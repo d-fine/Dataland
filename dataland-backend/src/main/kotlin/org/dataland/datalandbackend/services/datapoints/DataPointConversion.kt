@@ -12,8 +12,10 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
+import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
+private const val FORMULA_COMMENT_PREFIX = "This data point was calculated using the following formula: "
 private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
 private val ONE_HUNDRED = BigDecimal("100")
 private const val EXTENDED_CURRENCY_BASE_TYPE = "extendedCurrency"
@@ -29,6 +31,21 @@ enum class DataPointConversion(
     val id: String,
 ) {
     SUM("Sum") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+        ): String {
+            val sourceNames = getQuotedSourceNames(inputs, specs)
+            val formula =
+                if (sourceNames.size > 2) {
+                    sourceNames.joinToString("\n+ ")
+                } else {
+                    sourceNames.joinToString(" + ")
+                }
+            return "$FORMULA_COMMENT_PREFIX$formula."
+        }
+
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
@@ -46,7 +63,7 @@ enum class DataPointConversion(
                         value = values.sumOf { it },
                         currency = getCommonCurrency(dataPoints),
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, this.name),
+                        comment = createComment(inputs, specs, dataPoints),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 } else {
@@ -59,7 +76,7 @@ enum class DataPointConversion(
                     ExtendedDataPoint(
                         value = values.sumOf { it },
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, this.name),
+                        comment = createComment(inputs, specs, dataPoints),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -72,6 +89,12 @@ enum class DataPointConversion(
     },
 
     DIVISION("Division") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+        ): String = "$FORMULA_COMMENT_PREFIX${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
@@ -98,7 +121,7 @@ enum class DataPointConversion(
                             ),
                         currency = getCurrency(numerator),
                         quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, this.name),
+                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
@@ -117,7 +140,7 @@ enum class DataPointConversion(
                                 CALCULATION_ROUNDING_MODE,
                             ),
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, this.name),
+                        comment = createComment(inputs, specs, dataPoints),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -131,6 +154,12 @@ enum class DataPointConversion(
     },
 
     DIVISION_BY_PERCENT("DivisionByPercent") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+        ): String = "${FORMULA_COMMENT_PREFIX}100 * ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
@@ -158,7 +187,7 @@ enum class DataPointConversion(
                         value = result,
                         currency = getCurrency(numerator),
                         quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, "Division by percent"),
+                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
@@ -184,7 +213,7 @@ enum class DataPointConversion(
                     ExtendedDataPoint(
                         value = result,
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, "Division by percent"),
+                        comment = createComment(inputs, specs, dataPoints),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -198,6 +227,12 @@ enum class DataPointConversion(
     },
 
     IDENTITY("Identity") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+        ): String? = dataPoints.single().comment
+
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
@@ -212,7 +247,7 @@ enum class DataPointConversion(
                             value = it.value,
                             currency = getCurrency(it),
                             quality = it.quality,
-                            comment = createComment(inputs, specs, this.name),
+                            comment = createComment(inputs, specs, dataPoints),
                             dataSource = it.dataSource,
                         )
                     }
@@ -223,7 +258,7 @@ enum class DataPointConversion(
                         ExtendedDataPoint(
                             value = it.value,
                             quality = it.quality,
-                            comment = createComment(inputs, specs, this.name),
+                            comment = createComment(inputs, specs, dataPoints),
                             dataSource = it.dataSource,
                         )
                     }
@@ -250,6 +285,20 @@ enum class DataPointConversion(
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
     ): UploadedDataPoint
+
+    /**
+     * Creates a comment for the resulting data point describing this conversion's formula.
+     *
+     * @param inputs the uploaded data points used as calculation inputs
+     * @param specs the data point type specifications used to resolve input display names
+     * @param dataPoints the deserialized source data points used for the conversion
+     * @return a generated comment describing the calculation
+     */
+    abstract fun createComment(
+        inputs: Collection<UploadedDataPoint>,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    ): String?
 
     companion object {
         /**
@@ -347,22 +396,16 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
     inputs.minByOrNull { it.fileReference }
 
 /**
- * Creates a comment for the resulting data point indicating the [inputs] and [method] used to create it.
+ * Resolves the display names of [inputs] in [specs] and wraps each name in double quotes.
  *
  * @param inputs the uploaded data points used as calculation inputs
  * @param specs the data point type specifications used to resolve input display names
- * @param method the name of the conversion method used
- * @return a generated comment describing the calculation inputs and method
+ * @return the quoted display names of all inputs in order
  */
-internal fun createComment(
+private fun getQuotedSourceNames(
     inputs: Collection<UploadedDataPoint>,
     specs: Map<DataPointType, DataPointTypeSpecification>,
-    method: String,
-): String {
-    val sourceNames = inputs.map { specs.getValue(it.dataPointType).name }
-    return "This data point was calculated applying the method \"$method\" using: " +
-        sourceNames.joinToString(", ") { it } + " as input."
-}
+): List<String> = inputs.map { "\"${specs.getValue(it.dataPointType).name}\"" }
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].

@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
-import org.dataland.datalandbackend.services.datapoints.createComment
 import org.dataland.datalandbackend.services.datapoints.mergeDataSources
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
 import org.dataland.datalandbackend.utils.TestResourceFileReader
@@ -117,54 +116,50 @@ class DataPointConversionTest {
 
         @JvmStatic
         fun provideComments(): Stream<Arguments> {
-            val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
             val input1 = createDummyUploadedDataPoint("type1")
             val input2 = createDummyUploadedDataPoint("type2")
-            val specs =
-                mapOf(
-                    "type1" to
-                        DataPointTypeSpecification(
-                            dataPointType = dummyRef,
-                            name = "Input1",
-                            businessDefinition = "dummy",
-                            dataPointBaseType = dummyRef,
-                            usedBy = emptyList(),
-                            calculationRules = emptyList(),
-                        ),
-                    "type2" to
-                        DataPointTypeSpecification(
-                            dataPointType = dummyRef,
-                            name = "Input2",
-                            businessDefinition = "dummy",
-                            dataPointBaseType = dummyRef,
-                            usedBy = emptyList(),
-                            calculationRules = emptyList(),
-                        ),
-                )
+            val input3 = createDummyUploadedDataPoint("type3")
+            val specs = createCommentSpecs()
+            val firstDataPoint = ExtendedDataPoint(value = BigDecimal.ONE, comment = "Original source comment")
+            val secondDataPoint = ExtendedDataPoint(value = BigDecimal.TEN)
+            val thirdDataPoint = ExtendedDataPoint(value = BigDecimal.ZERO)
             return Stream.of(
                 Arguments.of(
                     listOf(input1, input2),
                     specs,
-                    "DummyMethod",
-                    "This data point was calculated applying the method \"DummyMethod\" using: Input1, Input2 as input.",
+                    listOf(firstDataPoint, secondDataPoint),
+                    DataPointConversion.SUM,
+                    "This data point was calculated using the following formula: \"Input1\" + \"Input2\".",
                 ),
                 Arguments.of(
-                    listOf(input2, input1),
+                    listOf(input1, input2, input3),
                     specs,
-                    "DummyMethod",
-                    "This data point was calculated applying the method \"DummyMethod\" using: Input2, Input1 as input.",
+                    listOf(firstDataPoint, secondDataPoint, thirdDataPoint),
+                    DataPointConversion.SUM,
+                    "This data point was calculated using the following formula: \"Input1\"\n" +
+                        "+ \"Input2\"\n" +
+                        "+ \"Input3\".",
+                ),
+                Arguments.of(
+                    listOf(input1, input2),
+                    specs,
+                    listOf(firstDataPoint, secondDataPoint),
+                    DataPointConversion.DIVISION,
+                    "This data point was calculated using the following formula: \"Input1\" / \"Input2\".",
+                ),
+                Arguments.of(
+                    listOf(input1, input2),
+                    specs,
+                    listOf(firstDataPoint, secondDataPoint),
+                    DataPointConversion.DIVISION_BY_PERCENT,
+                    "This data point was calculated using the following formula: 100 * \"Input1\" / \"Input2\".",
                 ),
                 Arguments.of(
                     listOf(input1),
                     specs,
-                    "DummyMethod",
-                    "This data point was calculated applying the method \"DummyMethod\" using: Input1 as input.",
-                ),
-                Arguments.of(
-                    emptyList<UploadedDataPoint>(),
-                    emptyMap<DataPointType, DataPointTypeSpecification>(),
-                    "DummyMethod",
-                    "This data point was calculated applying the method \"DummyMethod\" using:  as input.",
+                    listOf(firstDataPoint),
+                    DataPointConversion.IDENTITY,
+                    "Original source comment",
                 ),
             )
         }
@@ -197,6 +192,28 @@ class DataPointConversionTest {
                 companyId = "dummy",
                 reportingPeriod = "dummy",
                 dataPointType = dataPointType,
+            )
+
+        private fun createCommentSpecs(): Map<DataPointType, DataPointTypeSpecification> {
+            val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
+            return mapOf(
+                "type1" to createDummySpec(dummyRef, "Input1"),
+                "type2" to createDummySpec(dummyRef, "Input2"),
+                "type3" to createDummySpec(dummyRef, "Input3"),
+            )
+        }
+
+        private fun createDummySpec(
+            dummyRef: IdWithRef,
+            name: String,
+        ): DataPointTypeSpecification =
+            DataPointTypeSpecification(
+                dataPointType = dummyRef,
+                name = name,
+                businessDefinition = "dummy",
+                dataPointBaseType = dummyRef,
+                usedBy = emptyList(),
+                calculationRules = emptyList(),
             )
     }
 
@@ -449,11 +466,16 @@ class DataPointConversionTest {
 
     @Test
     fun `check that identity conversion works as expected`() {
-        val input = createUploadedDataPoint(TestResourceFileReader.getJsonString(NUMERIC_DATA_POINT_HALF))
+        val inputDataPoint =
+            defaultObjectMapper
+                .readValue<ExtendedDataPoint<BigDecimal>>(
+                    TestResourceFileReader.getJsonString(NUMERIC_DATA_POINT_HALF),
+                ).copy(comment = "Original source comment")
+        val input = createUploadedDataPoint(defaultObjectMapper.writeValueAsString(inputDataPoint))
         val result = applyTransformation(listOf(input), "targetType", "Identity", dummySpecs)
-        val inputDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(input.dataPoint)
-        val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(result.dataPoint)
+        val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.dataPoint)
         assert(resultDataPoint.value == inputDataPoint.value)
+        assertEquals(inputDataPoint.comment, resultDataPoint.comment)
         assert(resultDataPoint.dataSource == inputDataPoint.dataSource)
         assert(result.dataPointType == "targetType")
         assert(result.companyId == input.companyId)
@@ -462,11 +484,12 @@ class DataPointConversionTest {
 
     @Test
     fun `check that identity conversion of currency data points preserves the currency`() {
-        val input = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR"))
+        val input = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR", "Original currency comment"))
         val result = applyTransformation(listOf(input), currencyTargetType, "Identity", currencySpecs)
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(result.dataPoint)
         assertBigDecimalEquals("0.5", resultDataPoint.value)
         assertEquals("EUR", resultDataPoint.currency)
+        assertEquals("Original currency comment", resultDataPoint.comment)
         assert(result.dataPointType == currencyTargetType)
         assert(result.companyId == input.companyId)
         assert(result.reportingPeriod == input.reportingPeriod)
@@ -501,10 +524,11 @@ class DataPointConversionTest {
     fun `check that creation of comments works as expected`(
         inputs: Collection<UploadedDataPoint>,
         specs: Map<DataPointType, DataPointTypeSpecification>,
-        method: String,
+        dataPoints: Collection<ExtendedDataPoint<*>>,
+        conversion: DataPointConversion,
         expected: String,
     ) {
-        assert(createComment(inputs, specs, method) == expected)
+        assertEquals(expected, conversion.createComment(inputs, specs, dataPoints))
     }
 
     @ParameterizedTest
@@ -528,12 +552,14 @@ class DataPointConversionTest {
     private fun createCurrencyDataPoint(
         value: String,
         currency: String?,
+        comment: String? = null,
     ): String =
         defaultObjectMapper.writeValueAsString(
             ExtendedCurrencyDataPoint(
                 value = BigDecimal(value),
                 currency = currency,
                 quality = QualityOptions.Reported,
+                comment = comment,
             ),
         )
 }
