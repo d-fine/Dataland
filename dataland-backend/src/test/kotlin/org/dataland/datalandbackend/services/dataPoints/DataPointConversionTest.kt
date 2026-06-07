@@ -72,6 +72,8 @@ class DataPointConversionTest {
         )
 
     companion object {
+        const val ORIGINAL_COMMENT = "Original source comment"
+
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
             Stream.of(
@@ -120,7 +122,7 @@ class DataPointConversionTest {
             val input2 = createDummyUploadedDataPoint("type2")
             val input3 = createDummyUploadedDataPoint("type3")
             val specs = createCommentSpecs()
-            val firstDataPoint = ExtendedDataPoint(value = BigDecimal.ONE, comment = "Original source comment")
+            val firstDataPoint = ExtendedDataPoint(value = BigDecimal.ONE, comment = ORIGINAL_COMMENT)
             val secondDataPoint = ExtendedDataPoint(value = BigDecimal.TEN)
             val thirdDataPoint = ExtendedDataPoint(value = BigDecimal.ZERO)
             return Stream.of(
@@ -162,7 +164,7 @@ class DataPointConversionTest {
                     specs,
                     listOf(firstDataPoint),
                     DataPointConversion.IDENTITY,
-                    "Original source comment",
+                    ORIGINAL_COMMENT,
                 ),
             )
         }
@@ -473,7 +475,7 @@ class DataPointConversionTest {
             defaultObjectMapper
                 .readValue<ExtendedDataPoint<BigDecimal>>(
                     TestResourceFileReader.getJsonString(NUMERIC_DATA_POINT_HALF),
-                ).copy(comment = "Original source comment")
+                ).copy(comment = ORIGINAL_COMMENT)
         val input = createUploadedDataPoint(defaultObjectMapper.writeValueAsString(inputDataPoint))
         val result = applyTransformation(listOf(input), "targetType", "Identity", dummySpecs)
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.dataPoint)

@@ -97,20 +97,11 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
-                    require(inputs.size == 2) { "Exactly two data points must be provided for division." }
-                    val numerator =
-                        defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
-                    val denominator =
-                        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
-                    val numeratorValue =
-                        requireNotNull(numerator.value) { "Data points for division must not have null value fields." }
-                    val denominatorValue =
-                        requireNotNull(denominator.value) { "Data points for division must not have null value fields." }
-                    require(denominatorValue.signum() != 0) { "The divisor in division must not be zero." }
+                    val (numerator, denominator) = extractNumeratorAndDenominator(inputs)
                     ExtendedCurrencyDataPoint(
                         value =
-                            numeratorValue.divide(
-                                denominatorValue,
+                            numerator.value?.divide(
+                                denominator.value,
                                 CALCULATION_SCALE,
                                 CALCULATION_ROUNDING_MODE,
                             ),
@@ -120,12 +111,11 @@ enum class DataPointConversion(
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
+                    val nullValueErrorMessage = "Data points for division must not have null value fields."
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
                     require(dataPoints.size == 2) { "Exactly two data points must be provided for division." }
-                    val numerator =
-                        requireNotNull(dataPoints[0].value) { "Data points for division must not have null value fields." }
-                    val denominator =
-                        requireNotNull(dataPoints[1].value) { "Data points for division must not have null value fields." }
+                    val numerator = requireNotNull(dataPoints[0].value) { nullValueErrorMessage }
+                    val denominator = requireNotNull(dataPoints[1].value) { nullValueErrorMessage }
                     require(denominator.signum() != 0) { "The divisor in division must not be zero." }
                     ExtendedDataPoint(
                         value =
@@ -163,19 +153,10 @@ enum class DataPointConversion(
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
-                    require(inputs.size == 2) { "Exactly two data points must be provided for division by percent." }
-                    val numerator =
-                        defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
-                    val denominator =
-                        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
-                    val numeratorValue =
-                        requireNotNull(numerator.value) { "Data points for division by percent must not have null value fields." }
-                    val denominatorValue =
-                        requireNotNull(denominator.value) { "Data points for division by percent must not have null value fields." }
-                    require(denominatorValue.signum() != 0) { "The divisor in division by percent must not be zero." }
+                    val (numerator, denominator) = extractNumeratorAndDenominator(inputs)
                     val result =
-                        numeratorValue.multiply(ONE_HUNDRED).divide(
-                            denominatorValue,
+                        numerator.value?.multiply(ONE_HUNDRED)?.divide(
+                            denominator.value,
                             CALCULATION_SCALE,
                             CALCULATION_ROUNDING_MODE,
                         )
@@ -187,19 +168,12 @@ enum class DataPointConversion(
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
+                    val nullValueErrorMessage = "Data points for division by percent must not have null value fields."
                     val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
                     require(dataPoints.size == 2) { "Exactly two data points must be provided for division by percent." }
-                    val numerator =
-                        requireNotNull(dataPoints[0].value) {
-                            "Data points for division by percent must not have null value fields."
-                        }
-                    val denominator =
-                        requireNotNull(dataPoints[1].value) {
-                            "Data points for division by percent must not have null value fields."
-                        }
-                    require(denominator.signum() != 0) {
-                        "The divisor in division by percent must not be zero."
-                    }
+                    val numerator = requireNotNull(dataPoints[0].value) { nullValueErrorMessage }
+                    val denominator = requireNotNull(dataPoints[1].value) { nullValueErrorMessage }
+                    require(denominator.signum() != 0) { "The divisor in division by percent must not be zero." }
                     val result =
                         numerator.multiply(ONE_HUNDRED).divide(
                             denominator,
@@ -402,6 +376,19 @@ private fun getQuotedSourceNames(
     inputs: Collection<UploadedDataPoint>,
     specs: Map<DataPointType, DataPointTypeSpecification>,
 ): List<String> = inputs.map { "\"${specs.getValue(it.dataPointType).name}\"" }
+
+private fun extractNumeratorAndDenominator(
+    inputs: Collection<UploadedDataPoint>,
+): Pair<ExtendedCurrencyDataPoint, ExtendedDataPoint<BigDecimal>> {
+    val nullValueErrorMessage = "Data points for any type of division must not have null value fields."
+    require(inputs.size == 2) { "Exactly two data points must be provided for any type of division." }
+    val numerator = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
+    val denominator = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
+    requireNotNull(numerator.value) { nullValueErrorMessage }
+    val denominatorValue = requireNotNull(denominator.value) { nullValueErrorMessage }
+    require(denominatorValue.signum() != 0) { "The divisor in a division must not be zero." }
+    return Pair(numerator, denominator)
+}
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].

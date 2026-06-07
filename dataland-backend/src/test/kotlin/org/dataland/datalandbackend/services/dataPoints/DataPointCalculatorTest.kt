@@ -43,6 +43,7 @@ class DataPointCalculatorTest {
 
     private val correlationId = "test-correlation-id"
     private val companyId = "test-company-id"
+    private val secondaryCompanyId = "other-company-id"
     private val reportingPeriod = "2023"
     private val framework = "test-framework"
 
@@ -286,7 +287,7 @@ class DataPointCalculatorTest {
 
     @Test
     fun `check that multiple dataset dimensions are each handled independently`() {
-        val secondCompanyId = "other-company-id"
+        val secondCompanyId = secondaryCompanyId
         val secondDimensions = BasicDatasetDimensions(secondCompanyId, framework, reportingPeriod)
 
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
@@ -333,7 +334,7 @@ class DataPointCalculatorTest {
 
     @Test
     fun `check that source data from one company is not used for another company`() {
-        val secondCompanyId = "other-company-id"
+        val secondCompanyId = secondaryCompanyId
         val secondDimensions = BasicDatasetDimensions(secondCompanyId, framework, reportingPeriod)
 
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
@@ -441,7 +442,7 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, reportingPeriod = "2022"),
                 makeMetaData(sourceTypeB, reportingPeriod = "2022"),
                 makeMetaData(sourceTypeA, reportingPeriod = "2023"),
-                makeMetaData(sourceTypeB, companyId = "other-company-id", reportingPeriod = "2023"),
+                makeMetaData(sourceTypeB, companyId = secondaryCompanyId, reportingPeriod = "2023"),
             ),
         ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
 
@@ -501,7 +502,7 @@ class DataPointCalculatorTest {
 
     @Test
     fun `check that active source dimensions are grouped by company and reporting period and deduplicated`() {
-        val secondCompanyId = "other-company-id"
+        val secondCompanyId = secondaryCompanyId
         val secondTargetType = "secondCalculatedDataPointType"
         doReturn(
             mapOf(
