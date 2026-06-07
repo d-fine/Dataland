@@ -2,9 +2,11 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.dataland.datalandbackendutils.model.DataPointId
+import org.dataland.datalandbackendutils.model.DatasetType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -17,8 +19,9 @@ class DataDeliveryService
     constructor(
         private val dataCompositionService: DataCompositionService,
         private val dataAvailabilityChecker: DataAvailabilityChecker,
-        private val storageClient: StorageControllerApi,
+        private val internalStorageAdapter: InternalStorageAdapter,
         private val datasetAssembler: DatasetAssembler,
+        private val dataPointCalculator: DataPointCalculator,
     ) {
         /**
          * Delivers the datasets for the data dimensions provided in [dataDimensions] and returns a map of data dimension to
@@ -27,6 +30,7 @@ class DataDeliveryService
          *
          * @param dataDimensions the data dimensions for which datasets are to be assembled
          * @param correlationId the correlation ID for the operation
+         * @return a map of data dimensions to the assembled dataset in the form of a JSON string
          */
         fun getAssembledDatasets(
             dataDimensions: Collection<BasicDatasetDimensions>,
@@ -39,19 +43,33 @@ class DataDeliveryService
                     .associateWith { framework ->
                         dataCompositionService.getRelevantDataPointTypes(framework)
                     }
-
-            val requiredData = mutableMapOf<BasicDatasetDimensions, List<String>>()
-            for (dataDimension in dataDimensions) {
-                val relevantDimensions =
+            val relevantDimensions =
+                dataDimensions.associateWith { dataDimension ->
                     dataDimension.toBasicDataPointDimensions(
                         relevantDataPointTypes.getValue(dataDimension.framework),
                     )
-                val deliverableDataPointIds = dataAvailabilityChecker.getViewableDataPointIds(relevantDimensions)
-                if (deliverableDataPointIds.isNotEmpty()) {
-                    requiredData[dataDimension] = deliverableDataPointIds
                 }
-            }
-            return assembleDatasetsFromDataPointIds(requiredData, correlationId)
+            val deliverableDataPointMetaData =
+                dataAvailabilityChecker
+                    .getViewableDataPointMetaData(relevantDimensions)
+                    .filterValues { it.isNotEmpty() }
+            val requiredDataPointIds =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map { it.dataPointId }
+                }
+            val deliverableDataPointTypes =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map {
+                        it.dataPointType
+                    }
+                }
+            val calculatedData =
+                dataPointCalculator.getCalculatedData(
+                    datasetDimensions = dataDimensions,
+                    correlationId = correlationId,
+                    deliverableDataPointTypes = deliverableDataPointTypes,
+                )
+            return assembleDatasetsFromDataPointIds(requiredDataPointIds, calculatedData, correlationId)
         }
 
         /**
@@ -60,50 +78,29 @@ class DataDeliveryService
          * for visibility or existence of the provided data point IDs.
          *
          * @param dataPointIds data point IDs to assemble to data sets grouped by data dimensions
+         * @param calculatedData calculated data points grouped by data dimensions
          * @param correlationId the correlation ID for the operation
          * @return a map of data dimensions to the dataset in the form of a JSON string
          */
         private fun assembleDatasetsFromDataPointIds(
-            dataPointIds: Map<BasicDatasetDimensions, List<String>>,
+            dataPointIds: Map<BasicDatasetDimensions, List<DataPointId>>,
+            calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
-            val results = mutableMapOf<BasicDatasetDimensions, String>()
-            val allRequiredIds = dataPointIds.values.flatten().toSet()
-            val allStoredDataPoints = retrieveDataPointsFromInternalStorage(allRequiredIds, correlationId)
+            val allRequiredIds = dataPointIds.values.flatten().distinct()
+            val allStoredDataPoints =
+                internalStorageAdapter
+                    .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
 
-            dataPointIds.forEach { (dataDimensions, dataIds) ->
-                val datasetInput = dataIds.mapNotNull { allStoredDataPoints[it] }
-                results[dataDimensions] =
+            return (dataPointIds.keys + calculatedData.keys)
+                .associateWith { dataDimensions ->
+                    val dataIds = dataPointIds.getOrDefault(dataDimensions, emptyList())
+                    dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
+                }.filterValues { datasetInputs ->
+                    datasetInputs.isNotEmpty()
+                }.mapValues { (dataDimensions, datasetInput) ->
                     datasetAssembler.assembleSingleDataset(datasetInput, dataDimensions.framework)
-            }
-            return results
-        }
-
-        /**
-         * Retrieves a batch of data points from the internal storage identified by their IDs. IDs unknown to the internal storage are
-         * ignored.
-         *
-         * @param dataPointIds a list of data point IDs to be retrieved
-         * @param correlationId the correlation ID associated to the operation
-         * @return a map of data point IDs to the respective content
-         */
-        private fun retrieveDataPointsFromInternalStorage(
-            dataPointIds: Collection<String>,
-            correlationId: String,
-        ): Map<String, UploadedDataPoint> {
-            val dataPoints = mutableMapOf<String, UploadedDataPoint>()
-            val dataPointsFromInternalStorage =
-                storageClient.selectBatchDataPointsByIds(correlationId, dataPointIds.toList())
-            dataPointsFromInternalStorage.forEach { (dataPointId, storedDataPoint) ->
-                dataPoints[dataPointId] =
-                    UploadedDataPoint(
-                        dataPoint = storedDataPoint.dataPoint,
-                        dataPointType = storedDataPoint.dataPointType,
-                        companyId = storedDataPoint.companyId,
-                        reportingPeriod = storedDataPoint.reportingPeriod,
-                    )
-            }
-            return dataPoints
+                }
         }
 
         /**
@@ -118,24 +115,43 @@ class DataDeliveryService
          */
         fun getLatestAvailableAssembledDatasets(
             companyIds: Collection<String>,
-            framework: String,
+            framework: DatasetType,
             correlationId: String,
         ): List<PlainDataAndDimensions> {
             val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework).toSet()
-            val deliverableDataPointIds =
-                dataAvailabilityChecker
-                    .getLatestAvailableDataPointIds(companyIds, dataPointTypes)
-                    .entries
-                    .associate {
-                        BasicDatasetDimensions(it.key.companyId, framework, it.key.reportingPeriod) to it.value.map { dp -> dp.dataPointId }
-                    }
 
-            return assembleDatasetsFromDataPointIds(deliverableDataPointIds, correlationId)
-                .map {
-                    PlainDataAndDimensions(
-                        dimensions = it.key,
-                        data = it.value,
-                    )
+            val deliverableDataPointMetaData =
+                dataAvailabilityChecker.getLatestAvailableDataPointIds(companyIds, dataPointTypes).mapKeys {
+                    it.key.toBasicDatasetDimensions(framework)
                 }
+            val deliverableDataPointTypes =
+                deliverableDataPointMetaData.mapValues { (_, metaData) ->
+                    metaData.map {
+                        it.dataPointType
+                    }
+                }
+
+            val calculatedData =
+                dataPointCalculator.getCalculatedData(
+                    datasetDimensions = deliverableDataPointMetaData.keys,
+                    correlationId = correlationId,
+                    deliverableDataPointTypes = deliverableDataPointTypes,
+                )
+
+            val deliverableDataPointIds =
+                deliverableDataPointMetaData
+                    .mapValues { (_, metaData) -> metaData.map { it.dataPointId } }
+            val assembledDatasets =
+                assembleDatasetsFromDataPointIds(
+                    dataPointIds = deliverableDataPointIds,
+                    calculatedData = calculatedData,
+                    correlationId = correlationId,
+                )
+            return assembledDatasets.map {
+                PlainDataAndDimensions(
+                    dimensions = it.key,
+                    data = it.value,
+                )
+            }
         }
     }

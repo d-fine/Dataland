@@ -162,6 +162,7 @@ class DataPointValidatorTest {
                 name = "dummy",
                 businessDefinition = "dummy",
                 usedBy = emptyList(),
+                calculationRules = emptyList(),
             ),
         ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
 
