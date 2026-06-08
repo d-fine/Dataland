@@ -1,10 +1,8 @@
 package org.dataland.datalandbackend.services
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
-import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
@@ -22,8 +20,8 @@ import org.springframework.stereotype.Service
 class DataAvailabilityChecker
     @Autowired
     constructor(
-        @PersistenceContext private val entityManager: EntityManager,
         private val dataCompositionService: DataCompositionService,
+        private val dataMetaInformationRepository: DataMetaInformationRepository,
         private val dataPointMetaInformationRepository: DataPointMetaInformationRepository,
     ) {
         private val objectMapper = defaultObjectMapper
@@ -50,24 +48,9 @@ class DataAvailabilityChecker
                         )
                     },
                 )
-            val query =
-                """
-                WITH requested AS (
-                    SELECT DISTINCT company_id, framework, reporting_period
-                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
-                        AS dim(company_id text, framework text, reporting_period text)
-                )
-                SELECT m.*
-                FROM requested dim
-                JOIN data_meta_information m
-                    ON m.company_id = dim.company_id
-                    AND m.data_type = dim.framework
-                    AND m.reporting_period = dim.reporting_period
-                WHERE m.currently_active = true
-                """
-            val nativeQuery = entityManager.createNativeQuery(query, DataMetaInformationEntity::class.java)
-            nativeQuery.setParameter("jsonPayload", jsonPayload)
-            return nativeQuery.resultList.filterIsInstance<DataMetaInformationEntity>().map { it.toApiModel() }
+            return dataMetaInformationRepository
+                .findActiveDatasetsByDimensionsJson(jsonPayload)
+                .map { it.toApiModel() }
         }
 
         /**
@@ -96,24 +79,7 @@ class DataAvailabilityChecker
                         )
                     },
                 )
-            val query =
-                """
-                WITH requested AS (
-                    SELECT DISTINCT company_id, data_point_type, reporting_period
-                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
-                        AS dim(company_id text, data_point_type text, reporting_period text)
-                )
-                SELECT m.*
-                FROM requested dim
-                JOIN data_point_meta_information m
-                    ON m.company_id = dim.company_id
-                    AND m.data_point_type = dim.data_point_type
-                    AND m.reporting_period = dim.reporting_period
-                WHERE m.currently_active = true
-                """
-            val nativeQuery = entityManager.createNativeQuery(query, DataPointMetaInformationEntity::class.java)
-            nativeQuery.setParameter("jsonPayload", jsonPayload)
-            return nativeQuery.resultList.filterIsInstance<DataPointMetaInformationEntity>()
+            return dataPointMetaInformationRepository.findActiveDataPointsByDimensionsJson(jsonPayload)
         }
 
         /**
