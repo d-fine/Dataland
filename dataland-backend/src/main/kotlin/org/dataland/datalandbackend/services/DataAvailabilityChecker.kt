@@ -35,25 +35,39 @@ class DataAvailabilityChecker
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
         fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformation> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDatasetDimensions(dataDimensions)
-            val formattedTuples =
-                dimensionsToProcess.joinToString(", ") {
-                    "('${it.companyId}', '${it.framework}', '${it.reportingPeriod}')"
-                }
-
-            val queryToExecute =
-                """SELECT * FROM data_meta_information
-                WHERE (company_id, data_type, reporting_period) IN ($formattedTuples)
-                AND currently_active = true"""
-
-            return if (dimensionsToProcess.isNotEmpty()) {
-                val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-                query.resultList
-                    .filterIsInstance<DataMetaInformationEntity>()
-                    .map { it.toApiModel() }
-            } else {
-                emptyList()
+            val dimensionsToProcess = dataCompositionService.filterOutInvalidDatasetDimensions(dataDimensions).distinct()
+            if (dimensionsToProcess.isEmpty()) {
+                return emptyList()
             }
+
+            val jsonPayload =
+                objectMapper.writeValueAsString(
+                    dimensionsToProcess.map {
+                        mapOf(
+                            "company_id" to it.companyId,
+                            "framework" to it.framework,
+                            "reporting_period" to it.reportingPeriod,
+                        )
+                    },
+                )
+            val query =
+                """
+                WITH requested AS (
+                    SELECT DISTINCT company_id, framework, reporting_period
+                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                        AS dim(company_id text, framework text, reporting_period text)
+                )
+                SELECT m.*
+                FROM requested dim
+                JOIN data_meta_information m
+                    ON m.company_id = dim.company_id
+                    AND m.data_type = dim.framework
+                    AND m.reporting_period = dim.reporting_period
+                WHERE m.currently_active = true
+                """
+            val nativeQuery = entityManager.createNativeQuery(query, DataMetaInformationEntity::class.java)
+            nativeQuery.setParameter("jsonPayload", jsonPayload)
+            return nativeQuery.resultList.filterIsInstance<DataMetaInformationEntity>().map { it.toApiModel() }
         }
 
         /**
