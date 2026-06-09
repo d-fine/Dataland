@@ -23,6 +23,13 @@ done
 
 
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
+
+# Wait for all services to be healthy before starting the tests.
+# This prevents Cypress from running while JVM services are still warming up,
+# which causes peak memory usage (JVM startup + Cypress Electron heap) to overlap
+# and crash the Electron renderer process.
+timeout 600 bash -c "wait_for_services_healthy_in_compose_profile testing"
+
 timeout 3600 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 
 # Check and validate that all docker containers are indeed healthy
