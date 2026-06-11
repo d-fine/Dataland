@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/checkDevEnvOverrides
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -46,6 +47,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -93,6 +95,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -131,6 +134,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -138,8 +142,6 @@ jobs:
           cache: gradle
       - name: Build framework '${{ matrix.framework }}'
         run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
-        env:
-          DATALAND_QA_SERVICE_CLIENT_SECRET: "dummy"
       - name: Verify that there are no changed (git-tracked) files
         run: ./testing/verify_that_no_git_tracked_files_changed.sh
       - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
@@ -166,6 +168,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -196,6 +199,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -215,17 +219,6 @@ jobs:
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
-          NOTIFICATION_INTERNAL_CC: "dummyCI@example.com"
-          DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_BACKEND_CLIENT_SECRET: "password"
-          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
@@ -243,16 +236,6 @@ jobs:
         run: testing/verify_that_fake_fixtures_are_up_to_date.sh
       - name: verify OpenApi Files
         if: always()
-        env:
-          DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_BACKEND_CLIENT_SECRET: "password"
-          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
@@ -316,6 +299,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadDevEnv
       - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -324,54 +308,8 @@ jobs:
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
-          KEYCLOAK_FRONTEND_URL: "https://local-dev.dataland.com/keycloak"
-          KEYCLOAK_DB_PASSWORD: "password"
-          BACKEND_DB_PASSWORD: "password"
-          API_KEY_MANAGER_DB_PASSWORD: "password"
-          ACCOUNTING_SERVICE_DB_PASSWORD: "password"
-          DATA_SOURCING_SERVICE_DB_PASSWORD: "password"
-          INTERNAL_STORAGE_DB_PASSWORD: "password"
-          DOCUMENT_MANAGER_DB_PASSWORD: "password"
-          QA_SERVICE_DB_PASSWORD: "password"
-          COMMUNITY_MANAGER_DB_PASSWORD: "password"
-          EMAIL_SERVICE_DB_PASSWORD: "password"
-          USER_SERVICE_DB_PASSWORD: "password"
-          PGADMIN_PASSWORD: "password"
-          KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
-          DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_BATCH_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_API_KEY_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_USER_SERVICE_CLIENT_SECRET: "password"
-          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
-          DATALAND_BACKEND_CLIENT_SECRET: "password"
-          DATALAND_DATA_EXPORTER_CLIENT_SECRET: "password"
-          KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_READER_PASSWORD: "password"
-          KEYCLOAK_UPLOADER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_UPLOADER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_UPLOADER_PASSWORD: "password"
-          KEYCLOAK_REVIEWER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_REVIEWER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_REVIEWER_PASSWORD: "password"
-          KEYCLOAK_JUDGE_VALUE: "a+lk/Ddwa5wWL9T6BTZMhdNGEBiX6dzngWr5ic4Yt44="
-          KEYCLOAK_JUDGE_SALT: "z7iDkOaNQfeUQEV3IBpEFQ=="
-          KEYCLOAK_JUDGE_PASSWORD: "password"
-          KEYCLOAK_PREMIUM_USER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
-          KEYCLOAK_PREMIUM_USER_SALT: "K9nzg086pCNjq8dxl84GZg=="
-          KEYCLOAK_PREMIUM_USER_PASSWORD: "password"
-          KC_BOOTSTRAP_ADMIN_USERNAME: "admin"
-          KC_BOOTSTRAP_ADMIN_PASSWORD: "password"
           KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
           KEYCLOAK_GOOGLE_SECRET: "irrelevant_in_ci"
-          PROXY_PRIMARY_URL: local-dev.dataland.com
-          PROXY_LETSENCRYPT_PATH: /etc/letsencrypt/local-dev.dataland.com
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
@@ -381,24 +319,11 @@ jobs:
           DOCKER_BUILDKIT: 1
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          NOTIFICATION_INTERNAL_RECEIVERS: "anotherDummyCI@example.com"
-          NOTIFICATION_INTERNAL_CC: "anotherDummyCI2@example.com"
-          RABBITMQ_USER: "admin"
-          RABBITMQ_PASS: "dataland"
-          RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"
-          FRONTEND_LOCATION_CONFIG: "Test"
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
-          LOGGING_OPTIONS_MAX_SIZE: "1G"
-          LOGGING_OPTIONS_MAX_FILE: 1
           JAVA_TOOL_OPTIONS: "-Xms128m -Xmx384m"
-          GRAFANA_ADMIN: "admin"
-          GRAFANA_PASSWORD: "password"
-          LOKI_VOLUME: "./dataland-loki/data"
-          SLACK_ALERT_URL: "irrelevant_in_ci"
-          SLACK_CRITICAL_ALERT_URL: "irrelevant_in_ci"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7

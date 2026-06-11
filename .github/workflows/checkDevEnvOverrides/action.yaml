@@ -1,0 +1,33 @@
+name: "Check Development Environment Overrides"
+description: "Fail when CI hard-codes environments/.env.dev variables outside the allowlist"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check CI overrides for environments/.env.dev keys
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        env_file="./environments/.env.dev"
+        workflow_file="./.github/workflows/CI.yaml"
+
+        allowed_overrides=$(printf '%s\n' BACKEND_URL DATA_EXPORTER_OUTPUT_DIRECTORY)
+
+        dev_keys=$(sed -nE 's/^([A-Za-z_][A-Za-z0-9_]*)=.*/\1/p' "$env_file" | sort -u)
+        workflow_env_keys=$(sed -nE 's/^[[:space:]]+([A-Z_][A-Z0-9_]*):.*/\1/p' "$workflow_file" | sort -u)
+
+        disallowed_overrides=$(
+          comm -12 <(printf '%s\n' "$dev_keys") <(printf '%s\n' "$workflow_env_keys") \
+            | comm -23 - <(printf '%s\n' "$allowed_overrides" | sort -u)
+        )
+
+        if [[ -n "$disallowed_overrides" ]]; then
+          {
+            echo "CI.yaml hard-codes variables that are already defined in environments/.env.dev."
+            echo "Load .env.dev through ./.github/workflows/loadDevEnv instead, or document the key in the CI override allowlist."
+            echo
+            echo "$disallowed_overrides"
+          } >&2
+          exit 1
+        fi

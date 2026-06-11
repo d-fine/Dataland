@@ -20,7 +20,7 @@ runs:
         docker logs "$docker_service" > ./dockerLogs/${{ inputs.subfolder }}/"$docker_service".log 2>&1
         done
     - name: Upload docker log files
-      if: always()
+      if: ${{ always() && env.ACT != 'true' }}
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: dockerLogs-${{ inputs.subfolder }}
