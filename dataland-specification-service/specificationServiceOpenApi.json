@@ -687,9 +687,28 @@
           }
         }
       },
+      "CalculationRule": {
+        "required": [
+          "calculationMethod",
+          "inputs"
+        ],
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "calculationMethod": {
+            "type": "string"
+          }
+        }
+      },
       "DataPointTypeSpecification": {
         "required": [
           "businessDefinition",
+          "calculationRules",
           "dataPointBaseType",
           "dataPointType",
           "name",
@@ -719,6 +738,12 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "calculationRules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CalculationRule"
             }
           }
         }

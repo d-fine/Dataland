@@ -1,12 +1,11 @@
 package org.dataland.datalandbackend.utils
 
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.DataDimensionFilter
-import org.dataland.datalandbackend.services.SpecificationService
+import org.dataland.datalandbackend.services.DataCompositionService
+import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.datalandbackendutils.model.DatasetType
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -23,14 +22,16 @@ class DataPointUtils
     constructor(
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
-        private val specificationService: SpecificationService,
+        private val dataCompositionService: DataCompositionService,
+        private val dataPointCalculator: DataPointCalculator,
     ) {
         /**
          * Retrieve a framework specification from the specification service
+         *
          * @param framework the name of the framework to retrieve the specification for
          * @return the FrameworkSpecification object or null if the framework is not found
          */
-        fun getFrameworkSpecificationOrNull(framework: String): FrameworkSpecification? =
+        fun getFrameworkSpecificationOrNull(framework: DatasetType): FrameworkSpecification? =
             try {
                 specificationClient.getFrameworkSpecification(framework)
             } catch (ignore: ClientException) {
@@ -38,24 +39,14 @@ class DataPointUtils
             }
 
         /**
-         * Retrieves the relevant data point types for a specific framework
-         * @param framework the name of the framework
-         * @return a set of all relevant data point types
-         */
-        fun getRelevantDataPointTypes(framework: String): Set<String> {
-            val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
-            val frameworkTemplate = defaultObjectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
-        }
-
-        /**
          * Retrieves the latest upload time of an active data point belonging to a given framework and a specific company
+         *
          * @param dataPointDimensions the data point dimensions to get the latest upload time for
          * @return the latest upload time of an active data point as a long
          */
         fun getLatestUploadTime(dataPointDimensions: BasicDataDimensions): Long =
             metaDataManager.getLatestUploadTimeOfActiveDataPoints(
-                dataPointTypes = getRelevantDataPointTypes(dataPointDimensions.dataType),
+                dataPointTypes = dataCompositionService.getRelevantDataPointTypes(dataPointDimensions.dataType).toSet(),
                 companyId = dataPointDimensions.companyId,
                 reportingPeriod = dataPointDimensions.reportingPeriod,
             )
@@ -72,24 +63,33 @@ class DataPointUtils
          */
         fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
-            framework: String,
+            framework: DatasetType,
         ): Set<String> {
             if (getFrameworkSpecificationOrNull(framework) == null) {
                 return emptySet()
             }
 
-            val relevantDataPoints = getRelevantDataPointTypes(framework).subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
+            val relevantDataPoints =
+                dataCompositionService
+                    .getRelevantDataPointTypes(framework)
+                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
 
-            return metaDataManager
-                .getActiveDataPointMetaInformation(
-                    dataPointTypes = relevantDataPoints,
-                    companyId = companyId,
-                ).map { it.reportingPeriod }
-                .toSet()
+            val metaData =
+                metaDataManager
+                    .getActiveDataPointMetaInformation(
+                        dataPointTypes = relevantDataPoints,
+                        companyId = companyId,
+                    )
+
+            val calculationSourceDataPointDimension = dataPointCalculator.getActiveSourceDataPointDimensions(relevantDataPoints, companyId)
+            val calculationSourceReportingPeriods = calculationSourceDataPointDimension.map { it.reportingPeriod }.toSet()
+            val relevantDataPointReportingPeriods = metaData.map { it.reportingPeriod }.toSet()
+            return relevantDataPointReportingPeriods + calculationSourceReportingPeriods
         }
 
         /**
          * Retrieves all active data dimensions in regard to data points given the filter parameters
+         *
          * @param dataDimensionFilter the filter parameters for the data dimensions
          * @return a list of all active data dimensions
          */
@@ -104,6 +104,7 @@ class DataPointUtils
         /**
          * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
          * all frameworks are taken into account.
+         *
          * @param dataDimensionFilter the filter to use when searching for active data dimensions
          * @return a list of active framework data dimensions
          */
@@ -116,17 +117,16 @@ class DataPointUtils
                 } else {
                     dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
                 }
-
             for (framework in frameworks) {
+                val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
                 val activeDataPointMetaInformation =
                     metaDataManager.getActiveDataPointMetaInformationList(
                         DataDimensionFilter(
                             companyIds = dataDimensionFilter.companyIds,
-                            dataTypes = getRelevantDataPointTypes(framework).toList(),
+                            dataTypes = dataPointTypes.toList(),
                             reportingPeriods = dataDimensionFilter.reportingPeriods,
                         ),
                     )
-
                 activeDataPointMetaInformation
                     .groupBy {
                         Pair(it.companyId, it.reportingPeriod)
@@ -142,6 +142,19 @@ class DataPointUtils
                             )
                         }
                     }
+                val calculatableFrameworkDimensions =
+                    dataPointCalculator
+                        .getActiveSourceDataPointDimensions(
+                            dataPointTypes = dataPointTypes,
+                            dataDimensionFilter = dataDimensionFilter,
+                        ).map {
+                            BasicDataDimensions(
+                                companyId = it.companyId,
+                                dataType = framework,
+                                reportingPeriod = it.reportingPeriod,
+                            )
+                        }
+                allRelevantDimensions.addAll(calculatableFrameworkDimensions)
             }
             return allRelevantDimensions.distinct()
         }

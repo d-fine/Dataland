@@ -145,6 +145,7 @@ class DatasetJudgementSupportServiceTest {
                         IdWithRef(id = "eutaxonomy-financials", ref = ref),
                     ),
                 constraints = null,
+                calculationRules = emptyList(),
             )
 
         whenever(specificationControllerApi.getDataPointTypeSpecification(dataPointType))

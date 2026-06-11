@@ -321,6 +321,8 @@ jobs:
         env:
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Start memory monitor
+        run: ./testing/monitor-memory.sh start log/memory-monitor-${{ matrix.testGroup }}.log
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
@@ -399,6 +401,16 @@ jobs:
           LOKI_VOLUME: "./dataland-loki/data"
           SLACK_ALERT_URL: "irrelevant_in_ci"
           SLACK_CRITICAL_ALERT_URL: "irrelevant_in_ci"
+      - name: Stop memory monitor
+        if: always()
+        run: ./testing/monitor-memory.sh stop
+      - name: Upload memory monitor log
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: memory-monitor-${{ matrix.testGroup }}
+          path: log/memory-monitor-${{ matrix.testGroup }}.log
+          retention-days: 7
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
