@@ -38,7 +38,6 @@ function checkWarningLinks(subject: Cypress.Chainable<JQuery<HTMLElement>>): voi
 }
 
 describe('DatasetReviewOverview page details', () => {
-
   const keycloakMockWithJudge = minimalKeycloakMock({
     userId: 'current-judge-id',
     roles: [KEYCLOAK_ROLE_JUDGE],
@@ -386,7 +385,7 @@ describe('DatasetReviewOverview page details', () => {
         mountPage({ requestCount: 0 });
         cy.wait('@getDatasetJudgement');
         cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
-        cy.wait('@getRequestCount').its('request.body.requestStates').should('deep.equal', ['Processing'])
+        cy.wait('@getRequestCount').its('request.body.requestStates').should('deep.equal', ['Processing']);
       }
     );
 
