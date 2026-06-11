@@ -64,7 +64,7 @@ data class EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalc
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Turnover-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73""",
+        description = """Turnover-based total amount of assets of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73""",
         example = """{
       "value" : 100.5,
       "currency" : "USD",

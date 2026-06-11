@@ -64,7 +64,7 @@ data class EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalcula
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """CapEx-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73""",
+        description = """CapEx-based total amount of assets of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73""",
         example = """{
       "value" : 100.5,
       "currency" : "USD",

@@ -217,7 +217,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             label:
               'Turnover-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
             explanation:
-              'Turnover-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+              'Turnover-based total amount of assets of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
@@ -307,7 +307,7 @@ export const eutaxonomyFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyF
             label:
               'CapEx-based Total Amount Of Non-Assessed Exposures - Of which Exposures Financing Counterparties Reporting no Taxonomy-eligible Activities',
             explanation:
-              'CapEx-based total amount of assets Of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
+              'CapEx-based total amount of assets of which exposures financing counterparties reporting in accordance with Article 7(9) of Regulation (EU) 2026/73',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
