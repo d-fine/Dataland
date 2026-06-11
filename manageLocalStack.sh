@@ -10,11 +10,10 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--retrieve-certs] [--no-container-backend] [--silent]" >&3
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--retrieve-certs] [--no-container-backend] [--silent]" >&3
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
-  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)" >&3
   echo "  --retrieve-certs: Retrieve the SSL certificates instead of using self-signed ones" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --silent: Suppress subcommand output" >&3
@@ -40,9 +39,8 @@ prepare_loki_bind_mounts() {
 }
 
 start_development_stack() {
-  local local_frontend="$1"
-  local self_signed="$2"
-  local container_backend="$3"
+  local self_signed="$1"
+  local container_backend="$2"
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   run_step "Setting up SSL certificates" setup_certificates "$self_signed"
@@ -55,7 +53,7 @@ start_development_stack() {
   run_step "Reloading uncritical environment" source_uncritical_environment
 
   local compose_profiles
-  read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
+  read -ra compose_profiles <<< "$(determine_compose_profiles "$container_backend")"
 
   if [[ "$container_backend" = true ]]; then
     export INTERNAL_BACKEND_URL="http://backend:8080/api"
@@ -103,7 +101,6 @@ reset_development_stack() {
 }
 
 parse_arguments() {
-  local local_frontend=false
   local do_stop=false
   local do_reset=false
   local do_start=false
@@ -135,11 +132,6 @@ parse_arguments() {
         do_start=true
         shift
         ;;
-      --local-frontend)
-        log_info "Launching in local frontend mode" | tee /dev/fd/3
-        local_frontend=true
-        shift
-        ;;
       --retrieve-certs)
         self_signed=false
         shift
@@ -160,10 +152,6 @@ parse_arguments() {
     esac
   done
 
-  if [[ "$local_frontend" = true ]]; then
-    export FRONTEND_LOCATION_CONFIG="Localhost"
-  fi
-
   if [[ "$do_stop" = true ]]; then
     run_step "Stopping development stack" stop_development_stack
   fi
@@ -173,7 +161,7 @@ parse_arguments() {
   fi
 
   if [[ "$do_start" = true ]]; then
-    start_development_stack "$local_frontend" "$self_signed" "$container_backend"
+    start_development_stack "$self_signed" "$container_backend"
   fi
 }
 

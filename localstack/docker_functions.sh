@@ -3,7 +3,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/logging_functions.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
 
 # These profiles cover the full local dev stack for cleanup/start-stop operations regardless of current frontend/backend mode.
-development_profiles=(--profile development --profile developmentContainerFrontend --profile developmentContainerBackend)
+development_profiles=(--profile development --profile developmentContainerBackend)
 
 # Suppress successful command output when silent mode is enabled, but replay captured output on failure.
 run_quiet_command() {
@@ -38,13 +38,8 @@ run_docker_compose() {
 }
 
 determine_compose_profiles() {
-  local local_frontend="$1"
-  local container_backend="$2"
+  local container_backend="$1"
   local compose_profiles=(--profile development)
-
-  if [[ "$local_frontend" == false ]]; then
-    compose_profiles+=(--profile developmentContainerFrontend)
-  fi
 
   if [[ "$container_backend" == true ]]; then
     compose_profiles+=(--profile developmentContainerBackend)
