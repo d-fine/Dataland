@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-      - uses: ./.github/workflows/checkDevEnvOverrides
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -47,7 +46,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -95,7 +94,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -134,7 +133,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -168,7 +167,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -199,7 +198,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: temurin
@@ -299,7 +298,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: ./.github/workflows/loadDevEnv
+      - uses: ./.github/workflows/loadEnvironmentVariables
       - name: Retrieve SSL certificates for local-dev.dataland.com
         run: ./testing/retrieve_ssl_certs.sh
         env:
@@ -322,7 +321,6 @@ jobs:
           INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
-          DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
           JAVA_TOOL_OPTIONS: "-Xms128m -Xmx384m"
       - name: Upload JaCoCo Exec Results
         if: always()

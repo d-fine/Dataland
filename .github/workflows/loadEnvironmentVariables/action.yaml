@@ -1,0 +1,39 @@
+name: "Load Environment Variables"
+description: "Load environments/.env.dev and environments/.env.ci and expose their variables to subsequent workflow steps"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Load environment files
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        env_files=("./environments/.env.dev" "./environments/.env.ci")
+
+        for env_file in "${env_files[@]}"; do
+          if [[ ! -f "$env_file" ]]; then
+            echo "Environment file '$env_file' does not exist." >&2
+            exit 1
+          fi
+
+          set -o allexport
+          source "$env_file"
+          set +o allexport
+        done
+
+        mapfile -t env_keys < <(sed -nE 's/^([A-Za-z_][A-Za-z0-9_]*)=.*/\1/p' "${env_files[@]}" | sort -u)
+
+        for env_key in "${env_keys[@]}"; do
+          env_value="${!env_key}"
+          if [[ "$env_value" == *$'\n'* ]]; then
+            delimiter="EOF_${env_key}_$(date +%s%N)_$RANDOM"
+            {
+              echo "$env_key<<$delimiter"
+              echo "$env_value"
+              echo "$delimiter"
+            } >> "$GITHUB_ENV"
+          else
+            echo "$env_key=$env_value" >> "$GITHUB_ENV"
+          fi
+        done
