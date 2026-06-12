@@ -114,12 +114,13 @@ class DatasetJudgementServiceTest {
         source: AcceptedDataPointSource?,
         reporterUserId: String? = null,
         customValue: String? = null,
+        reasonForCustomDataPoint: String? = null,
         dataPointType: String = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
     ): DataPointJudgementEntity {
         service.patchJudgementDetails(
             UUID.randomUUID(),
             dataPointType,
-            JudgementDetailsPatch(source, reporterUserId, customValue),
+            JudgementDetailsPatch(source, reporterUserId, customValue, reasonForCustomDataPoint),
         )
 
         return captureSavedJudgement()
@@ -327,6 +328,77 @@ class DatasetJudgementServiceTest {
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
         assertNull(saved.reporterUserIdOfAcceptedQaReport)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Custom and non-null reason stores reason on entity`() {
+        val saved =
+            patchAndGetDataPoint(
+                AcceptedDataPointSource.Custom,
+                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
+                reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT,
+            )
+
+        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
+        assertEquals(mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT, saved.reasonForCustomDataPoint)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Custom and null reason stores null on entity`() {
+        val saved =
+            patchAndGetDataPoint(
+                AcceptedDataPointSource.Custom,
+                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
+                reasonForCustomDataPoint = null,
+            )
+
+        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
+        assertNull(saved.reasonForCustomDataPoint)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Original clears reasonForCustomDataPoint`() {
+        datasetJudgementEntity.dataPoints.first().apply {
+            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
+        }
+
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
+
+        assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
+        assertNull(saved.reasonForCustomDataPoint)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Qa clears reasonForCustomDataPoint`() {
+        datasetJudgementEntity.dataPoints.first().apply {
+            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
+        }
+
+        val saved =
+            patchAndGetDataPoint(
+                AcceptedDataPointSource.Qa,
+                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
+            )
+
+        assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
+        assertNull(saved.reasonForCustomDataPoint)
+    }
+
+    @Test
+    fun `getDatasetJudgementById includes reasonForCustomDataPoint when set and null when not set`() {
+        val judgementIdWithReasonForCustomDataPoint = UUID.randomUUID()
+        doReturn(mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntityWithCustomSource())
+            .whenever(datasetJudgementSupportService)
+            .getDatasetJudgementEntityById(judgementIdWithReasonForCustomDataPoint)
+
+        listOf(Pair(UUID.randomUUID(), null), Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT))
+            .forEach { (judgementId, expectedReason) ->
+                assertEquals(
+                    expectedReason,
+                    service.getDatasetJudgementById(judgementId)
+                        .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
+                        ?.reasonForCustomDataPoint)
+            }
     }
 
     @Test

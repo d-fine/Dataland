@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
@@ -23,6 +24,7 @@ object MockDatasetJudgementEntityForTest {
     val dummyDatapointId = UUID.randomUUID().toString()
     val qaReportId = UUID.randomUUID().toString()
     const val CUSTOM_VALUE = """{"value": 42}"""
+    const val REASON_FOR_CUSTOM_DATAPOINT = "The original value was missing and the QA suggestion was out of range."
 
     fun createDummyDatasetJudgementEntity(): DatasetJudgementEntity =
         DatasetJudgementEntity(
@@ -63,6 +65,39 @@ object MockDatasetJudgementEntityForTest {
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
                         customValue = null,
+                        reasonForCustomDataPoint = null,
+                        datasetJudgement = null,
+                    ),
+                ),
+        )
+
+    fun createDummyDatasetJudgementEntityWithCustomSource(): DatasetJudgementEntity =
+        DatasetJudgementEntity(
+            dataSetJudgementId = UUID.randomUUID(),
+            datasetId = dummyDatasetId,
+            companyId = dummyCompanyId,
+            dataType = DataTypeEnum.sfdr,
+            reportingPeriod = "2026",
+            qaJudgeUserId = dummyUserId,
+            qaJudgeUserName = DUMMY_USER_NAME,
+            qaReporters =
+                mutableListOf(
+                    QaReporter(
+                        reporterUserId = dummyUserId,
+                        reporterUserName = DUMMY_USER_NAME,
+                        reporterEmailAddress = DUMMY_USER_EMAIL,
+                    ),
+                ),
+            dataPoints =
+                mutableListOf(
+                    DataPointJudgementEntity(
+                        dataPointType = DUMMY_DATA_POINT_TYPE,
+                        dataPointId = UUID.randomUUID().toString(),
+                        qaReports = mutableListOf(),
+                        acceptedSource = AcceptedDataPointSource.Custom,
+                        reporterUserIdOfAcceptedQaReport = null,
+                        customValue = CUSTOM_VALUE,
+                        reasonForCustomDataPoint = REASON_FOR_CUSTOM_DATAPOINT,
                         datasetJudgement = null,
                     ),
                 ),

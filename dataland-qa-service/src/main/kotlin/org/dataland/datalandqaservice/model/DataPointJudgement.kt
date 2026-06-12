@@ -19,6 +19,7 @@ import java.util.UUID
  * @property qaReports the QA report data points submitted for this data point type
  * @property acceptedSource which source was accepted for this data point
  * @property customValue the custom value accepted for this data point, if applicable
+ * @property reasonForCustomDataPoint an explanation for why a custom datapoint was needed
  */
 data class DataPointJudgement(
     @field:Schema(
@@ -50,4 +51,9 @@ data class DataPointJudgement(
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_CUSTOM_DATAPOINTS_EXAMPLE,
     )
     val customValue: String?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE,
+    )
+    val reasonForCustomDataPoint: String?,
 )

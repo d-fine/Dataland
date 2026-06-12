@@ -93,6 +93,7 @@
         v-model:edit-mode-enabled="editModeEnabled"
         v-model:json="customJson"
         v-model:form-data="customFormData"
+        v-model:reason-for-custom-data-point="reasonForCustomDataPoint"
         :accept-disabled="isPatching"
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
@@ -152,6 +153,20 @@
     :dismissable-mask="true"
     :show-cancel-button="false"
     confirm-label="OK"
+  />
+  <PopupConfirmationModal
+    v-model:visible="isReasonWarningModalVisible"
+    header="Reason will be discarded"
+    message="You have entered a reason for a custom data point, but you're accepting a different source. The reason will be cleared if you proceed."
+    :error-message="undefined"
+    :is-loading="false"
+    :is-success="false"
+    @confirm="proceedWithNonCustomAccept"
+    @cancel="isReasonWarningModalVisible = false"
+    :dismissable-mask="false"
+    :show-cancel-button="true"
+    confirm-label="Proceed"
+    data-test="reason-warning-modal"
   />
 </template>
 
@@ -436,6 +451,11 @@ function goToNextReport(): void {
 const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
 const customFormData = ref<CustomFormData>({ ...DEFAULT_CUSTOM_FORM_DATA });
+const reasonForCustomDataPoint = ref<string>('');
+
+// Warning modal state for when a reason has been entered but a non-Custom source is accepted
+const isReasonWarningModalVisible = ref<boolean>(false);
+const pendingAcceptedSource = ref<AcceptedDataPointSource | null>(null);
 
 /**
  * Copies the original data point values into the custom section
@@ -581,6 +601,7 @@ function afterSuccessfulPatch(): void {
  * @param acceptedSource - The accepted data point source.
  * @param reporterUserIdOfAcceptedQaReport - The reporter user ID of the accepted QA report, if applicable.
  * @param customDataPoint - The custom data point JSON string, if applicable.
+ * @param reasonForCustomDataPoint - The reason for creating a custom data point, if applicable.
  * @param errorLogMessage - Message logged when the patch fails.
  * @returns Nothing.
  */
@@ -588,13 +609,14 @@ function patchCurrentDatapoint(
   acceptedSource: AcceptedDataPointSource,
   reporterUserIdOfAcceptedQaReport: string | undefined,
   customDataPoint: string | undefined,
+  reasonForCustomDataPoint: string | undefined,
   errorLogMessage: string
 ): void {
   patchJudgementDetail(
     {
       judgementId: props.datasetReviewId,
       dataPointTypeId: currentDataPointTypeId.value,
-      details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint },
+      details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint, reasonForCustomDataPoint },
     },
     {
       onSuccess: () => {
@@ -645,10 +667,44 @@ function patchCurrentDatapoint(
  * Central handler for accepting a data point from a given source
  * (original / QA / custom).
  *
+ * When a non-Custom source is selected but a reason for a custom data point has
+ * been entered, the Judge is asked to confirm before proceeding, since the reason
+ * will be discarded.
+ *
  * @param acceptedSource - The selected data point source to accept.
  * @returns Nothing.
  */
 function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
+  if (acceptedSource !== AcceptedDataPointSource.Custom && reasonForCustomDataPoint.value.trim().length > 0) {
+    pendingAcceptedSource.value = acceptedSource;
+    isReasonWarningModalVisible.value = true;
+    return;
+  }
+  executeAccept(acceptedSource);
+}
+
+/**
+ * Called when the Judge confirms they want to proceed after the reason-warning modal.
+ * Clears the reason and executes the pending acceptance.
+ *
+ * @returns Nothing.
+ */
+function proceedWithNonCustomAccept(): void {
+  isReasonWarningModalVisible.value = false;
+  reasonForCustomDataPoint.value = '';
+  if (pendingAcceptedSource.value !== null) {
+    executeAccept(pendingAcceptedSource.value);
+    pendingAcceptedSource.value = null;
+  }
+}
+
+/**
+ * Executes the accept action for the given source without any warnings.
+ *
+ * @param acceptedSource - The selected data point source to accept.
+ * @returns Nothing.
+ */
+function executeAccept(acceptedSource: AcceptedDataPointSource): void {
   switch (acceptedSource) {
     case AcceptedDataPointSource.Original:
       acceptOriginalDatapoint();
@@ -673,6 +729,7 @@ function acceptOriginalDatapoint(): void {
     AcceptedDataPointSource.Original,
     undefined,
     undefined,
+    undefined,
     `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
   );
 }
@@ -688,6 +745,7 @@ function acceptQaReportDatapoint(): void {
   patchCurrentDatapoint(
     AcceptedDataPointSource.Qa,
     currentQaReport.value.reporterUserId,
+    undefined,
     undefined,
     `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
   );
@@ -706,10 +764,12 @@ function acceptCustomDatapoint(): void {
     editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
     originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
   );
+  const reason = reasonForCustomDataPoint.value.trim() || undefined;
   patchCurrentDatapoint(
     AcceptedDataPointSource.Custom,
     undefined,
     customDataPointJson,
+    reason,
     `Error in patching datasetJudgement object for dataPointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
   );
 }
@@ -737,12 +797,14 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
       customFormData.value = parsed;
       const wrapped = wrapDataPointJson(judgementMetaData.customValue);
       customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
+      reasonForCustomDataPoint.value = judgementMetaData.reasonForCustomDataPoint ?? '';
       return;
     }
     console.error('Failed to parse previously accepted custom data point JSON');
   }
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
+  reasonForCustomDataPoint.value = '';
 }
 
 watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });

@@ -47,6 +47,7 @@ class PreApprovalServiceTest {
             acceptedSource = null,
             reporterUserIdOfAcceptedQaReport = null,
             customValue = null,
+            reasonForCustomDataPoint = null,
         )
 
     private fun runWorkflow(
