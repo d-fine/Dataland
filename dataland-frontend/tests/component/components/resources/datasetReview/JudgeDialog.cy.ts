@@ -1480,8 +1480,8 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="ok-confirmation-modal-button"]').click();
 
       cy.wait('@patchJudgementDetail').then((interception) => {
-          expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Original);
-          expect(interception.request.body.reasonForCustomDataPoint).to.be.undefined;
+        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Original);
+        expect(interception.request.body.reasonForCustomDataPoint).to.be.undefined;
       });
       cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', '');
     });
@@ -1509,8 +1509,8 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-custom-button"]').click();
 
       cy.wait('@patchJudgementDetail').then((interception) => {
-          expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
-          expect(interception.request.body.reasonForCustomDataPoint).to.eq('my-custom-reason');
+        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
+        expect(interception.request.body.reasonForCustomDataPoint).to.eq('my-custom-reason');
       });
     });
 
