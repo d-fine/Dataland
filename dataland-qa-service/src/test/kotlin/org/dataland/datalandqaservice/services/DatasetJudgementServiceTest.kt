@@ -391,8 +391,10 @@ class DatasetJudgementServiceTest {
             .whenever(datasetJudgementSupportService)
             .getDatasetJudgementEntityById(judgementIdWithReasonForCustomDataPoint)
 
-        listOf(Pair(UUID.randomUUID(), null), Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT))
-            .forEach { (judgementId, expectedReason) ->
+        listOf(
+            Pair(UUID.randomUUID(), null),
+            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT)
+        ).forEach { (judgementId, expectedReason) ->
                 assertEquals(
                     expectedReason,
                     service.getDatasetJudgementById(judgementId)
