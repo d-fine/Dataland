@@ -24,6 +24,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -58,7 +59,12 @@ class DatasetJudgementServiceTest {
         DatasetJudgementCreationService(
             datasetJudgementSupportService,
             keycloakUserService,
-            PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig()),
+            PreApprovalService(
+                autoPreApprovalEnabled = false,
+                exemptFieldsConfig = PreApprovalExemptFieldsConfig(),
+                significanceCheckService = SignificanceCheckService(),
+                datasetJudgementSupportService = datasetJudgementSupportService,
+            ),
         )
 
     private val service =

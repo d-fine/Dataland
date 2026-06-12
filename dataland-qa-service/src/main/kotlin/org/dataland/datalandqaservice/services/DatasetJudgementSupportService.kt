@@ -1,9 +1,12 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
@@ -16,6 +19,7 @@ import java.util.UUID
 /**
  * Service to support data point judgement operations.
  */
+@Suppress("TooManyFunctions")
 @Service
 class DatasetJudgementSupportService
     @Autowired
@@ -25,6 +29,7 @@ class DatasetJudgementSupportService
         private val specificationControllerApi: SpecificationControllerApi,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
         private val datasetJudgementRepository: DatasetJudgementRepository,
+        private val objectMapper: ObjectMapper,
     ) {
         /**
          * Retrieves meta data of a dataset.
@@ -103,4 +108,56 @@ class DatasetJudgementSupportService
          */
         fun getDatasetJudgementEntityById(datasetJudgementId: UUID): DatasetJudgementEntity? =
             datasetJudgementRepository.findById(datasetJudgementId).orElse(null)
+
+        /**
+         * Retrieves the data point type to data point id map for the currently live dataset
+         * of the given company and framework.
+         *
+         * Returns the contained data points for the latest active dataset across all reporting
+         * periods, or null if no active dataset exists for that company and framework.
+         *
+         * @param companyId The company identifier.
+         * @param dataType The framework / data type.
+         * @return Map of data point type to data point id, or null if no live dataset is found.
+         */
+        fun getLatestActiveDataPoints(
+            companyId: UUID,
+            dataType: DataTypeEnum,
+        ): Map<String, String>? {
+            val activeDatasets =
+                metaDataControllerApi.getListOfDataMetaInfo(
+                    companyId = companyId.toString(),
+                    dataType = dataType,
+                    showOnlyActive = true,
+                )
+            val latestDataset = activeDatasets.maxByOrNull { it.reportingPeriod } ?: return null
+            return metaDataControllerApi.getContainedDataPoints(latestDataset.dataId)
+        }
+
+        /**
+         * Fetches and returns the value node of a data point by its id.
+         *
+         * The stored data point JSON contains a "value" field alongside metadata such as quality
+         * and comment. This method extracts and returns only the "value" node.
+         *
+         * Returns null if the "value" field is absent or is an explicit JSON null.
+         *
+         * @param dataPointId The data point id.
+         * @return The value [JsonNode], or null if absent or null.
+         */
+        fun getDataPointValueNode(dataPointId: String): JsonNode? {
+            val dataPointJson = dataPointControllerApi.getDataPoint(dataPointId).dataPoint
+            val rootNode = objectMapper.readTree(dataPointJson)
+            val valueNode = rootNode["value"] ?: return null
+            return if (valueNode.isNull) null else valueNode
+        }
+
+        /**
+         * Resolves the data point base type id of a data point type from the specification service.
+         *
+         * @param dataPointType The data point type identifier.
+         * @return The base type id string (e.g. "extendedDecimal", "extendedInteger", "extendedEnumYesNo").
+         */
+        fun resolveBaseTypeId(dataPointType: String): String =
+            specificationControllerApi.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
     }

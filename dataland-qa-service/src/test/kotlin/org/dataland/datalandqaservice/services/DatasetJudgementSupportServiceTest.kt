@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -39,6 +40,7 @@ class DatasetJudgementSupportServiceTest {
             specificationControllerApi,
             dataPointQaReportRepository,
             datasetJudgementRepository,
+            ObjectMapper(),
         )
 
     @Test
