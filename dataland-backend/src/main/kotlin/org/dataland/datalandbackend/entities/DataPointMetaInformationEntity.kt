@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -51,6 +52,9 @@ data class DataPointMetaInformationEntity(
      * (b) the user has uploaded the data point
      * (c) the user is an admin or a judge or reviewer
      * This function checks these conditions.
+     *
+     * @param viewingUser the user requesting access to the data point
+     * @return true if the user may view the data point
      */
     fun isDataPointViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
         this.qaStatus == QaStatus.Accepted ||
@@ -75,13 +79,27 @@ data class DataPointMetaInformationEntity(
         )
 
     /**
-     * Converts the entity into the basic data dimension object
+     * Converts the entity into the basic data dimension object.
+     *
+     * @param framework the framework to use as data type, or null to use the entity's data point type
      * @return a BasicDataDimensions object
      */
     fun toBasicDataDimensions(framework: String? = null): BasicDataDimensions =
         BasicDataDimensions(
             companyId = companyId,
             dataType = framework ?: dataPointType,
+            reportingPeriod = reportingPeriod,
+        )
+
+    /**
+     * Converts the entity into the basic data point dimension object.
+     *
+     * @return a BasicDataPointDimensions object
+     */
+    fun toBasicDataPointDimensions(): BasicDataPointDimensions =
+        BasicDataPointDimensions(
+            companyId = companyId,
+            dataPointType = dataPointType,
             reportingPeriod = reportingPeriod,
         )
 }
