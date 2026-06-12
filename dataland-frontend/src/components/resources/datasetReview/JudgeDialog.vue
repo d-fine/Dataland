@@ -166,7 +166,6 @@
     :dismissable-mask="false"
     :show-cancel-button="true"
     confirm-label="Proceed"
-    data-test="reason-warning-modal"
   />
 </template>
 

@@ -1297,7 +1297,7 @@ describe('JudgeDialog component tests', () => {
       };
       mountJudgeDialog({ datasetJudgement: judgementWithCustomAccepted });
 
-      cy.get('[data-test="custom-datapoint-section"]').should('be.visible');
+      cy.get('[data-test="custom-datapoint-section"]').scrollIntoView().should('be.visible');
       cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
       cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
@@ -1412,7 +1412,7 @@ describe('JudgeDialog component tests', () => {
       mountJudgeDialog();
 
       cy.get('[data-test="custom-datapoint-section"]').within(() => {
-        cy.get('[data-test="reason-for-custom-datapoint-field"]').should('be.visible');
+        cy.get('[data-test="reason-for-custom-datapoint-field"]').scrollIntoView().should('be.visible');
         cy.contains('Reason for custom data point').should('be.visible');
       });
     });
@@ -1443,7 +1443,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-custom-button"]').click();
 
       cy.wait('@patchJudgementDetail');
-      cy.get('[data-test="confirmation-modal"]').should('not.be.visible');
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
 
     it('does not show warning modal when accepting Original source with a blank reason', () => {
@@ -1453,7 +1453,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-original-button"]').click();
 
       cy.wait('@patchJudgementDetail');
-      cy.get('[data-test="confirmation-modal"]').should('not.be.visible');
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
     });
 
     it('closes the warning modal and preserves the reason when clicking Go back', () => {
@@ -1465,7 +1465,7 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="cancel-confirmation-modal-button"]').click();
 
-      cy.get('[data-test="confirmation-modal"]').should('not.be.visible');
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
       cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', 'reason-to-preserve');
       cy.get('@patchJudgementDetail.all').should('have.length', 0);
     });
