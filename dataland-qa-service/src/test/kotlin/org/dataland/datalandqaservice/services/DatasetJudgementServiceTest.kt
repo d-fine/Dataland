@@ -393,14 +393,16 @@ class DatasetJudgementServiceTest {
 
         listOf(
             Pair(UUID.randomUUID(), null),
-            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT)
+            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT),
         ).forEach { (judgementId, expectedReason) ->
-                assertEquals(
-                    expectedReason,
-                    service.getDatasetJudgementById(judgementId)
-                        .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
-                        ?.reasonForCustomDataPoint)
-            }
+            assertEquals(
+                expectedReason,
+                service
+                    .getDatasetJudgementById(judgementId)
+                    .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
+                    ?.reasonForCustomDataPoint,
+            )
+        }
     }
 
     @Test
