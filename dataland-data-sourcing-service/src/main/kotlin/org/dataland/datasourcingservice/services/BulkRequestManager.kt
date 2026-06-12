@@ -110,13 +110,13 @@ class BulkRequestManager
             }
 
         private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
-            val mappedTypeEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
+            val newTaxonomyEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
 
             val activeDatasetDimensions =
                 metaDataController
                     .retrieveMetaDataOfActiveDatasets(
                         basicDataDimensions =
-                            (requests + mappedTypeEquivalentRequests).map {
+                            (requests + newTaxonomyEquivalentRequests).map {
                                 org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
                                     companyId = it.companyId,
                                     dataType = it.dataType,
