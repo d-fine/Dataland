@@ -11,4 +11,3 @@ export function cyLog(message: string): void {
     cy.log(message);
   }
 }
-

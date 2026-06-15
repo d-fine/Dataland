@@ -15,6 +15,7 @@ import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from '@e2e/util
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import { cyLog } from '@sharedUtils/CypressLog.ts';
 
 const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
@@ -26,14 +27,14 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
   cy.get(
     'div[data-test="fiscalYearEnd"] div[data-test="toggleDataPointWrapper"] div[data-test="dataPointToggleButton"]'
   ).within(() => {
-    cy.task('log', 'About to click #dataPointIsAvailableSwitch (fiscalYearEnd toggle)');
+    cyLog('About to click #dataPointIsAvailableSwitch (fiscalYearEnd toggle)');
     cy.get('#dataPointIsAvailableSwitch').click();
   });
-  cy.task('log', 'About to click [data-test="fiscalYearEnd"] datepicker dropdown button');
+  cyLog('About to click [data-test="fiscalYearEnd"] datepicker dropdown button');
   cy.get('[data-test="fiscalYearEnd"] button').should('have.class', 'p-datepicker-dropdown').click();
-  cy.task('log', 'About to click Next Month button in datepicker header');
+  cyLog('About to click Next Month button in datepicker header');
   cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').first().click();
-  cy.task('log', 'About to click day "11" in datepicker day view');
+  cyLog('About to click day "11" in datepicker day view');
   cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   selectItemFromDropdownByIndex(cy.get('[data-test="assurance-form-field"]'), 1);
   cy.get('input[name="provider"]').type('Some Assurance Provider Company');
@@ -121,7 +122,7 @@ describeIf(
       fillRequiredEutaxonomyNonFinancialsFields();
       const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
 
-      cy.task('log', 'About to click #dataPointIsAvailableSwitch (revenue toggle)');
+      cyLog('About to click #dataPointIsAvailableSwitch (revenue toggle)');
       cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
         cy.get('#dataPointIsAvailableSwitch').click();
       });
@@ -135,7 +136,7 @@ describeIf(
 
       const capexSelectorPrefix = 'div[name="capex"] div[data-test="totalAmount"]';
 
-      cy.task('log', 'About to click #dataPointIsAvailableSwitch (capex toggle)');
+      cyLog('About to click #dataPointIsAvailableSwitch (capex toggle)');
       cy.get(`${capexSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
         cy.get('#dataPointIsAvailableSwitch').click();
       });
@@ -159,7 +160,7 @@ describeIf(
           frontendDocumentHash = submittedReferencedReports[TEST_PDF_FILE_NAME].fileReference;
         }
       }).as('submitData');
-      cy.task('log', 'About to click submitButton (initial dataset submission)');
+      cyLog('About to click submitButton (initial dataset submission)');
       cy.get('button[data-test="submitButton"]').click();
       cy.wait(`@submitData`, { timeout: longTimeoutInMs }).then(() => {
         validateFrontendAndBackendDocumentHashesCoincide(token, frontendDocumentHash);
@@ -185,7 +186,7 @@ describeIf(
         expect(TEST_PDF_FILE_NAME in submittedReports).to.equal(false);
         expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
       }).as('submitEditData');
-      cy.task('log', 'About to click submitButton (edited dataset submission)');
+      cyLog('About to click submitButton (edited dataset submission)');
       cy.get('button[data-test="submitButton"]').click();
       return cy.wait(`@submitEditData`, { timeout: longTimeoutInMs }).then((interception) => {
         expect(interception.response?.statusCode).to.eq(200);
@@ -227,7 +228,7 @@ describeIf(
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
-      cy.task('log', 'About to click submitButton (reupload check submission)');
+      cyLog('About to click submitButton (reupload check submission)');
       cy.get('button[data-test="submitButton"]').click();
 
       cy.wait('@documentExists', { timeout: shortTimeoutInMs }).its('response.statusCode').should('equal', 200);
