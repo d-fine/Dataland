@@ -39,6 +39,18 @@ prepare_loki_bind_mounts() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
 }
 
+load_environment_step() {
+  local description="$1"
+  shift
+
+  log_step "$description"
+  "$@"
+}
+
+start_backend() {
+  ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
+}
+
 start_development_stack() {
   local self_signed="$1"
   local container_backend="$2"
@@ -47,11 +59,11 @@ start_development_stack() {
   run_step "Setting up SSL certificates" setup_certificates "$self_signed"
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
-  run_step "Loading generated GitHub environment" source_github_env_log
-  run_step "Loading uncritical environment" source_uncritical_environment
+  load_environment_step "Loading generated GitHub environment" source_github_env_log
+  load_environment_step "Loading uncritical environment" source_uncritical_environment
   run_step "Building Docker images" rebuild_docker_images
-  run_step "Reloading generated GitHub environment" source_github_env_log
-  run_step "Reloading uncritical environment" source_uncritical_environment
+  load_environment_step "Reloading generated GitHub environment" source_github_env_log
+  load_environment_step "Reloading uncritical environment" source_uncritical_environment
 
   local compose_profiles
   read -ra compose_profiles <<< "$(determine_compose_profiles "$container_backend")"
@@ -72,6 +84,12 @@ start_development_stack() {
   start_health_check
   log_step "Waiting for admin-proxy"
   wait_for_admin_proxy "${compose_profiles[@]}"
+
+  if [[ "$container_backend" = false ]]; then
+    log_step "Starting backend locally"
+    start_backend
+    return
+  fi
 
   log_success "Local stack started."
 }
@@ -98,8 +116,8 @@ reset_development_stack() {
   run_step "Cleaning Gradle outputs" ./gradlew clean
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
-  run_step "Loading generated GitHub environment" source_github_env_log
-  run_step "Loading uncritical environment" source_uncritical_environment
+  load_environment_step "Loading generated GitHub environment" source_github_env_log
+  load_environment_step "Loading uncritical environment" source_uncritical_environment
   run_step "Rebuilding Postgres image" rebuild_postgres_image
   run_step "Rebuilding Keycloak image" rebuild_keycloak_image
   log_step "Initializing Keycloak"
