@@ -76,7 +76,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
-    id("co.uzzu.dotenv.gradle") version "4.0.0"
+    id("co.uzzu.dotenv.gradle") version "4.0.0" apply false
 }
 
 val normalizeFeCoverageForSonar by tasks.registering {
@@ -98,7 +98,13 @@ val normalizeFeCoverageForSonar by tasks.registering {
 }
 
 val devEnvironmentFile = rootProject.file("environments/.env.dev")
-val devEnvironmentVariables = if (devEnvironmentFile.isFile) env.allVariables() else emptyMap()
+val devEnvironmentVariables =
+    if (devEnvironmentFile.isFile) {
+        apply(plugin = "co.uzzu.dotenv.gradle")
+        (extensions.getByName("env") as co.uzzu.dotenv.gradle.DotEnvRoot).allVariables()
+    } else {
+        emptyMap()
+    }
 
 // Propagate environments/.env.dev variables loaded by the dotenv plugin into forked task processes.
 allprojects {
