@@ -1,5 +1,8 @@
 // main
 
+import com.github.gradle.node.npm.task.NpmTask
+import com.github.gradle.node.task.NodeTask
+
 val jacocoVersion: String by project
 val ktlintVersion: String by project
 val githubUser: String by project
@@ -72,6 +75,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    id("co.uzzu.dotenv.gradle") version "4.0.0"
 }
 
 val normalizeFeCoverageForSonar by tasks.registering {
@@ -89,6 +93,27 @@ val normalizeFeCoverageForSonar by tasks.registering {
                         .replace(Regex("""SF:.*/Dataland/"""), "SF:")
                 reportFile.writeText(normalized)
             }
+    }
+}
+
+val devEnvironmentVariables = env.allVariables()
+
+// Propagate environments/.env.dev variables loaded by the dotenv plugin into forked task processes.
+allprojects {
+    tasks.withType<Test>().configureEach {
+        environment(devEnvironmentVariables)
+    }
+    tasks.withType<JavaExec>().configureEach {
+        environment(devEnvironmentVariables)
+    }
+    tasks.withType<Exec>().configureEach {
+        environment(devEnvironmentVariables)
+    }
+    tasks.withType<NpmTask>().configureEach {
+        environment.putAll(devEnvironmentVariables)
+    }
+    tasks.withType<NodeTask>().configureEach {
+        environment.putAll(devEnvironmentVariables)
     }
 }
 
