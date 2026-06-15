@@ -128,8 +128,12 @@ sample_disk() {
     df -h 2>/dev/null || true
     printf '\n'
 
-    printf "Inode usage"
+    printf "Inode usage: \n"
     df -ih 2>/dev/null || true
+    printf '\n'
+
+    printf 'Snapchot of /dev/root usage:\n'
+    du -h -d 1 /dev/root 2>/dev/null || true
     printf '\n'
 
     printf "Docker system disk usage:\n"
