@@ -59,17 +59,42 @@ class PreApprovalService(
             )
 
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
+            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
+            val dataPointEligible = isDataPointEligible(dataPoint, datasetJudgementEntity.dataType)
+            val selectedByRandomSampling = isRandomDrawBelowSamplingProbability()
+
+            val passesSignificanceCheck =
+                passesSignificanceCheck(dataPoint, datasetJudgementEntity.dataType, liveDataPoints)
 
             val allChecksPass =
-                areAllQaReportsAccepted(dataPoint) &&
-                    isDataPointEligible(dataPoint, datasetJudgementEntity.dataType) &&
-                    !isRandomDrawBelowSamplingProbability() &&
-                    passesSignificanceCheck(dataPoint, datasetJudgementEntity.dataType, liveDataPoints)
+                allQaReportsAccepted &&
+                        dataPointEligible &&
+                        !selectedByRandomSampling &&
+                        passesSignificanceCheck
+            if (!passesSignificanceCheck) {
+                logger.info("### DID NOT PASS SIGNIFICANCE CHECK, LARGE DEVIATION DETECTED, SKIPPING PRE-APPROVAL ###")
+            }
+            logger.info(
+                "Automatic preapproval decision: datasetId={}, companyId={}, framework={}, dataPointType={}, " +
+                        "allQaReportsAccepted={}, dataPointEligible={}, selectedByRandomSampling={}, " +
+                        "passesSignificanceCheck={}, preApproved={}",
+                datasetJudgementEntity.datasetId,
+                datasetJudgementEntity.companyId,
+                datasetJudgementEntity.dataType,
+                dataPoint.dataPointType,
+                allQaReportsAccepted,
+                dataPointEligible,
+                selectedByRandomSampling,
+                passesSignificanceCheck,
+                allChecksPass,
+            )
 
             if (allChecksPass) {
                 dataPoint.acceptedSource = AcceptedDataPointSource.Original
             }
         }
+
+
 
         return datasetJudgementEntity
     }
