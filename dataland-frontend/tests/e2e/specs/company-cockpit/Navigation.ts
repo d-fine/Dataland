@@ -7,34 +7,23 @@ const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
- * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion
+ * Searches for a specified term in the companies search bar and selects the autocomplete suggestion
+ * that matches the given company ID exactly, avoiding ambiguity when multiple companies share a name.
  * @param searchTerm the term to search for
+ * @param companyId the company ID of the option to click
  */
-function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
+function searchCompanyAndChooseById(searchTerm: string, companyId: string): void {
   cy.get('input#company_search_bar_standard').scrollIntoView();
-  cy.get('input#company_search_bar_standard').then(($input) => {
-    cy.task('log', `[navigation-test] search bar found, current value="${String($input.val())}"`);
-  });
   cy.get('input#company_search_bar_standard').type(searchTerm);
   cy.get('input#company_search_bar_standard').then(($input) => {
     cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
   });
-  cy.get('[data-pc-section="list"]').then(($list) => {
-    const options = $list.find('[data-pc-section="option"]');
-    cy.task('log', `[navigation-test] autocomplete list element count on page: ${$list.length}`);
-    cy.task('log', `[navigation-test] autocomplete option count: ${options.length}`);
-    options.each((i, el) => {
-      cy.task('log', `[navigation-test] autocomplete option[${i}]: "${Cypress.$(el).text().trim()}"`);
-    });
-    cy.task('log', `[navigation-test] list innerHTML: ${$list.first().html()?.substring(0, 500)}`);
-  });
-  cy.get('[data-pc-section="list"] [data-pc-section="option"]')
-    .should('have.length.at.least', 1)
-    .contains(searchTerm)
+  cy.get(`[data-pc-section="option"][data-company-id="${companyId}"]`)
+    .should('exist')
     .then(($el) => {
-      cy.task('log', `[navigation-test] clicking option: text="${$el.text().trim()}"`);
-    });
-  cy.get('[data-pc-section="list"] [data-pc-section="option"]').contains(searchTerm).click();
+      cy.task('log', `[navigation-test] clicking option with companyId="${companyId}": text="${$el.text().trim()}"`);
+    })
+    .click();
   cy.url().then((url) => {
     cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
   });
@@ -97,7 +86,7 @@ describeIf(
       cy.task('log', '[navigation-test] intercept registered, visiting alpha cockpit');
       visitCockpitForCompanyAlpha();
       cy.task('log', '[navigation-test] alpha cockpit loaded, starting search for beta company');
-      searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
+      searchCompanyAndChooseById(betaCompanyIdAndName.companyName, betaCompanyIdAndName.companyId);
       cy.task('log', '[navigation-test] clicked beta company in autocomplete, waiting for API request');
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta').then(() => {
         cy.task('log', '[navigation-test] fetchAggregatedFrameworkSummaryForBeta request was intercepted successfully');

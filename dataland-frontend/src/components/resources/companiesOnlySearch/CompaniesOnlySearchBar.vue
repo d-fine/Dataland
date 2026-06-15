@@ -19,7 +19,7 @@
         @item-select="$emit('selectCompany', $event.value)"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
-        :pt="autoCompletePassThrough"
+        :pt="mergedPassThrough"
       >
         <template #option="slotProps">
           <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -69,6 +69,24 @@ export default defineComponent({
     clearTimeout(this.notEnoughCharactersWarningTimeoutId);
   },
 
+  computed: {
+    mergedPassThrough(): object {
+      const externalPt = (this.autoCompletePassThrough ?? {}) as Record<string, unknown>;
+      return {
+        ...externalPt,
+        option: (ptOptions: { context?: { option?: { companyId?: string } } }): Record<string, unknown> => {
+          const externalOption =
+            typeof externalPt.option === 'function'
+              ? (externalPt.option as (o: unknown) => object)(ptOptions)
+              : (externalPt.option ?? {});
+          return {
+            ...(externalOption as object),
+            'data-company-id': ptOptions?.context?.option?.companyId,
+          };
+        },
+      };
+    },
+  },
   data: function () {
     return {
       searchBarInput: '',
