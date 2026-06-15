@@ -404,12 +404,14 @@ jobs:
       - name: Stop memory monitor
         if: always()
         run: ./testing/monitor-memory.sh stop
-      - name: Upload memory monitor log
+      - name: Upload memory monitor logs
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: memory-monitor-${{ matrix.testGroup }}
-          path: log/memory-monitor-${{ matrix.testGroup }}.log
+          path: |
+            log/memory-monitor-${{ matrix.testGroup }}.log
+            log/disk-usage.log
           retention-days: 7
       - name: Upload JaCoCo Exec Results
         if: always()
