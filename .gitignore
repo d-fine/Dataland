@@ -50,8 +50,7 @@ tls.crt
 /dataland-loki/data
 
 # logging of local stack
-**/log/localStack.out
-**/log/localStack.err
+**/log/manageLocalStack.log
 
 # Ignore the contents of .opencode (has node_modules etc)
 .opencode/*
