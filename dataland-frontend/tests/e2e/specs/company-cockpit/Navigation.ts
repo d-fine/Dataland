@@ -13,17 +13,18 @@ const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
  * @param companyId the company ID of the option to click
  */
 function searchCompanyAndChooseById(searchTerm: string, companyId: string): void {
+  const optionSelector = `[data-pc-section="option"][data-company-id="${companyId}"]`;
   cy.get('input#company_search_bar_standard').scrollIntoView();
   cy.get('input#company_search_bar_standard').type(searchTerm);
   cy.get('input#company_search_bar_standard').then(($input) => {
     cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
   });
-  cy.get(`[data-pc-section="option"][data-company-id="${companyId}"]`)
-    .should('exist')
+  cy.get(optionSelector)
+    .should('be.visible')
     .then(($el) => {
       cy.task('log', `[navigation-test] clicking option with companyId="${companyId}": text="${$el.text().trim()}"`);
-    })
-    .click();
+    });
+  cy.get(optionSelector).click();
   cy.url().then((url) => {
     cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
   });
