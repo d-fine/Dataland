@@ -184,6 +184,12 @@ export default defineConfig({
         },
       });
       on('task', {
+        log(message: string) {
+          console.log(message);
+          return null;
+        },
+      });
+      on('task', {
         async fileExists(path: string) {
           try {
             await promises.access(path);
