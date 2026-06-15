@@ -116,24 +116,61 @@ sample_once() {
   printf "\n"
 }
 
+sample_disk() {
+  local diskfile="$1"
+  local ts
+  ts=$(date '+%Y-%m-%d %H:%M:%S.%3N')
+
+  {
+    printf '=%.0s' {1..80}; printf '\n'
+    printf "DISK USAGE SNAPSHOT — %s\n" "$ts"
+    printf '=%.0s' {1..80}; printf '\n'
+    df -h 2>/dev/null || true
+    printf '\n'
+
+    printf "Inode usage: \n"
+    df -ih 2>/dev/null || true
+    printf '\n'
+
+    printf 'Snapshot of /dev/root (/) usage:\n'
+    du -h -d 1 / 2>/dev/null | sort -h | tail -10 || true
+    printf '\n'
+
+    printf "Docker system disk usage:\n"
+    docker system df 2>/dev/null || true
+    printf '\n'
+
+  } >> "$diskfile"
+}
+
 monitor_loop() {
   local logfile="$1"
+  local diskfile
+  diskfile="$(dirname "$logfile")/disk-usage.log"
+
   mkdir -p "$(dirname "$logfile")"
   {
     echo "Memory monitor started at $(date '+%Y-%m-%d %H:%M:%S')"
-    echo "Log file: $logfile"
+    echo "Log file:  $logfile"
+    echo "Disk file: $diskfile"
     echo ""
     print_header
   } >> "$logfile"
 
+  {
+    echo "Disk usage monitor started at $(date '+%Y-%m-%d %H:%M:%S')"
+    echo ""
+  } >> "$diskfile"
+
   while true; do
     { sample_once >> "$logfile"; } 2>> "$logfile" || true
-    sleep 5
+    { sample_disk "$diskfile"; } 2>> "$diskfile" || true
+    sleep 2
   done
 }
 
 cmd_start() {
-  local logfile="${1:-$DEFAULT_LOG_DIR/memory-monitor-$(date '+%Y%m%d_%H%M%S').log}"
+  local logfile="${1:-$DEFAULT_LOG_DIR/memory-monitor.log}"
   # Resolve to absolute path so the background process can find it regardless of cwd
   if [[ "$logfile" != /* ]]; then
     logfile="$(pwd)/$logfile"
