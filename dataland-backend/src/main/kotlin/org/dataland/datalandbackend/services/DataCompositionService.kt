@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.datalandbackendutils.model.DatasetType
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.concurrent.ConcurrentHashMap
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper as objectMapper
 
 /**
@@ -19,30 +23,42 @@ class DataCompositionService
     constructor(
         private val specificationService: SpecificationService,
     ) {
+        private val cachedRelevantDataPointTypes = ConcurrentHashMap<String, Set<DataPointType>>()
+
         /**
          * Retrieves all relevant data point types for a given data type
+         *
          * @param dataType the name of the data type (either a framework or a data point)
          * @return a set of all relevant data point types
          * @throws InvalidInputApiException if the data type is not known
          */
-        fun getRelevantDataPointTypes(dataType: String): Collection<String> =
-            when {
-                specificationService.isDataPointType(dataType) -> setOf(dataType)
-                specificationService.isAssembledFramework(dataType) -> getContainedDataPointTypes(dataType)
-                else -> {
-                    throw InvalidInputApiException(
-                        "DataType $dataType not found.",
-                        "The specified dataType $dataType is not known to the specification service.",
-                    )
+        fun getRelevantDataPointTypes(dataType: String): Collection<DataPointType> =
+            cachedRelevantDataPointTypes.computeIfAbsent(dataType) {
+                when {
+                    specificationService.isDataPointType(dataType) -> {
+                        setOf(dataType)
+                    }
+
+                    specificationService.isAssembledFramework(dataType) -> {
+                        getContainedDataPointTypes(dataType).toSet()
+                    }
+
+                    else -> {
+                        throw InvalidInputApiException(
+                            "DataType $dataType not found.",
+                            "The specified dataType $dataType is not known to the specification service.",
+                        )
+                    }
                 }
             }
 
         /**
          * Retrieves all data point types contained in an assembled framework
+         *
          * @param framework the name of the framework for which the data point type composition is requested
          * @return a set of all relevant data point types
          */
-        private fun getContainedDataPointTypes(framework: String): Collection<String> {
+        private fun getContainedDataPointTypes(framework: DatasetType): Collection<DataPointType> {
             val frameworkSpecification = specificationService.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
@@ -50,6 +66,7 @@ class DataCompositionService
 
         /**
          * Filters out invalid data dimensions by checking if the company ID, framework, and reporting period are valid.
+         *
          * @param datasetDimensions the list of data dimensions to filter
          * @return the list of all valid data dimensions from the original input
          */
@@ -61,6 +78,7 @@ class DataCompositionService
 
         /**
          * Filters out invalid data point dimensions by checking if the company ID, data point type, and reporting period are valid.
+         *
          * @param dataDimensions the list of data point dimensions to filter
          * @return the list of all valid data point dimensions from the original input
          */
@@ -69,4 +87,19 @@ class DataCompositionService
                 ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) &&
                     specificationService.isDataPointType(dimensions.dataPointType)
             }
+
+        /**
+         * Returns the calculation rules available for each of the given data point types.
+         *
+         * Types whose specification declares no calculation rules are omitted from the result.
+         *
+         * @param dataPointTypes the data point types to look up
+         * @return a map from data point type to its declared calculation rules
+         */
+        fun getAvailableCalculationRules(dataPointTypes: List<DataPointType>): Map<DataPointType, List<CalculationRule>> =
+            specificationService
+                .getDataPointSpecifications(dataPointTypes)
+                .mapValues { (_, specification) ->
+                    specification.calculationRules
+                }.filterValues { it.isNotEmpty() }
     }

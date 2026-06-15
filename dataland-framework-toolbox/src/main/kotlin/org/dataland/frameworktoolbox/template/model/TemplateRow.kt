@@ -40,6 +40,8 @@ data class TemplateRow(
     var showWhenValueIs: String,
     @JsonProperty("Mandatory Field")
     var mandatoryField: TemplateYesNo,
+    @JsonProperty("Field Calculation")
+    var fieldCalculation: String? = null,
     @JsonProperty("Data Point Type Name Overwrite")
     var dataPointTypeNameOverwrite: String? = null,
     @JsonProperty("Include Category in Type Name")

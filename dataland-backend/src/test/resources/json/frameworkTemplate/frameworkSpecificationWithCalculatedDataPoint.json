@@ -1,0 +1,10 @@
+{
+  "framework": {
+    "id": "sfdr",
+    "ref": "https://dummy.com/specifications/frameworks/dummy-framework"
+  },
+  "name": "DummyFramework",
+  "businessDefinition": "DummyFramework",
+  "schema": "{\"general\":{\"general\":{\"fiscalYearDeviation\":{\"id\":\"extendedEnumFiscalYearDeviationDummy\",\"ref\":\"https://dummy.com/specifications/data-points/extendedEnumFiscalYearDeviation\"}}},\"environmental\":{\"euTaxonomy\":{\"activity\":{\"insuranceAndReinsurance\":{\"nonLifeInsuranceAndReinsurance\":{\"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities\":{\"id\":\"extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities\"},\"proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities\":{\"id\":\"extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities\"},\"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities\":{\"id\":\"extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities\",\"ref\":\"https://dataland.com/specifications/data-point-types/extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities\"}}}}}}}",
+  "referencedReportJsonPath": "general.general.referencedReports"
+}

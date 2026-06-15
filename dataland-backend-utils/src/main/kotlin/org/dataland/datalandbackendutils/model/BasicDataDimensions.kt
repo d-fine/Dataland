@@ -5,7 +5,8 @@ import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
- * Data class that contains an instance of the abstract data dimensions
+ * Data class that contains an instance of the abstract data dimensions.
+ *
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType unique identifier for the abstract type of the data
  * @param reportingPeriod the year for which the data was provided
@@ -28,10 +29,11 @@ data class BasicDataDimensions(
     override val reportingPeriod: String,
 ) : DataDimensions {
     /**
-     * Converts the basic data dimensions object to a basic data set dimensions object
+     * Converts the basic data dimensions object to a basic data set dimensions object.
+     *
      * @param framework the framework of the dataset the dimensions shall be converted to, defaults to the data type
      * @return the basic dataset dimensions object
      */
-    fun toBasicDatasetDimensions(framework: String = dataType) =
+    fun toBasicDatasetDimensions(framework: DatasetType = dataType) =
         BasicDatasetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
 }
