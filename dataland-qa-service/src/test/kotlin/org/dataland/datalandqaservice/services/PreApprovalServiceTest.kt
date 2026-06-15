@@ -280,11 +280,6 @@ class PreApprovalServiceTest {
         }
     }
 
-    // --- Significance check integration tests ---
-    //
-    // All tests in this nested class use datasets where all QA reports are QaAccepted.
-    // They verify that the significance gate works correctly with the end-to-end PreApprovalService.
-
     @Nested
     inner class SignificanceCheckTests {
         private val dataPointType = "extendedDecimalField"
@@ -344,7 +339,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `significant decimal change suppresses preapproval`() {
-            // live=100, original=200 -> 100% relative change > 50% threshold -> significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = DecimalNode(BigDecimal.valueOf(200)),
@@ -357,7 +351,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `non-significant decimal change allows preapproval`() {
-            // live=100, original=110 -> 10% relative change < 50% threshold -> not significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = DecimalNode(BigDecimal.valueOf(110)),
@@ -370,7 +363,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `significant integer change suppresses preapproval`() {
-            // |15 - 5| = 10 > 5 threshold -> significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = IntNode(15),
@@ -383,7 +375,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `non-significant integer change allows preapproval`() {
-            // |7 - 5| = 2 < 5 threshold -> not significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = IntNode(7),
@@ -396,7 +387,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `significant boolean change suppresses preapproval`() {
-            // Yes -> No: any boolean change is significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = TextNode("Yes"),
@@ -409,7 +399,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `non-significant boolean (same value) allows preapproval`() {
-            // Yes -> Yes: no change -> not significant
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = TextNode("Yes"),
@@ -422,7 +411,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `original non-null but live value null allows preapproval`() {
-            // Null live value -> significance check returns false (not significant) -> allow
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = DecimalNode(BigDecimal.valueOf(100)),
@@ -435,13 +423,12 @@ class PreApprovalServiceTest {
 
         @Test
         fun `datapoint type not present in live dataset allows preapproval`() {
-            // The live dataset does not contain this data point type at all
             val service =
                 buildServiceWithLiveDataset(
                     originalValueNode = DecimalNode(BigDecimal.valueOf(100)),
                     liveValueNode = DecimalNode(BigDecimal.valueOf(200)),
                     baseTypeId = "extendedDecimal",
-                    liveDataPointMap = emptyMap(), // type not in live dataset
+                    liveDataPointMap = emptyMap(),
                 )
 
             assertEquals(AcceptedDataPointSource.Original, runSignificanceWorkflow(service))

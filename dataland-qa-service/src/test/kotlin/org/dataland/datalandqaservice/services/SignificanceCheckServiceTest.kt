@@ -20,8 +20,6 @@ class SignificanceCheckServiceTest {
     private val dummyFramework = DataTypeEnum.sfdr
     private val dummyDataPointType = "some-datapoint-type"
 
-    // --- resolveValueType ---
-
     @Nested
     inner class ResolveValueTypeTests {
         @Test
@@ -47,8 +45,6 @@ class SignificanceCheckServiceTest {
             assertEquals(ValueType.UNSUPPORTED, service.resolveValueType("some-unknown-type"))
         }
     }
-
-    // --- checkForSignificantChange: null handling ---
 
     @Nested
     inner class NullValueTests {
@@ -118,8 +114,6 @@ class SignificanceCheckServiceTest {
         }
     }
 
-    // --- checkForSignificantChange: BOOLEAN ---
-
     @Nested
     inner class BooleanSignificanceTests {
         @Test
@@ -175,15 +169,12 @@ class SignificanceCheckServiceTest {
         }
     }
 
-    // --- checkForSignificantChange: DECIMAL ---
-
     @Nested
     inner class DecimalSignificanceTests {
         private fun decimal(value: Double): JsonNode = DecimalNode(BigDecimal.valueOf(value))
 
         @Test
         fun `decimal change above 50 percent relative threshold is significant`() {
-            // live=100, original=200 -> |200-100|/100 = 1.0 > 0.5 -> significant
             assertTrue(
                 service.hasSignificantChange(
                     originalValue = decimal(200.0),
@@ -197,7 +188,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `decimal change exactly at 50 percent relative threshold is not significant`() {
-            // live=100, original=150 -> |150-100|/100 = 0.5, not strictly > 0.5 -> not significant
             assertFalse(
                 service.hasSignificantChange(
                     originalValue = decimal(150.0),
@@ -211,7 +201,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `decimal change below 50 percent relative threshold is not significant`() {
-            // live=100, original=110 -> |110-100|/100 = 0.1 < 0.5 -> not significant
             assertFalse(
                 service.hasSignificantChange(
                     originalValue = decimal(110.0),
@@ -238,7 +227,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `decimal live value zero and non-zero original is significant`() {
-            // Avoid division by zero: live=0, original != 0 -> significant
             assertTrue(
                 service.hasSignificantChange(
                     originalValue = decimal(10.0),
@@ -265,7 +253,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `decimal decrease above 50 percent is significant`() {
-            // live=100, original=40 -> |40-100|/100 = 0.6 > 0.5 -> significant
             assertTrue(
                 service.hasSignificantChange(
                     originalValue = decimal(40.0),
@@ -278,15 +265,12 @@ class SignificanceCheckServiceTest {
         }
     }
 
-    // --- checkForSignificantChange: INTEGER ---
-
     @Nested
     inner class IntegerSignificanceTests {
         private fun integer(value: Int): JsonNode = IntNode(value)
 
         @Test
         fun `integer change above absolute threshold of 5 is significant`() {
-            // |12 - 5| = 7 > 5 -> significant
             assertTrue(
                 service.hasSignificantChange(
                     originalValue = integer(12),
@@ -300,7 +284,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `integer change exactly at threshold of 5 is not significant`() {
-            // |10 - 5| = 5, not strictly > 5 -> not significant
             assertFalse(
                 service.hasSignificantChange(
                     originalValue = integer(10),
@@ -314,7 +297,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `integer change below absolute threshold of 5 is not significant`() {
-            // |7 - 5| = 2 < 5 -> not significant
             assertFalse(
                 service.hasSignificantChange(
                     originalValue = integer(7),
@@ -341,7 +323,6 @@ class SignificanceCheckServiceTest {
 
         @Test
         fun `negative integer change above threshold is significant`() {
-            // |1 - 10| = 9 > 5 -> significant
             assertTrue(
                 service.hasSignificantChange(
                     originalValue = integer(1),
@@ -353,8 +334,6 @@ class SignificanceCheckServiceTest {
             )
         }
     }
-
-    // --- checkForSignificantChange: UNSUPPORTED ---
 
     @Nested
     inner class UnsupportedTypeTests {
