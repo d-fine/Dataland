@@ -91,8 +91,9 @@ class SignificanceCheckService {
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue?.takeUnless { it.isNull } ?: return false
-        val live = liveValue?.takeUnless { it.isNull } ?: return false
+        val original = originalValue?.takeUnless { it.isNull }
+        val live = liveValue?.takeUnless { it.isNull }
+        if (original == null || live == null) return false
 
         return when (valueType) {
             ValueType.BOOLEAN -> original.asText() != live.asText()
@@ -108,8 +109,9 @@ class SignificanceCheckService {
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue.decimalValueOrNull() ?: return false
-        val live = liveValue.decimalValueOrNull() ?: return false
+        val original = originalValue.decimalValueOrNull()
+        val live = liveValue.decimalValueOrNull()
+        if (original == null || live == null) return false
         val threshold = getDecimalThreshold(dataPointType, framework)
 
         return isRelativeDecimalChangeAboveThreshold(original, live, threshold)
@@ -139,8 +141,9 @@ class SignificanceCheckService {
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue.bigIntegerValueOrNull() ?: return false
-        val live = liveValue.bigIntegerValueOrNull() ?: return false
+        val original = originalValue.bigIntegerValueOrNull()
+        val live = liveValue.bigIntegerValueOrNull()
+        if (original == null || live == null) return false
         val threshold = getIntegerThreshold(dataPointType, framework)
 
         return original.subtract(live).abs() > threshold

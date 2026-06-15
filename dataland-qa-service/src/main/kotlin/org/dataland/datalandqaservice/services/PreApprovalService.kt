@@ -160,24 +160,15 @@ class PreApprovalService(
         dataType: DataTypeEnum,
         liveDataPoints: Map<String, String>?,
     ): Boolean {
-        if (liveDataPoints == null) {
-            logger.info(
-                "Automatic preapproval significance check skipped: no live dataset found. dataType={}, dataPointType={}, dataPointId={}",
-                dataType,
-                dataPoint.dataPointType,
-                dataPoint.dataPointId,
-            )
-            return true
-        }
-
-        val liveDataPointId = liveDataPoints[dataPoint.dataPointType]
+        val liveDataPointId = liveDataPoints?.get(dataPoint.dataPointType)
         if (liveDataPointId == null) {
             logger.info(
-                "Automatic preapproval significance check skipped: data point type not present in live dataset. " +
-                    "dataType={}, dataPointType={}, dataPointId={}",
+                "Automatic preapproval significance check skipped. " +
+                    "dataType={}, dataPointType={}, dataPointId={}, liveDatasetPresent={}",
                 dataType,
                 dataPoint.dataPointType,
                 dataPoint.dataPointId,
+                liveDataPoints != null,
             )
             return true
         }
