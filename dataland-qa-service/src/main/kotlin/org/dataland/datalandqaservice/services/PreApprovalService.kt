@@ -10,6 +10,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreAp
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import kotlin.random.Random
+import org.slf4j.LoggerFactory
 
 /**
  * Service responsible for automatically pre-approving data points in a dataset judgement.
@@ -22,6 +23,9 @@ class PreApprovalService(
     private val significanceCheckService: SignificanceCheckService,
     private val datasetJudgementSupportService: DatasetJudgementSupportService,
 ) {
+    companion object {
+        private val logger = LoggerFactory.getLogger(PreApprovalService::class.java)
+    }
     private var _config: PreApprovalConfig = PreApprovalConfig()
     val config: PreApprovalConfig
         get() = _config
@@ -135,7 +139,27 @@ class PreApprovalService(
         dataType: DataTypeEnum,
         liveDataPoints: Map<String, String>?,
     ): Boolean {
-        val liveDataPointId = liveDataPoints?.get(dataPoint.dataPointType) ?: return true
+        if (liveDataPoints == null) {
+            logger.info(
+                "Automatic preapproval significance check skipped: no live dataset found. dataType={}, dataPointType={}, dataPointId={}",
+                dataType,
+                dataPoint.dataPointType,
+                dataPoint.dataPointId,
+            )
+            return true
+        }
+
+        val liveDataPointId = liveDataPoints[dataPoint.dataPointType]
+        if (liveDataPointId == null) {
+            logger.info(
+                "Automatic preapproval significance check skipped: data point type not present in live dataset. " +
+                        "dataType={}, dataPointType={}, dataPointId={}",
+                dataType,
+                dataPoint.dataPointType,
+                dataPoint.dataPointId,
+            )
+            return true
+        }
 
         val originalValue = datasetJudgementSupportService.getDataPointValueNode(dataPoint.dataPointId)
         val liveValue = datasetJudgementSupportService.getDataPointValueNode(liveDataPointId)
@@ -152,6 +176,24 @@ class PreApprovalService(
                 framework = dataType,
             )
 
-        return !hasSignificantChange
+        val passesSignificanceCheck = !hasSignificantChange
+
+        logger.info(
+            "Automatic preapproval significance check completed. " +
+                    "dataType={}, dataPointType={}, dataPointId={}, liveDataPointId={}, baseTypeId={}, valueType={}, " +
+                    "originalValuePresent={}, liveValuePresent={}, hasSignificantChange={}, passesSignificanceCheck={}",
+            dataType,
+            dataPoint.dataPointType,
+            dataPoint.dataPointId,
+            liveDataPointId,
+            baseTypeId,
+            valueType,
+            originalValue != null && !originalValue.isNull,
+            liveValue != null && !liveValue.isNull,
+            hasSignificantChange,
+            passesSignificanceCheck,
+        )
+
+        return passesSignificanceCheck
     }
 }
