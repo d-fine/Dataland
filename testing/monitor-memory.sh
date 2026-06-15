@@ -127,9 +127,15 @@ sample_disk() {
     printf '=%.0s' {1..80}; printf '\n'
     df -h 2>/dev/null || true
     printf '\n'
+
+    printf "Inode usage"
+    df -ih 2>/dev/null || true
+    printf '\n'
+
     printf "Docker system disk usage:\n"
     docker system df 2>/dev/null || true
     printf '\n'
+
   } >> "$diskfile"
 }
 
