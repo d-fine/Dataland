@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
@@ -17,6 +18,7 @@ import org.dataland.datalandspecificationservice.openApiClient.api.Specification
 import org.dataland.datalandspecificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
@@ -275,6 +277,70 @@ class DatasetJudgementSupportServiceTest {
 
         assertEquals(expected, result)
         verify(metaDataControllerApi).getContainedDataPoints("dataset-2024")
+    }
+
+    @Test
+    fun `getDataPointValueNode returns value node when value field is present`() {
+        val dataPointId = "dp-1"
+        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"value":"Yes"}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+
+        whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
+
+        val result = service.getDataPointValueNode(dataPointId)
+
+        assertEquals("Yes", result?.asText())
+        verify(dataPointControllerApi).getDataPoint(dataPointId)
+    }
+
+    @Test
+    fun `getDataPointValueNode returns null when value field is absent`() {
+        val dataPointId = "dp-2"
+        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"foo":"bar"}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+
+        whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
+
+        val result = service.getDataPointValueNode(dataPointId)
+
+        assertNull(result)
+        verify(dataPointControllerApi).getDataPoint(dataPointId)
+    }
+
+    @Test
+    fun `getDataPointValueNode returns null when value field is JSON null`() {
+        val dataPointId = "dp-3"
+        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"value":null}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+
+        whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
+
+        val result = service.getDataPointValueNode(dataPointId)
+
+        assertNull(result)
+        verify(dataPointControllerApi).getDataPoint(dataPointId)
+    }
+
+    @Test
+    fun `resolveBaseTypeId delegates to SpecificationControllerApi and returns base type id`() {
+        val dataPointType = "dummyType"
+        val expectedBaseTypeId = "extendedDecimal"
+        val ref = "dummy ref"
+
+        val spec =
+            DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = dataPointType, ref = ref),
+                name = "Some name",
+                businessDefinition = "Some business definition",
+                dataPointBaseType = IdWithRef(id = expectedBaseTypeId, ref = ref),
+                usedBy = emptyList(),
+                constraints = null,
+                calculationRules = emptyList(),
+            )
+
+        whenever(specificationControllerApi.getDataPointTypeSpecification(dataPointType)).thenReturn(spec)
+
+        val result = service.resolveBaseTypeId(dataPointType)
+
+        assertEquals(expectedBaseTypeId, result)
+        verify(specificationControllerApi).getDataPointTypeSpecification(dataPointType)
     }
 
 }
