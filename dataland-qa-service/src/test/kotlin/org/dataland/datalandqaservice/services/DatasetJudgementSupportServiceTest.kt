@@ -282,7 +282,13 @@ class DatasetJudgementSupportServiceTest {
     @Test
     fun `getDataPointValueNode returns value node when value field is present`() {
         val dataPointId = "dp-1"
-        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"value":"Yes"}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+        val uploadedDataPoint =
+            UploadedDataPoint(
+                dataPoint = """{"value":"Yes"}""",
+                dataPointType = "dummyType",
+                companyId = "c1",
+                reportingPeriod = "2024",
+            )
 
         whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
 
@@ -295,7 +301,13 @@ class DatasetJudgementSupportServiceTest {
     @Test
     fun `getDataPointValueNode returns null when value field is absent`() {
         val dataPointId = "dp-2"
-        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"foo":"bar"}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+        val uploadedDataPoint =
+            UploadedDataPoint(
+                dataPoint = """{"foo":"bar"}""",
+                dataPointType = "dummyType",
+                companyId = "c1",
+                reportingPeriod = "2024",
+            )
 
         whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
 
@@ -308,7 +320,13 @@ class DatasetJudgementSupportServiceTest {
     @Test
     fun `getDataPointValueNode returns null when value field is JSON null`() {
         val dataPointId = "dp-3"
-        val uploadedDataPoint = UploadedDataPoint(dataPoint = """{"value":null}""", dataPointType = "dummyType", companyId = "c1", reportingPeriod = "2024")
+        val uploadedDataPoint =
+            UploadedDataPoint(
+                dataPoint = """{"value":null}""",
+                dataPointType = "dummyType",
+                companyId = "c1",
+                reportingPeriod = "2024",
+            )
 
         whenever(dataPointControllerApi.getDataPoint(dataPointId)).thenReturn(uploadedDataPoint)
 
@@ -342,5 +360,4 @@ class DatasetJudgementSupportServiceTest {
         assertEquals(expectedBaseTypeId, result)
         verify(specificationControllerApi).getDataPointTypeSpecification(dataPointType)
     }
-
 }

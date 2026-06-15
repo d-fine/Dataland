@@ -7,10 +7,10 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import kotlin.random.Random
-import org.slf4j.LoggerFactory
 
 /**
  * Service responsible for automatically pre-approving data points in a dataset judgement.
@@ -26,6 +26,7 @@ class PreApprovalService(
     companion object {
         private val logger = LoggerFactory.getLogger(PreApprovalService::class.java)
     }
+
     private var _config: PreApprovalConfig = PreApprovalConfig()
     val config: PreApprovalConfig
         get() = _config
@@ -68,16 +69,13 @@ class PreApprovalService(
 
             val allChecksPass =
                 allQaReportsAccepted &&
-                        dataPointEligible &&
-                        !selectedByRandomSampling &&
-                        passesSignificanceCheck
-            if (!passesSignificanceCheck) {
-                logger.info("### DID NOT PASS SIGNIFICANCE CHECK, LARGE DEVIATION DETECTED, SKIPPING PRE-APPROVAL ###")
-            }
+                    dataPointEligible &&
+                    !selectedByRandomSampling &&
+                    passesSignificanceCheck
             logger.info(
                 "Automatic preapproval decision: datasetId={}, companyId={}, framework={}, dataPointType={}, " +
-                        "allQaReportsAccepted={}, dataPointEligible={}, selectedByRandomSampling={}, " +
-                        "passesSignificanceCheck={}, preApproved={}",
+                    "allQaReportsAccepted={}, dataPointEligible={}, selectedByRandomSampling={}, " +
+                    "passesSignificanceCheck={}, preApproved={}",
                 datasetJudgementEntity.datasetId,
                 datasetJudgementEntity.companyId,
                 datasetJudgementEntity.dataType,
@@ -93,8 +91,6 @@ class PreApprovalService(
                 dataPoint.acceptedSource = AcceptedDataPointSource.Original
             }
         }
-
-
 
         return datasetJudgementEntity
     }
@@ -178,7 +174,7 @@ class PreApprovalService(
         if (liveDataPointId == null) {
             logger.info(
                 "Automatic preapproval significance check skipped: data point type not present in live dataset. " +
-                        "dataType={}, dataPointType={}, dataPointId={}",
+                    "dataType={}, dataPointType={}, dataPointId={}",
                 dataType,
                 dataPoint.dataPointType,
                 dataPoint.dataPointId,
@@ -205,8 +201,8 @@ class PreApprovalService(
 
         logger.info(
             "Automatic preapproval significance check completed. " +
-                    "dataType={}, dataPointType={}, dataPointId={}, liveDataPointId={}, baseTypeId={}, valueType={}, " +
-                    "originalValuePresent={}, liveValuePresent={}, hasSignificantChange={}, passesSignificanceCheck={}",
+                "dataType={}, dataPointType={}, dataPointId={}, liveDataPointId={}, baseTypeId={}, valueType={}, " +
+                "originalValuePresent={}, liveValuePresent={}, hasSignificantChange={}, passesSignificanceCheck={}",
             dataType,
             dataPoint.dataPointType,
             dataPoint.dataPointId,

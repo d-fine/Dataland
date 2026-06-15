@@ -146,11 +146,9 @@ class SignificanceCheckService {
         return original.subtract(live).abs() > threshold
     }
 
-    private fun JsonNode.decimalValueOrNull(): BigDecimal? =
-        if (isNumber) decimalValue() else null
+    private fun JsonNode.decimalValueOrNull(): BigDecimal? = if (isNumber) decimalValue() else null
 
-    private fun JsonNode.bigIntegerValueOrNull(): BigInteger? =
-        if (isIntegralNumber) bigIntegerValue() else null
+    private fun JsonNode.bigIntegerValueOrNull(): BigInteger? = if (isIntegralNumber) bigIntegerValue() else null
 
     private fun getDecimalThreshold(
         dataPointType: String,
@@ -163,8 +161,5 @@ class SignificanceCheckService {
     private fun getIntegerThreshold(
         dataPointType: String,
         framework: DataTypeEnum,
-    ): BigInteger =
-        individualIntegerThresholds[framework]?.get(dataPointType) ?: INTEGER_ABSOLUTE_THRESHOLD
-
-
+    ): BigInteger = individualIntegerThresholds[framework]?.get(dataPointType) ?: INTEGER_ABSOLUTE_THRESHOLD
 }
