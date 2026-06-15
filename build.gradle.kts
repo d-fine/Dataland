@@ -2,6 +2,7 @@
 
 import com.github.gradle.node.npm.task.NpmTask
 import com.github.gradle.node.task.NodeTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val jacocoVersion: String by project
 val ktlintVersion: String by project
@@ -27,9 +28,9 @@ subprojects {
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-            jvmTarget = jvmVersion.majorVersion
+        compilerOptions {
+            freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn"))
+            jvmTarget.set(JvmTarget.fromTarget(jvmVersion.majorVersion))
         }
     }
     sonar {
