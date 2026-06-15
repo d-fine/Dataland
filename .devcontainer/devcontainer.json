@@ -23,7 +23,7 @@
   "features": {
     // Use docker-in-docker instead of docker-outside-of-docker to sandbox possible docker containers inside this
     // devcontainer from the host
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+    "ghcr.io/devcontainers/features/docker-in-docker:3": {
       "version": "latest",
     },
     "ghcr.io/devcontainers/features/java": {
