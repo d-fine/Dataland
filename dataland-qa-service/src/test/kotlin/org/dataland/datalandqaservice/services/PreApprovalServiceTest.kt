@@ -308,7 +308,9 @@ class PreApprovalServiceTest {
                 exemptFieldsConfig = PreApprovalExemptFieldsConfig(),
                 significanceCheckService = significanceCheckService,
                 datasetJudgementSupportService = supportServiceMock,
-            )
+            ).also {
+                it.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
+            }
         }
 
         private fun runSignificanceWorkflow(

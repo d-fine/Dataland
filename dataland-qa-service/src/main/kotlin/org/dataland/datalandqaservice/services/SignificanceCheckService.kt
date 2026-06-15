@@ -84,24 +84,23 @@ class SignificanceCheckService {
      * @param framework The framework of the dataset (used for per-data-point threshold lookups).
      * @return true if the change is significant and auto pre-approval should be suppressed; false otherwise.
      */
-    fun checkForSignificantChange(
+    fun hasSignificantChange(
         originalValue: JsonNode?,
         liveValue: JsonNode?,
         valueType: ValueType,
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        if (isNullOrJsonNull(originalValue) || isNullOrJsonNull(liveValue)) return false
+        val original = originalValue?.takeUnless { it.isNull } ?: return false
+        val live = liveValue?.takeUnless { it.isNull } ?: return false
 
         return when (valueType) {
-            ValueType.BOOLEAN -> originalValue!!.asText() != liveValue!!.asText()
-            ValueType.DECIMAL -> isDecimalChangeSignificant(originalValue!!, liveValue!!, dataPointType, framework)
-            ValueType.INTEGER -> isIntegerChangeSignificant(originalValue!!, liveValue!!, dataPointType, framework)
+            ValueType.BOOLEAN -> original.asText() != live.asText()
+            ValueType.DECIMAL -> isDecimalChangeSignificant(original, live, dataPointType, framework)
+            ValueType.INTEGER -> isIntegerChangeSignificant(original, live, dataPointType, framework)
             ValueType.UNSUPPORTED -> false
         }
     }
-
-    private fun isNullOrJsonNull(value: JsonNode?): Boolean = value == null || value.isNull
 
     private fun isDecimalChangeSignificant(
         originalValue: JsonNode,
@@ -109,18 +108,29 @@ class SignificanceCheckService {
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        if (!originalValue.isNumber || !liveValue.isNumber) return false
-        val original = originalValue.decimalValue()
-        val live = liveValue.decimalValue()
-        val threshold =
-            BigDecimal.valueOf(
-                individualDecimalThresholds[framework]?.get(dataPointType) ?: DECIMAL_RELATIVE_THRESHOLD,
-            )
-        return if (live.compareTo(BigDecimal.ZERO) == 0) {
-            original.compareTo(BigDecimal.ZERO) != 0
-        } else {
-            (original - live).abs().divide(live.abs(), DECIMAL_DIVISION_SCALE, RoundingMode.HALF_UP) > threshold
+        val original = originalValue.decimalValueOrNull() ?: return false
+        val live = liveValue.decimalValueOrNull() ?: return false
+        val threshold = getDecimalThreshold(dataPointType, framework)
+
+        return isRelativeDecimalChangeAboveThreshold(original, live, threshold)
+    }
+
+    private fun isRelativeDecimalChangeAboveThreshold(
+        original: BigDecimal,
+        live: BigDecimal,
+        threshold: BigDecimal,
+    ): Boolean {
+        if (live.compareTo(BigDecimal.ZERO) == 0) {
+            return original.compareTo(BigDecimal.ZERO) != 0
         }
+
+        val relativeChange =
+            original
+                .subtract(live)
+                .abs()
+                .divide(live.abs(), DECIMAL_DIVISION_SCALE, RoundingMode.HALF_UP)
+
+        return relativeChange > threshold
     }
 
     private fun isIntegerChangeSignificant(
@@ -129,10 +139,32 @@ class SignificanceCheckService {
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        if (!originalValue.isIntegralNumber || !liveValue.isIntegralNumber) return false
-        val original = originalValue.bigIntegerValue()
-        val live = liveValue.bigIntegerValue()
-        val threshold = individualIntegerThresholds[framework]?.get(dataPointType) ?: INTEGER_ABSOLUTE_THRESHOLD
-        return (original - live).abs() > threshold
+        val original = originalValue.bigIntegerValueOrNull() ?: return false
+        val live = liveValue.bigIntegerValueOrNull() ?: return false
+        val threshold = getIntegerThreshold(dataPointType, framework)
+
+        return original.subtract(live).abs() > threshold
     }
+
+    private fun JsonNode.decimalValueOrNull(): BigDecimal? =
+        if (isNumber) decimalValue() else null
+
+    private fun JsonNode.bigIntegerValueOrNull(): BigInteger? =
+        if (isIntegralNumber) bigIntegerValue() else null
+
+    private fun getDecimalThreshold(
+        dataPointType: String,
+        framework: DataTypeEnum,
+    ): BigDecimal =
+        BigDecimal.valueOf(
+            individualDecimalThresholds[framework]?.get(dataPointType) ?: DECIMAL_RELATIVE_THRESHOLD,
+        )
+
+    private fun getIntegerThreshold(
+        dataPointType: String,
+        framework: DataTypeEnum,
+    ): BigInteger =
+        individualIntegerThresholds[framework]?.get(dataPointType) ?: INTEGER_ABSOLUTE_THRESHOLD
+
+
 }

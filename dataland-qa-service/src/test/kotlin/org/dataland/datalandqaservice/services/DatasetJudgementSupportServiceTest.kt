@@ -220,4 +220,61 @@ class DatasetJudgementSupportServiceTest {
         assertEquals(expectedType, result)
         verify(dataPointQaReportRepository).findDataPointTypeUsingId(qaReportId.toString())
     }
+
+    @Test
+    fun `getLatestActiveDataPoints returns null when no active dataset exists`() {
+        whenever(
+            metaDataControllerApi.getListOfDataMetaInfo(
+                companyId = "company-id",
+                dataType = DataTypeEnum.sfdr,
+                showOnlyActive = true,
+            ),
+        ).thenReturn(emptyList())
+
+        val result =
+            service.getLatestActiveDataPoints(
+                companyId = UUID.randomUUID(),
+                dataType = DataTypeEnum.sfdr,
+            )
+
+        assertEquals(null, result)
+    }
+
+    @Test
+    fun `getLatestActiveDataPoints returns contained datapoints of latest active dataset`() {
+        val companyId = UUID.randomUUID()
+        val olderDataset =
+            DataMetaInformation(
+                dataId = "dataset-2023",
+                companyId = companyId.toString(),
+                dataType = DataTypeEnum.sfdr,
+                uploadTime = 1L,
+                reportingPeriod = "2023",
+                currentlyActive = true,
+                qaStatus = QaStatus.Accepted,
+            )
+        val newerDataset =
+            olderDataset.copy(
+                dataId = "dataset-2024",
+                reportingPeriod = "2024",
+            )
+        val expected = mapOf("someType" to "someDataPointId")
+
+        whenever(
+            metaDataControllerApi.getListOfDataMetaInfo(
+                companyId = companyId.toString(),
+                dataType = DataTypeEnum.sfdr,
+                showOnlyActive = true,
+            ),
+        ).thenReturn(listOf(olderDataset, newerDataset))
+
+        whenever(metaDataControllerApi.getContainedDataPoints("dataset-2024"))
+            .thenReturn(expected)
+
+        val result = service.getLatestActiveDataPoints(companyId, DataTypeEnum.sfdr)
+
+        assertEquals(expected, result)
+        verify(metaDataControllerApi).getContainedDataPoints("dataset-2024")
+    }
+
 }

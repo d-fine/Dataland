@@ -143,12 +143,15 @@ class PreApprovalService(
         val baseTypeId = datasetJudgementSupportService.resolveBaseTypeId(dataPoint.dataPointType)
         val valueType = significanceCheckService.resolveValueType(baseTypeId)
 
-        return !significanceCheckService.checkForSignificantChange(
-            originalValue = originalValue,
-            liveValue = liveValue,
-            valueType = valueType,
-            dataPointType = dataPoint.dataPointType,
-            framework = dataType,
-        )
+        val hasSignificantChange =
+            significanceCheckService.hasSignificantChange(
+                originalValue = originalValue,
+                liveValue = liveValue,
+                valueType = valueType,
+                dataPointType = dataPoint.dataPointType,
+                framework = dataType,
+            )
+
+        return !hasSignificantChange
     }
 }
