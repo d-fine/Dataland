@@ -16,18 +16,7 @@ function searchCompanyAndChooseById(searchTerm: string, companyId: string): void
   const optionSelector = `[data-pc-section="option"][data-company-id="${companyId}"]`;
   cy.get('input#company_search_bar_standard').scrollIntoView();
   cy.get('input#company_search_bar_standard').type(searchTerm);
-  cy.get('input#company_search_bar_standard').then(($input) => {
-    cy.task('log', `[navigation-test] after .type(), input value="${String($input.val())}" (expected="${searchTerm}")`);
-  });
-  cy.get(optionSelector)
-    .should('be.visible')
-    .then(($el) => {
-      cy.task('log', `[navigation-test] clicking option with companyId="${companyId}": text="${$el.text().trim()}"`);
-    });
-  cy.get(optionSelector).click();
-  cy.url().then((url) => {
-    cy.task('log', `[navigation-test] URL immediately after click: ${url}`);
-  });
+  cy.get(optionSelector).should('be.visible').click();
 }
 
 /**
@@ -55,12 +44,6 @@ describeIf(
       fetchTestCompanies().then(([alpha, beta]) => {
         alphaCompanyIdAndName = alpha;
         betaCompanyIdAndName = beta;
-        cy.task('log', `[navigation-test] alpha: id=${alpha.companyId} name="${alpha.companyName}"`);
-        cy.task('log', `[navigation-test] beta:  id=${beta.companyId} name="${beta.companyName}"`);
-        cy.task(
-          'log',
-          `[navigation-test] names are ${alpha.companyName === beta.companyName ? 'IDENTICAL' : 'different'}`
-        );
       });
     });
 
@@ -77,21 +60,12 @@ describeIf(
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
-      cy.task(
-        'log',
-        `[navigation-test] betaCompanyId=${betaCompanyIdAndName?.companyId} betaCompanyName=${betaCompanyIdAndName?.companyName}`
-      );
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
-      cy.task('log', '[navigation-test] intercept registered, visiting alpha cockpit');
       visitCockpitForCompanyAlpha();
-      cy.task('log', '[navigation-test] alpha cockpit loaded, starting search for beta company');
       searchCompanyAndChooseById(betaCompanyIdAndName.companyName, betaCompanyIdAndName.companyId);
-      cy.task('log', '[navigation-test] clicked beta company in autocomplete, waiting for API request');
-      cy.wait('@fetchAggregatedFrameworkSummaryForBeta').then(() => {
-        cy.task('log', '[navigation-test] fetchAggregatedFrameworkSummaryForBeta request was intercepted successfully');
-      });
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
     });

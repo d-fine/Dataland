@@ -71,19 +71,10 @@ export default defineComponent({
 
   computed: {
     mergedPassThrough(): object {
-      const externalPt = (this.autoCompletePassThrough ?? {}) as Record<string, unknown>;
       return {
-        ...externalPt,
-        option: (ptOptions: { context?: { option?: { companyId?: string } } }): Record<string, unknown> => {
-          const externalOption =
-            typeof externalPt.option === 'function'
-              ? (externalPt.option as (o: unknown) => object)(ptOptions)
-              : (externalPt.option ?? {});
-          return {
-            ...(externalOption as object),
-            'data-company-id': ptOptions?.context?.option?.companyId,
-          };
-        },
+        option: (ptOptions: { context?: { option?: { companyId?: string } } }): Record<string, unknown> => ({
+          'data-company-id': ptOptions?.context?.option?.companyId,
+        }),
       };
     },
   },
@@ -105,10 +96,6 @@ export default defineComponent({
     inputClass: {
       type: String,
       default: 'h-3rem d-framework-searchbar-input w-full',
-    },
-    autoCompletePassThrough: {
-      type: Object,
-      required: false,
     },
   },
 
