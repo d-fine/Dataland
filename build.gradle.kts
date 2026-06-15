@@ -97,7 +97,8 @@ val normalizeFeCoverageForSonar by tasks.registering {
     }
 }
 
-val devEnvironmentVariables = env.allVariables()
+val devEnvironmentFile = rootProject.file("environments/.env.dev")
+val devEnvironmentVariables = if (devEnvironmentFile.isFile) env.allVariables() else emptyMap()
 
 // Propagate environments/.env.dev variables loaded by the dotenv plugin into forked task processes.
 allprojects {

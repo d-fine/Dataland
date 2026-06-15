@@ -6,5 +6,4 @@ COPY ./gradle/ ./gradle/
 COPY ./gradlew .
 RUN  ./gradlew --version
 COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
-COPY ./environments/.env.dev ./environments/.env.dev
 RUN ./gradlew --no-daemon --stacktrace

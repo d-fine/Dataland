@@ -16,5 +16,4 @@ WORKDIR /app
 COPY ./gradle/ ./gradle/
 COPY ./gradlew .
 COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
-COPY ./environments/.env.dev ./environments/.env.dev
 RUN ./gradlew --no-daemon

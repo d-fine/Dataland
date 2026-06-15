@@ -9,7 +9,7 @@ fi
 gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -d'=' -f2)
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_e2etests_base ./dataland-e2etests/DockerfileBase "" \
-       ./gradle/ ./gradlew ./environments/.env.dev ./environments/.env.uncritical $gradle_dependencies
+       ./gradle/ ./gradlew ./environments/.env.uncritical $gradle_dependencies
 
 set -o allexport
 source ./*github_env.log
