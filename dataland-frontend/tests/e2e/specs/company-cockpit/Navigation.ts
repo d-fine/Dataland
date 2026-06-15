@@ -7,13 +7,16 @@ const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
 
 /**
- * Searches for a specified term in the companies search bar and selects the first autocomplete suggestion
+ * Searches for a specified term in the companies search bar and selects the autocomplete suggestion
+ * that matches the given company ID exactly, avoiding ambiguity when multiple companies share a name.
  * @param searchTerm the term to search for
+ * @param companyId the company ID of the option to click
  */
-function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
+function searchCompanyAndChooseById(searchTerm: string, companyId: string): void {
+  const optionSelector = `[data-pc-section="option"][data-company-id="${companyId}"]`;
   cy.get('input#company_search_bar_standard').scrollIntoView();
   cy.get('input#company_search_bar_standard').type(searchTerm);
-  cy.get('[data-pc-section="list"]').contains(searchTerm).click();
+  cy.get(optionSelector).should('be.visible').click();
 }
 
 /**
@@ -57,11 +60,11 @@ describeIf(
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
-      visitCockpitForCompanyAlpha();
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
-      searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
+      visitCockpitForCompanyAlpha();
+      searchCompanyAndChooseById(betaCompanyIdAndName.companyName, betaCompanyIdAndName.companyId);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
