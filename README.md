@@ -21,9 +21,9 @@ Follow these steps to set up the dataland development stack on your computer.
 3. Add a link for `local-dev.dataland.com` and `dataland-admin` to `127.0.0.1` in the Hosts file (On Windows: `%windir%\system32\drivers\etc\hosts`, On Linux: `/etc/hosts`).
 4. (If on Windows): Enable long paths in git (`git config --global core.longpaths true`) and [in Windows](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry).
 5. Clone this repository to your computer.
-6. Start the development stack by running `manageLocalStack.sh --reset --start --simple`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time, make sure that Docker is running in the background. Note: on Windows run this command in bash terminal e.g. GitBash.
+6. Start the development stack by running `manageLocalStack.sh --reset --start`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time, make sure that Docker is running in the background. Note: on Windows run this command in bash terminal e.g. GitBash.
 7. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
-8. You can stop the development stack by running `manageLocalStack.sh --stop --simple`.
+8. You can stop the development stack by running `manageLocalStack.sh --stop`.
 
 # Developer Remarks
 In this section, you find information that might be useful for you as a developer.
@@ -38,8 +38,9 @@ To add the provided git pre-hooks to your local development environment execute:
 `git config --local core.hookspath ./.githooks/`
 
 ## Environment Variables for Development
-Environmental variables can be set by adding them in `environments/.env.dev`, `environments/.env.template`, 
-`.github/workflows/CI.yaml`, `docker-compose.yml` and `verifyEnvironmentVariables.sh`.
+Environment variables for local development are defined in `environments/.env.dev`. CI loads `.env.dev` together
+with `environments/.env.ci` for CI-specific overrides. Add new variables to `.env.dev` and, if they differ in CI,
+to `.env.ci`.
 
 ## API Documentation
 Links to the interactive swagger API documentation are available on all running instances of dataland 
