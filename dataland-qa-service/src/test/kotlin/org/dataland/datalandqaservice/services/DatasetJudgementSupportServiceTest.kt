@@ -255,9 +255,10 @@ class DatasetJudgementSupportServiceTest {
                 currentlyActive = true,
                 qaStatus = QaStatus.Accepted,
             )
+        val arbitraryDatasetId = "dataset-2024"
         val newerDataset =
             olderDataset.copy(
-                dataId = "dataset-2024",
+                dataId = arbitraryDatasetId,
                 reportingPeriod = "2024",
             )
         val expected = mapOf("someType" to "someDataPointId")
@@ -270,13 +271,13 @@ class DatasetJudgementSupportServiceTest {
             ),
         ).thenReturn(listOf(olderDataset, newerDataset))
 
-        whenever(metaDataControllerApi.getContainedDataPoints("dataset-2024"))
+        whenever(metaDataControllerApi.getContainedDataPoints(arbitraryDatasetId))
             .thenReturn(expected)
 
         val result = service.getLatestActiveDataPoints(companyId, DataTypeEnum.sfdr)
 
         assertEquals(expected, result)
-        verify(metaDataControllerApi).getContainedDataPoints("dataset-2024")
+        verify(metaDataControllerApi).getContainedDataPoints(arbitraryDatasetId)
     }
 
     @Test
