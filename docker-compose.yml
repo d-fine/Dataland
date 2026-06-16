@@ -920,8 +920,6 @@ volumes:
     driver: local
   pgadmin_config:
     driver: local
-  frontend-dev-node-modules:
-    driver: local
   document_manager_data:
     driver: local
   qa_service_data:
