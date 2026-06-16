@@ -90,11 +90,18 @@ run_logged_command() {
 
   local exit_code=0
   if [[ "$VERBOSE" == true ]]; then
-    if "$@" > >(tee -a "$MANAGE_LOCAL_STACK_LOG_FILE") 2>&1; then
+    local output_file
+    output_file=$(mktemp)
+
+    if "$@" >"$output_file" 2>&1; then
       exit_code=0
     else
       exit_code=$?
     fi
+
+    cat "$output_file"
+    cat "$output_file" >> "$MANAGE_LOCAL_STACK_LOG_FILE"
+    rm -f "$output_file"
   else
     if "$@" >> "$MANAGE_LOCAL_STACK_LOG_FILE" 2>&1; then
       exit_code=0
