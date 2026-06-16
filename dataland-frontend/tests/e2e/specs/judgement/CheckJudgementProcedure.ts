@@ -453,7 +453,7 @@ function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
   cy.contains(
     `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
-  ).scrollIntoView().should('be.visible');
+  ).should('be.visible');
 
   dataPointEntries.forEach(([, dataPointId]) => {
     checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);
