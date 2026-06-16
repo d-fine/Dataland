@@ -90,10 +90,10 @@ run_logged_command() {
 
   local exit_code=0
   if [[ "$VERBOSE" == true ]]; then
-    if "$@" 2>&1 | tee -a "$MANAGE_LOCAL_STACK_LOG_FILE"; then
+    if "$@" > >(tee -a "$MANAGE_LOCAL_STACK_LOG_FILE") 2>&1; then
       exit_code=0
     else
-      exit_code=${PIPESTATUS[0]}
+      exit_code=$?
     fi
   else
     if "$@" >> "$MANAGE_LOCAL_STACK_LOG_FILE" 2>&1; then

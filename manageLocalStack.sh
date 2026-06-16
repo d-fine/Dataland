@@ -39,14 +39,6 @@ prepare_loki_bind_mounts() {
   mkdir -p "${LOKI_VOLUME}/health-check-log"
 }
 
-load_environment_step() {
-  local description="$1"
-  shift
-
-  log_step "$description"
-  "$@"
-}
-
 start_backend() {
   ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
 }
@@ -59,11 +51,11 @@ start_development_stack() {
   run_step "Setting up SSL certificates" setup_certificates "$self_signed"
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
-  load_environment_step "Loading generated GitHub environment" source_github_env_log
-  load_environment_step "Loading uncritical environment" source_uncritical_environment
+  run_step "Loading generated GitHub environment" source_github_env_log
+  run_step "Loading uncritical environment" source_uncritical_environment
   run_step "Building Docker images" rebuild_docker_images
-  load_environment_step "Reloading generated GitHub environment" source_github_env_log
-  load_environment_step "Reloading uncritical environment" source_uncritical_environment
+  run_step "Reloading generated GitHub environment" source_github_env_log
+  run_step "Reloading uncritical environment" source_uncritical_environment
 
   local compose_profiles
   read -ra compose_profiles <<< "$(determine_compose_profiles "$container_backend")"
@@ -116,8 +108,8 @@ reset_development_stack() {
   run_step "Cleaning Gradle outputs" ./gradlew clean
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
-  load_environment_step "Loading generated GitHub environment" source_github_env_log
-  load_environment_step "Loading uncritical environment" source_uncritical_environment
+  run_step "Loading generated GitHub environment" source_github_env_log
+  run_step "Loading uncritical environment" source_uncritical_environment
   run_step "Rebuilding Postgres image" rebuild_postgres_image
   run_step "Rebuilding Keycloak image" rebuild_keycloak_image
   log_step "Initializing Keycloak"
