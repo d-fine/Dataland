@@ -162,7 +162,7 @@
     :is-loading="false"
     :is-success="false"
     @confirm="proceedWithNonCustomAccept"
-    @cancel="isReasonWarningModalVisible = false"
+    @cancel="cancelReasonWarningModal"
     :dismissable-mask="false"
     :show-cancel-button="true"
     confirm-label="Proceed"
@@ -695,6 +695,14 @@ function proceedWithNonCustomAccept(): void {
     executeAccept(pendingAcceptedSource.value);
     pendingAcceptedSource.value = null;
   }
+}
+
+/**
+ * Resets the state when the warning modal is closed by clicking "Cancel".
+ */
+function cancelReasonWarningModal(): void {
+  isReasonWarningModalVisible.value = false;
+  pendingAcceptedSource.value = null;
 }
 
 /**

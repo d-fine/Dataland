@@ -138,20 +138,18 @@
         for="reason-for-custom-datapoint-field"
         style="
           display: block;
-          font-size: var(--font-size-xs);
           font-weight: var(--font-weight-semibold);
           margin-bottom: var(--spacing-xxs);
         "
       >
-        Reason for custom data point
+        Reason for custom data point (internal only)
       </label>
       <Textarea
         id="reason-for-custom-datapoint-field"
         v-model="reasonForCustomDataPoint"
         size="small"
-        spellcheck="false"
         data-test="reason-for-custom-datapoint-field"
-        placeholder="Reason for custom data point (optional)"
+        placeholder="Reason for custom data point (optional, internal only)"
         style="width: 100%; height: 4rem; resize: none"
       />
     </div>

@@ -100,5 +100,5 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "An optional comment explaining why a custom data point was created instead of " +
             "accepting the original uploaded value or the QA bot suggestion. " +
             "Only relevant when acceptedSource is Custom; null for all other sources."
-    const val REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE = "The original value was incorrect and the QA report claimed there was not data found."
+    const val REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE = "The original value was incorrect and the QA report claimed there was no data found."
 }
