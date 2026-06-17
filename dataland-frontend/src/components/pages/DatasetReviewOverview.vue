@@ -247,7 +247,7 @@ const requestSearchFilters = computed<RequestSearchFilterString>(() => ({
   companyId: companyIdRef.value,
   dataTypes: groupedDataTypeRef.value,
   reportingPeriods: reportingPeriodRef.value ? [reportingPeriodRef.value] : undefined,
-  requestStates: [RequestState.Open, RequestState.Processing],
+  requestStates: [RequestState.Processing],
 }));
 
 const metaDataSearchFilters = computed<DataMetaInformationSearchFilter[]>(() =>
@@ -327,7 +327,7 @@ const reviewWarnings = computed((): ReviewWarning[] => {
   if (isRequestCountReady.value && !hasValidRequestState.value) {
     warnings.push({
       id: 'invalid-request-state',
-      message: 'There is no related data request with status Open or Processing.',
+      message: 'There is no related data request with status Processing.',
       type: 'error',
     });
   }
