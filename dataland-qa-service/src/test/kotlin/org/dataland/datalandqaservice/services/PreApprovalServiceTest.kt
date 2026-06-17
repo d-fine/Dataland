@@ -68,7 +68,7 @@ class PreApprovalServiceTest {
      */
     private fun mockSupportServiceWithNoLiveDataset(): DatasetJudgementSupportService =
         mock<DatasetJudgementSupportService>().also {
-            whenever(it.getLatestActiveDataPoints(any(), any())).thenReturn(null)
+            whenever(it.getDataPointsOfLatestActiveDataset(any(), any())).thenReturn(null)
         }
 
     /**
@@ -294,7 +294,7 @@ class PreApprovalServiceTest {
             liveDataPointMap: Map<String, String> = mapOf(dpType to liveDataPointId),
         ): PreApprovalService {
             val supportServiceMock = mock<DatasetJudgementSupportService>()
-            whenever(supportServiceMock.getLatestActiveDataPoints(any(), any())).thenReturn(liveDataPointMap)
+            whenever(supportServiceMock.getDataPointsOfLatestActiveDataset(any(), any())).thenReturn(liveDataPointMap)
             whenever(supportServiceMock.getDataPointValueNode(originalDataPointId)).thenReturn(originalValueNode)
             whenever(supportServiceMock.getDataPointValueNode(liveDataPointId)).thenReturn(liveValueNode)
             whenever(supportServiceMock.resolveBaseTypeId(dpType)).thenReturn(baseTypeId)

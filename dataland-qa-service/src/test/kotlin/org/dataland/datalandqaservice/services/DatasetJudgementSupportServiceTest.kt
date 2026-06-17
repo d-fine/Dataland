@@ -234,7 +234,7 @@ class DatasetJudgementSupportServiceTest {
         ).thenReturn(emptyList())
 
         val result =
-            service.getLatestActiveDataPoints(
+            service.getDataPointsOfLatestActiveDataset(
                 companyId = UUID.randomUUID(),
                 dataType = DataTypeEnum.sfdr,
             )
@@ -274,7 +274,7 @@ class DatasetJudgementSupportServiceTest {
         whenever(metaDataControllerApi.getContainedDataPoints(arbitraryDatasetId))
             .thenReturn(expected)
 
-        val result = service.getLatestActiveDataPoints(companyId, DataTypeEnum.sfdr)
+        val result = service.getDataPointsOfLatestActiveDataset(companyId, DataTypeEnum.sfdr)
 
         assertEquals(expected, result)
         verify(metaDataControllerApi).getContainedDataPoints(arbitraryDatasetId)

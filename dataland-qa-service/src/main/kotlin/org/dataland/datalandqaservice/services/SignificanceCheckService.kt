@@ -16,31 +16,25 @@ import java.math.RoundingMode
  *
  * Thresholds are hardcoded per value type and can only be changed via redeployment:
  * - Boolean: any change is significant.
- * - Decimal: a relative change of more than 50% is significant.
- * - Integer: an absolute change of more than 5 is significant.
+ * - Decimal: a relative change of more than the defined DECIMAL_RELATIVE_THRESHOLD is significant.
+ * - Integer: an absolute change of more than the defined INTEGER_ABSOLUTE_THRESHOLD is significant.
  *
  * Individual per-data-point threshold overrides per framework can be registered via
  * [individualDecimalThresholds] and [individualIntegerThresholds] if needed.
  */
 @Service
 class SignificanceCheckService {
-    /**
-     * The value type category of a data point, derived from its data point base type specification.
-     */
     enum class ValueType { BOOLEAN, DECIMAL, INTEGER, UNSUPPORTED }
 
     companion object {
-        /** Relative change threshold for Decimal fields: a change of more than 50% is significant. */
         const val DECIMAL_RELATIVE_THRESHOLD = 0.5
 
-        /** Absolute change threshold for Integer fields: a change of more than 5 is significant. */
         val INTEGER_ABSOLUTE_THRESHOLD: BigInteger = BigInteger.valueOf(5)
 
         private val DECIMAL_BASE_TYPE_IDS = setOf("extendedDecimal")
         private val INTEGER_BASE_TYPE_IDS = setOf("extendedInteger")
         private val BOOLEAN_BASE_TYPE_IDS = setOf("extendedEnumYesNo")
 
-        /** Scale used for the intermediate division when computing relative decimal change. */
         private const val DECIMAL_DIVISION_SCALE = 10
     }
 
@@ -77,7 +71,7 @@ class SignificanceCheckService {
      * - Either value is null or an explicit JSON null.
      * - The value type is [ValueType.UNSUPPORTED].
      *
-     * @param originalValue The value node of the data point in the dataset under review.
+     * @param newValue The value node of the data point in the dataset under review.
      * @param liveValue The value node of the same data point in the currently live dataset.
      * @param valueType The value type category of the data point.
      * @param dataPointType The data point type identifier (used for per-data-point threshold lookups).
@@ -85,20 +79,20 @@ class SignificanceCheckService {
      * @return true if the change is significant and auto pre-approval should be suppressed; false otherwise.
      */
     fun hasSignificantChange(
-        originalValue: JsonNode?,
+        newValue: JsonNode?,
         liveValue: JsonNode?,
         valueType: ValueType,
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue?.takeUnless { it.isNull }
+        val newVal = newValue?.takeUnless { it.isNull }
         val live = liveValue?.takeUnless { it.isNull }
-        if (original == null || live == null) return false
+        if (newVal == null || live == null) return false
 
         return when (valueType) {
-            ValueType.BOOLEAN -> original.asText() != live.asText()
-            ValueType.DECIMAL -> isDecimalChangeSignificant(original, live, dataPointType, framework)
-            ValueType.INTEGER -> isIntegerChangeSignificant(original, live, dataPointType, framework)
+            ValueType.BOOLEAN -> newVal.asText() != live.asText()
+            ValueType.DECIMAL -> isDecimalChangeSignificant(newVal, live, dataPointType, framework)
+            ValueType.INTEGER -> isIntegerChangeSignificant(newVal, live, dataPointType, framework)
             ValueType.UNSUPPORTED -> false
         }
     }
@@ -114,14 +108,6 @@ class SignificanceCheckService {
         if (original == null || live == null) return false
         val threshold = getDecimalThreshold(dataPointType, framework)
 
-        return isRelativeDecimalChangeAboveThreshold(original, live, threshold)
-    }
-
-    private fun isRelativeDecimalChangeAboveThreshold(
-        original: BigDecimal,
-        live: BigDecimal,
-        threshold: BigDecimal,
-    ): Boolean {
         if (live.compareTo(BigDecimal.ZERO) == 0) {
             return original.compareTo(BigDecimal.ZERO) != 0
         }

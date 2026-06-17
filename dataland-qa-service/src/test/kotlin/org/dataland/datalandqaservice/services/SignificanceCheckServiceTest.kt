@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.databind.node.TextNode
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.Companion.DECIMAL_RELATIVE_THRESHOLD
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.Companion.INTEGER_ABSOLUTE_THRESHOLD
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.ValueType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -19,6 +21,19 @@ class SignificanceCheckServiceTest {
     private val service = SignificanceCheckService()
     private val dummyFramework = DataTypeEnum.sfdr
     private val dummyDataPointType = "some-datapoint-type"
+
+    private val baseDecimalValue = BigDecimal.valueOf(100.0)
+    private val baseIntegerValue = 10
+
+    private fun createDecimalNodeWithRelativeMultiplier(
+        baseValue: BigDecimal,
+        multiplier: Double,
+    ): JsonNode = DecimalNode(baseValue.multiply(BigDecimal.valueOf(multiplier)))
+
+    private fun createIntegerNodeWithAbsoluteOffset(
+        baseValue: Int,
+        absoluteOffset: Int,
+    ): JsonNode = IntNode(baseValue + absoluteOffset)
 
     @Nested
     inner class ResolveValueTypeTests {
@@ -52,7 +67,7 @@ class SignificanceCheckServiceTest {
         fun `original value null returns false`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = null,
+                    newValue = null,
                     liveValue = TextNode("Yes"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -65,7 +80,7 @@ class SignificanceCheckServiceTest {
         fun `live value null returns false`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = TextNode("Yes"),
+                    newValue = TextNode("Yes"),
                     liveValue = null,
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -78,7 +93,7 @@ class SignificanceCheckServiceTest {
         fun `original value JSON null returns false`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = NullNode.instance,
+                    newValue = NullNode.instance,
                     liveValue = TextNode("Yes"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -91,7 +106,7 @@ class SignificanceCheckServiceTest {
         fun `live value JSON null returns false`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = TextNode("Yes"),
+                    newValue = TextNode("Yes"),
                     liveValue = NullNode.instance,
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -104,7 +119,7 @@ class SignificanceCheckServiceTest {
         fun `both null returns false`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = null,
+                    newValue = null,
                     liveValue = null,
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -120,7 +135,7 @@ class SignificanceCheckServiceTest {
         fun `boolean change from Yes to No is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    originalValue = TextNode("Yes"),
+                    newValue = TextNode("Yes"),
                     liveValue = TextNode("No"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -133,7 +148,7 @@ class SignificanceCheckServiceTest {
         fun `boolean change from No to Yes is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    originalValue = TextNode("No"),
+                    newValue = TextNode("No"),
                     liveValue = TextNode("Yes"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -146,7 +161,7 @@ class SignificanceCheckServiceTest {
         fun `same boolean value Yes to Yes is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = TextNode("Yes"),
+                    newValue = TextNode("Yes"),
                     liveValue = TextNode("Yes"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -159,7 +174,7 @@ class SignificanceCheckServiceTest {
         fun `same boolean value No to No is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = TextNode("No"),
+                    newValue = TextNode("No"),
                     liveValue = TextNode("No"),
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
@@ -171,14 +186,12 @@ class SignificanceCheckServiceTest {
 
     @Nested
     inner class DecimalSignificanceTests {
-        private fun decimal(value: Double): JsonNode = DecimalNode(BigDecimal.valueOf(value))
-
         @Test
-        fun `decimal change above 50 percent relative threshold is significant`() {
+        fun `decimal increase above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    originalValue = decimal(200.0),
-                    liveValue = decimal(100.0),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD * 1.05),
+                    liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -187,11 +200,11 @@ class SignificanceCheckServiceTest {
         }
 
         @Test
-        fun `decimal change exactly at 50 percent relative threshold is not significant`() {
+        fun `decimal increase at threshold is not significant `() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = decimal(150.0),
-                    liveValue = decimal(100.0),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD),
+                    liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -200,11 +213,50 @@ class SignificanceCheckServiceTest {
         }
 
         @Test
-        fun `decimal change below 50 percent relative threshold is not significant`() {
+        fun `decimal increase below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = decimal(110.0),
-                    liveValue = decimal(100.0),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD * 0.95),
+                    liveValue = DecimalNode(baseDecimalValue),
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `decimal decrease above threshold is significant`() {
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD * 1.05),
+                    liveValue = DecimalNode(baseDecimalValue),
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `decimal decrease at threshold is not significant`() {
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD),
+                    liveValue = DecimalNode(baseDecimalValue),
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `decimal decrease below threshold is not significant`() {
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD * 0.95),
+                    liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -216,8 +268,8 @@ class SignificanceCheckServiceTest {
         fun `decimal unchanged is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = decimal(100.0),
-                    liveValue = decimal(100.0),
+                    newValue = DecimalNode(baseDecimalValue),
+                    liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -226,11 +278,11 @@ class SignificanceCheckServiceTest {
         }
 
         @Test
-        fun `decimal live value zero and non-zero original is significant`() {
+        fun `decimal live value zero and non-zero new value is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    originalValue = decimal(10.0),
-                    liveValue = decimal(0.0),
+                    newValue = DecimalNode(baseDecimalValue),
+                    liveValue = DecimalNode(BigDecimal.ZERO),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -242,21 +294,8 @@ class SignificanceCheckServiceTest {
         fun `decimal both values zero is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = decimal(0.0),
-                    liveValue = decimal(0.0),
-                    valueType = ValueType.DECIMAL,
-                    dataPointType = dummyDataPointType,
-                    framework = dummyFramework,
-                ),
-            )
-        }
-
-        @Test
-        fun `decimal decrease above 50 percent is significant`() {
-            assertTrue(
-                service.hasSignificantChange(
-                    originalValue = decimal(40.0),
-                    liveValue = decimal(100.0),
+                    newValue = DecimalNode(BigDecimal.ZERO),
+                    liveValue = DecimalNode(BigDecimal.ZERO),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -267,14 +306,12 @@ class SignificanceCheckServiceTest {
 
     @Nested
     inner class IntegerSignificanceTests {
-        private fun integer(value: Int): JsonNode = IntNode(value)
-
         @Test
-        fun `integer change above absolute threshold of 5 is significant`() {
+        fun `integer increase above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    originalValue = integer(12),
-                    liveValue = integer(5),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt() + 1),
+                    liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -283,11 +320,11 @@ class SignificanceCheckServiceTest {
         }
 
         @Test
-        fun `integer change exactly at threshold of 5 is not significant`() {
+        fun `integer increase at threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = integer(10),
-                    liveValue = integer(5),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt()),
+                    liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -296,11 +333,50 @@ class SignificanceCheckServiceTest {
         }
 
         @Test
-        fun `integer change below absolute threshold of 5 is not significant`() {
+        fun `integer increase below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = integer(7),
-                    liveValue = integer(5),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt() - 1),
+                    liveValue = IntNode(baseIntegerValue),
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `integer decrease above threshold is significant`() {
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(INTEGER_ABSOLUTE_THRESHOLD.toInt() + 1)),
+                    liveValue = IntNode(baseIntegerValue),
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `integer decrease at threshold is not significant`() {
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -INTEGER_ABSOLUTE_THRESHOLD.toInt()),
+                    liveValue = IntNode(baseIntegerValue),
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                ),
+            )
+        }
+
+        @Test
+        fun `integer decrease below threshold is not significant`() {
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(INTEGER_ABSOLUTE_THRESHOLD.toInt() - 1)),
+                    liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -312,21 +388,8 @@ class SignificanceCheckServiceTest {
         fun `integer unchanged is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = integer(42),
-                    liveValue = integer(42),
-                    valueType = ValueType.INTEGER,
-                    dataPointType = dummyDataPointType,
-                    framework = dummyFramework,
-                ),
-            )
-        }
-
-        @Test
-        fun `negative integer change above threshold is significant`() {
-            assertTrue(
-                service.hasSignificantChange(
-                    originalValue = integer(1),
-                    liveValue = integer(10),
+                    newValue = IntNode(baseIntegerValue),
+                    liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
@@ -341,7 +404,7 @@ class SignificanceCheckServiceTest {
         fun `unsupported type is never significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    originalValue = TextNode("someValue"),
+                    newValue = TextNode("someValue"),
                     liveValue = TextNode("otherValue"),
                     valueType = ValueType.UNSUPPORTED,
                     dataPointType = dummyDataPointType,

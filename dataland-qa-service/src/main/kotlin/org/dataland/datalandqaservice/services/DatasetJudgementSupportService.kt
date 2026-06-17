@@ -120,7 +120,7 @@ class DatasetJudgementSupportService
          * @param dataType The framework / data type.
          * @return Map of data point type to data point id, or null if no live dataset is found.
          */
-        fun getLatestActiveDataPoints(
+        fun getDataPointsOfLatestActiveDataset(
             companyId: UUID,
             dataType: DataTypeEnum,
         ): Map<String, String>? {

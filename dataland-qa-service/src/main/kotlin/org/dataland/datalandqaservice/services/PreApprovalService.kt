@@ -54,7 +54,7 @@ class PreApprovalService(
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
 
         val liveDataPoints =
-            datasetJudgementSupportService.getLatestActiveDataPoints(
+            datasetJudgementSupportService.getDataPointsOfLatestActiveDataset(
                 datasetJudgementEntity.companyId,
                 datasetJudgementEntity.dataType,
             )
@@ -72,20 +72,6 @@ class PreApprovalService(
                     dataPointEligible &&
                     !selectedByRandomSampling &&
                     passesSignificanceCheck
-            logger.info(
-                "Automatic preapproval decision: datasetId={}, companyId={}, framework={}, dataPointType={}, " +
-                    "allQaReportsAccepted={}, dataPointEligible={}, selectedByRandomSampling={}, " +
-                    "passesSignificanceCheck={}, preApproved={}",
-                datasetJudgementEntity.datasetId,
-                datasetJudgementEntity.companyId,
-                datasetJudgementEntity.dataType,
-                dataPoint.dataPointType,
-                allQaReportsAccepted,
-                dataPointEligible,
-                selectedByRandomSampling,
-                passesSignificanceCheck,
-                allChecksPass,
-            )
 
             if (allChecksPass) {
                 dataPoint.acceptedSource = AcceptedDataPointSource.Original
@@ -173,7 +159,7 @@ class PreApprovalService(
             return true
         }
 
-        val originalValue = datasetJudgementSupportService.getDataPointValueNode(dataPoint.dataPointId)
+        val newValue = datasetJudgementSupportService.getDataPointValueNode(dataPoint.dataPointId)
         val liveValue = datasetJudgementSupportService.getDataPointValueNode(liveDataPointId)
 
         val baseTypeId = datasetJudgementSupportService.resolveBaseTypeId(dataPoint.dataPointType)
@@ -181,7 +167,7 @@ class PreApprovalService(
 
         val hasSignificantChange =
             significanceCheckService.hasSignificantChange(
-                originalValue = originalValue,
+                newValue = newValue,
                 liveValue = liveValue,
                 valueType = valueType,
                 dataPointType = dataPoint.dataPointType,
@@ -189,23 +175,6 @@ class PreApprovalService(
             )
 
         val passesSignificanceCheck = !hasSignificantChange
-
-        logger.info(
-            "Automatic preapproval significance check completed. " +
-                "dataType={}, dataPointType={}, dataPointId={}, liveDataPointId={}, baseTypeId={}, valueType={}, " +
-                "originalValuePresent={}, liveValuePresent={}, hasSignificantChange={}, passesSignificanceCheck={}",
-            dataType,
-            dataPoint.dataPointType,
-            dataPoint.dataPointId,
-            liveDataPointId,
-            baseTypeId,
-            valueType,
-            originalValue != null && !originalValue.isNull,
-            liveValue != null && !liveValue.isNull,
-            hasSignificantChange,
-            passesSignificanceCheck,
-        )
-
         return passesSignificanceCheck
     }
 }
