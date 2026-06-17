@@ -16,8 +16,8 @@ import java.math.RoundingMode
  *
  * Thresholds are hardcoded per value type and can only be changed via redeployment:
  * - Boolean: any change is significant.
- * - Decimal: a relative change of more than the defined DECIMAL_RELATIVE_THRESHOLD is significant.
- * - Integer: an absolute change of more than the defined INTEGER_ABSOLUTE_THRESHOLD is significant.
+ * - Decimal: a relative change of more than the defined [DECIMAL_RELATIVE_THRESHOLD] is significant.
+ * - Integer: an absolute change of more than the defined [INTEGER_ABSOLUTE_THRESHOLD] is significant.
  *
  * Individual per-data-point threshold overrides per framework can be registered via
  * [individualDecimalThresholds] and [individualIntegerThresholds] if needed.
@@ -98,12 +98,12 @@ class SignificanceCheckService {
     }
 
     private fun isDecimalChangeSignificant(
-        originalValue: JsonNode,
+        newValue: JsonNode,
         liveValue: JsonNode,
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue.decimalValueOrNull()
+        val original = newValue.decimalValueOrNull()
         val live = liveValue.decimalValueOrNull()
         if (original == null || live == null) return false
         val threshold = getDecimalThreshold(dataPointType, framework)
@@ -122,12 +122,12 @@ class SignificanceCheckService {
     }
 
     private fun isIntegerChangeSignificant(
-        originalValue: JsonNode,
+        newValue: JsonNode,
         liveValue: JsonNode,
         dataPointType: String,
         framework: DataTypeEnum,
     ): Boolean {
-        val original = originalValue.bigIntegerValueOrNull()
+        val original = newValue.bigIntegerValueOrNull()
         val live = liveValue.bigIntegerValueOrNull()
         if (original == null || live == null) return false
         val threshold = getIntegerThreshold(dataPointType, framework)
