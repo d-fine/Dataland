@@ -1,133 +1,26 @@
 package org.dataland.datalandqaservice.services
 
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
-import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementFinalizationService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
-import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.reset
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
-class DatasetJudgementServiceTest {
-    private val datasetJudgementRepository = mock<DatasetJudgementRepository>()
-    private val datasetJudgementSupportService = mock<DatasetJudgementSupportService>()
-    private val keycloakUserService = mock<KeycloakUserService>()
-    private val datasetJudgementFinalizationService =
-        DatasetJudgementFinalizationService(
-            mock<DataPointControllerApi>(),
-            mock<DataPointQaReviewManager>(),
-            mock<QaReviewManager>(),
-        )
-
-    private val creationServiceClass =
-        DatasetJudgementCreationService(
-            datasetJudgementSupportService,
-            keycloakUserService,
-            PreApprovalService(autoPreApprovalEnabled = false, exemptFieldsConfig = PreApprovalExemptFieldsConfig()),
-        )
-
-    private val service =
-        DatasetJudgementService(
-            datasetJudgementRepository,
-            datasetJudgementSupportService,
-            creationServiceClass,
-            datasetJudgementFinalizationService,
-        )
-
-    private val mockDatasetJudgementEntityForTest = MockDatasetJudgementEntityForTest
-    private val datasetJudgementEntity = mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity()
-    private val dummyMetaData = mockDatasetJudgementEntityForTest.createDummyMetaData()
-
-    @BeforeEach
-    fun setup() {
-        reset(
-            datasetJudgementRepository,
-            datasetJudgementSupportService,
-        )
-
-        AuthenticationMock.mockSecurityContext(
-            "data.admin@example.com",
-            mockDatasetJudgementEntityForTest.dummyUserId.toString(),
-            setOf(DatalandRealmRole.ROLE_ADMIN),
-        )
-
-        doReturn(datasetJudgementEntity)
-            .whenever(datasetJudgementSupportService)
-            .getDatasetJudgementEntityById(any())
-
-        whenever(datasetJudgementRepository.save(any<DatasetJudgementEntity>()))
-            .thenAnswer { it.arguments[0] as DatasetJudgementEntity }
-
-        doReturn(
-            KeycloakUserInfo(
-                mockDatasetJudgementEntityForTest.DUMMY_USER_EMAIL,
-                mockDatasetJudgementEntityForTest.dummyUserId.toString(),
-                mockDatasetJudgementEntityForTest.DUMMY_USER_FIRST_NAME,
-                mockDatasetJudgementEntityForTest.DUMMY_USER_LAST_NAME,
-            ),
-        ).whenever(keycloakUserService)
-            .getUser(any())
-    }
-
-    private fun captureSavedJudgement(): DatasetJudgementEntity {
-        val captor = argumentCaptor<DatasetJudgementEntity>()
-        verify(datasetJudgementRepository).save(captor.capture())
-        return captor.firstValue
-    }
-
-    private fun patchAndGetDataPoint(
-        source: AcceptedDataPointSource?,
-        reporterUserId: String? = null,
-        customValue: String? = null,
-        reasonForCustomDataPoint: String? = null,
-        dataPointType: String = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-    ): DataPointJudgementEntity {
-        service.patchJudgementDetails(
-            UUID.randomUUID(),
-            dataPointType,
-            JudgementDetailsPatch(source, reporterUserId, customValue, reasonForCustomDataPoint),
-        )
-
-        return captureSavedJudgement()
-            .dataPoints
-            .first { it.dataPointType == dataPointType }
-    }
-
+class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
     private fun assertMatches(
         entity: DatasetJudgementEntity,
         response: DatasetJudgementResponse,
@@ -176,6 +69,27 @@ class DatasetJudgementServiceTest {
 
         assertThrows<ResourceNotFoundApiException> {
             service.getDatasetJudgementById(mockDatasetJudgementEntityForTest.dummyDatasetId)
+        }
+    }
+
+    @Test
+    fun `getDatasetJudgementById includes reasonForCustomDataPoint when set and null when not set`() {
+        val judgementIdWithReasonForCustomDataPoint = UUID.randomUUID()
+        doReturn(mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntityWithCustomSource())
+            .whenever(datasetJudgementSupportService)
+            .getDatasetJudgementEntityById(judgementIdWithReasonForCustomDataPoint)
+
+        listOf(
+            Pair(UUID.randomUUID(), null),
+            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT),
+        ).forEach { (judgementId, expectedReason) ->
+            assertEquals(
+                expectedReason,
+                service
+                    .getDatasetJudgementById(judgementId)
+                    .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
+                    ?.reasonForCustomDataPoint,
+            )
         }
     }
 
@@ -295,199 +209,6 @@ class DatasetJudgementServiceTest {
 
         assertThrows<ConflictApiException> {
             service.postDatasetJudgement(UUID.randomUUID())
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails with Original sets acceptedSource and clears AcceptedQaReport source`() {
-        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
-
-        assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
-        assertNull(saved.reporterUserIdOfAcceptedQaReport)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Qa sets acceptedSource and AcceptedQaReport source`() {
-        val saved =
-            patchAndGetDataPoint(
-                AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
-            )
-
-        assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertEquals(mockDatasetJudgementEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Custom sets acceptedSource and clears AcceptedQaReport source`() {
-        val saved =
-            patchAndGetDataPoint(
-                AcceptedDataPointSource.Custom,
-                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-            )
-
-        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertNull(saved.reporterUserIdOfAcceptedQaReport)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Custom and non-null reason stores reason on entity`() {
-        val saved =
-            patchAndGetDataPoint(
-                AcceptedDataPointSource.Custom,
-                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-                reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT,
-            )
-
-        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertEquals(mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT, saved.reasonForCustomDataPoint)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Custom and null reason stores null on entity`() {
-        val saved =
-            patchAndGetDataPoint(
-                AcceptedDataPointSource.Custom,
-                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-                reasonForCustomDataPoint = null,
-            )
-
-        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Original clears reasonForCustomDataPoint`() {
-        datasetJudgementEntity.dataPoints.first().apply {
-            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
-        }
-
-        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
-
-        assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
-    }
-
-    @Test
-    fun `patchJudgementDetails with Qa clears reasonForCustomDataPoint`() {
-        datasetJudgementEntity.dataPoints.first().apply {
-            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
-        }
-
-        val saved =
-            patchAndGetDataPoint(
-                AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
-            )
-
-        assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
-    }
-
-    @Test
-    fun `getDatasetJudgementById includes reasonForCustomDataPoint when set and null when not set`() {
-        val judgementIdWithReasonForCustomDataPoint = UUID.randomUUID()
-        doReturn(mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntityWithCustomSource())
-            .whenever(datasetJudgementSupportService)
-            .getDatasetJudgementEntityById(judgementIdWithReasonForCustomDataPoint)
-
-        listOf(
-            Pair(UUID.randomUUID(), null),
-            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT),
-        ).forEach { (judgementId, expectedReason) ->
-            assertEquals(
-                expectedReason,
-                service
-                    .getDatasetJudgementById(judgementId)
-                    .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
-                    ?.reasonForCustomDataPoint,
-            )
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails throws ConflictApiException when acceptedSource is custom and no customValue is provided`() {
-        assertThrows<ConflictApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(AcceptedDataPointSource.Custom, null, null),
-            )
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails with only customValue validates and sets customValue`() {
-        val saved =
-            patchAndGetDataPoint(
-                source = null,
-                customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-            )
-
-        assertEquals(mockDatasetJudgementEntityForTest.CUSTOM_VALUE, saved.customValue)
-        verify(datasetJudgementSupportService)
-            .validateCustomDataPoint(
-                mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-            )
-    }
-
-    @Test
-    fun `patchJudgementDetails with Qa without reporterUserIdOfAcceptedQaReport throws InvalidInputApiException`() {
-        assertThrows<InvalidInputApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(
-                    AcceptedDataPointSource.Qa,
-                    null,
-                    null,
-                ),
-            )
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails throws InvalidInputApiException when dataPointType not in judgement`() {
-        assertThrows<InvalidInputApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                "unknown-type",
-                JudgementDetailsPatch(AcceptedDataPointSource.Original, null, null),
-            )
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails throws InsufficientRights when user is not judge`() {
-        AuthenticationMock.mockSecurityContext(
-            "other@example.com",
-            UUID.randomUUID().toString(),
-            setOf(DatalandRealmRole.ROLE_UPLOADER),
-        )
-
-        assertThrows<InsufficientRightsApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(AcceptedDataPointSource.Original, null, null),
-            )
-        }
-    }
-
-    @Test
-    fun `patchJudgementDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
-        whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
-            .thenThrow(BackendClientException())
-
-        assertThrows<InvalidInputApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(null, null, """{"value": 1}"""),
-            )
-        }.also { exception ->
-            assertTrue(exception.cause is BackendClientException)
         }
     }
 }
