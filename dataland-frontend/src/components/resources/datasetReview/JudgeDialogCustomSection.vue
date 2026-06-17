@@ -136,11 +136,7 @@
     <div style="margin-top: var(--spacing-xs)">
       <label
         for="reason-for-custom-datapoint-field"
-        style="
-          display: block;
-          font-weight: var(--font-weight-semibold);
-          margin-bottom: var(--spacing-xxs);
-        "
+        style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xxs)"
       >
         Reason for custom data point (internal only)
       </label>
