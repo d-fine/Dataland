@@ -24,6 +24,14 @@ import java.math.RoundingMode
  */
 @Service
 class SignificanceCheckService {
+    /**
+     * Categorizes data point value types for significance threshold evaluation.
+     *
+     * - BOOLEAN: Any change is considered significant.
+     * - DECIMAL: Relative change is evaluated against [DECIMAL_RELATIVE_THRESHOLD].
+     * - INTEGER: Absolute change is evaluated against [INTEGER_ABSOLUTE_THRESHOLD].
+     * - UNSUPPORTED: Unknown types that are never considered significant.
+     */
     enum class ValueType { BOOLEAN, DECIMAL, INTEGER, UNSUPPORTED }
 
     companion object {
@@ -105,20 +113,21 @@ class SignificanceCheckService {
     ): Boolean {
         val original = newValue.decimalValueOrNull()
         val live = liveValue.decimalValueOrNull()
-        if (original == null || live == null) return false
+        if (original == null || live == null) {
+            return false
+        }
         val threshold = getDecimalThreshold(dataPointType, framework)
 
-        if (live.compareTo(BigDecimal.ZERO) == 0) {
-            return original.compareTo(BigDecimal.ZERO) != 0
+        return if (live.compareTo(BigDecimal.ZERO) == 0) {
+            original.compareTo(BigDecimal.ZERO) != 0
+        } else {
+            val relativeChange =
+                original
+                    .subtract(live)
+                    .abs()
+                    .divide(live.abs(), DECIMAL_DIVISION_SCALE, RoundingMode.HALF_UP)
+            relativeChange > threshold
         }
-
-        val relativeChange =
-            original
-                .subtract(live)
-                .abs()
-                .divide(live.abs(), DECIMAL_DIVISION_SCALE, RoundingMode.HALF_UP)
-
-        return relativeChange > threshold
     }
 
     private fun isIntegerChangeSignificant(
