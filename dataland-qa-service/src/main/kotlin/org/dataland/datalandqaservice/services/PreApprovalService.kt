@@ -7,6 +7,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import kotlin.random.Random
@@ -19,7 +20,13 @@ class PreApprovalService(
     @Value("\${dataland.qa-service.auto-preapproval-qa-accepted-datapoints}")
     private val autoPreApprovalEnabled: Boolean,
     private val exemptFieldsConfig: PreApprovalExemptFieldsConfig,
+    private val significanceCheckService: SignificanceCheckService,
+    private val datasetJudgementSupportService: DatasetJudgementSupportService,
 ) {
+    companion object {
+        private val logger = LoggerFactory.getLogger(PreApprovalService::class.java)
+    }
+
     private var _config: PreApprovalConfig = PreApprovalConfig()
     val config: PreApprovalConfig
         get() = _config
@@ -36,20 +43,35 @@ class PreApprovalService(
      * Pre-approves data points of a given DatasetJudgementEntity.
      *
      * If the feature flag is disabled, the given DatasetJudgementEntity is returned unchanged.
-     * If the feature flag is enabled, data points that pass several checks are pre-approved:
-     * - all QA reports have the verdict QaAccepted
-     * - data point is not on list of exempt fields
-     * -
+     * If the feature flag is enabled, data points that pass all of the following checks are
+     * pre-approved by setting their acceptedSource to Original:
+     * - All QA reports for the data point have the verdict QaAccepted.
+     * - The data point is not on the exempt fields list for the framework.
+     * - The data point is not excluded by random sampling.
+     * - The change in value compared to the currently live dataset is not significant.
      */
     fun preApproveDataPoints(datasetJudgementEntity: DatasetJudgementEntity): DatasetJudgementEntity {
         if (!autoPreApprovalEnabled) return datasetJudgementEntity
 
+        val liveDataPoints =
+            datasetJudgementSupportService.getDataPointsOfLatestActiveDataset(
+                datasetJudgementEntity.companyId,
+                datasetJudgementEntity.dataType,
+            )
+
         datasetJudgementEntity.dataPoints.forEach { dataPoint ->
+            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
+            val dataPointEligible = isDataPointEligible(dataPoint, datasetJudgementEntity.dataType)
+            val selectedByRandomSampling = isRandomDrawBelowSamplingProbability()
+
+            val passesSignificanceCheck =
+                passesSignificanceCheck(dataPoint, datasetJudgementEntity.dataType, liveDataPoints)
 
             val allChecksPass =
-                areAllQaReportsAccepted(dataPoint) &&
-                    isDataPointEligible(dataPoint, datasetJudgementEntity.dataType) &&
-                    !isRandomDrawBelowSamplingProbability()
+                allQaReportsAccepted &&
+                    dataPointEligible &&
+                    !selectedByRandomSampling &&
+                    passesSignificanceCheck
 
             if (allChecksPass) {
                 dataPoint.acceptedSource = AcceptedDataPointSource.Original
@@ -100,5 +122,59 @@ class PreApprovalService(
     private fun isRandomDrawBelowSamplingProbability(): Boolean {
         val samplingProbability = _config.samplingProbability
         return Random.nextDouble() < samplingProbability
+    }
+
+    /**
+     * Checks whether the change in a data point's value compared to the currently live dataset
+     * is not significant enough to suppress pre-approval.
+     *
+     * Returns true (allow pre-approval) in any of the following cases:
+     * - No live dataset exists for the company and framework.
+     * - The live dataset does not contain this data point type.
+     * - Either the original or the live value is null.
+     * - The change is below the significance threshold for the data point's value type.
+     *
+     * Returns false (suppress pre-approval) only when the change is considered significant.
+     *
+     * @param dataPoint the data point under review
+     * @param dataType the framework of the dataset being reviewed
+     * @param liveDataPoints map of data point type to data point id for the live dataset, or null
+     * @return `true` if pre-approval should be allowed, `false` if it should be suppressed
+     */
+    private fun passesSignificanceCheck(
+        dataPoint: DataPointJudgementEntity,
+        dataType: DataTypeEnum,
+        liveDataPoints: Map<String, String>?,
+    ): Boolean {
+        val liveDataPointId = liveDataPoints?.get(dataPoint.dataPointType)
+        if (liveDataPointId == null) {
+            logger.info(
+                "Automatic preapproval significance check skipped. " +
+                    "dataType={}, dataPointType={}, dataPointId={}, liveDatasetPresent={}",
+                dataType,
+                dataPoint.dataPointType,
+                dataPoint.dataPointId,
+                liveDataPoints != null,
+            )
+            return true
+        }
+
+        val newValue = datasetJudgementSupportService.getDataPointValueNode(dataPoint.dataPointId)
+        val liveValue = datasetJudgementSupportService.getDataPointValueNode(liveDataPointId)
+
+        val baseTypeId = datasetJudgementSupportService.resolveBaseTypeId(dataPoint.dataPointType)
+        val valueType = significanceCheckService.resolveValueType(baseTypeId)
+
+        val hasSignificantChange =
+            significanceCheckService.hasSignificantChange(
+                newValue = newValue,
+                liveValue = liveValue,
+                valueType = valueType,
+                dataPointType = dataPoint.dataPointType,
+                framework = dataType,
+            )
+
+        val passesSignificanceCheck = !hasSignificantChange
+        return passesSignificanceCheck
     }
 }
