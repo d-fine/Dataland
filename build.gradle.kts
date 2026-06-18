@@ -108,20 +108,13 @@ val devEnvironmentVariables =
 
 // Propagate environments/.env.dev variables loaded by the dotenv plugin into forked task processes.
 allprojects {
-    tasks.withType<Test>().configureEach {
-        environment(devEnvironmentVariables)
-    }
-    tasks.withType<JavaExec>().configureEach {
-        environment(devEnvironmentVariables)
-    }
-    tasks.withType<Exec>().configureEach {
-        environment(devEnvironmentVariables)
-    }
-    tasks.withType<NpmTask>().configureEach {
-        environment.putAll(devEnvironmentVariables)
-    }
-    tasks.withType<NodeTask>().configureEach {
-        environment.putAll(devEnvironmentVariables)
+    tasks.configureEach {
+        when (this) {
+            is Test -> environment(devEnvironmentVariables)
+            is Exec -> environment(devEnvironmentVariables)
+            is NpmTask -> environment.putAll(devEnvironmentVariables)
+            is NodeTask -> environment.putAll(devEnvironmentVariables)
+        }
     }
 }
 
