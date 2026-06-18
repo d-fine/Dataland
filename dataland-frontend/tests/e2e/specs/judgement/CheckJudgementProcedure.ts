@@ -114,10 +114,7 @@ describeIf(
     });
 
     it('Check judge modal selects expected values and stores them after finishing review', () => {
-      cy.screenshot('screenshot-beginning', { capture: 'fullPage' });
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
-        cy.screenshot('screenshoot-JudgmentDialogOpen', { capture: 'fullPage' });
-
         judgeDataPointsWithoutQaReports(overview);
         tryFinishingJudgementBeforeAllDataPointsReviewed();
         judgeDataPointsWithQaReports(overview);
@@ -389,8 +386,6 @@ function judgeDataPointLoop(
 
   entries.forEach(([dataPointType, dataPointId], index) => {
     if (index > 0) {
-      cy.screenshot(`screnshot-Loop-${index}`, { capture: 'fullPage' });
-
       selectNextDataPointToJudge(dataPointType);
       goToSelectedDataPoint();
     }
