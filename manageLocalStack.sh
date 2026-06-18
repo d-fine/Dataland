@@ -11,11 +11,11 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--retrieve-certs] [--no-container-backend] [--verbose]" >&3
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--self-signed-certs] [--no-container-backend] [--verbose]" >&3
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
-  echo "  --retrieve-certs: Retrieve the SSL certificates instead of using self-signed ones" >&3
+  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --verbose: Print subcommand output while also writing it to the local stack log" >&3
   echo "" >&3
@@ -147,8 +147,8 @@ parse_arguments() {
         do_start=true
         shift
         ;;
-      --retrieve-certs)
-        self_signed=false
+      --self-signed-certs)
+        self_signed=true
         shift
         ;;
       --no-container-backend)
