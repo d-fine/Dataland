@@ -202,6 +202,7 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Original
                         this.reporterUserIdOfAcceptedQaReport = null
+                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -214,6 +215,7 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport =
                             UUID.fromString(patch.reporterUserIdOfAcceptedQaReport)
+                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -222,6 +224,7 @@ class DatasetJudgementService
                     dataPoint.apply {
                         this.acceptedSource = AcceptedDataPointSource.Custom
                         this.reporterUserIdOfAcceptedQaReport = null
+                        this.reasonForCustomDataPoint = patch.reasonForCustomDataPoint
                     }
                 }
 

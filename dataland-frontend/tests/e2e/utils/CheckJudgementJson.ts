@@ -24,6 +24,7 @@ export interface QaJudgement {
   reporterUserIdOfAcceptedQaReport?: string;
   reporterUserNameOfAcceptedQaReport?: string;
   customValue?: string;
+  reasonForCustomDataPoint?: string;
 }
 
 export interface QaScenarioConfig {
