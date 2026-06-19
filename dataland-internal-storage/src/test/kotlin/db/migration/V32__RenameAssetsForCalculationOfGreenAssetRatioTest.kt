@@ -25,8 +25,6 @@ class V32__RenameAssetsForCalculationOfGreenAssetRatioTest : BaseFlywayMigration
         private val expectedRenaming = V32__RenameAssetsForCalculationOfGreenAssetRatio.renameMap
 
         private lateinit var expectedDataPointTypes: Map<String, String>
-
-        private lateinit var expectedDataPoints: Map<String, String>
     }
 
     @Autowired
@@ -55,7 +53,6 @@ class V32__RenameAssetsForCalculationOfGreenAssetRatioTest : BaseFlywayMigration
                     it.associate { item ->
                         item.dataPointId to expectedRenaming.getValue(item.dataPointType)
                     }
-                expectedDataPoints = it.associate { item -> item.dataPointId to item.dataPoint }
             }
     }
 
