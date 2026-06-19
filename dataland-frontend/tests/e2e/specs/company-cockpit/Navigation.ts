@@ -28,11 +28,9 @@ function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void 
   cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.get('#company-search-input').should('exist').type(searchTerm);
   });
-  cy.screenshot('Before-search', { capture: 'fullPage' });
   cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.contains('#company-search-listbox li[role="option"]', searchTerm, { timeout: longTimeoutInMs }).click();
   });
-  cy.screenshot('After-search', { capture: 'fullPage' });
 }
 
 describeIf(
@@ -59,7 +57,6 @@ describeIf(
       cy.intercept('GET', '/scripts/companySearchBar.js').as('companySearchBar');
       cy.visitAndCheckAppMount('/');
       cy.wait('@companySearchBar');
-      cy.screenshot('Searchbar-visible', { capture: 'fullPage' });
       searchCompanyAndChooseFirstSuggestionLanding(alphaCompanyIdAndName.companyName);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(
         alphaCompanyIdAndName.companyName
