@@ -59,7 +59,7 @@ services:
       FRONTEND_LOCATION_CONFIG: ${FRONTEND_LOCATION_CONFIG}
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
-      DISABLE_HSTS: ${DISABLE_HSTS:-false}
+      DISABLE_HSTS: ${DISABLE_HSTS}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -335,30 +335,9 @@ services:
       - admin-proxy:dataland-admin
     logging:
       <<: *loki-logging
-  frontend-dev:
-    # This container has been introduced to work around a docker bug where requests from a docker network to the host
-    # don't work anymore after a certain amount of requests
-    # https://github.com/docker/for-win/issues/8861
-    restart: always
-    profiles: [ "developmentContainerFrontend" ]
-    image: node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b
-    networks:
-      internal:
-        aliases:
-          - frontend
-    volumes:
-      - ./dataland-frontend:/app/dataland-frontend
-      - ./dataland-sharedElements:/app/dataland-sharedElements
-      - frontend-dev-node-modules:/app/dataland-frontend/node_modules
-    command: sh -c "cd /app/dataland-frontend && npm install && npm run dev"
-    <<: *uncritical-constants-env
-    environment:
-      POLLING: "false"
-    logging:
-      <<: *loki-logging
   frontend:
     restart: always
-    profiles: [ "production", "testing" ]
+    profiles: [ "production", "testing", "development" ]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     networks:
       - internal
@@ -940,8 +919,6 @@ volumes:
   letsencrypt:
     driver: local
   pgadmin_config:
-    driver: local
-  frontend-dev-node-modules:
     driver: local
   document_manager_data:
     driver: local
