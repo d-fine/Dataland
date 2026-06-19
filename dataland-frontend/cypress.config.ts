@@ -87,6 +87,13 @@ export default defineConfig({
       require('@cypress/code-coverage/task')(on, config);
 
       on('task', {
+        log(message: string) {
+          console.log(message);
+          return null;
+        },
+      });
+
+      on('task', {
         setToken(keySet: Record<string, unknown>) {
           Object.entries(keySet).forEach(([key, value]) => {
             configProcessScopedVariables[key] = value;
@@ -246,6 +253,13 @@ export default defineConfig({
     indexHtmlFile: 'tests/component/component-index.html',
     setupNodeEvents(on, config) {
       require('@cypress/code-coverage/task')(on, config);
+
+      on('task', {
+        log(message: string) {
+          console.log(message);
+          return null;
+        },
+      });
       return config;
     },
   },
