@@ -96,7 +96,7 @@ describeIf(
           return initializeDataPointOverviewForDataset(uploadedDataMetaInfo, tokens.adminToken).then(
             (preparedOverview: DataPointOverview) => {
               overview = preparedOverview;
-              uploadQaReportsForDataset(overview, {
+              return uploadQaReportsForDataset(overview, {
                 reviewerToken: tokens.reviewerToken,
                 adminToken: tokens.adminToken,
               });
@@ -222,8 +222,8 @@ function uploadQaReportForDataPoint(
   token: string,
   verdict: QaReportDataPointVerdict,
   correctedValue?: string
-): void {
-  cy.request({
+): Cypress.Chainable {
+  return cy.request({
     method: 'POST',
     url: `${apiBaseUrl}/qa/data-points/${dataPointId}/reports`,
     headers: { Authorization: `Bearer ${token}` },
@@ -283,7 +283,7 @@ function initializeDataPointOverviewForDataset(
  * Uploads QA reports for all configured data point types using the provided DataPointOverview.
  *
  * For each entry in `QA_SCENARIO_CONFIG`, the corresponding data point ID is resolved from
- * `overview.dataPointsWithQaReports` and the configured QA actions are executed.
+ * `overview.dataPointsWithQaReports` and the configured QA actions are executed sequentially.
  *
  * @param overview DataPointOverview containing data point IDs and counts.
  * @param tokens   Authentication tokens for the reviewer and admin users, used to upload QA reports.
@@ -291,32 +291,15 @@ function initializeDataPointOverviewForDataset(
 function uploadQaReportsForDataset(
   overview: DataPointOverview,
   tokens: { reviewerToken: string; adminToken: string }
-): void {
-  QA_SCENARIO_CONFIG.forEach((config) => {
+): Cypress.Chainable {
+  return QA_SCENARIO_CONFIG.flatMap((config) => {
     const dataPointId = overview.dataPointsWithQaReports[config.dataPointType];
-    if (!dataPointId) {
-      return;
-    }
-    runQaScenarioForDataPoint(dataPointId, config, tokens);
-  });
-}
-
-/**
- * Executes all configured QA reports for a single data point.
- *
- * @param dataPointId Identifier of the data point for which QA reports should be created.
- * @param config      QA scenario configuration describing verdicts, roles, and corrected values.
- * @param tokens      Authentication tokens for reviewer and admin.
- */
-function runQaScenarioForDataPoint(
-  dataPointId: string,
-  config: QaScenarioConfig,
-  tokens: { reviewerToken: string; adminToken: string }
-): void {
-  config.qaReports.forEach((qaReport) => {
-    const token = qaReport.role === 'reviewer' ? tokens.reviewerToken : tokens.adminToken;
-    uploadQaReportForDataPoint(dataPointId, token, qaReport.verdict, qaReport.correctedValue);
-  });
+    if (!dataPointId) return [];
+    return config.qaReports.map((qaReport) => {
+      const token = qaReport.role === 'reviewer' ? tokens.reviewerToken : tokens.adminToken;
+      return () => uploadQaReportForDataPoint(dataPointId, token, qaReport.verdict, qaReport.correctedValue);
+    });
+  }).reduce<Cypress.Chainable>((chain, upload) => chain.then(upload), cy.wrap(null));
 }
 
 /**
@@ -451,9 +434,12 @@ function checkOriginalDataPointsAccepted(dataPointEntries: Array<[string, string
   cy.reload();
   cy.closeCookieBannerIfItExists();
   cy.get('[data-test="datasetReviewComparisonTable"]').should('be.visible');
-  cy.contains(
-    `${Object.keys(overview.dataPointsWithQaReports).length} / ${overview.amountOfDataPointsToReview} data points to review`
-  ).should('be.visible');
+  const remainingQaDataPoints = QA_SCENARIO_CONFIG.filter((s) =>
+    s.qaReports.some((r) => r.verdict !== QaReportDataPointVerdict.QaAccepted)
+  ).length;
+  cy.contains(`${remainingQaDataPoints} / ${overview.amountOfDataPointsToReview} data points to review`).should(
+    'be.visible'
+  );
 
   dataPointEntries.forEach(([, dataPointId]) => {
     checkRowIcons(dataPointId, [IconState.Accepted, IconState.None, IconState.None, IconState.None]);

@@ -64,6 +64,14 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
     expect(body.customDataPoint, 'customDataPoint in request body').to.not.be.undefined;
     expect(body.customDataPoint, 'customDataPoint in request body').to.not.be.null;
   }
+
+  if (judgement.reasonForCustomDataPoint == null) {
+    expect(body.reasonForCustomDataPoint ?? null, 'reasonForCustomDataPoint in request body').to.eq(null);
+  } else {
+    expect(body.reasonForCustomDataPoint, 'reasonForCustomDataPoint in request body').to.eq(
+      judgement.reasonForCustomDataPoint
+    );
+  }
 }
 
 /**
@@ -105,6 +113,12 @@ export function makeJudgementDecision(judgement: QaJudgement): void {
     cy.get('[data-test="custom-value-field"]').click();
     cy.get('[data-test="custom-value-field"]').clear();
     cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
+  }
+
+  if (judgement.reasonForCustomDataPoint != null) {
+    cy.get('[data-test="reason-for-custom-datapoint-field"]').click();
+    cy.get('[data-test="reason-for-custom-datapoint-field"]').clear();
+    cy.get('[data-test="reason-for-custom-datapoint-field"]').type(judgement.reasonForCustomDataPoint);
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Original) {

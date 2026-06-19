@@ -133,6 +133,23 @@
       />
     </div>
 
+    <div style="margin-top: var(--spacing-xs)">
+      <label
+        for="reason-for-custom-datapoint-field"
+        style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xxs)"
+      >
+        Reason for custom data point (internal only)
+      </label>
+      <Textarea
+        id="reason-for-custom-datapoint-field"
+        v-model="reasonForCustomDataPoint"
+        size="small"
+        data-test="reason-for-custom-datapoint-field"
+        placeholder="Reason for custom data point (optional, internal only)"
+        style="width: 100%; height: 4rem; resize: none"
+      />
+    </div>
+
     <div style="margin-top: auto; padding-top: var(--spacing-xs)">
       <PrimeButton
         label="ACCEPT CUSTOM"
@@ -189,6 +206,7 @@ const jsonValue = defineModel<string>('json', {
 const formData = defineModel<CustomFormData>('formData', {
   default: () => DEFAULT_CUSTOM_FORM_DATA,
 });
+const reasonForCustomDataPoint = defineModel<string>('reasonForCustomDataPoint', { default: '' });
 
 const selectedDocumentOption = computed<DocumentOption | null>(
   () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null

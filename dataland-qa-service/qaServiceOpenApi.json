@@ -4379,6 +4379,11 @@
             "type": "string",
             "description": "Custom datapoints as json string to be uploaded.",
             "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
+          },
+          "reasonForCustomDataPoint": {
+            "type": "string",
+            "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
+            "example": "The original value was incorrect and the QA report claimed there was no data found."
           }
         },
         "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
@@ -10095,6 +10100,11 @@
             "type": "string",
             "description": "The data point as a JSON string.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+          },
+          "reasonForCustomDataPoint": {
+            "type": "string",
+            "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
+            "example": "The original value was incorrect and the QA report claimed there was no data found."
           }
         }
       },
