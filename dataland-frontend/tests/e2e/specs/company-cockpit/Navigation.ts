@@ -24,15 +24,32 @@ function searchCompanyAndChooseById(searchTerm: string, companyId: string): void
  * @param searchTerm the term to search for
  */
 function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void {
-  cy.contains('section', 'Search sustainability data by company name or LEI').scrollIntoView();
-  cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
-    cy.get('#company-search-input').should('exist').type(searchTerm);
-    cy.get('#company-search-input')
-      .invoke('val')
-      .then((value) => cy.task('log', `Search bar content after type: ${String(value)}`));
+  const searchSectionText = 'Search sustainability data by company name or LEI';
+  const searchInputSelector = '#company-search-input';
+  const optionSelector = '#company-search-listbox li[role="option"]';
+
+  cy.contains('section', searchSectionText).scrollIntoView();
+
+  cy.contains('section', searchSectionText).within(() => {
+    cy.get(searchInputSelector, { timeout: 10000 }).should('be.visible');
+    cy.get(searchInputSelector).click();
+    cy.get(searchInputSelector).clear();
+    cy.get(searchInputSelector).type(searchTerm);
+    cy.get(searchInputSelector).should('have.value', searchTerm);
+    cy.get(searchInputSelector).should('have.focus');
   });
-  cy.get('#company-search-input').screenshot('searchbar');
-  cy.contains('#company-search-listbox li[role="option"]', searchTerm, { timeout: longTimeoutInMs }).click();
+
+  cy.contains(optionSelector, searchTerm, {
+    timeout: 10000,
+  }).should('be.visible');
+
+  cy.contains(optionSelector, searchTerm, {
+    timeout: 10000,
+  }).click();
+
+  cy.screenshot('after-company-search-click', {
+    capture: 'fullPage',
+  });
 }
 
 describeIf(
@@ -53,6 +70,16 @@ describeIf(
 
     beforeEach(() => {
       setupCommonInterceptions();
+    });
+
+    afterEach(function (this: Mocha.Context) {
+      if (this.currentTest?.state === 'failed') {
+        const screenshotName = `failure-${this.currentTest.fullTitle()}`.replace(/[<>:"/\\|?*]+/g, '-');
+
+        cy.screenshot(screenshotName, {
+          capture: 'fullPage',
+        });
+      }
     });
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
