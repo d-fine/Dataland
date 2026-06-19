@@ -110,7 +110,7 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', {
       statusCode: 200,
       body: options?.requestCount ?? 1,
-    });
+    }).as('getRequestCount');
     cy.intercept('GET', `**/api/companies/${companyId}/info`, options?.companyInfo ?? mockCompanyInfo);
     cy.intercept('GET', `**/api/metadata/${dataId}`, mockMetaInfo);
     cy.intercept('POST', '**/api/metadata/filters', {
@@ -379,11 +379,17 @@ describe('DatasetReviewOverview page details', () => {
       qaStatus: QaStatus.Accepted,
     };
 
-    it('shows an error warning when there is no related data request with status Open or Processing', () => {
+    it('shows an error warning when there is no related data request with status Processing ', () => {
       mountPage({ requestCount: 0 });
       cy.wait('@getDatasetJudgement');
-
       cy.get('[data-test="review-warning-invalid-request-state"]').should('be.visible');
+      cy.wait('@getRequestCount').its('request.body.requestStates').should('deep.equal', ['Processing']);
+    });
+
+    it('hides the warning when there is a request with status Processing', () => {
+      mountPage({ requestCount: 1 });
+      cy.wait('@getDatasetJudgement');
+      cy.get('[data-test="review-warning-invalid-request-state"]').should('not.exist');
     });
 
     it('shows a warning when the company has no assigned sector', () => {

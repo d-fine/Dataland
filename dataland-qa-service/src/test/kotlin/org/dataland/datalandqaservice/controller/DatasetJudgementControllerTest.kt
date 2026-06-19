@@ -123,7 +123,7 @@ class DatasetJudgementControllerTest {
     fun `patchJudgementDetails delegates to service with all params`() {
         val judgeId = UUID.randomUUID()
         val dataPointType = "dummyType"
-        val patch = JudgementDetailsPatch(AcceptedDataPointSource.Qa, UUID.randomUUID().toString(), null)
+        val patch = JudgementDetailsPatch(AcceptedDataPointSource.Qa, UUID.randomUUID().toString())
         val serviceResponse = mock<DatasetJudgementResponse>()
 
         whenever(

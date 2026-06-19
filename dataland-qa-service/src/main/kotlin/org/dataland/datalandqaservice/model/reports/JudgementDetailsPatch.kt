@@ -24,4 +24,9 @@ data class JudgementDetailsPatch(
         example = BackendOpenApiDescriptionsAndExamples.DATA_POINT_EXAMPLE,
     )
     var customDataPoint: String? = null,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE,
+    )
+    var reasonForCustomDataPoint: String? = null,
 )
