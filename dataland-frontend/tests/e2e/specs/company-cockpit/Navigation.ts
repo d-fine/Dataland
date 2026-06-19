@@ -24,12 +24,10 @@ function searchCompanyAndChooseById(searchTerm: string, companyId: string): void
  * @param searchTerm the term to search for
  */
 function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void {
-  cy.intercept('GET', '/api/companies/names*').as('companySuggestions');
   cy.contains('section', 'Search sustainability data by company name or LEI').scrollIntoView();
   cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.get('#company-search-input').should('exist').type(searchTerm);
   });
-  cy.wait('@companySuggestions');
   cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.contains('#company-search-listbox li[role="option"]', searchTerm).click();
   });
