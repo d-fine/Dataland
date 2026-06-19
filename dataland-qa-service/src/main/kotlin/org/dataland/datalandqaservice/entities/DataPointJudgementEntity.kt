@@ -34,6 +34,8 @@ class DataPointJudgementEntity(
     var reporterUserIdOfAcceptedQaReport: UUID?,
     @Column(columnDefinition = "TEXT", nullable = true)
     var customValue: String?,
+    @Column(columnDefinition = "TEXT", nullable = true)
+    var reasonForCustomDataPoint: String? = null,
     @JoinColumn(name = "dataset_judgement_id")
     @ManyToOne
     var datasetJudgement: DatasetJudgementEntity? = null,
@@ -49,5 +51,6 @@ class DataPointJudgementEntity(
             acceptedSource = acceptedSource,
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
             customValue = customValue,
+            reasonForCustomDataPoint = reasonForCustomDataPoint,
         )
 }

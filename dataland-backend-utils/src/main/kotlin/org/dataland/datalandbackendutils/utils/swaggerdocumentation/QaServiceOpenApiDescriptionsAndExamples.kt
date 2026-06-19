@@ -95,4 +95,10 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "The unique identifier of the user whose QA report was " +
             "accepted for this data point, if applicable."
     const val ACCEPTED_REPORTER_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
+
+    const val REASON_FOR_CUSTOM_DATA_POINT_DESCRIPTION =
+        "An optional comment explaining why a custom data point was created instead of " +
+            "accepting the original uploaded value or the QA bot suggestion. " +
+            "Only relevant when acceptedSource is Custom; null for all other sources."
+    const val REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE = "The original value was incorrect and the QA report claimed there was no data found."
 }
