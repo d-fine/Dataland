@@ -27,8 +27,6 @@ function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void 
   cy.contains('section', 'Search sustainability data by company name or LEI').scrollIntoView();
   cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.get('#company-search-input').should('exist').type(searchTerm);
-  });
-  cy.contains('section', 'Search sustainability data by company name or LEI').within(() => {
     cy.contains('#company-search-listbox li[role="option"]', searchTerm, { timeout: longTimeoutInMs }).click();
   });
 }
