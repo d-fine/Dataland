@@ -308,15 +308,11 @@ jobs:
         run: ./testing/e2e_test_launcher.sh
         env:
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
-          CYPRESS_EXECUTION_ENVIRONMENT: "ci"
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
-          CYPRESS_IGNORE_EXTERNAL_STORAGE: "false"
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
-          INTERNAL_EURODATCLIENT_URL: "http://dummy-eurodat-client:8080"
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
-          JAVA_TOOL_OPTIONS: "-Xms128m -Xmx384m"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
