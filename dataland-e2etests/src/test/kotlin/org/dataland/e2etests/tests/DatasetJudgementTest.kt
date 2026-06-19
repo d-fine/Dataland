@@ -37,6 +37,7 @@ class DatasetJudgementTest {
     private val dataPointType2 = "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes"
     private val dataPointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
     private val customDataPoint = "{\"value\":1000,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}"
+    private val customDataPointReason = "Both original and QA suggestion values were out of the expected range."
 
     private val dummyQaReport1 =
         QaReportDataPointString(
@@ -107,6 +108,7 @@ class DatasetJudgementTest {
                 val acceptedSource: AcceptedDataPointSource,
                 val reporterUserIdOfAcceptedQaReport: String? = null,
                 val customDataPoint: String? = null,
+                val reasonForCustomDataPoint: String? = null,
             )
             val explicitlyHandledDataPointIds = setOf(dataPointId1, dataPointId2, dataPointId3)
 
@@ -116,7 +118,7 @@ class DatasetJudgementTest {
                     PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
                     PatchOperation(dataPointType1, AcceptedDataPointSource.Original),
                     PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
-                    PatchOperation(dataPointType3, AcceptedDataPointSource.Custom, null, customDataPoint),
+                    PatchOperation(dataPointType3, AcceptedDataPointSource.Custom, null, customDataPoint, customDataPointReason),
                 ) +
                     dataPoints
                         .filter { (_, dataPointId) -> dataPointId !in explicitlyHandledDataPointIds }
@@ -133,6 +135,7 @@ class DatasetJudgementTest {
                         it.acceptedSource,
                         it.reporterUserIdOfAcceptedQaReport,
                         it.customDataPoint,
+                        it.reasonForCustomDataPoint,
                     ),
                 )
             }
@@ -170,9 +173,11 @@ class DatasetJudgementTest {
         assertNull(datasetJudgement.dataPoints[dataPointType1]?.reporterUserIdOfAcceptedQaReport)
 
         assertEquals(AcceptedDataPointSource.Qa, datasetJudgement.dataPoints[dataPointType2]?.acceptedSource)
+        assertNull(datasetJudgement.dataPoints[dataPointType2]?.reasonForCustomDataPoint)
 
         assertEquals(AcceptedDataPointSource.Custom, datasetJudgement.dataPoints[dataPointType3]?.acceptedSource)
         assertEquals(customDataPoint, datasetJudgement.dataPoints[dataPointType3]?.customValue)
+        assertEquals(customDataPointReason, datasetJudgement.dataPoints[dataPointType3]?.reasonForCustomDataPoint)
     }
 
     @Test

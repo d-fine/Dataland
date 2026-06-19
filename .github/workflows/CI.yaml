@@ -399,6 +399,8 @@ jobs:
           LOKI_VOLUME: "./dataland-loki/data"
           SLACK_ALERT_URL: "irrelevant_in_ci"
           SLACK_CRITICAL_ALERT_URL: "irrelevant_in_ci"
+          AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS : true
+
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
