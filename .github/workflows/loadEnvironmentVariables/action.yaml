@@ -24,7 +24,7 @@ runs:
           source "$env_file"
 
           # Parse keys from this file and write the expanded values to $GITHUB_ENV
-          while IFS= read -r env_key; do
+          while IFS= read -r env_key || [[ -n "$env_key" ]]; do
             echo "$env_key=${!env_key}" >> "$GITHUB_ENV"
           done < <(sed -nE 's/^([A-Za-z_][A-Za-z0-9_]*)=.*/\1/p' "$env_file")
         done
