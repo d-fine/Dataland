@@ -3,13 +3,16 @@ package org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.mod
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.model.creditInstitution
-    .assetsForCalculationOfGreenAssetRatio
-    .EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio
+    .capexBasedAssetsForCalculationOfGreenAssetRatio
+    .EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.model.creditInstitution
     .capexBasedGreenAssetRatioSectorInformation
     .EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioSectorInformation
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.model.creditInstitution
     .capexBasedGreenAssetRatioStock.EutaxonomyFinancials202673CreditinstitutionCapexBasedGreenAssetRatioStock
+import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.model.creditInstitution
+    .turnoverBasedAssetsForCalculationOfGreenAssetRatio
+    .EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio
 import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.model.creditInstitution
     .turnoverBasedGreenAssetRatioSectorInformation
     .EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRatioSectorInformation
@@ -22,7 +25,11 @@ import org.dataland.datalandqaservice.frameworks.eutaxonomyfinancials202673.mode
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancials202673CreditInstitution(
     @field:Valid()
-    val assetsForCalculationOfGreenAssetRatio: EutaxonomyFinancials202673CreditinstitutionAssetsForCalculationOfGreenAssetRatio? = null,
+    val turnoverBasedAssetsForCalculationOfGreenAssetRatio:
+        EutaxonomyFinancials202673CreditinstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatio? = null,
+    @field:Valid()
+    val capexBasedAssetsForCalculationOfGreenAssetRatio:
+        EutaxonomyFinancials202673CreditinstitutionCapexBasedAssetsForCalculationOfGreenAssetRatio? = null,
     @field:Valid()
     val turnoverBasedGreenAssetRatioSectorInformation:
         EutaxonomyFinancials202673CreditinstitutionTurnoverBasedGreenAssetRatioSectorInformation? = null,
