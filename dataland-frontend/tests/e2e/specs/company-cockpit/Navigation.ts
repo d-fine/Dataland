@@ -79,7 +79,7 @@ describeIf(
     });
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
-      cy.intercept('GET', '**/api/companies/names*').as('companiesNameSearch');
+      cy.intercept('GET', '/api/companies/names*').as('companiesNameSearch');
       cy.intercept('GET', '/scripts/companySearchBar.js').as('companySearchBar');
       cy.visitAndCheckAppMount('/');
       cy.wait('@companySearchBar');
