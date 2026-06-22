@@ -37,18 +37,7 @@ function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void 
     cy.get(searchInputSelector).type(searchTerm);
     cy.get(searchInputSelector).should('have.value', searchTerm);
     cy.get(searchInputSelector).should('have.focus');
-  });
-
-  cy.contains(optionSelector, searchTerm, {
-    timeout: 10000,
-  }).should('be.visible');
-
-  cy.contains(optionSelector, searchTerm, {
-    timeout: 10000,
-  }).click();
-
-  cy.screenshot('after-company-search-click', {
-    capture: 'fullPage',
+    cy.contains(optionSelector, searchTerm, { timeout: 10000 }).should('be.visible').click();
   });
 }
 
