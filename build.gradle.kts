@@ -1,5 +1,9 @@
 // main
 
+import com.github.gradle.node.npm.task.NpmTask
+import com.github.gradle.node.task.NodeTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 val jacocoVersion: String by project
 val ktlintVersion: String by project
 val githubUser: String by project
@@ -24,9 +28,9 @@ subprojects {
     group = "org.dataland"
     version = "0.0.1-SNAPSHOT"
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-            jvmTarget = jvmVersion.majorVersion
+        compilerOptions {
+            freeCompilerArgs.set(listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn"))
+            jvmTarget.set(JvmTarget.fromTarget(jvmVersion.majorVersion))
         }
     }
     sonar {
@@ -72,6 +76,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    id("co.uzzu.dotenv.gradle") version "4.0.0" apply false
 }
 
 val normalizeFeCoverageForSonar by tasks.registering {
@@ -89,6 +94,27 @@ val normalizeFeCoverageForSonar by tasks.registering {
                         .replace(Regex("""SF:.*/Dataland/"""), "SF:")
                 reportFile.writeText(normalized)
             }
+    }
+}
+
+val devEnvironmentFile = rootProject.file("environments/.env.dev")
+val devEnvironmentVariables =
+    if (devEnvironmentFile.isFile) {
+        apply(plugin = "co.uzzu.dotenv.gradle")
+        (extensions.getByName("env") as co.uzzu.dotenv.gradle.DotEnvRoot).allVariables()
+    } else {
+        emptyMap()
+    }
+
+// Propagate environments/.env.dev variables loaded by the dotenv plugin into forked task processes.
+allprojects {
+    tasks.configureEach {
+        when (this) {
+            is Test -> environment(devEnvironmentVariables)
+            is Exec -> environment(devEnvironmentVariables)
+            is NpmTask -> environment.putAll(devEnvironmentVariables)
+            is NodeTask -> environment.putAll(devEnvironmentVariables)
+        }
     }
 }
 
@@ -113,7 +139,6 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-reduced-local-stack/**," +
                 "dataland-backend/src/main/kotlin/db/migration/utils/**," +
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
                 "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
@@ -177,6 +202,9 @@ sonar {
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/companies/CompanyInformation.kt," +
+
+                // internal-storage
+                "dataland-internal-storage/src/test/kotlin/db/migration/V32__RenameAssetsForCalculationOfGreenAssetRatioTest.kt," +
 
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +

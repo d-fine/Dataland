@@ -1,0 +1,12 @@
+{
+  "id" : "extendedCurrencyCreditInstitutionTurnoverBasedAssetsForCalculationOfGreenAssetRatioTurnoverBasedTotalGrossCarryingAmount",
+  "name" : "Turnover-based Total (gross) Carrying Amount",
+  "businessDefinition" : "Turnover-based total overall covered assets which are included in the numerator. Do not include assets which not covered for GAR calculation.",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials-2026-73" ],
+  "constraints" : [ "min:0" ],
+  "calculationRules" : [ {
+    "inputs" : [ "extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount" ],
+    "calculationMethod" : "Identity"
+  } ]
+}

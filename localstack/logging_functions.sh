@@ -13,7 +13,8 @@
 # Use log_info for repeated progress updates inside loops such as
 # "Waiting for Keycloak to finish initialization".
 
-: "${SILENT:=false}"
+: "${VERBOSE:=false}"
+: "${MANAGE_LOCAL_STACK_LOG_FILE:=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/log/manageLocalStack.log}"
 
 # Only emit ANSI colors for interactive terminals unless color output is explicitly disabled.
 if [[ -t 1 && "${NO_COLOR:-false}" != "true" ]]; then
@@ -62,4 +63,82 @@ log_warn() {
 # Print an error message to stderr.
 log_error() {
   printf '%b[E]%b %s\n' "$COLOR_RED" "$COLOR_RESET" "$1" >&2
+}
+
+format_logged_command() {
+  printf '%q ' "$@"
+}
+
+write_command_log_header() {
+  {
+    printf '[%s] $ %s\n' "$(date '+%Y-%m-%d %H:%M:%S %z')" "$(format_logged_command "$@")"
+    printf '%s\n' '--------------------------------------------------------------------------------'
+  } >> "$MANAGE_LOCAL_STACK_LOG_FILE"
+}
+
+write_command_log_footer() {
+  local exit_code="$1"
+  {
+    printf '%s\n' '--------------------------------------------------------------------------------'
+    printf '[%s] Command finished with exit code %s\n' "$(date '+%Y-%m-%d %H:%M:%S %z')" "$exit_code"
+    printf '\n'
+  } >> "$MANAGE_LOCAL_STACK_LOG_FILE"
+}
+
+run_logged_command() {
+  write_command_log_header "$@"
+
+  local exit_code=0
+  if [[ "$VERBOSE" == true ]]; then
+    local output_file
+    output_file=$(mktemp)
+
+    if "$@" >"$output_file" 2>&1; then
+      exit_code=0
+    else
+      exit_code=$?
+    fi
+
+    cat "$output_file"
+    cat "$output_file" >> "$MANAGE_LOCAL_STACK_LOG_FILE"
+    rm -f "$output_file"
+  else
+    if "$@" >> "$MANAGE_LOCAL_STACK_LOG_FILE" 2>&1; then
+      exit_code=0
+    else
+      exit_code=$?
+    fi
+  fi
+
+  write_command_log_footer "$exit_code"
+
+  if [[ "$exit_code" -ne 0 && "$VERBOSE" != true ]]; then
+    log_error "Command failed. See $MANAGE_LOCAL_STACK_LOG_FILE for details."
+  fi
+
+  return "$exit_code"
+}
+
+initialize_local_stack_log() {
+  mkdir -p "$(dirname "$MANAGE_LOCAL_STACK_LOG_FILE")"
+  {
+    printf '\n'
+    printf '================================================================================\n'
+    printf 'Local stack run started at %s\n' "$(date '+%Y-%m-%d %H:%M:%S %z')"
+    printf 'Working directory: %s\n' "$PWD"
+    printf 'Command: %s\n' "$(format_logged_command "$0" "$@")"
+    printf '%s\n' '--------------------------------------------------------------------------------'
+    printf '\n'
+  } >> "$MANAGE_LOCAL_STACK_LOG_FILE"
+}
+
+finalize_local_stack_log() {
+  local exit_code=$?
+  {
+    printf '\n'
+    printf '%s\n' '--------------------------------------------------------------------------------'
+    printf 'Local stack run finished at %s with exit code %s\n' "$(date '+%Y-%m-%d %H:%M:%S %z')" "$exit_code"
+    printf '================================================================================\n'
+    printf '\n'
+  } >> "$MANAGE_LOCAL_STACK_LOG_FILE"
 }

@@ -1,0 +1,30 @@
+name: "Load Environment Variables"
+description: "Load environments/.env.dev and environments/.env.ci and expose their variables to subsequent workflow steps"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Load environment files
+      shell: bash
+      run: |
+        # Exit on error, undefined variable, or pipe failure
+        set -euo pipefail
+
+        env_files=("./environments/.env.dev" "./environments/.env.ci")
+
+        # Source each env file and write its variables to $GITHUB_ENV for subsequent workflow steps.
+        # .env.ci is processed last so its values override .env.dev where keys overlap.
+        for env_file in "${env_files[@]}"; do
+          if [[ ! -f "$env_file" ]]; then
+            echo "Environment file '$env_file' does not exist." >&2
+            exit 1
+          fi
+
+          # Load variables into the current shell
+          source "$env_file"
+
+          # Parse keys from this file and write the expanded values to $GITHUB_ENV
+          while IFS= read -r env_key || [[ -n "$env_key" ]]; do
+            echo "$env_key=${!env_key}" >> "$GITHUB_ENV"
+          done < <(sed -nE 's/^([A-Za-z_][A-Za-z0-9_]*)=.*/\1/p' "$env_file")
+        done
