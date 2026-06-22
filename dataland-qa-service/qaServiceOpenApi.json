@@ -4384,6 +4384,9 @@
             "type": "string",
             "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
             "example": "The original value was incorrect and the QA report claimed there was no data found."
+          },
+          "preApprovalCheckResults": {
+            "$ref": "#/components/schemas/PreApprovalCheckResults"
           }
         },
         "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
@@ -4539,6 +4542,36 @@
           "FinishedWithDatasetAcceptance",
           "FinishedWithDatasetRejection"
         ]
+      },
+      "PreApprovalCheckResults": {
+        "required": [
+          "areAllQaReportsAccepted",
+          "isDataPointEligible",
+          "passesRandomSampling",
+          "passesSignificanceCheck"
+        ],
+        "type": "object",
+        "properties": {
+          "areAllQaReportsAccepted": {
+            "type": "boolean"
+          },
+          "isDataPointEligible": {
+            "type": "boolean"
+          },
+          "passesRandomSampling": {
+            "type": "boolean"
+          },
+          "passesSignificanceCheck": {
+            "type": "boolean"
+          }
+        },
+        "description": "Structured results of the automatic pre-approval checks for this data point. Each flag indicates whether the data point passed one prerequisite for automatic pre-approval of the original value.",
+        "example": {
+          "allQaReportsAccepted": true,
+          "dataPointEligible": true,
+          "passesRandomSampling": true,
+          "passesSignificanceCheck": true
+        }
       },
       "QaReportDataPointVerdict": {
         "type": "string",
