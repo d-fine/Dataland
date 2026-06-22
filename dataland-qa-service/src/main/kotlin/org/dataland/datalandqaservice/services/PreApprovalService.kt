@@ -64,7 +64,6 @@ class PreApprovalService(
             val allQaReportsAccepted = areAllQaReportsAccepted(dataPointJudgement)
             val dataPointEligible = isDataPointEligible(dataPointJudgement, datasetJudgementEntity.dataType)
             val passesRandomSampling = !isRandomDrawBelowSamplingProbability()
-
             val passesSignificanceCheck =
                 passesSignificanceCheck(dataPointJudgement, datasetJudgementEntity.dataType, liveDataPoints)
 
