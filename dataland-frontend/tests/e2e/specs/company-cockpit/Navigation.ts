@@ -37,13 +37,15 @@ function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void 
     cy.get(searchInputSelector).type(searchTerm);
     cy.get(searchInputSelector).should('have.value', searchTerm);
     cy.get(searchInputSelector).should('have.focus');
-    cy.wait('@companiesNameSearch').then(({ response }) => {
-      const count = Array.isArray(response?.body) ? response?.body.length : '?';
-      cy.task('log', `[DEBUG] companies/names response: ${count} results at ${new Date().toISOString()}`);
-      expect(JSON.stringify(response?.body)).to.contain(searchTerm);
-    });
-    cy.contains(optionSelector, searchTerm, { timeout: 5000 }).should('be.visible').click({ scrollBehavior: false });
   });
+
+  cy.wait('@companiesNameSearch').then(({ response }) => {
+    const count = Array.isArray(response?.body) ? response?.body.length : '?';
+    cy.task('log', `[DEBUG] companies/names response: ${count} results at ${new Date().toISOString()}`);
+    expect(JSON.stringify(response?.body)).to.contain(searchTerm);
+  });
+
+  cy.contains(optionSelector, searchTerm, { timeout: 5000 }).should('be.visible').click({ scrollBehavior: false });
 }
 
 describeIf(
