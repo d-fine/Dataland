@@ -56,14 +56,24 @@ export function generateEutaxonomyFinancials202673Data(
       },
     },
     creditInstitution: {
-      assetsForCalculationOfGreenAssetRatio: {
-        totalGrossCarryingAmount: dataGenerator.randomCurrencyDataPoint(0),
-        totalAmountOfNonAssessedExposures: dataGenerator.randomCurrencyDataPoint(0),
-        totalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties:
+      turnoverBasedAssetsForCalculationOfGreenAssetRatio: {
+        turnoverBasedTotalGrossCarryingAmount: dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedTotalAmountOfNonAssessedExposures: dataGenerator.randomCurrencyDataPoint(0),
+        turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties:
           dataGenerator.randomCurrencyDataPoint(0),
-        totalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
+        turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
           dataGenerator.randomCurrencyDataPoint(0),
-        totalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution:
+        turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution:
+          dataGenerator.randomCurrencyDataPoint(0),
+      },
+      capexBasedAssetsForCalculationOfGreenAssetRatio: {
+        capexBasedTotalGrossCarryingAmount: dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedTotalAmountOfNonAssessedExposures: dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties:
+          dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities:
+          dataGenerator.randomCurrencyDataPoint(0),
+        capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution:
           dataGenerator.randomCurrencyDataPoint(0),
       },
       turnoverBasedGreenAssetRatioSectorInformation: {

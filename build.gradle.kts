@@ -203,6 +203,9 @@ sonar {
                 "dataland-backend/src/test/kotlin/db/migration/V7__UnifyNfrdMandatoryFieldTest.kt," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/companies/CompanyInformation.kt," +
 
+                // internal-storage
+                "dataland-internal-storage/src/test/kotlin/db/migration/V32__RenameAssetsForCalculationOfGreenAssetRatioTest.kt," +
+
                 // toolbox
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components" +
                 "/Iso2CountryCodesMultiSelectComponent.kt," +
