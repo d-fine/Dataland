@@ -37,17 +37,12 @@ function searchCompanyAndChooseFirstSuggestionLanding(searchTerm: string): void 
     cy.get(searchInputSelector).type(searchTerm);
     cy.get(searchInputSelector).should('have.value', searchTerm);
     cy.get(searchInputSelector).should('have.focus');
-    cy.document().then((doc) => {
-      const listbox = doc.querySelector('#company-search-listbox');
-      const items = listbox?.querySelectorAll('li[role="option"]').length ?? 0;
-      const hidden = listbox?.classList.contains('hidden') ?? true;
-      const hasFocus = doc.querySelector('#company-search-input') === doc.activeElement;
-      cy.task(
-        'log',
-        `[DEBUG] pre-click: listbox hidden=${hidden}, items=${items}, input focused=${hasFocus} at ${new Date().toISOString()}`
-      );
+    cy.wait('@companiesNameSearch').then(({ response }) => {
+      const count = Array.isArray(response?.body) ? response?.body.length : '?';
+      cy.task('log', `[DEBUG] companies/names response: ${count} results at ${new Date().toISOString()}`);
+      expect(JSON.stringify(response?.body)).to.contain(searchTerm);
     });
-    cy.contains(optionSelector, searchTerm, { timeout: 10000 }).should('be.visible').click();
+    cy.contains(optionSelector, searchTerm, { timeout: 5000 }).should('be.visible').click({ scrollBehavior: false });
   });
 }
 
@@ -82,12 +77,7 @@ describeIf(
     });
 
     it('From the landing page visit the company cockpit via the searchbar', () => {
-      cy.intercept('GET', '**/api/companies/names*', (req) => {
-        req.on('response', (res) => {
-          const count = Array.isArray(res.body) ? res.body.length : '?';
-          cy.task('log', `[DEBUG] companies/names response: ${count} results at ${new Date().toISOString()}`);
-        });
-      }).as('companiesNameSearch');
+      cy.intercept('GET', '**/api/companies/names*').as('companiesNameSearch');
       cy.intercept('GET', '/scripts/companySearchBar.js').as('companySearchBar');
       cy.visitAndCheckAppMount('/');
       cy.wait('@companySearchBar');
