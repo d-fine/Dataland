@@ -3,48 +3,23 @@ source "$(dirname "${BASH_SOURCE[0]}")/logging_functions.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/env_functions.sh"
 
 # These profiles cover the full local dev stack for cleanup/start-stop operations regardless of current frontend/backend mode.
-development_profiles=(--profile development --profile developmentContainerFrontend --profile developmentContainerBackend)
-
-# Suppress successful command output when silent mode is enabled, but replay captured output on failure.
-run_quiet_command() {
-  if [[ "$SILENT" != true ]]; then
-    "$@"
-    return
-  fi
-
-  local output_file
-  output_file=$(mktemp)
-
-  if "$@" >"$output_file" 2>&1; then
-    rm -f "$output_file"
-    return 0
-  fi
-
-  cat "$output_file" >&2
-  rm -f "$output_file"
-  return 1
-}
+development_profiles=(--profile development --profile developmentContainerBackend)
 
 run_step() {
   local description="$1"
   shift
 
   log_step "$description"
-  run_quiet_command "$@"
+  run_logged_command "$@"
 }
 
 run_docker_compose() {
-  run_quiet_command docker compose "$@"
+  run_logged_command docker compose "$@"
 }
 
 determine_compose_profiles() {
-  local local_frontend="$1"
-  local container_backend="$2"
+  local container_backend="$1"
   local compose_profiles=(--profile development)
-
-  if [[ "$local_frontend" == false ]]; then
-    compose_profiles+=(--profile developmentContainerFrontend)
-  fi
 
   if [[ "$container_backend" == true ]]; then
     compose_profiles+=(--profile developmentContainerBackend)
@@ -98,7 +73,7 @@ start_docker_services() {
 clear_docker_completely() {
   run_docker_compose "${development_profiles[@]}" --profile init down
   run_docker_compose down --remove-orphans
-  run_quiet_command docker volume prune --force --all
+  run_logged_command docker volume prune --force --all
 }
 
 rebuild_docker_images() {
@@ -108,7 +83,7 @@ rebuild_docker_images() {
 
   for rebuild_script in ./build-utils/rebuild*.sh; do
     # Limit concurrent rebuilds to keep Docker and Gradle resource usage manageable locally.
-    if [[ "$SILENT" != true && $(jobs -r | wc -l) -ge $max_parallel ]]; then
+    if [[ "$VERBOSE" == true && $(jobs -r | wc -l) -ge $max_parallel ]]; then
       log_info "Waiting for free build slot ($max_parallel parallel max)"
     fi
 

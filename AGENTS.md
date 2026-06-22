@@ -17,7 +17,6 @@
 
 - CI behavior and command truth source: `.github/workflows/CI.yaml`
 - Workflow helper sources: `testing/` and `build-utils/`
-- Broad local smoke checks: `./runBasicChecks.sh` and `./runBasicChecks.sh short`
 - OpenAPI verification script: `testing/verifyOpenApiFiles.sh`
 - Fake fixture verification script: `testing/verify_that_fake_fixtures_are_up_to_date.sh`
 
@@ -38,9 +37,6 @@
 - Generate OpenAPI specs or clients for a specific module:
   - `./gradlew :<module>:generateOpenApiDocs`
   - `./gradlew :<module>:generateClients`
-- Broad repo smoke checks:
-  - `./runBasicChecks.sh`
-  - `./runBasicChecks.sh short`
 
 # CI Alignment
 
@@ -59,11 +55,6 @@
   - Run `./gradlew ktlintFormat`.
   - Run `./gradlew :<affected-module>:test`.
   - Run `./gradlew detekt` when touching production Kotlin code, shared code, or multiple backend modules.
-- Cross-cutting or uncertain changes:
-  - Prefer `./runBasicChecks.sh short` before finishing.
-- `./runBasicChecks.sh` must be run from the repository root.
-- `./runBasicChecks.sh short` skips setup steps and is useful when generated clients and local state are already in place.
-- Full `./runBasicChecks.sh` assumes the backend is not already running locally.
 
 # Never Do These By Default
 
@@ -127,5 +118,4 @@
 
 - If a frontend or test module fails after backend API changes, regenerate the relevant OpenAPI specs and clients before debugging further.
 - `dataland-website` output is consumed by the frontend build, so website changes can require frontend verification as well.
-- If you are unsure which checks approximate CI best, use `./runBasicChecks.sh short` for a faster pass or `./runBasicChecks.sh` for the fuller workflow.
 - When editing only one area of the monorepo, avoid unnecessary repo-wide runs unless the change affects shared contracts, generated code, or multiple modules.

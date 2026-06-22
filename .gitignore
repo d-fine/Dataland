@@ -49,6 +49,9 @@ tls.crt
 # local logging data
 /dataland-loki/data
 
+# Ignore local log directory
+/log
+
 # Ignore the contents of .opencode (has node_modules etc)
 .opencode/*
 

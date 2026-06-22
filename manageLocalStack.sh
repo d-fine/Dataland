@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
+exec 3>&1 4>&2
+
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERBOSE=false
+export VERBOSE
 source "$project_root/localstack/docker_functions.sh"
 source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--local-frontend] [--dev-env] [--self-signed-certs] [--simple] [--no-container-backend] [--silent]"
-  echo "  --start: Start the development stack"
-  echo "  --stop: Stop the development stack"
-  echo "  --reset: Reset and restart the development stack from scratch"
-  echo "  --local-frontend: Run in local frontend mode (redirect traffic to localhost)"
-  echo "  --dev-env: Load environments/.env.dev before starting/resetting"
-  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them"
-  echo "  --simple: Shortcut for --dev-env --self-signed-certs"
-  echo "  --no-container-backend: Run backend without containers"
-  echo "  --silent: Suppress subcommand output"
-  echo ""
-  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start"
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--self-signed-certs] [--no-container-backend] [--verbose]" >&3
+  echo "  --start: Start the development stack" >&3
+  echo "  --stop: Stop the development stack" >&3
+  echo "  --reset: Reset and restart the development stack from scratch" >&3
+  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
+  echo "  --no-container-backend: Run backend without containers" >&3
+  echo "  --verbose: Print subcommand output while also writing it to the local stack log" >&3
+  echo "" >&3
+  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start" >&3
 }
 
 rebuild_gradle_dockerfile() {
@@ -43,9 +44,8 @@ start_backend() {
 }
 
 start_development_stack() {
-  local local_frontend="$1"
-  local self_signed="$2"
-  local container_backend="$3"
+  local self_signed="$1"
+  local container_backend="$2"
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   run_step "Setting up SSL certificates" setup_certificates "$self_signed"
@@ -58,21 +58,21 @@ start_development_stack() {
   run_step "Reloading uncritical environment" source_uncritical_environment
 
   local compose_profiles
-  read -ra compose_profiles <<< "$(determine_compose_profiles "$local_frontend" "$container_backend")"
+  read -ra compose_profiles <<< "$(determine_compose_profiles "$container_backend")"
 
-  if [[ "$container_backend" = true ]]; then
-    export INTERNAL_BACKEND_URL="http://backend:8080/api"
-    export BACKEND_URL="http://backend:8080/api/"
-  else
+  if [[ "$container_backend" = false ]]; then
     export INTERNAL_BACKEND_URL="http://host.docker.internal:8080/api"
     export BACKEND_URL="http://host.docker.internal:8080/api/"
   fi
 
-  run_step "Cleaning up existing containers" stop_and_cleanup_containers
+  log_step "Cleaning up existing containers"
+  stop_and_cleanup_containers
   run_step "Preparing Loki bind mounts" prepare_loki_bind_mounts
-  run_step "Starting Docker services" start_docker_services "$container_backend" "${compose_profiles[@]}"
+  log_step "Starting Docker services"
+  start_docker_services "$container_backend" "${compose_profiles[@]}"
   start_health_check
-  run_step "Waiting for admin-proxy" wait_for_admin_proxy "${compose_profiles[@]}"
+  log_step "Waiting for admin-proxy"
+  wait_for_admin_proxy "${compose_profiles[@]}"
 
   if [[ "$container_backend" = false ]]; then
     log_step "Starting backend locally"
@@ -100,7 +100,8 @@ reset_development_stack() {
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   check_backend_not_running
-  run_step "Clearing Docker state" clear_docker_completely
+  log_step "Clearing Docker state"
+  clear_docker_completely
   run_step "Cleaning Gradle outputs" ./gradlew clean
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
@@ -108,19 +109,19 @@ reset_development_stack() {
   run_step "Loading uncritical environment" source_uncritical_environment
   run_step "Rebuilding Postgres image" rebuild_postgres_image
   run_step "Rebuilding Keycloak image" rebuild_keycloak_image
-  run_step "Initializing Keycloak" initialize_keycloak
+  log_step "Initializing Keycloak"
+  initialize_keycloak
 }
 
 parse_arguments() {
-  local local_frontend=false
-  local dev_env=false
   local do_stop=false
   local do_reset=false
   local do_start=false
   
-  local self_signed=false
+  local self_signed=true
   local container_backend=true
-  SILENT=false
+
+  load_dev_environment
 
   if [[ $# -eq 0 ]]; then
     print_usage
@@ -143,21 +144,7 @@ parse_arguments() {
         do_start=true
         shift
         ;;
-      --local-frontend)
-        log_info "Launching in local frontend mode"
-        local_frontend=true
-        shift
-        ;;
-      --dev-env)
-        dev_env=true
-        shift
-        ;;
       --self-signed-certs)
-        self_signed=true
-        shift
-        ;;
-      --simple)
-        dev_env=true
         self_signed=true
         shift
         ;;
@@ -165,8 +152,8 @@ parse_arguments() {
         container_backend=false
         shift
         ;;
-      --silent)
-        SILENT=true
+      --verbose)
+        VERBOSE=true
         shift
         ;;
       *)
@@ -177,16 +164,9 @@ parse_arguments() {
     esac
   done
 
-  if [[ "$dev_env" = true ]]; then
-    load_dev_environment
-  fi
-
-  if [[ "$local_frontend" = true ]]; then
-    export FRONTEND_LOCATION_CONFIG="Localhost"
-  fi
-
   if [[ "$do_stop" = true ]]; then
-    run_step "Stopping development stack" stop_development_stack
+    log_step "Stopping development stack"
+    stop_development_stack
   fi
 
   if [[ "$do_reset" = true ]]; then
@@ -194,8 +174,11 @@ parse_arguments() {
   fi
 
   if [[ "$do_start" = true ]]; then
-    start_development_stack "$local_frontend" "$self_signed" "$container_backend"
+    start_development_stack "$self_signed" "$container_backend"
   fi
 }
 
+initialize_local_stack_log "$@"
+log_info "Local stack command logs: $MANAGE_LOCAL_STACK_LOG_FILE"
+trap finalize_local_stack_log EXIT
 parse_arguments "$@"
