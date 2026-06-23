@@ -205,7 +205,7 @@ export class Generator {
    * @param currency the currency of the datapoint
    * @returns the generated datapoint
    */
-  generateCurrencyExtendedDataPoint(value: number | null, currency: string | null): CurrencyDataPoint {
+  generateCurrencyExtendedDataPoint(value: number | null, currency: string): CurrencyDataPoint {
     const datapoint = this.generateExtendedDataPoint(value);
     return {
       ...datapoint,
@@ -219,7 +219,7 @@ export class Generator {
   generateAmountWithCurrency(): AmountWithCurrency {
     return {
       amount: this.randomCurrencyValue(),
-      currency: this.valueOrNull(generateCurrencyCode()),
+      currency: generateCurrencyCode(),
     };
   }
 
