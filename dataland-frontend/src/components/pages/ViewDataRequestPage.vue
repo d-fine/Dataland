@@ -29,17 +29,13 @@
       header="Resubmit Request"
     >
       <div class="message">
-        <label
-          for="resubmit-message"
-          class="side-header"
-          style="display: block; margin-block: 1em; font-weight: var(--font-weight-semibold)"
-          >Message</label
-        >
+        <p class="side-header">Message</p>
         <Textarea
           v-model="resubmitMessage"
           style="resize: none"
           data-test="resubmit-message"
           id="resubmit-message"
+          aria-label="Message"
           rows="5"
           placeholder="Provide a reason for resubmitting."
         />

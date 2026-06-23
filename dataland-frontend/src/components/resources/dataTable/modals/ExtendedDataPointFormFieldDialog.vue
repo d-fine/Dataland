@@ -8,7 +8,7 @@
     optionValue="value"
     data-test="quality-select"
     inputId="quality-select"
-    aria-labelledby="quality-select"
+    aria-label="Quality"
     fluid
   />
   <h4>Data Source</h4>
@@ -22,7 +22,7 @@
       data-test="document-select"
       style="width: 17em"
       inputId="document-select"
-      aria-labelledby="document-select"
+      aria-label="Data Source"
       fluid
     />
     <InputText
@@ -48,7 +48,7 @@
     v-model="insertedComment"
     data-test="comment-textarea"
     id="comment-input"
-    aria-labelledby="comment-input"
+    aria-label="Comment"
     rows="5"
     :draggable="false"
     fluid

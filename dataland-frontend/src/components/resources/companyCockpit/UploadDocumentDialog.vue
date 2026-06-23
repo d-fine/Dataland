@@ -68,12 +68,7 @@
       </div>
 
       <div class="field">
-        <label
-          for="document-category"
-          class="upload-label"
-          style="display: block; margin-block: 1em; font-weight: var(--font-weight-semibold)"
-          >Document Category</label
-        >
+        <p class="upload-label">Document Category</p>
         <Select
           v-model="documentCategory"
           :options="documentCategories"
@@ -81,6 +76,7 @@
           optionValue="value"
           placeholder="Select category"
           inputId="document-category"
+          aria-label="Document Category"
           :class="{ 'error-field': showErrors && !documentCategory }"
           data-test="document-category"
         />

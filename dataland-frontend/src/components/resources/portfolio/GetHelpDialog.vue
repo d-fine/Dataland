@@ -1,29 +1,21 @@
 <template>
   <div class="container">
     <div>
-      <label
-        for="get-help-topic"
-        class="header-styling"
-        style="display: block; font-weight: var(--font-weight-semibold); margin-block: 1em"
-        >Choose a topic</label
-      >
+      <p class="header-styling">Choose a topic</p>
       <Select
-        inputId="get-help-topic"
         v-model="selectedTopic"
         :options="availableTopics"
         placeholder="Where do you need help with?"
+        inputId="get-help-topic"
+        aria-label="Choose a topic"
         fluid
       />
     </div>
     <div>
-      <label
-        for="get-help-message"
-        class="header-styling"
-        style="display: block; font-weight: var(--font-weight-semibold); margin-block: 1em"
-        >Your message to us</label
-      >
+      <p class="header-styling">Your message to us</p>
       <Textarea
         id="get-help-message"
+        aria-label="Your message to us"
         v-model="message"
         placeholder="Please state for which companies you need help finding identifiers to add them to your portfolio"
         rows="5"
