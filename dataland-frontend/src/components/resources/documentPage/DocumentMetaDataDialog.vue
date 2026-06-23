@@ -49,7 +49,7 @@
               </td>
             </tr>
             <tr>
-              <th>Document type</th>
+              <th><label for="document-category-select">Document type</label></th>
               <td v-if="editMode">
                 <Select
                   v-model="metaDataPatch.documentCategory"
@@ -58,6 +58,7 @@
                   optionValue="value"
                   style="min-width: 15rem"
                   data-test="document-category-select"
+                  inputId="document-category-select"
                 />
               </td>
               <td v-else data-test="document-type">{{ humanizeStringOrNumber(metaData?.documentCategory) }}</td>

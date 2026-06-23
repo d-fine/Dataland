@@ -1,16 +1,17 @@
 <template>
   <div class="container">
     <div>
-      <p class="header-styling">Choose a topic</p>
+      <label for="get-help-topic" class="header-styling">Choose a topic</label>
       <Select
-        id="get-help-topic"
+        inputId="get-help-topic"
         v-model="selectedTopic"
         :options="availableTopics"
         placeholder="Where do you need help with?"
+        fluid
       />
     </div>
     <div>
-      <p class="header-styling">Your message to us</p>
+      <label for="get-help-message" class="header-styling">Your message to us</label>
       <Textarea
         id="get-help-message"
         v-model="message"
@@ -99,10 +100,6 @@ async function sendEmail(): Promise<void> {
 
 #get-help-message {
   resize: none;
-  width: 100%;
-}
-
-#get-help-topic {
   width: 100%;
 }
 

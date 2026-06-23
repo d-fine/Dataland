@@ -26,13 +26,14 @@
       </div>
     </div>
 
-    <p class="header-styling">Notification Frequency</p>
+    <label for="notification-frequency-select" class="header-styling">Notification Frequency</label>
     <Select
       v-model="selectedNotificationOption"
       :options="notificationOptions"
       :disabled="!isMonitoringActive"
       optionLabel="label"
       optionValue="value"
+      inputId="notification-frequency-select"
       data-test="notification-options"
       style="min-width: 14rem"
     />

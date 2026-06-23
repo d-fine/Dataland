@@ -1,15 +1,22 @@
 <template>
-  <h4>Quality</h4>
-  <Select
-    :placeholder="'Select Quality'"
-    v-model="chosenQuality"
-    :options="qualityOptionsList ?? []"
-    optionLabel="label"
-    optionValue="value"
-    data-test="quality-select"
-    fluid
-  />
-  <h4>Data Source</h4>
+  <div class="quality-select">
+    <label for="quality-select" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
+      >Quality</label
+    >
+    <Select
+      :placeholder="'Select Quality'"
+      v-model="chosenQuality"
+      :options="qualityOptionsList ?? []"
+      optionLabel="label"
+      optionValue="value"
+      data-test="quality-select"
+      inputId="quality-select"
+      fluid
+    />
+  </div>
+  <label for="document-select" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
+    >Data Source</label
+  >
   <div class="data-source-wrapper">
     <Select
       :placeholder="'Select Document'"
@@ -19,6 +26,7 @@
       optionValue="value"
       data-test="document-select"
       style="width: 17em"
+      inputId="document-select"
       fluid
     />
     <InputText
@@ -38,11 +46,14 @@
 
   <PrimeButton label="Go to documents page" variant="link" as="a" :href="`/companies/${companyId}/documents`" />
 
-  <h4>Comment</h4>
+  <label for="comment-input" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
+    >Comment</label
+  >
   <Textarea
     :placeholder="'Insert comment'"
     v-model="insertedComment"
     data-test="comment-textarea"
+    id="comment-input"
     rows="5"
     :draggable="false"
     fluid

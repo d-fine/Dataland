@@ -68,13 +68,14 @@
       </div>
 
       <div class="field">
-        <p class="upload-label">Document Category</p>
+        <label for="document-category" class="upload-label">Document Category</label>
         <Select
           v-model="documentCategory"
           :options="documentCategories"
           optionLabel="label"
           optionValue="value"
           placeholder="Select category"
+          inputId="document-category"
           :class="{ 'error-field': showErrors && !documentCategory }"
           data-test="document-category"
         />
