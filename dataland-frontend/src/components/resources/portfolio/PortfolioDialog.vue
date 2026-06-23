@@ -5,7 +5,12 @@
       <InputText v-model="portfolioName" data-test="portfolio-name-input" :placeholder="portfolioName" fluid />
     </div>
     <div class="container">
-      <label for="company-identifiers-input" class="header-styling">Add company identifiers</label>
+      <label
+        for="company-identifiers-input"
+        class="header-styling"
+        style="display: block; font-weight: var(--font-weight-bold); margin-block: 1em"
+        >Add company identifiers</label
+      >
       <Textarea
         v-model="companyIdentifiersInput"
         data-test="company-identifiers-input"

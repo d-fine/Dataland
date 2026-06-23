@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <div>
-      <label for="get-help-topic" class="header-styling">Choose a topic</label>
+      <label
+        for="get-help-topic"
+        class="header-styling"
+        style="display: block; font-weight: var(--font-weight-semibold); margin-block: 1em"
+        >Choose a topic</label
+      >
       <Select
         inputId="get-help-topic"
         v-model="selectedTopic"
@@ -11,7 +16,12 @@
       />
     </div>
     <div>
-      <label for="get-help-message" class="header-styling">Your message to us</label>
+      <label
+        for="get-help-message"
+        class="header-styling"
+        style="display: block; font-weight: var(--font-weight-semibold); margin-block: 1em"
+        >Your message to us</label
+      >
       <Textarea
         id="get-help-message"
         v-model="message"

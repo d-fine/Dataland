@@ -29,7 +29,12 @@
       header="Resubmit Request"
     >
       <div class="message">
-        <label for="resubmit-message" class="side-header">Message</label>
+        <label
+          for="resubmit-message"
+          class="side-header"
+          style="display: block; margin-block: 1em; font-weight: var(--font-weight-semibold)"
+          >Message</label
+        >
         <Textarea
           v-model="resubmitMessage"
           style="resize: none"

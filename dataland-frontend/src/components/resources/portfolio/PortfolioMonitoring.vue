@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <label for="notification-frequency-select" class="header-styling">Notification Frequency</label>
+    <p class="header-styling" aria-label="notification-frequency-select">Notification Frequency</p>
     <Select
       v-model="selectedNotificationOption"
       :options="notificationOptions"

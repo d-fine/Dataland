@@ -1,22 +1,17 @@
 <template>
-  <div class="quality-select">
-    <label for="quality-select" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
-      >Quality</label
-    >
-    <Select
-      :placeholder="'Select Quality'"
-      v-model="chosenQuality"
-      :options="qualityOptionsList ?? []"
-      optionLabel="label"
-      optionValue="value"
-      data-test="quality-select"
-      inputId="quality-select"
-      fluid
-    />
-  </div>
-  <label for="document-select" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
-    >Data Source</label
-  >
+  <h4>Quality</h4>
+  <Select
+    :placeholder="'Select Quality'"
+    v-model="chosenQuality"
+    :options="qualityOptionsList ?? []"
+    optionLabel="label"
+    optionValue="value"
+    data-test="quality-select"
+    inputId="quality-select"
+    aria-labelledby="quality-select"
+    fluid
+  />
+  <h4>Data Source</h4>
   <div class="data-source-wrapper">
     <Select
       :placeholder="'Select Document'"
@@ -27,6 +22,7 @@
       data-test="document-select"
       style="width: 17em"
       inputId="document-select"
+      aria-labelledby="document-select"
       fluid
     />
     <InputText
@@ -46,14 +42,13 @@
 
   <PrimeButton label="Go to documents page" variant="link" as="a" :href="`/companies/${companyId}/documents`" />
 
-  <label for="comment-input" style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold)"
-    >Comment</label
-  >
+  <h4>Comment</h4>
   <Textarea
     :placeholder="'Insert comment'"
     v-model="insertedComment"
     data-test="comment-textarea"
     id="comment-input"
+    aria-labelledby="comment-input"
     rows="5"
     :draggable="false"
     fluid

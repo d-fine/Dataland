@@ -8,21 +8,19 @@
       :maxFractionDigits="2"
       fluid
     />
-    <div class="currency-select-field">
-      <label for="currency-select">Currency</label>
-      <Select
-        v-model="currency"
-        placeholder="Currency"
-        :options="currencyList"
-        option-label="label"
-        option-value="value"
-        class="currency-select"
-        inputId="currency-select"
-        data-test="currency"
-        style="width: 10em"
-        fluid
-      />
-    </div>
+    <Select
+      v-model="currency"
+      placeholder="Currency"
+      :options="currencyList"
+      option-label="label"
+      option-value="value"
+      class="currency-select"
+      data-test="currency"
+      style="width: 10em"
+      inputId="currency-select"
+      aria-label="Currency"
+      fluid
+    />
   </div>
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"

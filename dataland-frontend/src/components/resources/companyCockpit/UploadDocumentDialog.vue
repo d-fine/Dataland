@@ -68,7 +68,12 @@
       </div>
 
       <div class="field">
-        <label for="document-category" class="upload-label">Document Category</label>
+        <label
+          for="document-category"
+          class="upload-label"
+          style="display: block; margin-block: 1em; font-weight: var(--font-weight-semibold)"
+          >Document Category</label
+        >
         <Select
           v-model="documentCategory"
           :options="documentCategories"
