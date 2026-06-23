@@ -89,12 +89,6 @@ const menuItems: Ref<MenuItem[]> = computed(() => [
     command: (): void => void router.push('/api-key'),
   },
   {
-    label: 'DATA REQUEST',
-    icon: 'pi pi-envelope',
-    id: 'profile-picture-dropdown-data-request-button',
-    command: (): void => void router.push('/bulkdatarequest'),
-  },
-  {
     label: 'QUALITY ASSURANCE',
     icon: 'pi pi-shield',
     id: 'profile-picture-dropdown-qa-services-anchor',
