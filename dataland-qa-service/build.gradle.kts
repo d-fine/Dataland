@@ -83,7 +83,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").toString())
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -113,7 +113,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").toString())
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -143,7 +143,7 @@ tasks.register("generateSpecificationClient", org.openapitools.generator.gradle.
     description = "Task to generate clients for the specification service."
     group = "clients"
     val specificationServicePackage = "org.dataland.datalandspecificationservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").toString())
     outputDir.set(
         layout.buildDirectory
             .dir("clients/specification-service")
@@ -173,7 +173,7 @@ tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.g
     description = "Task to generate clients for the data sourcing service."
     group = "clients"
     val dataSourcingServiceClientDestinationPackage = "org.dataland.dataSourcingService.openApiClient"
-    input = project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").toString())
     outputDir.set(
         layout.buildDirectory
             .dir("clients/data-sourcing-service")

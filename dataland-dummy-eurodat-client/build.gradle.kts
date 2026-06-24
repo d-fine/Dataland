@@ -65,7 +65,7 @@ tasks.register(
 ) {
     description = "Task to generate a Spring web server based on the specification"
     group = "server"
-    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").toString())
     outputDir.set("$buildDir/server/dummyeurodatclientservice")
     packageName.set(dummyEurodatClientServerDestinationPackage)
     modelPackage.set("$dummyEurodatClientServerDestinationPackage.model")
