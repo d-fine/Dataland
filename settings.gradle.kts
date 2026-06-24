@@ -21,8 +21,6 @@ include(
     "dataland-framework-toolbox",
     "dataland-community-manager",
     "dataland-email-service",
-    "dataland-external-storage",
-    "dataland-dummy-eurodat-client",
     "dataland-data-exporter",
     "dataland-specification-lib",
     "dataland-specification-service",

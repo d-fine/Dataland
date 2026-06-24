@@ -1,4 +1,0 @@
-FROM scratch AS builder
-
-WORKDIR /app
-COPY ./dataland-dummy-eurodat-client/build/libs/*.jar ./dataland-dummy-eurodat-client/build/libs/
