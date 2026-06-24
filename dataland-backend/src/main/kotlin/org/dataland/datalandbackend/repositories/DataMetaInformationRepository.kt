@@ -152,6 +152,66 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): List<DataMetaInformationEntity>
 
     /**
+     * Retrieves active datasets matching the JSON-encoded list of dataset dimensions.
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            """
+            WITH requested AS (
+                SELECT DISTINCT company_id, framework, reporting_period
+                FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                    AS dim(company_id text, framework text, reporting_period text)
+            )
+            SELECT m.*
+            FROM requested dim
+            JOIN data_meta_information m
+                ON m.company_id = dim.company_id
+                AND m.data_type = dim.framework
+                AND m.reporting_period = dim.reporting_period
+            WHERE m.currently_active = true
+            """,
+    )
+    fun findActiveDatasetsByDimensionsJson(
+        @Param("jsonPayload") jsonPayload: String,
+    ): List<DataMetaInformationEntity>
+
+    /**
+     * Retrieves active dataset dimensions matching the given filter criteria.
+     * An empty JSON array for any filter means "match all" (wildcard).
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            """
+            WITH
+                company_filter AS (
+                    SELECT value AS company_id
+                    FROM jsonb_array_elements_text(CAST(:companyIds AS jsonb))
+                ),
+                type_filter AS (
+                    SELECT value AS data_type
+                    FROM jsonb_array_elements_text(CAST(:dataTypes AS jsonb))
+                ),
+                period_filter AS (
+                    SELECT value AS reporting_period
+                    FROM jsonb_array_elements_text(CAST(:reportingPeriods AS jsonb))
+                )
+            SELECT m.*
+            FROM data_meta_information m
+            WHERE m.currently_active = true
+              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 OR m.company_id IN (SELECT company_id FROM company_filter))
+              AND (jsonb_array_length(CAST(:dataTypes AS jsonb)) = 0 OR m.data_type IN (SELECT data_type FROM type_filter))
+              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
+            """,
+    )
+    fun findActiveDatasetDimensionsByFilter(
+        @Param("companyIds") companyIds: String,
+        @Param("dataTypes") dataTypes: String,
+        @Param("reportingPeriods") reportingPeriods: String,
+    ): List<DataMetaInformationEntity>
+
+    /**
      * Retrieves the most recent (in terms of reporting period) active DataMetaInformationEntity for each company and the specified dataType
      *
      * @param companyIds the list of company IDs

@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
@@ -56,9 +54,6 @@ class DataAvailabilityCheckerTest {
         }
     }
 
-    @PersistenceContext
-    private lateinit var entityManager: EntityManager
-
     @Autowired
     private lateinit var dataMetaInformationRepository: DataMetaInformationRepository
 
@@ -67,6 +62,9 @@ class DataAvailabilityCheckerTest {
 
     @Autowired
     private lateinit var dataCompositionService: DataCompositionService
+
+    @Autowired
+    private lateinit var dataMetaInformationRepositoryHelper: DataMetaInformationRepositoryHelper
 
     @Autowired
     private lateinit var storedCompanyRepository: StoredCompanyRepository
@@ -82,7 +80,11 @@ class DataAvailabilityCheckerTest {
 
     @BeforeEach
     fun setUp() {
-        dataAvailabilityChecker = DataAvailabilityChecker(entityManager, dataCompositionService, dataPointMetaInformationRepository)
+        dataAvailabilityChecker =
+            DataAvailabilityChecker(
+                dataCompositionService,
+                dataMetaInformationRepositoryHelper,
+            )
         whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
             listOf(SimpleFrameworkSpecification(IdWithRef(framework, "dummy"), "Test Framework")),
         )
@@ -336,16 +338,17 @@ class DataAvailabilityCheckerTest {
                 reportingPeriod = reportingPeriod,
             )
         dbCreationUtils.storeDataPointMetaData(dataPointType = ignoredDimensions.dataPointType)
-        val results = dataAvailabilityChecker.getViewableDataPointIds(
-            listOf(
-                ignoredDimensions,
-                BasicDataPointDimensions(
-                    companyId = companyId,
-                    dataPointType = dataPointType,
-                    reportingPeriod = reportingPeriod,
+        val results =
+            dataAvailabilityChecker.getViewableDataPointIds(
+                listOf(
+                    ignoredDimensions,
+                    BasicDataPointDimensions(
+                        companyId = companyId,
+                        dataPointType = dataPointType,
+                        reportingPeriod = reportingPeriod,
+                    ),
                 ),
             )
-        )
         assert(results.isEmpty()) { "There should be no result." }
     }
 }

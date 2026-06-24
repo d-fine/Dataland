@@ -1,7 +1,10 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointType
@@ -70,11 +73,24 @@ class DataCompositionService
          * @param datasetDimensions the list of data dimensions to filter
          * @return the list of all valid data dimensions from the original input
          */
-        fun filterOutInvalidDatasetDimensions(datasetDimensions: List<BasicDatasetDimensions>) =
-            datasetDimensions.filter { dimensions ->
-                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) &&
-                    specificationService.isFramework(dimensions.framework)
-            }
+        fun filterOutInvalidDatasetDimensions(datasetDimensions: List<BasicDataDimensions>) =
+            datasetDimensions.asSequence().filter { dimensions ->
+                ValidationUtils.isBaseDimensions(dimensions) &&
+                    specificationService.isFramework(dimensions.dataType)
+            }.map { it.toBasicDatasetDimensions() }.toList()
+
+        /**
+         * Filters out invalid entries from the filter by checking if company IDs, frameworks, and reporting periods are valid.
+         *
+         * @param dataDimentionFilter the filter to remove invalid data from
+         * @return a new filter without any invalid entries
+         */
+        fun filterOutInvalidDatasetEntries(dataDimensionFilter: DataDimensionFilter) =
+            DataDimensionFilter(
+                companyIds = dataDimensionFilter.companyIds?.filter { ValidationUtils.isUuid(it) },
+                dataTypes = dataDimensionFilter.dataTypes?.filter { specificationService.isFramework(it) },
+                reportingPeriods = dataDimensionFilter.reportingPeriods?.filter { ValidationUtils.isReportingPeriod(it) },
+            )
 
         /**
          * Filters out invalid data point dimensions by checking if the company ID, data point type, and reporting period are valid.
@@ -82,11 +98,24 @@ class DataCompositionService
          * @param dataDimensions the list of data point dimensions to filter
          * @return the list of all valid data point dimensions from the original input
          */
-        fun filterOutInvalidDataPointDimensions(dataDimensions: List<BasicDataPointDimensions>) =
+        fun filterOutInvalidDataPointDimensions(dataDimensions: List<DataPointDimensions>) =
             dataDimensions.filter { dimensions ->
-                ValidationUtils.isBaseDimensions(dimensions.toBaseDimensions()) &&
+                ValidationUtils.isBaseDimensions(dimensions) &&
                     specificationService.isDataPointType(dimensions.dataPointType)
             }
+
+        /**
+         * Filters out invalid entries from the filter by checking if company IDs, data point types, and reporting periods are valid.
+         *
+         * @param dataDimentionFilter the filter to remove invalid data from
+         * @return a new filter without any invalid entries
+         */
+        fun filterOutInvalidDataPointEntries(dataDimensionFilter: DataDimensionFilter) =
+            DataDimensionFilter(
+                companyIds = dataDimensionFilter.companyIds?.filter { ValidationUtils.isUuid(it) },
+                dataTypes = dataDimensionFilter.dataTypes?.filter { specificationService.isDataPointType(it) },
+                reportingPeriods = dataDimensionFilter.reportingPeriods?.filter { ValidationUtils.isReportingPeriod(it) },
+            )
 
         /**
          * Returns the calculation rules available for each of the given data point types.

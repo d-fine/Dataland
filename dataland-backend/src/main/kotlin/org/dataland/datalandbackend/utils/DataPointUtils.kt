@@ -52,7 +52,7 @@ class DataPointUtils
             )
 
         /**
-         * Retrieves all reporting periods with at least on active data point for a specific company and framework
+         * Retrieves all reporting periods with at least one active data point for a specific company and framework
          *
          * Generic data points (company "meta" information like "Number of Employees") are excluded to return only
          * reporting periods with actual data.
@@ -87,75 +87,5 @@ class DataPointUtils
             return relevantDataPointReportingPeriods + calculationSourceReportingPeriods
         }
 
-        /**
-         * Retrieves all active data dimensions in regard to data points given the filter parameters
-         *
-         * @param dataDimensionFilter the filter parameters for the data dimensions
-         * @return a list of all active data dimensions
-         */
-        fun getActiveDataDimensionsFromDataPoints(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
-            val dataPointMetaInformationEntities =
-                metaDataManager.getActiveDataPointMetaInformationList(dataDimensionFilter)
-            val dataPointBasedDimensions = dataPointMetaInformationEntities.map { it.toBasicDataDimensions() }
-            val frameworkBasedDimensions = getAllActiveDataDimensionsForFrameworks(dataDimensionFilter)
-            return (dataPointBasedDimensions + frameworkBasedDimensions).distinct()
-        }
 
-        /**
-         * Retrieve all active framework-based data dimensions using the given DataDimensionFilter. If no framework is specified,
-         * all frameworks are taken into account.
-         *
-         * @param dataDimensionFilter the filter to use when searching for active data dimensions
-         * @return a list of active framework data dimensions
-         */
-        private fun getAllActiveDataDimensionsForFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
-            val allRelevantDimensions = mutableListOf<BasicDataDimensions>()
-            val allAssembledFrameworks = specificationClient.listFrameworkSpecifications().map { it.framework.id }
-            val frameworks =
-                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
-                    allAssembledFrameworks
-                } else {
-                    dataDimensionFilter.dataTypes.filter { allAssembledFrameworks.contains(it) }
-                }
-            for (framework in frameworks) {
-                val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
-                val activeDataPointMetaInformation =
-                    metaDataManager.getActiveDataPointMetaInformationList(
-                        DataDimensionFilter(
-                            companyIds = dataDimensionFilter.companyIds,
-                            dataTypes = dataPointTypes.toList(),
-                            reportingPeriods = dataDimensionFilter.reportingPeriods,
-                        ),
-                    )
-                activeDataPointMetaInformation
-                    .groupBy {
-                        Pair(it.companyId, it.reportingPeriod)
-                    }.values
-                    .forEach { metaInformationEntities ->
-                        if (DataAvailabilityIgnoredFieldsUtils
-                                .containsNonIgnoredDataPoints(metaInformationEntities.map { it.dataPointType })
-                        ) {
-                            allRelevantDimensions.addAll(
-                                metaInformationEntities.map {
-                                    it.toBasicDataDimensions(framework)
-                                },
-                            )
-                        }
-                    }
-                val calculatableFrameworkDimensions =
-                    dataPointCalculator
-                        .getActiveSourceDataPointDimensions(
-                            dataPointTypes = dataPointTypes,
-                            dataDimensionFilter = dataDimensionFilter,
-                        ).map {
-                            BasicDataDimensions(
-                                companyId = it.companyId,
-                                dataType = framework,
-                                reportingPeriod = it.reportingPeriod,
-                            )
-                        }
-                allRelevantDimensions.addAll(calculatableFrameworkDimensions)
-            }
-            return allRelevantDimensions.distinct()
-        }
     }

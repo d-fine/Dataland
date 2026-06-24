@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -121,15 +122,8 @@ class DataMetaInformationManager(
      * @param dataDimensionFilter the filters to apply to the search
      * @return a list of data dimensions for which a dataset is active
      */
-    fun getActiveDataDimensionsFromDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
-        val dataMetaInformationEntities =
-            dataMetaInformationRepository.getBulkActiveDatasets(
-                companyIds = dataDimensionFilter.companyIds,
-                dataTypes = dataDimensionFilter.dataTypes,
-                reportingPeriods = dataDimensionFilter.reportingPeriods,
-            )
-        return dataMetaInformationEntities.map { it.toBasicDataDimensions() }
-    }
+    fun getActiveDataDimensionsFromDatasets(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> =
+        getActiveDataMetaInformationList(dataDimensionFilter).map { it.toBasicDataDimensions() }
 
     /**
      * Method to retrieve the latest available dataset meta information for a certain data type and a collection of companies
@@ -141,4 +135,43 @@ class DataMetaInformationManager(
         companyIds: Collection<String>,
         dataType: String,
     ): List<DataMetaInformationEntity> = dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
+
+    /**
+     * Retrieves active dataset metadata for the given exact list of dataset dimensions.
+     *
+     * @param dataDimensions the dataset dimensions to look up
+     * @return list of matching active DataMetaInformationEntity objects
+     */
+    fun getActiveDataMetaInformationList(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformationEntity> {
+        if (dataDimensions.isEmpty()) return emptyList()
+        val jsonPayload =
+            defaultObjectMapper.writeValueAsString(
+                dataDimensions.map {
+                    mapOf(
+                        "company_id" to it.companyId,
+                        "framework" to it.framework,
+                        "reporting_period" to it.reportingPeriod,
+                    )
+                },
+            )
+        return dataMetaInformationRepository.findActiveDatasetsByDimensionsJson(jsonPayload)
+    }
+
+    /**
+     * Retrieves active dataset metadata matching the given filter criteria.
+     * An empty list for any parameter means "match all" (wildcard).
+     *
+     * @param companyIds company IDs to filter by (empty = all)
+     * @param dataTypes framework names to filter by (empty = all)
+     * @param reportingPeriods reporting periods to filter by (empty = all)
+     * @return list of DataMetaInformationEntity for active datasets matching the filters
+     */
+    fun getActiveDataMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataMetaInformationEntity> =
+        if (dataDimensionFilter.isEmpty()) emptyList()
+        else dataMetaInformationRepository
+            .findActiveDatasetDimensionsByFilter(
+                defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
+                defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
+                defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
+            )
 }
