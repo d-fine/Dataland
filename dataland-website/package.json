@@ -27,7 +27,7 @@
     "@astrojs/vue": "^5.1.4",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
     "astro": "^5.7.10",
-    "typescript": "^5.7.3",
+    "typescript": "^6.0.0",
     "vue": "^3.5.32"
   },
   "devDependencies": {
