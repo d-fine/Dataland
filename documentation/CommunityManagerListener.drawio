@@ -59,7 +59,7 @@
             <mxPoint x="1040" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BEdGjauQH-SjkTQYxWv_-12" value="&lt;font size=&quot;1&quot;&gt;Exchange for &lt;b&gt;Private Data Received Events&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;(posted to by different services; the&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;Community Manager receives a message&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;on this exchange from the &lt;b&gt;Backend&lt;/b&gt; after&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;metadata for the new VSME dataset&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;have been persisted)&lt;/font&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="BEdGjauQH-SjkTQYxWv_-11" vertex="1" connectable="0">
+        <mxCell id="BEdGjauQH-SjkTQYxWv_-12" value="&lt;font size=&quot;1&quot;&gt;Exchange for &lt;b&gt;Private Data Received Events&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;(retired private-data flow)&lt;/font&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="BEdGjauQH-SjkTQYxWv_-11" vertex="1" connectable="0">
           <mxGeometry x="-0.0218" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
