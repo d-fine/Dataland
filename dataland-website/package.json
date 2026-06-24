@@ -22,11 +22,11 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/mdx": "^6.0.0",
     "@astrojs/sitemap": "^3.3.1",
-    "@astrojs/vue": "^5.1.4",
+    "@astrojs/vue": "^6.0.0",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "astro": "^5.7.10",
+    "astro": "^6.0.0",
     "typescript": "^6.0.0",
     "vue": "^3.5.32"
   },
