@@ -2,38 +2,41 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Theresaburgh",
-			"headquartersPostalCode": "06118-6050",
-			"sector": "methodologies",
+			"headquarters": "East Sofia",
+			"headquartersPostalCode": "65562-3422",
+			"sector": "functionalities",
 			"identifiers": {
 				"Lei": [
-					"qP8fXp68xtYtx5up4vn0"
+					"hhkohQ8TcCDFa9MOdIR0"
 				],
 				"Isin": [
-					"HR32kGQnQQhH"
+					"QX6EDkOw0ocG",
+					"OByxACyxhKv5"
 				],
-				"PermId": [],
+				"PermId": [
+					"6SsbxzWVzi"
+				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"9MOdIR0KO"
+				"Duns": [
+					"P7LHz5drE"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"UzQBNaD0DZD6tWt"
+				]
 			},
-			"countryCode": "SK",
+			"countryCode": "IQ",
 			"companyContactDetails": [
-				"Darla.Christiansen@example.com",
-				"Lola.Mann73@example.com",
-				"Colleen.Leuschke83@example.com"
+				"Clementine_Kunde@example.com",
+				"James78@example.com",
+				"Benny_Hodkiewicz25@example.com"
 			],
 			"companyAlternativeNames": [
-				"Hoppe, Von and Monahan",
-				"Kihn LLC",
-				"Runte Inc"
+				"Wilderman-Wolf, Little and Crona"
 			],
-			"companyLegalForm": null,
-			"website": "https://aggravating-outrun.org",
-			"fiscalYearEnd": "17-Nov",
+			"companyLegalForm": "AG",
+			"website": "https://wrathful-synergy.biz",
+			"fiscalYearEnd": "16-Feb",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -50,6 +53,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2020"
 	}
 ]

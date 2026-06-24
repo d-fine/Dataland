@@ -2,38 +2,42 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Bednarburgh",
-			"headquartersPostalCode": "37783-0713",
-			"sector": null,
+			"headquarters": "West Uriahtown",
+			"headquartersPostalCode": "17630-4360",
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [
-					"LmPvXXYeJxZ39PfAZS9Z"
+					"wH7vHiesPQi0atPOEBT2"
 				],
 				"Isin": [
-					"xatOKm3hKSW2",
-					"zabX6u6nyi8h"
+					"mHJ4ECZhoXIa"
 				],
-				"PermId": [],
+				"PermId": [
+					"poRMOq3RVK"
+				],
 				"Ticker": [],
-				"Duns": [
-					"PQi0atPOE"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"T2BKlB2Xr"
+					"QOH2GOMkl"
 				],
-				"CompanyRegistrationNumber": [
-					"S7bQOmHJ4ECZhoX"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CI",
-			"companyContactDetails": [],
+			"countryCode": "BA",
+			"companyContactDetails": [
+				"Eveline19@example.com",
+				"Verona_Brown46@example.com",
+				"Joyce.Predovic@example.com",
+				"Makenna.Sawayn35@example.com",
+				"Wellington.Schuppe-Wilderman64@example.com"
+			],
 			"companyAlternativeNames": [
-				"Rohan - Hilll",
-				"Schroeder Inc"
+				"Bernhard - Russel",
+				"Gislason - Bartoletti",
+				"Pacocha LLC"
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://pink-pile.info",
-			"fiscalYearEnd": "27-Nov",
+			"website": "https://important-solvency.biz",
+			"fiscalYearEnd": "22-May",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -110,6 +114,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2024"
 	}
 ]

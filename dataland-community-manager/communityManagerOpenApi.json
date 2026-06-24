@@ -959,8 +959,7 @@
                   "eutaxonomy-non-financials-2026-73",
                   "nuclear-and-gas",
                   "lksg",
-                  "pcaf",
-                  "vsme"
+                  "pcaf"
                 ]
               }
             }
@@ -1219,8 +1218,7 @@
                   "eutaxonomy-non-financials-2026-73",
                   "nuclear-and-gas",
                   "lksg",
-                  "pcaf",
-                  "vsme"
+                  "pcaf"
                 ]
               }
             }
@@ -1402,8 +1400,7 @@
                   "eutaxonomy-non-financials-2026-73",
                   "nuclear-and-gas",
                   "lksg",
-                  "pcaf",
-                  "vsme"
+                  "pcaf"
                 ]
               }
             }
@@ -1987,8 +1984,7 @@
               "eutaxonomy-non-financials-2026-73",
               "nuclear-and-gas",
               "lksg",
-              "pcaf",
-              "vsme"
+              "pcaf"
             ]
           },
           "reportingPeriods": {
@@ -2106,8 +2102,7 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
-              "pcaf",
-              "vsme"
+              "pcaf"
             ],
             "items": {
               "type": "string",
@@ -2119,8 +2114,7 @@
                 "eutaxonomy-non-financials-2026-73",
                 "nuclear-and-gas",
                 "lksg",
-                "pcaf",
-                "vsme"
+                "pcaf"
               ]
             }
           },
@@ -2664,8 +2658,7 @@
               "eutaxonomy-non-financials-2026-73",
               "nuclear-and-gas",
               "lksg",
-              "pcaf",
-              "vsme"
+              "pcaf"
             ]
           },
           "reportingPeriod": {

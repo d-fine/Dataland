@@ -2,18 +2,18 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-05-25",
+				"dataDate": "2024-10-24",
 				"fiscalYearDeviation": {
-					"value": "Deviation"
+					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-12-27"
+					"value": "2024-10-02"
 				},
 				"referencedReports": {
-					"IntegratedReport": {
+					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-02-08"
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-02-09"
 					}
 				}
 			}
@@ -21,16 +21,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 6442,
+					"value": 1276,
 					"dataSource": {
-						"page": "1061",
-						"fileName": "IntegratedReport",
+						"page": "328",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "blockchains",
+						"tagName": "initiatives",
 						"publicationDate": null
 					},
-					"comment": "synthesize auxiliary application",
-					"quality": "Incomplete"
+					"comment": "compress wireless port",
+					"quality": "Reported"
 				}
 			}
 		},
@@ -39,26 +39,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "No",
 					"dataSource": {
-						"page": "752",
-						"fileName": "IntegratedReport",
+						"page": "34-143",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
+						"tagName": "communities",
 						"publicationDate": null
 					},
-					"comment": "synthesize haptic pixel",
-					"quality": "Incomplete"
+					"comment": "input online bus",
+					"quality": "Audited"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "763",
-						"fileName": "IntegratedReport",
+						"page": "913-1059",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "platforms",
+						"tagName": "methodologies",
 						"publicationDate": null
 					},
-					"comment": "hack primary transmitter",
-					"quality": "Estimated"
+					"comment": "parse multi-byte protocol",
+					"quality": "Reported"
 				}
 			}
 		}
