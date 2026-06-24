@@ -349,3 +349,13 @@ Remove the VSME framework, VSME-specific tests and test data sources, EuroDaT se
 - [ ] Re-check fake fixture verification and decide whether the expected generated diff should be committed or whether generator cleanup is still incomplete.
 - [ ] Update the completion criteria if fake fixture verification is now green.
 - [ ] Include the final CI-failure rationale in the PR notes: VSME private-data behavior was removed, generic request coverage was retained with public frameworks, and generated files were updated only through generators.
+
+## Phase 15: RabbitMQ Admin Queue CI Fix
+
+- [x] Remove retired private-data queues from the RabbitMQ admin Cypress expectation.
+- [x] Run `npm --prefix ./dataland-frontend run checkcypresscompilation` via `@command-summarizer`.
+
+## Phase 15 Notes
+
+- Removed `dataStoredBackendPrivateDataManager` and `privateRequestReceivedCommunityManager` from `RabbitMQAdmin.ts` because both queues belonged to the removed VSME/private-data/external-storage flow. They are no longer declared by any active listener or `QueueNames` constant, so the admin test should not require them.
+- `npm --prefix ./dataland-frontend run checkcypresscompilation` passed via `@command-summarizer` after the queue expectation update.
