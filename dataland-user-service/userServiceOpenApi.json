@@ -1400,7 +1400,6 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
-            "nullable": true,
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1494,7 +1493,6 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
-            "nullable": true,
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1581,7 +1579,6 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
-            "nullable": true,
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1623,14 +1620,12 @@
           },
           "isMonitored": {
             "type": "boolean",
-            "description": "Boolean flag that indicates whether the portfolio is monitored.",
-            "nullable": true
+            "description": "Boolean flag that indicates whether the portfolio is monitored."
           },
           "monitoredFrameworks": {
             "uniqueItems": true,
             "type": "array",
             "description": "A list of frameworks for which the companies in the portfolio are actively monitored.",
-            "nullable": true,
             "example": [
               "sfdr"
             ],
@@ -1644,7 +1639,6 @@
           "timeWindowThreshold": {
             "type": "string",
             "description": "The time window threshold for portfolio monitoring. Determines the lookback period for data requests (Standard: 6 months, Extended: 16 months).",
-            "nullable": true,
             "example": "Standard",
             "enum": [
               "Standard",
@@ -1655,7 +1649,6 @@
             "uniqueItems": true,
             "type": "array",
             "description": "A list of user IDs with whom the portfolio is shared.",
-            "nullable": true,
             "example": [
               "1e63a842-1e65-43ed-b78a-5e7cec155c28"
             ],
@@ -1689,7 +1682,6 @@
           "sector": {
             "type": "string",
             "description": "The industry or sector in which the company operates.",
-            "nullable": true,
             "example": "Information Technology"
           },
           "countryCode": {
@@ -1743,7 +1735,6 @@
           "userEmail": {
             "type": "string",
             "description": "The email address of the Dataland user in question.",
-            "nullable": true,
             "example": "test@example.com"
           },
           "portfolioAccessRole": {
@@ -1809,8 +1800,7 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           }
         }
       },

@@ -348,8 +348,7 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           }
         }
       },

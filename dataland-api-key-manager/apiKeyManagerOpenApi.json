@@ -426,28 +426,23 @@
         "type": "object",
         "properties": {
           "keycloakUserId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "keycloakRoles": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
             }
           },
           "expiryDate": {
             "type": "integer",
-            "format": "int64",
-            "nullable": true
+            "format": "int64"
           },
           "active": {
-            "type": "boolean",
-            "nullable": true
+            "type": "boolean"
           },
           "validationMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -499,8 +494,7 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           }
         }
       },

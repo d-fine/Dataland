@@ -2007,7 +2007,6 @@
             "uniqueItems": true,
             "type": "array",
             "description": "A list of company contact email addresses specified by the user creating the request.",
-            "nullable": true,
             "example": [
               "test@example.com"
             ],
@@ -2018,7 +2017,6 @@
           "message": {
             "type": "string",
             "description": "A message to be sent to the specified company contacts.",
-            "nullable": true,
             "example": "Please consider sharing your data on Dataland."
           },
           "notifyMeImmediately": {
@@ -2224,7 +2222,6 @@
           "resourceUrl": {
             "type": "string",
             "description": "A URL pointing to the resource identified by resourceId.",
-            "nullable": true,
             "example": "https://dataland.com/requests/1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
@@ -2251,7 +2248,6 @@
           "email": {
             "type": "string",
             "description": "The email address of the Dataland user in question.",
-            "nullable": true,
             "example": "test@example.com"
           },
           "id": {
@@ -2262,13 +2258,11 @@
           "firstName": {
             "type": "string",
             "description": "The first name of the Dataland user in question.",
-            "nullable": true,
             "example": "Jane"
           },
           "lastName": {
             "type": "string",
             "description": "The last name of the Dataland user in question.",
-            "nullable": true,
             "example": "Doe"
           }
         }
@@ -2342,26 +2336,15 @@
         "type": "object",
         "properties": {
           "requestStatus": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RequestStatus"
-              }
-            ]
+            "$ref": "#/components/schemas/RequestStatus"
           },
           "accessStatus": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccessStatus"
-              }
-            ]
+            "$ref": "#/components/schemas/AccessStatus"
           },
           "contacts": {
             "uniqueItems": true,
             "type": "array",
             "description": "A list of company contact email addresses specified by the user creating the request.",
-            "nullable": true,
             "example": [
               "test@example.com"
             ],
@@ -2372,32 +2355,23 @@
           "message": {
             "type": "string",
             "description": "A message to be sent to the specified company contacts.",
-            "nullable": true,
             "example": "Please consider sharing your data on Dataland."
           },
           "requestPriority": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RequestPriority"
-              }
-            ]
+            "$ref": "#/components/schemas/RequestPriority"
           },
           "notifyMeImmediately": {
             "type": "boolean",
-            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email.",
-            "nullable": true
+            "description": "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of the posted requests. If set to false, these updates are listed in the weekly summary email."
           },
           "adminComment": {
             "type": "string",
             "description": "The admin comment of the data request.",
-            "nullable": true,
             "example": "Should be processed with high priority."
           },
           "requestStatusChangeReason": {
             "type": "string",
             "description": "The reason for the status change.",
-            "nullable": true,
             "example": "The company has not published data for this reporting period yet."
           }
         }
@@ -2455,7 +2429,6 @@
           "userEmailAddress": {
             "type": "string",
             "description": "The email address of the user who created this data request.",
-            "nullable": true,
             "example": "test@example.com"
           },
           "notifyMeImmediately": {
@@ -2514,7 +2487,6 @@
           "adminComment": {
             "type": "string",
             "description": "The admin comment of the data request.",
-            "nullable": true,
             "example": "Should be processed with high priority."
           }
         }
@@ -2540,7 +2512,6 @@
           "message": {
             "type": "string",
             "description": "A message specified by the user creating the request to be sent to the company contacts.",
-            "nullable": true,
             "example": "Please consider sharing your data on Dataland."
           },
           "creationTimestamp": {
@@ -2575,13 +2546,11 @@
           "requestStatusChangeReason": {
             "type": "string",
             "description": "The reason for the status change.",
-            "nullable": true,
             "example": "The company has not published data for this reporting period yet."
           },
           "answeringDataId": {
             "type": "string",
             "description": "The data ID of the data set that answered the request.",
-            "nullable": true,
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
@@ -2615,7 +2584,6 @@
           "userEmailAddress": {
             "type": "string",
             "description": "The email address of the user who created this data request.",
-            "nullable": true,
             "example": "test@example.com"
           },
           "creationTimestamp": {
@@ -2662,7 +2630,6 @@
           "adminComment": {
             "type": "string",
             "description": "The admin comment of the data request.",
-            "nullable": true,
             "example": "Should be processed with high priority."
           }
         }
@@ -2689,7 +2656,6 @@
           "dataType": {
             "type": "string",
             "description": "The associated reporting framework or data point type (as applicable).",
-            "nullable": true,
             "enum": [
               "sfdr",
               "eutaxonomy-financials",
@@ -2705,7 +2671,6 @@
           "reportingPeriod": {
             "type": "string",
             "description": "The relevant reporting period (e.g. a fiscal year).",
-            "nullable": true,
             "example": "2023"
           },
           "datalandCompanyId": {
@@ -2754,13 +2719,11 @@
           "firstName": {
             "type": "string",
             "description": "The first name of the user in the company role assignment.",
-            "nullable": true,
             "example": "Jane"
           },
           "lastName": {
             "type": "string",
             "description": "The last name of the user in the company role assignment.",
-            "nullable": true,
             "example": "Doe"
           }
         }
@@ -2798,8 +2761,7 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           }
         }
       },

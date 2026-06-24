@@ -657,8 +657,7 @@
             "type": "string"
           },
           "referencedReportJsonPath": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -684,8 +683,7 @@
             "type": "object"
           },
           "referencedReportJsonPath": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -738,7 +736,6 @@
           },
           "constraints": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -821,8 +818,7 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           }
         }
       },
