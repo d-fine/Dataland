@@ -12,7 +12,7 @@ org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring"
 org-sonarqube = { id = "org.sonarqube", version = "7.3.1.8318" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.7" }
-org-openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.22.0" }
 ##                                                           ⬆ = "7.19.0" }
 ##                                                           ⬆ = "7.20.0" }
 ##                                                           ⬆ = "7.21.0" }
