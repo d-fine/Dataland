@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.services.PrivateDataAccessChecker
 import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -38,7 +37,6 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myObjectMapper: ObjectMapper,
     @Autowired var logMessageBuilder: LogMessageBuilder,
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired var privateDataAccessChecker: PrivateDataAccessChecker,
     @Autowired var companyRoleChecker: CompanyRoleChecker,
 ) : ${frameworkDataType.shortenedQualifier}Api {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -117,11 +115,8 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             val authentication = DatalandAuthentication.fromContextOrNull()
             val frameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>()
             metaInfos.filter {
-                it.isDatasetViewableByUser(authentication) && (
-                    privateDataAccessChecker
-                        .hasUserAccessToPrivateResources(it.dataId) || companyRoleChecker
-                        .hasCurrentUserAnyRoleForCompany(companyId)
-                    )
+                it.isDatasetViewableByUser(authentication) &&
+                    companyRoleChecker.hasCurrentUserAnyRoleForCompany(companyId)
             }
                 .forEach {
                     val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
