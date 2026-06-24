@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.repositories.DataPointMetaInformationReposit
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -223,4 +224,28 @@ class DataAvailabilityChecker
                         BasicBaseDimensions(it.key, dataPointMetaInfos.first().reportingPeriod) to dataPointMetaInfos
                     }
                 }.toMap()
+
+        /**
+         * Checks which of the provided data dimensions have active data (dataset or data point).
+         *
+         * @param dimensions List of data dimensions (each combining companyId, dataType, and reportingPeriod).
+         * @return The subset of the input dimensions for which active data exists.
+         */
+        fun getAvailableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> = TODO("to be implemented")
+
+        /**
+         * Searches for available data dimensions matching the provided filter criteria.
+         *
+         * Empty lists are treated as wildcards (match all values for that filter dimension).
+         *
+         * @param companyIds The company IDs to filter by (empty = all companies).
+         * @param frameworksOrDataPointTypes The framework or data-point type names to filter by (empty = all types).
+         * @param reportingPeriods The reporting periods to filter by (empty = all periods).
+         * @return All active data dimensions matching the filter criteria.
+         */
+        fun getAvailableDimensions(
+            companyIds: List<String>,
+            frameworksOrDataPointTypes: List<String>,
+            reportingPeriods: List<String>,
+        ): List<BasicDataDimensions> = TODO("to be implemented")
     }
