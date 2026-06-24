@@ -5,9 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
-import org.dataland.datalandcommunitymanager.entities.MessageEntity
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
@@ -29,7 +26,6 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
@@ -38,7 +34,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
-import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import java.util.UUID
 
@@ -209,70 +204,6 @@ class SingleDataRequestManagerTest {
         ).buildSingleDataRequestInternalMessageAndSendCEMessage(
             any(),
             anyString(),
-        )
-    }
-
-    @Test
-    fun `validate that access request is created and email is send`() {
-        val reportingPeriod = "2020"
-        val userId = "1234-221-1111elf"
-        val contacts = setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
-        val message = "MESSAGE"
-        val request =
-            SingleDataRequest(
-                companyIdentifier = companyIdRegexSafeCompanyId, dataType = DataTypeEnum.vsme,
-                reportingPeriods = setOf(reportingPeriod), contacts = contacts, message = message,
-            )
-
-        `when`(
-            mockCompanyRolesManager.getCompanyRoleAssignmentsByParameters(
-                CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, null,
-            ),
-        ).thenReturn(
-            listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, "123")),
-        )
-
-        `when`(
-            mockCommunityManagerDataRequestProcessingUtils.matchingDatasetExists(
-                companyIdRegexSafeCompanyId,
-                reportingPeriod,
-                DataTypeEnum.vsme,
-            ),
-        ).thenReturn(true)
-
-        `when`(
-            mockDataAccessManager.hasAccessToPrivateDataset(
-                companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme, userId,
-            ),
-        ).thenReturn(false)
-
-        singleDataRequestManager.processSingleDataRequest(request)
-
-        verifyExpectedBehaviour(userId, reportingPeriod, contacts, message)
-    }
-
-    private fun verifyExpectedBehaviour(
-        userId: String,
-        reportingPeriod: String,
-        contacts: Set<String>,
-        message: String,
-    ) {
-        verify(mockDataAccessManager, times(1)).createAccessRequestToPrivateDataset(
-            userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
-        )
-
-        verify(mockAccessRequestEmailBuilder, times(1)).notifyCompanyOwnerAboutNewRequest(any(), any())
-
-        verifyNoInteractions(mockSingleDataRequestEmailMessageBuilder)
-
-        verify(mockCommunityManagerDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(
-            userId = any(),
-            datalandCompanyId = any(),
-            dataType = any(),
-            notifyMeImmediately = any(),
-            reportingPeriod = any(),
-            contacts = any(),
-            message = any(),
         )
     }
 

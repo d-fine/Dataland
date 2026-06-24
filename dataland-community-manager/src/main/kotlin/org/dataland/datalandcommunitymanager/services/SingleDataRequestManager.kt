@@ -146,18 +146,7 @@ class SingleDataRequestManager
             reportingPeriod: String,
             preprocessedRequest: PreprocessedRequest,
         ): Map<String, String> =
-            if (shouldCreateAccessRequestToPrivateDataset(
-                    dataType = preprocessedRequest.dataType, companyId = preprocessedRequest.companyId,
-                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
-                )
-            ) {
-                dataAccessManager.createAccessRequestToPrivateDataset(
-                    userId = preprocessedRequest.userId, companyId = preprocessedRequest.companyId,
-                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
-                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
-                )
-                mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
-            } else if (communityManagerDataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
+            if (communityManagerDataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
@@ -179,35 +168,6 @@ class SingleDataRequestManager
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
-
-        private fun shouldCreateAccessRequestToPrivateDataset(
-            dataType: DataTypeEnum,
-            companyId: String,
-            reportingPeriod: String,
-            userId: String,
-        ): Boolean {
-            val matchingDatasetExists =
-                communityManagerDataRequestProcessingUtils.matchingDatasetExists(
-                    companyId = companyId, reportingPeriod = reportingPeriod,
-                    dataType = dataType,
-                )
-            val hasAccessToPrivateDataset =
-                dataAccessManager.hasAccessToPrivateDataset(
-                    companyId = companyId,
-                    reportingPeriod = reportingPeriod, dataType = dataType, userId = userId,
-                )
-            val accessRequestAlreadyInPendingStatus =
-                dataAccessManager.existsAccessRequestWithNonPendingStatus(
-                    companyId = companyId, framework = dataType,
-                    reportingPeriod = reportingPeriod, userId = userId,
-                )
-            return (
-                dataType == DataTypeEnum.vsme &&
-                    matchingDatasetExists &&
-                    !hasAccessToPrivateDataset &&
-                    !accessRequestAlreadyInPendingStatus
-            )
-        }
 
         private fun performQuotaCheckForNonPremiumUser(
             userId: String,

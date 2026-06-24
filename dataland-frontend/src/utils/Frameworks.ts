@@ -3,11 +3,10 @@ import type { DataPointDisplay } from '@/utils/DataPoint.ts';
 
 /**
  * This function checks if a framework is private
- * @param framework the framework to check
  * @returns true if the framework is private, false otherwise
  */
-export function isFrameworkPrivate(framework: DataTypeEnum): boolean {
-  return framework == DataTypeEnum.Vsme;
+export function isFrameworkPrivate(): boolean {
+  return false;
 }
 
 /**
@@ -21,11 +20,10 @@ export function isFrameworkPublic(framework: DataTypeEnum): boolean {
 
 /**
  * This function checks if a framework is editable
- * @param framework the framework to check
  * @returns true if the framework is editable, false otherwise
  */
-export function isFrameworkEditable(framework: DataTypeEnum): boolean {
-  return framework != DataTypeEnum.Vsme;
+export function isFrameworkEditable(): boolean {
+  return true;
 }
 
 export interface DataPointDataTableRefProps {

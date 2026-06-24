@@ -131,7 +131,7 @@ import {
   type QaStatus,
 } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
-import { AxiosError, type AxiosRequestConfig } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -319,13 +319,8 @@ async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
     isDataProcessedSuccessfully.value = true;
     emit('updateActiveDataMetaInfoForChosenFramework', mapOfReportingPeriodToActiveDataset.value);
   } catch (error) {
-    if (error instanceof AxiosError && error?.status === 403 && props.dataType === 'vsme') {
-      await getMetaData();
-      setActiveDataForCurrentCompanyAndFramework();
-    } else {
-      isDataProcessedSuccessfully.value = false;
-      console.error(error);
-    }
+    isDataProcessedSuccessfully.value = false;
+    console.error(error);
   }
 }
 

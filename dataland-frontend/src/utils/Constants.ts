@@ -3,12 +3,8 @@ import { DataTypeEnum } from '@clients/backend';
 // - Available frameworks settings
 
 export const ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER = Object.values(DataTypeEnum);
-export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework == DataTypeEnum.Vsme
-);
-export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework != DataTypeEnum.Vsme
-);
+export const PRIVATE_FRAMEWORKS: DataTypeEnum[] = [];
+export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 const MAIN_FRAMEWORKS = new Set([

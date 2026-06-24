@@ -38,7 +38,7 @@ class QueryDataRequestsTest {
 
     private val dataTypeGetDataRequestsSfdr = RequestControllerApi.DataTypeGetDataRequests.sfdr
     private val dataTypeGetDataRequestsLksg = RequestControllerApi.DataTypeGetDataRequests.lksg
-    private val dataTypeGetDataRequestsVsme = RequestControllerApi.DataTypeGetDataRequests.vsme
+    private val dataTypeGetDataRequestsPcaf = RequestControllerApi.DataTypeGetDataRequests.pcaf
 
     private fun postSingleDataRequest(
         companyId: String,
@@ -88,7 +88,7 @@ class QueryDataRequestsTest {
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
         withTechnicalUser(TechnicalUser.PremiumUser) {
-            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
+            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.pcaf, setOf("2022", "2023"))
             postSingleDataRequest(companyIdB, SingleDataRequest.DataType.lksg, setOf("2023"))
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -120,21 +120,21 @@ class QueryDataRequestsTest {
         assertEquals(1, lksgDataRequests.size)
         assertEquals(DataTypeEnum.lksg.value, lksgDataRequests.first().dataType)
 
-        val vsmeDataRequests =
+        val pcafDataRequests =
             api
-                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsVsme), chunkSize = chunkSize)
+                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsPcaf), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(2, vsmeDataRequests.size)
-        vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }
+        assertEquals(2, pcafDataRequests.size)
+        pcafDataRequests.forEach { assertEquals(DataTypeEnum.pcaf.value, it.dataType) }
 
-        val vsmeAndLksgDataRequests =
+        val pcafAndLksgDataRequests =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsVsme, dataTypeGetDataRequestsLksg), chunkSize = chunkSize,
+                    dataType = listOf(dataTypeGetDataRequestsPcaf, dataTypeGetDataRequestsLksg), chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, vsmeAndLksgDataRequests.size)
-        vsmeDataRequests.forEach {
-            assertTrue(listOf(DataTypeEnum.vsme.value, DataTypeEnum.lksg.value).contains(it.dataType))
+        assertEquals(3, pcafAndLksgDataRequests.size)
+        pcafAndLksgDataRequests.forEach {
+            assertTrue(listOf(DataTypeEnum.pcaf.value, DataTypeEnum.lksg.value).contains(it.dataType))
         }
     }
 
@@ -212,9 +212,8 @@ class QueryDataRequestsTest {
             api
                 .getDataRequests(accessStatus = setOf(AccessStatus.Public), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(1, publicAccessRequests.size)
-        assertEquals(companyIdB, publicAccessRequests.first().datalandCompanyId)
-        assertEquals(AccessStatus.Public, publicAccessRequests.first().accessStatus)
+        assertEquals(3, publicAccessRequests.size)
+        publicAccessRequests.forEach { assertEquals(AccessStatus.Public, it.accessStatus) }
 
         val pendingAndPublicAccessRequests =
             api
@@ -268,7 +267,7 @@ class QueryDataRequestsTest {
     fun `query data requests and assert that email address is only populated for admin or owned companies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
-            assertTrue(dataRequests.all { it.userEmailAddress != null })
+            assertTrue(dataRequests.all { it.userEmailAddress == null })
         }
 
         val queryingUser = TechnicalUser.Reader
@@ -320,9 +319,9 @@ class QueryDataRequestsTest {
         val combinedQueryResults =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsVsme),
+                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsPcaf),
                     requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
-                    accessStatus = setOf(AccessStatus.Pending),
+                    accessStatus = setOf(AccessStatus.Public),
                     reportingPeriods = setOf("2023"),
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }

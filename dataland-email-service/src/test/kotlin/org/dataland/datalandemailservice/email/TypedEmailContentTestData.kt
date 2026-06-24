@@ -23,7 +23,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val REQUESTER_EMAIL = "requester@example.com"
         const val DATA_TYPE_A = "eutaxonomy-non-financials"
         const val DATA_TYPE_LABEL_A = "EU Taxonomy for non-financial companies"
-        const val DATA_TYPE_LABEL_B = "VSME"
+        const val DATA_TYPE_LABEL_B = "PCAF"
         const val REPORTING_PERIOD_A = "2020"
         const val REPORTING_PERIOD_B = "2023"
         const val REPORTING_PERIOD_C = "2024"

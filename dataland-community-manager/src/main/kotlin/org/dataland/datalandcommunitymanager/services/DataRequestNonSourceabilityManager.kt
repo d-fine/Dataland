@@ -119,21 +119,14 @@ class DataRequestNonSourceabilityManager
                     requestStatusChangeReason = requestStatusChangeReason,
                 )
             val earlierQaApproval = dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(dataRequestEntity)
-            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                requestEmailManager.sendNotificationsSpecificToAccessRequests(dataRequestEntity, patch, correlationId)
+            if (dataRequestEntity.notifyMeImmediately) {
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, RequestStatus.NonSourceable, requestStatusChangeReason, earlierQaApproval, correlationId,
                 )
-            } else {
-                if (dataRequestEntity.notifyMeImmediately) {
-                    requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                        dataRequestEntity, RequestStatus.NonSourceable, requestStatusChangeReason, earlierQaApproval, correlationId,
-                    )
-                }
-                dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
-                    dataRequestEntity, RequestStatus.NonSourceable, dataRequestEntity.notifyMeImmediately, earlierQaApproval,
-                )
             }
+            dataRequestSummaryNotificationService.createUserSpecificNotificationEvent(
+                dataRequestEntity, RequestStatus.NonSourceable, dataRequestEntity.notifyMeImmediately, earlierQaApproval,
+            )
             updateEntity(dataRequestEntity, patch)
         }
 

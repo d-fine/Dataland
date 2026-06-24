@@ -2,7 +2,6 @@ import {
   generateCompanyRoleAssignment,
   mountCompanyCockpitWithAuthentication,
   mockRequestsOnMounted,
-  validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
 import {
   type AggregatedFrameworkDataSummary,
@@ -13,12 +12,7 @@ import {
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { CompanyRole } from '@clients/communitymanager';
-import {
-  KEYCLOAK_ROLE_PREMIUM_USER,
-  KEYCLOAK_ROLE_UPLOADER,
-  KEYCLOAK_ROLE_USER,
-  KEYCLOAK_ROLES,
-} from '@/utils/KeycloakRoles';
+import { KEYCLOAK_ROLE_PREMIUM_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
@@ -94,13 +88,11 @@ describe('Component test for the company cockpit', () => {
    * @param isProvideDataButtonExpected determines if a provide-data-button is expected to be found in the panels
    * @param isMobileViewActive determines whether the company cockpit page is in mobile view mode
    * @param frameworksToTest the frameworks that are tested for
-   * @param isCompanyOwner is the current user company owner
    */
   function validateDisplayedFrameworkSummaryPanels(
     isProvideDataButtonExpected: boolean,
     isMobileViewActive: boolean,
-    frameworksToTest: Set<DataTypeEnum>,
-    isCompanyOwner: boolean = false
+    frameworksToTest: Set<DataTypeEnum>
   ): void {
     const frameworksWithoutProvideDataButton = new Set([
       'lksg',
@@ -126,10 +118,6 @@ describe('Component test for the company cockpit', () => {
       } else {
         cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('not.exist');
       }
-      if (frameworkName == 'vsme') {
-        validateVsmeFrameworkSummaryPanel(isCompanyOwner);
-        return;
-      }
       if (isProvideDataButtonExpected) {
         if (!frameworksWithoutProvideDataButton.has(frameworkName)) {
           cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
@@ -148,29 +136,21 @@ describe('Component test for the company cockpit', () => {
    */
   function validateFrameworkSummaryPanels(
     isProvideDataButtonExpected: boolean,
-    isMobileViewActive: boolean = false,
-    isCompanyOwner: boolean = false
+    isMobileViewActive: boolean = false
   ): void {
     validateDisplayedFrameworkSummaryPanels(
       isProvideDataButtonExpected,
       isMobileViewActive,
-      initiallyDisplayedFrameworks,
-      isCompanyOwner
+      initiallyDisplayedFrameworks
     );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
-    validateDisplayedFrameworkSummaryPanels(
-      isProvideDataButtonExpected,
-      isMobileViewActive,
-      allFrameworks,
-      isCompanyOwner
-    );
+    validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, isMobileViewActive, allFrameworks);
     cy.get('[data-test=toggleShowAll]').contains('SHOW LESS').click();
     validateDisplayedFrameworkSummaryPanels(
       isProvideDataButtonExpected,
       isMobileViewActive,
-      initiallyDisplayedFrameworks,
-      isCompanyOwner
+      initiallyDisplayedFrameworks
     );
     cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
   }
@@ -291,20 +271,6 @@ describe('Component test for the company cockpit', () => {
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], []);
     validateSingleDataRequestButton();
   });
-
-  for (const keycloakRole of KEYCLOAK_ROLES) {
-    it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
-      const hasCompanyAtLeastOneOwner = true;
-      mockRequestsOnMounted(
-        hasCompanyAtLeastOneOwner,
-        companyInformationForTest,
-        mockMapOfDataTypeToAggregatedFrameworkDataSummary
-      );
-      mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
-      cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
-      validateVsmeFrameworkSummaryPanel(false);
-    });
-  }
 
   it('Check for all expected elements for an uploader-user on a mobile device for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;

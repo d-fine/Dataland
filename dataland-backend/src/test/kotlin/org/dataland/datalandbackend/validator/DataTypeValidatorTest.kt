@@ -23,7 +23,6 @@ class DataTypeValidatorTest {
             "nuclear-and-gas",
             "pcaf",
             "lksg",
-            "vsme",
         ],
     )
     fun `should return true for valid data types`(dataType: String) {

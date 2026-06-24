@@ -22,6 +22,7 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming.removeUnallowedJavaIdentifierCharacters
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
@@ -42,6 +43,8 @@ abstract class PavedRoadFramework(
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
     val isPrivateFramework: Boolean = false,
 ) {
+    val backendPackageName = removeUnallowedJavaIdentifierCharacters(identifier)
+
     val framework =
         Framework(
             identifier = identifier,

@@ -83,14 +83,8 @@ class CommunityManagerDataRequestProcessingUtils
                     creationTime,
                 )
             dataRequestRepository.save(dataRequestEntity)
-            val accessStatus =
-                if (dataType == DataTypeEnum.vsme) {
-                    AccessStatus.Pending
-                } else {
-                    AccessStatus.Public
-                }
             addNewRequestStatusToHistory(
-                dataRequestEntity, RequestStatus.Open, accessStatus, null, creationTime,
+                dataRequestEntity, RequestStatus.Open, AccessStatus.Public, null, creationTime,
             )
 
             if (!contacts.isNullOrEmpty()) {

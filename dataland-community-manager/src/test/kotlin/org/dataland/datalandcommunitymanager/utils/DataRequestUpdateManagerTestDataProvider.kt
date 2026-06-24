@@ -75,7 +75,7 @@ class DataRequestUpdateManagerTestDataProvider {
     fun getStreamOfArgumentsToTestDataRequestUpdateUtils() =
         Stream.of(
             Arguments.of("lksg", RequestStatus.Open, RequestStatus.Answered),
-            Arguments.of("vsme", RequestStatus.Open, RequestStatus.Answered),
+            Arguments.of("pcaf", RequestStatus.Open, RequestStatus.Answered),
             Arguments.of(nuclearAndGas, RequestStatus.Open, RequestStatus.NonSourceable),
             Arguments.of("eu-taxonomy-financials", RequestStatus.Open, RequestStatus.Withdrawn),
             Arguments.of("sfdr", RequestStatus.Withdrawn, RequestStatus.Open),
@@ -151,12 +151,12 @@ class DataRequestUpdateManagerTestDataProvider {
         )
 
     fun getDummyStoredDataRequestStatusObject(
-        dataType: String,
+        @Suppress("UNUSED_PARAMETER") dataType: String,
         requestStatusBefore: RequestStatus,
     ) = StoredDataRequestStatusObject(
         status = requestStatusBefore,
         creationTimestamp = 1L,
-        accessStatus = if (dataType == "vsme") AccessStatus.Granted else AccessStatus.Public,
+        accessStatus = AccessStatus.Public,
         requestStatusChangeReason = null,
         answeringDataId = null,
     )

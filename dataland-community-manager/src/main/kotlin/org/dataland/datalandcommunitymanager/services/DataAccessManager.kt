@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -60,8 +59,7 @@ class DataAccessManager(
      * This method checks if the requesting user has been granted access to the information for a specific company,
      * reporting period and data type.
      * If the datatype input has no correspond entry in the datatype enum class then an exception thrown
-     * If datatype is not vsme the method returns
-     * If there is no access or no data set an exception is thrown.
+     * If the data type is valid, the method returns because no private frameworks remain.
      * @param companyId the companyId for which the access status should be checked
      * @param reportingPeriod the reportingPeriod for which the access status should be checked
      * @param dataType the framework dataType for which the access status should be checked
@@ -69,32 +67,16 @@ class DataAccessManager(
      */
     @Transactional
     fun hasAccessToDataset(
-        companyId: String,
-        reportingPeriod: String,
+        @Suppress("UNUSED_PARAMETER") companyId: String,
+        @Suppress("UNUSED_PARAMETER") reportingPeriod: String,
         dataType: String,
-        userId: String,
+        @Suppress("UNUSED_PARAMETER") userId: String,
     ) {
-        val dataTypeEnum =
-            DataTypeEnum.decode(dataType)
-                ?: throw InvalidInputApiException(
-                    "The provided input did not match expected values.",
-                    "The $dataType was not recognized by the system. Please check your input",
-                )
-
-        if (dataTypeEnum != DataTypeEnum.vsme) {
-            return
-        }
-
-        val hasAccess =
-            hasAccessToPrivateDataset(companyId, reportingPeriod, dataTypeEnum, userId)
-
-        if (!hasAccess) {
-            throw ResourceNotFoundApiException(
-                "The user has no access to the dataset or the dataset does not exists.",
-                "The user $userId cannot access the dataset for the company $companyId, for the data type " +
-                    "$dataType and the reporting period $reportingPeriod. The dataset may not exists.",
+        DataTypeEnum.decode(dataType)
+            ?: throw InvalidInputApiException(
+                "The provided input did not match expected values.",
+                "The $dataType was not recognized by the system. Please check your input",
             )
-        }
     }
 
     /**

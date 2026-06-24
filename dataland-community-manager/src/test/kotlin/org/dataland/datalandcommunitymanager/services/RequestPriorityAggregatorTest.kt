@@ -38,10 +38,10 @@ class RequestPriorityAggregatorTest {
             AggregatedDataRequest(DataTypeEnum.lksg, "2024", companyIdVeryHighPriority, RequestPriority.Baseline, "Open", 2),
             AggregatedDataRequest(DataTypeEnum.lksg, "2024", companyIdVeryHighPriority, RequestPriority.High, "Open", 2),
             AggregatedDataRequest(DataTypeEnum.lksg, "2024", companyIdVeryHighPriority, RequestPriority.Urgent, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Low, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Baseline, "Open", 1),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.pcaf, "2023", companyIdUrgentPriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.pcaf, "2023", companyIdUrgentPriority, RequestPriority.Baseline, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.pcaf, "2023", companyIdUrgentPriority, RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.pcaf, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1),
         )
 
     @BeforeEach

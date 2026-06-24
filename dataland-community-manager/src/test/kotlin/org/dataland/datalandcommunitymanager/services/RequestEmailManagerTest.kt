@@ -95,7 +95,7 @@ class RequestEmailManagerTest {
 
     @Test
     fun `validate that an access requested email is sent`() {
-        val dataRequestEntity = DataRequestEntity("", DataTypeEnum.vsme.name, true, "", "", 0L)
+        val dataRequestEntity = DataRequestEntity("", DataTypeEnum.lksg.name, true, "", "", 0L)
         dataRequestEntity.messageHistory =
             listOf(
                 MessageEntity(

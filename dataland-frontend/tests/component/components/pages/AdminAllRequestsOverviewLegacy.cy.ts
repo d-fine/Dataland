@@ -116,7 +116,7 @@ describe('Component test for the admin-requests-overview page', () => {
       }),
       generateExtendedStoredDataRequest({
         userEmailAddress: mailGamma,
-        framework: DataTypeEnum.Vsme,
+        framework: DataTypeEnum.Pcaf,
         requestStatus: RequestStatus.Answered,
         accessStatus: AccessStatus.Declined,
         adminComment: commentGamma,
@@ -137,7 +137,7 @@ describe('Component test for the admin-requests-overview page', () => {
     ];
     mockRequestsLarge = [];
     for (let num = 1; num <= 104; num++) {
-      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.Vsme]);
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.Pcaf]);
       const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
       const requestStatus = faker.helpers.arrayElement([
         RequestStatus.Open,

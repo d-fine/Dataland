@@ -178,7 +178,6 @@ sonar {
                 "dataland-frontend/src/frameworks/eutaxonomy-financials-2026-73/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/eutaxonomy-non-financials-2026-73/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/pcaf/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/eutaxonomy-financials/UploadConfig.ts," +
@@ -248,9 +247,8 @@ sonar {
             "dataland-frontend/src/components/general/SlideShow.vue," +
 
                 // frontend configs
-                "dataland-frontend/src/frameworks/vsme/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/pcaf/ViewConfig.ts," +
-                // -> no need to cover these two ViewConfigs because there are no custom fields
+                // -> no need to cover this ViewConfig because there are no custom fields
 
                 // backend
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
