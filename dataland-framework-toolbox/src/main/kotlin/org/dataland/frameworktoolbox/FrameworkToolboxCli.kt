@@ -88,11 +88,11 @@ class FrameworkToolboxCli {
 
     private fun buildSingleFramework(args: Array<String>) {
         require(args.size == 1) { "Command 'build' does not support more than one argument" }
-        cleanRemovedFrameworkOutputs()
         val foundFramework = allPavedRoadFrameworks.find { it.identifier == args[0] }
         requireNotNull(foundFramework) {
             "Could not find framework with identifier ${args[0]}"
         }
+        cleanRemovedFrameworkOutputs()
         foundFramework.compileFramework(datalandProject)
     }
 

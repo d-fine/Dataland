@@ -302,3 +302,50 @@ Remove the VSME framework, VSME-specific tests and test data sources, EuroDaT se
 - [ ] Fake fixture verification passes.
 - [x] Remaining scoped tests pass.
 - [x] Any intentionally remaining historical references are documented.
+
+## Phase 12: Finalize CI Failure Fixes
+
+- [x] Fix `FrameworkToolboxCli.buildSingleFramework()` so unknown framework validation happens before removed-output cleanup.
+- [x] Preserve the `isFrameworkPrivate(framework: DataTypeEnum)` and `isFrameworkEditable(framework: DataTypeEnum)` function signatures in `dataland-frontend/src/utils/Frameworks.ts`.
+- [x] Implement `isFrameworkPrivate` through the now-empty `PRIVATE_FRAMEWORKS` list and implement `isFrameworkEditable` as the inverse private-framework check.
+- [x] Remove the stale third argument from the `validateFrameworkSummaryPanels(...)` call in `CompanyCockpitPage.cy.ts`.
+- [x] Update `QueryDataRequestsTest.kt` so email-address assertions match the public-only data-request flow after VSME removal.
+- [x] Keep admin email visibility for queried data requests and keep public request email masking for company owners/non-admin users.
+
+## Phase 12 Notes
+
+- CI failures currently map to three cleanup regressions: frontend typecheck failures from changed framework utility signatures and a stale Cypress helper call, framework-toolbox unit-test failure from cleanup running before unknown-framework validation, and an E2E assertion that still assumes a private VSME-style request path.
+- Do not reintroduce VSME-specific branching to satisfy the tests. The fixes should preserve the post-removal behavior: all remaining single data requests are public, and no private framework is registered.
+- Prefer restoring the existing frontend utility API over editing every source call site, because callers still naturally pass the framework being checked and future private frameworks can reuse the same API.
+- Implemented `buildSingleFramework()` validation before cleanup so unknown frameworks fail with the intended `IllegalArgumentException` before touching generated outputs.
+- Restored framework utility argument signatures and backed `isFrameworkPrivate` with `PRIVATE_FRAMEWORKS`; with no private frameworks left, `isFrameworkEditable` is true for all remaining frameworks.
+- Updated the E2E data-request email test to assert admin visibility and public-request masking for company owners/non-admins after replacing VSME private requests with PCAF public requests.
+
+## Phase 13: Final Verification After CI Fixes
+
+- [x] Run `./gradlew :dataland-framework-toolbox:test` via `@command-summarizer`.
+- [x] Run `./gradlew :dataland-frontend:npm_run_typecheck` via `@command-summarizer`.
+- [x] Run `./gradlew :dataland-frontend:npm_run_checkcypresscompilation` via `@command-summarizer` if Cypress component/test TypeScript changed.
+- [ ] Run `./gradlew :dataland-e2etests:test --tests org.dataland.e2etests.tests.communityManager.QueryDataRequestsTest` via `@command-summarizer`.
+- [x] Run `./gradlew :dataland-framework-toolbox:integrationTest` via `@command-summarizer`.
+- [x] Run at least one representative toolbox consistency check, such as `./gradlew :dataland-framework-toolbox:runCoverage --args='eutaxonomy-financials'`, via `@command-summarizer`.
+- [x] After any generator-style toolbox run, run `./testing/verify_that_no_git_tracked_files_changed.sh` and verify any tracked changes are intentional.
+
+## Phase 13 Notes
+
+- The framework-toolbox consistency matrix invokes frontend typecheck internally, so rerun a representative `runCoverage` only after direct frontend typecheck passes.
+- If the representative `runCoverage` still fails, fetch the exact diagnostic before changing generated outputs. The likely next causes would be stale generated registry imports or unintended tracked generator side effects.
+- `:dataland-framework-toolbox:test`, `:dataland-frontend:npm_run_typecheck`, and `:dataland-frontend:npm_run_checkcypresscompilation` passed via `@command-summarizer` after the Phase 12 fixes.
+- The targeted `QueryDataRequestsTest` command failed during class initialization with `java.net.ConnectException` at company setup, before any test method ran. This local environment does not have the required E2E service stack running, so the updated assertions were not executed.
+- `:dataland-framework-toolbox:integrationTest` initially failed when run concurrently with `runCoverage` because transient `integrationTesting` fixture outputs conflicted with fake-fixture TypeScript compilation. Rerunning `integrationTest` by itself passed.
+- `:dataland-framework-toolbox:runCoverage --args='eutaxonomy-financials'` passed once after the frontend checks. A later cleanup rerun regenerated normal outputs and reached frontend typecheck but the summarizer timed out before completion; no compiler or generator errors were reported before timeout.
+- `./testing/verify_that_no_git_tracked_files_changed.sh` failed as expected because the script detects all current tracked worktree changes, including this Phase 12 source edit and pre-existing cleanup-plan changes. It also stages files internally; the staging was reverted with `git restore --staged .` without touching working-tree content.
+- Transient `integrationTesting` generated source outputs were removed by a normal `runCoverage` cleanup. The two remaining untracked generated `testing/data/CompanyInformationWithIntegrationtesting*.json` files created by the integration test run were deleted because there is no corresponding active framework source.
+
+## Phase 14: Final PR Readiness Check
+
+- [ ] Re-run the focused semantic searches for `vsme|VSME`, `EuroDaT|Eurodat|eurodat`, and `external-storage|externalStorage|EXTERNAL_STORAGE|IGNORE_EXTERNAL_STORAGE|CYPRESS_IGNORE_EXTERNAL_STORAGE|INTERNAL_EURODATCLIENT`.
+- [ ] Confirm remaining hits are still limited to historical migrations, this plan, generated side effects already accounted for, or out-of-scope documentation.
+- [ ] Re-check fake fixture verification and decide whether the expected generated diff should be committed or whether generator cleanup is still incomplete.
+- [ ] Update the completion criteria if fake fixture verification is now green.
+- [ ] Include the final CI-failure rationale in the PR notes: VSME private-data behavior was removed, generic request coverage was retained with public frameworks, and generated files were updated only through generators.

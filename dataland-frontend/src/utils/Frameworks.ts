@@ -1,12 +1,14 @@
 import { DataTypeEnum } from '@clients/backend';
 import type { DataPointDisplay } from '@/utils/DataPoint.ts';
+import { PRIVATE_FRAMEWORKS } from '@/utils/Constants.ts';
 
 /**
  * This function checks if a framework is private
+ * @param framework the framework to check
  * @returns true if the framework is private, false otherwise
  */
-export function isFrameworkPrivate(): boolean {
-  return false;
+export function isFrameworkPrivate(framework: DataTypeEnum): boolean {
+  return PRIVATE_FRAMEWORKS.includes(framework);
 }
 
 /**
@@ -20,10 +22,11 @@ export function isFrameworkPublic(framework: DataTypeEnum): boolean {
 
 /**
  * This function checks if a framework is editable
+ * @param framework the framework to check
  * @returns true if the framework is editable, false otherwise
  */
-export function isFrameworkEditable(): boolean {
-  return true;
+export function isFrameworkEditable(framework: DataTypeEnum): boolean {
+  return !isFrameworkPrivate(framework);
 }
 
 export interface DataPointDataTableRefProps {

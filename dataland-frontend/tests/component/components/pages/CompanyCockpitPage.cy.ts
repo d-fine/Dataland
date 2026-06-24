@@ -258,7 +258,7 @@ describe('Component test for the company cockpit', () => {
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-    validateFrameworkSummaryPanels(isProvideDataButtonExpected, false, true);
+    validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     validateSingleDataRequestButton();
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
