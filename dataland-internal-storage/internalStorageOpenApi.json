@@ -576,7 +576,8 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         }
       },

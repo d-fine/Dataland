@@ -1686,6 +1686,7 @@
           "memberComment": {
             "type": "string",
             "description": "A comment that accompanies the data sourcing request.",
+            "nullable": true,
             "example": "The previously provided data is lacking scope 3 emissions, but they should be available."
           }
         }
@@ -1856,11 +1857,13 @@
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
+            "nullable": true,
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           "dataTypes": {
             "type": "array",
             "description": "A list of associated reporting frameworks or data point types (as applicable).",
+            "nullable": true,
             "example": [
               "sfdr",
               "eutaxonomy-financials"
@@ -1872,6 +1875,7 @@
           "reportingPeriods": {
             "type": "array",
             "description": "The relevant reporting periods (e.g. fiscal years).",
+            "nullable": true,
             "example": [
               "2023",
               "2024"
@@ -1883,11 +1887,13 @@
           "userId": {
             "type": "string",
             "description": "The ID of the user who created the data request.",
+            "nullable": true,
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
           "requestStates": {
             "type": "array",
             "description": "A list of associated request states.",
+            "nullable": true,
             "example": [
               "Open",
               "Processing"
@@ -1899,6 +1905,7 @@
           "requestPriorities": {
             "type": "array",
             "description": "A list of associated request priorities.",
+            "nullable": true,
             "example": [
               "Low",
               "High"
@@ -1910,21 +1917,25 @@
           "emailAddress": {
             "type": "string",
             "description": "The email address of the user who created this data request.",
+            "nullable": true,
             "example": "test@example.com"
           },
           "adminComment": {
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "companySearchString": {
             "type": "string",
             "description": "Search string used for company substring matching. Matched against company names and identifiers.",
+            "nullable": true,
             "example": "Inc."
           },
           "dataSourcingStates": {
             "type": "array",
             "description": "The current state of the data sourcing object.",
+            "nullable": true,
             "example": [
               "Initialized",
               "DataVerification"
@@ -1950,25 +1961,34 @@
           "dataSourcingEntityId": {
             "type": "string",
             "description": "The unique identifier of the data sourcing object.",
+            "nullable": true,
             "example": "ef6d806c-4bd3-4ea2-b8e6-dcc590385e15"
           },
           "dataSourcingState": {
-            "$ref": "#/components/schemas/DataSourcingState"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataSourcingState"
+              }
+            ]
           },
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
             "format": "date",
+            "nullable": true,
             "example": "2025-12-31"
           },
           "documentCollectorName": {
             "type": "string",
             "description": "The name of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "ABC Corporation"
           },
           "dataExtractorName": {
             "type": "string",
             "description": "The name of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "ABC Corporation"
           }
         },
@@ -2046,7 +2066,12 @@
             "$ref": "#/components/schemas/RequestState"
           },
           "dataSourcingDetails": {
-            "$ref": "#/components/schemas/DataSourcingDetails"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataSourcingDetails"
+              }
+            ]
           },
           "companyName": {
             "type": "string",
@@ -2174,24 +2199,34 @@
         "type": "object",
         "properties": {
           "documentCollector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "dataExtractor": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "adminComment": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "priority": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "state": {
-            "$ref": "#/components/schemas/DataSourcingState"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataSourcingState"
+              }
+            ]
           },
           "documentIds": {
             "uniqueItems": true,
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "string"
             }
@@ -2199,13 +2234,15 @@
           "expectedPublicationDatesOfDocuments": {
             "uniqueItems": true,
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ExpectedPublicationDateOfDocument"
             }
           },
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -2283,21 +2320,25 @@
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "documentCollector": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
           },
           "dataExtractor": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           },
           "adminComment": {
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "associatedRequestIds": {
@@ -2312,6 +2353,7 @@
             "type": "integer",
             "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
             "format": "int32",
+            "nullable": true,
             "example": 1
           }
         }
@@ -2373,22 +2415,26 @@
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "documentCollector": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
           },
           "dataExtractor": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           },
           "priority": {
             "type": "integer",
             "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
             "format": "int32",
+            "nullable": true,
             "example": 1
           }
         }
@@ -2535,7 +2581,12 @@
             "$ref": "#/components/schemas/RequestState"
           },
           "dataSourcingState": {
-            "$ref": "#/components/schemas/DataSourcingState"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataSourcingState"
+              }
+            ]
           },
           "displayedState": {
             "$ref": "#/components/schemas/DisplayedState"
@@ -2585,21 +2636,25 @@
           "dateOfNextDocumentSourcingAttempt": {
             "type": "string",
             "description": "The date of the next planned attempt to source documents for this data sourcing object.",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "documentCollector": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the collection of documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "d23d16de-e9c8-470f-b08b-e576e0c4193e"
           },
           "dataExtractor": {
             "type": "string",
             "description": "The Dataland company ID of the company which is responsible for the extraction of data from documents concerning this data sourcing object.",
+            "nullable": true,
             "example": "8248c02a-8958-4518-b61f-a5fff1afbe2e"
           },
           "adminComment": {
             "type": "string",
             "description": "A comment that can be set by Dataland admins to provide additional information.",
+            "nullable": true,
             "example": "The data sourcing process is delayed due to unforeseen circumstances."
           },
           "lastModifiedDate": {
@@ -2612,6 +2667,7 @@
             "type": "integer",
             "description": "The priority of the data sourcing object. Lower values indicate higher priority, with 1 being the highest. Null if the requesting user is not an admin or data provider.",
             "format": "int32",
+            "nullable": true,
             "example": 1
           }
         }
@@ -2649,7 +2705,8 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         }
       },
