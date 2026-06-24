@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.services.PrivateDataManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -28,12 +27,10 @@ import org.springframework.web.multipart.MultipartFile
 
 /**
  * Controller for the ${frameworkIdentifier} framework endpoints
- * @param privateDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
 @RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
-    @Autowired var privateDataManager: PrivateDataManager,
     @Autowired var myObjectMapper: ObjectMapper,
     @Autowired var logMessageBuilder: LogMessageBuilder,
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
@@ -47,11 +44,9 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             documents: Array<MultipartFile>?,
         ):
         ResponseEntity<DataMetaInformation> {
-        val dataMetaInformation = privateDataManager.processPrivate${frameworkDataType.shortenedQualifier}StorageRequest(
-            companyAssociated${frameworkDataType.shortenedQualifier},
-            documents,
-        )
-        return ResponseEntity.ok(dataMetaInformation)
+        TODO("PrivateDataManager was removed; implement private data storage for ${frameworkIdentifier}")
+        @Suppress("UNREACHABLE_CODE")
+        return ResponseEntity.ok(null!!)
     }
 
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
@@ -64,10 +59,12 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+        TODO("PrivateDataManager was removed; implement private data retrieval for ${frameworkIdentifier}")
+        @Suppress("UNREACHABLE_CODE")
         val companyAssociatedData = CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = metaInfo.reportingPeriod,
-            data = privateDataManager.getPrivate${frameworkDataType.shortenedQualifier}(dataId, correlationId),
+            data = null!!,
         )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -81,7 +78,9 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             hash: String):
         ResponseEntity<InputStreamResource> {
         val correlationId = generateCorrelationId(companyId = null, dataId = dataId)
-        val document = privateDataManager.retrievePrivateDocumentById(dataId, hash, correlationId)
+        TODO("PrivateDataManager was removed; implement private document retrieval for ${frameworkIdentifier}")
+        @Suppress("UNREACHABLE_CODE")
+        val document = null!!
         return ResponseEntity.ok()
             .contentType(document.type.mediaType)
             .header(
@@ -120,7 +119,9 @@ class ${frameworkDataType.shortenedQualifier}Controller(
             }
                 .forEach {
                     val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-                    val data = privateDataManager.getPrivate${frameworkIdentifier?cap_first}Data(it.dataId, correlationId)
+                    TODO("PrivateDataManager was removed; implement private data retrieval for ${frameworkIdentifier}")
+                    @Suppress("UNREACHABLE_CODE")
+                    val data = null!!
                     frameworkDataAndMetaInfo.add(
                         DataAndMetaInformation(
                             it.toApiModel(), data,

@@ -303,11 +303,10 @@ async function getMetaData(): Promise<void> {
 }
 
 /**
- * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
+ * Retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
  * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
- * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
- * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
- * filled with retrieved metaData and empty data object.
+ * If the user lacks sufficient rights, activeDataForCurrentCompanyAndFramework is populated with
+ * metadata-only entries via the metadata endpoint.
  */
 async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
   try {
@@ -381,7 +380,7 @@ async function handleDatasetDownload(
   downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
+    // Cast is safe because all registered frameworks extend PublicFrameworkDataApi
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider
