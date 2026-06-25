@@ -42,7 +42,6 @@ import BaseDataPointFormField from '@/components/forms/parts/elements/basic/Base
 import { type DocumentToUpload } from '@/utils/FileUploadUtils';
 import GeneralViolationsAssessmentFormElement from '@/components/forms/parts/elements/derived/GeneralViolationsAssessmentFormElement.vue';
 import GrievanceMechanismAssessmentFormElement from '@/components/forms/parts/elements/derived/GrievanceMechanismAssessmentFormElement.vue';
-import SubsidiaryFormElement from '@/components/forms/parts/elements/derived/SubsidiaryFormElement.vue';
 
 export default defineComponent({
   name: 'FormListFormField',
@@ -59,7 +58,6 @@ export default defineComponent({
     StringBaseDataPointFormField,
     FormKit,
     PrimeButton,
-    SubsidiaryFormElement,
   },
   data() {
     return {
