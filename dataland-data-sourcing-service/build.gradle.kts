@@ -93,7 +93,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -123,7 +123,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -152,7 +152,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the document manager service."
     group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.datalanddocumentmanager.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/document-manager")

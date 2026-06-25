@@ -89,7 +89,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.backend"
-    inputSpec.set(project.file(backendOpenApiFile).toString())
+    inputSpec.set(project.file(backendOpenApiFile).path)
     outputDir.set(backendClientOutputDir)
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
@@ -112,7 +112,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     description = "Task to generate clients for the API-key manager service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.apikeymanager"
-    inputSpec.set(project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/apikeymanager")
@@ -140,7 +140,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the document manager service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.documentmanager"
-    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/documentmanager")
@@ -167,7 +167,7 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     description = "Task to generate clients for the QA service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.qaservice"
-    inputSpec.set(project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/qaservice")
@@ -195,7 +195,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.communitymanager"
-    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/communitymanager")
@@ -223,7 +223,7 @@ tasks.register("generateEmailServiceClient", org.openapitools.generator.gradle.p
     description = "Task to generate clients for the email service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.emailservice"
-    inputSpec.set(project.file("${project.rootDir}/dataland-email-service/emailServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-email-service/emailServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/emailservice")
@@ -246,7 +246,7 @@ tasks.register("generateUserServiceClient", org.openapitools.generator.gradle.pl
     description = "Task to generate clients for the user service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.userservice"
-    inputSpec.set(project.file("${project.rootDir}/dataland-user-service/userServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-user-service/userServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/userservice")
@@ -269,7 +269,7 @@ tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.g
     description = "Task to generate clients for the data sourcing service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.datasourcingservice"
-    inputSpec.set(project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/datasourcingservice")
@@ -292,7 +292,7 @@ tasks.register("generateAccountingServiceClient", org.openapitools.generator.gra
     description = "Task to generate clients for the accounting service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.accountingservice"
-    inputSpec.set(project.file("${project.rootDir}/dataland-accounting-service/accountingServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-accounting-service/accountingServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/accountingservice")

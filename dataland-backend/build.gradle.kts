@@ -116,7 +116,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the internal storage service."
     group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/internal-storage")

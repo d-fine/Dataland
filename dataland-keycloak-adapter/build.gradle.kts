@@ -53,7 +53,7 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     description = "Task to generate clients for the API-key manager service."
     group = "clients"
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/api-key-manager")
