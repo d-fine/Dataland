@@ -144,7 +144,7 @@ tasks.register("generateExternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the external storage service."
     group = "clients"
     val externalStorageClientDestinationPackage = "org.dataland.datalandexternalstorage.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/external-storage")
@@ -173,7 +173,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -202,7 +202,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the document manager service."
     group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/document-manager")
@@ -233,7 +233,7 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
     description = "Task to generate clients for the specification service."
     group = "clients"
     val specificationServiceClientDestinationPackage = "org.dataland.specificationservice.openApiClient"
-    inputSpec.set(project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").toString())
+    inputSpec.set(project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/specification-service")
