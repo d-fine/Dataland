@@ -75,6 +75,8 @@
           optionLabel="label"
           optionValue="value"
           placeholder="Select category"
+          inputId="document-category"
+          aria-label="Document Category"
           :class="{ 'error-field': showErrors && !documentCategory }"
           data-test="document-category"
         />

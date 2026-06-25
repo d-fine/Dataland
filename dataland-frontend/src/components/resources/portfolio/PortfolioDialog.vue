@@ -9,6 +9,8 @@
       <Textarea
         v-model="companyIdentifiersInput"
         data-test="company-identifiers-input"
+        id="company-identifiers-input"
+        aria-label="Add company identifiers"
         :disabled="isCompaniesLoading"
         placeholder="Enter company identifiers, e.g. DE-000402625-0, SWE402626."
         rows="5"
