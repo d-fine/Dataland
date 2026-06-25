@@ -100,6 +100,18 @@ export const COMPANY_COPY = {
 
 export const NEWS_ITEMS: NewsItem[] = [
   {
+    image: '/static/images/news/news_dmm_q22026_poll_x.jpg',
+    title: "Dataland Members' Meeting poll results",
+    date: 'May 20, 2026',
+    link: 'https://www.linkedin.com/feed/update/urn:li:activity:7462854237400719360',
+  },
+  {
+    image: '/static/images/news/news_fact_impulse_2026_x.jpg',
+    title: 'Dataland at Fact Impulse 2026',
+    date: 'May 5, 2026',
+    link: 'https://www.linkedin.com/feed/update/urn:li:activity:7457353586004463616',
+  },
+  {
     image: '/static/images/news/news_eu_taxo_x.png',
     title: 'Smooth transition to the new EU Taxonomy template',
     date: 'March 5, 2026',
