@@ -2,41 +2,41 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "East Sofia",
-			"headquartersPostalCode": "65562-3422",
-			"sector": "functionalities",
+			"headquarters": "North Johnathan",
+			"headquartersPostalCode": "12777",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"hhkohQ8TcCDFa9MOdIR0"
+					"fMYboJnMdT8mJ8TZBqNC"
 				],
 				"Isin": [
-					"QX6EDkOw0ocG",
-					"OByxACyxhKv5"
+					"0s9jlESjuRPo"
 				],
 				"PermId": [
-					"6SsbxzWVzi"
+					"YFBfWqyAWW"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"wvNRyvD"
+				],
 				"Duns": [
-					"P7LHz5drE"
+					"y7tjmLcXE"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"UzQBNaD0DZD6tWt"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IQ",
+			"countryCode": "PE",
 			"companyContactDetails": [
-				"Clementine_Kunde@example.com",
-				"James78@example.com",
-				"Benny_Hodkiewicz25@example.com"
+				"Lizzie51@example.com"
 			],
 			"companyAlternativeNames": [
-				"Wilderman-Wolf, Little and Crona"
+				"Beer, Parker and Smitham",
+				"Bosco, Blick and Abernathy",
+				"Jerde-Boyle - Kozey",
+				"Weissnat, Erdman and Lueilwitz"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://wrathful-synergy.biz",
-			"fiscalYearEnd": "16-Feb",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://angelic-widow.info",
+			"fiscalYearEnd": "15-Mar",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -53,6 +53,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	}
 ]

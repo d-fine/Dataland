@@ -196,7 +196,7 @@ class DataRequestQueryManagerTest {
         doAnswer { invocation ->
             val extendedStoredDataRequests = invocation.getArgument<List<ExtendedStoredDataRequest>>(0)
             extendedStoredDataRequests.map { it.copy(userEmailAddress = userIdsToEmailAddresses[it.userId]) }
-        }.whenever(mockDataRequestMasker).addEmailAddressIfAllowedToSee(any(), any(), any())
+        }.whenever(mockDataRequestMasker).addEmailAddressIfAllowedToSee(any(), any())
 
         doAnswer { invocation ->
             invocation.getArgument<List<ExtendedStoredDataRequest>>(0)

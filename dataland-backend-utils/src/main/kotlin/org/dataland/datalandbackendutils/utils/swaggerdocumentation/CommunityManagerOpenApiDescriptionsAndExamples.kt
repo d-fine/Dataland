@@ -59,9 +59,6 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val REQUEST_STATUS_DESCRIPTION =
         "The current request status of the data request."
 
-    const val ACCESS_STATUS_DESCRIPTION =
-        "The current access status of the data request."
-
     const val REQUEST_PRIORITY_DESCRIPTION = "The priority of the data request."
 
     const val ADMIN_COMMENT_DESCRIPTION = "The admin comment of the data request."

@@ -918,19 +918,6 @@
             }
           },
           {
-            "name": "accessStatus",
-            "in": "query",
-            "description": "The current access status of the data request.",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/AccessStatus"
-              }
-            }
-          },
-          {
             "name": "requestPriority",
             "in": "query",
             "description": "The priority of the data request.",
@@ -1173,19 +1160,6 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/RequestStatus"
-              }
-            }
-          },
-          {
-            "name": "accessStatus",
-            "in": "query",
-            "description": "The current access status of the data request.",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/AccessStatus"
               }
             }
           },
@@ -2213,25 +2187,11 @@
           }
         }
       },
-      "AccessStatus": {
-        "type": "string",
-        "description": "The current access status of the data request.",
-        "enum": [
-          "Declined",
-          "Granted",
-          "Pending",
-          "Public",
-          "Revoked"
-        ]
-      },
       "DataRequestPatch": {
         "type": "object",
         "properties": {
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
-          },
-          "accessStatus": {
-            "$ref": "#/components/schemas/AccessStatus"
           },
           "contacts": {
             "uniqueItems": true,
@@ -2292,7 +2252,6 @@
       },
       "StoredDataRequest": {
         "required": [
-          "accessStatus",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -2370,9 +2329,6 @@
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
           },
-          "accessStatus": {
-            "$ref": "#/components/schemas/AccessStatus"
-          },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
           },
@@ -2417,7 +2373,6 @@
       },
       "StoredDataRequestStatusObject": {
         "required": [
-          "accessStatus",
           "creationTimestamp",
           "status"
         ],
@@ -2431,9 +2386,6 @@
             "description": "The timestamp (epoch milliseconds) when the status object was created.",
             "format": "int64",
             "example": 1751291891271
-          },
-          "accessStatus": {
-            "$ref": "#/components/schemas/AccessStatus"
           },
           "requestStatusChangeReason": {
             "type": "string",
@@ -2449,7 +2401,6 @@
       },
       "ExtendedStoredDataRequest": {
         "required": [
-          "accessStatus",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
@@ -2512,9 +2463,6 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
-          },
-          "accessStatus": {
-            "$ref": "#/components/schemas/AccessStatus"
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"

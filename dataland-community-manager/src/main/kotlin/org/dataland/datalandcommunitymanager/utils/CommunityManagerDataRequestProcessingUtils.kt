@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
@@ -84,7 +83,7 @@ class CommunityManagerDataRequestProcessingUtils
                 )
             dataRequestRepository.save(dataRequestEntity)
             addNewRequestStatusToHistory(
-                dataRequestEntity, RequestStatus.Open, AccessStatus.Public, null, creationTime,
+                dataRequestEntity, RequestStatus.Open, null, creationTime,
             )
 
             if (!contacts.isNullOrEmpty()) {
@@ -116,20 +115,19 @@ class CommunityManagerDataRequestProcessingUtils
         /**
          * For a given dataRequestEntity, this function adds and persists a new entry to
          * the requestStatusHistory of the dataRequestEntity.
-         * The new entry contains a requestStatus, an accessStatus and a modificationTime.
+         * The new entry contains a requestStatus and a modificationTime.
          * This function should be called within a transaction.
          */
         fun addNewRequestStatusToHistory(
             dataRequestEntity: DataRequestEntity,
             requestStatus: RequestStatus,
-            accessStatus: AccessStatus,
             requestStatusChangeReason: String?,
             modificationTime: Long,
             answeringDataId: String? = null,
         ) {
             val requestStatusObject =
                 StoredDataRequestStatusObject(
-                    requestStatus, modificationTime, accessStatus, requestStatusChangeReason, answeringDataId,
+                    requestStatus, modificationTime, requestStatusChangeReason, answeringDataId,
                 )
             val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 

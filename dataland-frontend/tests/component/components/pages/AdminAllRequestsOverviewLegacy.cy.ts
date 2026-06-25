@@ -2,12 +2,7 @@ import AdminAllRequestsOverviewLegacy from '@/components/pages/AdminAllRequestsO
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import {
-  AccessStatus,
-  type ExtendedStoredDataRequest,
-  RequestPriority,
-  RequestStatus,
-} from '@clients/communitymanager';
+import { type ExtendedStoredDataRequest, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
@@ -41,7 +36,6 @@ describe('Component test for the admin-requests-overview page', () => {
     userEmailAddress: string;
     framework: DataTypeEnum;
     requestStatus: RequestStatus;
-    accessStatus: AccessStatus;
     adminComment: string;
     requestPriority: RequestPriority;
     companyName: string | undefined;
@@ -66,7 +60,6 @@ describe('Component test for the admin-requests-overview page', () => {
       companyName: filterParameters.companyName ?? faker.company.name(),
       lastModifiedDate: Date.now(),
       requestStatus: filterParameters.requestStatus,
-      accessStatus: filterParameters.accessStatus,
       adminComment: filterParameters.adminComment,
       requestPriority: filterParameters.requestPriority,
     };
@@ -98,7 +91,6 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailAlpha,
         framework: DataTypeEnum.Lksg,
         requestStatus: RequestStatus.Open,
-        accessStatus: AccessStatus.Public,
         adminComment: commentAlpha,
         requestPriority: RequestPriority.Urgent,
         companyName: companyNameAlpha,
@@ -108,7 +100,6 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailBeta,
         framework: DataTypeEnum.EutaxonomyFinancials,
         requestStatus: RequestStatus.Answered,
-        accessStatus: AccessStatus.Declined,
         adminComment: commentBeta,
         requestPriority: RequestPriority.High,
         companyName: companyNameBeta,
@@ -118,7 +109,6 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailGamma,
         framework: DataTypeEnum.Pcaf,
         requestStatus: RequestStatus.Answered,
-        accessStatus: AccessStatus.Declined,
         adminComment: commentGamma,
         requestPriority: RequestPriority.High,
         companyName: companyNameGamma,
@@ -128,7 +118,6 @@ describe('Component test for the admin-requests-overview page', () => {
         userEmailAddress: mailDelta,
         framework: DataTypeEnum.Sfdr,
         requestStatus: RequestStatus.Closed,
-        accessStatus: AccessStatus.Public,
         adminComment: commentDelta,
         requestPriority: RequestPriority.Low,
         companyName: companyNameDelta,
@@ -156,7 +145,6 @@ describe('Component test for the admin-requests-overview page', () => {
           userEmailAddress: email,
           framework: dataType,
           requestStatus: requestStatus,
-          accessStatus: AccessStatus.Public,
           adminComment: comment,
           requestPriority: requestPriority,
           companyName: undefined,

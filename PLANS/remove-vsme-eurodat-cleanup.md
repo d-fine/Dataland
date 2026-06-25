@@ -405,3 +405,121 @@ Remove the VSME framework, VSME-specific tests and test data sources, EuroDaT se
 - Generation passed via `@command-summarizer`: `./gradlew :dataland-framework-toolbox:runCoverage --args='sfdr'`, `./gradlew :dataland-community-manager:generateOpenApiDocs`, and `./gradlew :dataland-backend:generateClients :dataland-frontend:generateClients :dataland-e2etests:generateClients`.
 - Verification passed via `@command-summarizer`: `:dataland-framework-toolbox:test`, `:dataland-backend-utils:compileKotlin`, `:dataland-message-queue-utils:test`, `:dataland-email-service:test`, `:dataland-community-manager:test`, `:dataland-backend:compileKotlin`, `:dataland-e2etests:compileTestKotlin`, frontend `typecheck`, frontend `checkcypresscompilation`, and `testing/verifyOpenApiFiles.sh`.
 - Final searches for private-framework and private access-request terms only hit historical notes in this cleanup plan.
+
+## Phase 18: Remove Legacy AccessStatus Data-Request Machinery
+
+- [ ] Load `dataland-openapi-impact` and `dataland-frontend-impact` before editing, because this phase changes the community-manager API contract and generated frontend/E2E/backend clients.
+- [ ] Read package-specific `AGENTS.md` files before editing `dataland-community-manager/`, `dataland-backend-utils/`, `dataland-frontend/`, and `dataland-e2etests/`.
+- [ ] Run `git status --short` and note unrelated worktree changes without reverting them.
+- [ ] Reconfirm the current access-status blast radius with focused searches for `AccessStatus|accessStatus|access_status|AccessStatusParameterNonRequired|ACCESS_STATUS_DESCRIPTION` in source, tests, generated specs, and fixtures.
+
+### Phase 18 Scope And Decisions
+
+- [ ] Remove `AccessStatus` entirely from active source, API models, UI, tests, generated clients, and generated fixtures.
+- [ ] Add a new Flyway migration to drop `request_status_history.access_status`. Do not edit historical migration `dataland-community-manager/src/main/kotlin/db/migration/V8__AddAccessStatusToRequestStatusHistory.kt`.
+- [ ] Preserve historical references in old Flyway migrations and this cleanup plan only. Final source searches should have no active `AccessStatus`, `accessStatus`, or `access_status` references outside generated artifacts that are expected to be refreshed.
+- [ ] Decide and document requester email visibility after removing access status. The recommended post-removal behavior is: admins can see requester email addresses; company owners and other non-admin users cannot see requester email addresses unless a separate product requirement says otherwise. This preserves the current public-request masking behavior after VSME/private access removal.
+- [ ] Decide whether the company-owner page `CompanyDataRequestsOverview.vue` should be deleted or replaced by a read-only company request overview. The recommended cleanup is deletion, because its remaining actions are only Grant, Decline, and Revoke access-status patches.
+
+### Phase 18A: Community Manager Kotlin Source
+
+- [ ] Delete `dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/model/dataRequest/AccessStatus.kt`.
+- [ ] Remove `accessStatus` from `DataRequestPatch.kt`, including constructor property, KDoc, Swagger description usage, and generated API schema impact.
+- [ ] Remove `accessStatus` from `StoredDataRequest.kt`.
+- [ ] Remove `accessStatus` from `StoredDataRequestStatusObject.kt`; keep only request status, creation timestamp, request-status change reason, and answering data ID.
+- [ ] Remove `accessStatus` from `ExtendedStoredDataRequest.kt` and its entity conversion.
+- [ ] Remove the derived `DataRequestEntity.accessStatus` getter and remove `accessStatus = accessStatus` from `toStoredDataRequest()`.
+- [ ] Remove `RequestStatusEntity.accessStatus`, the `AccessStatus` import, `@Enumerated(EnumType.STRING)`, constructor mapping from `StoredDataRequestStatusObject`, and conversion back to `StoredDataRequestStatusObject`.
+- [ ] Add a new Flyway migration after `V16__MigrateCompanyRolesWithConstraintUpdate.kt`, likely `V17__DropAccessStatusFromRequestStatusHistory.kt`, that executes `ALTER TABLE request_status_history DROP COLUMN access_status`. Verify whether H2/PostgreSQL syntax needs a conditional or plain statement consistent with existing migrations.
+- [ ] Update `RequestApi.kt`: remove `AccessStatus` import, `AccessStatusParameterNonRequired` import, access-status KDoc lines, and `accessStatus` parameters from `getDataRequests` and `getNumberOfRequests`.
+- [ ] Update `RequestController.kt`: remove `AccessStatus` import, remove `accessStatus` method parameters, and remove access-status arguments passed to `DataRequestsFilter`.
+- [ ] Update `DataRequestsFilter.kt`: remove `accessStatus` field, `AccessStatus` import, `shouldFilterByAccessStatus`, and `preparedAccessStatus`.
+- [ ] Update `TemporaryTables.kt`: keep the latest status join only if `request_status` is still needed, but remove `access_status` from the selected columns and remove the SQL `status_table.access_status IN ...` filter fragment.
+- [ ] Update `CommunityManagerDataRequestProcessingUtils.kt`: remove `AccessStatus` import, remove the hardcoded `AccessStatus.Public` argument when new requests are stored, and remove the `accessStatus` parameter from `addNewRequestStatusToHistory()`.
+- [ ] Update `DataRequestUpdateUtils.kt`: remove `newAccessStatus`, compare only request-status changes plus the existing `RequestStatus.NonSourceable` special case, call `addNewRequestStatusToHistory()` without access status, and log request-status patching without access status.
+- [ ] Update `DataRequestLogger.kt`: remove the `AccessStatus` import and replace `logMessageForPatchingRequestStatusOrAccessStatus` with a request-status-only logger, or reuse an existing request-status log helper if one exists.
+- [ ] Update `SecurityUtilsService.kt`: remove `dataRequestPatch.accessStatus` from `notPatchingStatusPriorityComment`, remove `pathingOnlyAccessStatus`, and remove the company-owner-only access-status patch authorization branch. After this phase, non-admin company owners should no longer be able to patch a request solely through the removed access-status path.
+- [ ] Update `DataRequestMasker.kt`: remove `AccessStatus` import and the `it.accessStatus != AccessStatus.Public` condition. Recommended logic: `allowedToSeeEmailAddress = isUserAdmin()` only, unless the product explicitly chooses company-owner email visibility.
+- [ ] Update `DataRequestRepository.kt` comments/Javadocs that mention `accessStatus` filters.
+
+### Phase 18B: Community Manager Tests
+
+- [ ] Update all community-manager tests that import or construct `AccessStatus`, including `DataRequestUpdateManagerTestDataProvider.kt`, `DataRequestMaskerTest.kt`, `DataRequestUpdateUtilsTest.kt`, `DataRequestUpdateManagerTest.kt`, `DataRequestSummaryNotificationServiceTest.kt`, `DataRequestTimeSchedulerTest.kt`, and `DataRequestEntityTest.kt`.
+- [ ] Delete tests whose only purpose is access-status patching or permission behavior, such as the `DataRequestPatch(accessStatus = ...)` case in `DataRequestUpdateManagerTest.kt`.
+- [ ] Update `StoredDataRequestStatusObject(...)`, `StoredDataRequest(...)`, and `ExtendedStoredDataRequest(...)` constructor calls after removing `accessStatus`.
+- [ ] Update data-request masking tests to assert the new requester-email visibility rule from Phase 18 scope decisions.
+
+### Phase 18C: Backend Utils Swagger Cleanup
+
+- [ ] Update `dataland-backend-utils/src/main/kotlin/org/dataland/datalandbackendutils/utils/swaggerdocumentation/CommunityManagerOpenApiCustomAnnotations.kt` and remove `AccessStatusParameterNonRequired`.
+- [ ] Update `dataland-backend-utils/src/main/kotlin/org/dataland/datalandbackendutils/utils/swaggerdocumentation/CommunityManagerOpenApiDescriptionsAndExamples.kt` and remove `ACCESS_STATUS_DESCRIPTION` if no active source still references it.
+- [ ] Run or include `:dataland-backend-utils:compileKotlin` in verification, because community-manager source imports shared Swagger annotations/descriptions.
+
+### Phase 18D: Frontend Source And Navigation
+
+- [ ] Remove or replace `dataland-frontend/src/components/pages/CompanyDataRequestsOverview.vue`. Recommended: delete the page because its only actions are Grant, Decline, and Revoke access-status changes.
+- [ ] If deleting `CompanyDataRequestsOverview.vue`, update `dataland-frontend/src/router/index.ts`: remove the lazy import and `/companyrequests` route.
+- [ ] If deleting `CompanyDataRequestsOverview.vue`, update `dataland-frontend/src/components/general/DatasetsTabMenu.vue`: remove the `data-requests-for-my-companies` tab and associated `requestsForMyCompaniesTab` visibility logic.
+- [ ] Update any component tests that assert the `DATA REQUESTS FOR MY COMPANIES` tab exists or is hidden/visible.
+- [ ] Update `MyDataRequestsOverviewLegacy.vue`: remove the access-status filter dropdown, selected/available access-status state, access-status column, filtering function, reset handling, and `retrieveAvailableAccessStatuses` import usage.
+- [ ] Update `AdminAllRequestsOverviewLegacy.vue`: remove the access-status column and any `DatalandTag` usage that only displayed access status.
+- [ ] Update `ViewDataRequestPageLegacy.vue`: remove the access-status badge/display from the request detail page.
+- [ ] Update `StatusHistoryLegacy.vue`: remove the access-status column, `accessStatusBadgeClass` import, and `accessStatusEntry` test selectors.
+- [ ] Update `DatalandTagLegacy.vue`: remove `AccessStatus` import and the five access-status switch cases. Keep request-status and request-priority behavior intact.
+- [ ] Update `RequestUtilsLegacy.ts`: remove `AccessStatus` import, remove the `accessStatus` parameter from `patchDataRequest()`, stop sending `accessStatus` in the patch body, and delete `accessStatusBadgeClass()`.
+- [ ] Update `RequestsOverviewPageUtilsLegacy.ts`: remove `AccessStatus` import and `retrieveAvailableAccessStatuses()`.
+- [ ] Update `ReviewRequestButtonsLegacy.vue`: remove `AccessStatus` import and `accessStatus` parameter plumbing into `patchDataRequest()`.
+- [ ] Verify modern `MyDataRequestsOverview.vue` and `AdminAllRequestsOverview.vue` remain clean; current analysis found no active access-status usage there.
+
+### Phase 18E: Frontend Tests And Fake Fixture Sources
+
+- [ ] Update component tests and mocks that construct access-status values: `AdminAllRequestsOverviewLegacy.cy.ts`, `MyDataRequestsOverviewLegacy.cy.ts`, `ViewDataRequestPageLegacy.cy.ts`, and `StatusHistoryLegacy.cy.ts`.
+- [ ] Update `dataland-frontend/tests/e2e/fixtures/custom_mocks/StoredDataRequestsFaker.ts`: remove `AccessStatus` import, random access-status generation, `accessStatus` fields, and helper parameters that set access status.
+- [ ] Do not manually edit generated fixture output `testing/data/DataRequestsMock.json`; regenerate it through the fake-fixture workflow after source/faker changes.
+- [ ] After regeneration, expected generated fixture output should no longer contain `accessStatus` entries.
+
+### Phase 18F: E2E Kotlin Tests
+
+- [ ] Update `dataland-e2etests/src/test/kotlin/org/dataland/e2etests/tests/communityManager/QueryDataRequestsTest.kt`: remove `AccessStatus` import, remove access-status filtering/assertion tests, and remove access-status arguments from `getDataRequests()` calls.
+- [ ] Update `dataland-e2etests/src/test/kotlin/org/dataland/e2etests/tests/communityManager/QueryDataRequestsCountingTests.kt`: remove access-status count-filter assertions and access-status arguments from `getNumberOfRequests()` calls.
+- [ ] Update `dataland-e2etests/src/test/kotlin/org/dataland/e2etests/tests/communityManager/CommunityManagerListenerTest.kt`: remove `AccessStatus` import, remove nullable `accessStatus` helper arguments, and update generated `DataRequestPatch(...)` calls after the field is removed.
+- [ ] Check `dataland-e2etests/src/test/kotlin/org/dataland/e2etests/utils/communityManager/GeneralCommunityManagerTestUils.kt` after client regeneration; it may only need constructor/signature adjustments.
+
+### Phase 18G: OpenAPI And Generated Clients
+
+- [ ] Run `./gradlew :dataland-community-manager:generateOpenApiDocs` via `@command-summarizer` after source changes. Confirm `communityManagerOpenApi.json` no longer contains the `AccessStatus` schema, `accessStatus` request parameters, or `accessStatus` model properties.
+- [ ] Regenerate all known community-manager client consumers via `@command-summarizer`: `./gradlew :dataland-backend:generateClients :dataland-frontend:generateClients :dataland-e2etests:generateClients :dataland-qa-service:generateClients :dataland-user-service:generateClients :dataland-data-sourcing-service:generateClients :dataland-accounting-service:generateClients :dataland-document-manager:generateClients :dataland-batch-manager:generateClients`.
+- [ ] If a listed module lacks a `generateClients` task in the current branch, document that and run the closest compile check for that module instead.
+- [ ] Do not hand-edit generated clients or generated OpenAPI JSON. Fix source and rerun generation.
+
+### Phase 18H: Verification
+
+- [ ] Run `./gradlew :dataland-community-manager:test` via `@command-summarizer`.
+- [ ] Run `./gradlew :dataland-backend-utils:compileKotlin` via `@command-summarizer`.
+- [ ] Run `./gradlew :dataland-e2etests:compileTestKotlin` via `@command-summarizer`.
+- [ ] Run frontend checks via `@command-summarizer`: `./gradlew :dataland-frontend:npm_run_typecheck`, `./gradlew :dataland-frontend:npm_run_checkcypresscompilation`, and `./gradlew :dataland-frontend:npm_run_checkfakefixturecompilation`.
+- [ ] Run fake fixture generation or verification via `@command-summarizer`: prefer `testing/verify_that_fake_fixtures_are_up_to_date.sh`; if it reports expected generated diffs, include them and document that no fixture was manually edited.
+- [ ] Run `testing/verifyOpenApiFiles.sh` via `@command-summarizer`.
+- [ ] Run targeted compile checks for regenerated community-manager client consumers if generation touched them: at minimum `:dataland-backend:compileKotlin`, `:dataland-qa-service:compileKotlin`, `:dataland-user-service:compileKotlin`, `:dataland-data-sourcing-service:compileKotlin`, `:dataland-accounting-service:compileKotlin`, `:dataland-document-manager:compileKotlin`, and `:dataland-batch-manager:compileKotlin` where those modules/tasks exist.
+- [ ] Run `./gradlew ktlintFormat` while editing Kotlin, then `./gradlew ktlintCheck detekt` via `@command-summarizer` before finishing if production Kotlin changed.
+
+### Phase 18I: Final Searches And Expected Remaining Hits
+
+- [ ] Search active source and tests for `AccessStatus|accessStatus|access_status|AccessStatusParameterNonRequired|ACCESS_STATUS_DESCRIPTION` after regeneration.
+- [ ] Expected allowed remaining hits: historical Flyway migration `V8__AddAccessStatusToRequestStatusHistory.kt`, the new drop-column migration if its filename/body mentions `access_status`, generated diff notes in this cleanup plan, and possibly git-deleted/generated files before final cleanup. No active API/model/frontend/E2E code should reference access status.
+- [ ] Search generated OpenAPI/client/fixture outputs for `AccessStatus|accessStatus|access_status` and confirm only intentionally historical or removed-file references remain.
+- [ ] Update Phase 18 notes after implementation with exact commands run, whether fake fixture verification is green, and any intentionally remaining references.
+
+### Phase 18 Notes
+
+- Removed `AccessStatus` from active community-manager API/domain/source/test code and deleted `AccessStatus.kt`.
+- Added `V17__DropAccessStatusFromRequestStatusHistory.kt` to drop `request_status_history.access_status`; historical `V8__AddAccessStatusToRequestStatusHistory.kt` was not edited.
+- Requester email visibility is now admin-only after access-status removal; company owners can still query their company requests but requester emails remain masked.
+- Deleted `CompanyDataRequestsOverview.vue`, removed the `/companyrequests` route, and removed the “DATA REQUESTS FOR MY COMPANIES” tab.
+- Removed access-status columns, filters, badges, patch parameters, and test data from legacy frontend request pages, Cypress component tests, and fake fixture source.
+- Removed access-status query/count/patch usage from Kotlin E2E tests.
+- Regeneration passed via `@command-summarizer`: `./gradlew :dataland-community-manager:generateOpenApiDocs` and `./gradlew :dataland-backend:generateClients :dataland-frontend:generateClients :dataland-e2etests:generateClients :dataland-qa-service:generateClients :dataland-user-service:generateClients :dataland-data-sourcing-service:generateClients :dataland-accounting-service:generateClients :dataland-document-manager:generateClients :dataland-batch-manager:generateClients`.
+- Fake fixture generation completed through `testing/verify_that_fake_fixtures_are_up_to_date.sh`, but the script failed its final diff check because generated fixture outputs changed as expected: `testing/data/DataRequestsMock.json`, `testing/data/EuTaxonomyNonFinancialsQaReportPreparedFixtures.json`, `testing/data/SfdrLinkedDataAndQaReportPreparedFixtures.json`, and `testing/data/SfdrQaReportPreparedFixtures.json`. No generated fixture output was manually edited.
+- Verification passed via `@command-summarizer`: `:dataland-community-manager:test`, `:dataland-backend-utils:compileKotlin`, `:dataland-e2etests:compileTestKotlin`, frontend `typecheck`, frontend `checkcypresscompilation`, frontend `checkfakefixturecompilation`, `testing/verifyOpenApiFiles.sh`, regenerated-client consumer compiles for backend/QA/user/data-sourcing/accounting/document-manager/batch-manager, and `./gradlew ktlintCheck detekt`.
+- A combined `./gradlew ktlintFormat ktlintCheck detekt` run hit Gradle implicit-dependency validation before detekt because ktlint format tasks consumed generated backend-client outputs without declared dependencies. The CI-style `./gradlew ktlintCheck detekt` rerun passed.
+- Final searches for `AccessStatus|accessStatus|access_status|AccessStatusParameterNonRequired|ACCESS_STATUS_DESCRIPTION` are clean in active backend-utils, frontend, E2E, generated OpenAPI, and generated fixture outputs. Remaining community-manager hits are only the historical V8 migration and the new V17 drop-column migration.

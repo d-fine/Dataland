@@ -135,12 +135,6 @@
                   :value="storedDataRequest.requestStatus"
                   class="dataland-inline-tag"
                 />
-                <span class="card__title">and Access is:</span>
-                <DatalandTag
-                  :severity="storedDataRequest.accessStatus || ''"
-                  :value="storedDataRequest.accessStatus"
-                  class="dataland-inline-tag"
-                />
                 <span class="card__subtitle">
                   since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                 </span>
@@ -404,7 +398,6 @@ export default defineComponent({
           undefined,
           undefined,
           undefined,
-          undefined,
           this.storedDataRequest.notifyMeImmediately,
           undefined,
           this.getKeycloakPromise
@@ -423,7 +416,6 @@ export default defineComponent({
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
             RequestStatus.Open as RequestStatus,
-            undefined,
             undefined,
             undefined,
             undefined,
@@ -449,7 +441,6 @@ export default defineComponent({
         await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
-          undefined,
           undefined,
           undefined,
           undefined,
@@ -486,7 +477,6 @@ export default defineComponent({
       if (this.hasValidEmailForm) {
         patchDataRequest(
           this.requestId,
-          undefined,
           undefined,
           // as unknown as Set<string> cast required to ensure proper json is created
           this.emailContacts as unknown as Set<string>,

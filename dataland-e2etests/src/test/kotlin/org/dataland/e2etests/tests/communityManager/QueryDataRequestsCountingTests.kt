@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
@@ -77,26 +76,6 @@ class QueryDataRequestsCountingTests {
         assertEquals(
             0,
             api.getNumberOfRequests(datalandCompanyId = companyIdB, requestStatus = setOf(RequestStatus.Resolved)),
-        )
-    }
-
-    @Test
-    fun `count requests with access status filters`() {
-        assertEquals(
-            2,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Public)),
-        )
-        assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Pending)),
-        )
-        assertEquals(
-            1,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, accessStatus = setOf(AccessStatus.Public)),
-        )
-        assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, accessStatus = setOf(AccessStatus.Pending)),
         )
     }
 

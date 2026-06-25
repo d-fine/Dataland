@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -201,30 +200,6 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `query data requests with access status filter and assert that the expected results are being retrieved`() {
-        val grantedAccessRequests =
-            api
-                .getDataRequests(accessStatus = setOf(AccessStatus.Granted), chunkSize = chunkSize)
-                .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(0, grantedAccessRequests.size)
-
-        val publicAccessRequests =
-            api
-                .getDataRequests(accessStatus = setOf(AccessStatus.Public), chunkSize = chunkSize)
-                .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, publicAccessRequests.size)
-        publicAccessRequests.forEach { assertEquals(AccessStatus.Public, it.accessStatus) }
-
-        val pendingAndPublicAccessRequests =
-            api
-                .getDataRequests(
-                    accessStatus = setOf(AccessStatus.Pending, AccessStatus.Public),
-                    chunkSize = chunkSize,
-                ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, pendingAndPublicAccessRequests.size)
-    }
-
-    @Test
     fun `query data requests with company id filter and assert that the expected results are being retrieved`() {
         val storedDataRequestsForRandomCompanyId =
             api
@@ -322,7 +297,6 @@ class QueryDataRequestsTest {
                 .getDataRequests(
                     dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsPcaf),
                     requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
-                    accessStatus = setOf(AccessStatus.Public),
                     reportingPeriods = setOf("2023"),
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }

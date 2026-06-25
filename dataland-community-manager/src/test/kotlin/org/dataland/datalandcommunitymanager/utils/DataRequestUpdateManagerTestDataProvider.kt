@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
@@ -116,7 +115,6 @@ class DataRequestUpdateManagerTestDataProvider {
                 StoredDataRequestStatusObject(
                     status = RequestStatus.Withdrawn,
                     creationTimestamp = 1L,
-                    accessStatus = AccessStatus.Public,
                     requestStatusChangeReason = null,
                     answeringDataId = null,
                 ),
@@ -156,7 +154,6 @@ class DataRequestUpdateManagerTestDataProvider {
     ) = StoredDataRequestStatusObject(
         status = requestStatusBefore,
         creationTimestamp = 1L,
-        accessStatus = AccessStatus.Public,
         requestStatusChangeReason = null,
         answeringDataId = null,
     )

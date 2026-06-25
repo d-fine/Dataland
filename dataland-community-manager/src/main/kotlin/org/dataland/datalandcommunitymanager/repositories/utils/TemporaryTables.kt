@@ -11,7 +11,7 @@ class TemporaryTables private constructor() {
             "WITH most_recent AS (SELECT data_request_id, MAX(creation_timestamp) " +
                 "AS creation_timestamp FROM request_status_history " +
                 "GROUP BY data_request_id), " +
-                "status_table AS (SELECT most_recent.data_request_id AS request_id, request_status, access_status " +
+                "status_table AS (SELECT most_recent.data_request_id AS request_id, request_status " +
                 "FROM request_status_history " +
                 "JOIN most_recent ON most_recent.data_request_id = request_status_history.data_request_id " +
                 "AND most_recent.creation_timestamp = request_status_history.creation_timestamp) "
@@ -32,8 +32,6 @@ class TemporaryTables private constructor() {
                 "OR d.user_Id IN :#{#searchFilter.preparedUserIdsMatchingEmailAddress}) AND " +
                 "(:#{#searchFilter.shouldFilterByRequestStatus} = false " +
                 "OR status_table.request_status IN :#{#searchFilter.preparedRequestStatus} ) AND " +
-                "(:#{#searchFilter.shouldFilterByAccessStatus} = false " +
-                "OR status_table.access_status IN :#{#searchFilter.preparedAccessStatus}  ) AND " +
                 "(:#{#searchFilter.shouldFilterByReportingPeriods} = false " +
                 "OR d.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
                 "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +

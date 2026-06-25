@@ -2,42 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "West Uriahtown",
-			"headquartersPostalCode": "17630-4360",
-			"sector": "infrastructures",
+			"headquarters": "West Erika",
+			"headquartersPostalCode": "19266-6117",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [
-					"wH7vHiesPQi0atPOEBT2"
-				],
+				"Lei": [],
 				"Isin": [
-					"mHJ4ECZhoXIa"
+					"xzWVziJdopbL"
 				],
 				"PermId": [
-					"poRMOq3RVK"
+					"bP7LHz5drE"
 				],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"QOH2GOMkl"
+					"DZD6tWtyq"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
+			"countryCode": "SE",
 			"companyContactDetails": [
-				"Eveline19@example.com",
-				"Verona_Brown46@example.com",
-				"Joyce.Predovic@example.com",
-				"Makenna.Sawayn35@example.com",
-				"Wellington.Schuppe-Wilderman64@example.com"
+				"Benny_Hodkiewicz25@example.com",
+				"Roy.Wilderman-Wolf@example.com",
+				"Chester_Medhurst88@example.com",
+				"Kenton.Wintheiser48@example.com"
 			],
 			"companyAlternativeNames": [
-				"Bernhard - Russel",
-				"Gislason - Bartoletti",
-				"Pacocha LLC"
+				"Graham, White and Buckridge",
+				"Little - Schuster"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://important-solvency.biz",
-			"fiscalYearEnd": "22-May",
+			"companyLegalForm": "AG",
+			"website": "https://ashamed-hydrocarbon.com/",
+			"fiscalYearEnd": "04-Jun",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -114,6 +110,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2023"
 	}
 ]
