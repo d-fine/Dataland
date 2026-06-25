@@ -11,7 +11,7 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 org-sonarqube = { id = "org.sonarqube", version = "7.3.1.8318" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
-com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.7" }
+com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "3.0.3" }
 org-openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
 ##                                                           ⬆ = "7.19.0" }
 ##                                                           ⬆ = "7.20.0" }
@@ -40,7 +40,7 @@ kotlin = "2.0.21"
 ##  ⬆ = "2.3.10"
 ##  ⬆ = "2.3.20"
 ##  ⬆ = "2.3.21"
-okhttp3 = "4.12.0"
+okhttp3 = "5.3.2"
 ##   ⬆ = "5.0.0"
 ##   ⬆ = "5.1.0"
 ##   ⬆ = "5.2.0"
