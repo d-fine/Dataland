@@ -47,13 +47,3 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     options?: AxiosRequestConfig
   ): AxiosPromise<CompanyAssociatedData<FrameworkDataType>>;
 }
-
-export interface PrivateFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
-  getPrivateDocument(dataId: string, hash: string, options?: AxiosRequestConfig): AxiosPromise<File>;
-
-  postFrameworkData(
-    companyAssociatedSmeData: CompanyAssociatedData<FrameworkDataType>,
-    documents: Array<File>,
-    options?: AxiosRequestConfig
-  ): AxiosPromise<DataMetaInformation>;
-}
