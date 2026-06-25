@@ -359,3 +359,49 @@ Remove the VSME framework, VSME-specific tests and test data sources, EuroDaT se
 
 - Removed `dataStoredBackendPrivateDataManager` and `privateRequestReceivedCommunityManager` from `RabbitMQAdmin.ts` because both queues belonged to the removed VSME/private-data/external-storage flow. They are no longer declared by any active listener or `QueueNames` constant, so the admin test should not require them.
 - `npm --prefix ./dataland-frontend run checkcypresscompilation` passed via `@command-summarizer` after the queue expectation update.
+
+## Phase 16: Internal Wiki Cleanup
+
+- [x] Update `DatalandInternal.wiki/Onboarding.md` and remove the obsolete EuroDaT setup step from local development onboarding.
+- [x] Delete or retire `DatalandInternal.wiki/EuroDaT‐client.md` because the EuroDaT client, dummy EuroDaT services, and external-storage service were removed.
+- [x] Update `DatalandInternal.wiki/_Sidebar.md` and remove the EuroDaT Client navigation entry.
+- [x] Update `DatalandInternal.wiki/Development-Workflow.md` and remove the obsolete CD option text for ignoring external-storage startup errors.
+- [x] Update `DatalandInternal.wiki/Deployment.md` and remove the obsolete deployment checklist entries for ignoring external-storage startup errors.
+- [x] Update `DatalandInternal.wiki/Maintenance.md` and remove the stale EuroDaT client maintenance section while preserving unrelated maintenance notes.
+- [x] Re-run focused wiki searches for `vsme|VSME`, `EuroDaT|Eurodat|eurodat`, and `external-storage|externalStorage|EXTERNAL_STORAGE|IGNORE_EXTERNAL_STORAGE|CYPRESS_IGNORE_EXTERNAL_STORAGE|INTERNAL_EURODATCLIENT`.
+- [x] Confirm no remaining internal wiki references describe removed VSME, EuroDaT, dummy EuroDaT, or external-storage runtime/setup behavior.
+
+## Phase 16 Notes
+
+- Removed local onboarding instructions for EuroDaT credentials, keystore placement, and the EuroDaT client wiki link.
+- Deleted the obsolete EuroDaT client page, including dummy EuroDaT and external-storage setup instructions.
+- Removed the EuroDaT Client sidebar entry.
+- Removed obsolete CD/deployment checkbox instructions for ignoring external-storage startup errors.
+- Removed the stale EuroDaT client maintenance heading and renumbered the following maintenance sections.
+- Focused searches in `DatalandInternal.wiki` returned no hits for VSME, EuroDaT/eurodat, or external-storage/runtime ignore terms after the cleanup.
+
+## Phase 17: Remove Private Framework Abstraction
+
+- [x] Remove private-framework generation support from `dataland-framework-toolbox`.
+- [x] Remove `isPrivateFramework` constructor/property plumbing from `PavedRoadFramework` and `InDevelopmentPavedRoadFramework`.
+- [x] Simplify generated backend framework controllers and frontend framework definitions/API clients to public-only templates.
+- [x] Delete private framework Freemarker templates.
+- [x] Stop generating private framework registry imports.
+- [x] Remove frontend private-framework registries, helper functions, and empty `PRIVATE_FRAMEWORKS` constant.
+- [x] Remove private document download handling and private/inaccessible dataset request UI.
+- [x] Remove community-manager private access-request endpoint, service methods, email builder, email templates, and unused routing key.
+- [x] Remove generated `reportingPeriodsOfStoredAccessRequests` response field from single data request responses.
+- [x] Regenerate framework outputs, community-manager OpenAPI docs, and downstream clients.
+- [x] Run focused verification and final searches.
+
+## Phase 17 Notes
+
+- `dataland-framework-toolbox` now generates only public framework controllers, frontend API clients, framework definitions, and public/all registry imports.
+- Deleted frontend private framework registry files and replaced the remaining non-private helpers from `Frameworks.ts` with focused `FrameworkFamilies.ts` and `FrameworkTypes.ts` modules.
+- Removed the request-access UI for inaccessible private datasets because all remaining frameworks are public after VSME removal.
+- Removed the `DataAccessApi`/`DataAccessController` endpoint and `DataAccessManager`; no active code path still creates private access requests.
+- Removed retired access-request email content, templates, and tests.
+- `AccessStatus` itself remains because it is still part of persisted data request history and filtering APIs; removing or migrating that model should be a separate persisted-data phase.
+- Generation passed via `@command-summarizer`: `./gradlew :dataland-framework-toolbox:runCoverage --args='sfdr'`, `./gradlew :dataland-community-manager:generateOpenApiDocs`, and `./gradlew :dataland-backend:generateClients :dataland-frontend:generateClients :dataland-e2etests:generateClients`.
+- Verification passed via `@command-summarizer`: `:dataland-framework-toolbox:test`, `:dataland-backend-utils:compileKotlin`, `:dataland-message-queue-utils:test`, `:dataland-email-service:test`, `:dataland-community-manager:test`, `:dataland-backend:compileKotlin`, `:dataland-e2etests:compileTestKotlin`, frontend `typecheck`, frontend `checkcypresscompilation`, and `testing/verifyOpenApiFiles.sh`.
+- Final searches for private-framework and private access-request terms only hit historical notes in this cleanup plan.
