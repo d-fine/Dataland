@@ -61,7 +61,6 @@ class FrameworkDataModelBuilder(
 
     private fun buildFrameworkSpecificApiController(
         into: DatalandRepository,
-        privateFrameworkBoolean: Boolean,
         assembledDataset: Boolean,
     ) {
         logger.trace("Building the framework-specific API Controller")
@@ -70,15 +69,9 @@ class FrameworkDataModelBuilder(
                 frameworkBasePackageQualifier.replace(".", "/") /
                 "${rootDataModelClass.name}Controller.kt"
         logger.trace("Building framework API controller for '{}' into '{}'", framework.identifier, targetPath)
-        val nameOfDataApiController =
-            if (privateFrameworkBoolean) {
-                "/specific/datamodel/PrivateFrameworkDataController.kt.ftl"
-            } else {
-                "/specific/datamodel/PublicFrameworkDataController.kt.ftl"
-            }
         val freemarkerTemplate =
             FreeMarker.configuration
-                .getTemplate(nameOfDataApiController)
+                .getTemplate("/specific/datamodel/PublicFrameworkDataController.kt.ftl")
 
         val writer = FileWriter(targetPath.toFile())
         freemarkerTemplate.process(
@@ -101,14 +94,13 @@ class FrameworkDataModelBuilder(
     fun build(
         into: DatalandRepository,
         buildApiController: Boolean,
-        privateFrameworkBoolean: Boolean,
         assembledDataset: Boolean,
     ) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into.backendKotlinSrc)
 
         if (buildApiController) {
-            buildFrameworkSpecificApiController(into, privateFrameworkBoolean, assembledDataset)
+            buildFrameworkSpecificApiController(into, assembledDataset)
         }
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")
