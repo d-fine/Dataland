@@ -229,7 +229,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call without email filter `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithoutEmailAddress,
                 null,
                 null,
@@ -252,7 +251,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call with email filter `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithEmailAddressBeta,
                 null,
                 null,
@@ -275,7 +273,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call with search string `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithoutEmailAddress,
                 companySearchString,
                 null,

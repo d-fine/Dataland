@@ -4,7 +4,6 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
-import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -26,14 +25,12 @@ class RequestControllerTest {
     private val mockSingleDataRequestManager = mock<SingleDataRequestManager>()
     private val mockDataRequestQueryManager = mock<DataRequestQueryManager>()
     private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
-    private val mockCompanyRolesManager = mock<CompanyRolesManager>()
     private val requestController =
         RequestController(
             mockBulkDataRequestManager,
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
             mockDataRequestUpdateManager,
-            mockCompanyRolesManager,
         )
 
     @BeforeEach
@@ -43,7 +40,6 @@ class RequestControllerTest {
             mockSingleDataRequestManager,
             mockDataRequestQueryManager,
             mockDataRequestUpdateManager,
-            mockCompanyRolesManager,
         )
     }
 
