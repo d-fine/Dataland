@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "@formkit/core": "^2.0.0",
-    "@formkit/themes": "^2.0.0",
-    "@formkit/vue": "^2.0.0",
+    "@formkit/core": "^1.7.2",
+    "@formkit/themes": "^1.7.2",
+    "@formkit/vue": "^1.7.2",
     "@ibm/plex": "^6.4.1",
     "@primeuix/themes": "^2.0.3",
     "@primevue/core": "^4.5.5",
