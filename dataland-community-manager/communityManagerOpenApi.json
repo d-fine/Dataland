@@ -842,96 +842,6 @@
         ]
       }
     },
-    "/requests/dataset-access/{companyId}/{dataType}/{reportingPeriod}/{userId}": {
-      "head": {
-        "tags": [
-          "data-access-controller"
-        ],
-        "summary": "This head request checks whether the logged-in user has access to dataset.",
-        "description": "This head request checks whether the logged-in user has access to dataset.",
-        "operationId": "hasAccessToDataset",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "dataType",
-            "in": "path",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "sfdr"
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "path",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": 2023
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "The ID of the user who created the data request.",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The user can access the dataset."
-          },
-          "404": {
-            "description": "Either the specified dataset does not exist or the user cannot access the dataset."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/requests": {
       "get": {
         "tags": [
@@ -2025,7 +1935,6 @@
         "required": [
           "message",
           "reportingPeriodsOfDuplicateDataRequests",
-          "reportingPeriodsOfStoredAccessRequests",
           "reportingPeriodsOfStoredDataRequests"
         ],
         "type": "object",
@@ -2051,17 +1960,6 @@
             "description": "Reporting periods corresponding to data requests that were rejected due to being duplicates.",
             "example": [
               "2022"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "reportingPeriodsOfStoredAccessRequests": {
-            "type": "array",
-            "description": "Reporting periods corresponding to the accepted and stored access requests.",
-            "example": [
-              "2023",
-              "2024"
             ],
             "items": {
               "type": "string"

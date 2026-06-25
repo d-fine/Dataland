@@ -246,7 +246,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method for processing data requests by users after an incoming QA approval or private data received event.
+         * Method for processing data requests by users after an incoming QA approval event.
          */
         @Transactional
         fun processUserRequests(

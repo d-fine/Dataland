@@ -24,11 +24,6 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val CONTACTS_MESSAGE_DESCRIPTION = "A message to be sent to the specified company contacts."
     const val CONTACTS_MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."
 
-    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION =
-        "Reporting periods corresponding to the accepted and stored access requests."
-    const val REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
-
     const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
 
     const val ALREADY_EXISTING_REQUESTS_DESCRIPTION =

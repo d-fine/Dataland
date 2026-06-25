@@ -1,7 +1,5 @@
 package org.dataland.datalandemailservice.email
 
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGrantedEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequestedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
@@ -112,21 +110,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "You've successfully claimed company ownership for",
         )
 
-    val accessToDatasetRequestedEmailContent =
-        AccessToDatasetRequestedEmailContent(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
-            MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME,
-        ).also {
-            it.baseUrl = BASE_URL
-        }
-
-    val accessToDatasetRequestedKeywords =
-        listOf(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B,
-            MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME, BASE_URL,
-            "is requesting access to your data from",
-        )
-
     val dataRequestSummaryEmailContent =
         DataRequestSummaryEmailContent(
             listOf(DataRequestSummaryEmailContent.FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
@@ -159,19 +142,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "New Data", "Framework", DATA_TYPE_LABEL_A,
             "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
             "Company", COMPANY_NAME,
-        )
-
-    private val accessToDatasetGrantedEmailContent =
-        AccessToDatasetGrantedEmailContent(
-            companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE,
-        ).also {
-            it.baseUrl = BASE_URL
-        }
-
-    private val accessToDatasetGrantedKeywords =
-        listOf(
-            companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, BASE_URL,
-            "You have now access to the following dataset on Dataland",
         )
 
     private val datasetUploadedClaimCompanyOwnershipEmailContent =
@@ -234,8 +204,6 @@ class TypedEmailContentTestData : ArgumentsProvider {
             Arguments.of(dataUpdatedEmailContent, dataUpdatedKeywords),
             Arguments.of(dataNonSourceableEmailContent, dataNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApprovedEmailContent, companyOwnershipClaimApprovedKeywords),
-            Arguments.of(accessToDatasetRequestedEmailContent, accessToDatasetRequestedKeywords),
-            Arguments.of(accessToDatasetGrantedEmailContent, accessToDatasetGrantedKeywords),
             Arguments.of(datasetRequestedClaimCompanyOwnershipEmailContent, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(datasetUploadedClaimCompanyOwnershipEmailContent, datasetUploadedClaimCompanyOwnershipKeywords),
             Arguments.of(internalEmailContentTable, keyValueTableKeywords),

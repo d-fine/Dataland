@@ -9,11 +9,9 @@ import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.utils.KeycloakAdapterRequestProcessingUtils
@@ -38,8 +36,6 @@ class SingleDataRequestManager
         private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
         private val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
         private val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
-        private val dataAccessManager: DataAccessManager,
-        private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         private val securityUtilsService: SecurityUtilsService,
         private val companyRolesManager: CompanyRolesManager,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
@@ -90,16 +86,10 @@ class SingleDataRequestManager
                 preprocessedRequest,
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS],
             )
-            sendDataAccessRequestEmailMessage(
-                preprocessedRequest,
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS],
-            )
-
             return buildResponseForSingleDataRequest(
                 singleDataRequest,
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS]?.toList() ?: listOf(),
                 reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DUPLICATE_DATA_REQUESTS]?.toList() ?: listOf(),
-                reportingPeriodsMap[ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS]?.toList() ?: listOf(),
             )
         }
 
@@ -147,10 +137,6 @@ class SingleDataRequestManager
             preprocessedRequest: PreprocessedRequest,
         ): Map<String, String> =
             if (communityManagerDataRequestProcessingUtils.existsDataRequestWithNonFinalStatus(
-                    companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
-                ) ||
-                dataAccessManager.existsAccessRequestWithNonPendingStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
                     reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
@@ -250,32 +236,10 @@ class SingleDataRequestManager
             }
         }
 
-        private fun sendDataAccessRequestEmailMessage(
-            preprocessedRequest: PreprocessedRequest,
-            reportingPeriodsOfStoredAccessRequests: List<String>?,
-        ) {
-            if (reportingPeriodsOfStoredAccessRequests.isNullOrEmpty()) {
-                return
-            } else {
-                val dataTypeDescription =
-                    readableFrameworkNameMapping[preprocessedRequest.dataType] ?: preprocessedRequest.dataType.toString()
-                accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
-                    AccessRequestEmailBuilder.RequestEmailInformation(
-                        preprocessedRequest.userId, preprocessedRequest.message,
-                        preprocessedRequest.companyId, dataTypeDescription,
-                        reportingPeriodsOfStoredAccessRequests.toSet(),
-                        preprocessedRequest.contacts ?: setOf(),
-                    ),
-                    preprocessedRequest.correlationId,
-                )
-            }
-        }
-
         private fun buildResponseForSingleDataRequest(
             singleDataRequest: SingleDataRequest,
             reportingPeriodsOfStoredDataRequests: List<String>,
             reportingPeriodsOfDuplicateDataRequests: List<String>,
-            reportingPeriodOfStoredAccessRequests: List<String>,
         ): SingleDataRequestResponse =
             SingleDataRequestResponse(
                 buildResponseMessageForSingleDataRequest(
@@ -284,7 +248,6 @@ class SingleDataRequestManager
                 ),
                 reportingPeriodsOfStoredDataRequests,
                 reportingPeriodsOfDuplicateDataRequests,
-                reportingPeriodOfStoredAccessRequests,
             )
 
         /**

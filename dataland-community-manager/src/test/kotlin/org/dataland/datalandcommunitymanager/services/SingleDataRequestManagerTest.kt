@@ -4,13 +4,10 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
-import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -29,7 +26,6 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
@@ -43,11 +39,7 @@ class SingleDataRequestManagerTest {
     private val mockCommunityManagerDataRequestProcessingUtils = mock<CommunityManagerDataRequestProcessingUtils>()
     private val mockKeycloakAdapterRequestProcessingUtils = mock<KeycloakAdapterRequestProcessingUtils>()
     private val mockSecurityUtilsService = mock<SecurityUtilsService>()
-    private val mockCompanyInfoService = mock<CompanyInfoService>()
-    private val mockAccessRequestEmailBuilder = mock<AccessRequestEmailBuilder>()
     private val mockCompanyRolesManager = mock<CompanyRolesManager>()
-    private val mockDataAccessManager = mock<DataAccessManager>()
-    private val mockKeycloakUserService = mock<KeycloakUserService>()
 
     private lateinit var singleDataRequestManager: SingleDataRequestManager
 
@@ -72,13 +64,8 @@ class SingleDataRequestManagerTest {
             mockSingleDataRequestEmailMessageBuilder,
             mockCommunityManagerDataRequestProcessingUtils,
             mockSecurityUtilsService,
-            mockCompanyInfoService,
-            mockAccessRequestEmailBuilder,
             mockCompanyRolesManager,
-            mockDataAccessManager,
-            mockKeycloakUserService,
         )
-        doNothing().whenever(mockCompanyInfoService).checkIfCompanyIdIsValid(anyString())
         doReturn(true).whenever(mockKeycloakAdapterRequestProcessingUtils).userIsPremiumUser(premiumUserId)
         setUpDataRequestRepositoryMock()
         doAnswer { invocation ->
@@ -101,8 +88,6 @@ class SingleDataRequestManagerTest {
                 singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
                 communityManagerDataRequestProcessingUtils = mockCommunityManagerDataRequestProcessingUtils,
                 keycloakAdapterRequestProcessingUtils = mockKeycloakAdapterRequestProcessingUtils,
-                dataAccessManager = mockDataAccessManager,
-                accessRequestEmailBuilder = mockAccessRequestEmailBuilder,
                 securityUtilsService = mockSecurityUtilsService,
                 companyRolesManager = mockCompanyRolesManager,
                 maxRequestsForUser = maxRequestsForUser,

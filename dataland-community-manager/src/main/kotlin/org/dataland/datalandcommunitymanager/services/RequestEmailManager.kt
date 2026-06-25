@@ -2,10 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,7 +18,6 @@ import java.util.UUID
 class RequestEmailManager(
     @Autowired private val dataRequestResponseEmailMessageSender: DataRequestResponseEmailBuilder,
     @Autowired private val singleDataRequestEmailMessageBuilder: SingleDataRequestEmailMessageBuilder,
-    @Autowired private val accessRequestEmailBuilder: AccessRequestEmailBuilder,
 ) {
     /**
      * Method to send email when the request status changes
@@ -90,29 +86,5 @@ class RequestEmailManager(
             dataRequestEntity,
             correlationId,
         )
-    }
-
-    /**
-     * Function to send relevant e-mail notifications on a patch event for an access request.
-     */
-    fun sendNotificationsSpecificToAccessRequests(
-        dataRequestEntity: DataRequestEntity,
-        dataRequestPatch: DataRequestPatch,
-        correlationId: String,
-    ) {
-        if (dataRequestPatch.accessStatus == AccessStatus.Granted) {
-            accessRequestEmailBuilder.notifyRequesterAboutGrantedRequest(
-                AccessRequestEmailBuilder.GrantedEmailInformation(dataRequestEntity),
-                correlationId,
-            )
-        }
-        if (dataRequestPatch.requestStatus == RequestStatus.Answered &&
-            dataRequestPatch.accessStatus == AccessStatus.Pending
-        ) {
-            accessRequestEmailBuilder.notifyCompanyOwnerAboutNewRequest(
-                AccessRequestEmailBuilder.RequestEmailInformation(dataRequestEntity),
-                correlationId,
-            )
-        }
     }
 }
