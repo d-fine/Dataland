@@ -15,12 +15,13 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.SpecificationService
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
+import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -49,25 +50,27 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 import java.util.stream.Stream
 import kotlin.reflect.jvm.javaMethod
 
-@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@SpringBootTest(classes = [DatalandBackend::class])
+@Testcontainers
 @Transactional
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
-    @Autowired private val dataPointUtils: DataPointUtils,
+    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
     @Autowired private val specificationService: SpecificationService,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
@@ -85,11 +88,21 @@ internal class CompanyDataControllerTest(
                 companyQueryManager,
                 companyIdentifierManager,
                 companyBaseManager,
-                dataPointUtils,
+                dataAvailabilityChecker,
             )
     }
 
     companion object {
+        @Container
+        @JvmStatic
+        val postgres = TestPostgresContainer.postgres
+
+        @DynamicPropertySource
+        @JvmStatic
+        fun configureProperties(registry: DynamicPropertyRegistry) {
+            TestPostgresContainer.configureProperties(registry)
+        }
+
         private const val TEST_LEI = "testLei"
         private const val TEST_CHILD_LEI = "testChildLei"
 

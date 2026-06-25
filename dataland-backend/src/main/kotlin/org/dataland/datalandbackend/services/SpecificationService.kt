@@ -76,17 +76,17 @@ class SpecificationService
             nonAssembledFrameworks.addAll(DataType.values.map { it.toString() } - assembledFrameworks)
         }
 
-    /**
-     * Return a list of all known assembled frameworks
-     */
-    fun getAssembledFrameworks() = assembledFrameworks.toSet()
+        /**
+         * Return a list of all known assembled frameworks
+         */
+        fun getAssembledFrameworks() = assembledFrameworks.toSet()
 
-    /**
-     * Return a list of all known non assembled frameworks
-     */
-    fun getNonAssembledFrameworks() = nonAssembledFrameworks.toSet()
+        /**
+         * Return a list of all known non assembled frameworks
+         */
+        fun getNonAssembledFrameworks() = nonAssembledFrameworks.toSet()
 
-    /**
+        /**
          * Check if any given string represents an assembled framework
          *
          * @param framework string to be checked

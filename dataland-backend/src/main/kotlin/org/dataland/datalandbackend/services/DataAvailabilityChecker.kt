@@ -39,8 +39,8 @@ class DataAvailabilityChecker
         private fun getMetaDataOfActiveDatasets(dataDimensions: List<DataDimensions>): List<DataMetaInformationEntity> =
             dataMetaInformationManager.getActiveDataMetaInformationList(
                 dataCompositionService.filterOutInvalidDatasetDimensions(
-                    dataDimensions.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) }
-                )
+                    dataDimensions.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) },
+                ),
             )
 
         /**
@@ -67,7 +67,7 @@ class DataAvailabilityChecker
          */
         private fun getMetaDataOfActiveDataPoints(dataDimensions: List<DataPointDimensions>): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
-                dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions).distinct()
+                dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions).distinct(),
             )
 
         /**
@@ -151,7 +151,7 @@ class DataAvailabilityChecker
                     dataDimensionFilter.companyIds,
                     frameworks.toList(),
                     dataDimensionFilter.reportingPeriods,
-                )
+                ),
             ).map { it.toBasicDataDimensions() }
         }
 
@@ -172,48 +172,53 @@ class DataAvailabilityChecker
                     dataDimensionFilter.dataTypes.intersect(allAssembledFrameworks)
                 }
 
-            return frameworks.flatMap { framework ->
-                val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
-                val activeDataPointDimensions =
-                    getMetaDataOfActiveDataPoints(
-                        DataDimensionFilter(
-                            companyIds = dataDimensionFilter.companyIds,
-                            dataTypes = dataPointTypes.toList(),
-                            reportingPeriods = dataDimensionFilter.reportingPeriods,
-                        ),
-                    ).map { it.toBasicDataPointDimensions() }.toSet()
+            return frameworks
+                .flatMap { framework ->
+                    val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
+                    val activeDataPointDimensions =
+                        getMetaDataOfActiveDataPoints(
+                            DataDimensionFilter(
+                                companyIds = dataDimensionFilter.companyIds,
+                                dataTypes = dataPointTypes.toList(),
+                                reportingPeriods = dataDimensionFilter.reportingPeriods,
+                            ),
+                        ).map { it.toBasicDataPointDimensions() }.toSet()
 
-                val calculatableDataPointDimensions = dataPointCalculator.getCalculatableDataPointDimensions(
-                    dataPointTypes = dataPointTypes,
-                    dataDimensionFilter = dataDimensionFilter,
-                )
+                    val calculatableDataPointDimensions =
+                        dataPointCalculator.getCalculatableDataPointDimensions(
+                            dataPointTypes = dataPointTypes,
+                            dataDimensionFilter = dataDimensionFilter,
+                        )
 
-                getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, framework)
-            }.toSet()
+                    getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, framework)
+                }.toSet()
         }
 
-    /**
-     * Returns viewable dataset dimensions for a given collection of data point dimensions.
-     *
-     * The data point dimensions are grouped by (companyId, reportionPeriod) and for each group, the corresponding
-     * dataset dimensions is returned if and only if the group contains more than the ignored fields.
-     *
-     * This function is only meaningful, if the data point types of the passed data point dimensions are part of the
-     * given framework.
-     *
-     * @param dataPointDimensions the available data point dimensions that determine if a dataset dimension is available
-     * @param framework the framework used to construct the dataset dimensions
-     * @return a set of viewable dataset dimensions
-     */
+        /**
+         * Returns viewable dataset dimensions for a given collection of data point dimensions.
+         *
+         * The data point dimensions are grouped by (companyId, reportionPeriod) and for each group, the corresponding
+         * dataset dimensions is returned if and only if the group contains more than the ignored fields.
+         *
+         * This function is only meaningful, if the data point types of the passed data point dimensions are part of the
+         * given framework.
+         *
+         * @param dataPointDimensions the available data point dimensions that determine if a dataset dimension is available
+         * @param framework the framework used to construct the dataset dimensions
+         * @return a set of viewable dataset dimensions
+         */
         private fun getViewableDatasetDimensions(
             dataPointDimensions: Collection<BasicDataPointDimensions>,
             framework: String,
         ): Set<BasicDataDimensions> =
-            dataPointDimensions.groupBy { it.toBaseDimensions() }
+            dataPointDimensions
+                .groupBy { it.toBaseDimensions() }
                 .mapNotNull { (baseDimensions, dataPointDimensions) ->
                     if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPointDimensions.map { it.dataPointType })) {
                         BasicDataDimensions(baseDimensions.companyId, framework, baseDimensions.reportingPeriod)
-                    } else null
+                    } else {
+                        null
+                    }
                 }.toSet()
 
         /**

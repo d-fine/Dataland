@@ -5,8 +5,6 @@ import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.model.DatasetType
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -74,10 +72,13 @@ class DataCompositionService
          * @return the list of all valid data dimensions from the original input
          */
         fun filterOutInvalidDatasetDimensions(datasetDimensions: List<BasicDataDimensions>) =
-            datasetDimensions.asSequence().filter { dimensions ->
-                ValidationUtils.isBaseDimensions(dimensions) &&
-                    specificationService.isFramework(dimensions.dataType)
-            }.map { it.toBasicDatasetDimensions() }.toList()
+            datasetDimensions
+                .asSequence()
+                .filter { dimensions ->
+                    ValidationUtils.isBaseDimensions(dimensions) &&
+                        specificationService.isFramework(dimensions.dataType)
+                }.map { it.toBasicDatasetDimensions() }
+                .toList()
 
         /**
          * Filters out invalid entries from the filter by checking if company IDs, frameworks, and reporting periods are valid.

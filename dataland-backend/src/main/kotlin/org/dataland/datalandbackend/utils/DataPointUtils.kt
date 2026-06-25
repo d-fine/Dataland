@@ -1,8 +1,6 @@
 package org.dataland.datalandbackend.utils
 
-import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.DataCompositionService
-import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.DatasetType
@@ -23,7 +21,6 @@ class DataPointUtils
         private val specificationClient: SpecificationControllerApi,
         private val metaDataManager: DataPointMetaInformationManager,
         private val dataCompositionService: DataCompositionService,
-        private val dataPointCalculator: DataPointCalculator,
     ) {
         /**
          * Retrieve a framework specification from the specification service
@@ -50,42 +47,4 @@ class DataPointUtils
                 companyId = dataPointDimensions.companyId,
                 reportingPeriod = dataPointDimensions.reportingPeriod,
             )
-
-        /**
-         * Retrieves all reporting periods with at least one active data point for a specific company and framework
-         *
-         * Generic data points (company "meta" information like "Number of Employees") are excluded to return only
-         * reporting periods with actual data.
-         *
-         * @param companyId the ID of the company
-         * @param framework the name of the framework
-         * @return a set of all reporting periods with active data points or an empty set if none exist
-         */
-        fun getAllReportingPeriodsWithActiveDataPoints(
-            companyId: String,
-            framework: DatasetType,
-        ): Set<String> {
-            if (getFrameworkSpecificationOrNull(framework) == null) {
-                return emptySet()
-            }
-
-            val relevantDataPoints =
-                dataCompositionService
-                    .getRelevantDataPointTypes(framework)
-                    .subtract(DataAvailabilityIgnoredFieldsUtils.getIgnoredFields())
-
-            val metaData =
-                metaDataManager
-                    .getActiveDataPointMetaInformation(
-                        dataPointTypes = relevantDataPoints,
-                        companyId = companyId,
-                    )
-
-            val calculationSourceDataPointDimension = dataPointCalculator.getActiveSourceDataPointDimensions(relevantDataPoints, companyId)
-            val calculationSourceReportingPeriods = calculationSourceDataPointDimension.map { it.reportingPeriod }.toSet()
-            val relevantDataPointReportingPeriods = metaData.map { it.reportingPeriod }.toSet()
-            return relevantDataPointReportingPeriods + calculationSourceReportingPeriods
-        }
-
-
     }

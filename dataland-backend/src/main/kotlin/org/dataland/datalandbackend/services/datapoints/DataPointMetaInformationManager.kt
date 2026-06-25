@@ -22,7 +22,7 @@ class DataPointMetaInformationManager
     constructor(
         private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
     ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+        private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Get meta info about one specific data point
@@ -202,13 +202,16 @@ class DataPointMetaInformationManager
          * @return list of DataPointMetaInformationEntity for active data points matching the filters
          */
         fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
-            if (dataDimensionFilter.isEmpty()) emptyList()
-            else dataPointMetaInformationRepositoryInterface
-                .findActiveDataPointDimensionsByFilter(
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
-                )
+            if (dataDimensionFilter.isEmpty()) {
+                emptyList()
+            } else {
+                dataPointMetaInformationRepositoryInterface
+                    .findActiveDataPointDimensionsByFilter(
+                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
+                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
+                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
+                    )
+            }
 
         /**
          * Retrieves active data point metadata for the given exact list of data point dimensions.

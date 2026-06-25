@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -12,6 +13,7 @@ import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInform
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
@@ -54,6 +56,7 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
         private val dataPointUtils: DataPointUtils,
+        private val dataAvailabilityChecker: DataAvailabilityChecker,
         private val dataDeliveryService: DataDeliveryService,
         private val datasetAssembler: DatasetAssembler,
         private val specificationService: SpecificationService,
@@ -336,8 +339,10 @@ class AssembledDataManager
 
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =
-                dataPointUtils
-                    .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
+                dataAvailabilityChecker
+                    .getViewableDimensions(
+                        DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(framework)),
+                    ).map { it.reportingPeriod }
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 
             return getDatasetData(

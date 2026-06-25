@@ -167,11 +167,14 @@ class DataMetaInformationManager(
      * @return list of DataMetaInformationEntity for active datasets matching the filters
      */
     fun getActiveDataMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataMetaInformationEntity> =
-        if (dataDimensionFilter.isEmpty()) emptyList()
-        else dataMetaInformationRepository
-            .findActiveDatasetDimensionsByFilter(
-                defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
-                defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
-                defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
-            )
+        if (dataDimensionFilter.isEmpty()) {
+            emptyList()
+        } else {
+            dataMetaInformationRepository
+                .findActiveDatasetDimensionsByFilter(
+                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
+                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
+                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
+                )
+        }
 }

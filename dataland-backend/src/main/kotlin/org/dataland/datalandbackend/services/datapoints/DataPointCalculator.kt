@@ -256,7 +256,6 @@ class DataPointCalculator
             return calculatedData
         }
 
-
         /**
          * For a collection of target data point types, finds all DataPointDimensions calculatable under the constraint of the given filter
          *
@@ -299,25 +298,25 @@ class DataPointCalculator
          * Returns a list of all dimensions for which the data point type can be calculated given the available input dimensions.
          */
         private fun getCalculatableDataPointDimensions(
-                dataPointTypeSpecification: DataPointTypeSpecification,
-                activeSourceDataPointDimensions: List<BasicDataPointDimensions>,
-            ): List<BasicDataPointDimensions> =
-                dataPointTypeSpecification.calculationRules.flatMap { calculationRule ->
-                    getCalculatableBaseDimensions(
-                        calculationRule,
-                        activeSourceDataPointDimensions.groupBy { it.toBaseDimensions() },
-                    ).map { it.toBasicDataPointDimensions(dataPointTypeSpecification.dataPointType.id) }
-                }
+            dataPointTypeSpecification: DataPointTypeSpecification,
+            activeSourceDataPointDimensions: List<BasicDataPointDimensions>,
+        ): List<BasicDataPointDimensions> =
+            dataPointTypeSpecification.calculationRules.flatMap { calculationRule ->
+                getCalculatableBaseDimensions(
+                    calculationRule,
+                    activeSourceDataPointDimensions.groupBy { it.toBaseDimensions() },
+                ).map { it.toBasicDataPointDimensions(dataPointTypeSpecification.dataPointType.id) }
+            }
 
         /**
          * Returns a set of all dimensions for which the calculation rule is calculatable given the available input dimensions.
          */
         private fun getCalculatableBaseDimensions(
-                calculationRule: CalculationRule,
-                activeSourceDataPointDimensions: Map<BasicBaseDimensions, List<BasicDataPointDimensions>>,
-            ): Set<BasicBaseDimensions>
-                = activeSourceDataPointDimensions
-                    .filter { (_, dimensions) ->
-                        dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)
-                    }.keys
+            calculationRule: CalculationRule,
+            activeSourceDataPointDimensions: Map<BasicBaseDimensions, List<BasicDataPointDimensions>>,
+        ): Set<BasicBaseDimensions> =
+            activeSourceDataPointDimensions
+                .filter { (_, dimensions) ->
+                    dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)
+                }.keys
     }

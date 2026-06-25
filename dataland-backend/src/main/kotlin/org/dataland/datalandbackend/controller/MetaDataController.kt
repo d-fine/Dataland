@@ -1,24 +1,20 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
-import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
-import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceabilityInformationManager
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -44,8 +40,6 @@ class MetaDataController(
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
     @Autowired val assembledDataManager: AssembledDataManager,
-    @Autowired val dataPointUtils: DataPointUtils,
-    @Autowired val dataAvailabilityChecker: DataAvailabilityChecker,
     @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -202,28 +196,5 @@ class MetaDataController(
             )
         }
         return ResponseEntity.ok(dataPoints)
-    }
-
-    override fun getAvailableDataDimensions(
-        companyIds: List<String>?,
-        frameworksOrDataPointTypes: List<String>?,
-        reportingPeriods: List<String>?,
-    ): ResponseEntity<List<BasicDataDimensions>> {
-        val dataDimensionFilter = DataDimensionFilter(companyIds, frameworksOrDataPointTypes, reportingPeriods)
-        if (dataDimensionFilter.isEmpty()) {
-            throw InvalidInputApiException(
-                summary = "All filters are empty.",
-                message = "At least one filter must be provided.",
-            )
-        }
-        val activeDimensionsFromDatasets = dataMetaInformationManager.getActiveDataDimensionsFromDatasets(dataDimensionFilter)
-        val activeDimensionsFromDataPoints = dataPointUtils.getActiveDataDimensionsFromDataPoints(dataDimensionFilter)
-        return ResponseEntity.ok((activeDimensionsFromDatasets + activeDimensionsFromDataPoints).distinct())
-    }
-
-    override fun retrieveMetaDataOfActiveDatasets(dataDimensions: List<BasicDataDimensions>): ResponseEntity<List<DataMetaInformation>> {
-        val foundMetaInformation = dataAvailabilityChecker.getMetaDataOfActiveDatasets(dataDimensions.map { it.toBasicDatasetDimensions() })
-        foundMetaInformation.forEach { it.addRef(proxyPrimaryUrl) }
-        return ResponseEntity.ok(foundMetaInformation)
     }
 }

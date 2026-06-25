@@ -787,72 +787,6 @@
         ]
       }
     },
-    "/metadata/active-dataset-search": {
-      "post": {
-        "tags": [
-          "meta-data-controller"
-        ],
-        "summary": "Checks if active datasets are available.",
-        "description": "Checks if any active datasets are available applying the provided data dimensions and returns the corresponding meta data.",
-        "operationId": "retrieveMetaDataOfActiveDatasets",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/BasicDataDimensions"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved meta data of active datasets.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataMetaInformation"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/isinleimapping/": {
       "post": {
         "tags": [
@@ -4313,109 +4247,6 @@
                   "description": "A map from data point IDs to the associated technical IDs.",
                   "example": {
                     "extendedEnumFiscalYearDeviation": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/metadata/available-data-dimensions": {
-      "get": {
-        "tags": [
-          "meta-data-controller"
-        ],
-        "summary": "Checks if any data is available applying the provided filters.",
-        "description": "Checks if any data is available using the given filters and returns the corresponding data dimensions.",
-        "operationId": "getAvailableDataDimensions",
-        "parameters": [
-          {
-            "name": "companyIds",
-            "in": "query",
-            "description": "The unique identifiers under which a company can be found on Dataland.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
-              "480238a8-a1d6-452c-93b8-5dc75c7dcd64"
-            ]
-          },
-          {
-            "name": "frameworksOrDataPointTypes",
-            "in": "query",
-            "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "sfdr",
-              "extendedDateFiscalYearEnd"
-            ]
-          },
-          {
-            "name": "reportingPeriods",
-            "in": "query",
-            "description": "The relevant reporting periods (e.g. fiscal years).",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "2023",
-              "2024"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully checked if data is available.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BasicDataDimensions"
                   }
                 }
               }
@@ -8716,31 +8547,6 @@
                 "$ref": "#/components/schemas/QaStatus"
               }
             ]
-          }
-        }
-      },
-      "BasicDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "example": "2023"
           }
         }
       },
@@ -22788,15 +22594,15 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string",
-            "description": "The official name of the company.",
-            "example": "ABC Corporation"
-          },
           "companyId": {
             "type": "string",
             "description": "The unique identifier under which a company can be found on Dataland.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "The official name of the company.",
+            "example": "ABC Corporation"
           }
         }
       },

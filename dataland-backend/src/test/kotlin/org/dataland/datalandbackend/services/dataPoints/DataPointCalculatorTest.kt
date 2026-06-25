@@ -5,13 +5,13 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -34,7 +34,6 @@ import java.math.BigDecimal
 
 class DataPointCalculatorTest {
     private val dataCompositionService = mock<DataCompositionService>()
-    private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
     private val internalStorageAdapter = mock<InternalStorageAdapter>()
     private val specificationService = mock<SpecificationService>()
     private val metaDataManager = mock<DataPointMetaInformationManager>()
@@ -110,8 +109,10 @@ class DataPointCalculatorTest {
     fun setUp() {
         dataPointCalculator =
             DataPointCalculator(
-                dataCompositionService, dataAvailabilityChecker,
-                internalStorageAdapter, specificationService, metaDataManager,
+                dataCompositionService,
+                internalStorageAdapter,
+                specificationService,
+                metaDataManager,
             )
         doReturn(
             mapOf(
@@ -119,6 +120,16 @@ class DataPointCalculatorTest {
                 sourceTypeB to makeDataPointTypeSpecification(sourceTypeB),
             ),
         ).whenever(specificationService).getDataPointSpecifications(any())
+    }
+
+    /**
+     * Stubs the active data point metadata lookup used by the calculation source resolution so that it returns one
+     * metadata entity per provided data point ID.
+     */
+    private fun stubActiveSourceDataPointIds(vararg dataPointIds: String) {
+        doReturn(
+            dataPointIds.map { makeMetaData(dataPointType = sourceTypeA, dataPointId = it) },
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<List<DataPointDimensions>>())
     }
 
     @Test
@@ -131,7 +142,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b")
         doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -162,7 +173,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a")
         doReturn(mapOf("id-a" to dataPointHalf))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -192,7 +203,7 @@ class DataPointCalculatorTest {
             ),
         ).whenever(dataCompositionService).getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a")
         doReturn(mapOf("id-a" to dataPointHalf))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -224,7 +235,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b")
         // Both returned from storage, but B has no value
         doReturn(mapOf("id-a" to dataPointWithValue, "id-b" to dataPointWithoutValue))
             .whenever(internalStorageAdapter)
@@ -244,7 +255,7 @@ class DataPointCalculatorTest {
     fun `check that dimensions for which no calculation rule exists are omitted from the result`() {
         doReturn(emptyMap<String, Collection<CalculationRule>>()).whenever(dataCompositionService).getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(emptyList<String>()).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds()
         doReturn(emptyMap<String, UploadedDataPoint>())
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -264,7 +275,7 @@ class DataPointCalculatorTest {
     fun `check that already deliverable data point types are not calculated again`() {
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
         doReturn(emptyMap<String, Collection<CalculationRule>>()).whenever(dataCompositionService).getAvailableCalculationRules(any())
-        doReturn(emptyList<String>()).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds()
         doReturn(emptyMap<String, UploadedDataPoint>())
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -300,9 +311,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b", "id-second-a", "id-second-b"))
-            .whenever(dataAvailabilityChecker)
-            .getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b", "id-second-a", "id-second-b")
         doReturn(
             mapOf(
                 "id-a" to dataPointHalf,
@@ -345,7 +354,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b")
         doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -376,7 +385,7 @@ class DataPointCalculatorTest {
         ).whenever(dataCompositionService)
             .getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b")
         doReturn(mapOf("id-a" to dataPointHalfFromAnotherPeriod, "id-b" to dataPointOneFromAnotherPeriod))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -407,7 +416,7 @@ class DataPointCalculatorTest {
             ),
         ).whenever(dataCompositionService).getAvailableCalculationRules(any())
         doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        stubActiveSourceDataPointIds("id-a", "id-b")
         doReturn(mapOf("id-a" to dataPointOne, "id-b" to dataPointZero))
             .whenever(internalStorageAdapter)
             .getDataPoints(any(), any())
@@ -427,7 +436,7 @@ class DataPointCalculatorTest {
     }
 
     @Test
-    fun `check that active source dimensions are returned only for complete rules in the same base dimensions`() {
+    fun `check that calculatable dimensions are returned only for complete rules in the same base dimensions`() {
         doReturn(
             mapOf(
                 targetType to
@@ -444,21 +453,22 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, reportingPeriod = "2023"),
                 makeMetaData(sourceTypeB, companyId = secondaryCompanyId, reportingPeriod = "2023"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
 
-        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType), companyId)
+        val result =
+            dataPointCalculator
+                .getCalculatableDataPointDimensions(listOf(targetType), DataDimensionFilter(companyIds = listOf(companyId)))
 
         assertEquals(
             setOf(
-                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
-                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
+                BasicDataPointDimensions(companyId, targetType, "2022"),
             ),
             result,
         )
     }
 
     @Test
-    fun `check that active source lookup is constrained to the requested dimensions`() {
+    fun `check that calculatable dimension lookup is constrained to the requested dimensions`() {
         val filter = DataDimensionFilter(companyIds = listOf(companyId), reportingPeriods = listOf("2022"))
         val secondTargetType = "secondCalculatedDataPointType"
         doReturn(
@@ -480,19 +490,19 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, reportingPeriod = "2022"),
                 makeMetaData(sourceTypeB, reportingPeriod = "2022"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
 
-        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType, secondTargetType), filter)
+        val result = dataPointCalculator.getCalculatableDataPointDimensions(listOf(targetType, secondTargetType), filter)
 
         assertEquals(
             setOf(
-                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
-                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
+                BasicDataPointDimensions(companyId, targetType, "2022"),
+                BasicDataPointDimensions(companyId, secondTargetType, "2022"),
             ),
             result,
         )
         verify(metaDataManager).getActiveDataPointMetaInformationList(
-            argThat {
+            argThat<DataDimensionFilter> {
                 companyIds == filter.companyIds &&
                     reportingPeriods == filter.reportingPeriods &&
                     dataTypes?.containsAll(listOf(sourceTypeA, sourceTypeB)) == true
@@ -501,7 +511,7 @@ class DataPointCalculatorTest {
     }
 
     @Test
-    fun `check that active source dimensions are grouped by company and reporting period and deduplicated`() {
+    fun `check that calculatable dimensions are grouped by company and reporting period and deduplicated`() {
         val secondCompanyId = secondaryCompanyId
         val secondTargetType = "secondCalculatedDataPointType"
         doReturn(
@@ -525,28 +535,29 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, companyId = secondCompanyId, reportingPeriod = "2024"),
                 makeMetaData(sourceTypeB, companyId = secondCompanyId, reportingPeriod = "2024"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
 
-        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(targetType, secondTargetType), DataDimensionFilter())
+        val result =
+            dataPointCalculator.getCalculatableDataPointDimensions(listOf(targetType, secondTargetType), DataDimensionFilter())
 
         assertEquals(
             setOf(
-                BasicDataPointDimensions(companyId, sourceTypeA, "2022"),
-                BasicDataPointDimensions(companyId, sourceTypeB, "2022"),
-                BasicDataPointDimensions(secondCompanyId, sourceTypeA, "2024"),
-                BasicDataPointDimensions(secondCompanyId, sourceTypeB, "2024"),
+                BasicDataPointDimensions(companyId, targetType, "2022"),
+                BasicDataPointDimensions(companyId, secondTargetType, "2022"),
+                BasicDataPointDimensions(secondCompanyId, targetType, "2024"),
+                BasicDataPointDimensions(secondCompanyId, secondTargetType, "2024"),
             ),
             result,
         )
         verify(metaDataManager).getActiveDataPointMetaInformationList(
-            argThat {
+            argThat<DataDimensionFilter> {
                 dataTypes == listOf(sourceTypeA, sourceTypeB)
             },
         )
     }
 
     @Test
-    fun `check that active source dimension lookup does not infer recursive calculation chains`() {
+    fun `check that calculatable dimension lookup does not infer recursive calculation chains`() {
         val intermediateType = "intermediateCalculatedDataPointType"
         val finalTargetType = "finalCalculatedDataPointType"
         doReturn(
@@ -560,9 +571,11 @@ class DataPointCalculatorTest {
         ).whenever(specificationService).getDataPointSpecifications(listOf(finalTargetType))
         doReturn(listOf(makeMetaData(sourceTypeA)))
             .whenever(metaDataManager)
-            .getActiveDataPointMetaInformationList(any())
+            .getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
 
-        val result = dataPointCalculator.getActiveSourceDataPointDimensions(listOf(finalTargetType), companyId)
+        val result =
+            dataPointCalculator
+                .getCalculatableDataPointDimensions(listOf(finalTargetType), DataDimensionFilter(companyIds = listOf(companyId)))
 
         assertTrue(result.isEmpty())
     }
