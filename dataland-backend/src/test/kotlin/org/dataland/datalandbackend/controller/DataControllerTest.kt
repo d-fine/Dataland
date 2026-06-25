@@ -21,7 +21,6 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -59,7 +58,6 @@ internal class DataControllerTest {
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
-    private val mockDataPointUtils = mock<DataPointUtils>()
     private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
@@ -165,7 +163,6 @@ internal class DataControllerTest {
             val argument = invocation.arguments[0] as Set<*>
             argument.associateWith { someEuTaxoDataAsString }
         }.whenever(mockDataManager).getDatasetData(any(), any())
-        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
 
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {

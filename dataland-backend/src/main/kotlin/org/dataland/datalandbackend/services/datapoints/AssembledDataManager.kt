@@ -14,12 +14,12 @@ import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
+import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.services.SpecificationService
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
@@ -55,7 +55,8 @@ class AssembledDataManager
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
-        private val dataPointUtils: DataPointUtils,
+        private val metaDataManager: DataPointMetaInformationManager,
+        private val dataCompositionService: DataCompositionService,
         private val dataAvailabilityChecker: DataAvailabilityChecker,
         private val dataDeliveryService: DataDeliveryService,
         private val datasetAssembler: DatasetAssembler,
@@ -357,7 +358,15 @@ class AssembledDataManager
                             dataType = searchFilter.dataType,
                             reportingPeriod = dataDimensions.reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = dataPointUtils.getLatestUploadTime(dataDimensions.toBasicDataDimensions()),
+                            uploadTime =
+                                metaDataManager.getLatestUploadTimeOfActiveDataPoints(
+                                    dataPointTypes =
+                                        dataCompositionService
+                                            .getRelevantDataPointTypes(dataDimensions.framework)
+                                            .toSet(),
+                                    companyId = dataDimensions.companyId,
+                                    reportingPeriod = dataDimensions.reportingPeriod,
+                                ),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = dataString,

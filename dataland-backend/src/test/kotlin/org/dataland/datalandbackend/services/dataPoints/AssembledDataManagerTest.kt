@@ -24,7 +24,6 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -114,7 +113,6 @@ class AssembledDataManagerTest {
     private lateinit var dataDeliveryService: DataDeliveryService
     private lateinit var assembledDataManager: AssembledDataManager
     private lateinit var specificationService: SpecificationService
-    private lateinit var dataPointUtils: DataPointUtils
     private lateinit var internalStorageAdapter: InternalStorageAdapter
     private lateinit var dataPointCalculator: DataPointCalculator
 
@@ -194,7 +192,6 @@ class AssembledDataManagerTest {
                 specificationService,
                 metaDataManager,
             )
-        dataPointUtils = DataPointUtils(specificationClient, metaDataManager, dataCompositionService)
         dataDeliveryService =
             DataDeliveryService(
                 dataCompositionService, dataAvailabilityChecker,
@@ -205,8 +202,8 @@ class AssembledDataManagerTest {
                 dataManager, messageQueuePublications, dataPointValidator,
                 datasetDatapointRepository, spyDataPointManager,
                 referencedReportsUtilities,
-                companyQueryManager, dataPointUtils, dataAvailabilityChecker, dataDeliveryService,
-                datasetAssembler, specificationService,
+                companyQueryManager, metaDataManager, dataCompositionService, dataAvailabilityChecker,
+                dataDeliveryService, datasetAssembler, specificationService,
             )
     }
 
