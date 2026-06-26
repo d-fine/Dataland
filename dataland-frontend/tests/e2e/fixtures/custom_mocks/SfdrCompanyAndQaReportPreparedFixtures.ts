@@ -1,9 +1,4 @@
-import {
-  generateArray,
-  generateFixtureDataset,
-  pickOneElement,
-  removeAllUnusedReferencedReports
-} from '@e2e/fixtures/FixtureUtils';
+import {removeAllUnusedReferencedReports} from '@e2e/fixtures/FixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
   ExtendedDataPointYesNoQualityEnum,
