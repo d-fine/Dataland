@@ -3,7 +3,7 @@ package org.dataland.datalanduserservice.configurations
 import okhttp3.OkHttpClient
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -31,9 +31,9 @@ class ApiClients(
      * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
      */
     @Bean
-    fun getMetaDataControllerApi(
+    fun getDataAvailabilityControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+    ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager

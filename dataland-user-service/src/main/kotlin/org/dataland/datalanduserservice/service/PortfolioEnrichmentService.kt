@@ -1,8 +1,9 @@
 package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 class PortfolioEnrichmentService
     @Autowired
     constructor(
-        private val metaDataControllerApi: MetaDataControllerApi,
+        private val dataAvailabilityControllerApi: DataAvailabilityControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         private val majorFrameworks =
@@ -52,11 +53,13 @@ class PortfolioEnrichmentService
             companyIds: List<String>,
             frameworks: List<String>,
         ): Map<String, Map<String, List<String>>> {
-            val availableDataDimensions =
-                metaDataControllerApi.getAvailableDataDimensions(
+            val availableDataDimensions = dataAvailabilityControllerApi.getAvailableDataDimensions(
+                DataAvailabilitySearchRequest(
                     companyIds = companyIds,
                     frameworksOrDataPointTypes = frameworks,
+                    reportingPeriods = emptyList(),
                 )
+            )
 
             val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
                 availableDataDimensions
