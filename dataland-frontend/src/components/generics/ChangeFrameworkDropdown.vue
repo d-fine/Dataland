@@ -29,7 +29,7 @@
 import { type PropType, ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation } from '@clients/backend';
+import { type BasicDataDimensions, type DataTypeEnum } from '@clients/backend';
 
 const props = defineProps({
   companyId: {
@@ -41,7 +41,7 @@ const props = defineProps({
     required: true,
   },
   dataMetaInformation: {
-    type: Array as PropType<Array<DataMetaInformation>>,
+    type: Array as PropType<Array<BasicDataDimensions>>,
     required: true,
   },
 });
@@ -72,12 +72,12 @@ const dropdownExtended = ref<boolean>(false);
  * implemented, the distinct frameworks are set as options for the framework-dropdown element.
  * @param dataMetaInformation an array of data meta info
  */
-function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>): { label: string; value: string }[] {
+function getFrameworkListSorted(dataMetaInformation: Array<BasicDataDimensions>): { label: string; value: string }[] {
   const setOfAvailableFrameworksForCompany = [
     ...new Set(dataMetaInformation.map((individualMetaInfo) => individualMetaInfo.dataType)),
   ];
   const dataTypesInDropdown = setOfAvailableFrameworksForCompany
-    .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType))
+    .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType as DataTypeEnum))
     .sort((a, b) => a.localeCompare(b))
     .map((dataType) => {
       return {

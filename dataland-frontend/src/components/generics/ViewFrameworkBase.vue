@@ -124,12 +124,14 @@ import {
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
+  type BasicDataDimensions,
   type CompanyInformation,
   type DataMetaInformation,
   type DataTypeEnum,
   ExportFileType,
   type QaStatus,
 } from '@clients/backend';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { CompanyRole } from '@clients/communitymanager';
 import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
@@ -154,7 +156,7 @@ const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const fetchedCompanyInformation = ref<CompanyInformation>({} as CompanyInformation);
-const dataMetaInformation = ref<DataMetaInformation[]>([]);
+const dataMetaInformation = ref<BasicDataDimensions[]>([]);
 const activeDataForCurrentCompanyAndFramework = ref<Array<DataAndMetaInformation<FrameworkData>>>([]);
 const chosenDataTypeInDropdown = ref(props.dataType ?? '');
 const isDataProcessedSuccessfully = ref(false);
@@ -247,7 +249,7 @@ watch(isReviewableByCurrentUser, () => {
 onMounted(async () => {
   if (dataId.value) {
     await getMetaData();
-    setActiveDataForCurrentCompanyAndFramework();
+    setActiveDataForCurrentCompanyAndFramework(await getFullMetaData());
     await getDatasetJudgementId();
   } else {
     await getMetaData();
@@ -289,17 +291,32 @@ function setQaStatusTo(qaStatus: QaStatus): void {
 }
 
 /**
- * Retrieves all data meta data available for current company
+ * Retrieves available data dimensions for the current company to populate the framework dropdown
+ * and the reporting periods for the download dialog.
  */
 async function getMetaData(): Promise<void> {
   try {
-    const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.metaDataController;
-    const response = await api.getListOfDataMetaInfo(props.companyID);
+    const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.dataAvailabilityController;
+    const response = await api.getAvailableDataDimensions({
+      companyIds: [props.companyID],
+      frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+      reportingPeriods: [],
+    });
     dataMetaInformation.value = response.data;
   } catch (err) {
     isDataProcessedSuccessfully.value = false;
     console.error(err);
   }
+}
+
+/**
+ * Retrieves full dataset metadata for the current company. Used only for fallback paths that
+ * require the complete DataMetaInformation shape (e.g. dataId-in-route view and vsme-403 error).
+ */
+async function getFullMetaData(): Promise<DataMetaInformation[]> {
+  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.metaDataController;
+  const response = await api.getListOfDataMetaInfo(props.companyID);
+  return response.data;
 }
 
 /**
@@ -321,7 +338,7 @@ async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
   } catch (error) {
     if (error instanceof AxiosError && error?.status === 403 && props.dataType === 'vsme') {
       await getMetaData();
-      setActiveDataForCurrentCompanyAndFramework();
+      setActiveDataForCurrentCompanyAndFramework(await getFullMetaData());
     } else {
       isDataProcessedSuccessfully.value = false;
       console.error(error);
@@ -331,10 +348,11 @@ async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
 
 /**
  * Get available metaData in case of either insufficient rights.
+ * @param fullMetaData the full dataset metadata to use for populating the active data
  */
-function setActiveDataForCurrentCompanyAndFramework(): void {
-  if (dataMetaInformation.value) {
-    activeDataForCurrentCompanyAndFramework.value = dataMetaInformation.value.map((meta) => ({
+function setActiveDataForCurrentCompanyAndFramework(fullMetaData: DataMetaInformation[]): void {
+  if (fullMetaData.length > 0) {
+    activeDataForCurrentCompanyAndFramework.value = fullMetaData.map((meta) => ({
       metaInfo: meta,
       data: {},
     }));

@@ -27,6 +27,7 @@ import { CreditsControllerApi } from '@clients/accountingservice';
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
+  dataAvailabilityController: backendApis.DataAvailabilityControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
   userUploadsController: backendApis.UserUploadsControllerApiInterface;
 }
@@ -94,6 +95,7 @@ export class ApiClientProvider {
     return {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
+      dataAvailabilityController: backendClientFactory(backendApis.DataAvailabilityControllerApi),
       metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
       userUploadsController: backendClientFactory(backendApis.UserUploadsControllerApi),
     };

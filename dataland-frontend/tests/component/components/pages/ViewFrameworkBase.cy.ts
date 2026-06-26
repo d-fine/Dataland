@@ -4,7 +4,10 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for ViewFrameworkBase', () => {
   beforeEach(() => {
-    cy.intercept('/api/metadata*', { fixture: 'MetaInfoDataMocksForOneCompany', times: 1 }).as('metaDataFetch');
+    cy.intercept('POST', '/api/data-availability/available-data-dimensions', {
+      fixture: 'BasicDataDimensionsMocksForOneCompany',
+      times: 1,
+    });
     cy.intercept('**/api/data/**/companies/*', {
       fixture: 'DataAndMetaInfoMocksForOneCompany',
       times: 1,
