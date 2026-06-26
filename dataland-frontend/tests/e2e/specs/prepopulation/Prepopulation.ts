@@ -6,7 +6,7 @@ import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
 import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
 import {
-  type PublicApiClientConstructor, setQaReviewStatusPending,
+  type PublicApiClientConstructor,
   uploadGenericFrameworkData, uploadQaReportsData,
   uploadVsmeFrameworkData,
 } from '@e2e/utils/FrameworkUpload';
@@ -129,7 +129,12 @@ describe(
             cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
               fixtureData = jsonContent as typeof fixtureData;
             });
+            Cypress.expose('excludeBypassQaIntercept', true)
           });
+
+          after(function () {
+            Cypress.expose('excludeBypassQaIntercept', false)
+          })
 
           it(`Upload SFDR Data with a QA report`, () => {
             cy.getAdminToken().then((token) => {
@@ -144,8 +149,6 @@ describe(
                   false
                 );
                 await uploadQaReportsData(token, storedData.dataId, fixtureDataClosure.qaReports);
-                await new Promise(resolve => {setTimeout(resolve, 1000)});
-                await setQaReviewStatusPending(token, storedData.dataId);
               });
             });
           });

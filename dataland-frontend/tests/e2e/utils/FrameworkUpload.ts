@@ -14,11 +14,8 @@ import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrame
 import { CompanyRole } from '@clients/communitymanager';
 import {
   DataPointQaReport,
-  DataPointQaReportControllerApi, QaControllerApi,
-  QaReportDataPointString,
-  QaReportMetaInformation, QaStatus,
-  type SfdrData as SfdrQaReport,
-  SfdrDataQaReportControllerApi
+  DataPointQaReportControllerApi,
+  QaReportDataPointString
 } from '@clients/qaservice';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
@@ -116,7 +113,6 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
   });
 }
 
-
 /**
  * Uploads QA reports for data points contained in a dataset.
  *
@@ -139,22 +135,6 @@ export async function uploadQaReportsData(
   const response = await metadataApi.getContainedDataPoints(dataId);
   const dataPointIdMappings = await response.data;
   const uploadedQaReports: Array<DataPointQaReport> = [];
-
-  // throw new Error(JSON.stringify(dataPointIdMappings));
-  //
-  // for(const [key, value] of Object.entries(qaReports)) {
-  //   const dataPointId = dataPointIdMappings[key];
-  //         uploadedQaReports.push( await uploadSingleQaReportData(token, dataPointId, value));
-  //         // await setDataPointQaReviewStatusPending(token, dataPointId);
-  // }
-  // doThingsInChunks(Object.entries(qaReports), 10, async (qaReportMapping) => {
-  //     const dataPointId = dataPointIdMappings[qaReportMapping[0]];
-  //     if (dataPointId) {
-  //       uploadedQaReports.push( await uploadSingleQaReportData(token, dataPointId, qaReportMapping[1]));
-  //       // await setDataPointQaReviewStatusPending(token, dataPointId);
-  //     }
-  //   }
-  // )
 
   await Promise.all(
     Object.entries(qaReports).map(async ([key, value]) => {
@@ -188,45 +168,6 @@ export async function uploadSingleQaReportData(
   const qaReportApi = new DataPointQaReportControllerApi(new Configuration({accessToken: token }));
   const response = await qaReportApi.postQaReport(dataPointId, qaReport);
   return response.data;
-}
-
-export async function setQaReviewStatusPending(
-  token: string,
-  dataId: string
-): Promise<void> {
-  const qaApi = new QaControllerApi(new Configuration({accessToken: token }));
-  await qaApi.changeQaStatus(dataId, "Pending");
-}
-
-export async function setDataPointQaReviewStatusPending(
-  token: string,
-  dataPointId: string
-): Promise<void> {
-  const qaApi = new QaControllerApi(new Configuration({accessToken: token }));
-  await qaApi.changeDataPointQaStatus(dataPointId, QaStatus.Pending);
-}
-
-async function waitUntilQaServiceKnowsDataId(
-  token: string,
-  dataId: string,
-  maxAttempts = 30,
-  delayMs = 1000
-): Promise<void> {
-  const qaApi = new QaControllerApi(new Configuration({
-    accessToken: token
-  }));
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    try {
-      await qaApi.getQaReviewResponseByDataId(dataId);
-      return;
-    } catch {
-      if (attempt === maxAttempts - 1) throw new Error(`QA        
-     service did not recognise dataId ${dataId} after ${maxAttempts}   
-     attempts`);
-      await new Promise((resolve) => setTimeout(resolve,
-        delayMs));
-    }
-  }
 }
 
   /**
