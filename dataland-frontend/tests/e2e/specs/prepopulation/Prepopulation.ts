@@ -118,7 +118,7 @@ describe(
       apiClientConstructor: PublicApiClientConstructor<SfdrData>,
       nameOfFixtureJson: string
     ): void {
-      describeIf(`Upload data for a SFDR QA Report`,
+      describeIf(`Upload and validate data for sfdr framework with a qa report`,
         {
           executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
         },
@@ -136,7 +136,7 @@ describe(
             Cypress.expose('excludeBypassQaIntercept', false)
           })
 
-          it(`Upload SFDR Data with a QA report`, () => {
+          it(`Upload data for framework sfdr with qa report`, () => {
             cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
                 const storedCompany = await getOrUploadCompanyViaApi(token, fixtureDataClosure.preparedFixture.companyInformation);
@@ -152,9 +152,9 @@ describe(
               });
             });
           });
-          // it('Checks that all the uploaded company ids and data ids can be retrieved', function () {
-          //   checkUploadedData(frameworkIdentifier, fixtureData.length);
-          // });
+          it('Checks that all the uploaded company ids and data ids can be retrieved', function () {
+            checkUploadedData(DataTypeEnum.Sfdr, fixtureData.length);
+          });
         }
       );
     }
