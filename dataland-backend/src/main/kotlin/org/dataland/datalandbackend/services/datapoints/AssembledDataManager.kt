@@ -341,7 +341,7 @@ class AssembledDataManager
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =
                 dataAvailabilityChecker
-                    .getViewableDimensions(
+                    .getAvailableDimensions(
                         DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(framework)),
                     ).map { it.reportingPeriod }
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }

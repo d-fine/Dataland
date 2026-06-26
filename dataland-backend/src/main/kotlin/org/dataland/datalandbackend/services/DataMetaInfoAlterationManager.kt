@@ -57,7 +57,7 @@ class DataMetaInfoAlterationManager
                 specificationService.getFrameworkSpecification(dataMetaInformation.dataType)
                 logger.info(
                     "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
-                            "CorrelationId: $correlationId.",
+                        "CorrelationId: $correlationId.",
                 )
                 dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
                 messageQueuePublications.publishDatasetMetaInfoPatchMessage(
@@ -65,7 +65,8 @@ class DataMetaInfoAlterationManager
                     dataMetaInformation.uploaderUserId,
                     correlationId,
                 )
-            } catch (_: InvalidInputApiException) { // No framework specification available
+            } catch (_: InvalidInputApiException) {
+                // No framework specification available
                 logger.info("Retrieving StorableDataset with dataId $dataId from Storage. CorrelationId: $correlationId.")
                 val updatedStorableDataset: StorableDataset =
                     dataManager
@@ -74,7 +75,7 @@ class DataMetaInfoAlterationManager
 
                 logger.info(
                     "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
-                            "CorrelationId: $correlationId.",
+                        "CorrelationId: $correlationId.",
                 )
                 dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
 

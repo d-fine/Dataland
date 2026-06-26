@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.DataAvailabilityApi
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.dataavailability.DataAvailabilitySearchRequest
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -29,9 +30,11 @@ class DataAvailabilityController(
         }
         return ResponseEntity.ok(
             dataAvailabilityChecker.getAvailableDimensions(
-                companyIds = request.companyIds,
-                frameworksOrDataPointTypes = request.frameworksOrDataPointTypes,
-                reportingPeriods = request.reportingPeriods,
+                DataDimensionFilter(
+                    companyIds = request.companyIds,
+                    dataTypes = request.frameworksOrDataPointTypes,
+                    reportingPeriods = request.reportingPeriods,
+                ),
             ),
         )
     }

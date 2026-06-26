@@ -87,7 +87,7 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Checks which of the provided data dimensions have active data (dataset or data point).
+         * Returns the subset of the provided data dimensions for which active data exists (dataset or data point).
          *
          * Both the dataset store and the data-point store are queried. Dimensions with an unknown dataType are
          * silently dropped. If only ignored fields are available for a certain dataset dimension, it will not be part
@@ -96,7 +96,7 @@ class DataAvailabilityChecker
          * @param dimensions List of data dimensions
          * @return The subset of the input dimensions for which active data exists
          */
-        fun getViewableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
+        fun getAvailableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
             val dataPointBasedDimensions =
                 getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions = getMetaDataOfActiveDatasets(dimensions).map { it.toBasicDataDimensions() }
@@ -115,7 +115,7 @@ class DataAvailabilityChecker
          * @param dataDimensionFilter dimensions filter specifying what to search for
          * @return All active data dimensions matching the filter criteria
          */
-        fun getViewableDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+        fun getAvailableDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
             val dataPointBasedDimensions = getMetaDataOfActiveDataPoints(dataDimensionFilter).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions = getAllViewableDimensionsForNonAssembledFrameworks(dataDimensionFilter)
             val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dataDimensionFilter)
@@ -158,18 +158,17 @@ class DataAvailabilityChecker
                     dataCompositionService
                         .getRelevantDataPointTypes(dimension.framework)
                         .map { dataPointType ->
-                            dimension.framework to BasicDataPointDimensions(
-                                dimension.companyId,
-                                dataPointType,
-                                dimension.reportingPeriod
-                            )
+                            dimension.framework to
+                                BasicDataPointDimensions(
+                                    dimension.companyId,
+                                    dataPointType,
+                                    dimension.reportingPeriod,
+                                )
                         }
-                }
-                .groupBy(
+                }.groupBy(
                     keySelector = { it.first },
-                    valueTransform = { it.second }
-                )
-                .flatMap { (framework, dataPointDimensions) ->
+                    valueTransform = { it.second },
+                ).flatMap { (framework, dataPointDimensions) ->
                     getViewableDatasetDimensions(dataPointDimensions, framework)
                 }
 

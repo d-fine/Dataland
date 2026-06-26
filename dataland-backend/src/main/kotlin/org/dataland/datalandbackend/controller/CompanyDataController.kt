@@ -200,7 +200,7 @@ class CompanyDataController
                         (
                             companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
                                 dataAvailabilityChecker
-                                    .getViewableDimensions(
+                                    .getAvailableDimensions(
                                         DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
                                     ).map { dimension -> dimension.reportingPeriod }
                                     .toSet()

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -114,11 +115,7 @@ class DataAvailabilityControllerTest(
     @Test
     fun `getAvailableDataDimensions returns matched dimensions from checker`() {
         whenever(
-            dataAvailabilityChecker.getAvailableDimensions(
-                companyIds = any(),
-                frameworksOrDataPointTypes = any(),
-                reportingPeriods = any(),
-            ),
+            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
         ).doReturn(listOf(exampleDimension))
 
         mockMvc
@@ -181,11 +178,7 @@ class DataAvailabilityControllerTest(
     @Test
     fun `getAvailableDataDimensions accepts empty reportingPeriods as wildcard`() {
         whenever(
-            dataAvailabilityChecker.getAvailableDimensions(
-                companyIds = any(),
-                frameworksOrDataPointTypes = any(),
-                reportingPeriods = any(),
-            ),
+            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
         ).doReturn(listOf(exampleDimension))
 
         mockMvc

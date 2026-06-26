@@ -88,34 +88,34 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with list - empty input returns empty result`() {
-        val results = dataAvailabilityChecker.getViewableDimensions(emptyList())
+    fun `getAvailableDimensions with list - empty input returns empty result`() {
+        val results = dataAvailabilityChecker.getAvailableDimensions(emptyList())
         assert(results.isEmpty()) { "Empty input should return empty result." }
     }
 
     @Test
-    fun `getViewableDimensions with list - active dataset is returned`() {
+    fun `getAvailableDimensions with list - active dataset is returned`() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = true)
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
-        val results = dataAvailabilityChecker.getViewableDimensions(listOf(datasetDimension))
+        val results = dataAvailabilityChecker.getAvailableDimensions(listOf(datasetDimension))
         assert(results.size == 1) { "There should be exactly one result." }
         assert(results.first() == datasetDimension) { "The result should be the provided dimension." }
     }
 
     @Test
-    fun `getViewableDimensions with list - active data point is returned`() {
+    fun `getAvailableDimensions with list - active data point is returned`() {
         dbCreationUtils.storeDataPointMetaData(currentlyActive = true)
         dbCreationUtils.storeDataPointMetaData(currentlyActive = null)
-        val results = dataAvailabilityChecker.getViewableDimensions(listOf(dataPointDimension))
+        val results = dataAvailabilityChecker.getAvailableDimensions(listOf(dataPointDimension))
         assert(results.size == 1) { "There should be exactly one result." }
         assert(results.first() == dataPointDimension) { "The result should be the provided dimension." }
     }
 
     @Test
-    fun `getViewableDimensions with list - active dataset and active data point are both returned`() {
+    fun `getAvailableDimensions with list - active dataset and active data point are both returned`() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDataPointMetaData()
-        val results = dataAvailabilityChecker.getViewableDimensions(listOf(datasetDimension, dataPointDimension))
+        val results = dataAvailabilityChecker.getAvailableDimensions(listOf(datasetDimension, dataPointDimension))
         assert(results.size == 2) { "Both dimensions should be returned." }
         assert(results.containsAll(listOf(datasetDimension, dataPointDimension))) { "Both dimensions should be in the result." }
     }
@@ -126,14 +126,14 @@ class DataAvailabilityCheckerTest {
         "$companyId, unknowntype, $reportingPeriod",
         "$companyId, $framework, 12345",
     )
-    fun `getViewableDimensions with list - invalid dimensions are filtered out`(
+    fun `getAvailableDimensions with list - invalid dimensions are filtered out`(
         testCompanyId: String,
         dataType: String,
         testReportingPeriod: String,
     ) {
         dbCreationUtils.storeDatasetMetaData(dataType = dataType, reportingPeriod = testReportingPeriod)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 listOf(BasicDataDimensions(companyId = testCompanyId, dataType = dataType, reportingPeriod = testReportingPeriod)),
             )
         assert(results.isEmpty()) { "Invalid dimensions should be filtered out." }
@@ -143,13 +143,13 @@ class DataAvailabilityCheckerTest {
     fun `check that the availability check returns active datasets as expected`() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
-        val results = dataAvailabilityChecker.getViewableDimensions(listOf(datasetDimension))
+        val results = dataAvailabilityChecker.getAvailableDimensions(listOf(datasetDimension))
         assert(results.size == 1) { "There should be exactly one result." }
         assert(results.first() == datasetDimension) { "The result should be the provided example." }
     }
 
     @Test
-    fun `getViewableDimensions with list - multiple dimensions mix of active inactive and non-existent`() {
+    fun `getAvailableDimensions with list - multiple dimensions mix of active inactive and non-existent`() {
         val otherYear = "2024"
         val otherFramework = "lksg"
         val otherId = UUID.randomUUID().toString()
@@ -173,7 +173,7 @@ class DataAvailabilityCheckerTest {
                 BasicDataDimensions(companyId = companyId, dataType = otherFramework, reportingPeriod = "2020"),
             )
 
-        val results = dataAvailabilityChecker.getViewableDimensions(expectedDimensions + unexpectedDimensions)
+        val results = dataAvailabilityChecker.getAvailableDimensions(expectedDimensions + unexpectedDimensions)
         assert(results.size == expectedDimensions.size) { "Incorrect number of dimensions found." }
         assert(expectedDimensions.containsAll(results)) { "Unexpected dimensions in result." }
     }
@@ -203,7 +203,7 @@ class DataAvailabilityCheckerTest {
                 BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = "2020"),
             )
 
-        val results = dataAvailabilityChecker.getViewableDimensions(expectedDimensions + unexpectedDimensions)
+        val results = dataAvailabilityChecker.getAvailableDimensions(expectedDimensions + unexpectedDimensions)
 
         assert(results.size == expectedDimensions.size) { "Incorrect number of data points found." }
         val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) }
@@ -211,10 +211,10 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - filter matching active dataset returns correct dimensions`() {
+    fun `getAvailableDimensions with filters - filter matching active dataset returns correct dimensions`() {
         dbCreationUtils.storeDatasetMetaData()
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework),
@@ -226,10 +226,10 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - filter matching active data point returns correct dimensions`() {
+    fun `getAvailableDimensions with filters - filter matching active data point returns correct dimensions`() {
         dbCreationUtils.storeDataPointMetaData()
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(dataPointType),
@@ -241,9 +241,9 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - no matching data returns empty result`() {
+    fun `getAvailableDimensions with filters - no matching data returns empty result`() {
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework),
@@ -254,11 +254,11 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - inactive data is excluded`() {
+    fun `getAvailableDimensions with filters - inactive data is excluded`() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         dbCreationUtils.storeDatasetMetaData(currentlyActive = false)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework),
@@ -269,11 +269,11 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - empty lists act as wildcards`() {
+    fun `getAvailableDimensions with filters - empty lists act as wildcards`() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDataPointMetaData()
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = emptyList(),
@@ -284,12 +284,12 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - multiple frameworks filter returns only matching framework`() {
+    fun `getAvailableDimensions with filters - multiple frameworks filter returns only matching framework`() {
         val otherFramework = "lksg"
         dbCreationUtils.storeDatasetMetaData(dataType = framework)
         dbCreationUtils.storeDatasetMetaData(dataType = otherFramework)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework),
@@ -301,12 +301,12 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - multiple periods filter returns only matching period`() {
+    fun `getAvailableDimensions with filters - multiple periods filter returns only matching period`() {
         val otherPeriod = "2024"
         dbCreationUtils.storeDatasetMetaData(reportingPeriod = reportingPeriod)
         dbCreationUtils.storeDatasetMetaData(reportingPeriod = otherPeriod)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework),
@@ -318,11 +318,11 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions with filters - mixed datasets and data points with cross-cutting filter`() {
+    fun `getAvailableDimensions with filters - mixed datasets and data points with cross-cutting filter`() {
         dbCreationUtils.storeDatasetMetaData(dataType = framework)
         dbCreationUtils.storeDataPointMetaData(dataPointType = dataPointType)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(framework, dataPointType),
@@ -334,12 +334,12 @@ class DataAvailabilityCheckerTest {
     }
 
     @Test
-    fun `getViewableDimensions - data points with only ignored fields do not yield a dimension`() {
+    fun `getAvailableDimensions - data points with only ignored fields do not yield a dimension`() {
         val ignoredDataPointType = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields().first()
         doReturn(null).whenever(specificationClient).getDataPointTypeSpecification(ignoredDataPointType)
         dbCreationUtils.storeDataPointMetaData(dataPointType = ignoredDataPointType)
         val results =
-            dataAvailabilityChecker.getViewableDimensions(
+            dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
                     companyIds = listOf(companyId),
                     dataTypes = listOf(ignoredDataPointType),
