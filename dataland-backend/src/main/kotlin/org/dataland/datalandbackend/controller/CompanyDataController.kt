@@ -197,14 +197,10 @@ class CompanyDataController
             ResponseEntity.ok(
                 DataType.values.associateWith {
                     AggregatedFrameworkDataSummary(
-                        (
-                            companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                                dataAvailabilityChecker
-                                    .getAvailableDimensions(
-                                        DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
-                                    ).map { dimension -> dimension.reportingPeriod }
-                                    .toSet()
-                        ).size.toLong(),
+                        dataAvailabilityChecker
+                            .getAvailableDimensions(
+                                DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
+                            ).map { dimension -> dimension.reportingPeriod }.toSet().size.toLong(),
                     )
                 },
             )
