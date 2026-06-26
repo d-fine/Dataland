@@ -3,19 +3,20 @@ import {
   type DataMetaInformation,
   type CompanyInformation,
   type VsmeData,
-  VsmeDataControllerApi, MetaDataControllerApi,
+  VsmeDataControllerApi,
+  MetaDataControllerApi,
 } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
-import {admin_userId} from '@e2e/utils/Cypress';
+import { admin_userId } from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
 import { CompanyRole } from '@clients/communitymanager';
 import {
   type DataPointQaReport,
   DataPointQaReportControllerApi,
-  type QaReportDataPointString
+  type QaReportDataPointString,
 } from '@clients/qaservice';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
@@ -131,19 +132,19 @@ export async function uploadQaReportsData(
   dataId: string,
   qaReports: { [key: string]: QaReportDataPointString }
 ): Promise<Array<DataPointQaReport>> {
-  const metadataApi = new MetaDataControllerApi(new Configuration ({accessToken: token }));
+  const metadataApi = new MetaDataControllerApi(new Configuration({ accessToken: token }));
   const response = await metadataApi.getContainedDataPoints(dataId);
   const dataPointIdMappings = response.data;
   const uploadedQaReports: Array<DataPointQaReport> = [];
 
   await Promise.all(
     Object.entries(qaReports).map(async ([key, value]) => {
-      const dataPointId = dataPointIdMappings[key]
+      const dataPointId = dataPointIdMappings[key];
       if (dataPointId) {
         uploadedQaReports.push(await uploadSingleQaReportData(token, dataPointId, value));
       }
-    }
-  ));
+    })
+  );
 
   return uploadedQaReports;
 }
@@ -165,12 +166,12 @@ export async function uploadSingleQaReportData(
   dataPointId: string,
   qaReport: QaReportDataPointString
 ): Promise<DataPointQaReport> {
-  const qaReportApi = new DataPointQaReportControllerApi(new Configuration({accessToken: token }));
+  const qaReportApi = new DataPointQaReportControllerApi(new Configuration({ accessToken: token }));
   const response = await qaReportApi.postQaReport(dataPointId, qaReport);
   return response.data;
 }
 
-  /**
+/**
  * Uploads a single vsme dataset for a company
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for

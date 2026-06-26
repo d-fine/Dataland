@@ -7,7 +7,8 @@ import { describeIf } from '@e2e/support/TestUtility';
 import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
 import {
   type PublicApiClientConstructor,
-  uploadGenericFrameworkData, uploadQaReportsData,
+  uploadGenericFrameworkData,
+  uploadQaReportsData,
   uploadVsmeFrameworkData,
 } from '@e2e/utils/FrameworkUpload';
 import {
@@ -16,8 +17,8 @@ import {
 } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum, type VsmeData } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
-import {type QaReportFixtureData} from "@sharedUtils/QaReportFixtures.ts";
-import {SfdrApiClient} from "@/frameworks/sfdr/ApiClient.ts";
+import { type QaReportFixtureData } from '@sharedUtils/QaReportFixtures.ts';
+import { SfdrApiClient } from '@/frameworks/sfdr/ApiClient.ts';
 
 const chunkSize = 15;
 
@@ -131,7 +132,8 @@ describe(
       apiClientConstructor: PublicApiClientConstructor<SfdrData>,
       nameOfFixtureJson: string
     ): void {
-      describeIf(`Upload and validate data for sfdr framework with a qa report`,
+      describeIf(
+        `Upload and validate data for sfdr framework with a qa report`,
         {
           executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
         },
@@ -142,17 +144,20 @@ describe(
             cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
               fixtureData = jsonContent as typeof fixtureData;
             });
-            Cypress.expose('excludeBypassQaIntercept', true)
+            Cypress.expose('excludeBypassQaIntercept', true);
           });
 
           after(function () {
-            Cypress.expose('excludeBypassQaIntercept', false)
-          })
+            Cypress.expose('excludeBypassQaIntercept', false);
+          });
 
           it(`Upload data for framework sfdr with qa report`, () => {
             cy.getAdminToken().then((token) => {
               doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
-                const storedCompany = await getOrUploadCompanyViaApi(token, fixtureDataClosure.preparedFixture.companyInformation);
+                const storedCompany = await getOrUploadCompanyViaApi(
+                  token,
+                  fixtureDataClosure.preparedFixture.companyInformation
+                );
                 const storedData = await uploadGenericFrameworkData(
                   token,
                   storedCompany.companyId,
@@ -223,7 +228,10 @@ describe(
       );
     }
 
-    uploadSfdrQaReportFixtures( (config) => new SfdrApiClient(config ,undefined),`SfdrCompanyAndQaReportPreparedFixtures`);
+    uploadSfdrQaReportFixtures(
+      (config) => new SfdrApiClient(config, undefined),
+      `SfdrCompanyAndQaReportPreparedFixtures`
+    );
 
     uploadVsmeFixtures(2, 10);
   }
