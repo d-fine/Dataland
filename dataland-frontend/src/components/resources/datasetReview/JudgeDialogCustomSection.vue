@@ -77,6 +77,7 @@
                   placeholder="Select Quality"
                   data-test="custom-quality-field"
                   inputId="custom-quality-field"
+                  aria-label="Quality"
                 />
               </td>
             </tr>
@@ -95,6 +96,7 @@
                   placeholder="Select Document"
                   data-test="custom-document-field"
                   inputId="custom-document-field"
+                  aria-label="Document"
                 />
               </td>
             </tr>
