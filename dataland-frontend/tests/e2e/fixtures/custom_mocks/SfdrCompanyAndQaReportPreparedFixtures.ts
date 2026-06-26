@@ -3,12 +3,12 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
   ExtendedDataPointYesNoQualityEnum,
   ExtendedDataPointYesNoValueEnum,
-  QaReportDataPointVerdict, QaReportDataPointString,
+  QaReportDataPointVerdict, type QaReportDataPointString,
 } from '@clients/qaservice';
 import type {CompanyInformation, SfdrData} from '@clients/backend';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures.ts";
-import { QaReportFixtureData } from "@sharedUtils/QaReportFixtures.ts";
+import { type QaReportFixtureData } from "@sharedUtils/QaReportFixtures.ts";
 
 
 

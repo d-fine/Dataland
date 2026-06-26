@@ -16,7 +16,7 @@ import {
 } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum, type VsmeData } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
-import {QaReportFixtureData} from "@sharedUtils/QaReportFixtures.ts";
+import {type QaReportFixtureData} from "@sharedUtils/QaReportFixtures.ts";
 import {SfdrApiClient} from "@/frameworks/sfdr/ApiClient.ts";
 
 const chunkSize = 15;
@@ -114,6 +114,19 @@ describe(
       );
     }
 
+    /**
+     * Registers and executes an upload test suite for SFDR framework fixtures that include QA reports.
+     * Sets the `excludeBypassQaIntercept` flag before the tests and resets it afterwards,
+     * ensuring QA intercept behavior is properly applied during the upload.
+     *
+     * For each fixture entry, it uploads the company and its SFDR data (without bypassing QA),
+     * then uploads the associated QA reports. Finally, it verifies that the expected number of
+     * companies and datasets were successfully stored.
+     *
+     * @param apiClientConstructor - A constructor function for creating an SFDR API client instance.
+     * @param nameOfFixtureJson - The name of the Cypress fixture JSON file containing
+     *                            {@link QaReportFixtureData} entries for SFDR.
+     */
     function uploadSfdrQaReportFixtures(
       apiClientConstructor: PublicApiClientConstructor<SfdrData>,
       nameOfFixtureJson: string

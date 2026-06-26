@@ -13,9 +13,9 @@ import {admin_userId} from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
 import { CompanyRole } from '@clients/communitymanager';
 import {
-  DataPointQaReport,
+  type DataPointQaReport,
   DataPointQaReportControllerApi,
-  QaReportDataPointString
+  type QaReportDataPointString
 } from '@clients/qaservice';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
@@ -133,7 +133,7 @@ export async function uploadQaReportsData(
 ): Promise<Array<DataPointQaReport>> {
   const metadataApi = new MetaDataControllerApi(new Configuration ({accessToken: token }));
   const response = await metadataApi.getContainedDataPoints(dataId);
-  const dataPointIdMappings = await response.data;
+  const dataPointIdMappings = response.data;
   const uploadedQaReports: Array<DataPointQaReport> = [];
 
   await Promise.all(
