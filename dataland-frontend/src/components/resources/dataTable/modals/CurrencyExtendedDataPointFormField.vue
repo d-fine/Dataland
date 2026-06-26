@@ -17,6 +17,8 @@
       class="currency-select"
       data-test="currency"
       style="width: 10em"
+      inputId="currency-select"
+      aria-label="Currency"
       fluid
     />
   </div>
