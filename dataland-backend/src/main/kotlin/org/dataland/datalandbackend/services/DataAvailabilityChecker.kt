@@ -90,24 +90,19 @@ class DataAvailabilityChecker
          * Checks which of the provided data dimensions have active data (dataset or data point).
          *
          * Both the dataset store and the data-point store are queried. Dimensions with an unknown dataType are
-         * silently dropped. If only ignored fields are available for a certain dimension, it will not be part of the
-         * result.
+         * silently dropped. If only ignored fields are available for a certain dataset dimension, it will not be part
+         * of the result.
          *
          * @param dimensions List of data dimensions
          * @return The subset of the input dimensions for which active data exists
          */
-        fun getAvailableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
-            if (dimensions.isEmpty()) return emptyList()
+        fun getViewableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
+            val dataPointBasedDimensions =
+                getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
+            val nonAssembledFrameworkBasedDimensions = getMetaDataOfActiveDatasets(dimensions).map { it.toBasicDataDimensions() }
+            val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dimensions)
 
-            val activeDatasetDimensions =
-                getMetaDataOfActiveDatasets(dimensions)
-                    .map { BasicDataDimensions(it.company.companyId, it.dataType, it.reportingPeriod) }
-
-            val activeDataPointDimensions =
-                getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() })
-                    .map { BasicDataDimensions(it.companyId, it.dataPointType, it.reportingPeriod) }
-
-            return (activeDatasetDimensions + activeDataPointDimensions).distinct()
+            return (dataPointBasedDimensions + nonAssembledFrameworkBasedDimensions + assembledFrameworkBasedDimensions).distinct()
         }
 
         /**
@@ -115,7 +110,7 @@ class DataAvailabilityChecker
          *
          * Both the dataset store and the data-point store are queried. An empty list for any filter dimension is
          * treated as a wildcard (all values for that dimension are included). If only ignored fields are available for
-         * a certain dimension, it will not be part of the result.
+         * a certain dataset dimension, it will not be part of the result.
          *
          * @param dataDimensionFilter dimensions filter specifying what to search for
          * @return All active data dimensions matching the filter criteria
@@ -154,6 +149,29 @@ class DataAvailabilityChecker
                 ),
             ).map { it.toBasicDataDimensions() }
         }
+
+        private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> =
+            dataCompositionService
+                .filterOutInvalidDatasetDimensions(dimensions)
+                .filter { specificationService.isAssembledFramework(it.framework) }
+                .flatMap { dimension ->
+                    dataCompositionService
+                        .getRelevantDataPointTypes(dimension.framework)
+                        .map { dataPointType ->
+                            dimension.framework to BasicDataPointDimensions(
+                                dimension.companyId,
+                                dataPointType,
+                                dimension.reportingPeriod
+                            )
+                        }
+                }
+                .groupBy(
+                    keySelector = { it.first },
+                    valueTransform = { it.second }
+                )
+                .flatMap { (framework, dataPointDimensions) ->
+                    getViewableDatasetDimensions(dataPointDimensions, framework)
+                }
 
         /**
          * Retrieve all active assembled framework-based data dimensions using the given DataDimensionFilter.
