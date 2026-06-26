@@ -16,7 +16,7 @@ import {
 } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum, type VsmeData } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
-import {QaReportFixtureData} from "../../../sharedUtils/QaReportFixtures.ts";
+import {QaReportFixtureData} from "@sharedUtils/QaReportFixtures.ts";
 import {SfdrApiClient} from "@/frameworks/sfdr/ApiClient.ts";
 
 const chunkSize = 15;
