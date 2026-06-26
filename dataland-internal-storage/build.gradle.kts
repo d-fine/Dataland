@@ -90,7 +90,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")

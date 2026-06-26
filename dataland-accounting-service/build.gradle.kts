@@ -89,10 +89,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input =
-        project
-            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
-            .path
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -121,7 +118,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -159,6 +156,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-backend-utils:assemble")
     dependsOn(":dataland-message-queue-utils:assemble")
     dependsOn(":dataland-keycloak-adapter:assemble")
+}
+
+tasks.named("compileTestKotlin") {
+    dependsOn("kaptKotlin")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {

@@ -82,7 +82,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -112,7 +112,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/communitymanager")
@@ -141,7 +141,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the internal storage service."
     group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/internalstorage")
@@ -170,7 +170,7 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     description = "Task to generate clients for the qa service."
     group = "clients"
     val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/qaservice")
