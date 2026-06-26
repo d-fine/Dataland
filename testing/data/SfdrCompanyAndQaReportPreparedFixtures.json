@@ -1,0 +1,123 @@
+[
+	{
+		"preparedFixture": {
+			"companyInformation": {
+				"companyName": "Kohler - Predovic",
+				"headquarters": "Fort Maechester",
+				"headquartersPostalCode": "47032-8592",
+				"sector": "solutions",
+				"identifiers": {
+					"Lei": [],
+					"Isin": [
+						"pFA5kYoP1Jze"
+					],
+					"PermId": [],
+					"Ticker": [],
+					"Duns": [
+						"HxExvBb15"
+					],
+					"VatNumber": [
+						"afkrpaPGu"
+					],
+					"CompanyRegistrationNumber": []
+				},
+				"countryCode": "WF",
+				"companyContactDetails": [
+					"Marsha_Monahan-MacGyver64@example.com",
+					"Cassandre_Fritsch@example.com",
+					"Lucy.Purdy@example.com"
+				],
+				"companyAlternativeNames": [
+					"Swift, Veum and Stehr",
+					"Waters - Vandervort"
+				],
+				"companyLegalForm": "GmbH",
+				"website": "https://outlying-larva.biz/",
+				"fiscalYearEnd": "25-Apr",
+				"isTeaserCompany": false
+			},
+			"t": {
+				"general": {
+					"general": {
+						"dataDate": "2025-03-01",
+						"fiscalYearDeviation": {
+							"value": "NoDeviation"
+						},
+						"fiscalYearEnd": {
+							"value": "2024-12-31"
+						},
+						"referencedReports": {
+							"SustainabilityReport": {
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"fileName": "SustainabilityReport",
+								"publicationDate": "2023-03-05"
+							}
+						}
+					}
+				},
+				"social": {
+					"humanRights": {
+						"numberOfReportedIncidentsOfHumanRightsViolations": {
+							"value": 9958,
+							"dataSource": {
+								"page": "148",
+								"fileName": "SustainabilityReport",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "interfaces",
+								"publicationDate": null
+							},
+							"comment": "synthesize cross-platform program",
+							"quality": "NoDataFound"
+						}
+					}
+				},
+				"environmental": {
+					"biodiversity": {
+						"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+							"value": "No",
+							"dataSource": {
+								"page": "3-524",
+								"fileName": "SustainabilityReport",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "supply-chains",
+								"publicationDate": null
+							},
+							"comment": "hack auxiliary firewall",
+							"quality": "NoDataFound"
+						},
+						"biodiversityProtectionPolicy": {
+							"value": "Yes",
+							"dataSource": {
+								"page": "681-875",
+								"fileName": "SustainabilityReport",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "synergies",
+								"publicationDate": null
+							},
+							"comment": "reboot bluetooth microchip",
+							"quality": "Reported"
+						}
+					}
+				}
+			},
+			"reportingPeriod": "2024"
+		},
+		"qaReports": {
+			"extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations": {
+				"comment": "data is wrong",
+				"verdict": "QaRejected",
+				"correctedData": "{ \"value\": 5, \"quality\": \"Estimated\"}"
+			},
+			"extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure": {
+				"comment": "some comment",
+				"verdict": "QaInconclusive",
+				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Estimated\"}"
+			},
+			"extendedEnumYesNoBiodiversityProtectionPolicy": {
+				"comment": "data is correct",
+				"verdict": "QaInconclusive",
+				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Reported\"}"
+			}
+		}
+	}
+]

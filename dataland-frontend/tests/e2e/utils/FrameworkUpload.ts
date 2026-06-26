@@ -3,15 +3,23 @@ import {
   type DataMetaInformation,
   type CompanyInformation,
   type VsmeData,
-  VsmeDataControllerApi,
+  VsmeDataControllerApi, MetaDataControllerApi,
 } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
-import { admin_userId } from '@e2e/utils/Cypress';
+import {admin_userId, doThingsInChunks} from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
 import { CompanyRole } from '@clients/communitymanager';
+import {
+  DataPointQaReport,
+  DataPointQaReportControllerApi, QaControllerApi,
+  QaReportDataPointString,
+  QaReportMetaInformation, QaStatus,
+  type SfdrData as SfdrQaReport,
+  SfdrDataQaReportControllerApi
+} from '@clients/qaservice';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
   config: Configuration
@@ -108,7 +116,120 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
   });
 }
 
+
 /**
+ * Uploads QA reports for data points contained in a dataset.
+ *
+ * The method retrieves all contained data points for the given `dataId`,
+ * maps each entry in `qaReports` by key to the corresponding data point id,
+ * and uploads the reports in chunks of 10.
+ * Entries without a matching data point id are skipped.
+ *
+ * @param token Bearer token used for authenticated API requests.
+ * @param dataId Identifier of the dataset whose data points should receive QA reports.
+ * @param qaReports Map of data point keys to QA report payloads.
+ * @returns A list of successfully uploaded QA report entities.
+ */
+export async function uploadQaReportsData(
+  token: string,
+  dataId: string,
+  qaReports: { [key: string]: QaReportDataPointString }
+): Promise<Array<DataPointQaReport>> {
+  const metadataApi = new MetaDataControllerApi(new Configuration ({accessToken: token }));
+  const response = await metadataApi.getContainedDataPoints(dataId);
+  const dataPointIdMappings = await response.data;
+  const uploadedQaReports: Array<DataPointQaReport> = [];
+
+  // throw new Error(JSON.stringify(dataPointIdMappings));
+  //
+  // for(const [key, value] of Object.entries(qaReports)) {
+  //   const dataPointId = dataPointIdMappings[key];
+  //         uploadedQaReports.push( await uploadSingleQaReportData(token, dataPointId, value));
+  //         // await setDataPointQaReviewStatusPending(token, dataPointId);
+  // }
+  // doThingsInChunks(Object.entries(qaReports), 10, async (qaReportMapping) => {
+  //     const dataPointId = dataPointIdMappings[qaReportMapping[0]];
+  //     if (dataPointId) {
+  //       uploadedQaReports.push( await uploadSingleQaReportData(token, dataPointId, qaReportMapping[1]));
+  //       // await setDataPointQaReviewStatusPending(token, dataPointId);
+  //     }
+  //   }
+  // )
+
+  await Promise.all(
+    Object.entries(qaReports).map(async ([key, value]) => {
+      const dataPointId = dataPointIdMappings[key]
+      if (dataPointId) {
+        uploadedQaReports.push(await uploadSingleQaReportData(token, dataPointId, value));
+      }
+    }
+  ));
+
+  return uploadedQaReports;
+}
+
+/**
+ * Uploads a single QA report for a specific data point.
+ *
+ * Creates an authenticated QA service client using the provided bearer token,
+ * submits the QA report payload for the given data point, and returns the
+ * created QA report entity from the API response.
+ *
+ * @param token Bearer token used for authenticated API access.
+ * @param dataPointId Identifier of the data point that receives the QA report.
+ * @param qaReport QA report payload to upload for the data point.
+ * @returns The persisted QA report returned by the backend.
+ */
+export async function uploadSingleQaReportData(
+  token: string,
+  dataPointId: string,
+  qaReport: QaReportDataPointString
+): Promise<DataPointQaReport> {
+  const qaReportApi = new DataPointQaReportControllerApi(new Configuration({accessToken: token }));
+  const response = await qaReportApi.postQaReport(dataPointId, qaReport);
+  return response.data;
+}
+
+export async function setQaReviewStatusPending(
+  token: string,
+  dataId: string
+): Promise<void> {
+  const qaApi = new QaControllerApi(new Configuration({accessToken: token }));
+  await qaApi.changeQaStatus(dataId, "Pending");
+}
+
+export async function setDataPointQaReviewStatusPending(
+  token: string,
+  dataPointId: string
+): Promise<void> {
+  const qaApi = new QaControllerApi(new Configuration({accessToken: token }));
+  await qaApi.changeDataPointQaStatus(dataPointId, QaStatus.Pending);
+}
+
+async function waitUntilQaServiceKnowsDataId(
+  token: string,
+  dataId: string,
+  maxAttempts = 30,
+  delayMs = 1000
+): Promise<void> {
+  const qaApi = new QaControllerApi(new Configuration({
+    accessToken: token
+  }));
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      await qaApi.getQaReviewResponseByDataId(dataId);
+      return;
+    } catch {
+      if (attempt === maxAttempts - 1) throw new Error(`QA        
+     service did not recognise dataId ${dataId} after ${maxAttempts}   
+     attempts`);
+      await new Promise((resolve) => setTimeout(resolve,
+        delayMs));
+    }
+  }
+}
+
+  /**
  * Uploads a single vsme dataset for a company
  * @param token The API bearer token to use
  * @param companyId The Id of the company to upload the dataset for
