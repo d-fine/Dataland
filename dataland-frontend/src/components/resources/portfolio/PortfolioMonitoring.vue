@@ -33,8 +33,10 @@
       :disabled="!isMonitoringActive"
       optionLabel="label"
       optionValue="value"
+      inputId="notification-frequency-select"
       data-test="notification-options"
       style="min-width: 14rem"
+      aria-label="Notification Frequency"
     />
     <p class="header-styling">Frameworks</p>
     <div>
