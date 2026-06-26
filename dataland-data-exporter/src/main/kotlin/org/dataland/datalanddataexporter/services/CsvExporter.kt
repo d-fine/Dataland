@@ -3,13 +3,13 @@ package org.dataland.datalanddataexporter.services
 import ApiRetryException
 import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.createDirectories
@@ -40,7 +40,7 @@ import java.net.SocketTimeoutException
  */
 @Component("CsvExporter")
 class CsvExporter(
-    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
+    @Autowired private val dataAvailabilityController: DataAvailabilityControllerApi,
     @Autowired private val sfdrDataControllerApi: SfdrDataControllerApi,
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired private val isinLeiDataControllerApi: IsinLeiDataControllerApi,
@@ -186,23 +186,24 @@ class CsvExporter(
     }
 
     /**
-     * Gets all SFDR data dimensions from the metadata endpoint in the backend.
+     * Gets all SFDR data dimensions from the data availability endpoint in the backend.
      * @return A list of data dimensions
      */
-    fun getAllAvailableSfdrDataDimensions(): List<BasicDataDimensions> {
-        val dataDimensions = mutableListOf<BasicDataDimensions>()
-        val metaData = metaDataControllerApi.getListOfDataMetaInfo(dataType = DataTypeEnum.sfdr)
-        metaData.forEach {
-            dataDimensions.add(
+    fun getAllAvailableSfdrDataDimensions(): List<BasicDataDimensions> =
+        dataAvailabilityController
+            .getAvailableDataDimensions(
+                DataAvailabilitySearchRequest(
+                    companyIds = emptyList(),
+                    frameworksOrDataPointTypes = listOf("sfdr"),
+                    reportingPeriods = emptyList(),
+                ),
+            ).map {
                 BasicDataDimensions(
                     companyId = it.companyId,
-                    dataType = "sfdr",
+                    dataType = it.dataType,
                     reportingPeriod = it.reportingPeriod,
-                ),
-            )
-        }
-        return dataDimensions
-    }
+                )
+            }
 
     /**
      * Gets the company-related data (LEI, reporting period, company ID, ...) for the CSV export.

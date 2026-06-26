@@ -1,16 +1,13 @@
 package org.dataland.datalanddataexporter.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanddataexporter.TestDataProvider
 import org.dataland.datalanddataexporter.services.CsvExporter.Companion.MAX_RETRIES
@@ -30,27 +27,23 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import java.io.File
 import java.net.SocketTimeoutException
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
-    private lateinit var mockMetadataControllerApi: MetaDataControllerApi
+    private lateinit var mockDataAvailabilityControllerApi: DataAvailabilityControllerApi
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var mockIsinLeiDataControllerApi: IsinLeiDataControllerApi
 
     private val outputDirectory = "./src/test/resources/csv/output"
 
-    private val mockMetaData =
+    private val mockSfdrDimensions =
         listOf(
-            DataMetaInformation(
-                dataType = DataTypeEnum.sfdr,
-                reportingPeriod = "2021",
+            ClientBasicDataDimensions(
                 companyId = "mockCompanyId",
-                dataId = "mockDataId",
-                qaStatus = QaStatus.Accepted,
-                uploadTime = 1,
-                currentlyActive = true,
-                ref = "test",
+                dataType = "sfdr",
+                reportingPeriod = "2021",
             ),
         )
 
@@ -68,14 +61,12 @@ class CsvExporterTest {
             data = TestDataProvider.getMockSfdrDataWithNoNullFields(),
         )
 
-    private fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
-        val mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
+    private fun setupMockDataAvailabilityControllerApi(): DataAvailabilityControllerApi {
+        val mockDataAvailabilityControllerApi = mock(DataAvailabilityControllerApi::class.java)
         `when`(
-            mockMetaDataControllerApi.getListOfDataMetaInfo(
-                dataType = DataTypeEnum.sfdr,
-            ),
-        ).thenReturn(mockMetaData)
-        return mockMetaDataControllerApi
+            mockDataAvailabilityControllerApi.getAvailableDataDimensions(any()),
+        ).thenReturn(mockSfdrDimensions)
+        return mockDataAvailabilityControllerApi
     }
 
     private fun setupMockSfdrDataControllerApi(): SfdrDataControllerApi {
@@ -127,14 +118,14 @@ class CsvExporterTest {
 
     @BeforeEach
     fun setup() {
-        mockMetadataControllerApi = setupMockMetaDataControllerApi()
+        mockDataAvailabilityControllerApi = setupMockDataAvailabilityControllerApi()
         mockSfdrDataControllerApi = setupMockSfdrDataControllerApi()
         mockCompanyDataControllerApi = setupMockCompanyDataControllerApi()
         mockIsinLeiDataControllerApi = setupMockIsinLeiDataControllerApi()
 
         csvDataExporter =
             CsvExporter(
-                metaDataControllerApi = mockMetadataControllerApi,
+                dataAvailabilityController = mockDataAvailabilityControllerApi,
                 sfdrDataControllerApi = mockSfdrDataControllerApi,
                 companyDataControllerApi = mockCompanyDataControllerApi,
                 isinLeiDataControllerApi = mockIsinLeiDataControllerApi,
@@ -151,10 +142,8 @@ class CsvExporterTest {
     @Test
     fun `check that the sfdr export runs as expected`() {
         assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory) }
-        verify(mockMetadataControllerApi, times(1))
-            .getListOfDataMetaInfo(
-                dataType = DataTypeEnum.sfdr,
-            )
+        verify(mockDataAvailabilityControllerApi, times(1))
+            .getAvailableDataDimensions(any())
         verify(mockSfdrDataControllerApi, times(1))
             .getCompanyAssociatedSfdrDataByDimensions(
                 reportingPeriod = any(),

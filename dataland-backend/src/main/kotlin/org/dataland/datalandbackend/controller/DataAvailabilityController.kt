@@ -22,18 +22,18 @@ class DataAvailabilityController(
         ResponseEntity.ok(dataAvailabilityChecker.getAvailableDimensions(dimensions))
 
     override fun getAvailableDataDimensions(request: DataAvailabilitySearchRequest): ResponseEntity<List<BasicDataDimensions>> {
-        if (request.companyIds.isEmpty() || request.frameworksOrDataPointTypes.isEmpty()) {
+        if (request.frameworksOrDataPointTypes.isEmpty()) {
             throw InvalidInputApiException(
-                "companyIds and frameworksOrDataPointTypes must not be empty.",
-                "The request body must contain at least one companyId and at least one frameworkOrDataPointType.",
+                "frameworksOrDataPointTypes must not be empty.",
+                "The request body must contain at least one frameworkOrDataPointType.",
             )
         }
         return ResponseEntity.ok(
             dataAvailabilityChecker.getAvailableDimensions(
                 DataDimensionFilter(
-                    companyIds = request.companyIds,
+                    companyIds = request.companyIds.ifEmpty { null },
                     dataTypes = request.frameworksOrDataPointTypes,
-                    reportingPeriods = request.reportingPeriods,
+                    reportingPeriods = request.reportingPeriods.ifEmpty { null },
                 ),
             ),
         )

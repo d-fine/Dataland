@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 private const val ACTIVE_DIMENSIONS_SEARCH_PATH = "/data-availability/active-dimensions-search"
 private const val AVAILABLE_DATA_DIMENSIONS_PATH = "/data-availability/available-data-dimensions"
-private const val INVALID_INPUT_SUMMARY = "companyIds and frameworksOrDataPointTypes must not be empty."
+private const val INVALID_INPUT_SUMMARY = "frameworksOrDataPointTypes must not be empty."
 
 @SpringBootTest(
     classes = [DatalandBackend::class],
@@ -138,7 +138,11 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getAvailableDataDimensions returns 400 when companyIds is empty`() {
+    fun `getAvailableDataDimensions accepts empty companyIds as wildcard`() {
+        whenever(
+            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
+        ).doReturn(listOf(exampleDimension))
+
         mockMvc
             .perform(
                 post(AVAILABLE_DATA_DIMENSIONS_PATH)
@@ -152,8 +156,7 @@ class DataAvailabilityControllerTest(
                         }
                         """.trimIndent(),
                     ).with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.errors[0].summary").value(INVALID_INPUT_SUMMARY))
+            ).andExpect(status().isOk)
     }
 
     @Test
