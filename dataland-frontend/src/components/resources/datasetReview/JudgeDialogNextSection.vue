@@ -26,6 +26,8 @@
         placeholder="Select next data point"
         :pt="{ root: { style: { flex: '1' } } }"
         data-test="next-datapoint-select"
+        inputId="next-datapoint-select"
+        aria-label="Select next data point"
       >
         <template #option="slotProps">
           <div :style="slotProps.option.reviewed ? 'color: var(--p-gray-300);' : ''">
