@@ -211,7 +211,6 @@ describe('parseDataPointJsonToFormData', () => {
   });
 
   it('returns null when JSON is invalid', () => {
-    // NOSONAR typescript:S2699
     const invalidJson = '{ this is not valid json }';
     const form = parseDataPointJsonToFormData(invalidJson);
     assert.isNull(form);
