@@ -200,7 +200,10 @@ class CompanyDataController
                         dataAvailabilityChecker
                             .getAvailableDimensions(
                                 DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
-                            ).map { dimension -> dimension.reportingPeriod }.toSet().size.toLong(),
+                            ).map { dimension -> dimension.reportingPeriod }
+                            .toSet()
+                            .size
+                            .toLong(),
                     )
                 },
             )

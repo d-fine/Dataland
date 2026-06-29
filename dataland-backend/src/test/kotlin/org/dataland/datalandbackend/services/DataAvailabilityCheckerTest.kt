@@ -7,8 +7,9 @@ import org.dataland.datalandbackend.repositories.DataPointMetaInformationReposit
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataBaseCreationUtils
+import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
@@ -17,42 +18,21 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.springframework.test.context.bean.override.mockito.MockitoBean
-import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 import org.dataland.datalandbackend.utils.DEFAULT_COMPANY_ID as companyId
 import org.dataland.datalandbackend.utils.DEFAULT_DATA_POINT_TYPE as dataPointType
 import org.dataland.datalandbackend.utils.DEFAULT_FRAMEWORK as framework
 import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingPeriod
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
-@Transactional
-@Rollback
-class DataAvailabilityCheckerTest {
-    companion object {
-        // Even though this class uses a test container for integration testing, it is not possible to use the BaseIntegrationTest class.
-        // This is due to the direct usage of the EntityManager, which will lead to issues connecting to the database
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            TestPostgresContainer.configureProperties(registry)
-        }
-    }
-
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
+@DefaultMocks
+class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var dataMetaInformationRepository: DataMetaInformationRepository
 
@@ -65,8 +45,8 @@ class DataAvailabilityCheckerTest {
     @Autowired
     private lateinit var dataAvailabilityChecker: DataAvailabilityChecker
 
-    @MockitoBean
-    private var specificationClient = mock<SpecificationControllerApi>()
+    @Autowired
+    private lateinit var specificationClient: SpecificationControllerApi
 
     private lateinit var dbCreationUtils: DataBaseCreationUtils
 
