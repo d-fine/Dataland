@@ -213,10 +213,8 @@ describe('parseDataPointJsonToFormData', () => {
   it('returns null when JSON is invalid', () => {
     // NOSONAR typescript:S2699
     const invalidJson = '{ this is not valid json }';
-
     const form = parseDataPointJsonToFormData(invalidJson);
-
-    expect(form).to.be.null;
+    assert.isNull(form);
   });
 });
 
@@ -302,10 +300,9 @@ describe('wrapDataPointJson', () => {
   });
 
   it('returns null when JSON is invalid', () => {
-    // NOSONAR typescript:S2699
     const invalidJson = '{ this is not valid json }';
     const wrapped = wrapDataPointJson(invalidJson);
-    expect(wrapped).to.be.null;
+    assert.isNull(wrapped);
   });
 
   it('returns null when JSON value is null', () => {
