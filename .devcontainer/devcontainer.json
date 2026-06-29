@@ -23,7 +23,7 @@
   "features": {
     // Use docker-in-docker instead of docker-outside-of-docker to sandbox possible docker containers inside this
     // devcontainer from the host
-    "ghcr.io/devcontainers/features/docker-in-docker:3": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {
       "version": "latest",
     },
     "ghcr.io/devcontainers/features/java": {
@@ -38,6 +38,5 @@
   },
 
   "postCreateCommand": "cd /workspaces/dataland/dataland-frontend && npx --yes cypress install && npx --yes cypress verify",
-  "postStartCommand": "sudo -n rm -f /etc/sudoers.d/vscode || true"
 
 }
