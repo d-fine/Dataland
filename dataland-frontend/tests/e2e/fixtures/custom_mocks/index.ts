@@ -3,7 +3,7 @@ import {
   generateMetaInfoDataForOneCompany,
   extractMetaInfoAssociatedWithReportingPeriodByDataType,
 } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
-import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
+import { generateAvailableDataDimensions } from '@e2e/fixtures/custom_mocks/AvailableDataDimensionsFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
 import {
@@ -41,8 +41,8 @@ export function exportCustomMocks(): void {
   );
 
   fs.writeFileSync(
-    '../testing/data/MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock.json',
-    JSON.stringify(generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(), null, '\t')
+    '../testing/data/AvailableDataDimensionsMock.json',
+    JSON.stringify(generateAvailableDataDimensions(), null, '\t')
   );
 
   fs.writeFileSync(

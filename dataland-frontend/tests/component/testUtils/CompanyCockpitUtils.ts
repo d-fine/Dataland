@@ -3,7 +3,7 @@ import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { computed, ref } from 'vue';
-import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
+import { type BasicDataDimensions, type CompanyInformation } from '@clients/backend';
 
 const dummyUserId = 'mock-user-id';
 const dummyFirstName = 'mock-first-name';
@@ -68,13 +68,13 @@ function generateDocumentMetaInformation(
  *
  * @param {boolean} hasCompanyAtLeastOneOwner - Indicates if the company has at least one owner.
  * @param {CompanyInformation} companyInformationForTest - Mock details of the company information to be returned.
- * @param {Map<DataTypeEnum, AggregatedFrameworkDataSummary>} mockMapOfDataTypeToAggregatedFrameworkDataSummary
- * - A mapping of data types to the corresponding aggregated framework data summary for testing.
+ * @param {BasicDataDimensions[]} mockAvailableDataDimensions
+ * - A list of available data dimensions to be returned by the data-availability endpoint.
  */
 export function mockRequestsOnMounted(
   hasCompanyAtLeastOneOwner: boolean,
   companyInformationForTest: CompanyInformation,
-  mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>
+  mockAvailableDataDimensions: BasicDataDimensions[]
 ): void {
   cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance`, {
     statusCode: 200,
@@ -84,9 +84,9 @@ export function mockRequestsOnMounted(
   cy.intercept(`**/api/companies/*/info`, {
     body: companyInformationForTest,
   }).as('fetchCompanyInfo');
-  cy.intercept('**/api/companies/*/aggregated-framework-data-summary', {
-    body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
-  }).as('fetchAggregatedFrameworkMetaInfo');
+  cy.intercept('POST', '**/api/data-availability/available-data-dimensions', {
+    body: mockAvailableDataDimensions,
+  }).as('fetchAvailableDataDimensions');
 
   const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
 
@@ -161,7 +161,7 @@ export function mountCompanyCockpitWithAuthentication(
     },
   });
   cy.wait('@fetchCompanyInfo');
-  cy.wait('@fetchAggregatedFrameworkMetaInfo');
+  cy.wait('@fetchAvailableDataDimensions');
   cy.wait('@fetchCompanyOwnershipExistence');
   return chainable;
 }

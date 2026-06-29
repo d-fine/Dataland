@@ -60,12 +60,12 @@ describeIf(
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
-      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
-        'fetchAggregatedFrameworkSummaryForBeta'
+      cy.intercept('POST', `**/api/data-availability/available-data-dimensions`).as(
+        'fetchAvailableDataDimensionsForBeta'
       );
       visitCockpitForCompanyAlpha();
       searchCompanyAndChooseById(betaCompanyIdAndName.companyName, betaCompanyIdAndName.companyId);
-      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
+      cy.wait('@fetchAvailableDataDimensionsForBeta');
       cy.url({ timeout: longTimeoutInMs }).should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
       cy.get('[data-test="companyNameTitle"]', { timeout: longTimeoutInMs }).contains(betaCompanyIdAndName.companyName);
     });
