@@ -271,7 +271,11 @@ sonar {
 
 tasks.named("sonar") {
     dependsOn(normalizeFeCoverageForSonar)
-    dependsOn(subprojects.flatMap { it.tasks.matching { t -> t.name == "kaptKotlin" } })
+    dependsOn(
+        provider {
+            subprojects.mapNotNull { it.tasks.findByName("kaptKotlin") }
+        },
+    )
 }
 
 jacoco {
