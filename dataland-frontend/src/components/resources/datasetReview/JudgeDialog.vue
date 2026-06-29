@@ -123,7 +123,7 @@
         },
       }"
     >
-      <div style="white-space: pre-wrap; word-break: break-word">
+      <div style="white-space: pre-wrap; overflow-wrap: break-word">
         {{ popoverText }}
       </div>
     </Popover>
