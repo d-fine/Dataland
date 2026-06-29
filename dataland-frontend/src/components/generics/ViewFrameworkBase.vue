@@ -17,7 +17,7 @@
           <div class="flex">
             <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              :data-meta-information="dataMetaInformation"
+              :available-data-dimensions="availableDataDimensions"
               :data-type="dataType"
               :company-id="companyID"
             />
@@ -156,7 +156,7 @@ const dialog = useDialog();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 const fetchedCompanyInformation = ref<CompanyInformation>({} as CompanyInformation);
-const dataMetaInformation = ref<BasicDataDimensions[]>([]);
+const availableDataDimensions = ref<BasicDataDimensions[]>([]);
 const activeDataForCurrentCompanyAndFramework = ref<Array<DataAndMetaInformation<FrameworkData>>>([]);
 const chosenDataTypeInDropdown = ref(props.dataType ?? '');
 const isDataProcessedSuccessfully = ref(false);
@@ -202,7 +202,7 @@ const isEditableByCurrentUser = computed(
 
 const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
-    dataMetaInformation.value.map((meta) => ({
+    availableDataDimensions.value.map((meta) => ({
       metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod },
     }))
   )
@@ -302,7 +302,7 @@ async function getMetaData(): Promise<void> {
       frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
       reportingPeriods: [],
     });
-    dataMetaInformation.value = response.data;
+    availableDataDimensions.value = response.data;
   } catch (err) {
     isDataProcessedSuccessfully.value = false;
     console.error(err);

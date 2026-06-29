@@ -28,7 +28,7 @@ describe('Component test for ViewFrameworkBase', () => {
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
         cy.wrap(component).its('isDataProcessedSuccessfully').should('be.true');
-        cy.wrap(component).its('dataMetaInformation').its('length').should('equal', 9);
+        cy.wrap(component).its('availableDataDimensions').its('length').should('equal', 9);
       });
     });
   });

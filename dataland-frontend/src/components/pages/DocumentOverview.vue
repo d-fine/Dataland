@@ -6,7 +6,7 @@
   />
   <div class="selection-header">
     <ChangeFrameworkDropdown
-      :data-meta-information="dataMetaInformation"
+      :available-data-dimensions="availableDataDimensions"
       data-type="Documents"
       :company-id="companyId"
     />
@@ -138,7 +138,8 @@ import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
 import { documentNameOrId, humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { DataMetaInformation } from '@clients/backend';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants.ts';
+import { type BasicDataDimensions } from '@clients/backend';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
@@ -182,7 +183,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
 const refreshDocumentTable = ref(0); // incrementing this value will force re-rendering document table
-const dataMetaInformation = ref<DataMetaInformation[]>([]);
+const availableDataDimensions = ref<BasicDataDimensions[]>([]);
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 watch(selectedDocumentType, () => {
@@ -228,9 +229,14 @@ async function getAllDocumentsForFilters(): Promise<void> {
         selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
       )
     ).data;
-    const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
-    const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
-    dataMetaInformation.value = apiResponse.data;
+    const dataAvailabilityApi = apiClientProvider.backendClients.dataAvailabilityController;
+    availableDataDimensions.value = (
+      await dataAvailabilityApi.getAvailableDataDimensions({
+        companyIds: [props.companyId],
+        frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+        reportingPeriods: [],
+      })
+    ).data;
   } catch (error) {
     console.error(error);
   } finally {

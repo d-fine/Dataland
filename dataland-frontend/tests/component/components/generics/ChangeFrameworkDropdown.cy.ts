@@ -51,7 +51,7 @@ describe('Component test for ChangeFrameworkDropdown', () => {
       props: {
         companyId: companyId,
         dataType: dataType,
-        dataMetaInformation: listOfDataMetaInfo,
+        availableDataDimensions: listOfDataMetaInfo,
       },
     }).then(() => {
       // Dropdown is closed
