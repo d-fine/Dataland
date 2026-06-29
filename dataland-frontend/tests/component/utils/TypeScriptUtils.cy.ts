@@ -17,7 +17,7 @@ describe('Unit test for assertDefined', () => {
   });
 
   it('verifies that the isString function works', () => {
-    expect(isString('Test')).to.be.true;
+    expect(isString('Test')).to.equal(true);
 
     const someRandomNumberThatIsNotAString = 5;
     expect(isString(someRandomNumberThatIsNotAString)).to.be.false;

@@ -170,29 +170,28 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
           reportingPeriods: allReportingPeriods,
         },
       },
-    })(ShowMultipleReportsBanner).then(() => {
-      cy.get(`[data-test="frameworkNewDataTableTitle"]`).contains(
-        `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
-      );
-      cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`);
+    })(ShowMultipleReportsBanner);
+    cy.get(`[data-test="frameworkNewDataTableTitle"]`).contains(
+      `Data extracted from the company report. Company Reports (${expectedLatestReportingPeriod})`
+    );
+    cy.get(`[data-test="report-link-${nameOfFirstReportOfExpectedLatestReportingPeriod}"]`).should('exist');
 
-      cy.get(`[data-test="previousReportsLinkToModal"]`).contains('Previous years reports').click();
+    cy.get(`[data-test="previousReportsLinkToModal"]`).contains('Previous years reports').click();
 
-      runFunctionBlockWithinPrimeVueModal(() => {
-        for (let i = 0; i < fixturesForTests.length; i++) {
-          const reportingPeriodOfDataset = allReportingPeriods[i];
-          const reportsForDataset = allReports[i];
+    runFunctionBlockWithinPrimeVueModal(() => {
+      for (let i = 0; i < fixturesForTests.length; i++) {
+        const reportingPeriodOfDataset = allReportingPeriods[i];
+        const reportsForDataset = allReports[i];
 
-          if (reportingPeriodOfDataset != expectedLatestReportingPeriod) {
-            cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
-            for (const reportKey in reportsForDataset) {
-              cy.get(`[data-test='report-link-${reportKey}']`).first().click();
-              cy.get(`[data-test='download-link-${reportKey}']`).contains(reportKey);
-              cy.get('button.p-dialog-close-button').last().click();
-            }
+        if (reportingPeriodOfDataset != expectedLatestReportingPeriod) {
+          cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
+          for (const reportKey in reportsForDataset) {
+            cy.get(`[data-test='report-link-${reportKey}']`).first().click();
+            cy.get(`[data-test='download-link-${reportKey}']`).contains(reportKey);
+            cy.get('button.p-dialog-close-button').last().click();
           }
         }
-      });
+      }
     });
   });
 });
