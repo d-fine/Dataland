@@ -59,6 +59,7 @@
                   style="min-width: 15rem"
                   data-test="document-category-select"
                   inputId="document-category-select"
+                  aria-label="Document type"
                 />
               </td>
               <td v-else data-test="document-type">{{ humanizeStringOrNumber(metaData?.documentCategory) }}</td>
