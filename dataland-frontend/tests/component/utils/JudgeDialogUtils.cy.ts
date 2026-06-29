@@ -211,6 +211,7 @@ describe('parseDataPointJsonToFormData', () => {
   });
 
   it('returns null when JSON is invalid', () => {
+    // NOSONAR typescript:S2699
     const invalidJson = '{ this is not valid json }';
 
     const form = parseDataPointJsonToFormData(invalidJson);
@@ -301,6 +302,7 @@ describe('wrapDataPointJson', () => {
   });
 
   it('returns null when JSON is invalid', () => {
+    // NOSONAR typescript:S2699
     const invalidJson = '{ this is not valid json }';
     const wrapped = wrapDataPointJson(invalidJson);
     expect(wrapped).to.be.null;
