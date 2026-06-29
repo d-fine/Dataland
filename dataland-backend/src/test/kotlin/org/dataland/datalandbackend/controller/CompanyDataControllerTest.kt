@@ -40,11 +40,15 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.util.UUID
 import java.util.stream.Stream
 import kotlin.reflect.jvm.javaMethod
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @Transactional
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
@@ -68,10 +72,6 @@ internal class CompanyDataControllerTest(
     }
 
     companion object {
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {

@@ -43,13 +43,13 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.UUID
 import kotlin.random.Random
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @Transactional
 @Rollback
 internal class MetaDataControllerTest
@@ -63,10 +63,6 @@ internal class MetaDataControllerTest
         @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
     ) {
         companion object {
-            @Container
-            @JvmStatic
-            val postgres = TestPostgresContainer.postgres
-
             @DynamicPropertySource
             @JvmStatic
             fun configureProperties(registry: DynamicPropertyRegistry) {
