@@ -301,8 +301,7 @@ async function getAnsweringDatasetUrl(): Promise<string | undefined> {
     if (!parentCompanyId) return;
     answeringDimension = await checkDataAvailable(parentCompanyId);
   }
-  if (answeringDimension)
-    return `/companies/${answeringDimension.companyId}/frameworks/${answeringDimension.dataType}`;
+  if (answeringDimension) return `/companies/${answeringDimension.companyId}/frameworks/${answeringDimension.dataType}`;
 }
 
 /**

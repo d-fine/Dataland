@@ -72,7 +72,9 @@ const dropdownExtended = ref<boolean>(false);
  * implemented, the distinct frameworks are set as options for the framework-dropdown element.
  * @param availableDataDimensions an array of available data dimensions
  */
-function getFrameworkListSorted(availableDataDimensions: Array<BasicDataDimensions>): { label: string; value: string }[] {
+function getFrameworkListSorted(
+  availableDataDimensions: Array<BasicDataDimensions>
+): { label: string; value: string }[] {
   const setOfAvailableFrameworksForCompany = [
     ...new Set(availableDataDimensions.map((individualMetaInfo) => individualMetaInfo.dataType)),
   ];
