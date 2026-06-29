@@ -16,7 +16,7 @@ import {
 } from '@clients/datasourcingservice';
 import { DocumentControllerApi } from '@clients/documentmanager';
 import { EmailControllerApi } from '@clients/emailservice';
-import { QaControllerApi, DatasetJudgementControllerApi } from '@clients/qaservice';
+import { QaControllerApi, DatasetJudgementControllerApi, PreApprovalControllerApi } from '@clients/qaservice';
 import { PortfolioControllerApi } from '@clients/userservice';
 import type Keycloak from 'keycloak-js';
 import axios, { type AxiosInstance } from 'axios';
@@ -49,6 +49,7 @@ interface ApiClients {
   dataExportController: DataExportControllerApi;
   companyRightsController: CompanyRightsControllerApi;
   creditsController: CreditsControllerApi;
+  preApprovalController: PreApprovalControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -118,6 +119,7 @@ export class ApiClientProvider {
       dataExportController: this.getClientFactory('/api')(DataExportControllerApi),
       companyRightsController: this.getClientFactory('/community')(CompanyRightsControllerApi),
       creditsController: this.getClientFactory('/accounting')(CreditsControllerApi),
+      preApprovalController: this.getClientFactory('/qa')(PreApprovalControllerApi),
     };
   }
 

@@ -335,9 +335,30 @@ services:
       - admin-proxy:dataland-admin
     logging:
       <<: *loki-logging
+  frontend-dev:
+    # This container has been introduced to work around a docker bug where requests from a docker network to the host
+    # don't work anymore after a certain amount of requests
+    # https://github.com/docker/for-win/issues/8861
+    restart: always
+    profiles: [ "development" ]
+    image: node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b
+    networks:
+      internal:
+        aliases:
+          - frontend
+    volumes:
+      - ./dataland-frontend:/app/dataland-frontend
+      - ./dataland-sharedElements:/app/dataland-sharedElements
+      - frontend-dev-node-modules:/app/dataland-frontend/node_modules
+    command: sh -c "cd /app/dataland-frontend && npm install && npm run dev"
+    <<: *uncritical-constants-env
+    environment:
+      POLLING: "false"
+    logging:
+      <<: *loki-logging
   frontend:
     restart: always
-    profiles: [ "production", "testing", "development" ]
+    profiles: [ "production", "testing" ]
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     networks:
       - internal
@@ -549,7 +570,7 @@ services:
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
-      AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:-false}
+      AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:-true}
     depends_on:
       qa-service-db:
         condition: service_healthy
@@ -902,6 +923,8 @@ networks:
   loki:
   grafana:
 volumes:
+  frontend-dev-node-modules:
+    driver: local
   keycloak_data:
     driver: local
   backend_data:

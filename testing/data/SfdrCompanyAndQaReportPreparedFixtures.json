@@ -74,6 +74,11 @@
 				"environmental": {
 					"biodiversity": {
 						"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+							"value": "Yes",
+							"quality": "Reported",
+							"comment": "Data was extracted."
+						},
+						"biodiversityProtectionPolicy": {
 							"value": "No",
 							"dataSource": {
 								"page": "3-524",
@@ -84,18 +89,6 @@
 							},
 							"comment": "hack auxiliary firewall",
 							"quality": "NoDataFound"
-						},
-						"biodiversityProtectionPolicy": {
-							"value": "Yes",
-							"dataSource": {
-								"page": "681-875",
-								"fileName": "SustainabilityReport",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"tagName": "synergies",
-								"publicationDate": null
-							},
-							"comment": "reboot bluetooth microchip",
-							"quality": "Reported"
 						}
 					}
 				}
@@ -110,8 +103,8 @@
 			},
 			"extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure": {
 				"comment": "some comment",
-				"verdict": "QaInconclusive",
-				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Estimated\"}"
+				"verdict": "QaAccepted",
+				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Reported\"}"
 			},
 			"extendedEnumYesNoBiodiversityProtectionPolicy": {
 				"comment": "data is correct",

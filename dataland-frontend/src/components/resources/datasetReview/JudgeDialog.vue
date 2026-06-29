@@ -104,8 +104,11 @@
         @copy-corrected="copyCorrectedToCustom"
       />
 
-      <!-- Bottom-right: Next data point selection & patch error -->
+      <!-- Bottom-right: Preapproval section & next data point selection & patch error -->
       <JudgeDialogNextSection
+        :pre-approval-verdict-badge="preApprovalVerdictBadge"
+        :pre-approval-check-results="preApprovalCheckResults"
+        :is-pre-approval-check-results-not-null="isPreApprovalCheckResultsNotNull"
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
@@ -487,6 +490,28 @@ function copyCorrectedToCustom(): void {
     customFormData.value = transformDataPointDetailToFormData(currentQaCorrectedData.value);
   }
 }
+
+// ===== Pre-Approval data =====
+
+const preApprovalCheckResults = computed(() => currentDatapointJudgement.value?.preApprovalCheckResults ?? null);
+
+const preApprovalVerdictBadge = computed<{ label: string; background: string; color: string }>(() => {
+  const results = preApprovalCheckResults.value;
+  if (!results)
+    return { label: 'PRE-APPROVAL OBJECT NOT FOUND', background: 'var(--p-yellow-100)', color: 'var(--p-yellow-700)' };
+
+  const passes =
+    results.areAllQaReportsAccepted &&
+    results.isDataPointEligible &&
+    results.passesRandomSampling &&
+    results.passesSignificanceCheck;
+
+  return passes
+    ? { label: 'PRE-APPROVED', background: 'var(--p-green-100)', color: 'var(--p-green-700)' }
+    : { label: 'MANUAL REVIEW', background: 'var(--p-red-100)', color: 'var(--p-red-700)' };
+});
+
+const isPreApprovalCheckResultsNotNull = computed(() => preApprovalCheckResults.value !== null);
 
 // ===== Next data point =====
 
