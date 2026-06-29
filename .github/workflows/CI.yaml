@@ -398,8 +398,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: |
           ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
-          -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
-          --no-daemon --stacktrace
+          -x detekt -x ktlintCheck -x jacocoTestReport \
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: jacocoTestReport
