@@ -185,9 +185,11 @@ class PreApprovalServiceTest {
 
     @Nested
     inner class ExemptFieldsTests {
+        val exemptField = "exempt-field-type"
+        val nonExemptField = "non-exempt-field-type"
+
         @Test
         fun `No preapproval for exempt field even if all reports are QaAccepted`() {
-            val exemptField = "exempt-field-type"
             val service =
                 buildServiceWithoutLiveDataset(
                     autoPreApprovalEnabled = true,
@@ -200,7 +202,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `Preapproval works for non-exempt field when all reports are QaAccepted`() {
-            val nonExemptField = "non-exempt-field-type"
             val service =
                 buildServiceWithoutLiveDataset(
                     autoPreApprovalEnabled = true,
@@ -225,8 +226,6 @@ class PreApprovalServiceTest {
 
         @Test
         fun `Only non-exempt fields are auto-accepted when multiple fields are present`() {
-            val exemptField = "exempt-field-type"
-            val nonExemptField = "non-exempt-field-type"
             val service =
                 buildServiceWithoutLiveDataset(
                     autoPreApprovalEnabled = true,

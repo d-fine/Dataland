@@ -1,7 +1,7 @@
 import { doThingsInChunks, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
 import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type SfdrData } from '@clients/backend';
+import { type SfdrData, DataTypeEnum, type VsmeData } from '@clients/backend';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
 import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
@@ -15,7 +15,6 @@ import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from '@/frameworks/BasePublicFrameworkRegistry';
-import { DataTypeEnum, type VsmeData } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 import { type QaReportFixtureData } from '@sharedUtils/QaReportFixtures.ts';
 import { SfdrApiClient } from '@/frameworks/sfdr/ApiClient.ts';
