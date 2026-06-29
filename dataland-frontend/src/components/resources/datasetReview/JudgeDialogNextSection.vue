@@ -1,10 +1,15 @@
 <template>
   <div style="display: flex; flex-direction: column; gap: var(--spacing-sm)">
-    <section
-      data-test="pre-approval-section"
-      style="padding: var(--spacing-xs); display: flex; flex-direction: column"
-    >
-      <div style="display: flex; align-items: center; gap: var(--spacing-sm); width: 100%; margin-bottom: var(--spacing-sm)">
+    <section data-test="pre-approval-section" style="padding: var(--spacing-xs); display: flex; flex-direction: column">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: var(--spacing-sm);
+          width: 100%;
+          margin-bottom: var(--spacing-sm);
+        "
+      >
         <h3 style="margin-top: 0; margin-bottom: 0; white-space: nowrap">Pre-Approval:</h3>
         <span
           :style="{
@@ -38,9 +43,7 @@
           <span
             :class="[props.preApprovalCheckResults!.areAllQaReportsAccepted ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
             :style="{
-              color: props.preApprovalCheckResults!.areAllQaReportsAccepted
-                ? 'var(--p-green-600)'
-                : 'var(--p-red-600)',
+              color: props.preApprovalCheckResults!.areAllQaReportsAccepted ? 'var(--p-green-600)' : 'var(--p-red-600)',
             }"
             aria-hidden="true"
           />
@@ -50,9 +53,7 @@
           <span
             :class="[props.preApprovalCheckResults!.isDataPointEligible ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
             :style="{
-              color: props.preApprovalCheckResults!.isDataPointEligible
-                ? 'var(--p-green-600)'
-                : 'var(--p-red-600)',
+              color: props.preApprovalCheckResults!.isDataPointEligible ? 'var(--p-green-600)' : 'var(--p-red-600)',
             }"
             aria-hidden="true"
           />
@@ -62,9 +63,7 @@
           <span
             :class="[props.preApprovalCheckResults!.passesRandomSampling ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
             :style="{
-              color: props.preApprovalCheckResults!.passesRandomSampling
-                ? 'var(--p-green-600)'
-                : 'var(--p-red-600)',
+              color: props.preApprovalCheckResults!.passesRandomSampling ? 'var(--p-green-600)' : 'var(--p-red-600)',
             }"
             aria-hidden="true"
           />
@@ -74,9 +73,7 @@
           <span
             :class="[props.preApprovalCheckResults!.passesSignificanceCheck ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
             :style="{
-              color: props.preApprovalCheckResults!.passesSignificanceCheck
-                ? 'var(--p-green-600)'
-                : 'var(--p-red-600)',
+              color: props.preApprovalCheckResults!.passesSignificanceCheck ? 'var(--p-green-600)' : 'var(--p-red-600)',
             }"
             aria-hidden="true"
           />
@@ -146,22 +143,21 @@
     style="max-width: 35rem; width: 100vw"
   >
     <p>
-      The <strong>QA accepted</strong> field is true if and only if the QA was accepted. It is then
-      not in the states "QA Inconclusive", "QA Rejected" or "Mixed Verdicts".
+      The <strong>QA accepted</strong> field is true if and only if the QA was accepted. It is then not in the states
+      "QA Inconclusive", "QA Rejected" or "Mixed Verdicts".
     </p>
     <p>
-      The <strong>Not an exempted field</strong> is true if and only if the KPI is not on the list
-      of fields that are exempted from automatic preapproval.
+      The <strong>Not an exempted field</strong> is true if and only if the KPI is not on the list of fields that are
+      exempted from automatic preapproval.
     </p>
     <p>
-      The <strong>Randomly selected for preapproval</strong> field is true if and only if the KPI
-      was selected to be preapproved by random sampling. It rejects a datapoint for pre-approval with
-      a probability of {{preApprovalConfig?.samplingProbability ?? 'unknown'}}.
+      The <strong>Randomly selected for preapproval</strong> field is true if and only if the KPI was selected to be
+      preapproved by random sampling. It rejects a datapoint for pre-approval with a probability of
+      {{ preApprovalConfig?.samplingProbability ?? 'unknown' }}.
     </p>
     <p>
-      The <strong>Nonsignificant deviation</strong> field is true if and only if either there is no
-      data for the previous year, or the data from the previous year does not significantly deviate
-      from this year's reported data.
+      The <strong>Nonsignificant deviation</strong> field is true if and only if either there is no data for the
+      previous year, or the data from the previous year does not significantly deviate from this year's reported data.
     </p>
   </PrimeDialog>
 </template>
@@ -187,7 +183,7 @@ const props = defineProps<{
   isPreApprovalCheckResultsNotNull: boolean;
 }>();
 
-const {data: preApprovalConfig } = usePreApprovalConfigQuery();
+const { data: preApprovalConfig } = usePreApprovalConfigQuery();
 
 const emit = defineEmits<{
   (e: 'update:onlyShowUnreviewed', value: boolean): void;

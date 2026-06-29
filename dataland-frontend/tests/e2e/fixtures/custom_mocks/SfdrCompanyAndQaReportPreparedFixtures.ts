@@ -6,7 +6,7 @@ import {
   QaReportDataPointVerdict,
   type QaReportDataPointString,
 } from '@clients/qaservice';
-import {type CompanyInformation, QualityOptions, type SfdrData} from '@clients/backend';
+import { type CompanyInformation, QualityOptions, type SfdrData } from '@clients/backend';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
 import { generateCompanyInformation } from '@e2e/fixtures/CompanyFixtures.ts';
 import { type QaReportFixtureData } from '@sharedUtils/QaReportFixtures.ts';
@@ -39,7 +39,7 @@ export function generateSFDRCompanyAndQaReports(): Array<QaReportFixtureData<Sfd
         primaryForestAndWoodedLandOfNativeSpeciesExposure: {
           value: ExtendedDataPointYesNoValueEnum.Yes,
           quality: QualityOptions.Reported,
-          comment: "Data was extracted."
+          comment: 'Data was extracted.',
         },
         biodiversityProtectionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },
