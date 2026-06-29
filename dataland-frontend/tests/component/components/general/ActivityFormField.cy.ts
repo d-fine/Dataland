@@ -18,7 +18,7 @@ describe('Component test for AlignedActivitiesFormField', () => {
       .eq(1)
       .should('contain', 'Renovation of existing buildings')
       .find('input.p-radiobutton-input')
-      .click({ force: true });
+      .click();
     cy.get('div[data-test="activityPopover"]').should('not.exist');
     cy.get('div[data-test="activityFormElement"]').should('contain', 'Renovation of existing buildings');
     cy.get('button[data-test="dataTestChooseActivityButton"]').eq(1).should('contain', 'Change Activity');

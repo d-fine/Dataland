@@ -321,7 +321,7 @@ describe('Component tests for the view data request page', function (): void {
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
-        cy.get('[data-test="updateRequestButton"]').should('exist').click({ force: true });
+        cy.get('[data-test="updateRequestButton"]').should('exist').click();
         cy.get('[data-test="successText"]').should('exist');
         interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
         cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
