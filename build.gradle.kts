@@ -271,6 +271,7 @@ sonar {
 
 tasks.named("sonar") {
     dependsOn(normalizeFeCoverageForSonar)
+    dependsOn(subprojects.flatMap { it.tasks.matching { t -> t.name == "kaptKotlin" } })
 }
 
 jacoco {
@@ -299,7 +300,7 @@ detekt {
     config.setFrom("$projectDir/config/detekt.yml")
     baseline = file("$projectDir/config/baseline.xml")
     val detektFileTree = fileTree("$projectDir")
-    detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
+    detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude("**/.gradle/**")
     detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
     detektFileTree.exclude("**/dataland-loki/data/**")
     source.setFrom(detektFileTree)
