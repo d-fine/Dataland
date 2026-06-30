@@ -4546,7 +4546,7 @@
       "PreApprovalCheckResults": {
         "required": [
           "areAllQaReportsAccepted",
-          "isDataPointEligible",
+          "dataPointEligible",
           "passesRandomSampling",
           "passesSignificanceCheck"
         ],
@@ -4555,7 +4555,7 @@
           "areAllQaReportsAccepted": {
             "type": "boolean"
           },
-          "isDataPointEligible": {
+          "dataPointEligible": {
             "type": "boolean"
           },
           "passesRandomSampling": {

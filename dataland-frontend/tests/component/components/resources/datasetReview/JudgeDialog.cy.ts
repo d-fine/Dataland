@@ -149,14 +149,14 @@ const samplingProbabilityTestConfig = 0.25;
 
 const allPassingPreApprovalCheckResults = {
   areAllQaReportsAccepted: true,
-  isDataPointEligible: true,
+  dataPointEligible: true,
   passesRandomSampling: true,
   passesSignificanceCheck: true,
 };
 
 const partialFailPreApprovalCheckResults = {
   areAllQaReportsAccepted: true,
-  isDataPointEligible: false, // one failing check
+  dataPointEligible: false, // one failing check
   passesRandomSampling: true,
   passesSignificanceCheck: true,
 };

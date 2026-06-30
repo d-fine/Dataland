@@ -570,11 +570,11 @@ class PreApprovalServiceTest {
 
             // Scenario 1: data point type is on the exempt field list
             var checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList(), dataPointType = exemptField))
-            assertEquals(false, checkResults.isDataPointEligible)
+            assertEquals(false, checkResults.dataPointEligible)
 
             // Scenario 2: data point type is not on the exempt field list
             checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList(), dataPointType = nonExemptField))
-            assertEquals(true, checkResults.isDataPointEligible)
+            assertEquals(true, checkResults.dataPointEligible)
         }
 
         @Test

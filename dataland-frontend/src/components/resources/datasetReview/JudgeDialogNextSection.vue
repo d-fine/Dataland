@@ -51,9 +51,9 @@
         <div style="padding: var(--spacing-xxs) var(--spacing-xs)">
           <span>Not an exempted field:</span>
           <span
-            :class="[props.preApprovalCheckResults!.isDataPointEligible ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
+            :class="[props.preApprovalCheckResults!.dataPointEligible ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
             :style="{
-              color: props.preApprovalCheckResults!.isDataPointEligible ? 'var(--p-green-600)' : 'var(--p-red-600)',
+              color: props.preApprovalCheckResults!.dataPointEligible ? 'var(--p-green-600)' : 'var(--p-red-600)',
             }"
             aria-hidden="true"
           />

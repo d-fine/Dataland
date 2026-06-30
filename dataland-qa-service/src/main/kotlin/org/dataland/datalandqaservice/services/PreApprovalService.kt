@@ -70,7 +70,7 @@ class PreApprovalService(
             dataPointJudgement.preApprovalCheckResults =
                 PreApprovalCheckResults(
                     areAllQaReportsAccepted = allQaReportsAccepted,
-                    isDataPointEligible = dataPointEligible,
+                    dataPointEligible = dataPointEligible,
                     passesRandomSampling = passesRandomSampling,
                     passesSignificanceCheck = passesSignificanceCheck,
                 )

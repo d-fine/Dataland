@@ -502,7 +502,7 @@ const preApprovalVerdictBadge = computed<{ label: string; background: string; co
 
   const passes =
     results.areAllQaReportsAccepted &&
-    results.isDataPointEligible &&
+    results.dataPointEligible &&
     results.passesRandomSampling &&
     results.passesSignificanceCheck;
 
