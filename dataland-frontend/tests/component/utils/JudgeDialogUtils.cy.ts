@@ -213,7 +213,7 @@ describe('parseDataPointJsonToFormData', () => {
   it('returns null when JSON is invalid', () => {
     const invalidJson = '{ this is not valid json }';
     const form = parseDataPointJsonToFormData(invalidJson);
-    expect(form).to.deep.equal({ value: null });
+    expect(form).to.deep.equal(null);
   });
 });
 
@@ -301,7 +301,7 @@ describe('wrapDataPointJson', () => {
   it('returns null when JSON is invalid', () => {
     const invalidJson = '{ this is not valid json }';
     const wrapped = wrapDataPointJson(invalidJson);
-    expect(wrapped).to.deep.equal({ value: null });
+    expect(wrapped).to.deep.equal(null);
   });
 
   it('returns null when JSON value is null', () => {
