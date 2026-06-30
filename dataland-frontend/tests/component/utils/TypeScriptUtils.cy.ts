@@ -20,6 +20,6 @@ describe('Unit test for assertDefined', () => {
     expect(isString('Test')).to.equal(true);
 
     const someRandomNumberThatIsNotAString = 5;
-    expect(isString(someRandomNumberThatIsNotAString)).to.be.false;
+    expect(isString(someRandomNumberThatIsNotAString)).to.equal(false);
   });
 });
