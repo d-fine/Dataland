@@ -3,15 +3,13 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    project.files(
-        sourceSets.asMap.values.flatMap { sourceSet ->
-            sourceSet.output.classesDirs.map {
-                fileTree(it) {
-                    exclude("**/openApiClient/**")
-                }
-            }
-        },
-    ),
+    sourceSets.asMap.values.flatMap { sourceSet ->
+        sourceSet.output.classesDirs.flatMap {
+            fileTree(it) {
+                exclude("**/openApiClient/**")
+            }.files
+        }
+    },
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -159,11 +157,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-message-queue-utils:assemble")
     dependsOn(":dataland-keycloak-adapter:assemble")
 }
-
-tasks.named("compileTestKotlin") {
-    dependsOn("kaptKotlin")
-}
-
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
     dependsOn("generateClients")
 }
