@@ -58,3 +58,6 @@ tls.crt
 # Allow opencode configs, skills and agents
 !.opencode/skills/
 !.opencode/agents/
+
+# Ignore devcontainer lock file
+.devcontainer/devcontainer-lock.json
