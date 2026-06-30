@@ -70,23 +70,6 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): DataMetaInformationEntity?
 
     /**
-     * Gets the distinct reporting periods matching the search parameters provided
-     * @param companyId the ID of the company to filter for
-     * @param dataType the data type to filter for
-     * @param currentlyActive the currently active filter
-     * @returns the distinct reporting periods matching the search parameter
-     */
-    @Query(
-        "SELECT DISTINCT d.reportingPeriod FROM DataMetaInformationEntity d " +
-            "WHERE d.company.companyId = ?1 AND d.dataType = ?2 AND d.currentlyActive = ?3",
-    )
-    fun getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
-        companyId: String,
-        dataType: String,
-        currentlyActive: Boolean,
-    ): Set<String>
-
-    /**
      * Queries the meta information for datasets uploaded by a specific user
      * @param userId the id of the user for whom to query data meta information
      * @returns the data meta information uploaded by the specified user

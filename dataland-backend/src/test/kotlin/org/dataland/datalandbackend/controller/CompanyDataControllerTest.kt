@@ -5,12 +5,10 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
@@ -46,7 +44,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -74,8 +71,6 @@ internal class CompanyDataControllerTest(
     @Autowired private val specificationService: SpecificationService,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
-
-    @MockitoBean private val dataPointMetaInformationRepository = mock<DataPointMetaInformationRepository>()
 
     @MockitoBean private val specificationClient = mock<SpecificationControllerApi>()
     lateinit var companyController: CompanyDataController
@@ -325,15 +320,6 @@ internal class CompanyDataControllerTest(
                 calculationRules = emptyList(),
             )
         }.whenever(specificationClient).getDataPointTypeSpecification(any())
-        doReturn(
-            listOf(
-                mock<DataPointMetaInformationEntity> {
-                    on { reportingPeriod } doReturn "2023"
-                },
-            ),
-        ).whenever(dataPointMetaInformationRepository)
-            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), any<String>())
-
         val testCompanyId = UUID.randomUUID().toString()
         val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
         assertEquals(0, result.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)

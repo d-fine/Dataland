@@ -286,8 +286,6 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
-        doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
-
         assertDoesNotThrow {
             assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }

@@ -48,15 +48,6 @@ class DataPointMetaInformationManager
             dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
 
         /**
-         * Get the currently active data id for a specific set of data point dimensions
-         * @param dataPointDimensions the data point dimensions to get the currently active data id for
-         * @return the id of the currently active data point
-         */
-        @Transactional(readOnly = true)
-        fun getCurrentlyActiveDataId(dataPointDimensions: BasicDataPointDimensions): String? =
-            dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
-
-        /**
          * Method to get the data point dimensions from a data id
          * @param dataPointIds the ids of the data point
          * @return the data point dimensions
