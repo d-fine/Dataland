@@ -5,9 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 
 /**
- * Request body for querying available data dimensions by filter.
- * @param companyIds the company IDs to filter by; must not be empty
- * @param frameworksOrDataPointTypes the frameworks or data point types to filter by; must not be empty
+ * Request body for querying available data dimensions by filter. At least one of the lists must be filled.
+ *
+ * @param companyIds the company IDs to filter by; an empty list serves as a wildcard.
+ * @param frameworksOrDataPointTypes the frameworks or data point types to filter by; an empty list serves as a wildcard.
  * @param reportingPeriods the reporting periods to filter by; an empty list is treated as a wildcard (all periods)
  */
 data class DataAvailabilitySearchRequest(
