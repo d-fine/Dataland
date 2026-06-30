@@ -100,6 +100,7 @@
       <div style="display: flex; gap: var(--spacing-xs); margin-top: var(--spacing-sm)">
         <Select
           id="next-datapoint-select"
+          aria-label="Next data point"
           :modelValue="props.selectedNextDataPointTypeId"
           @update:modelValue="emit('update:selectedNextDataPointTypeId', $event)"
           :options="props.options"
