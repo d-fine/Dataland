@@ -105,7 +105,7 @@ internal class MetaDataControllerTest
                     ),
                 )
             mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
-            assertMetaDataNotVisible(metaInfo)
+            assertMetaDataAccessDenied(metaInfo)
             mockSecurityContext(userId = uploaderUserId, roles = expectedSetOfRolesForUploader)
             assertMetaDataVisible(metaInfo)
             mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
@@ -125,7 +125,7 @@ internal class MetaDataControllerTest
                     ),
                 )
             mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
-            assertMetaDataNotVisible(metaInfo)
+            assertMetaDataAccessDenied(metaInfo)
             mockSecurityContext(userId = "uploader-user-id-of-rejected-dataset", roles = expectedSetOfRolesForUploader)
             assertMetaDataVisible(metaInfo)
             mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
@@ -250,6 +250,18 @@ internal class MetaDataControllerTest
                         showOnlyActive = false,
                     ).body!!
             assertFalse(allMetaInformation.any { it.dataId == metaInfo.dataId })
+            assertThrows<AccessDeniedException> {
+                metaDataController.getDataMetaInfo(metaInfo.dataId)
+            }
+        }
+
+        private fun assertMetaDataAccessDenied(metaInfo: DataMetaInformationEntity) {
+            assertThrows<AccessDeniedException> {
+                metaDataController.getListOfDataMetaInfo(
+                    companyId = metaInfo.company.companyId,
+                    showOnlyActive = false,
+                )
+            }
             assertThrows<AccessDeniedException> {
                 metaDataController.getDataMetaInfo(metaInfo.dataId)
             }
