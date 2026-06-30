@@ -66,7 +66,7 @@ interface MetaDataApi {
     @GetMapping(
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_REVIEWER') or hasRole('ROLE_JUDGE')")
     fun getListOfDataMetaInfo(
         @RequestParam
         @CompanyIdParameterNonRequired
@@ -117,7 +117,8 @@ interface MetaDataApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+
+    @PreAuthorize("hasRole('ROLE_UPLOADER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_REVIEWER') or hasRole('ROLE_JUDGE')")
     fun postListOfDataMetaInfoFilters(
         @RequestBody dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
     ): ResponseEntity<List<DataMetaInformation>>
