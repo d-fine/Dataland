@@ -117,7 +117,6 @@ interface MetaDataApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-
     @PreAuthorize("hasRole('ROLE_UPLOADER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_REVIEWER') or hasRole('ROLE_JUDGE')")
     fun postListOfDataMetaInfoFilters(
         @RequestBody dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
