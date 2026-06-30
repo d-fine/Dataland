@@ -106,6 +106,6 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "Structured results of the automatic pre-approval checks for this data point. " +
             "Each flag indicates whether the data point passed one prerequisite for automatic pre-approval of the original value."
     const val PRE_APPROVAL_CHECK_RESULTS_EXAMPLE =
-        "{ \"allQaReportsAccepted\": true, \"dataPointEligible\": true, " +
+        "{ \"areAllQaReportsAccepted\": true, \"dataPointEligible\": true, " +
             "\"passesRandomSampling\": true, \"passesSignificanceCheck\": true }"
 }

@@ -144,26 +144,24 @@
     header="Pre-Approval Checks"
     style="max-width: 35rem; width: 100vw"
   >
+    <p>For pre-approval of a KPI all four pre-approval pre-conditions need to be true:</p>
     <p>
-      For pre-approval of a KPI all four pre-approval pre-conditions need to be true:
+      <strong>"QA accepted"</strong> is true if the verdict of the DALAI-bot review is "QA accepted" (i.e. not "QA
+      Inconclusive", "QA Rejected" or "Mixed Verdicts").
     </p>
     <p>
-      <strong>"QA accepted"</strong> is true if the verdict of the DALAI-bot review is "QA accepted"
-      (i.e. not "QA Inconclusive", "QA Rejected" or "Mixed Verdicts").
+      <strong>"Not an exempted field"</strong> is true if the KPI is not on the list of fields that are exempted from
+      automatic preapproval.
     </p>
     <p>
-      <strong>"Not an exempted field"</strong> is true if the KPI is not on the list of fields that are
-      exempted from automatic preapproval.
+      <strong>"Randomly selected for preapproval"</strong> is true if the KPI was selected to be preapproved by random
+      sampling (probability of pre-approval is currently {{ displaySamplingProbability }} %).
     </p>
     <p>
-      <strong>"Randomly selected for preapproval"</strong> is true if the KPI was selected to be
-      preapproved by random sampling (probability of pre-approval is currently {{ displaySamplingProbability }} %).
-    </p>
-    <p>
-      <strong>"Nonsignificant deviation"</strong> is true if either there is no data for the previous year
-      (previous year data not on Dataland or null), or the data from the previous year does not significantly
-      deviate from this year's reported data. Significant means more than 50 % deviation for numerical fields,
-      more than 5 for integer fields or "Yes" -> "No"/ "No" -> "Yes" for Yes/No fields.
+      <strong>"Nonsignificant deviation"</strong> is true if either there is no data for the previous year (previous
+      year data not on Dataland or null), or the data from the previous year does not significantly deviate from this
+      year's reported data. Significant means more than 50 % deviation for numerical fields, more than 5 for integer
+      fields or "Yes" -> "No"/ "No" -> "Yes" for Yes/No fields.
     </p>
   </PrimeDialog>
 </template>
@@ -173,7 +171,7 @@ import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import Select from 'primevue/select';
 import ToggleSwitch from 'primevue/toggleswitch';
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import type { NextDataPointOption } from '@/types/JudgeDialogTypes.ts';
 import type { PreApprovalCheckResults } from '@clients/qaservice';
 import { usePreApprovalConfigQuery } from '@/api-queries/qa-service/dataset-judgement/usePreApprovalConfigQuery.ts';
@@ -190,9 +188,10 @@ const props = defineProps<{
 }>();
 
 const { data: preApprovalConfig } = usePreApprovalConfigQuery();
-const samplingProbability = computed(() => preApprovalConfig.value?.samplingProbability ?? undefined );
-const displaySamplingProbability = computed(() => samplingProbability.value !== undefined ?
-    (1 - samplingProbability.value) * 100 : 'unknown');
+const samplingProbability = computed(() => preApprovalConfig.value?.samplingProbability ?? undefined);
+const displaySamplingProbability = computed(() =>
+  samplingProbability.value !== undefined ? (1 - samplingProbability.value) * 100 : 'unknown'
+);
 
 const emit = defineEmits<{
   (e: 'update:onlyShowUnreviewed', value: boolean): void;
