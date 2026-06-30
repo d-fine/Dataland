@@ -190,7 +190,7 @@ const props = defineProps<{
 const { data: preApprovalConfig } = usePreApprovalConfigQuery();
 const samplingProbability = computed(() => preApprovalConfig.value?.samplingProbability ?? undefined);
 const displaySamplingProbability = computed(() =>
-  samplingProbability.value !== undefined ? (1 - samplingProbability.value) * 100 : 'unknown'
+  samplingProbability.value === undefined ? 'unknown' : (1 - samplingProbability.value) * 100
 );
 
 const emit = defineEmits<{

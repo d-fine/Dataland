@@ -145,8 +145,6 @@ const overflowTestCases = [
   },
 ] as const;
 
-const samplingProbabilityTestConfig = 0.25;
-
 const allPassingPreApprovalCheckResults = {
   areAllQaReportsAccepted: true,
   dataPointEligible: true,
@@ -221,7 +219,7 @@ function mountJudgeDialog(options?: {
 
   cy.intercept('GET', `**/qa/pre-approval/config`, {
     statusCode: 200,
-    body: { samplingProbability: samplingProbabilityTestConfig },
+    body: { samplingProbability: 0.25 },
   }).as('getPreApprovalConfig');
 
   const queryClient = new QueryClient({
@@ -1742,6 +1740,6 @@ describe('Pre-approval badge and check results', () => {
     mountJudgeDialog({ datasetJudgement: judgement });
 
     cy.get('[aria-label="Pre-approval info"]').click();
-    cy.get('.p-dialog').contains(samplingProbabilityTestConfig.toString()).should('be.visible');
+    cy.get('.p-dialog').contains('75').should('be.visible');
   });
 });
