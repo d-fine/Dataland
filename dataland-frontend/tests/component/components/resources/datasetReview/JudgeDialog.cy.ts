@@ -145,6 +145,22 @@ const overflowTestCases = [
   },
 ] as const;
 
+const samplingProbabilityTestConfig = 0.25;
+
+const allPassingPreApprovalCheckResults = {
+  areAllQaReportsAccepted: true,
+  isDataPointEligible: true,
+  passesRandomSampling: true,
+  passesSignificanceCheck: true,
+};
+
+const partialFailPreApprovalCheckResults = {
+  areAllQaReportsAccepted: true,
+  isDataPointEligible: false, // one failing check
+  passesRandomSampling: true,
+  passesSignificanceCheck: true,
+};
+
 // ===== Mount helper =====
 
 /**
@@ -202,6 +218,11 @@ function mountJudgeDialog(options?: {
     statusCode: 200,
     body: options?.companyDocuments ?? [],
   }).as('getCompanyDocuments');
+
+  cy.intercept('GET', `**/qa/pre-approval/config`, {
+    statusCode: 200,
+    body: { samplingProbability: samplingProbabilityTestConfig },
+  }).as('getPreApprovalConfig');
 
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
@@ -1574,5 +1595,153 @@ describe('JudgeDialog component tests', () => {
 
       cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', '');
     });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 14. Pre-approval badge and check results
+// ---------------------------------------------------------------------------
+describe('Pre-approval badge and check results', () => {
+  it('shows "PRE-APPROVAL OBJECT NOT FOUND" badge when preApprovalCheckResults object is null', () => {
+    mountJudgeDialog();
+
+    cy.get('[data-test="pre-approval-verdict-badge"]').should('contain.text', 'PRE-APPROVAL OBJECT NOT FOUND');
+  });
+
+  it('shows "PRE-APPROVED" badge when all checks in preApprovalCheckResults pass', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: allPassingPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[data-test="pre-approval-verdict-badge"]').should('contain.text', 'PRE-APPROVED');
+  });
+
+  it('shows "MANUAL REVIEW" badge when preApprovalCheckResults has any failing checks', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: partialFailPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[data-test="pre-approval-verdict-badge"]').should('contain.text', 'MANUAL REVIEW');
+  });
+
+  it('does not render the check result grid or info button when preApprovalCheckResults is absent', () => {
+    mountJudgeDialog();
+
+    cy.get('[data-test="pre-approval-section"]').within(() => {
+      cy.get('[aria-label="Pre-approval info"]').should('not.exist');
+      cy.get('.pi-check, .pi-times').should('not.exist');
+    });
+  });
+
+  it('renders the check result grid and info button when preApprovalCheckResults is present', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: allPassingPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[data-test="pre-approval-section"]').within(() => {
+      cy.get('[aria-label="Pre-approval info"]').should('be.visible');
+      cy.contains('All QA reports accepted:').should('be.visible');
+      cy.contains('Not an exempted field:').should('be.visible');
+      cy.contains('Randomly selected for pre-approval:').should('be.visible');
+      cy.contains('Nonsignificant deviation:').should('be.visible');
+    });
+  });
+
+  it('renders a green pi-check icon for a passing check', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: allPassingPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[data-test="pre-approval-section"]')
+      .contains('All QA reports accepted:')
+      .closest('div')
+      .find('.pi-check')
+      .should('have.css', 'color', 'rgb(22, 101, 52)'); // var(--p-green-600)
+  });
+
+  it('renders a red pi-times icon for a failing check', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: partialFailPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[data-test="pre-approval-section"]')
+      .contains('Not an exempted field:')
+      .closest('div')
+      .find('.pi-times')
+      .should('have.css', 'color', 'rgb(185, 28, 28)'); // var(--p-red-600)
+  });
+
+  it('opens the info dialog when the info button is clicked', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: allPassingPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[aria-label="Pre-approval info"]').click();
+    cy.get('.p-dialog').contains('Pre-Approval Checks').should('be.visible');
+  });
+
+  it('shows the sampling probability from the API in the info dialog', () => {
+    const judgement: DatasetJudgementResponse = {
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: {
+          ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+          preApprovalCheckResults: allPassingPreApprovalCheckResults,
+        },
+      },
+    };
+    mountJudgeDialog({ datasetJudgement: judgement });
+
+    cy.get('[aria-label="Pre-approval info"]').click();
+    cy.get('.p-dialog').contains(samplingProbabilityTestConfig.toString()).should('be.visible');
   });
 });
