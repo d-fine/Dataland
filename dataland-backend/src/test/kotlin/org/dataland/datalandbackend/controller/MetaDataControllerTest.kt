@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
-import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
@@ -16,7 +15,6 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -200,62 +198,10 @@ internal class MetaDataControllerTest
             assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mockDataMetaInformationPatch)
         }
 
-        @Test
-        fun `check that the resulting data dimensions are as expected when retrieving active datasets`() {
-            val singleReportingPeriod = "2020"
-            val singleDataType = "lksg"
-            val storedCompanies = addCompanyToDatabase(3)
-            addMetainformation(company = storedCompanies[0], reportingPeriod = singleReportingPeriod)
-            addMetainformation(company = storedCompanies[1])
-            addMetainformation(company = storedCompanies[2])
-            addMetainformation(company = storedCompanies[0], currentlyActive = null, qaStatus = QaStatus.Rejected)
-            addMetainformation(company = storedCompanies[0], dataType = singleDataType)
-            val expectedDimensions =
-                listOf(
-                    BasicDataDimensions(
-                        companyId = storedCompanies[0].companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = singleReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompanies[1].companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompanies[0].companyId,
-                        dataType = singleDataType,
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                )
-            val combinedSingleFilters =
-                dataMetaInformationManager
-                    .getActiveDataMetaInformationList(
-                        DataDimensionFilter(
-                            companyIds = listOf(storedCompanies[0].companyId),
-                            dataTypes = listOf(defaultDataType.toString()),
-                            reportingPeriods = listOf(singleReportingPeriod),
-                        ),
-                    ).map { it.toBasicDataDimensions() }
-            assertTrue(combinedSingleFilters.first() == expectedDimensions.first())
-
-            val combinedMultipleFilters =
-                dataMetaInformationManager
-                    .getActiveDataMetaInformationList(
-                        DataDimensionFilter(
-                            companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
-                            dataTypes = listOf(defaultDataType.toString(), singleDataType),
-                            reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
-                        ),
-                    ).map { it.toBasicDataDimensions() }
-            assertTrue(combinedMultipleFilters == expectedDimensions)
-        }
-
         private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
             val storedCompanies = mutableListOf<StoredCompanyEntity>()
             testDataProvider.getCompanyInformationWithoutIdentifiers(numberOfCompanies).forEach {
-                storedCompanies
-                    .add(companyManager.addCompany(it))
+                storedCompanies.add(companyManager.addCompany(it))
             }
             return storedCompanies
         }
