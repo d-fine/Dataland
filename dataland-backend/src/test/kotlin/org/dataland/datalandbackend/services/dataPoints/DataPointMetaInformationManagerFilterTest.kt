@@ -26,6 +26,7 @@ class DataPointMetaInformationManagerFilterTest(
     private val defaultDataPointType = "extendedDateFiscalYearEnd"
     private val defaultReportingPeriod = "2023"
     private val uploaderUserId = "uploader-user-id"
+    private var uploadTimeCounter = 0L
 
     @Test
     fun `empty filter returns no active data points`() {
@@ -159,7 +160,7 @@ class DataPointMetaInformationManagerFilterTest(
                 dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
                 uploaderUserId = uploaderUserId,
-                uploadTime = System.currentTimeMillis(),
+                uploadTime = ++uploadTimeCounter,
                 currentlyActive = currentlyActive,
                 qaStatus = qaStatus,
             ),
