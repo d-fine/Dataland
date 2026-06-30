@@ -143,7 +143,8 @@ sonar {
                 "dataland-internal-storage/src/main/kotlin/db/migration/utils/**," +
                 "dataland-community-manager/src/main/kotlin/db/migration/V16__MigrateCompanyRolesWithConstraintUpdate.kt," +
                 "dataland-website/src/**/*.ts," +
-                "dataland-sharedElements/src/footer/TheFooter.vue",
+                "dataland-sharedElements/src/footer/TheFooter.vue," +
+                "dataland-qa-service/test/kotlin/org/dataland/datalandqaservice/services/PreApprovalServiceTest.kt",
         )
         property(
             "sonar.sources",
