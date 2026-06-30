@@ -160,22 +160,6 @@ class DataPointMetaInformationManager
         }
 
         /**
-         * Method to get the reporting periods with active data points for a specific set of data point types and one company
-         * @param dataPointTypes the data point types to filter for
-         * @param companyId the company to filter for
-         * @return the reporting periods with at least one active data point
-         */
-        fun getActiveDataPointMetaInformation(
-            dataPointTypes: Set<String>,
-            companyId: String,
-        ): List<DataPointMetaInformationEntity> =
-            dataPointMetaInformationRepositoryInterface
-                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
-                    dataPointTypes = dataPointTypes,
-                    companyId = companyId,
-                )
-
-        /**
          * Method to get the latest upload time of active data points given a set of data point types for a specific company
          * @param dataPointTypes the data point types to filter for
          * @param companyId the company to filter for

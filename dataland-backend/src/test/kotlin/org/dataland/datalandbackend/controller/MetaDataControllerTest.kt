@@ -230,24 +230,24 @@ internal class MetaDataControllerTest
                 )
             val combinedSingleFilters =
                 dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(
+                    .getActiveDataMetaInformationList(
                         DataDimensionFilter(
                             companyIds = listOf(storedCompanies[0].companyId),
                             dataTypes = listOf(defaultDataType.toString()),
                             reportingPeriods = listOf(singleReportingPeriod),
                         ),
-                    )
+                    ).map { it.toBasicDataDimensions() }
             assertTrue(combinedSingleFilters.first() == expectedDimensions.first())
 
             val combinedMultipleFilters =
                 dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(
+                    .getActiveDataMetaInformationList(
                         DataDimensionFilter(
                             companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
                             dataTypes = listOf(defaultDataType.toString(), singleDataType),
                             reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
                         ),
-                    )
+                    ).map { it.toBasicDataDimensions() }
             assertTrue(combinedMultipleFilters == expectedDimensions)
         }
 

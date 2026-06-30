@@ -197,20 +197,6 @@ internal class DataControllerTest {
     }
 
     @Test
-    fun `test that resource not found error is thrown if combination of reportingPeriod and companyId and dataType does not exist`() {
-        doReturn(null)
-            .whenever(mockDataMetaInformationManager)
-            .getActiveDatasetIdByDataDimensions(any<BasicDatasetDimensions>())
-
-        assertThrows<ResourceNotFoundApiException> {
-            dataController.getCompanyAssociatedDataByDimensions(
-                reportingPeriod = testReportingPeriod,
-                companyId = testCompanyId,
-            )
-        }
-    }
-
-    @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         doAnswer { invocation ->
             val argument = invocation.getArgument<Set<BasicDatasetDimensions>>(0)
