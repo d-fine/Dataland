@@ -1,4 +1,4 @@
 # basis image from docker
-FROM postgres:18.0@sha256:41fc5342eefba6cc2ccda736aaf034bbbb7c3df0fdb81516eba1ba33f360162c
+FROM postgres:18.4@sha256:1a5b3e745bbd82d6deb146505e504da3c2f248cac15e431951b148fbe4f8613a
 
 HEALTHCHECK --interval=30s --timeout=3s CMD pg_isready || false || exit 1
