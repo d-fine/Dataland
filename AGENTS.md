@@ -119,3 +119,7 @@
 - If a frontend or test module fails after backend API changes, regenerate the relevant OpenAPI specs and clients before debugging further.
 - `dataland-website` output is consumed by the frontend build, so website changes can require frontend verification as well.
 - When editing only one area of the monorepo, avoid unnecessary repo-wide runs unless the change affects shared contracts, generated code, or multiple modules.
+
+# Additional Guidelines
+
+- **Verbose Commands:** For tasks with high-volume output (e.g., `gradle` tasks, `npm` builds, other test suites), delegate execution to the `@command-summarizer` subagent. Explicitly state what specific context, failures, or metrics you need extracted to continue your work.
