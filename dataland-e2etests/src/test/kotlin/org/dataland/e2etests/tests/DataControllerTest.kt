@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
-import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsRevenue
@@ -208,23 +207,17 @@ class DataControllerTest {
             apiAccessor.dataControllerApiForSfdrData::getAllCompanySfdrData,
         ).forEach { getAllCompanyData -> assertEquals(0, getAllCompanyData(companyId, false, null).size) }
 
-        apiAccessor.dataAvailabilityControllerApi
-            .getAvailableDataDimensions(
-                DataAvailabilitySearchRequest(
-                    companyIds = listOf(companyId),
-                    frameworksOrDataPointTypes = DataTypeEnum.entries.map { it.value },
-                    reportingPeriods = emptyList(),
-                ),
-            ).groupBy { it.dataType }
-            .forEach { (framework, dimensions) ->
-                val distinctPeriods = dimensions.map { it.reportingPeriod }.distinct().size
+        apiAccessor.companyDataControllerApi
+            .getAggregatedFrameworkDataSummary(
+                companyId = companyId,
+            ).forEach { (framework, aggregatedFrameworkDataSummary) ->
                 if (
                     framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value ||
                     framework == DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value
                 ) {
-                    assertEquals(1, distinctPeriods)
+                    assertEquals(1, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 } else {
-                    assertEquals(0, distinctPeriods)
+                    assertEquals(0, aggregatedFrameworkDataSummary.numberOfProvidedReportingPeriods)
                 }
             }
     }

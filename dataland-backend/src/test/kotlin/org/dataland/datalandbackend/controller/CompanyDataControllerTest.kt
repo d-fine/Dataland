@@ -5,13 +5,18 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
+import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
+import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
@@ -19,6 +24,12 @@ import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALID
 import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -32,14 +43,18 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 import java.util.stream.Stream
@@ -55,9 +70,14 @@ internal class CompanyDataControllerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
+    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
+    @Autowired private val specificationService: SpecificationService,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
+    @MockitoBean private val dataPointMetaInformationRepository = mock<DataPointMetaInformationRepository>()
+
+    @MockitoBean private val specificationClient = mock<SpecificationControllerApi>()
     lateinit var companyController: CompanyDataController
 
     @BeforeEach
@@ -68,6 +88,7 @@ internal class CompanyDataControllerTest(
                 companyQueryManager,
                 companyIdentifierManager,
                 companyBaseManager,
+                dataAvailabilityChecker,
             )
     }
 
@@ -267,5 +288,54 @@ internal class CompanyDataControllerTest(
 
         assertEquals(listOf("ze03VSQH8elRgYoZgV3c", "7tSuSlwbMYu2Po0aqlVm"), resultLEICodes)
         assertEquals(listOf("Company A", "Company B"), resultCompanyNames)
+    }
+
+    @Test
+    fun `getAggregatedFrameworkDataSummary does not count datasets with only shared fields`() {
+        val testDataPointTypeName = "extendedDateFiscalYearEnd"
+        mockSecurityContext()
+        val framework = DataType.valueOf("sfdr").toString()
+        val frameworkSpecification =
+            mock<FrameworkSpecification> {
+                on { schema } doReturn
+                    "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$testDataPointTypeName\",\"ref\":\"dummy\"}}}}"
+            }
+        doReturn(
+            listOf(SimpleFrameworkSpecification(framework = IdWithRef(id = framework, ref = "dummy"), name = "Test")),
+        ).whenever(specificationClient).listFrameworkSpecifications()
+        doAnswer { invocation ->
+            if (invocation.getArgument<String>(0) == framework) {
+                frameworkSpecification
+            } else {
+                throw ClientException()
+            }
+        }.whenever(specificationClient).getFrameworkSpecification(any<String>())
+        specificationService.initiateSpecifications(null)
+        doAnswer { invocation ->
+            val dataPointType = invocation.getArgument<String>(0)
+            if (dataPointType in DataType.values.map { it.toString() }) {
+                throw ClientException()
+            }
+            DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = dataPointType, ref = "dummy"),
+                name = dataPointType,
+                businessDefinition = "",
+                dataPointBaseType = IdWithRef(id = "extendedDate", ref = ""),
+                usedBy = emptyList(),
+                calculationRules = emptyList(),
+            )
+        }.whenever(specificationClient).getDataPointTypeSpecification(any())
+        doReturn(
+            listOf(
+                mock<DataPointMetaInformationEntity> {
+                    on { reportingPeriod } doReturn "2023"
+                },
+            ),
+        ).whenever(dataPointMetaInformationRepository)
+            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), any<String>())
+
+        val testCompanyId = UUID.randomUUID().toString()
+        val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
+        assertEquals(0, result.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)
     }
 }

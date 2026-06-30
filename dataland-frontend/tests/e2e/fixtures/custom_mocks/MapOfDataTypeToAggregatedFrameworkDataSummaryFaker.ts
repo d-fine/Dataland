@@ -1,0 +1,23 @@
+import { type AggregatedFrameworkDataSummary } from '@clients/backend';
+import { AggregatedDataRequestWithAggregatedPriorityDataTypeEnum } from '@clients/communitymanager';
+import { generateInt } from '@e2e/fixtures/common/NumberFixtures';
+
+/**
+ * Creates a map of all existing frameworks to a corresponding framework data summary
+ * @returns the map
+ */
+export function generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(): Record<
+  string,
+  AggregatedFrameworkDataSummary
+> {
+  const mapOfFrameworkNameToAggregatedFrameworkDataSummary: Record<
+    string,
+    { numberOfProvidedReportingPeriods: number }
+  > = {};
+  for (const frameworkName of Object.values(AggregatedDataRequestWithAggregatedPriorityDataTypeEnum)) {
+    mapOfFrameworkNameToAggregatedFrameworkDataSummary[frameworkName] = {
+      numberOfProvidedReportingPeriods: generateInt(30),
+    };
+  }
+  return mapOfFrameworkNameToAggregatedFrameworkDataSummary;
+}

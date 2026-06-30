@@ -3,9 +3,9 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
-import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -381,26 +381,22 @@ class CompanyDataControllerTest {
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73 to 2,
                 DataTypeEnum.sfdr to 0,
             )
+        val expectedMap =
+            DataTypeEnum.entries
+                .associate { framework ->
+                    val numOfReportingPeriods = expectedNumberForFramework[framework] ?: 0
+                    framework.value to
+                        AggregatedFrameworkDataSummary(
+                            numberOfProvidedReportingPeriods = numOfReportingPeriods,
+                        )
+                }.toSortedMap()
         ApiAwait.waitForCondition condition@{
-            val dimensions =
-                apiAccessor.dataAvailabilityControllerApi.getAvailableDataDimensions(
-                    DataAvailabilitySearchRequest(
-                        companyIds = listOf(companyId),
-                        frameworksOrDataPointTypes = DataTypeEnum.entries.map { it.value },
-                        reportingPeriods = emptyList(),
-                    ),
-                )
-            val countByFramework =
-                DataTypeEnum.entries
-                    .associate { framework ->
-                        framework.value to dimensions.count { it.dataType == framework.value }.toLong()
-                    }.toSortedMap()
-            val expectedMap =
-                DataTypeEnum.entries
-                    .associate { framework ->
-                        framework.value to (expectedNumberForFramework[framework] ?: 0L)
-                    }.toSortedMap()
-            return@condition expectedMap == countByFramework
+            val aggregatedFrameworkDataSummary =
+                apiAccessor.companyDataControllerApi
+                    .getAggregatedFrameworkDataSummary(
+                        companyId = companyId,
+                    ).toSortedMap()
+            return@condition expectedMap == aggregatedFrameworkDataSummary
         }
     }
 

@@ -4,7 +4,7 @@ import {
   mockRequestsOnMounted,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
 import { setupCompanyCockpitFixtures } from './testUtils';
-import { type BasicDataDimensions, type CompanyInformation } from '@clients/backend';
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
@@ -22,7 +22,7 @@ function interceptCompanyRights(companyId: string, companyRights: string[]): voi
 
 describe('Component test for the authorization of company cockpit components', () => {
   let companyInformationForTest: CompanyInformation;
-  let mockAvailableDataDimensions: BasicDataDimensions[];
+  let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   before(function () {
@@ -30,15 +30,15 @@ describe('Component test for the authorization of company cockpit components', (
       (info) => {
         companyInformationForTest = info;
       },
-      (dimensions) => {
-        mockAvailableDataDimensions = dimensions;
+      (map) => {
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary = map;
       }
     );
   });
 
   it('Check tab and content visibility for Dataland Admins', () => {
     interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
 
     cy.wait('@fetchCompanyRights');
@@ -50,7 +50,7 @@ describe('Component test for the authorization of company cockpit components', (
 
   it('Check tab and content visibility for users without admin and without company rights', () => {
     interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, []);
 
     cy.wait('@fetchCompanyRights');
@@ -61,7 +61,7 @@ describe('Component test for the authorization of company cockpit components', (
 
   it('Check tab and content visibility for users with company rights for a non member company', () => {
     interceptCompanyRights(dummyCompanyId, []);
-    mockRequestsOnMounted(true, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, [
       generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId),
     ]);
@@ -75,7 +75,7 @@ describe('Component test for the authorization of company cockpit components', (
     interceptCompanyRights(dummyCompanyId, ['Member']);
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
-    mockRequestsOnMounted(true, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
 
     cy.wait('@fetchCompanyRights');

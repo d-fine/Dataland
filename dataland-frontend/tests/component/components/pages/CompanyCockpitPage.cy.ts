@@ -4,7 +4,12 @@ import {
   mockRequestsOnMounted,
   validateVsmeFrameworkSummaryPanel,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
-import { type BasicDataDimensions, type CompanyInformation, DataTypeEnum, type LksgData } from '@clients/backend';
+import {
+  type AggregatedFrameworkDataSummary,
+  type CompanyInformation,
+  DataTypeEnum,
+  type LksgData,
+} from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { CompanyRole } from '@clients/communitymanager';
@@ -44,7 +49,7 @@ function validateSingleDataRequestButton(): void {
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;
-  let mockAvailableDataDimensions: BasicDataDimensions[];
+  let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const initiallyDisplayedFrameworks: Set<DataTypeEnum> = new Set([
     DataTypeEnum.EutaxonomyFinancials,
@@ -66,9 +71,12 @@ describe('Component test for the company cockpit', () => {
       const lksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       companyInformationForTest = lksgFixtures[0].companyInformation;
     });
-    cy.fixture('AvailableDataDimensionsMock').then(function (jsonContent) {
-      mockAvailableDataDimensions = jsonContent as BasicDataDimensions[];
-      allFrameworks = new Set(mockAvailableDataDimensions.map((d) => d.dataType as DataTypeEnum));
+    cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then(function (jsonContent) {
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
+        DataTypeEnum,
+        AggregatedFrameworkDataSummary
+      >;
+      allFrameworks = new Set(Object.keys(mockMapOfDataTypeToAggregatedFrameworkDataSummary)) as Set<DataTypeEnum>;
     });
   });
 
@@ -101,16 +109,19 @@ describe('Component test for the company cockpit', () => {
     ]);
     for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-      const numberOfReportingPeriods = new Set(
-        mockAvailableDataDimensions.filter((d) => d.dataType === frameworkName).map((d) => d.reportingPeriod)
-      ).size;
+      const frameworkDataSummary = new Map(Object.entries(mockMapOfDataTypeToAggregatedFrameworkDataSummary)).get(
+        frameworkName
+      );
+      if (frameworkDataSummary === undefined) {
+        throw new Error(frameworkDataSummary + ' missing in mockMapOfDataTypeToAggregatedFrameworkDataSummary.');
+      }
       cy.get(frameworkSummaryPanelSelector).scrollIntoView();
       cy.get(frameworkSummaryPanelSelector).should('exist');
       cy.get(`${frameworkSummaryPanelSelector} span[data-test="${frameworkName}-panel-value"]`).should(
         'contain',
-        numberOfReportingPeriods.toString()
+        frameworkDataSummary.numberOfProvidedReportingPeriods.toString()
       );
-      if (numberOfReportingPeriods > 0 && !isMobileViewActive) {
+      if (frameworkDataSummary.numberOfProvidedReportingPeriods > 0 && !isMobileViewActive) {
         cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('exist');
       } else {
         cy.get(`[data-test="${frameworkName}-view-data-button"]`).should('not.exist');
@@ -165,7 +176,7 @@ describe('Component test for the company cockpit', () => {
   }
 
   it('Checks the latest documents', () => {
-    mockRequestsOnMounted(false, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(false, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, []);
     // For each category a request is made.
     const categoryKeys = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
@@ -195,7 +206,11 @@ describe('Component test for the company cockpit', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(false, false, []);
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
@@ -205,7 +220,11 @@ describe('Component test for the company cockpit', () => {
   it('Check for expected company ownership elements for a non-logged-in user and for a company with a company owner', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(false, false, []);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
     validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
@@ -216,7 +235,11 @@ describe('Component test for the company cockpit', () => {
     const hasCompanyAtLeastOneOwner = true;
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = false;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER], []);
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
@@ -229,7 +252,11 @@ describe('Component test for the company cockpit', () => {
     const hasCompanyAtLeastOneOwner = false;
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], []);
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
@@ -242,7 +269,11 @@ describe('Component test for the company cockpit', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId)];
     const isClaimOwnershipPanelExpected = false;
     const isProvideDataButtonExpected = true;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], companyRoleAssignmentsOfUser);
     validateSearchBarExistence(true);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
@@ -252,7 +283,11 @@ describe('Component test for the company cockpit', () => {
   });
   it('Check for some expected elements for a logged-in premium-user and for a company without company owner', () => {
     const hasCompanyAtLeastOneOwner = false;
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], []);
     validateSingleDataRequestButton();
   });
@@ -260,7 +295,11 @@ describe('Component test for the company cockpit', () => {
   for (const keycloakRole of KEYCLOAK_ROLES) {
     it(`Check the Vsme summary panel behaviour if the user is not company owner, Case: ${keycloakRole}`, () => {
       const hasCompanyAtLeastOneOwner = true;
-      mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+      mockRequestsOnMounted(
+        hasCompanyAtLeastOneOwner,
+        companyInformationForTest,
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary
+      );
       mountCompanyCockpitWithAuthentication(true, false, [keycloakRole]);
       cy.get('[data-test="toggleShowAll"]').contains('SHOW ALL').click();
       validateVsmeFrameworkSummaryPanel(false);
@@ -272,7 +311,11 @@ describe('Component test for the company cockpit', () => {
     const isClaimOwnershipPanelExpected = true;
     const isProvideDataButtonExpected = false;
     setMobileDeviceViewport();
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]);
     validateSearchBarExistence(false);
     validateCompanyInformationBanner(hasCompanyAtLeastOneOwner);
@@ -283,7 +326,7 @@ describe('Component test for the company cockpit', () => {
   it('Users are being displayed correctly in the Users Page', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Analyst, dummyCompanyId)];
 
-    mockRequestsOnMounted(true, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, companyRoleAssignmentsOfUser);
 
     cy.wait('@fetchRoleAssignments');

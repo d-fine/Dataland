@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -61,6 +62,7 @@ class DataPointSpecificationExampleValidationTest
         private val companyQueryManager: CompanyQueryManager,
         private val companyIdentifierManager: CompanyIdentifierManager,
         private val companyBaseManager: CompanyBaseManager,
+        private val dataAvailabilityChecker: DataAvailabilityChecker,
     ) {
         lateinit var companyController: CompanyDataController
         private lateinit var companyIdOfPostedCompany: String
@@ -74,6 +76,7 @@ class DataPointSpecificationExampleValidationTest
                     companyQueryManager,
                     companyIdentifierManager,
                     companyBaseManager,
+                    dataAvailabilityChecker,
                 )
 
             companyIdOfPostedCompany = postCompany(companyWithTestLei)

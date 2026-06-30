@@ -67,6 +67,10 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val IDENTIFIER_TYPE_DESCRIPTION = "The type of identifier that is used."
 
+    const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION = "The amount of available reporting periods per framework."
+    const val AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE =
+        "{\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\":2}"
+
     const val LIST_OF_COUNTRY_CODES_DESCRIPTION = "The list of country codes in ISO 3166-1 alpha-2 format."
     const val LIST_OF_COUNTRY_CODES_EXAMPLE = "[\"$COUNTRY_CODE_EXAMPLE\"]"
 

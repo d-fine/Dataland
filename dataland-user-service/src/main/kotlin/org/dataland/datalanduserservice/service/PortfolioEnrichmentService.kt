@@ -53,14 +53,13 @@ class PortfolioEnrichmentService
             companyIds: List<String>,
             frameworks: List<String>,
         ): Map<String, Map<String, List<String>>> {
-            val availableDataDimensions =
-                dataAvailabilityControllerApi.getAvailableDataDimensions(
-                    DataAvailabilitySearchRequest(
-                        companyIds = companyIds,
-                        frameworksOrDataPointTypes = frameworks,
-                        reportingPeriods = emptyList(),
-                    ),
+            val availableDataDimensions = dataAvailabilityControllerApi.getAvailableDataDimensions(
+                DataAvailabilitySearchRequest(
+                    companyIds = companyIds,
+                    frameworksOrDataPointTypes = frameworks,
+                    reportingPeriods = emptyList(),
                 )
+            )
 
             val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
                 availableDataDimensions

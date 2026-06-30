@@ -46,7 +46,9 @@
           :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
           :company-id="companyId"
           :framework="framework"
-          :number-of-provided-reporting-periods="numberOfReportingPeriodsForFramework(framework)"
+          :number-of-provided-reporting-periods="
+            aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+          "
           :data-test="`${framework}-summary-panel`"
         />
       </div>
@@ -84,16 +86,12 @@ import { isFrameworkPublic } from '@/utils/Frameworks';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter';
-import {
-  ALL_FRAMEWORKS_IN_DISPLAYED_ORDER,
-  ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-  MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-} from '@/utils/Constants';
+import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 
 import type Keycloak from 'keycloak-js';
-import type { BasicDataDimensions, DataTypeEnum } from '@clients/backend';
+import type { AggregatedFrameworkDataSummary, DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
@@ -113,15 +111,8 @@ const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | u
 const router = useRouter();
 
 /** local state (self-contained) */
-const availableDataDimensions = ref<BasicDataDimensions[]>([]);
-
-/**
- * Derives the number of distinct reporting periods for a given framework from the available data dimensions.
- */
-function numberOfReportingPeriodsForFramework(framework: DataTypeEnum): number {
-  return new Set(availableDataDimensions.value.filter((d) => d.dataType === framework).map((d) => d.reportingPeriod))
-    .size;
-}
+type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
+const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
 
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
 const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
@@ -166,17 +157,13 @@ function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
 }
 
 /**
- * Fetches available data dimensions for the current company and stores them locally.
- * The per-framework reporting period counts are derived from this list.
+ * Fetches the aggregated framework data summary for the current company.
+ * Updates the aggregatedFrameworkDataSummary ref with the response.
  */
-async function fetchAvailableDataDimensions(): Promise<void> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.dataAvailabilityController;
-  const response = await api.getAvailableDataDimensions({
-    companyIds: [props.companyId],
-    frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
-    reportingPeriods: [],
-  });
-  availableDataDimensions.value = response.data;
+async function getAggregatedFrameworkDataSummary(): Promise<void> {
+  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
+  const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
+  aggregatedFrameworkDataSummary.value = response.data as SummaryByType;
 }
 
 /**
@@ -210,7 +197,7 @@ watch(
   () => props.companyId,
   async (newId, oldId) => {
     if (newId === oldId) return;
-    await Promise.all([setLocalRights(), fetchAvailableDataDimensions(), getMetaInfoForLatestDocuments()]);
+    await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
   }
 );
 /** Added to fix flakyness in CompanyOwnershipUserJourney to eliminate race condition */
@@ -220,7 +207,7 @@ watch(companyRoleAssignmentsRef, async (newAssignments) => {
 });
 
 onMounted(async () => {
-  await Promise.all([setLocalRights(), fetchAvailableDataDimensions(), getMetaInfoForLatestDocuments()]);
+  await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
 });
 </script>
 

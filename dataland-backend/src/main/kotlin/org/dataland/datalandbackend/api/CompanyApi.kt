@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
@@ -405,6 +406,43 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getTeaserCompanies(): List<String>
+
+    /**
+     * A method used to retrieve the aggregated data summary for all frameworks
+     * @param companyId the identifier of the company to collect the information for
+     * @returns the collected aggregated data summary per framework
+     */
+    @Operation(
+        summary = "Retrieve aggregated data summary for all frameworks",
+        description = "For each framework retrieves the amount of available reporting periods",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved values.",
+                content = [
+                    Content(
+                        schema =
+                            Schema(
+                                type = "object",
+                                additionalPropertiesSchema = AggregatedFrameworkDataSummary::class,
+                                description = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_DESCRIPTION,
+                                example = BackendOpenApiDescriptionsAndExamples.AGGREGATED_FRAMEWORK_DATA_SUMMARY_EXAMPLE,
+                            ),
+                    ),
+                ],
+            ),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/aggregated-framework-data-summary"],
+        produces = ["application/json"],
+    )
+    fun getAggregatedFrameworkDataSummary(
+        @CompanyIdParameterRequired
+        @PathVariable("companyId") companyId: String,
+    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
 
     /**
      * A method to retrieve company information for one specific company identified by its company ID

@@ -3,7 +3,7 @@ import {
   mountCompanyCockpitWithAuthentication,
   mockRequestsOnMounted,
 } from '@ct/testUtils/CompanyCockpitUtils.ts';
-import { type BasicDataDimensions, type CompanyInformation } from '@clients/backend';
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { setupCompanyCockpitFixtures } from './testUtils';
 
@@ -32,7 +32,7 @@ function interceptExtendedCompanyRoleAssignments(body: CompanyRoleAssignmentExte
 
 describe('Component test for Dataland Member Badge in Company Cockpit', () => {
   let companyInformationForTest: CompanyInformation;
-  let mockAvailableDataDimensions: BasicDataDimensions[];
+  let mockMapOfDataTypeToAggregatedFrameworkDataSummary: Map<DataTypeEnum, AggregatedFrameworkDataSummary>;
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   before(function () {
@@ -40,8 +40,8 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
       (info) => {
         companyInformationForTest = info;
       },
-      (dimensions) => {
-        mockAvailableDataDimensions = dimensions;
+      (map) => {
+        mockMapOfDataTypeToAggregatedFrameworkDataSummary = map;
       }
     );
   });
@@ -50,7 +50,11 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     interceptCompanyRights(dummyCompanyId, ['Member']);
     interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
@@ -69,7 +73,11 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser: CompanyRoleAssignmentExtended[] = [];
     const hasCompanyAtLeastOneOwner = true;
 
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     interceptCompanyRights(dummyCompanyId, ['Member']);
     interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 
@@ -82,7 +90,11 @@ describe('Component test for Dataland Member Badge in Company Cockpit', () => {
     const companyRoleAssignmentsOfUser = [generateCompanyRoleAssignment(CompanyRole.Admin, dummyCompanyId)];
     const hasCompanyAtLeastOneOwner = true;
 
-    mockRequestsOnMounted(hasCompanyAtLeastOneOwner, companyInformationForTest, mockAvailableDataDimensions);
+    mockRequestsOnMounted(
+      hasCompanyAtLeastOneOwner,
+      companyInformationForTest,
+      mockMapOfDataTypeToAggregatedFrameworkDataSummary
+    );
     interceptCompanyRights(dummyCompanyId, []);
     interceptExtendedCompanyRoleAssignments(companyRoleAssignmentsOfUser);
 

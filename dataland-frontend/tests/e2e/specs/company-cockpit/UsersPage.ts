@@ -43,11 +43,11 @@ describeIf(
       cy.then(() => getAdminToken()).then((token) =>
         assignCompanyRole(token, CompanyRole.Analyst, alphaCompanyIdAndName.companyId, reader_userId)
       );
-      cy.intercept('POST', `**/api/data-availability/available-data-dimensions`).as(
-        'fetchAvailableDataDimensionsForBeta'
+      cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForBeta'
       );
       cy.visit(`/companies/${betaCompanyIdAndName.companyId}/users`);
-      cy.wait('@fetchAvailableDataDimensionsForBeta');
+      cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.get('[data-test="usersTab"]').should('not.exist');
       cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
     });
@@ -166,12 +166,12 @@ describeIf(
         return Promise.all(promises);
       });
 
-      cy.intercept('POST', `**/api/data-availability/available-data-dimensions`).as(
-        'fetchAvailableDataDimensionsForAlpha'
+      cy.intercept('GET', `**/api/companies/${alphaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
+        'fetchAggregatedFrameworkSummaryForAlpha'
       );
 
       cy.visit(`/companies/${alphaCompanyIdAndName.companyId}/users`);
-      cy.wait('@fetchAvailableDataDimensionsForAlpha');
+      cy.wait('@fetchAggregatedFrameworkSummaryForAlpha');
     }
   }
 );

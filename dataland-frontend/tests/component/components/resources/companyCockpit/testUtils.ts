@@ -1,14 +1,14 @@
-import type { BasicDataDimensions, CompanyInformation, LksgData } from '@clients/backend';
+import type { CompanyInformation, DataTypeEnum, AggregatedFrameworkDataSummary, LksgData } from '@clients/backend';
 import type { FixtureData } from '@sharedUtils/Fixtures';
 
 /**
  * Sets up fixtures for Company Cockpit tests.
  * @param setCompanyInformation
- * @param setAvailableDataDimensions
+ * @param setFrameworkDataSummary
  */
 export function setupCompanyCockpitFixtures(
   setCompanyInformation: (info: CompanyInformation) => void,
-  setAvailableDataDimensions: (dimensions: BasicDataDimensions[]) => void
+  setFrameworkDataSummary: (map: Map<DataTypeEnum, AggregatedFrameworkDataSummary>) => void
 ): void {
   cy.clearLocalStorage();
   cy.fixture('CompanyInformationWithLksgData').then((jsonContent) => {
@@ -19,7 +19,7 @@ export function setupCompanyCockpitFixtures(
     }
     setCompanyInformation(firstFixture.companyInformation);
   });
-  cy.fixture('AvailableDataDimensionsMock').then((jsonContent) => {
-    setAvailableDataDimensions(jsonContent as BasicDataDimensions[]);
+  cy.fixture('MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock').then((jsonContent) => {
+    setFrameworkDataSummary(jsonContent as Map<DataTypeEnum, AggregatedFrameworkDataSummary>);
   });
 }

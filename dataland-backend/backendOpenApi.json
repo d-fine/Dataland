@@ -7672,6 +7672,75 @@
         ]
       }
     },
+    "/companies/{companyId}/aggregated-framework-data-summary": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve aggregated data summary for all frameworks",
+        "description": "For each framework retrieves the amount of available reporting periods",
+        "operationId": "getAggregatedFrameworkDataSummary",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
+                  },
+                  "description": "The amount of available reporting periods per framework.",
+                  "example": {
+                    "sfdr": 2
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/teaser": {
       "get": {
         "tags": [
@@ -22710,6 +22779,18 @@
           },
           "data": {
             "$ref": "#/components/schemas/EutaxonomyFinancials202673Data"
+          }
+        }
+      },
+      "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfProvidedReportingPeriods": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
