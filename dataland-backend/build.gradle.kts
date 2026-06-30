@@ -3,13 +3,15 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    sourceSets.asMap.values.flatMap { sourceSet ->
-        sourceSet.output.classesDirs.flatMap {
-            fileTree(it) {
-                exclude("**/openApiClient/**")
-            }.files
-        }
-    },
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -116,10 +118,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the internal storage service."
     group = "clients"
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
-    input =
-        project
-            .file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
-            .path
+    inputSpec.set(project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/internal-storage")
@@ -147,10 +146,7 @@ tasks.register("generateExternalStorageClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the external storage service."
     group = "clients"
     val externalStorageClientDestinationPackage = "org.dataland.datalandexternalstorage.openApiClient"
-    input =
-        project
-            .file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json")
-            .path
+    inputSpec.set(project.file("${project.rootDir}/dataland-external-storage/externalStorageOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/external-storage")
@@ -179,10 +175,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input =
-        project
-            .file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json")
-            .path
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -211,7 +204,7 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     description = "Task to generate clients for the document manager service."
     group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/document-manager")
@@ -242,7 +235,7 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
     description = "Task to generate clients for the specification service."
     group = "clients"
     val specificationServiceClientDestinationPackage = "org.dataland.specificationservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/specification-service")
