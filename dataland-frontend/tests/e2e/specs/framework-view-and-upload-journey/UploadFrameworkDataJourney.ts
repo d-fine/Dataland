@@ -49,11 +49,15 @@ function verifyChoosingFrameworkPageForUploadedTestCompanyWithManyDatasets(uploa
  */
 function checkIfDropDownSwitchRendersData(): void {
   cy.get('[data-test="chooseFrameworkDropdown"]').click();
-  cy.get('[data-test="chooseFrameworkDropdown"] a:contains("EU Taxonomy Financials")').click();
+  cy.get('[data-test="chooseFrameworkDropdown"]')
+    .contains('a', /^EU Taxonomy Financials$/)
+    .click();
   cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
 
   cy.get('[data-test="chooseFrameworkDropdown"]').click();
-  cy.get('[data-test="chooseFrameworkDropdown"] a:contains("LkSG")').click();
+  cy.get('[data-test="chooseFrameworkDropdown"]')
+    .contains('a', /^LkSG$/)
+    .click();
   cy.get('td[data-cell-label="Data Date"]').should('be.visible');
 
   cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
