@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
@@ -34,16 +35,21 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String {
-            val sourceNames = getQuotedSourceNames(inputs, specs)
-            val formula = sourceNames.joinToString(prefix = "\n+ ", separator = "\n+ ")
-            return "This data point was calculated as the sum of the following data points: $formula."
-        }
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): String =
+            getCalculationComment(
+                formula = getNumberedSourceReferences(inputs).joinToString(" + "),
+                inputs = inputs,
+                specs = specs,
+                dataPoints = dataPoints,
+                sourceFrameworksByType = sourceFrameworksByType,
+            )
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
@@ -57,7 +63,7 @@ enum class DataPointConversion(
                         value = values.sumOf { it },
                         currency = getCommonCurrency(dataPoints),
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
+                        comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 } else {
@@ -70,7 +76,7 @@ enum class DataPointConversion(
                     ExtendedDataPoint(
                         value = values.sumOf { it },
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
+                        comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -87,13 +93,21 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): String =
-            "This data point was calculated using the following formula: ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+            getCalculationComment(
+                formula = getNumberedSourceReferences(inputs).joinToString(" / "),
+                inputs = inputs,
+                specs = specs,
+                dataPoints = dataPoints,
+                sourceFrameworksByType = sourceFrameworksByType,
+            )
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
@@ -107,7 +121,7 @@ enum class DataPointConversion(
                             ),
                         currency = getCurrency(numerator),
                         quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
+                        comment = createComment(inputs, specs, listOf(numerator, denominator), sourceFrameworksByType),
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
@@ -125,7 +139,7 @@ enum class DataPointConversion(
                                 CALCULATION_ROUNDING_MODE,
                             ),
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
+                        comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -143,13 +157,21 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): String =
-            "This data point was calculated using the following formula: 100 * ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+            getCalculationComment(
+                formula = "100 * ${getNumberedSourceReferences(inputs).joinToString(" / ")}",
+                inputs = inputs,
+                specs = specs,
+                dataPoints = dataPoints,
+                sourceFrameworksByType = sourceFrameworksByType,
+            )
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
@@ -164,7 +186,7 @@ enum class DataPointConversion(
                         value = result,
                         currency = getCurrency(numerator),
                         quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
+                        comment = createComment(inputs, specs, listOf(numerator, denominator), sourceFrameworksByType),
                         dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
                     )
                 } else {
@@ -183,7 +205,7 @@ enum class DataPointConversion(
                     ExtendedDataPoint(
                         value = result,
                         quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
+                        comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                         dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
                     )
                 }
@@ -201,12 +223,17 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String? = dataPoints.single().comment
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): String =
+            "This data point was mapped from the following source: " +
+                "${getNumberedSourceReferences(inputs).single()}\n\n***\n\n" +
+                getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint {
             val calculatedDataPoint =
                 if (isCurrencyDataPoint(targetType, specs)) {
@@ -217,7 +244,7 @@ enum class DataPointConversion(
                             value = it.value,
                             currency = getCurrency(it),
                             quality = it.quality,
-                            comment = createComment(inputs, specs, dataPoints),
+                            comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                             dataSource = it.dataSource,
                         )
                     }
@@ -228,7 +255,7 @@ enum class DataPointConversion(
                         ExtendedDataPoint(
                             value = it.value,
                             quality = it.quality,
-                            comment = createComment(inputs, specs, dataPoints),
+                            comment = createComment(inputs, specs, dataPoints, sourceFrameworksByType),
                             dataSource = it.dataSource,
                         )
                     }
@@ -248,12 +275,14 @@ enum class DataPointConversion(
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
      * @return the derived data point produced by this strategy
      */
     abstract fun convert(
         inputs: Collection<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint
 
     /**
@@ -262,12 +291,14 @@ enum class DataPointConversion(
      * @param inputs the uploaded data points used as calculation inputs
      * @param specs the data point type specifications used to resolve input display names
      * @param dataPoints the deserialized source data points used for the conversion
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
      * @return a generated comment describing the calculation
      */
     abstract fun createComment(
         inputs: Collection<UploadedDataPoint>,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         dataPoints: Collection<ExtendedDataPointInterface<*>>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): String?
 
     companion object {
@@ -366,16 +397,83 @@ internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): Ex
     inputs.minByOrNull { it.fileReference }
 
 /**
- * Resolves the display names of [inputs] in [specs] and wraps each name in double quotes.
+ * Builds the complete comment for a calculated data point.
  *
- * @param inputs the uploaded data points used as calculation inputs
- * @param specs the data point type specifications used to resolve input display names
- * @return the quoted display names of all inputs in order
+ * @param formula the formula to display, using numbered source references such as `[1]`
+ * @param inputs the uploaded source data points used for the calculation
+ * @param specs the data point type specifications used to resolve source display names
+ * @param dataPoints the deserialized source data points used to inspect quality and source comments
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the generated calculation comment including formula and source details
  */
-private fun getQuotedSourceNames(
+private fun getCalculationComment(
+    formula: String,
     inputs: Collection<UploadedDataPoint>,
     specs: Map<DataPointType, DataPointTypeSpecification>,
-): List<String> = inputs.map { "\"${specs.getValue(it.dataPointType).name}\"" }
+    dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): String =
+    "This data point was calculated using the following formula: $formula\n\n***\n\n" +
+        getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
+
+/**
+ * Returns numbered source references for the given inputs.
+ *
+ * @param inputs the uploaded source data points to reference
+ * @return references in input order, starting with `[1]`
+ */
+private fun getNumberedSourceReferences(inputs: Collection<UploadedDataPoint>): List<String> =
+    inputs.mapIndexed { index, _ -> "[${index + 1}]" }
+
+/**
+ * Builds the source details section for a calculated or identity-mapped data point.
+ *
+ * Every source entry contains the source data point type name and framework display name. Source comments are included
+ * only when the source data point quality is not [QualityOptions.Reported].
+ *
+ * @param inputs the uploaded source data points used to resolve source type names
+ * @param specs the data point type specifications keyed by source data point type
+ * @param dataPoints the deserialized source data points used to inspect quality and comments
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the formatted sources section
+ */
+private fun getSourcesSection(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+    dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): String =
+    inputs
+        .zip(dataPoints)
+        .mapIndexed { index, (input, dataPoint) ->
+            val sourceName = specs.getValue(input.dataPointType).name
+            val sourceFrameworkName = getSourceFrameworkLabel(sourceFrameworksByType[input.dataPointType].orEmpty())
+            val commentLine =
+                if (dataPoint.quality == QualityOptions.Reported) {
+                    ""
+                } else {
+                    val sourceComment = dataPoint.comment?.takeIf { it.isNotBlank() } ?: "none"
+                    "\n+ Comment: $sourceComment"
+                }
+            "[${index + 1}] $sourceName\n" +
+                "+ Framework: $sourceFrameworkName" +
+                commentLine
+        }.joinToString(separator = "\n\n")
+
+/**
+ * Formats source framework specifications for display in generated calculation comments.
+ *
+ * @param sourceFrameworks framework specifications associated with a source data point type
+ * @return a stable comma-separated list of framework names, or "Unknown" when no framework is available
+ */
+private fun getSourceFrameworkLabel(sourceFrameworks: List<FrameworkSpecification>): String =
+    sourceFrameworks
+        .map { it.name }
+        .distinct()
+        .sorted()
+        .takeIf { it.isNotEmpty() }
+        ?.joinToString(", ")
+        ?: "Unknown"
 
 private fun extractNumeratorAndDenominator(
     inputs: Collection<UploadedDataPoint>,
@@ -397,6 +495,7 @@ private fun extractNumeratorAndDenominator(
  * @param targetType the data point type assigned to the resulting data point
  * @param method the textual identifier of the conversion strategy
  * @param specs the data point type specifications used during conversion
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
  * @return the derived data point produced by the resolved strategy
  */
 fun applyTransformation(
@@ -404,4 +503,5 @@ fun applyTransformation(
     targetType: DataPointType,
     method: String,
     specs: Map<DataPointType, DataPointTypeSpecification>,
-): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType, specs)
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType, specs, sourceFrameworksByType)

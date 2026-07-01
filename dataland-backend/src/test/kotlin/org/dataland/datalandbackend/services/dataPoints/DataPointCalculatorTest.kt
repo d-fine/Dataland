@@ -18,6 +18,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -46,6 +47,11 @@ class DataPointCalculatorTest {
     private val secondaryCompanyId = "other-company-id"
     private val reportingPeriod = "2023"
     private val framework = "test-framework"
+    private val frameworkName = "Test Framework"
+    private val sourceFrameworkA = "source-framework-a"
+    private val sourceFrameworkAName = "Source Framework A"
+    private val sourceFrameworkB = "source-framework-b"
+    private val sourceFrameworkBName = "Source Framework B"
 
     private val sourceTypeA = "sourceDataPointTypeA"
     private val sourceTypeB = "sourceDataPointTypeB"
@@ -81,13 +87,25 @@ class DataPointCalculatorTest {
     private fun makeDataPointTypeSpecification(
         dataPointType: String,
         calculationRules: List<CalculationRule> = emptyList(),
+        usedBy: List<String> = emptyList(),
     ) = DataPointTypeSpecification(
         dataPointType = IdWithRef(id = dataPointType, ref = ""),
         name = dataPointType,
         businessDefinition = "",
         dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
-        usedBy = emptyList(),
+        usedBy = usedBy.map { IdWithRef(id = it, ref = "") },
         calculationRules = calculationRules,
+    )
+
+    private fun makeFrameworkSpecification(
+        framework: String,
+        frameworkName: String,
+    ) = FrameworkSpecification(
+        framework = IdWithRef(id = framework, ref = ""),
+        name = frameworkName,
+        businessDefinition = "",
+        schema = "{}",
+        referencedReportJsonPath = null,
     )
 
     private fun makeMetaData(
@@ -115,10 +133,17 @@ class DataPointCalculatorTest {
             )
         doReturn(
             mapOf(
-                sourceTypeA to makeDataPointTypeSpecification(sourceTypeA),
-                sourceTypeB to makeDataPointTypeSpecification(sourceTypeB),
+                sourceTypeA to makeDataPointTypeSpecification(sourceTypeA, usedBy = listOf(sourceFrameworkA)),
+                sourceTypeB to makeDataPointTypeSpecification(sourceTypeB, usedBy = listOf(sourceFrameworkB)),
             ),
         ).whenever(specificationService).getDataPointSpecifications(any())
+        doReturn(makeFrameworkSpecification(framework, frameworkName)).whenever(specificationService).getFrameworkSpecification(framework)
+        doReturn(makeFrameworkSpecification(sourceFrameworkA, sourceFrameworkAName))
+            .whenever(specificationService)
+            .getFrameworkSpecification(sourceFrameworkA)
+        doReturn(makeFrameworkSpecification(sourceFrameworkB, sourceFrameworkBName))
+            .whenever(specificationService)
+            .getFrameworkSpecification(sourceFrameworkB)
     }
 
     @Test
@@ -149,8 +174,75 @@ class DataPointCalculatorTest {
         assertEquals(1, calculatedPoints.size)
         val calculatedPoint = calculatedPoints.first()
         assertEquals(targetType, calculatedPoint.dataPointType)
-        val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(calculatedPoint.dataPoint).value
+        val calculatedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(calculatedPoint.dataPoint)
+        val value = calculatedDataPoint.value
         assertEquals(0, BigDecimal(1.5).compareTo(value!!))
+        assertTrue(calculatedDataPoint.comment?.contains("Framework: $sourceFrameworkAName") == true)
+        assertTrue(calculatedDataPoint.comment?.contains("Framework: $sourceFrameworkBName") == true)
+        assertFalse(calculatedDataPoint.comment?.contains("Framework: $frameworkName") == true)
+    }
+
+    @Test
+    fun `check that multiple usedBy frameworks are shown in calculated comments`() {
+        val otherSourceFramework = "other-source-framework"
+        val otherSourceFrameworkName = "Other Source Framework"
+        val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
+
+        doReturn(
+            mapOf(
+                sourceTypeA to
+                    makeDataPointTypeSpecification(
+                        sourceTypeA,
+                        usedBy = listOf(sourceFrameworkA, otherSourceFramework),
+                    ),
+            ),
+        ).whenever(specificationService).getDataPointSpecifications(any())
+        doReturn(makeFrameworkSpecification(otherSourceFramework, otherSourceFrameworkName))
+            .whenever(specificationService)
+            .getFrameworkSpecification(otherSourceFramework)
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA), "Identity"))),
+        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
+        doReturn(listOf(sourceTypeA, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(mapOf("id-a" to dataPointHalf)).whenever(internalStorageAdapter).getDataPoints(any(), any())
+
+        val result =
+            dataPointCalculator.getCalculatedData(
+                datasetDimensions = listOf(datasetDimensions),
+                deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)),
+                correlationId = correlationId,
+            )
+
+        val calculatedDataPoint =
+            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint)
+        assertTrue(calculatedDataPoint.comment?.contains("Framework: $otherSourceFrameworkName, $sourceFrameworkAName") == true)
+    }
+
+    @Test
+    fun `check that unknown is shown when usedBy is empty`() {
+        val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
+
+        doReturn(mapOf(sourceTypeA to makeDataPointTypeSpecification(sourceTypeA)))
+            .whenever(specificationService)
+            .getDataPointSpecifications(any())
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA), "Identity"))),
+        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
+        doReturn(listOf(sourceTypeA, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(mapOf("id-a" to dataPointHalf)).whenever(internalStorageAdapter).getDataPoints(any(), any())
+
+        val result =
+            dataPointCalculator.getCalculatedData(
+                datasetDimensions = listOf(datasetDimensions),
+                deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)),
+                correlationId = correlationId,
+            )
+
+        val calculatedDataPoint =
+            defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint)
+        assertTrue(calculatedDataPoint.comment?.contains("Framework: Unknown") == true)
     }
 
     @Test
