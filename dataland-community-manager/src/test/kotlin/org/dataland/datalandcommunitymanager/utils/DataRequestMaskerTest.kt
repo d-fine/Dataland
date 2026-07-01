@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -39,7 +38,6 @@ class DataRequestMaskerTest {
             datalandCompanyId = "",
             lastModifiedDate = 0,
             requestStatus = RequestStatus.Open,
-            accessStatus = AccessStatus.Pending,
             requestPriority = RequestPriority.Low,
             adminComment = testComment,
             messageHistory = listOf(),

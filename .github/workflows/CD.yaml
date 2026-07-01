@@ -16,11 +16,6 @@ on:
         description: 'Load the full NorthData Golden Copy File into the database'
         required: false
         type: boolean
-      ignoreExternalStorageError:
-        description: 'Ignore errors due to external factors on startup of the external storage'
-        required: false
-        type: boolean
-        default: true
       whichEnvironment:
         description: "Choose environment"
         required: true
@@ -195,16 +190,7 @@ jobs:
           INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${{ vars.INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION }}
           QA_SERVICE_MIGRATION_BASELINE_VERSION: ${{ vars.QA_SERVICE_MIGRATION_BASELINE_VERSION }}
           USER_SERVICE_MIGRATION_BASELINE_VERSION: ${{vars.USER_SERVICE_MIGRATION_BASELINE_VERSION}}
-          EURODAT_CLIENT_KEYSTORE_INT_BASE64: ${{ secrets.EURODAT_CLIENT_KEYSTORE_INT_BASE64 }}
-          EURODAT_CLIENT_TEST_INT_BASE64: ${{ secrets.EURODAT_CLIENT_TEST_INT_BASE64 }}
-          EURODAT_CLIENT_TLS_CERT: ${{ secrets.EURODAT_CLIENT_TLS_CERT }}
-          EURODAT_BASE_URL: ${{ secrets.EURODAT_BASE_URL }}
-          KEY_STORE_FILE_PASSWORD: ${{ secrets.KEY_STORE_FILE_PASSWORD}}
-          QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD: ${{ secrets.QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD}}
-          QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD: ${{ secrets.QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD}}
-          QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD: ${{ secrets.QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD}}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
-          IGNORE_EXTERNAL_STORAGE_ERROR: ${{ github.event.inputs.ignoreExternalStorageError }}
           DATA_EXPORTER_OUTPUT_DIRECTORY: ${{ secrets.DATA_EXPORTER_OUTPUT_DIRECTORY }}
           LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
           LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
@@ -296,7 +282,6 @@ jobs:
           KC_BOOTSTRAP_ADMIN_PASSWORD: ${{ secrets.KC_BOOTSTRAP_ADMIN_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           CYPRESS_RESET_DATABASE: ${{ github.event.inputs.resetStackAndRepopulate }}
-          CYPRESS_IGNORE_EXTERNAL_STORAGE: ${{ github.event.inputs.ignoreExternalStorageError }}
           CYPRESS_EXECUTION_ENVIRONMENT: ${{ vars.CYPRESS_EXECUTION_ENVIRONMENT }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           CYPRESS_SINGLE_POPULATE: true

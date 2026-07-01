@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -139,21 +138,6 @@ class DataRequestUpdateManager
                 return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
             }
 
-            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                requestEmailManager.sendNotificationsSpecificToAccessRequests(
-                    dataRequestEntity, dataRequestPatch, correlationId,
-                )
-                requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                    dataRequestEntity, dataRequestPatch.requestStatus,
-                    dataRequestPatch.requestStatusChangeReason,
-                    dataRequestUpdateUtils.existsEarlierQaApprovalOfDatasetForDataDimension(
-                        dataRequestEntity,
-                    ),
-                    correlationId,
-                )
-                return updateDataRequestEntity(dataRequestEntity, dataRequestPatch, answeringDataId)
-            }
-
             if (dataRequestPatch.requestStatus == RequestStatus.Answered) {
                 when (
                     Pair(dataRequestEntity.requestStatus, dataRequestEntity.notifyMeImmediately)
@@ -209,15 +193,11 @@ class DataRequestUpdateManager
             correlationId: String,
             requestStatusChangeReason: String? = null,
         ) {
-            val isVsmeWithoutAccess =
-                dataRequestEntity.dataType == DataTypeEnum.vsme.name &&
-                    dataRequestEntity.accessStatus != AccessStatus.Granted
             patchDataRequest(
                 dataRequestId = dataRequestEntity.dataRequestId,
                 dataRequestPatch =
                     DataRequestPatch(
                         requestStatus = RequestStatus.Answered,
-                        accessStatus = if (isVsmeWithoutAccess) AccessStatus.Pending else null,
                         requestStatusChangeReason = requestStatusChangeReason,
                     ),
                 correlationId = correlationId,
@@ -266,7 +246,7 @@ class DataRequestUpdateManager
         }
 
         /**
-         * Method for processing data requests by users after an incoming QA approval or private data received event.
+         * Method for processing data requests by users after an incoming QA approval event.
          */
         @Transactional
         fun processUserRequests(
@@ -345,18 +325,6 @@ class DataRequestUpdateManager
                 )
             val requestsToProcess = answeredOrClosedOrResolvedDataRequestEntities.filter { it.dataRequestId !in requestIdsToIgnore }
             for (dataRequestEntity in requestsToProcess) {
-                if (dataRequestEntity.dataType == DataTypeEnum.vsme.name) {
-                    if (dataRequestEntity.accessStatus != AccessStatus.Declined &&
-                        dataRequestEntity.accessStatus != AccessStatus.Revoked
-                    ) {
-                        requestEmailManager.sendDataUpdatedEmail(
-                            dataRequestEntity,
-                            correlationId,
-                        )
-                    }
-                    continue
-                }
-
                 if (dataRequestEntity.notifyMeImmediately) {
                     requestEmailManager.sendDataUpdatedEmail(
                         dataRequestEntity,

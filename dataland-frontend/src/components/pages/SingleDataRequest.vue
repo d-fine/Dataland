@@ -143,7 +143,6 @@ import { openEmailClient } from '@/utils/Email';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type CompanyInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
-import { type SingleDataRequestDataTypeEnum } from '@clients/communitymanager';
 import { AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import Card from 'primevue/card';
@@ -188,7 +187,7 @@ export default defineComponent({
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: router.currentRoute.value.query.preSelectedFramework as SingleDataRequestDataTypeEnum,
+      frameworkName: router.currentRoute.value.query.preSelectedFramework as DataTypeEnum,
       errorMessage: '',
       selectedReportingPeriodsError: false,
       selectedFrameworkError: false,

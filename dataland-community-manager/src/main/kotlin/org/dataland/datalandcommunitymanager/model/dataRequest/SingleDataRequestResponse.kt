@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 
 /**
@@ -40,14 +39,4 @@ data class SingleDataRequestResponse(
             ),
     )
     val reportingPeriodsOfDuplicateDataRequests: List<String>,
-    @field:JsonProperty(required = true)
-    @field:ArraySchema(
-        arraySchema =
-            Schema(
-                type = "string",
-                description = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_DESCRIPTION,
-                example = CommunityManagerOpenApiDescriptionsAndExamples.REPORTING_PERIODS_OF_STORED_ACCESS_REQUESTS_EXAMPLE,
-            ),
-    )
-    val reportingPeriodsOfStoredAccessRequests: List<String>,
 )

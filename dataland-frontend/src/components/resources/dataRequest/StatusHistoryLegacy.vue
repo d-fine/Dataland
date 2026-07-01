@@ -36,17 +36,6 @@
             </div></template
           >
         </Column>
-        <Column field="accessStatus" header="Access Status"
-          ><template #body="slotProps"
-            ><div
-              style="display: inline-flex"
-              :class="accessStatusBadgeClass(slotProps.data.accessStatus)"
-              data-test="accessStatusEntry"
-            >
-              {{ slotProps.data.accessStatus }}
-            </div></template
-          >
-        </Column>
         <Column field="reasonNonSourceable" header="Comment" style="width: 45%"
           ><template #body="slotProps"
             ><div style="display: inline-flex" data-test="reasonNonSourceableEntry">
@@ -61,7 +50,7 @@
 
 <script lang="ts">
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
+import { badgeClass, getRequestStatusLabel } from '@/utils/RequestUtilsLegacy';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -83,7 +72,6 @@ export default defineComponent({
   },
   methods: {
     getRequestStatusLabel,
-    accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
     /**

@@ -2,38 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Bednarburgh",
-			"headquartersPostalCode": "37783-0713",
-			"sector": null,
+			"headquarters": "West Erika",
+			"headquartersPostalCode": "19266-6117",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [
-					"LmPvXXYeJxZ39PfAZS9Z"
-				],
+				"Lei": [],
 				"Isin": [
-					"xatOKm3hKSW2",
-					"zabX6u6nyi8h"
+					"xzWVziJdopbL"
 				],
-				"PermId": [],
+				"PermId": [
+					"bP7LHz5drE"
+				],
 				"Ticker": [],
-				"Duns": [
-					"PQi0atPOE"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"T2BKlB2Xr"
+					"DZD6tWtyq"
 				],
-				"CompanyRegistrationNumber": [
-					"S7bQOmHJ4ECZhoX"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CI",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Rohan - Hilll",
-				"Schroeder Inc"
+			"countryCode": "SE",
+			"companyContactDetails": [
+				"Benny_Hodkiewicz25@example.com",
+				"Roy.Wilderman-Wolf@example.com",
+				"Chester_Medhurst88@example.com",
+				"Kenton.Wintheiser48@example.com"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://pink-pile.info",
-			"fiscalYearEnd": "27-Nov",
+			"companyAlternativeNames": [
+				"Graham, White and Buckridge",
+				"Little - Schuster"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://ashamed-hydrocarbon.com/",
+			"fiscalYearEnd": "04-Jun",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -110,6 +110,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2023"
 	}
 ]

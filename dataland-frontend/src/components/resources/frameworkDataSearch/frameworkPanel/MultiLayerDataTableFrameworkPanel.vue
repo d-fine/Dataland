@@ -22,12 +22,6 @@
       :reporting-periods="sortedReportingPeriods"
       :reports="sortedReports"
     />
-    <PrimeButton
-      v-if="metaInfoOfAvailableButInaccessibleDataset.length > 0"
-      @click="openModalToDisplayInaccessibleDatasets"
-      class="mb-4"
-      >REQUEST ACCESS TO MORE DATASETS
-    </PrimeButton>
     <MultiLayerDataTable
       :dataAndMetaInfo="sortedDataAndMetaInfo"
       :inReviewMode="inReviewMode"
@@ -46,12 +40,6 @@
   </div>
   <div v-if="status == 'InsufficientRights'">
     <h1>Sorry! You have insufficient rights to view the available datasets.</h1>
-    <h3>You can request access from the company owner:</h3>
-    <RequestableDatasetsTable
-      :metaInfoOfAvailableDatasets="metaInfoOfAvailableButInaccessibleDataset"
-      :dataType="props.frameworkIdentifier"
-      :companyId="props.companyId"
-    />
   </div>
   <div v-if="status == 'Error'">
     <h1>We are having issues loading the data.</h1>
@@ -60,7 +48,6 @@
 
 <script setup generic="FrameworkDataType" lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
-import PrimeButton from 'primevue/button';
 import MultiLayerDataTable from '@/components/resources/dataTable/MultiLayerDataTable.vue';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -86,12 +73,6 @@ import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/comp
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { AxiosError } from 'axios';
-import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
-import { useDialog } from 'primevue/usedialog';
-import RequestableDatasetsTableModalWrapper from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
-import { isFrameworkPrivate } from '@/utils/Frameworks';
-
-const dialog = useDialog();
 
 type ViewPanelStates = 'LoadingDatasets' | 'DisplayingDatasets' | 'Error' | 'InsufficientRights';
 
@@ -172,7 +153,6 @@ const sortedReports = computed(() => {
 
 const updateCounter = ref(0);
 const status = ref<ViewPanelStates>('LoadingDatasets');
-const metaInfoOfAvailableButInaccessibleDataset = ref<DataMetaInformation[]>([]);
 const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
 const updateKey = ref(0);
 
@@ -216,10 +196,6 @@ async function reloadDisplayData(currentCounter: number): Promise<void> {
         status.value = 'Error';
       }
     }
-  } finally {
-    if (status.value != 'Error') {
-      await fetchMetaInfoOfInaccessibleDatasets();
-    }
   }
 }
 
@@ -252,48 +228,6 @@ async function loadDataForDisplay(
     ).data.data;
   }
   return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-}
-
-/**
- * Fetches meta info of available, but inaccessible datasets for the user.
- * By doing this, the UI can offer the user a list of potential datasets,
- * that the user might want to request access to.
- */
-async function fetchMetaInfoOfInaccessibleDatasets(): Promise<void> {
-  if (isFrameworkPrivate(props.frameworkIdentifier as DataTypeEnum)) {
-    const allMetaInfoOfAvailableDatasets = (
-      await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
-        props.companyId,
-        props.frameworkIdentifier as DataTypeEnum,
-        true
-      )
-    ).data;
-
-    const alreadyFetchedDataIds = new Set(rawDataAndMetaInfoForDisplay.value.map((it) => it.metaInfo.dataId));
-
-    metaInfoOfAvailableButInaccessibleDataset.value = allMetaInfoOfAvailableDatasets.filter(
-      (metaInfoOfAvailableDataset) => !alreadyFetchedDataIds.has(metaInfoOfAvailableDataset.dataId)
-    );
-  }
-}
-
-/**
- * Opens a modal and shows the user available datasets to which the user does not have access (yet).
- */
-function openModalToDisplayInaccessibleDatasets(): void {
-  dialog.open(RequestableDatasetsTableModalWrapper, {
-    props: {
-      modal: true,
-      closable: true,
-      dismissableMask: true,
-      header: 'Available datasets to request access for',
-    },
-    data: {
-      metaInfoOfAvailableDatasets: metaInfoOfAvailableButInaccessibleDataset,
-      dataType: props.frameworkIdentifier,
-      companyId: props.companyId,
-    },
-  });
 }
 </script>
 <style scoped>

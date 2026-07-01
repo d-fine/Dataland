@@ -6,16 +6,12 @@
     <p class="font-medium text-xl">Checking for user roles...</p>
     <DatalandProgressSpinner />
   </div>
-  <div v-if="(hasUserRequiredKeycloakRole && !isFrameworkPrivate) || isUserCompanyOwnerOrUploader">
+  <div v-if="hasUserRequiredKeycloakRole || isUserCompanyOwnerOrUploader">
     <slot></slot>
   </div>
 
   <TheContent
-    v-if="
-      !waitingForCompanyRoleAssignments &&
-      !isUserCompanyOwnerOrUploader &&
-      (!hasUserRequiredKeycloakRole || isFrameworkPrivate)
-    "
+    v-if="!waitingForCompanyRoleAssignments && !isUserCompanyOwnerOrUploader && !hasUserRequiredKeycloakRole"
     class="flex"
   >
     <MiddleCenterDiv class="col-12">
@@ -35,7 +31,6 @@ import TheContent from '@/components/generics/TheContent.vue';
 import MiddleCenterDiv from '@/components/wrapper/MiddleCenterDivWrapper.vue';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { CompanyRole } from '@clients/communitymanager';
-import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 export default defineComponent({
   name: 'AuthorizationWrapper',
@@ -45,7 +40,6 @@ export default defineComponent({
       hasUserRequiredKeycloakRole: null as boolean | null,
       isUserCompanyOwnerOrUploader: null as boolean | null,
       waitingForCompanyRoleAssignments: true,
-      isFrameworkPrivate: null as boolean | null,
     };
   },
   props: {
@@ -54,7 +48,6 @@ export default defineComponent({
       required: true,
     },
     companyId: String,
-    dataType: String,
   },
   setup() {
     return {
@@ -62,7 +55,6 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    this.setIfFrameworkIsPrivate();
     void this.setUserPermissions();
   },
   methods: {
@@ -82,15 +74,6 @@ export default defineComponent({
       this.isUserCompanyOwnerOrUploader = isCompanyOwner || isDataUploader;
       this.hasUserRequiredKeycloakRole = await checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise);
       this.waitingForCompanyRoleAssignments = false;
-    },
-
-    /**
-     * This method sets if the data type in the props is private or not
-     */
-    setIfFrameworkIsPrivate() {
-      if (this.dataType) {
-        this.isFrameworkPrivate = getAllPrivateFrameworkIdentifiers().includes(this.dataType);
-      }
     },
   },
 });

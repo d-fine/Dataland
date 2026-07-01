@@ -34,7 +34,6 @@ Use this when the user asks to generate or refresh clients, or when a consumer m
 - `dataland-accounting-service`
 - `dataland-batch-manager`
 - `dataland-internal-storage`
-- `dataland-external-storage`
 - `dataland-keycloak-adapter`
 
 ## Dataland-specific rules

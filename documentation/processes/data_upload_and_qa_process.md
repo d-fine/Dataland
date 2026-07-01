@@ -2,7 +2,7 @@
 | Metadata        | Value                                                                                                                                                                                                                       |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Target Audience | Dataland Developers                                                                                                                                                                                                         |
-| Abstract        | This document describes the process of uploading datasets to Dataland and the QA process that follows. It focuses on any messages that are sent via the message-queue. It is limited to **public** datasets (i.e., no VSME) |
+| Abstract        | This document describes the process of uploading datasets to Dataland and the QA process that follows. It focuses on any messages that are sent via the message-queue. |
 
 
 The following diagram describes the process of uploading datasets to Dataland and the QA process that follows. It focuses on any messages that are sent via the message-queue.

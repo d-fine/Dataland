@@ -75,10 +75,6 @@ data class StoredDataRequest(
     )
     val requestStatus: RequestStatus,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-    )
-    val accessStatus: AccessStatus,
-    @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
     )
     val requestPriority: RequestPriority,
