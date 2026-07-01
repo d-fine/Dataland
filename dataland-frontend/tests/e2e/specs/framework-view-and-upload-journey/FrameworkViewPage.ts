@@ -361,7 +361,7 @@ describeIf(
       }
     );
 
-    it.only('Check that using back-button and dropdowns on the view-page work as expected', () => {
+    it('Check that using back-button and dropdowns on the view-page work as expected', () => {
       cy.ensureLoggedInAsReader();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
