@@ -7,7 +7,6 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -80,49 +79,6 @@ class CommunityManagerListener(
             )
             investorRelationsManager.saveNotificationEventForInvestorRelationsEmails(
                 dataId = dataId,
-            )
-        }
-    }
-
-    /**
-     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered and handles the update of the access status
-     * @param payload the message body containing the dataId of the uploaded data
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value =
-                    Queue(
-                        "privateRequestReceivedCommunityManager",
-                        arguments = [
-                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                            Argument(name = "defaultRequeueRejected", value = "false"),
-                        ],
-                    ),
-                exchange = Exchange(ExchangeName.PRIVATE_REQUEST_RECEIVED, declare = "false"),
-                key = [RoutingKeyNames.META_DATA_PERSISTED],
-            ),
-        ],
-    )
-    @Transactional
-    fun changeRequestStatusAfterPrivateDataUpload(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) id: String,
-    ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
-        val privateDataUploadMessage = MessageQueueUtils.readMessagePayload<PrivateDataUploadMessage>(payload)
-        val dataId = privateDataUploadMessage.dataId
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        MessageQueueUtils.rejectMessageOnException {
-            dataRequestUpdateManager.processUserRequests(
-                dataId,
-                correlationId = id,
             )
         }
     }

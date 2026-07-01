@@ -1,9 +1,5 @@
-import { type PrivateFrameworkDataApi, type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type ApiClientProvider } from '@/services/ApiClients';
-import {
-  getAllPrivateFrameworkIdentifiers,
-  getBasePrivateFrameworkDefinition,
-} from '@/frameworks/BasePrivateFrameworkRegistry';
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
@@ -18,17 +14,11 @@ import {
 export function getFrameworkDataApiForIdentifier(
   identifier: string,
   apiClientProvider: ApiClientProvider
-): PrivateFrameworkDataApi<object> | PublicFrameworkDataApi<object> | undefined {
-  const privateFrameworkIdentifiers = getAllPrivateFrameworkIdentifiers();
+): PublicFrameworkDataApi<object> | undefined {
   const publicFrameworkIdentifiers = getAllPublicFrameworkIdentifiers();
 
   let dataControllerApi;
-  if (privateFrameworkIdentifiers.includes(identifier)) {
-    const frameworkDefinition = getBasePrivateFrameworkDefinition(identifier);
-    if (frameworkDefinition) {
-      dataControllerApi = frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-    }
-  } else if (publicFrameworkIdentifiers.includes(identifier)) {
+  if (publicFrameworkIdentifiers.includes(identifier)) {
     const frameworkDefinition = getBasePublicFrameworkDefinition(identifier);
     if (frameworkDefinition) {
       dataControllerApi = frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);

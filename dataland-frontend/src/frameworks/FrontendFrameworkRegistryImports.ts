@@ -7,7 +7,6 @@ import lksgFrontendFrameworkDefinition from '@/frameworks/lksg/FrontendFramework
 import nuclearAndGasFrontendFrameworkDefinition from '@/frameworks/nuclear-and-gas/FrontendFrameworkDefinition';
 import pcafFrontendFrameworkDefinition from '@/frameworks/pcaf/FrontendFrameworkDefinition';
 import sfdrFrontendFrameworkDefinition from '@/frameworks/sfdr/FrontendFrameworkDefinition';
-import vsmeFrontendFrameworkDefinition from '@/frameworks/vsme/FrontendFrameworkDefinition';
 import { type FrontendFrameworkDefinition } from '@/frameworks/BaseFrameworkDefinition';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,5 +19,4 @@ export const FrontendFrameworkDefinitions: Record<string, FrontendFrameworkDefin
   nuclearAndGas: nuclearAndGasFrontendFrameworkDefinition,
   pcaf: pcafFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
-  vsme: vsmeFrontendFrameworkDefinition,
 };

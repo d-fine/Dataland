@@ -16,17 +16,6 @@ creation URL (or simply copy this md file into the description)
 
 - [ ] Update the wiki page (should display current issues why specific updates were not done)
 
-### Dataland EuroDaT client (The EuroDaT section should be skipped)
-
-- [ ] Check on the https://eurodat.gitlab.io/trustee-platform/release_notes/ if there is a newer version available, if yes
-  then update the version number used in docker-compose.
-- [ ] If the version was changed: Check if the eurodatClientOpenApi.json in dataland-external-storage is in sync with
-  the currently used version of the client.
-  1. Edit the docker compose file by adding a `ports` section with the entry `"8080:8080"` to the "eurodat-client" and start it
-  2. Open a shell and navigate to the `dataland-eurodat-client` subproject
-  3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
-  4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
-
 ## Server maintenance
 
 Note: Before applying any update to any server make sure that a backup exists for all dev servers, letsencrypt, clone and test. In case of prod, create a fresh backup just

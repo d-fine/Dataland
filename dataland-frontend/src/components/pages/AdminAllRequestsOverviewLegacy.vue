@@ -181,11 +181,6 @@
               <DatalandTag :severity="slotProps.data.requestStatus" :value="slotProps.data.requestStatus" rounded />
             </template>
           </Column>
-          <Column header="ACCESS STATUS" :sortable="false" field="accessStatus">
-            <template #body="slotProps">
-              <DatalandTag :severity="slotProps.data.accessStatus" :value="slotProps.data.accessStatus" />
-            </template>
-          </Column>
           <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
             <template #body="slotProps">
               <DatalandTag :severity="slotProps.data.requestPriority" :value="slotProps.data.requestPriority" />
@@ -376,7 +371,6 @@ export default defineComponent({
               emailFilter,
               commentFilter,
               selectedRequestStatusesAsSet,
-              undefined,
               selectedPriorityAsSet,
               selectedReportingPeriodAsSet,
               undefined,
@@ -392,7 +386,6 @@ export default defineComponent({
               emailFilter,
               commentFilter,
               selectedRequestStatusesAsSet,
-              undefined,
               selectedPriorityAsSet,
               selectedReportingPeriodAsSet,
               undefined,

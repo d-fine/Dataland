@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     property = "type",
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = AccessToDatasetRequestedEmailContent::class, name = "AccessToDatasetRequestedEmailContent"),
-    JsonSubTypes.Type(value = AccessToDatasetGrantedEmailContent::class, name = "AccessToDatasetGrantedEmailContent"),
     JsonSubTypes.Type(value = DataAvailableEmailContent::class, name = "DataAvailableEmailContent"),
     JsonSubTypes.Type(value = DataNonSourceableEmailContent::class, name = "DataNonSourceableEmailContent"),
     JsonSubTypes.Type(value = DataUpdatedEmailContent::class, name = "DataUpdatedEmailContent"),
@@ -55,46 +53,6 @@ interface InitializeSubscriptionUuidLater {
  */
 interface InitializeBaseUrlLater {
     var baseUrl: String
-}
-
-/**
- * Content of an email sent to the company owner, when a user requests access to a company dataset.
- */
-data class AccessToDatasetRequestedEmailContent(
-    val companyId: String,
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriods: List<String>,
-    val message: String?,
-    val requesterEmail: String?,
-    val requesterFirstName: String?,
-    val requesterLastName: String?,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Access to your data has been requested on Dataland!"
-    override val templateName = "access_to_dataset_requested.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * Content of an email sent to the user, once the company grants access to a dataset requested by the user.
- */
-data class AccessToDatasetGrantedEmailContent(
-    val companyId: String,
-    val companyName: String,
-    val dataType: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your Dataland Access Request has been granted!"
-    override val templateName = "access_to_dataset_granted.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
 }
 
 /**

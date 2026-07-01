@@ -45,7 +45,6 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eutaxonomy-financials-2026-73');
   require('./eu-taxonomy-non-financials');
   require('./eutaxonomy-non-financials-2026-73');
-  require('./vsme');
   require('./pcaf');
   require('./company-ownership');
   require('./user-experience');

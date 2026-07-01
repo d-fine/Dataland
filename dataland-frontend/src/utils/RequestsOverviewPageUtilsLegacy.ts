@@ -1,4 +1,4 @@
-import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
+import { RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { ADMIN_FILTERABLE_REQUESTS_REPORTING_PERIODS, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -36,19 +36,6 @@ export function retrieveAvailableFrameworks(): Array<FrameworkSelectableItem> {
     return {
       frameworkDataType: dataTypeEnum,
       displayName: displayName,
-      disabled: false,
-    };
-  });
-}
-
-/**
- * Gets list with all available access status
- * @returns array of SelectableItem
- */
-export function retrieveAvailableAccessStatuses(): Array<SelectableItem> {
-  return Object.values(AccessStatus).map((accessStatus) => {
-    return {
-      displayName: accessStatus,
       disabled: false,
     };
   });

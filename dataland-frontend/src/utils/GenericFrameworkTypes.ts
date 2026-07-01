@@ -4,7 +4,6 @@ import {
   type EutaxonomyNonFinancialsData,
   type LksgData,
   type SfdrData,
-  type VsmeData,
   type NuclearAndGasData,
 } from '@clients/backend';
 
@@ -50,5 +49,4 @@ export type FrameworkData =
   | EutaxonomyNonFinancialsData
   | LksgData
   | SfdrData
-  | VsmeData
   | NuclearAndGasData;

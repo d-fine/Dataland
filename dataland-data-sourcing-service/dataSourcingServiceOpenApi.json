@@ -1735,8 +1735,7 @@
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
               "lksg",
-              "pcaf",
-              "vsme"
+              "pcaf"
             ],
             "items": {
               "type": "string"

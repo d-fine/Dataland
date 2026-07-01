@@ -1,12 +1,7 @@
 import MyDataRequestsOverviewLegacy from '@/components/pages/MyDataRequestsOverviewLegacy.vue';
 import router from '@/router';
 import { DataTypeEnum } from '@clients/backend';
-import {
-  AccessStatus,
-  type ExtendedStoredDataRequest,
-  RequestPriority,
-  RequestStatus,
-} from '@clients/communitymanager';
+import { type ExtendedStoredDataRequest, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
@@ -21,7 +16,6 @@ before(function () {
    * @param companyName to include in the data request
    * @param companyId to include in the data request
    * @param requestStatus to set in the data request
-   * @param accessStatus to set in the data request
    * @param requestPriority to set in the data request
    * @returns an extended sorted data request object
    */
@@ -31,7 +25,6 @@ before(function () {
     companyName: string,
     companyId: string,
     requestStatus: RequestStatus,
-    accessStatus: AccessStatus,
     requestPriority: RequestPriority
   ): ExtendedStoredDataRequest {
     return {
@@ -44,7 +37,6 @@ before(function () {
       companyName: companyName,
       lastModifiedDate: 1709204495770,
       requestStatus: requestStatus,
-      accessStatus: accessStatus,
       requestPriority: requestPriority,
     };
   }
@@ -56,7 +48,6 @@ before(function () {
       'companyAnswered',
       'compA',
       RequestStatus.Answered,
-      AccessStatus.Pending,
       RequestPriority.Low
     ),
     buildExtendedStoredDataRequest(
@@ -65,7 +56,6 @@ before(function () {
       'companyNotAnsweredSfdr',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending,
       RequestPriority.Low
     ),
     buildExtendedStoredDataRequest(
@@ -74,7 +64,6 @@ before(function () {
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
       RequestStatus.Resolved,
-      AccessStatus.Pending,
       RequestPriority.Low
     ),
     buildExtendedStoredDataRequest(
@@ -83,7 +72,6 @@ before(function () {
       'companyNotAnsweredEU',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending,
       RequestPriority.Low
     ),
     buildExtendedStoredDataRequest(
@@ -92,7 +80,6 @@ before(function () {
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
       RequestStatus.Answered,
-      AccessStatus.Pending,
       RequestPriority.Low
     )
   );
@@ -106,7 +93,7 @@ describe('Component tests for the data requests search page', function (): void 
     cy.mountWithPlugins(MyDataRequestsOverviewLegacy, {
       keycloak: minimalKeycloakMock({}),
     });
-    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS', 'ACCESS STATUS'];
+    const sortingColumHeader = ['COMPANY', 'REPORTING PERIOD', 'REQUESTED', 'REQUEST STATUS'];
     for (const value of sortingColumHeader) {
       cy.get(`table th:contains(${value})`).should('exist').click();
       cy.get('[data-test="requested-datasets-table"]')

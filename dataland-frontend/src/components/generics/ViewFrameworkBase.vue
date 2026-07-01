@@ -63,7 +63,6 @@
             />
 
             <PrimeButton
-              v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
               label="DOWNLOAD DATA"
@@ -107,13 +106,11 @@ import TheContent from '@/components/generics/TheContent.vue';
 import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
 
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import {
   KEYCLOAK_ROLE_ADMIN,
@@ -131,7 +128,7 @@ import {
   type QaStatus,
 } from '@clients/backend';
 import { CompanyRole } from '@clients/communitymanager';
-import { AxiosError, type AxiosRequestConfig } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -192,7 +189,6 @@ const isJudgeableByCurrentUser = computed(
 const isEditableByCurrentUser = computed(
   () =>
     hasUserUploaderRights.value &&
-    isFrameworkEditable(props.dataType) &&
     (!props.singleDataMetaInfoToDisplay ||
       props.singleDataMetaInfoToDisplay.currentlyActive ||
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
@@ -303,11 +299,10 @@ async function getMetaData(): Promise<void> {
 }
 
 /**
- * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
+ * Retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
  * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
- * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
- * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
- * filled with retrieved metaData and empty data object.
+ * If the user lacks sufficient rights, activeDataForCurrentCompanyAndFramework is populated with
+ * metadata-only entries via the metadata endpoint.
  */
 async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
   try {
@@ -319,13 +314,8 @@ async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
     isDataProcessedSuccessfully.value = true;
     emit('updateActiveDataMetaInfoForChosenFramework', mapOfReportingPeriodToActiveDataset.value);
   } catch (error) {
-    if (error instanceof AxiosError && error?.status === 403 && props.dataType === 'vsme') {
-      await getMetaData();
-      setActiveDataForCurrentCompanyAndFramework();
-    } else {
-      isDataProcessedSuccessfully.value = false;
-      console.error(error);
-    }
+    isDataProcessedSuccessfully.value = false;
+    console.error(error);
   }
 }
 
@@ -386,7 +376,7 @@ async function handleDatasetDownload(
   downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
+    // Cast is safe because all registered frameworks extend PublicFrameworkDataApi
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider
