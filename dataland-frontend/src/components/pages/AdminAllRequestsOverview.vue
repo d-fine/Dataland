@@ -284,7 +284,6 @@ import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
 import Popover from 'primevue/popover';
 import { type RequestPriority, type DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
-import { type GetDataRequestsDataTypeEnum } from '@clients/communitymanager';
 
 const datasetsPerPage = 100;
 const COLUMN_SELECTION_STORAGE_KEY = 'adminAllRequestsOverview.selectedColumns';
@@ -394,10 +393,8 @@ onMounted(() => {
  */
 async function getAllRequestsForFilters(): Promise<void> {
   waitingForData.value = true;
-  const selectedFrameworksForApi = computed<GetDataRequestsDataTypeEnum[] | undefined>(() =>
-    selectedFrameworks.value.length
-      ? selectedFrameworks.value.map((i) => i.frameworkDataType as GetDataRequestsDataTypeEnum)
-      : undefined
+  const selectedFrameworksForApi = computed<string[] | undefined>(() =>
+    selectedFrameworks.value.length ? selectedFrameworks.value.map((i) => i.frameworkDataType) : undefined
   );
 
   const mixedStateFilters = computed(() => convertDisplayedStatesToApiFilters(selectedMixedStates.value));

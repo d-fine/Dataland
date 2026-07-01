@@ -22,8 +22,6 @@ const ViewDataRequestPageLegacy = (): Promise<RouteComponent> =>
   import('@/components/pages/ViewDataRequestPageLegacy.vue');
 const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
   import('@/components/pages/UnsubscribeFromMailsPage.vue');
-const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
-  import('@/components/pages/CompanyDataRequestsOverview.vue');
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
 const ChooseCompanyForFrameworkDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseCompanyForFrameworkDataUpload.vue');
@@ -215,15 +213,6 @@ const routes = [
     props: true,
     component: ViewDataRequestPageLegacy,
     meta: {
-      requiresAuthentication: true,
-    },
-  },
-  {
-    path: `/companyrequests`,
-    name: 'CompanyDataRequestsOverview',
-    component: CompanyDataRequestsOverview,
-    meta: {
-      initialTabId: 'data-requests-for-my-company',
       requiresAuthentication: true,
     },
   },

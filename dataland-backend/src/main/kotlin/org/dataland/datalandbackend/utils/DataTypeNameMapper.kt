@@ -11,7 +11,6 @@ object DataTypeNameMapper {
             "eutaxonomy-non-financials" to "EU Taxonomy Non-Financials",
             "nuclear-and-gas" to "EU Taxonomy Nuclear and Gas",
             "lksg" to "LkSG",
-            "vsme" to "VSME",
         )
 
     /**

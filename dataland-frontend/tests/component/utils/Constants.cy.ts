@@ -1,11 +1,10 @@
-import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { DataTypeEnum } from '@clients/backend';
 import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFrameworkRegistry';
-import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
   it('Check for the correct order of the frameworks', () => {
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER).to.have.length(9);
+    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER).to.have.length(8);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0]).to.equal(DataTypeEnum.Sfdr);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[1]).to.equal(DataTypeEnum.EutaxonomyFinancials);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[2]).to.equal(DataTypeEnum.EutaxonomyFinancials202673);
@@ -14,7 +13,6 @@ describe('Unit test for the data type sorting in the Constants', () => {
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[5]).to.equal(DataTypeEnum.NuclearAndGas);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[6]).to.equal(DataTypeEnum.Lksg);
     expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[7]).to.equal(DataTypeEnum.Pcaf);
-    expect(ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[8]).to.equal(DataTypeEnum.Vsme);
   });
 
   it('Check if the frameworks in the Constants are in sync with the framework registries', () => {
@@ -26,16 +24,9 @@ describe('Unit test for the data type sorting in the Constants', () => {
 
     const allToolboxSupportedFrameworksConstant = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
 
-    const frameworkIdentifiersFromPrivateRegistry = getAllPrivateFrameworkIdentifiers();
-    const frameworkIdentifiersFromPublicAndPrivateRegistries = [
-      ...frameworkIdentifiersFromPrivateRegistry,
-      ...getAllPublicFrameworkIdentifiers(),
-    ];
+    const frameworkIdentifiersFromPublicRegistry = getAllPublicFrameworkIdentifiers();
 
-    expect(allToolboxSupportedFrameworksConstant).to.have.members(frameworkIdentifiersFromPublicAndPrivateRegistries);
-    expect(frameworkIdentifiersFromPublicAndPrivateRegistries).to.have.members(allToolboxSupportedFrameworksConstant);
-
-    expect(PRIVATE_FRAMEWORKS).to.have.members(frameworkIdentifiersFromPrivateRegistry);
-    expect(frameworkIdentifiersFromPrivateRegistry).to.have.members(PRIVATE_FRAMEWORKS);
+    expect(allToolboxSupportedFrameworksConstant).to.have.members(frameworkIdentifiersFromPublicRegistry);
+    expect(frameworkIdentifiersFromPublicRegistry).to.have.members(allToolboxSupportedFrameworksConstant);
   });
 });

@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -129,7 +128,7 @@ class DataRequestUpdateManagerTest {
                         setOf("dummyChildCompanyId1", "dummyChildCompanyId2"),
                         setOf(dataMetaInformation.reportingPeriod),
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                        null, null, null,
+                        null, null,
                     ),
             )
         doReturn(dummyDataRequestEntitiesWithoutEarlierQaApproval)
@@ -326,16 +325,6 @@ class DataRequestUpdateManagerTest {
             .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Closed), isNull(), any(), eq(correlationId),
             )
-    }
-
-    @Test
-    fun `validate that no email is sent to company contacts and the history is updated when an access status is patched`() {
-        val randomUUID = UUID.randomUUID().toString()
-        dataRequestUpdateManager.processExternalPatchRequestForDataRequest(
-            dataRequestId = dummyDataRequestEntityWithoutEarlierQaApproval1.dataRequestId,
-            dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
-            randomUUID,
-        )
     }
 
     @Test

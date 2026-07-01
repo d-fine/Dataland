@@ -248,7 +248,6 @@ class SecurityUtilsService(
         val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
         val notPatchingStatusPriorityComment =
             areAllParametersUnset(
-                dataRequestPatch.accessStatus,
                 dataRequestPatch.requestPriority,
                 dataRequestPatch.adminComment,
             )
@@ -264,16 +263,6 @@ class SecurityUtilsService(
             isOwnRequest && requestStatusChangeable && notPatchingStatusPriorityComment && messageHistoryChangeable
         )
 
-        val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString())
-        val pathingOnlyAccessStatus =
-            areAllParametersUnset(
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-            )
-
-        return ownRequestPatchAllowed || (isCompanyOwner && pathingOnlyAccessStatus)
+        return ownRequestPatchAllowed
     }
 }

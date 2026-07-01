@@ -16,7 +16,6 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  * @param companyName the name of the company for this data request
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param requestStatus the current status of the data request
- * @param accessStatus the current access status of the data request
  * @param requestPriority the priority of the data request
  * @param adminComment the admin comment of the data request
  */
@@ -71,10 +70,6 @@ data class ExtendedStoredDataRequest(
     )
     val requestStatus: RequestStatus,
     @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-    )
-    val accessStatus: AccessStatus,
-    @field:Schema(
         description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_PRIORITY_DESCRIPTION,
     )
     val requestPriority: RequestPriority,
@@ -95,7 +90,6 @@ data class ExtendedStoredDataRequest(
         companyName,
         dataRequestEntity.lastModifiedDate,
         dataRequestEntity.requestStatus,
-        dataRequestEntity.accessStatus,
         dataRequestEntity.requestPriority,
         dataRequestEntity.adminComment,
     )

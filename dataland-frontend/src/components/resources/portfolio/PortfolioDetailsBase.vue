@@ -439,7 +439,6 @@ async function handleDatasetDownload(
   downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider

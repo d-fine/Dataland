@@ -59,7 +59,7 @@ class DataRequestSummaryEmailBuilderTest {
             "euTaxonomy-non-financials;EU Taxonomy for non-financial companies",
             "nuclear-and-gas;EU Taxonomy Nuclear and Gas",
             "lksg;LkSG",
-            "vsme;VSME",
+            "pcaf;PCAF",
         ],
     )
     fun `check that data request summary emails contain the human readable names of frameworks`(

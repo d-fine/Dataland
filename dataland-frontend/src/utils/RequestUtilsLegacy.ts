@@ -1,12 +1,11 @@
 import { ApiClientProvider } from '@/services/ApiClients';
-import { type AccessStatus, RequestStatus } from '@clients/communitymanager';
+import { RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 
 /**
  * Patches the RequestStatus of a StoredDataRequest
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
- * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
  * @param notifyMeImmediately
@@ -16,7 +15,6 @@ import type Keycloak from 'keycloak-js';
 export async function patchDataRequest(
   dataRequestId: string,
   requestStatus: RequestStatus | undefined,
-  accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
   notifyMeImmediately: boolean | undefined,
@@ -29,7 +27,6 @@ export async function patchDataRequest(
         keycloakPromiseGetter()
       ).apiClients.communityManagerRequestController.patchDataRequest(dataRequestId, {
         requestStatus: requestStatus,
-        accessStatus: accessStatus,
         contacts: contacts,
         message: message,
         notifyMeImmediately: notifyMeImmediately,
@@ -61,28 +58,6 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return 'p-badge badge-brown outline rounded';
     case 'NonSourceable':
       return 'p-badge badge-gray outline rounded';
-    default:
-      return 'p-badge outline rounded';
-  }
-}
-
-/**
- * Defines the color of p-badge
- * @param accessStatus access status of a request
- * @returns p-badge class
- */
-export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
-  switch (accessStatus) {
-    case 'Public':
-      return 'p-badge badge-blue outline rounded';
-    case 'Pending':
-      return 'p-badge badge-yellow outline rounded';
-    case 'Granted':
-      return 'p-badge badge-light-green outline rounded';
-    case 'Revoked':
-      return 'p-badge badge-gray outline rounded';
-    case 'Declined':
-      return 'p-badge badge-brown outline rounded';
     default:
       return 'p-badge outline rounded';
   }

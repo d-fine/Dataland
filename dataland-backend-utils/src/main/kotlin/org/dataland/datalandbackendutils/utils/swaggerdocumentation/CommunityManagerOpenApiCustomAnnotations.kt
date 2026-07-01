@@ -41,15 +41,6 @@ annotation class AdminCommentParameterNonRequired
 )
 annotation class RequestStatusParameterNonRequired
 
-/** AccessStatus annotation */
-@Target(AnnotationTarget.VALUE_PARAMETER)
-@Retention(AnnotationRetention.RUNTIME)
-@Parameter(
-    description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-    required = false,
-)
-annotation class AccessStatusParameterNonRequired
-
 /** RequestPriority annotation */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

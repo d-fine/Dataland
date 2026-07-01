@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandmessagequeueutils.messages.SourceabilityMessage
@@ -75,7 +74,7 @@ class DataRequestUpdateManagerTestDataProvider {
     fun getStreamOfArgumentsToTestDataRequestUpdateUtils() =
         Stream.of(
             Arguments.of("lksg", RequestStatus.Open, RequestStatus.Answered),
-            Arguments.of("vsme", RequestStatus.Open, RequestStatus.Answered),
+            Arguments.of("pcaf", RequestStatus.Open, RequestStatus.Answered),
             Arguments.of(nuclearAndGas, RequestStatus.Open, RequestStatus.NonSourceable),
             Arguments.of("eu-taxonomy-financials", RequestStatus.Open, RequestStatus.Withdrawn),
             Arguments.of("sfdr", RequestStatus.Withdrawn, RequestStatus.Open),
@@ -116,7 +115,6 @@ class DataRequestUpdateManagerTestDataProvider {
                 StoredDataRequestStatusObject(
                     status = RequestStatus.Withdrawn,
                     creationTimestamp = 1L,
-                    accessStatus = AccessStatus.Public,
                     requestStatusChangeReason = null,
                     answeringDataId = null,
                 ),
@@ -151,12 +149,11 @@ class DataRequestUpdateManagerTestDataProvider {
         )
 
     fun getDummyStoredDataRequestStatusObject(
-        dataType: String,
+        @Suppress("UNUSED_PARAMETER") dataType: String,
         requestStatusBefore: RequestStatus,
     ) = StoredDataRequestStatusObject(
         status = requestStatusBefore,
         creationTimestamp = 1L,
-        accessStatus = if (dataType == "vsme") AccessStatus.Granted else AccessStatus.Public,
         requestStatusChangeReason = null,
         answeringDataId = null,
     )

@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailBuilder
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageBuilder
 import org.dataland.datalandcommunitymanager.utils.CommunityManagerDataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
@@ -21,10 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyList
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.reset
-import org.mockito.kotlin.any
-import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -46,19 +42,15 @@ class SingleDataRequestManagerServiceTest
     constructor(
         val communityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils,
         val keycloakAdapterRequestProcessingUtils: KeycloakAdapterRequestProcessingUtils,
-        val accessRequestEmailBuilder: AccessRequestEmailBuilder,
         val dataRequestRepository: DataRequestRepository,
         val securityUtilsService: SecurityUtilsService,
         val companyRolesManager: CompanyRolesManager,
     ) {
         @MockitoBean
-        private val mockCompanyInfoService = mock<CompanyInfoService>()
-
-        @MockitoBean
-        private val mockDataAccessManager = mock<DataAccessManager>()
-
-        @MockitoBean
         private val mockSingleDataRequestEmailMessageBuilder = mock<SingleDataRequestEmailMessageBuilder>()
+
+        @MockitoBean
+        private val mockCompanyInfoService = mock<CompanyInfoService>()
 
         @MockitoBean
         private val mockKeycloakUserService = mock<KeycloakUserService>()
@@ -87,23 +79,6 @@ class SingleDataRequestManagerServiceTest
         private val adminUserName = "data_admin"
 
         private fun setUpStubs() {
-            // The following method is only used to check for existing datasets in the context of
-            // access requests.
-            doReturn(false).whenever(spyCommunityManagerDataRequestProcessingUtils).matchingDatasetExists(
-                anyString(), anyString(), any(),
-            )
-            doReturn(false).whenever(mockDataAccessManager).hasAccessToPrivateDataset(
-                anyString(), anyString(), anyOrNull(), anyString(),
-            )
-            doReturn(false).whenever(mockDataAccessManager).existsAccessRequestWithNonPendingStatus(
-                anyString(), anyOrNull(), anyString(), anyString(),
-            )
-            doReturn(listOf("ROLE_ADMIN", "ROLE_PREMIUM_USER"))
-                .whenever(mockKeycloakUserService)
-                .getCompositeUserRoleNames(eq(adminUserId))
-            doReturn(listOf("ROLE_USER"))
-                .whenever(mockKeycloakUserService)
-                .getCompositeUserRoleNames(eq(dummyUserId))
             doReturn(
                 Pair(
                     mapOf(dummyCompanyId to CompanyIdAndName(companyName = "dummy", companyId = dummyCompanyId)),
@@ -111,6 +86,12 @@ class SingleDataRequestManagerServiceTest
                 ),
             ).whenever(spyCommunityManagerDataRequestProcessingUtils)
                 .performIdentifierValidation(anyList())
+            doReturn(listOf("ROLE_ADMIN", "ROLE_PREMIUM_USER"))
+                .whenever(mockKeycloakUserService)
+                .getCompositeUserRoleNames(eq(adminUserId))
+            doReturn(listOf("ROLE_USER"))
+                .whenever(mockKeycloakUserService)
+                .getCompositeUserRoleNames(eq(dummyUserId))
         }
 
         @BeforeEach
@@ -119,9 +100,8 @@ class SingleDataRequestManagerServiceTest
             spyKeycloakAdapterRequestProcessingUtils = spy(keycloakAdapterRequestProcessingUtils)
 
             reset(
-                mockCompanyInfoService,
-                mockDataAccessManager,
                 mockSingleDataRequestEmailMessageBuilder,
+                mockCompanyInfoService,
                 mockKeycloakUserService,
             )
 
@@ -134,8 +114,6 @@ class SingleDataRequestManagerServiceTest
                     singleDataRequestEmailMessageBuilder = mockSingleDataRequestEmailMessageBuilder,
                     communityManagerDataRequestProcessingUtils = spyCommunityManagerDataRequestProcessingUtils,
                     keycloakAdapterRequestProcessingUtils = spyKeycloakAdapterRequestProcessingUtils,
-                    dataAccessManager = mockDataAccessManager,
-                    accessRequestEmailBuilder = accessRequestEmailBuilder,
                     securityUtilsService = securityUtilsService,
                     companyRolesManager = companyRolesManager,
                     maxRequestsForUser = 10,

@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -45,13 +44,11 @@ class DataRequestMasker
 
         /** This method adds the email address if the user is allowed to see it
          * @param extendedStoredDataRequests list of extendedStoredDataRequests to check
-         * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
          * @returns all data requests with the corresponding email address if the user is allowed to see it
          */
         fun addEmailAddressIfAllowedToSee(
             extendedStoredDataRequests: List<ExtendedStoredDataRequest>,
-            ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
         ): List<ExtendedStoredDataRequest> {
             val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
@@ -59,12 +56,7 @@ class DataRequestMasker
 
             val extendedStoredDataRequestsWithMails =
                 extendedStoredDataRequests.map {
-                    val allowedToSeeEmailAddress =
-                        isUserAdmin() ||
-                            (
-                                ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
-                                    it.accessStatus != AccessStatus.Public
-                            )
+                    val allowedToSeeEmailAddress = isUserAdmin()
 
                     it.userEmailAddress =
                         it.userId

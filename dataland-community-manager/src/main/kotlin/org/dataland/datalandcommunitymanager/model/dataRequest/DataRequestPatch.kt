@@ -6,7 +6,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityMan
 
 /** API model containing all fields that can be set when patching an existing data request
  * @param requestStatus The new request status to set
- * @param accessStatus The new access status to set
  * @param contacts The new contacts to set
  * @param message The new message to set
  * @param requestPriority The new request priority to set
@@ -18,10 +17,6 @@ data class DataRequestPatch(
         description = CommunityManagerOpenApiDescriptionsAndExamples.REQUEST_STATUS_DESCRIPTION,
     )
     val requestStatus: RequestStatus? = null,
-    @field:Schema(
-        description = CommunityManagerOpenApiDescriptionsAndExamples.ACCESS_STATUS_DESCRIPTION,
-    )
-    val accessStatus: AccessStatus? = null,
     @field:ArraySchema(
         arraySchema =
             Schema(

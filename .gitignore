@@ -40,12 +40,6 @@ local
 gitinfo
 .envrc
 
-# eurodat-client secret files
-**/secret_files/
-client.env
-keystore.jks
-tls.crt
-
 # local logging data
 /dataland-loki/data
 
