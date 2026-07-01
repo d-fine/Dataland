@@ -225,8 +225,8 @@ enum class DataPointConversion(
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): String =
-            "This data point was mapped from the following source:\n\n" +
-                "${getNumberedSourceReferences(inputs).single()}\n\n" +
+            "This data point was mapped from the following source: " +
+                "${getNumberedSourceReferences(inputs).single()}\n\n***\n\n" +
                 getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 
         override fun convert(
@@ -413,8 +413,7 @@ private fun getCalculationComment(
     dataPoints: Collection<ExtendedDataPointInterface<*>>,
     sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
 ): String =
-    "This data point was calculated using the following formula:\n\n" +
-        "$formula\n\n" +
+    "This data point was calculated using the following formula: $formula\n\n***\n\n" +
         getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 
 /**
@@ -444,23 +443,22 @@ private fun getSourcesSection(
     dataPoints: Collection<ExtendedDataPointInterface<*>>,
     sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
 ): String =
-    "**Sources**:\n\n" +
-        inputs
-            .zip(dataPoints)
-            .mapIndexed { index, (input, dataPoint) ->
-                val sourceName = specs.getValue(input.dataPointType).name
-                val sourceFrameworkName = getSourceFrameworkLabel(sourceFrameworksByType[input.dataPointType].orEmpty())
-                val commentLine =
-                    if (dataPoint.quality == QualityOptions.Reported) {
-                        ""
-                    } else {
-                        val sourceComment = dataPoint.comment?.takeIf { it.isNotBlank() } ?: "none"
-                        "\n    Comment: $sourceComment"
-                    }
-                "[${index + 1}] Type: \"$sourceName\"\n" +
-                    "    Framework: \"$sourceFrameworkName\"" +
-                    commentLine
-            }.joinToString(separator = "\n\n")
+    inputs
+        .zip(dataPoints)
+        .mapIndexed { index, (input, dataPoint) ->
+            val sourceName = specs.getValue(input.dataPointType).name
+            val sourceFrameworkName = getSourceFrameworkLabel(sourceFrameworksByType[input.dataPointType].orEmpty())
+            val commentLine =
+                if (dataPoint.quality == QualityOptions.Reported) {
+                    ""
+                } else {
+                    val sourceComment = dataPoint.comment?.takeIf { it.isNotBlank() } ?: "none"
+                    "\n+ Comment: $sourceComment"
+                }
+            "[${index + 1}] $sourceName\n" +
+                "+ Framework: $sourceFrameworkName" +
+                commentLine
+        }.joinToString(separator = "\n\n")
 
 /**
  * Formats source framework specifications for display in generated calculation comments.
