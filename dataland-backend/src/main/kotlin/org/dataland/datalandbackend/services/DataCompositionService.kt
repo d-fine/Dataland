@@ -135,8 +135,9 @@ class DataCompositionService
             val original = listOf(dataDimensionQuery.companyIds, dataDimensionQuery.dataTypes, dataDimensionQuery.reportingPeriods)
 
             if (filtered.zip(original).any { (filteredList, originalList) ->
-                filteredList.isEmpty() && originalList.isNotEmpty()
-            }) {
+                    filteredList.isEmpty() && originalList.isNotEmpty()
+                }
+            ) {
                 return DataDimensionQuery(emptyList(), emptyList(), emptyList())
             }
 
