@@ -13,6 +13,31 @@ import org.springframework.data.repository.query.Param
  */
 interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntity, String> {
     /**
+     * Retrieves active datasets matching the JSON-encoded list of dataset dimensions.
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            """
+            WITH requested AS (
+                SELECT DISTINCT company_id, framework, reporting_period
+                FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                    AS dim(company_id text, framework text, reporting_period text)
+            )
+            SELECT m.*
+            FROM requested dim
+            JOIN data_meta_information m
+                ON m.company_id = dim.company_id
+                AND m.data_type = dim.framework
+                AND m.reporting_period = dim.reporting_period
+            WHERE m.currently_active = true
+            """,
+    )
+    fun findActiveDatasetsByDimensionsJson(
+        @Param("jsonPayload") jsonPayload: String,
+    ): List<DataMetaInformationEntity>
+
+    /**
      * Searches for dataMetaInformation based on a filter defined in DataMetaInformationSearchFilter.
      * The filtering parameters are companyId, dataType, reportingPeriod, uploaderUserId, qaStatus, active status.
      * - If a filter for companyId, dataType, reportingPeriod, uploaderUserIds, or qaStatus is set (non-null or true),

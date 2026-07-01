@@ -11,6 +11,31 @@ import org.springframework.data.repository.query.Param
  */
 interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInformationEntity, String> {
     /**
+     * Retrieves active data points matching the JSON-encoded list of data point dimensions.
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            """
+            WITH requested AS (
+                SELECT DISTINCT company_id, data_point_type, reporting_period
+                FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                    AS dim(company_id text, data_point_type text, reporting_period text)
+            )
+            SELECT m.*
+            FROM requested dim
+            JOIN data_point_meta_information m
+                ON m.company_id = dim.company_id
+                AND m.data_point_type = dim.data_point_type
+                AND m.reporting_period = dim.reporting_period
+            WHERE m.currently_active = true
+            """,
+    )
+    fun findActiveDataPointsByDimensionsJson(
+        @Param("jsonPayload") jsonPayload: String,
+    ): List<DataPointMetaInformationEntity>
+
+    /**
      * Retrieve the ID of the currently active data point for the given data point dimension
      */
     @Query(
