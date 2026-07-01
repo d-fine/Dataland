@@ -259,16 +259,14 @@ class DataPointConversionTest {
             formula: String,
             vararg sourceBlocks: String,
         ): String =
-            "This data point was calculated using the following formula:\n\n" +
-                "$formula\n\n" +
+            "This data point was calculated using the following formula: $formula\n\n***\n\n" +
                 sourcesSection(*sourceBlocks)
 
         private fun identityComment(vararg sourceBlocks: String): String =
-            "This data point was mapped from the following source:\n\n" +
-                "[1]\n\n" +
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
                 sourcesSection(*sourceBlocks)
 
-        private fun sourcesSection(vararg sourceBlocks: String): String = "**Sources**:\n\n" + sourceBlocks.joinToString(separator = "\n\n")
+        private fun sourcesSection(vararg sourceBlocks: String): String = sourceBlocks.joinToString(separator = "\n\n")
 
         private fun sourceBlock(
             index: Int,
@@ -276,9 +274,9 @@ class DataPointConversionTest {
             sourceComment: String? = null,
             frameworkName: String = SOURCE_FRAMEWORK_NAME,
         ): String =
-            "[$index] Type: \"$sourceName\"\n" +
-                "    Framework: \"$frameworkName\"" +
-                (sourceComment?.let { "\n    Comment: $it" } ?: "")
+            "[$index] $sourceName\n" +
+                "+ Framework: $frameworkName" +
+                (sourceComment?.let { "\n+ Comment: $it" } ?: "")
     }
 
     @ParameterizedTest
@@ -558,12 +556,10 @@ class DataPointConversionTest {
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.dataPoint)
         assert(resultDataPoint.value == inputDataPoint.value)
         assertEquals(
-            "This data point was mapped from the following source:\n\n" +
-                "[1]\n\n" +
-                "**Sources**:\n\n" +
-                "[1] Type: \"dummy\"\n" +
-                "    Framework: \"$sourceFrameworkName\"\n" +
-                "    Comment: $ORIGINAL_COMMENT",
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+                "[1] dummy\n" +
+                "+ Framework: $sourceFrameworkName\n" +
+                "+ Comment: $ORIGINAL_COMMENT",
             resultDataPoint.comment,
         )
         assert(resultDataPoint.dataSource == inputDataPoint.dataSource)
@@ -580,11 +576,9 @@ class DataPointConversionTest {
         assertBigDecimalEquals("0.5", resultDataPoint.value)
         assertEquals("EUR", resultDataPoint.currency)
         assertEquals(
-            "This data point was mapped from the following source:\n\n" +
-                "[1]\n\n" +
-                "**Sources**:\n\n" +
-                "[1] Type: \"dummy\"\n" +
-                "    Framework: \"$sourceFrameworkName\"",
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+                "[1] dummy\n" +
+                "+ Framework: $sourceFrameworkName",
             resultDataPoint.comment,
         )
         assert(result.dataPointType == currencyTargetType)
@@ -697,12 +691,10 @@ class DataPointConversionTest {
             )
 
         assertEquals(
-            "This data point was mapped from the following source:\n\n" +
-                "[1]\n\n" +
-                "**Sources**:\n\n" +
-                "[1] Type: \"Input1\"\n" +
-                "    Framework: \"$sourceFrameworkName\"\n" +
-                "    Comment: $sourceComment",
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+                "[1] Input1\n" +
+                "+ Framework: $sourceFrameworkName\n" +
+                "+ Comment: $sourceComment",
             comment,
         )
     }
@@ -720,12 +712,10 @@ class DataPointConversionTest {
             )
 
         assertEquals(
-            "This data point was mapped from the following source:\n\n" +
-                "[1]\n\n" +
-                "**Sources**:\n\n" +
-                "[1] Type: \"Input1\"\n" +
-                "    Framework: \"$sourceFrameworkName\"\n" +
-                "    Comment: none",
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+                "[1] Input1\n" +
+                "+ Framework: $sourceFrameworkName\n" +
+                "+ Comment: none",
             comment,
         )
     }
