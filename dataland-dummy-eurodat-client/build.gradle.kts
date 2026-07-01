@@ -3,13 +3,15 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    sourceSets.asMap.values.flatMap { sourceSet ->
-        sourceSet.output.classesDirs.flatMap {
-            fileTree(it) {
-                exclude("**/openApiClient/**")
-            }.files
-        }
-    },
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -65,7 +67,7 @@ tasks.register(
 ) {
     description = "Task to generate a Spring web server based on the specification"
     group = "server"
-    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path)
     outputDir.set("$buildDir/server/dummyeurodatclientservice")
     packageName.set(dummyEurodatClientServerDestinationPackage)
     modelPackage.set("$dummyEurodatClientServerDestinationPackage.model")

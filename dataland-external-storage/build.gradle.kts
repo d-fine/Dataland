@@ -3,13 +3,15 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    sourceSets.asMap.values.flatMap { sourceSet ->
-        sourceSet.output.classesDirs.flatMap {
-            fileTree(it) {
-                exclude("**/openApiClient/**")
-            }.files
-        }
-    },
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -82,7 +84,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -111,7 +113,7 @@ tasks.register("generateEurodatClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the eurodat client."
     group = "clients"
     val eurodatClientDestinationPackage = "org.dataland.datalandeurodatclient.openApiClient"
-    input = project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-eurodat-client/eurodatClientOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/eurodatclient")
