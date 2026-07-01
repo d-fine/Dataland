@@ -29,12 +29,12 @@ describe('Component test for FrameworkDataSearchFilters', () => {
     // @ts-ignore
     cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
       const emittedCountryCodes = wrapper.emitted('update:selectedCountryCodes');
-      expect(emittedCountryCodes).to.have.length;
+      expect(emittedCountryCodes).to.have.length.greaterThan(0);
       const emittedCountryCodesDefined = assertDefined(emittedCountryCodes);
       expect(emittedCountryCodesDefined[emittedCountryCodes!.length - 1][0]).to.deep.equal(['DE']);
 
       const emittedSectors = wrapper.emitted('update:selectedSectors');
-      expect(emittedSectors).to.have.length;
+      expect(emittedSectors).to.have.length.greaterThan(0);
       const emittedSectorsDefined = assertDefined(emittedSectors);
       expect(emittedSectorsDefined[emittedSectors!.length - 1][0]).to.deep.equal(['DummySector']);
     });
