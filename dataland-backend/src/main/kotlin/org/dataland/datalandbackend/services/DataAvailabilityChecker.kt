@@ -1,19 +1,21 @@
 package org.dataland.datalandbackend.services
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
+import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.collections.distinct
+import kotlin.collections.plus
 
 /**
  * Service to determine if data is available
@@ -22,38 +24,39 @@ import org.springframework.stereotype.Service
 class DataAvailabilityChecker
     @Autowired
     constructor(
-        @PersistenceContext private val entityManager: EntityManager,
         private val dataCompositionService: DataCompositionService,
-        private val dataPointMetaInformationRepository: DataPointMetaInformationRepository,
+        private val dataMetaInformationManager: DataMetaInformationManager,
+        private val dataPointCalculator: DataPointCalculator,
+        private val dataPointMetaInformationManager: DataPointMetaInformationManager,
+        private val specificationService: SpecificationService,
     ) {
-        private val objectMapper = defaultObjectMapper
-
         /**
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
          *
          * @param dataDimensions List of data dimensions to search for.
          * @return List of DataMetaInformation objects that match the provided data dimensions.
          */
-        fun getMetaDataOfActiveDatasets(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformation> {
-            val dimensionsToProcess = dataCompositionService.filterOutInvalidDatasetDimensions(dataDimensions)
-            val formattedTuples =
-                dimensionsToProcess.joinToString(", ") {
-                    "('${it.companyId}', '${it.framework}', '${it.reportingPeriod}')"
-                }
+        private fun getMetaDataOfActiveDatasets(dataDimensions: List<DataDimensions>): List<DataMetaInformationEntity> =
+            dataMetaInformationManager.getActiveDataMetaInformationList(
+                dataCompositionService.filterOutInvalidDatasetDimensions(
+                    dataDimensions.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) },
+                ),
+            )
 
-            val queryToExecute =
-                """SELECT * FROM data_meta_information
-                WHERE (company_id, data_type, reporting_period) IN ($formattedTuples)
-                AND currently_active = true"""
-
-            return if (dimensionsToProcess.isNotEmpty()) {
-                val query = entityManager.createNativeQuery(queryToExecute, DataMetaInformationEntity::class.java)
-                query.resultList
-                    .filterIsInstance<DataMetaInformationEntity>()
-                    .map { it.toApiModel() }
-            } else {
-                emptyList()
+        /**
+         * Retrieves metadata of active datasets for the given filter.
+         *
+         * An empty list in the filter means no restrictions.
+         *
+         * @param dataDimensionFilter dimensions filter specifying what to search for
+         * @return List of DataMetaInformation objects that match the provided data dimensions.
+         */
+        private fun getMetaDataOfActiveDatasets(dataDimensionFilter: DataDimensionFilter): List<DataMetaInformationEntity> {
+            val datasetDimensionFilter = dataCompositionService.filterOutInvalidDatasetEntries(dataDimensionFilter)
+            if (datasetDimensionFilter.dataTypes.isNullOrEmpty() && !dataDimensionFilter.dataTypes.isNullOrEmpty()) {
+                return emptyList()
             }
+            return dataMetaInformationManager.getActiveDataMetaInformationList(datasetDimensionFilter)
         }
 
         /**
@@ -62,73 +65,178 @@ class DataAvailabilityChecker
          * @param dataDimensions List of data point dimensions to search for.
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
-        fun getMetaDataOfActiveDataPoints(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
-            val dimensionsToProcess =
-                dataCompositionService
-                    .filterOutInvalidDataPointDimensions(dataDimensions)
-                    .distinct()
+        private fun getMetaDataOfActiveDataPoints(dataDimensions: List<DataPointDimensions>): List<DataPointMetaInformationEntity> =
+            dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
+                dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions).distinct(),
+            )
 
-            if (dimensionsToProcess.isEmpty()) {
+        /**
+         * Retrieves metadata of active datasets for the given filter.
+         *
+         * An empty list in the filter means no restrictions.
+         *
+         * @param dataDimensionFilter dimensions filter specifying what to search for
+         * @return List of DataMetaInformation objects that match the provided data dimensions.
+         */
+        private fun getMetaDataOfActiveDataPoints(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> {
+            val dataPointDimensionFilter = dataCompositionService.filterOutInvalidDataPointEntries(dataDimensionFilter)
+            if (dataPointDimensionFilter.dataTypes.isNullOrEmpty() && !dataDimensionFilter.dataTypes.isNullOrEmpty()) {
                 return emptyList()
             }
+            return dataPointMetaInformationManager.getActiveDataPointMetaInformationList(dataPointDimensionFilter)
+        }
 
-            val jsonPayload =
-                objectMapper.writeValueAsString(
-                    dimensionsToProcess.map {
-                        mapOf(
-                            "company_id" to it.companyId,
-                            "data_point_type" to it.dataPointType,
-                            "reporting_period" to it.reportingPeriod,
+        /**
+         * Returns the subset of the provided data dimensions for which active data exists (dataset or data point).
+         *
+         * Both the dataset store and the data-point store are queried. Dimensions with an unknown dataType are
+         * silently dropped. If only ignored fields are available for a certain dataset dimension, it will not be part
+         * of the result.
+         *
+         * @param dimensions List of data dimensions
+         * @return The subset of the input dimensions for which active data exists
+         */
+        fun getAvailableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
+            val dataPointBasedDimensions =
+                getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
+            val nonAssembledFrameworkBasedDimensions = getMetaDataOfActiveDatasets(dimensions).map { it.toBasicDataDimensions() }
+            val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dimensions)
+
+            return (dataPointBasedDimensions + nonAssembledFrameworkBasedDimensions + assembledFrameworkBasedDimensions).distinct()
+        }
+
+        /**
+         * Searches for available data dimensions matching the provided filter criteria.
+         *
+         * Both the dataset store and the data-point store are queried. An empty list for any filter dimension is
+         * treated as a wildcard (all values for that dimension are included). If only ignored fields are available for
+         * a certain dataset dimension, it will not be part of the result.
+         *
+         * @param dataDimensionFilter dimensions filter specifying what to search for
+         * @return All active data dimensions matching the filter criteria
+         */
+        fun getAvailableDimensions(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+            val dataPointBasedDimensions = getMetaDataOfActiveDataPoints(dataDimensionFilter).map { it.toBasicDataDimensions() }
+            val nonAssembledFrameworkBasedDimensions = getAllViewableDimensionsForNonAssembledFrameworks(dataDimensionFilter)
+            val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dataDimensionFilter)
+
+            return (dataPointBasedDimensions + nonAssembledFrameworkBasedDimensions + assembledFrameworkBasedDimensions).distinct()
+        }
+
+        /**
+         * Retrieve all active non assembled framework-based data dimensions using the given DataDimensionFilter.
+         *
+         * If no dataType is specified, all frameworks are taken into account.
+         *
+         * @param dataDimensionFilter the filter to use when searching for active data dimensions
+         * @return a list of active framework data dimensions
+         */
+        private fun getAllViewableDimensionsForNonAssembledFrameworks(dataDimensionFilter: DataDimensionFilter): List<BasicDataDimensions> {
+            val allNonAssembledFrameworks = specificationService.getNonAssembledFrameworks()
+            val frameworks =
+                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
+                    allNonAssembledFrameworks
+                } else {
+                    dataDimensionFilter.dataTypes.intersect(allNonAssembledFrameworks)
+                }
+            if (frameworks.isEmpty()) return emptyList()
+
+            return getMetaDataOfActiveDatasets(
+                DataDimensionFilter(
+                    dataDimensionFilter.companyIds,
+                    frameworks.toList(),
+                    dataDimensionFilter.reportingPeriods,
+                ),
+            ).map { it.toBasicDataDimensions() }
+        }
+
+        private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> =
+            dataCompositionService
+                .filterOutInvalidDatasetDimensions(dimensions)
+                .filter { specificationService.isAssembledFramework(it.framework) }
+                .flatMap { dimension ->
+                    dataCompositionService
+                        .getRelevantDataPointTypes(dimension.framework)
+                        .map { dataPointType ->
+                            dimension.framework to
+                                BasicDataPointDimensions(
+                                    dimension.companyId,
+                                    dataPointType,
+                                    dimension.reportingPeriod,
+                                )
+                        }
+                }.groupBy(
+                    keySelector = { it.first },
+                    valueTransform = { it.second },
+                ).flatMap { (framework, dataPointDimensions) ->
+                    getViewableDatasetDimensions(dataPointDimensions, framework)
+                }
+
+        /**
+         * Retrieve all active assembled framework-based data dimensions using the given DataDimensionFilter.
+         *
+         * If no dataType is specified, all frameworks are taken into account.
+         *
+         * @param dataDimensionFilter the filter to use when searching for active data dimensions
+         * @return a list of active framework data dimensions
+         */
+        private fun getAllViewableDimensionsForAssembledFrameworks(dataDimensionFilter: DataDimensionFilter): Set<BasicDataDimensions> {
+            val allAssembledFrameworks = specificationService.getAssembledFrameworks()
+            val frameworks =
+                if (dataDimensionFilter.dataTypes.isNullOrEmpty()) {
+                    allAssembledFrameworks
+                } else {
+                    dataDimensionFilter.dataTypes.intersect(allAssembledFrameworks)
+                }
+
+            return frameworks
+                .flatMap { framework ->
+                    val dataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
+                    val activeDataPointDimensions =
+                        getMetaDataOfActiveDataPoints(
+                            DataDimensionFilter(
+                                companyIds = dataDimensionFilter.companyIds,
+                                dataTypes = dataPointTypes.toList(),
+                                reportingPeriods = dataDimensionFilter.reportingPeriods,
+                            ),
+                        ).map { it.toBasicDataPointDimensions() }.toSet()
+
+                    val calculatableDataPointDimensions =
+                        dataPointCalculator.getCalculatableDataPointDimensions(
+                            dataPointTypes = dataPointTypes,
+                            dataDimensionFilter = dataDimensionFilter,
                         )
-                    },
-                )
-            val query =
-                """
-                WITH requested AS (
-                    SELECT DISTINCT company_id, data_point_type, reporting_period
-                    FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
-                        AS dim(company_id text, data_point_type text, reporting_period text)
-                )
-                SELECT m.*
-                FROM requested dim
-                JOIN data_point_meta_information m
-                    ON m.company_id = dim.company_id
-                    AND m.data_point_type = dim.data_point_type
-                    AND m.reporting_period = dim.reporting_period
-                WHERE m.currently_active = true
-                """
-            val nativeQuery = entityManager.createNativeQuery(query, DataPointMetaInformationEntity::class.java)
-            nativeQuery.setParameter("jsonPayload", jsonPayload)
-            return nativeQuery.resultList.filterIsInstance<DataPointMetaInformationEntity>()
+
+                    getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, framework)
+                }.toSet()
         }
 
         /**
-         * Retrieves all active data point metadata that correspond to the data point dimensions provided.
+         * Returns viewable dataset dimensions for a given collection of data point dimensions.
          *
-         * Only returns metadata if at least one data point is not an ignorable field.
+         * The data point dimensions are grouped by (companyId, reportionPeriod) and for each group, the corresponding
+         * dataset dimensions is returned if and only if the group contains more than the ignored fields.
          *
-         * @param dataDimensions the list of data point dimensions to get the metadata for
-         * @return the metadata corresponding to the viewable data points of the input
+         * This function is only meaningful, if the data point types of the passed data point dimensions are part of the
+         * given framework.
+         *
+         * @param dataPointDimensions the available data point dimensions that determine if a dataset dimension is available
+         * @param framework the framework used to construct the dataset dimensions
+         * @return a set of viewable dataset dimensions
          */
-        fun getViewableDataPointMetaData(dataDimensions: List<BasicDataPointDimensions>): List<DataPointMetaInformationEntity> {
-            val metaData = getMetaDataOfActiveDataPoints(dataDimensions)
-            return if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(metaData.map { it.dataPointType })) {
-                metaData
-            } else {
-                emptyList()
-            }
-        }
-
-        /**
-         * Retrieves all active data point IDs that correspond to the data point dimensions provided.
-         *
-         * Only returns IDs if at least one data point is not an ignorable field.
-         *
-         * @param dataDimensions the list of data point dimensions to get the data point IDs for
-         * @return a list of data point IDs corresponding to the viewable data points of the input
-         */
-        fun getViewableDataPointIds(dataDimensions: List<BasicDataPointDimensions>): List<String> =
-            getViewableDataPointMetaData(dataDimensions).map { it.dataPointId }
+        private fun getViewableDatasetDimensions(
+            dataPointDimensions: Collection<BasicDataPointDimensions>,
+            framework: String,
+        ): Set<BasicDataDimensions> =
+            dataPointDimensions
+                .groupBy { it.toBaseDimensions() }
+                .mapNotNull { (baseDimensions, dataPointDimensions) ->
+                    if (DataAvailabilityIgnoredFieldsUtils.containsNonIgnoredDataPoints(dataPointDimensions.map { it.dataPointType })) {
+                        BasicDataDimensions(baseDimensions.companyId, framework, baseDimensions.reportingPeriod)
+                    } else {
+                        null
+                    }
+                }.toSet()
 
         /**
          * Retrieves all active data point metadata for each given set of dataset dimensions.
@@ -140,7 +248,7 @@ class DataAvailabilityChecker
          * @return a map with the same dataset-dimension keys and the viewable metadata for each dimension
          */
         fun <T : DatasetDimensions> getViewableDataPointMetaData(
-            dataPointDimensionsByDatasetDimensions: Map<T, List<BasicDataPointDimensions>>,
+            dataPointDimensionsByDatasetDimensions: Map<T, Collection<BasicDataPointDimensions>>,
         ): Map<T, List<DataPointMetaInformationEntity>> {
             val allRelevantDimensions = dataPointDimensionsByDatasetDimensions.values.flatten()
             val metaDataByDimensions =
@@ -208,11 +316,8 @@ class DataAvailabilityChecker
             companyIds: Collection<String>,
             dataPointTypes: Set<String>,
         ): Map<BasicBaseDimensions, List<DataPointMetaInformationEntity>> =
-            dataPointMetaInformationRepository
-                .findByCompanyIdInAndDataPointTypeInAndCurrentlyActiveTrue(
-                    companyIds,
-                    dataPointTypes,
-                ).groupBy { it.companyId }
+            getMetaDataOfActiveDataPoints(DataDimensionFilter(companyIds.toList(), dataPointTypes.toList()))
+                .groupBy { it.companyId }
                 .entries
                 .asSequence()
                 .mapNotNull {

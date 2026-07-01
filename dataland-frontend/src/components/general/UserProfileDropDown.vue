@@ -27,27 +27,16 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
 import PrimeMenu from 'primevue/menu';
 import type { MenuItem } from 'primevue/menuitem';
-import { computed, inject, onMounted, type Ref, ref, useTemplateRef } from 'vue';
+import { computed, inject, type Ref, useTemplateRef } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const menu = useTemplateRef('menu');
-
-const userIsJudge = ref(false);
-
-onMounted(() => {
-  assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      userIsJudge.value = keycloak.hasRealmRole(KEYCLOAK_ROLE_JUDGE);
-    })
-    .catch((error) => console.log(error));
-});
 
 /**
  * Toggles Menu as Popup
@@ -87,19 +76,6 @@ const menuItems: Ref<MenuItem[]> = computed(() => [
     icon: 'pi pi-key',
     id: 'profile-api-generate-key-button',
     command: (): void => void router.push('/api-key'),
-  },
-  {
-    label: 'DATA REQUEST',
-    icon: 'pi pi-envelope',
-    id: 'profile-picture-dropdown-data-request-button',
-    command: (): void => void router.push('/bulkdatarequest'),
-  },
-  {
-    label: 'QUALITY ASSURANCE',
-    icon: 'pi pi-shield',
-    id: 'profile-picture-dropdown-qa-services-anchor',
-    command: (): void => void router.push('/qualityassurance'),
-    disabled: !userIsJudge.value,
   },
   {
     label: 'LOG OUT',

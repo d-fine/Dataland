@@ -12,13 +12,14 @@ import { ref } from 'vue';
 import { generateCompanyRoleAssignment } from '@ct/testUtils/CompanyCockpitUtils.ts';
 
 /**
- * Waits for the 5 requests that happen when the document overview page is being mounted
+ * Waits for the 6 requests that happen when the document overview page is being mounted
  */
 function waitForRequestsOnMounted(): void {
   cy.wait('@fetchCompanyInfo');
   cy.wait('@fetchCompanyOwnershipExistence');
   cy.wait('@fetchValidateCompanyRole');
   cy.wait('@fetchDocumentsFilteredCompanyId');
+  cy.wait('@fetchAvailableDataDimensions');
 }
 
 describe('Component test for the Document Overview', () => {
@@ -59,6 +60,10 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFilteredCompanyId');
+    cy.intercept('POST', '**/api/data-availability/available-data-dimensions', {
+      body: [],
+      times: 1,
+    }).as('fetchAvailableDataDimensions');
     cy.intercept(`**/?companyId=${dummyCompanyId}&documentCategories=${searchStringForApi}`, {
       body: mockFetchedDocuments.filter((document) => document.documentCategory === 'AnnualReport'),
       times: 1,

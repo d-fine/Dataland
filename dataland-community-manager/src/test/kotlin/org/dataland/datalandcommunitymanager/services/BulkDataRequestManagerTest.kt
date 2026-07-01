@@ -2,11 +2,9 @@ package org.dataland.datalandcommunitymanager.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
@@ -27,12 +25,13 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Value
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 class BulkDataRequestManagerTest {
     private lateinit var bulkDataRequestManager: BulkDataRequestManager
     private lateinit var mockBulkDataRequestEmailMessageBuilder: BulkDataRequestEmailMessageBuilder
     private lateinit var mockCommunityManagerDataRequestProcessingUtils: CommunityManagerDataRequestProcessingUtils
-    private lateinit var mockMetaDataController: MetaDataControllerApi
+    private lateinit var mockDataAvailabilityController: DataAvailabilityControllerApi
     private lateinit var mockEntityManager: EntityManager
 
     @Value("\${dataland.community-manager.proxy-primary-url}")
@@ -43,7 +42,6 @@ class BulkDataRequestManagerTest {
     private val dummyCompanyIdAndName = CompanyIdAndName(companyId = UUID.randomUUID().toString(), companyName = "Dummy Company AG")
     private val dummyReportingPeriod = "2023"
     private val dummyUserProvidedCompanyId = "companyId1"
-    private val emptyList: List<DataMetaInformation> = listOf()
     private val bulkDataRequest =
         BulkDataRequest(
             companyIdentifiers = setOf(dummyUserProvidedCompanyId),
@@ -55,7 +53,7 @@ class BulkDataRequestManagerTest {
     fun setUpBulkDataRequestManager() {
         mockBulkDataRequestEmailMessageBuilder = mock<BulkDataRequestEmailMessageBuilder>()
         mockCommunityManagerDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
-        mockMetaDataController = mock<MetaDataControllerApi>()
+        mockDataAvailabilityController = mock<DataAvailabilityControllerApi>()
         mockEntityManager = mock<EntityManager>()
 
         bulkDataRequestManager =
@@ -63,7 +61,7 @@ class BulkDataRequestManagerTest {
                 mock<DataRequestLogger>(),
                 mockBulkDataRequestEmailMessageBuilder,
                 mockCommunityManagerDataRequestProcessingUtils,
-                mockMetaDataController,
+                mockDataAvailabilityController,
                 mockEntityManager,
                 proxyPrimaryUrl,
             )
@@ -117,7 +115,7 @@ class BulkDataRequestManagerTest {
     private fun setupEmptyMocks() {
         whenever(mockCommunityManagerDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
-        whenever(mockMetaDataController.retrieveMetaDataOfActiveDatasets(any())).thenReturn(emptyList)
+        whenever(mockDataAvailabilityController.getActiveDimensions(any())).thenReturn(emptyList())
         val mockQuery = mock<Query>()
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
             .thenReturn(mock<Query>())
@@ -185,17 +183,12 @@ class BulkDataRequestManagerTest {
     @Test
     fun `process bulk data request with existing data`() {
         setupEmptyMocks()
-        whenever(mockMetaDataController.retrieveMetaDataOfActiveDatasets(any())).thenReturn(
+        whenever(mockDataAvailabilityController.getActiveDimensions(any())).thenReturn(
             listOf(
-                DataMetaInformation(
-                    dataId = "dataId1",
+                ClientBasicDataDimensions(
                     companyId = dummyCompanyIdAndName.companyId,
-                    dataType = DataTypeEnum.sfdr,
-                    uploadTime = System.currentTimeMillis(),
+                    dataType = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                    ref = "https://example.com/dataId1",
                 ),
             ),
         )
@@ -207,8 +200,8 @@ class BulkDataRequestManagerTest {
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
-                    resourceId = "dataId1",
-                    resourceUrl = "https://example.com/dataId1",
+                    resourceId = "${dummyCompanyIdAndName.companyId}/sfdr/$dummyReportingPeriod",
+                    resourceUrl = "https://dataland.com/companies/${dummyCompanyIdAndName.companyId}/frameworks/sfdr/",
                 ),
             )
 

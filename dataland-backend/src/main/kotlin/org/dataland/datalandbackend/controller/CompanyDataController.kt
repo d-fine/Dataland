@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
+import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
@@ -17,8 +18,8 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.utils.CompanyIdentifierUtils
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.slf4j.LoggerFactory
@@ -43,7 +44,7 @@ class CompanyDataController
         private val companyQueryManager: CompanyQueryManager,
         private val companyIdentifierManager: CompanyIdentifierManager,
         private val companyBaseManager: CompanyBaseManager,
-        private val dataPointUtils: DataPointUtils,
+        private val dataAvailabilityChecker: DataAvailabilityChecker,
     ) : CompanyApi {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -196,10 +197,13 @@ class CompanyDataController
             ResponseEntity.ok(
                 DataType.values.associateWith {
                     AggregatedFrameworkDataSummary(
-                        (
-                            companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                                dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
-                        ).size.toLong(),
+                        dataAvailabilityChecker
+                            .getAvailableDimensions(
+                                DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
+                            ).map { dimension -> dimension.reportingPeriod }
+                            .toSet()
+                            .size
+                            .toLong(),
                     )
                 },
             )

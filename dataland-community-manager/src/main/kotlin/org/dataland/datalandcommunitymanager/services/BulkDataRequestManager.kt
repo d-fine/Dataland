@@ -2,9 +2,8 @@ package org.dataland.datalandcommunitymanager.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of bulk data requests
@@ -32,7 +32,7 @@ class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageBuilder,
     @Autowired private val utils: CommunityManagerDataRequestProcessingUtils,
-    @Autowired private val metaDataController: MetaDataControllerApi,
+    @Autowired private val dataAvailabilityController: DataAvailabilityControllerApi,
     @PersistenceContext private val entityManager: EntityManager,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
@@ -54,8 +54,8 @@ class BulkDataRequestManager(
         val validRequestCombinations =
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
 
-        val existingDatasets =
-            metaDataController.retrieveMetaDataOfActiveDatasets(
+        val existingDatasets: List<ClientBasicDataDimensions> =
+            dataAvailabilityController.getActiveDimensions(
                 basicDataDimensions = validRequestCombinations.map { it.toBasicDataDimensions() },
             )
 
@@ -94,15 +94,15 @@ class BulkDataRequestManager(
     }
 
     private fun getAlreadyExistingDatasetsResponse(
-        metaDataList: List<DataMetaInformation>,
+        existingDimensionsList: List<ClientBasicDataDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
-        if (metaDataList.isEmpty()) {
+        if (existingDimensionsList.isEmpty()) {
             return emptyList()
         }
 
-        return metaDataList.map { metaData ->
-            val companyId = metaData.companyId
+        return existingDimensionsList.map { dimension ->
+            val companyId = dimension.companyId
 
             val companyMappingEntry =
                 userProvidedIdentifierToDatalandCompanyIdMapping.entries
@@ -114,26 +114,31 @@ class BulkDataRequestManager(
             ResourceResponse(
                 userProvidedIdentifier = companyMappingEntry.key,
                 companyName = companyMappingEntry.value.companyName,
-                framework = metaData.dataType.toString(),
-                reportingPeriod = metaData.reportingPeriod,
-                resourceId = metaData.dataId,
-                resourceUrl = metaData.ref,
+                framework = dimension.dataType,
+                reportingPeriod = dimension.reportingPeriod,
+                resourceId = "${dimension.companyId}/${dimension.dataType}/${dimension.reportingPeriod}",
+                resourceUrl = "https://$proxyPrimaryUrl/companies/${dimension.companyId}/frameworks/${dimension.dataType}/",
             )
         }
     }
 
     private fun getDimensionsWithoutRequests(
         validRequestCombinations: List<DatasetDimensions>,
-        existingDatasets: List<DataMetaInformation>,
+        existingDatasets: List<ClientBasicDataDimensions>,
     ): List<DatasetDimensions> {
-        val dimensionsWithExistingRequests =
+        val dimensionsWithExistingDatasets =
             existingDatasets
                 .map {
-                    DatasetDimensions(it.companyId, it.dataType, it.reportingPeriod)
+                    DatasetDimensions(
+                        it.companyId,
+                        DataTypeEnum.decode(it.dataType)
+                            ?: throw IllegalArgumentException("Invalid data type: ${it.dataType}"),
+                        it.reportingPeriod,
+                    )
                 }.toSet()
 
         val allValidDimensions = validRequestCombinations.toSet()
-        val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingRequests
+        val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingDatasets
         return dimensionsWithoutRequests.toList()
     }
 
@@ -329,7 +334,7 @@ class BulkDataRequestManager(
     private fun createBulkDataRequests(
         acceptedRequestCombinations: List<DatasetDimensions>,
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
-        existingDatasets: List<DataMetaInformation>,
+        existingDatasets: List<ClientBasicDataDimensions>,
         rejectedIdentifiers: List<String>,
         notifyMeImmediately: Boolean,
         correlationId: String,

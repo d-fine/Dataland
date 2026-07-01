@@ -193,7 +193,7 @@ import {
   type StoredDataSourcing,
   type RequestHistoryEntryData,
 } from '@clients/datasourcingservice';
-import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
+import { type BasicDataDimensions, IdentifierType } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -211,7 +211,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 const requestControllerApi = apiClientProvider.apiClients.requestController;
 const dataSourcingControllerApi = apiClientProvider.apiClients.dataSourcingController;
 const companyControllerApi = apiClientProvider.backendClients.companyDataController;
-const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
+const dataAvailabilityControllerApi = apiClientProvider.backendClients.dataAvailabilityController;
 
 const withdrawSuccessModalIsVisible = ref(false);
 const resubmitModalIsVisible = ref(false);
@@ -297,30 +297,27 @@ async function checkForAvailableData(): Promise<void> {
  * Retrieves a URL to the data set that is answering the given request. This function may throw an exception.
  */
 async function getAnsweringDatasetUrl(): Promise<string | undefined> {
-  let answeringDataMetaInfo = await getDataMetaInfo(storedRequest.companyId);
-  if (!answeringDataMetaInfo) {
+  let answeringDimension = await checkDataAvailable(storedRequest.companyId);
+  if (!answeringDimension) {
     const parentCompanyId = await getParentCompanyId();
     if (!parentCompanyId) return;
-    answeringDataMetaInfo = await getDataMetaInfo(parentCompanyId);
+    answeringDimension = await checkDataAvailable(parentCompanyId);
   }
-  if (answeringDataMetaInfo)
-    return `/companies/${answeringDataMetaInfo.companyId}/frameworks/${answeringDataMetaInfo.dataType}`;
+  if (answeringDimension) return `/companies/${answeringDimension.companyId}/frameworks/${answeringDimension.dataType}`;
 }
 
 /**
- * Retrieve the metadata object of the active data set identified by the given parameters.
+ * Checks whether an active dataset exists for the given company ID combined with the current request's
+ * data type and reporting period.
  *
  * This function may throw an exception.
- * @return the metadata object if found, else "undefined"
+ * @return the matching BasicDataDimensions if found, else "undefined"
  */
-async function getDataMetaInfo(companyId: string): Promise<DataMetaInformation | undefined> {
-  const datasets = await metaDataControllerApi.getListOfDataMetaInfo(
-    companyId,
-    storedRequest.dataType as DataTypeEnum,
-    true,
-    storedRequest.reportingPeriod
-  );
-  return datasets.data.length > 0 ? datasets.data[0] : undefined;
+async function checkDataAvailable(companyId: string): Promise<BasicDataDimensions | undefined> {
+  const response = await dataAvailabilityControllerApi.getActiveDimensions([
+    { companyId, dataType: storedRequest.dataType, reportingPeriod: storedRequest.reportingPeriod },
+  ]);
+  return response.data.length > 0 ? response.data[0] : undefined;
 }
 
 /**
