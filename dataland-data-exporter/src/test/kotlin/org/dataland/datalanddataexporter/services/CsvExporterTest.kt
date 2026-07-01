@@ -64,7 +64,7 @@ class CsvExporterTest {
     private fun setupMockDataAvailabilityControllerApi(): DataAvailabilityControllerApi {
         val mockDataAvailabilityControllerApi = mock(DataAvailabilityControllerApi::class.java)
         `when`(
-            mockDataAvailabilityControllerApi.getAvailableDataDimensions(any()),
+            mockDataAvailabilityControllerApi.searchViewableDimensions(any()),
         ).thenReturn(mockSfdrDimensions)
         return mockDataAvailabilityControllerApi
     }
@@ -143,7 +143,7 @@ class CsvExporterTest {
     fun `check that the sfdr export runs as expected`() {
         assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory) }
         verify(mockDataAvailabilityControllerApi, times(1))
-            .getAvailableDataDimensions(any())
+            .searchViewableDimensions(any())
         verify(mockSfdrDataControllerApi, times(1))
             .getCompanyAssociatedSfdrDataByDimensions(
                 reportingPeriod = any(),

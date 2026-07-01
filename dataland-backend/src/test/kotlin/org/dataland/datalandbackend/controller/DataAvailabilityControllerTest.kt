@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.DatalandBackend
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -27,9 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-private const val ACTIVE_DIMENSIONS_SEARCH_PATH = "/data-availability/active-dimensions-search"
-private const val AVAILABLE_DATA_DIMENSIONS_PATH = "/data-availability/available-data-dimensions"
-private const val INVALID_INPUT_SUMMARY = "frameworksOrDataPointTypes must not be empty."
+private const val FILTER_VIEWABLE_DIMENSIONS_PATH = "/data-availability/viewable-dimensions/filter"
+private const val SEARCH_VIEWABLE_DIMENSIONS_PATH = "/data-availability/viewable-dimensions/search"
 
 @SpringBootTest(
     classes = [DatalandBackend::class],
@@ -66,16 +65,16 @@ class DataAvailabilityControllerTest(
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    // --- POST /data-availability/active-dimensions-search ---
+    // --- POST /data-availability/viewable-dimensions/filter ---
 
     @Test
-    fun `getActiveDimensions returns matched dimensions from checker`() {
-        whenever(dataAvailabilityChecker.getAvailableDimensions(any<List<BasicDataDimensions>>()))
+    fun `filterViewableDimensions returns matched dimensions from checker`() {
+        whenever(dataAvailabilityChecker.filterViewableDimensions(any<List<BasicDataDimensions>>()))
             .doReturn(listOf(exampleDimension))
 
         mockMvc
             .perform(
-                post(ACTIVE_DIMENSIONS_SEARCH_PATH)
+                post(FILTER_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content("""[{"companyId":"test-company-id","dataType":"sfdr","reportingPeriod":"2023"}]""")
                     .with(securityContext(mockSecurityContext)),
@@ -86,13 +85,13 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getActiveDimensions with empty list returns empty result`() {
-        whenever(dataAvailabilityChecker.getAvailableDimensions(eq(emptyList<BasicDataDimensions>())))
+    fun `filterViewableDimensions with empty list returns empty result`() {
+        whenever(dataAvailabilityChecker.filterViewableDimensions(eq(emptyList<BasicDataDimensions>())))
             .doReturn(emptyList())
 
         mockMvc
             .perform(
-                post(ACTIVE_DIMENSIONS_SEARCH_PATH)
+                post(FILTER_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content("[]")
                     .with(securityContext(mockSecurityContext)),
@@ -101,26 +100,26 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getActiveDimensions returns 401 for unauthenticated request`() {
+    fun `filterViewableDimensions returns 401 for unauthenticated request`() {
         mockMvc
             .perform(
-                post(ACTIVE_DIMENSIONS_SEARCH_PATH)
+                post(FILTER_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content("[]"),
             ).andExpect(status().isUnauthorized)
     }
 
-    // --- POST /data-availability/available-data-dimensions ---
+    // --- POST /data-availability/viewable-dimensions/search ---
 
     @Test
-    fun `getAvailableDataDimensions returns matched dimensions from checker`() {
+    fun `searchViewableDimensions returns matched dimensions from checker`() {
         whenever(
-            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
+            dataAvailabilityChecker.searchViewableDimensions(any<DataDimensionQuery>()),
         ).doReturn(listOf(exampleDimension))
 
         mockMvc
             .perform(
-                post(AVAILABLE_DATA_DIMENSIONS_PATH)
+                post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content(
                         """
@@ -138,14 +137,14 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getAvailableDataDimensions accepts empty companyIds as wildcard`() {
+    fun `searchViewableDimensions accepts empty companyIds as wildcard`() {
         whenever(
-            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
+            dataAvailabilityChecker.searchViewableDimensions(any<DataDimensionQuery>()),
         ).doReturn(listOf(exampleDimension))
 
         mockMvc
             .perform(
-                post(AVAILABLE_DATA_DIMENSIONS_PATH)
+                post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content(
                         """
@@ -160,33 +159,35 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getAvailableDataDimensions returns 400 when frameworksOrDataPointTypes is empty`() {
-        mockMvc
-            .perform(
-                post(AVAILABLE_DATA_DIMENSIONS_PATH)
-                    .contentType("application/json")
-                    .content(
-                        """
-                        {
-                            "companyIds": ["test-company-id"],
-                            "frameworksOrDataPointTypes": [],
-                            "reportingPeriods": ["2023"]
-                        }
-                        """.trimIndent(),
-                    ).with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.errors[0].summary").value(INVALID_INPUT_SUMMARY))
-    }
-
-    @Test
-    fun `getAvailableDataDimensions accepts empty reportingPeriods as wildcard`() {
+    fun `searchViewableDimensions returns 400 when the search filter is empty`() {
         whenever(
-            dataAvailabilityChecker.getAvailableDimensions(any<DataDimensionFilter>()),
+            dataAvailabilityChecker.searchViewableDimensions(any<DataDimensionQuery>()),
         ).doReturn(listOf(exampleDimension))
 
         mockMvc
             .perform(
-                post(AVAILABLE_DATA_DIMENSIONS_PATH)
+                post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
+                    .contentType("application/json")
+                    .content(
+                        """
+                        {
+                            "frameworksOrDataPointTypes": [],
+                            "reportingPeriods": []
+                        }
+                        """.trimIndent(),
+                    ).with(securityContext(mockSecurityContext)),
+            ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `searchViewableDimensions accepts empty reportingPeriods as wildcard`() {
+        whenever(
+            dataAvailabilityChecker.searchViewableDimensions(any<DataDimensionQuery>()),
+        ).doReturn(listOf(exampleDimension))
+
+        mockMvc
+            .perform(
+                post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content(
                         """
@@ -201,10 +202,10 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `getAvailableDataDimensions returns 401 for unauthenticated request`() {
+    fun `searchViewableDimensions returns 401 for unauthenticated request`() {
         mockMvc
             .perform(
-                post(AVAILABLE_DATA_DIMENSIONS_PATH)
+                post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
                     .contentType("application/json")
                     .content(
                         """

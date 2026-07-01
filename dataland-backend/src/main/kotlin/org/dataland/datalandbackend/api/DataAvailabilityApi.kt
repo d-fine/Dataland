@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.model.dataavailability.DataAvailabilitySearchRequest
+import org.dataland.datalandbackend.model.DataDimensionSearchRequest
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -20,51 +20,46 @@ import org.springframework.web.bind.annotation.RequestMapping
 @SecurityRequirement(name = "default-oauth")
 interface DataAvailabilityApi {
     /**
-     * Checks which of the provided exact data dimension triples have active data.
-     * @param dimensions list of (companyId, dataType, reportingPeriod) triples to check
+     * Filters the provided exact data dimension triples to those for which viewable data exists.
+     * @param dimensions list of (companyId, dataType, reportingPeriod) triples to filter
      */
     @Operation(
-        summary = "Returns which of the provided data dimension triples have active data.",
+        summary = "Filters the provided data dimension triples to those with viewable data.",
         description =
             "Accepts a list of exact (companyId, dataType, reportingPeriod) triples and returns " +
-                "those for which active data exists, covering both datasets and data points.",
+                "those for which viewable data exists, covering both datasets and data points.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved active data dimensions."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved viewable data dimensions."),
         ],
     )
-    @PostMapping(value = ["/active-dimensions-search"])
+    @PostMapping(value = ["/viewable-dimensions/filter"])
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getActiveDimensions(
+    fun filterViewableDimensions(
         @RequestBody dimensions: List<BasicDataDimensions>,
     ): ResponseEntity<List<BasicDataDimensions>>
 
     /**
-     * Returns all available data dimensions matching the given filters.
-     * @param request filter containing companyIds (required), frameworksOrDataPointTypes (required),
-     *   and reportingPeriods (optional; empty list means all periods)
+     * Searches for all viewable data dimensions matching the given filters.
+     * @param request filter containing companyIds, frameworksOrDataPointTypes, and reportingPeriods;
+     *   an empty list for any field is treated as a wildcard (all values)
      */
     @Operation(
-        summary = "Returns all available data dimensions matching the given filters.",
+        summary = "Returns all viewable data dimensions matching the given filters.",
         description =
             "Accepts lists of company IDs, frameworks or data point types, and reporting periods. " +
-                "Returns all active data dimensions that match any combination of the provided filters. " +
-                "companyIds and frameworksOrDataPointTypes must each contain at least one entry. " +
-                "An empty reportingPeriods list is treated as a wildcard and matches all reporting periods.",
+                "Returns all viewable data dimensions that match any combination of the provided filters. " +
+                "An empty list for any field is treated as a wildcard and matches all values for that dimension.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved available data dimensions."),
-            ApiResponse(
-                responseCode = "400",
-                description = "companyIds and frameworksOrDataPointTypes must each contain at least one entry.",
-            ),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved viewable data dimensions."),
         ],
     )
-    @PostMapping(value = ["/available-data-dimensions"])
+    @PostMapping(value = ["/viewable-dimensions/search"])
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAvailableDataDimensions(
-        @RequestBody request: DataAvailabilitySearchRequest,
+    fun searchViewableDimensions(
+        @RequestBody request: DataDimensionSearchRequest,
     ): ResponseEntity<List<BasicDataDimensions>>
 }

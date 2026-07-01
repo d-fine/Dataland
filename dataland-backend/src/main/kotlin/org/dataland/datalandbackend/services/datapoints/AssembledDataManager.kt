@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -341,8 +341,8 @@ class AssembledDataManager
             val framework = searchFilter.dataType.toString()
             val reportingPeriods =
                 dataAvailabilityChecker
-                    .getAvailableDimensions(
-                        DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(framework)),
+                    .searchViewableDimensions(
+                        DataDimensionQuery(companyIds = listOf(companyId), dataTypes = listOf(framework)),
                     ).map { it.reportingPeriod }
                     .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
 

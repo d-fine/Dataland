@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.InternalStorageAdapter
@@ -263,12 +263,12 @@ class DataPointCalculator
          * same company and reporting period. Company and reporting-period filters are applied to the source data points.
          *
          * @param dataPointTypes target data point types whose calculation rules should be checked
-         * @param dataDimensionFilter filter whose company and reporting-period constraints should be applied
+         * @param dataDimensionQuery filter whose company and reporting-period constraints should be applied
          * @return calculatable data point dimensions
          */
         fun getCalculatableDataPointDimensions(
             dataPointTypes: Collection<DataPointType>,
-            dataDimensionFilter: DataDimensionFilter,
+            dataDimensionQuery: DataDimensionQuery,
         ): Set<BasicDataPointDimensions> {
             val specs = specificationService.getDataPointSpecifications(dataPointTypes.toList())
 
@@ -282,10 +282,10 @@ class DataPointCalculator
             val activeSourceDataPointDimensions =
                 metaDataManager
                     .getActiveDataPointMetaInformationList(
-                        DataDimensionFilter(
-                            companyIds = dataDimensionFilter.companyIds,
+                        DataDimensionQuery(
+                            companyIds = dataDimensionQuery.companyIds,
                             dataTypes = sourceDataPointTypes.distinct(),
-                            reportingPeriods = dataDimensionFilter.reportingPeriods,
+                            reportingPeriods = dataDimensionQuery.reportingPeriods,
                         ),
                     ).map {
                         it.toBasicDataPointDimensions()

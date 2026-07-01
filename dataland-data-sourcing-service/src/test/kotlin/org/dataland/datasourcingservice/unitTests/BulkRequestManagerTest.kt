@@ -220,7 +220,7 @@ class BulkRequestManagerTest {
         ).whenever(mockQuery).resultList
         doReturn(existingDatasetDimensionsList)
             .whenever(mockDataAvailabilityControllerApi)
-            .getActiveDimensions(any())
+            .filterViewableDimensions(any())
     }
 
     private fun createBulkRequestManager() {
@@ -331,7 +331,7 @@ class BulkRequestManagerTest {
                 ),
             ),
         ).whenever(mockDataAvailabilityControllerApi)
-            .getActiveDimensions(any())
+            .filterViewableDimensions(any())
 
         val response =
             bulkRequestManager.processBulkDataRequest(

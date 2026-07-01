@@ -60,7 +60,7 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFilteredCompanyId');
-    cy.intercept('POST', '**/api/data-availability/available-data-dimensions', {
+    cy.intercept('POST', '**/api/data-availability/viewable-dimensions/search', {
       body: [],
       times: 1,
     }).as('fetchAvailableDataDimensions');

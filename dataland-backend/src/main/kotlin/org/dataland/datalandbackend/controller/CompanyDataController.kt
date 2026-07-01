@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
@@ -198,8 +198,8 @@ class CompanyDataController
                 DataType.values.associateWith {
                     AggregatedFrameworkDataSummary(
                         dataAvailabilityChecker
-                            .getAvailableDimensions(
-                                DataDimensionFilter(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
+                            .searchViewableDimensions(
+                                DataDimensionQuery(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
                             ).map { dimension -> dimension.reportingPeriod }
                             .toSet()
                             .size

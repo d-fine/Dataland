@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
-import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
+import org.dataland.datalandbackend.openApiClient.model.DataDimensionSearchRequest
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.createDirectories
@@ -191,8 +191,8 @@ class CsvExporter(
      */
     fun getAllAvailableSfdrDataDimensions(): List<BasicDataDimensions> =
         dataAvailabilityController
-            .getAvailableDataDimensions(
-                DataAvailabilitySearchRequest(
+            .searchViewableDimensions(
+                DataDimensionSearchRequest(
                     companyIds = emptyList(),
                     frameworksOrDataPointTypes = listOf("sfdr"),
                     reportingPeriods = emptyList(),

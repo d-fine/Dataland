@@ -2981,19 +2981,19 @@
         ]
       }
     },
-    "/data-availability/available-data-dimensions": {
+    "/data-availability/viewable-dimensions/search": {
       "post": {
         "tags": [
           "data-availability-controller"
         ],
-        "summary": "Returns all available data dimensions matching the given filters.",
-        "description": "Accepts lists of company IDs, frameworks or data point types, and reporting periods. Returns all active data dimensions that match any combination of the provided filters. companyIds and frameworksOrDataPointTypes must each contain at least one entry. An empty reportingPeriods list is treated as a wildcard and matches all reporting periods.",
-        "operationId": "getAvailableDataDimensions",
+        "summary": "Returns all viewable data dimensions matching the given filters.",
+        "description": "Accepts lists of company IDs, frameworks or data point types, and reporting periods. Returns all viewable data dimensions that match any combination of the provided filters. An empty list for any field is treated as a wildcard and matches all values for that dimension.",
+        "operationId": "searchViewableDimensions",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataAvailabilitySearchRequest"
+                "$ref": "#/components/schemas/DataDimensionSearchRequest"
               }
             }
           },
@@ -3001,20 +3001,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully retrieved available data dimensions.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BasicDataDimensions"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "companyIds and frameworksOrDataPointTypes must each contain at least one entry.",
+            "description": "Successfully retrieved viewable data dimensions.",
             "content": {
               "*/*": {
                 "schema": {
@@ -3057,14 +3044,14 @@
         ]
       }
     },
-    "/data-availability/active-dimensions-search": {
+    "/data-availability/viewable-dimensions/filter": {
       "post": {
         "tags": [
           "data-availability-controller"
         ],
-        "summary": "Returns which of the provided data dimension triples have active data.",
-        "description": "Accepts a list of exact (companyId, dataType, reportingPeriod) triples and returns those for which active data exists, covering both datasets and data points.",
-        "operationId": "getActiveDimensions",
+        "summary": "Filters the provided data dimension triples to those with viewable data.",
+        "description": "Accepts a list of exact (companyId, dataType, reportingPeriod) triples and returns those for which viewable data exists, covering both datasets and data points.",
+        "operationId": "filterViewableDimensions",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3080,7 +3067,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully retrieved active data dimensions.",
+            "description": "Successfully retrieved viewable data dimensions.",
             "content": {
               "*/*": {
                 "schema": {
@@ -22277,17 +22264,13 @@
           }
         }
       },
-      "DataAvailabilitySearchRequest": {
-        "required": [
-          "companyIds",
-          "frameworksOrDataPointTypes",
-          "reportingPeriods"
-        ],
+      "DataDimensionSearchRequest": {
         "type": "object",
         "properties": {
           "companyIds": {
             "type": "array",
             "description": "A list of Dataland company ids for which the data export is requested.",
+            "nullable": true,
             "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]",
             "items": {
               "type": "string"
@@ -22296,6 +22279,7 @@
           "frameworksOrDataPointTypes": {
             "type": "array",
             "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
+            "nullable": true,
             "example": [
               "sfdr",
               "extendedDateFiscalYearEnd"
@@ -22307,6 +22291,7 @@
           "reportingPeriods": {
             "type": "array",
             "description": "The reporting periods for which the data export is requested.",
+            "nullable": true,
             "example": [
               "2023",
               "2024"

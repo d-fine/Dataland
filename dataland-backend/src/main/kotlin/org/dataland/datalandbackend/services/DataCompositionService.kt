@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -86,11 +86,11 @@ class DataCompositionService
          * @param dataDimentionFilter the filter to remove invalid data from
          * @return a new filter without any invalid entries
          */
-        fun filterOutInvalidDatasetEntries(dataDimensionFilter: DataDimensionFilter) =
-            DataDimensionFilter(
-                companyIds = dataDimensionFilter.companyIds?.filter { ValidationUtils.isUuid(it) },
-                dataTypes = dataDimensionFilter.dataTypes?.filter { specificationService.isFramework(it) },
-                reportingPeriods = dataDimensionFilter.reportingPeriods?.filter { ValidationUtils.isReportingPeriod(it) },
+        fun filterOutInvalidDatasetEntries(dataDimensionQuery: DataDimensionQuery) =
+            DataDimensionQuery(
+                companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
+                dataTypes = dataDimensionQuery.dataTypes.filter { specificationService.isFramework(it) },
+                reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
             )
 
         /**
@@ -111,11 +111,11 @@ class DataCompositionService
          * @param dataDimentionFilter the filter to remove invalid data from
          * @return a new filter without any invalid entries
          */
-        fun filterOutInvalidDataPointEntries(dataDimensionFilter: DataDimensionFilter) =
-            DataDimensionFilter(
-                companyIds = dataDimensionFilter.companyIds?.filter { ValidationUtils.isUuid(it) },
-                dataTypes = dataDimensionFilter.dataTypes?.filter { specificationService.isDataPointType(it) },
-                reportingPeriods = dataDimensionFilter.reportingPeriods?.filter { ValidationUtils.isReportingPeriod(it) },
+        fun filterOutInvalidDataPointEntries(dataDimensionQuery: DataDimensionQuery) =
+            DataDimensionQuery(
+                companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
+                dataTypes = dataDimensionQuery.dataTypes.filter { specificationService.isDataPointType(it) },
+                reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
             )
 
         /**

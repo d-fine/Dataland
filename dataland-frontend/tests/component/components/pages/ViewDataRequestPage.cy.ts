@@ -203,7 +203,7 @@ describe('Component tests for the view data request page', function (): void {
       dataType: dummyFramework,
       reportingPeriod: dummyReportingYear,
     };
-    cy.intercept('POST', `**/api/data-availability/active-dimensions-search`, {
+    cy.intercept('POST', `**/api/data-availability/viewable-dimensions/filter`, {
       body: hasActiveDataset ? [dummyDimension] : [],
       status: 200,
     });

@@ -115,7 +115,7 @@ class BulkDataRequestManagerTest {
     private fun setupEmptyMocks() {
         whenever(mockCommunityManagerDataRequestProcessingUtils.performIdentifierValidation(anyList()))
             .thenReturn(Pair(mapOf(dummyUserProvidedCompanyId to dummyCompanyIdAndName), emptyList()))
-        whenever(mockDataAvailabilityController.getActiveDimensions(any())).thenReturn(emptyList())
+        whenever(mockDataAvailabilityController.filterViewableDimensions(any())).thenReturn(emptyList())
         val mockQuery = mock<Query>()
         whenever(mockEntityManager.createNativeQuery(any(), any<Class<DataRequestEntity>>()))
             .thenReturn(mock<Query>())
@@ -183,7 +183,7 @@ class BulkDataRequestManagerTest {
     @Test
     fun `process bulk data request with existing data`() {
         setupEmptyMocks()
-        whenever(mockDataAvailabilityController.getActiveDimensions(any())).thenReturn(
+        whenever(mockDataAvailabilityController.filterViewableDimensions(any())).thenReturn(
             listOf(
                 ClientBasicDataDimensions(
                     companyId = dummyCompanyIdAndName.companyId,

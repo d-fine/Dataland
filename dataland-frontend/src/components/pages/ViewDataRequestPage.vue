@@ -314,7 +314,7 @@ async function getAnsweringDatasetUrl(): Promise<string | undefined> {
  * @return the matching BasicDataDimensions if found, else "undefined"
  */
 async function checkDataAvailable(companyId: string): Promise<BasicDataDimensions | undefined> {
-  const response = await dataAvailabilityControllerApi.getActiveDimensions([
+  const response = await dataAvailabilityControllerApi.filterViewableDimensions([
     { companyId, dataType: storedRequest.dataType, reportingPeriod: storedRequest.reportingPeriod },
   ]);
   return response.data.length > 0 ? response.data[0] : undefined;

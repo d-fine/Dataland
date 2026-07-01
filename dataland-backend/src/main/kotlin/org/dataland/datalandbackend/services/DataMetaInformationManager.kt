@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -153,15 +153,15 @@ class DataMetaInformationManager(
      * @return list of DataMetaInformationEntity for active datasets matching the filters
      */
     @Transactional(readOnly = true)
-    fun getActiveDataMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataMetaInformationEntity> =
-        if (dataDimensionFilter.isEmpty()) {
+    fun getActiveDataMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> =
+        if (dataDimensionQuery.isEmpty()) {
             emptyList()
         } else {
             dataMetaInformationRepository
                 .findActiveDatasetDimensionsByFilter(
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
-                    defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
+                    defaultObjectMapper.writeValueAsString(dataDimensionQuery.companyIds),
+                    defaultObjectMapper.writeValueAsString(dataDimensionQuery.dataTypes),
+                    defaultObjectMapper.writeValueAsString(dataDimensionQuery.reportingPeriods),
                 )
         }
 }

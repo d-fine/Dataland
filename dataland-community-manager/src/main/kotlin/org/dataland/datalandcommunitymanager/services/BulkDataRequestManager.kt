@@ -55,7 +55,7 @@ class BulkDataRequestManager(
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
 
         val existingDatasets: List<ClientBasicDataDimensions> =
-            dataAvailabilityController.getActiveDimensions(
+            dataAvailabilityController.filterViewableDimensions(
                 basicDataDimensions = validRequestCombinations.map { it.toBasicDataDimensions() },
             )
 

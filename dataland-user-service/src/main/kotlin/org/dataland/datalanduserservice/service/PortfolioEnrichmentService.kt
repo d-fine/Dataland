@@ -3,7 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataAvailabilitySearchRequest
+import org.dataland.datalandbackend.openApiClient.model.DataDimensionSearchRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolio
 import org.dataland.datalanduserservice.model.EnrichedPortfolioEntry
@@ -54,8 +54,8 @@ class PortfolioEnrichmentService
             frameworks: List<String>,
         ): Map<String, Map<String, List<String>>> {
             val availableDataDimensions =
-                dataAvailabilityControllerApi.getAvailableDataDimensions(
-                    DataAvailabilitySearchRequest(
+                dataAvailabilityControllerApi.searchViewableDimensions(
+                    DataDimensionSearchRequest(
                         companyIds = companyIds,
                         frameworksOrDataPointTypes = frameworks,
                         reportingPeriods = emptyList(),

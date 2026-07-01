@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services.dataPoints
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.DataCompositionService
@@ -453,11 +453,11 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, reportingPeriod = "2023"),
                 makeMetaData(sourceTypeB, companyId = secondaryCompanyId, reportingPeriod = "2023"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionQuery>())
 
         val result =
             dataPointCalculator
-                .getCalculatableDataPointDimensions(listOf(targetType), DataDimensionFilter(companyIds = listOf(companyId)))
+                .getCalculatableDataPointDimensions(listOf(targetType), DataDimensionQuery(companyIds = listOf(companyId)))
 
         assertEquals(
             setOf(
@@ -469,7 +469,7 @@ class DataPointCalculatorTest {
 
     @Test
     fun `check that calculatable dimension lookup is constrained to the requested dimensions`() {
-        val filter = DataDimensionFilter(companyIds = listOf(companyId), reportingPeriods = listOf("2022"))
+        val filter = DataDimensionQuery(companyIds = listOf(companyId), reportingPeriods = listOf("2022"))
         val secondTargetType = "secondCalculatedDataPointType"
         doReturn(
             mapOf(
@@ -490,7 +490,7 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, reportingPeriod = "2022"),
                 makeMetaData(sourceTypeB, reportingPeriod = "2022"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionQuery>())
 
         val result = dataPointCalculator.getCalculatableDataPointDimensions(listOf(targetType, secondTargetType), filter)
 
@@ -502,7 +502,7 @@ class DataPointCalculatorTest {
             result,
         )
         verify(metaDataManager).getActiveDataPointMetaInformationList(
-            argThat<DataDimensionFilter> {
+            argThat<DataDimensionQuery> {
                 companyIds == filter.companyIds &&
                     reportingPeriods == filter.reportingPeriods &&
                     dataTypes?.containsAll(listOf(sourceTypeA, sourceTypeB)) == true
@@ -535,10 +535,10 @@ class DataPointCalculatorTest {
                 makeMetaData(sourceTypeA, companyId = secondCompanyId, reportingPeriod = "2024"),
                 makeMetaData(sourceTypeB, companyId = secondCompanyId, reportingPeriod = "2024"),
             ),
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<DataDimensionQuery>())
 
         val result =
-            dataPointCalculator.getCalculatableDataPointDimensions(listOf(targetType, secondTargetType), DataDimensionFilter())
+            dataPointCalculator.getCalculatableDataPointDimensions(listOf(targetType, secondTargetType), DataDimensionQuery())
 
         assertEquals(
             setOf(
@@ -550,7 +550,7 @@ class DataPointCalculatorTest {
             result,
         )
         verify(metaDataManager).getActiveDataPointMetaInformationList(
-            argThat<DataDimensionFilter> {
+            argThat<DataDimensionQuery> {
                 dataTypes == listOf(sourceTypeA, sourceTypeB)
             },
         )
@@ -571,11 +571,11 @@ class DataPointCalculatorTest {
         ).whenever(specificationService).getDataPointSpecifications(listOf(finalTargetType))
         doReturn(listOf(makeMetaData(sourceTypeA)))
             .whenever(metaDataManager)
-            .getActiveDataPointMetaInformationList(any<DataDimensionFilter>())
+            .getActiveDataPointMetaInformationList(any<DataDimensionQuery>())
 
         val result =
             dataPointCalculator
-                .getCalculatableDataPointDimensions(listOf(finalTargetType), DataDimensionFilter(companyIds = listOf(companyId)))
+                .getCalculatableDataPointDimensions(listOf(finalTargetType), DataDimensionQuery(companyIds = listOf(companyId)))
 
         assertTrue(result.isEmpty())
     }

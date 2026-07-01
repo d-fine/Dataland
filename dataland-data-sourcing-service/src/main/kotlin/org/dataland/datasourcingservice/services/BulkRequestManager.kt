@@ -114,7 +114,7 @@ class BulkRequestManager
 
             val activeDatasetDimensions =
                 dataAvailabilityController
-                    .getActiveDimensions(
+                    .filterViewableDimensions(
                         basicDataDimensions =
                             (requests + newTaxonomyEquivalentRequests).map {
                                 org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(

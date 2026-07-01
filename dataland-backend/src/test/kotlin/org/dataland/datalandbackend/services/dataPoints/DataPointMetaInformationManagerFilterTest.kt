@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -31,7 +31,7 @@ class DataPointMetaInformationManagerFilterTest(
     @Test
     fun `empty filter returns no active data points`() {
         addDataPointMetaInformation()
-        val result = dataPointMetaInformationManager.getActiveDataPointMetaInformationList(DataDimensionFilter())
+        val result = dataPointMetaInformationManager.getActiveDataPointMetaInformationList(DataDimensionQuery())
         assertTrue(result.isEmpty())
     }
 
@@ -40,7 +40,7 @@ class DataPointMetaInformationManagerFilterTest(
         addDataPointMetaInformation()
         val result =
             dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
-                DataDimensionFilter(
+                DataDimensionQuery(
                     companyIds = emptyList(),
                     dataTypes = emptyList(),
                     reportingPeriods = emptyList(),
@@ -59,37 +59,37 @@ class DataPointMetaInformationManagerFilterTest(
         val result =
             dataPointMetaInformationManager
                 .getActiveDataPointMetaInformationList(
-                    DataDimensionFilter(companyIds = listOf(companyA)),
+                    DataDimensionQuery(companyIds = listOf(companyA)),
                 ).map { it.toBasicDataPointDimensions() }
         assertEquals(2, result.size)
         assertTrue(result.all { it.companyId == companyA })
     }
 
     @Test
-    fun `null and empty list are equivalent wildcards for unset filter dimensions`() {
+    fun `empty list is wildcard for unset filter dimensions`() {
         val companyA = UUID.randomUUID().toString()
         val companyB = UUID.randomUUID().toString()
         addDataPointMetaInformation(companyId = companyA, reportingPeriod = "2022")
         addDataPointMetaInformation(companyId = companyA, dataPointType = "annualRevenue", reportingPeriod = "2023")
         addDataPointMetaInformation(companyId = companyB)
         val companyIds = listOf(companyA)
-        val resultWithNull =
+        val resultWithDefaults =
             dataPointMetaInformationManager
                 .getActiveDataPointMetaInformationList(
-                    DataDimensionFilter(companyIds = companyIds, dataTypes = null, reportingPeriods = null),
+                    DataDimensionQuery(companyIds = companyIds),
                 ).map { it.toBasicDataPointDimensions() }
         val resultWithEmptyList =
             dataPointMetaInformationManager
                 .getActiveDataPointMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = companyIds,
                         dataTypes = emptyList(),
                         reportingPeriods = emptyList(),
                     ),
                 ).map { it.toBasicDataPointDimensions() }
-        assertEquals(resultWithNull, resultWithEmptyList)
-        assertEquals(2, resultWithNull.size)
-        assertTrue(resultWithNull.all { it.companyId == companyA })
+        assertEquals(resultWithDefaults, resultWithEmptyList)
+        assertEquals(2, resultWithDefaults.size)
+        assertTrue(resultWithDefaults.all { it.companyId == companyA })
     }
 
     @Test
@@ -98,7 +98,7 @@ class DataPointMetaInformationManagerFilterTest(
         addDataPointMetaInformation(companyId = company, reportingPeriod = "2023")
         val result =
             dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
-                DataDimensionFilter(
+                DataDimensionQuery(
                     companyIds = listOf(company),
                     reportingPeriods = listOf("2024"),
                 ),
@@ -114,7 +114,7 @@ class DataPointMetaInformationManagerFilterTest(
         addDataPointMetaInformation(companyId = company, currentlyActive = null)
         val result =
             dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
-                DataDimensionFilter(companyIds = listOf(company)),
+                DataDimensionQuery(companyIds = listOf(company)),
             )
         assertEquals(1, result.size)
         assertEquals(true, result.first().currentlyActive)
@@ -131,7 +131,7 @@ class DataPointMetaInformationManagerFilterTest(
         val result =
             dataPointMetaInformationManager
                 .getActiveDataPointMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = listOf(companyA, companyB),
                         dataTypes = listOf(defaultDataPointType, "annualRevenue"),
                         reportingPeriods = listOf("2022", "2023"),

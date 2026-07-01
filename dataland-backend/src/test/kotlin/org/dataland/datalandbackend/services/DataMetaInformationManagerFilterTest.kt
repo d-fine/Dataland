@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -73,7 +73,7 @@ class DataMetaInformationManagerFilterTest(
         val combinedSingleFilters =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = listOf(storedCompanies[0].companyId),
                         dataTypes = listOf(defaultDataType.toString()),
                         reportingPeriods = listOf(singleReportingPeriod),
@@ -84,7 +84,7 @@ class DataMetaInformationManagerFilterTest(
         val combinedMultipleFilters =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
                         dataTypes = listOf(defaultDataType.toString(), singleDataType),
                         reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
@@ -96,7 +96,7 @@ class DataMetaInformationManagerFilterTest(
     @Test
     fun `empty filter returns no active datasets`() {
         addMetainformation()
-        val result = dataMetaInformationManager.getActiveDataMetaInformationList(DataDimensionFilter())
+        val result = dataMetaInformationManager.getActiveDataMetaInformationList(DataDimensionQuery())
         assertTrue(result.isEmpty())
     }
 
@@ -105,7 +105,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation()
         val result =
             dataMetaInformationManager.getActiveDataMetaInformationList(
-                DataDimensionFilter(
+                DataDimensionQuery(
                     companyIds = emptyList(),
                     dataTypes = emptyList(),
                     reportingPeriods = emptyList(),
@@ -123,36 +123,36 @@ class DataMetaInformationManagerFilterTest(
         val result =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(companyIds = listOf(companies[0].companyId)),
+                    DataDimensionQuery(companyIds = listOf(companies[0].companyId)),
                 ).map { it.toBasicDataDimensions() }
         assertEquals(2, result.size)
         assertTrue(result.all { it.companyId == companies[0].companyId })
     }
 
     @Test
-    fun `null and empty list are equivalent wildcards for unset filter dimensions`() {
+    fun `empty list is wildcard for unset filter dimensions`() {
         val companies = addCompanyToDatabase(2)
         addMetainformation(company = companies[0], reportingPeriod = "2022")
         addMetainformation(company = companies[0], dataType = "lksg", reportingPeriod = "2023")
         addMetainformation(company = companies[1])
         val companyIds = listOf(companies[0].companyId)
-        val resultWithNull =
+        val resultWithDefaults =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(companyIds = companyIds, dataTypes = null, reportingPeriods = null),
+                    DataDimensionQuery(companyIds = companyIds),
                 ).map { it.toBasicDataDimensions() }
         val resultWithEmptyList =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = companyIds,
                         dataTypes = emptyList(),
                         reportingPeriods = emptyList(),
                     ),
                 ).map { it.toBasicDataDimensions() }
-        assertEquals(resultWithNull, resultWithEmptyList)
-        assertEquals(2, resultWithNull.size)
-        assertTrue(resultWithNull.all { it.companyId == companies[0].companyId })
+        assertEquals(resultWithDefaults, resultWithEmptyList)
+        assertEquals(2, resultWithDefaults.size)
+        assertTrue(resultWithDefaults.all { it.companyId == companies[0].companyId })
     }
 
     @Test
@@ -161,7 +161,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation(company = company, reportingPeriod = "2023")
         val result =
             dataMetaInformationManager.getActiveDataMetaInformationList(
-                DataDimensionFilter(
+                DataDimensionQuery(
                     companyIds = listOf(company.companyId),
                     reportingPeriods = listOf("2024"),
                 ),
@@ -177,7 +177,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation(company = company, currentlyActive = null)
         val result =
             dataMetaInformationManager.getActiveDataMetaInformationList(
-                DataDimensionFilter(companyIds = listOf(company.companyId)),
+                DataDimensionQuery(companyIds = listOf(company.companyId)),
             )
         assertEquals(1, result.size)
         assertEquals(true, result.first().currentlyActive)
@@ -195,7 +195,7 @@ class DataMetaInformationManagerFilterTest(
         val result =
             dataMetaInformationManager
                 .getActiveDataMetaInformationList(
-                    DataDimensionFilter(
+                    DataDimensionQuery(
                         companyIds = listOf(companyA.companyId, companyB.companyId),
                         dataTypes = listOf(defaultDataType.toString(), "lksg"),
                         reportingPeriods = listOf("2022", "2023"),

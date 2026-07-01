@@ -4,7 +4,7 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for ViewFrameworkBase', () => {
   beforeEach(() => {
-    cy.intercept('POST', '/api/data-availability/available-data-dimensions', {
+    cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', {
       fixture: 'BasicDataDimensionsMocksForOneCompany',
       times: 1,
     });

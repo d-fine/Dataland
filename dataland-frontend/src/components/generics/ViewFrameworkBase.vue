@@ -297,7 +297,7 @@ function setQaStatusTo(qaStatus: QaStatus): void {
 async function getMetaData(): Promise<void> {
   try {
     const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.dataAvailabilityController;
-    const response = await api.getAvailableDataDimensions({
+    const response = await api.searchViewableDimensions({
       companyIds: [props.companyID],
       frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
       reportingPeriods: [],

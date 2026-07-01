@@ -231,7 +231,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
     ).data;
     const dataAvailabilityApi = apiClientProvider.backendClients.dataAvailabilityController;
     availableDataDimensions.value = (
-      await dataAvailabilityApi.getAvailableDataDimensions({
+      await dataAvailabilityApi.searchViewableDimensions({
         companyIds: [props.companyId],
         frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
         reportingPeriods: [],

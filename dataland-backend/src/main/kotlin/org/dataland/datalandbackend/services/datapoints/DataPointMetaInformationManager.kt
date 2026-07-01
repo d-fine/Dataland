@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
@@ -176,15 +176,15 @@ class DataPointMetaInformationManager
          * @param dataDimensionFilter filter specifying what to search for
          * @return list of DataPointMetaInformationEntity for active data points matching the filters
          */
-        fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
-            if (dataDimensionFilter.isEmpty()) {
+        fun getActiveDataPointMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> =
+            if (dataDimensionQuery.isEmpty()) {
                 emptyList()
             } else {
                 dataPointMetaInformationRepositoryInterface
                     .findActiveDataPointDimensionsByFilter(
-                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.companyIds.orEmpty()),
-                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.dataTypes.orEmpty()),
-                        defaultObjectMapper.writeValueAsString(dataDimensionFilter.reportingPeriods.orEmpty()),
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.companyIds),
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.dataTypes),
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.reportingPeriods),
                     )
             }
 
