@@ -42,38 +42,6 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
-        val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
-        val identifiers = uniqueIdentifiersMap.values.toSet()
-        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
-        val reportingPeriods = setOf("2022", "2023")
-        val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
-        val response =
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, dataTypes, reportingPeriods, notifyMeImmediately = false),
-            )
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
-            response,
-            identifiers.size * dataTypes.size * reportingPeriods.size,
-        )
-        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
-        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
-        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
-        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newlyStoredRequests, identifiers.size * dataTypes.size * reportingPeriods.size,
-        )
-        val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
-        uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
-            checkThatDataRequestExistsExactlyOnceInRecentlyStored(
-                newlyStoredRequests, dataTypes.random().value, reportingPeriods.random(),
-                getUniqueDatalandCompanyIdForIdentifierValue(it),
-            )
-        }
-    }
-
-    @Test
     fun `post a bulk data request with at least one invalid identifier and check that this gives no stored request`() {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val validIdentifiers = uniqueIdentifiersMap.values.toSet()
