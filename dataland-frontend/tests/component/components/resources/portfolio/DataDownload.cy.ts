@@ -39,11 +39,13 @@ describe('Check the Portfolio Download view', function (): void {
     it('Check framework selection', function (): void {
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
+      cy.get('[data-test="frameworkSelector"]').should('contain.text', 'SFDR');
     });
 
     it('Check file type selection', function (): void {
       cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
+      cy.get('[data-test="fileTypeSelector"]').should('contain.text', 'Comma-separated Values');
     });
 
     it('Check reporting period selection via MultiSelect', function (): void {
@@ -94,6 +96,8 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('Comma-separated Values').click();
       cy.get('[data-test="downloadDataButtonInModal"]').click();
+      cy.get('[data-test="reportingYearError"]').should('not.exist');
+      cy.get('[data-test="fileTypeError"]').should('not.exist');
     });
 
     it('Check that latest reporting period toggle is on by default and disables reporting period selector', function (): void {

@@ -79,7 +79,7 @@ describe('Component test for the LksgPanel', () => {
         cy.get('tbody.p-datatable-tbody p').contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
       }
     }
-    cy.get('div.p-dialog-mask').click({ force: true });
+    cy.get('div.p-dialog-mask').click();
   });
 
   it('Validate that the procurement category modal is displayed and contains the correct headers', () => {
