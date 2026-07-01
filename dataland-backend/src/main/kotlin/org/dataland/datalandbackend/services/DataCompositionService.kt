@@ -83,15 +83,11 @@ class DataCompositionService
         /**
          * Filters out invalid entries from the filter by checking if company IDs, frameworks, and reporting periods are valid.
          *
-         * @param dataDimentionFilter the filter to remove invalid data from
+         * @param dataDimensionQuery the filter to remove invalid data from
          * @return a new filter without any invalid entries
          */
         fun filterOutInvalidDatasetEntries(dataDimensionQuery: DataDimensionQuery) =
-            DataDimensionQuery(
-                companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
-                dataTypes = dataDimensionQuery.dataTypes.filter { specificationService.isFramework(it) },
-                reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
-            )
+            filterDimensionQuery(dataDimensionQuery) { specificationService.isFramework(it) }
 
         /**
          * Filters out invalid data point dimensions by checking if the company ID, data point type, and reporting period are valid.
@@ -108,15 +104,44 @@ class DataCompositionService
         /**
          * Filters out invalid entries from the filter by checking if company IDs, data point types, and reporting periods are valid.
          *
-         * @param dataDimentionFilter the filter to remove invalid data from
+         * @param dataDimensionQuery the filter to remove invalid data from
          * @return a new filter without any invalid entries
          */
         fun filterOutInvalidDataPointEntries(dataDimensionQuery: DataDimensionQuery) =
-            DataDimensionQuery(
-                companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
-                dataTypes = dataDimensionQuery.dataTypes.filter { specificationService.isDataPointType(it) },
-                reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
-            )
+            filterDimensionQuery(dataDimensionQuery) { specificationService.isDataPointType(it) }
+
+        /**
+         * Filters a [DataDimensionQuery] by removing entries failing validation.
+         *
+         * The provided [dataTypeValidator] is used for the dataTypes field. If any field becomes empty after filtering
+         * while it was non-empty originally, an empty query is returned to avoid unintended wildcard matches.
+         *
+         * @param dataDimensionQuery the query to filter
+         * @param dataTypeValidator predicate to determine whether a data type string is valid
+         * @return a filtered query, or an all-empty query if any dimension was entirely invalidated
+         */
+        private fun filterDimensionQuery(
+            dataDimensionQuery: DataDimensionQuery,
+            dataTypeValidator: (String) -> Boolean,
+        ): DataDimensionQuery {
+            val filteredQuery =
+                DataDimensionQuery(
+                    companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
+                    dataTypes = dataDimensionQuery.dataTypes.filter { dataTypeValidator(it) },
+                    reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
+                )
+
+            val filtered = listOf(filteredQuery.companyIds, filteredQuery.dataTypes, filteredQuery.reportingPeriods)
+            val original = listOf(dataDimensionQuery.companyIds, dataDimensionQuery.dataTypes, dataDimensionQuery.reportingPeriods)
+
+            if (filtered.zip(original).any { (filteredList, originalList) ->
+                filteredList.isEmpty() && originalList.isNotEmpty()
+            }) {
+                return DataDimensionQuery(emptyList(), emptyList(), emptyList())
+            }
+
+            return filteredQuery
+        }
 
         /**
          * Returns the calculation rules available for each of the given data point types.

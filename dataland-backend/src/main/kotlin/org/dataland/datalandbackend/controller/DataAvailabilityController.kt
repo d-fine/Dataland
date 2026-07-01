@@ -19,8 +19,12 @@ class DataAvailabilityController(
 ) : DataAvailabilityApi {
     override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> =
         ResponseEntity.ok(
-            if (dimensions.isEmpty()) emptyList()
-            else dataAvailabilityChecker.filterViewableDimensions(dimensions))
+            if (dimensions.isEmpty()) {
+                emptyList()
+            } else {
+                dataAvailabilityChecker.filterViewableDimensions(dimensions)
+            },
+        )
 
     override fun searchViewableDimensions(request: DataDimensionSearchRequest): ResponseEntity<List<BasicDataDimensions>> {
         val dimensionsQuery = request.toDataDimensionQuery()

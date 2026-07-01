@@ -53,7 +53,7 @@ class DataAvailabilityChecker
          */
         private fun getMetaDataOfActiveDatasets(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> {
             val datasetDimensionQuery = dataCompositionService.filterOutInvalidDatasetEntries(dataDimensionQuery)
-            if (datasetDimensionQuery.dataTypes.isEmpty() && !dataDimensionQuery.dataTypes.isEmpty()) {
+            if (datasetDimensionQuery.isEmpty()) {
                 return emptyList()
             }
             return dataMetaInformationManager.getActiveDataMetaInformationList(datasetDimensionQuery)
@@ -80,7 +80,7 @@ class DataAvailabilityChecker
          */
         private fun getMetaDataOfActiveDataPoints(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> {
             val dataPointDimensionQuery = dataCompositionService.filterOutInvalidDataPointEntries(dataDimensionQuery)
-            if (dataPointDimensionQuery.dataTypes.isEmpty() && !dataDimensionQuery.dataTypes.isEmpty()) {
+            if (dataPointDimensionQuery.isEmpty()) {
                 return emptyList()
             }
             return dataPointMetaInformationManager.getActiveDataPointMetaInformationList(dataPointDimensionQuery)
