@@ -52,7 +52,7 @@ export class UploadReports extends UploadDocuments {
   }
 
   validateReportIsListedAsAlreadyUploaded(reportName: string): void {
-    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer`).should('exist');
+    cy.get(`${this.uploadReportsSelector} [data-test="${reportName}AlreadyUploadedContainer"]`).should('exist');
   }
 
   validateReportToUploadHasContainerWithInfoForm(reportName: string): void {
