@@ -4,8 +4,6 @@
       :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
-      :framework="dataType"
-      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
@@ -98,7 +96,6 @@
 </template>
 
 <script setup lang="ts">
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 
@@ -133,7 +130,7 @@ import {
 } from '@clients/backend';
 import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { CompanyRole } from '@clients/communitymanager';
-import { AxiosError, type AxiosRequestConfig } from 'axios';
+import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -157,8 +154,6 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const fetchedCompanyInformation = ref<CompanyInformation>({} as CompanyInformation);
 const availableDataDimensions = ref<BasicDataDimensions[]>([]);
-const activeDataForCurrentCompanyAndFramework = ref<Array<DataAndMetaInformation<FrameworkData>>>([]);
-const chosenDataTypeInDropdown = ref(props.dataType ?? '');
 const isDataProcessedSuccessfully = ref(false);
 const hideEmptyFields = ref(true);
 const hasUserUploaderRights = ref(false);
@@ -171,16 +166,22 @@ const hasUserAdminRights = ref(false);
 const hasUserJudgeRights = ref(false);
 const datasetJudgementId = ref<string | undefined>(undefined);
 
+/**
+ * Map of reporting period to the corresponding active BasicDataDimensions for this company and framework.
+ * Built from searchViewableDimensions (DataAvailabilityController) — the single source of truth for what data is
+ * actually available. This covers non-assembled datasets, standalone data points, and assembled/calculated dimensions.
+ */
 const mapOfReportingPeriodToActiveDataset = computed(() => {
-  const map = new Map<string, DataMetaInformation>();
-  for (const d of activeDataForCurrentCompanyAndFramework.value) {
-    map.set(d.metaInfo.reportingPeriod, d.metaInfo);
+  const map = new Map<string, BasicDataDimensions>();
+  for (const d of availableDataDimensions.value) {
+    if (d.dataType === props.dataType) {
+      map.set(d.reportingPeriod, d);
+    }
   }
   return map;
 });
 
 provide('hideEmptyFields', hideEmptyFields);
-provide('mapOfReportingPeriodToActiveDataset', mapOfReportingPeriodToActiveDataset);
 provide('editModeIsOn', editModeIsOn);
 
 const isReviewableByCurrentUser = computed(
@@ -216,23 +217,8 @@ watch(
     void (async (): Promise<void> => {
       try {
         await getMetaData();
-        await getAllActiveDataForCurrentCompanyAndFramework();
       } catch (error) {
         console.error('Error watching companyID:', error);
-      }
-    })();
-  }
-);
-
-watch(
-  () => props.dataType,
-  (newVal) => {
-    chosenDataTypeInDropdown.value = newVal;
-    void (async (): Promise<void> => {
-      try {
-        await getAllActiveDataForCurrentCompanyAndFramework();
-      } catch (error) {
-        console.error('Error watching dataType:', error);
       }
     })();
   }
@@ -247,13 +233,9 @@ watch(isReviewableByCurrentUser, () => {
 });
 
 onMounted(async () => {
+  await getMetaData();
   if (dataId.value) {
-    await getMetaData();
-    setActiveDataForCurrentCompanyAndFramework(await getFullMetaData());
     await getDatasetJudgementId();
-  } else {
-    await getMetaData();
-    await getAllActiveDataForCurrentCompanyAndFramework();
   }
   await setViewPageAttributesForUser();
 });
@@ -291,8 +273,12 @@ function setQaStatusTo(qaStatus: QaStatus): void {
 }
 
 /**
- * Retrieves available data dimensions for the current company to populate the framework dropdown
- * and the reporting periods for the download dialog.
+ * Retrieves available data dimensions for the current company via the DataAvailabilityController.
+ * This is the single source of truth for what data exists: it covers non-assembled datasets,
+ * standalone data points, and assembled/calculated dimensions.
+ * Populates availableDataDimensions (used for ChangeFrameworkDropdown, DownloadData reporting periods,
+ * and the active-reporting-period map emitted to the parent).
+ * Sets isDataProcessedSuccessfully once the availability call completes.
  */
 async function getMetaData(): Promise<void> {
   try {
@@ -303,69 +289,10 @@ async function getMetaData(): Promise<void> {
       reportingPeriods: [],
     });
     availableDataDimensions.value = response.data;
+    isDataProcessedSuccessfully.value = true;
   } catch (err) {
     isDataProcessedSuccessfully.value = false;
     console.error(err);
-  }
-}
-
-/**
- * Retrieves full dataset metadata for the current company. Used only for fallback paths that
- * require the complete DataMetaInformation shape (e.g. dataId-in-route view and vsme-403 error).
- */
-async function getFullMetaData(): Promise<DataMetaInformation[]> {
-  try {
-    const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.metaDataController;
-    const response = await api.getListOfDataMetaInfo(props.companyID);
-    return response.data;
-  } catch (err) {
-    if (err instanceof AxiosError && err.status === 403) {
-      return [];
-    }
-    throw err;
-  }
-}
-
-/**
- * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
- * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
- * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
- * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
- * filled with retrieved metaData and empty data object.
- */
-async function getAllActiveDataForCurrentCompanyAndFramework(): Promise<void> {
-  try {
-    const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    const frameworkDataApi = getFrameworkDataApiForIdentifier(props.dataType, apiClientProvider);
-
-    const response = await frameworkDataApi?.getAllCompanyData(props.companyID, true);
-    activeDataForCurrentCompanyAndFramework.value = Array.from(response!.data);
-    isDataProcessedSuccessfully.value = true;
-    emit('updateActiveDataMetaInfoForChosenFramework', mapOfReportingPeriodToActiveDataset.value);
-  } catch (error) {
-    if (error instanceof AxiosError && error?.status === 403 && props.dataType === 'vsme') {
-      await getMetaData();
-      setActiveDataForCurrentCompanyAndFramework(await getFullMetaData());
-    } else {
-      isDataProcessedSuccessfully.value = false;
-      console.error(error);
-    }
-  }
-}
-
-/**
- * Get available metaData in case of either insufficient rights.
- * @param fullMetaData the full dataset metadata to use for populating the active data
- */
-function setActiveDataForCurrentCompanyAndFramework(fullMetaData: DataMetaInformation[]): void {
-  if (fullMetaData.length > 0) {
-    activeDataForCurrentCompanyAndFramework.value = fullMetaData.map((meta) => ({
-      metaInfo: meta,
-      data: {},
-    }));
-    isDataProcessedSuccessfully.value = true;
-  } else {
-    isDataProcessedSuccessfully.value = false;
   }
 }
 
