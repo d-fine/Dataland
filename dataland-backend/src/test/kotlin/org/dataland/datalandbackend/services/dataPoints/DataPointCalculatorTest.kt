@@ -18,6 +18,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -46,6 +47,7 @@ class DataPointCalculatorTest {
     private val secondaryCompanyId = "other-company-id"
     private val reportingPeriod = "2023"
     private val framework = "test-framework"
+    private val frameworkName = "Test Framework"
 
     private val sourceTypeA = "sourceDataPointTypeA"
     private val sourceTypeB = "sourceDataPointTypeB"
@@ -119,6 +121,15 @@ class DataPointCalculatorTest {
                 sourceTypeB to makeDataPointTypeSpecification(sourceTypeB),
             ),
         ).whenever(specificationService).getDataPointSpecifications(any())
+        doReturn(
+            FrameworkSpecification(
+                framework = IdWithRef(id = framework, ref = ""),
+                name = frameworkName,
+                businessDefinition = "",
+                schema = "{}",
+                referencedReportJsonPath = null,
+            ),
+        ).whenever(specificationService).getFrameworkSpecification(framework)
     }
 
     @Test
@@ -149,8 +160,10 @@ class DataPointCalculatorTest {
         assertEquals(1, calculatedPoints.size)
         val calculatedPoint = calculatedPoints.first()
         assertEquals(targetType, calculatedPoint.dataPointType)
-        val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(calculatedPoint.dataPoint).value
+        val calculatedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(calculatedPoint.dataPoint)
+        val value = calculatedDataPoint.value
         assertEquals(0, BigDecimal(1.5).compareTo(value!!))
+        assertTrue(calculatedDataPoint.comment?.contains("Framework: \"$frameworkName\"") == true)
     }
 
     @Test

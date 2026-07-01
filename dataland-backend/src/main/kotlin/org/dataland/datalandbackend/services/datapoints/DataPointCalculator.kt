@@ -78,6 +78,7 @@ class DataPointCalculator
          * @param allSourceData source data points available for the fixed company and reporting period
          * @param companyId company id shared by the target data points to calculate
          * @param reportingPeriod reporting period shared by the target data points to calculate
+         * @param sourceFrameworkName display name of the framework the target dataset is assembled for
          * @return A list of all calculated data points (is empty if no calculation was possible)
          */
         private fun calculateDataPoints(
@@ -85,6 +86,7 @@ class DataPointCalculator
             allSourceData: Collection<UploadedDataPoint>,
             companyId: String,
             reportingPeriod: String,
+            sourceFrameworkName: String,
         ): List<UploadedDataPoint> {
             val allSourceDataByType = allSourceData.associateBy { it.dataPointType }
             return potentialCalculations.mapNotNull { (dataPointType, calculationRules) ->
@@ -94,6 +96,7 @@ class DataPointCalculator
                     allSourceData = allSourceDataByType,
                     companyId = companyId,
                     reportingPeriod = reportingPeriod,
+                    sourceFrameworkName = sourceFrameworkName,
                 )
             }
         }
@@ -108,6 +111,7 @@ class DataPointCalculator
          * @param allSourceData available source data points by data point type
          * @param companyId company id of the target data point
          * @param reportingPeriod reporting period of the target data point
+         * @param sourceFrameworkName display name of the framework the target dataset is assembled for
          * @return the first successfully calculated data point, or null if no rule can be applied
          */
         private fun calculateFirstAvailableDataPoint(
@@ -116,6 +120,7 @@ class DataPointCalculator
             allSourceData: Map<DataPointType, UploadedDataPoint>,
             companyId: String,
             reportingPeriod: String,
+            sourceFrameworkName: String,
         ): UploadedDataPoint? {
             val targetDimensions =
                 BasicDataPointDimensions(
@@ -132,6 +137,7 @@ class DataPointCalculator
                     dataPointType = dataPointType,
                     allSourceData = allSourceData,
                     targetDimensions = targetDimensions,
+                    sourceFrameworkName = sourceFrameworkName,
                 )
             }
         }
@@ -143,6 +149,7 @@ class DataPointCalculator
          * @param dataPointType target data point type used for logging
          * @param allSourceData available source data points by data point type
          * @param targetDimensions dimensions of the data point to calculate
+         * @param sourceFrameworkName display name of the framework the target dataset is assembled for
          * @return calculated data point, or null if the rule cannot be applied
          */
         private fun tryCalculateSingleDataPoint(
@@ -150,6 +157,7 @@ class DataPointCalculator
             dataPointType: DataPointType,
             allSourceData: Map<DataPointType, UploadedDataPoint>,
             targetDimensions: BasicDataPointDimensions,
+            sourceFrameworkName: String,
         ): UploadedDataPoint? {
             val orderedInputs =
                 calculationRule.inputs.map { sourceType ->
@@ -160,6 +168,7 @@ class DataPointCalculator
                     inputs = orderedInputs,
                     method = calculationRule.calculationMethod,
                     dataPointDimensions = targetDimensions,
+                    sourceFrameworkName = sourceFrameworkName,
                 )
             } catch (exception: IllegalArgumentException) {
                 logger.error(
@@ -180,12 +189,14 @@ class DataPointCalculator
          * @param inputs ordered source data points for the transformation
          * @param method calculation method name
          * @param dataPointDimensions target data point dimensions
+         * @param sourceFrameworkName display name of the framework the target dataset is assembled for
          * @return the transformed uploaded data point
          */
         private fun calculateSingleDataPoint(
             inputs: Collection<UploadedDataPoint>,
             method: String,
             dataPointDimensions: BasicDataPointDimensions,
+            sourceFrameworkName: String,
         ): UploadedDataPoint {
             val dataPointTypes = inputs.map { it.dataPointType } + dataPointDimensions.dataPointType
             val specs = specificationService.getDataPointSpecifications(dataPointTypes.distinct())
@@ -194,6 +205,7 @@ class DataPointCalculator
                 targetType = dataPointDimensions.dataPointType,
                 method = method,
                 specs = specs,
+                sourceFrameworkName = sourceFrameworkName,
             )
         }
 
@@ -245,12 +257,14 @@ class DataPointCalculator
             val calculatedData =
                 potentialCalculations
                     .mapNotNull { (datasetDimensions, calculations) ->
+                        val sourceFrameworkName = specificationService.getFrameworkSpecification(datasetDimensions.framework).name
                         val calculatedDataPoints =
                             calculateDataPoints(
                                 companyId = datasetDimensions.companyId,
                                 reportingPeriod = datasetDimensions.reportingPeriod,
                                 potentialCalculations = calculations,
                                 allSourceData = sourceData.getValue(datasetDimensions),
+                                sourceFrameworkName = sourceFrameworkName,
                             )
                         calculatedDataPoints.takeIf { it.isNotEmpty() }?.let { datasetDimensions to it }
                     }.toMap()
