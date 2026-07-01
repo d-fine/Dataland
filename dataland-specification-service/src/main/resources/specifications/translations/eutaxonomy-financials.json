@@ -8,7 +8,7 @@
         "referencedReports" : "REFERENCED_REPORTS",
         "areAllGroupEntitiesCovered" : "ALL_GROUP_ENTITIES_COVERED",
         "numberOfEmployees" : "NO_OF_EMPLOYEES",
-        "isNfrdMandatory" : "NFRD_MANDATORY",
+        "isEuTaxonomyDataReportedOnAMandatoryBasis" : "NFRD_MANDATORY",
         "assurance" : "ASSURANCE"
       }
     },

@@ -3,7 +3,7 @@
   "name" : "Is NFRD mandatory?",
   "businessDefinition" : "Is the NFRD mandatory for your company?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-non-financials" ],
+  "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
   "constraints" : null,
   "calculationRules" : [ {
     "inputs" : [ "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis" ],

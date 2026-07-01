@@ -8540,7 +8540,7 @@
           "numberOfEmployees": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "isNfrdMandatory": {
+          "isEuTaxonomyDataReportedOnAMandatoryBasis": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "assurance": {
