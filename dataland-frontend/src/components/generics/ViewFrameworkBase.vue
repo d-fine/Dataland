@@ -314,9 +314,16 @@ async function getMetaData(): Promise<void> {
  * require the complete DataMetaInformation shape (e.g. dataId-in-route view and vsme-403 error).
  */
 async function getFullMetaData(): Promise<DataMetaInformation[]> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.metaDataController;
-  const response = await api.getListOfDataMetaInfo(props.companyID);
-  return response.data;
+  try {
+    const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.metaDataController;
+    const response = await api.getListOfDataMetaInfo(props.companyID);
+    return response.data;
+  } catch (err) {
+    if (err instanceof AxiosError && err.status === 403) {
+      return [];
+    }
+    throw err;
+  }
 }
 
 /**

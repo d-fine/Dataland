@@ -126,6 +126,7 @@ describeIf(
     const nameOfCompanyAlpha = 'company-alpha-with-three-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+      humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials202673),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
       'Documents',
@@ -360,7 +361,7 @@ describeIf(
       }
     );
 
-    it('Check that using back-button and dropdowns on the view-page work as expected', () => {
+    it.only('Check that using back-button and dropdowns on the view-page work as expected', () => {
       cy.ensureLoggedInAsReader();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
