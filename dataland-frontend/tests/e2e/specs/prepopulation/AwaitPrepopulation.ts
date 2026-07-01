@@ -16,9 +16,7 @@ describeIf(
     let prepopulatedDataTypes: string[] = [];
 
     before(function () {
-      const dataTypesWithToolboxSupport = Object.values(DataTypeEnum);
-      // At the moment, VSME prepopulation is broken.
-      prepopulatedDataTypes = dataTypesWithToolboxSupport.filter((element) => element !== 'vsme');
+      prepopulatedDataTypes = Object.values(DataTypeEnum);
       const fixtures = prepopulatedDataTypes.map((dataType) =>
         `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replaceAll('-', '')
       );

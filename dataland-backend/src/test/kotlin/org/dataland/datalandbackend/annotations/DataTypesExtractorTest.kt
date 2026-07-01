@@ -14,7 +14,6 @@ class DataTypesExtractorTest {
                 "eutaxonomy-non-financials-2026-73",
                 "lksg",
                 "sfdr",
-                "vsme",
                 "nuclear-and-gas",
                 "pcaf",
             )

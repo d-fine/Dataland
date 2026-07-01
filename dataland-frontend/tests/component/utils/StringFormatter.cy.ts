@@ -1,7 +1,6 @@
 import { convertKebabCaseToPascalCase, humanizeStringOrNumber, toSafeDisplayString } from '@/utils/StringFormatter';
 import { DataTypeEnum } from '@clients/backend';
 import { PublicFrameworkDefinitions } from '@/frameworks/BasePublicFrameworkRegistryImports';
-import { PrivateFrameworkDefinitions } from '@/frameworks/BasePrivateFrameworkRegistryImports';
 
 describe('Unit test for StringFormatter', () => {
   it('Check if specific keywords are converted correctly', () => {
@@ -26,7 +25,6 @@ describe('Unit test for StringFormatter', () => {
 
   it('Check that framework identifiers are being formatted correctly', () => {
     expect(humanizeStringOrNumber(DataTypeEnum.Lksg)).to.equal(PublicFrameworkDefinitions[DataTypeEnum.Lksg].label);
-    expect(humanizeStringOrNumber(DataTypeEnum.Vsme)).to.equal(PrivateFrameworkDefinitions[DataTypeEnum.Vsme].label);
   });
 
   it('Check that kebab case is converted correctly to camel case', () => {

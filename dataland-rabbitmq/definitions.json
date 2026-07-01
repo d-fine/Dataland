@@ -96,24 +96,6 @@
       "arguments": {}
     },
     {
-      "name": "privateItemStored",
-      "vhost": "vhost",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {}
-    },
-    {
-      "name": "privateRequestReceived",
-      "vhost": "vhost",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {}
-    },
-    {
       "name": "backend.dataPoints",
       "vhost": "vhost",
       "type": "direct",

@@ -165,17 +165,3 @@ export function mountCompanyCockpitWithAuthentication(
   cy.wait('@fetchCompanyOwnershipExistence');
   return chainable;
 }
-
-/**
- * Validates the vsme framework summary panel
- * @param isUserCompanyOwner is the current user company owner
- */
-export function validateVsmeFrameworkSummaryPanel(isUserCompanyOwner: boolean): void {
-  const frameworkName = 'vsme';
-  const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;
-  if (isUserCompanyOwner) {
-    cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('exist');
-  } else {
-    cy.get(`${frameworkSummaryPanelSelector} [data-test="${frameworkName}-provide-data-button"]`).should('not.exist');
-  }
-}

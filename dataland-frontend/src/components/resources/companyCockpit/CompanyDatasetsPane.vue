@@ -43,7 +43,7 @@
         <FrameworkSummaryPanel
           v-for="framework of frameworksToDisplay"
           :key="framework"
-          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework()"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -82,7 +82,6 @@ import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwne
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { isFrameworkPublic } from '@/utils/Frameworks';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter';
@@ -152,8 +151,8 @@ function routeToDocuments(): void {
 /**
  * Determines if the user is allowed to upload for a given framework.
  */
-function isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-  return isUserCompanyOwnerOrUploader.value || (isFrameworkPublic(framework) && isUserKeycloakUploader.value);
+function isUserAllowedToUploadForFramework(): boolean {
+  return isUserCompanyOwnerOrUploader.value || isUserKeycloakUploader.value;
 }
 
 /**

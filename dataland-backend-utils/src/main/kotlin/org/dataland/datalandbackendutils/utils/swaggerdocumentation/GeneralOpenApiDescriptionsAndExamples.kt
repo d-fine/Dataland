@@ -98,7 +98,7 @@ object GeneralOpenApiDescriptionsAndExamples {
             "name that cannot be identified will result in an error, and no requests will be created."
     const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
         "[\"sfdr\",\"eutaxonomy-financials\",\"eutaxonomy-financials-2026-73\"," +
-            "\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"pcaf\",\"vsme\"]"
+            "\"eutaxonomy-non-financials\",\"nuclear-and-gas\",\"lksg\",\"pcaf\"]"
 
     const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
         "A set of reporting periods (years) on Dataland. Requests will be posted for all specified reporting periods."

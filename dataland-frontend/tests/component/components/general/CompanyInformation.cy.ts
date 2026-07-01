@@ -1,7 +1,7 @@
 import CompanyInformationComponent from '@/components/pages/CompanyInformation.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { type CompanyInformation, type VsmeData } from '@clients/backend';
-import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { type CompanyInformation, type LksgData } from '@clients/backend';
+import { type FixtureData } from '@sharedUtils/Fixtures';
 import { type StoredDataRequest } from '@clients/communitymanager';
 import router from '@/router';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -15,14 +15,10 @@ describe('Component tests for the company info sheet', function (): void {
 
   let companyInformationForTest: CompanyInformation;
   let mockedStoredDataRequests: StoredDataRequest[];
-  let vsmeFixtureForTest: FixtureData<VsmeData>;
 
   before(function () {
-    cy.fixture('CompanyInformationWithVsmePreparedFixtures').then(function (jsonContent) {
-      const preparedFixturesSme = jsonContent as Array<FixtureData<VsmeData>>;
-      vsmeFixtureForTest = getPreparedFixture('Vsme-dataset-with-no-null-fields', preparedFixturesSme);
-
-      companyInformationForTest = vsmeFixtureForTest.companyInformation;
+    cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
+      companyInformationForTest = (jsonContent as Array<FixtureData<LksgData>>)[0].companyInformation;
       companyInformationForTest.parentCompanyLei = dummyParentCompanyLei;
       companyInformationForTest.identifiers = {
         Lei: [dummyCompanyLei],

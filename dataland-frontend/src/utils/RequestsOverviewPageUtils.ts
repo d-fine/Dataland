@@ -1,4 +1,3 @@
-import { RequestPriority } from '@clients/communitymanager';
 import {
   type FrameworkSelectableItem,
   type DisplayedStateSelectableItem,
@@ -11,6 +10,7 @@ import {
   type DataSourcingEnhancedRequest,
   DataSourcingState,
   DisplayedState,
+  RequestPriority,
   RequestState,
 } from '@clients/datasourcingservice';
 

@@ -154,7 +154,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import { DatasetJudgementState } from '@clients/qaservice';
-import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/Frameworks.ts';
+import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/FrameworkFamilies.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';

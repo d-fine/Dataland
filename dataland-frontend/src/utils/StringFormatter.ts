@@ -5,7 +5,6 @@
 import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
-import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
@@ -126,8 +125,7 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
     return '';
   }
 
-  const frameworkLabel =
-    getBasePublicFrameworkDefinition(rawInput)?.label ?? getBasePrivateFrameworkDefinition(rawInput)?.label;
+  const frameworkLabel = getBasePublicFrameworkDefinition(rawInput)?.label;
   if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
   return resultOfCustomMappingHumanisation === ''

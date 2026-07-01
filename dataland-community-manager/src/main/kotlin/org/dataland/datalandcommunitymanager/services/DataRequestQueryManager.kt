@@ -175,7 +175,6 @@ class DataRequestQueryManager
 
         /**
          * Method to get all data requests based on filters.
-         * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
          * @param chunkSize the size of entries per chunk which should be returned
@@ -183,7 +182,6 @@ class DataRequestQueryManager
          */
         @Transactional
         fun getDataRequests(
-            ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
             companySearchString: String?,
             chunkIndex: Int?,
@@ -206,7 +204,7 @@ class DataRequestQueryManager
 
             val extendedStoredDataRequestsWithMails =
                 dataRequestMasker.addEmailAddressIfAllowedToSee(
-                    extendedStoredDataRequests, ownedCompanyIdsByUser, filter,
+                    extendedStoredDataRequests, filter,
                 )
             val extendedStoredDataRequestsFilteredAdminComment =
                 dataRequestMasker.hideAdminCommentForNonAdmins(extendedStoredDataRequestsWithMails)

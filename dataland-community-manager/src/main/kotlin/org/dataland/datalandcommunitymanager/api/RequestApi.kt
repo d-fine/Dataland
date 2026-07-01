@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.validator.MinimumTrimmedSize
-import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AccessStatusParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.AdminCommentParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CommunityManagerOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterNonRequired
@@ -23,7 +22,6 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPer
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestPriorityParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.RequestStatusParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserIdParameterNonRequired
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -226,7 +224,6 @@ interface RequestApi {
      *  returned
      * @param adminComment If set, only comments with this substring are returned
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
-     * @param accessStatus If set, only the requests with an access status in accessStatus are returned
      * @param requestPriority If set, only the requests with this priority are returned
      * @param reportingPeriods If set, only the requests with one of these reportingPeriods are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
@@ -268,9 +265,6 @@ interface RequestApi {
         @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
         @RequestParam(required = false)
-        @AccessStatusParameterNonRequired
-        accessStatus: Set<AccessStatus>?,
-        @RequestParam(required = false)
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,
         @RequestParam(required = false)
@@ -308,7 +302,6 @@ interface RequestApi {
      *  counted
      * @param adminComment If set, only comments with this substring are counted
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
-     * @param accessStatus If set, only the requests with an access status in accessStatus are counted
      * @param requestPriority If set, only the requests with this priority are counted
      * @param reportingPeriods If set, only the requests with one of these reportingPeriods are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
@@ -347,9 +340,6 @@ interface RequestApi {
         @RequestParam(required = false)
         @RequestStatusParameterNonRequired
         requestStatus: Set<RequestStatus>?,
-        @RequestParam(required = false)
-        @AccessStatusParameterNonRequired
-        accessStatus: Set<AccessStatus>?,
         @RequestParam(required = false)
         @RequestPriorityParameterNonRequired
         requestPriority: Set<RequestPriority>?,

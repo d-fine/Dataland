@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -38,7 +37,7 @@ class QueryDataRequestsTest {
 
     private val dataTypeGetDataRequestsSfdr = RequestControllerApi.DataTypeGetDataRequests.sfdr
     private val dataTypeGetDataRequestsLksg = RequestControllerApi.DataTypeGetDataRequests.lksg
-    private val dataTypeGetDataRequestsVsme = RequestControllerApi.DataTypeGetDataRequests.vsme
+    private val dataTypeGetDataRequestsPcaf = RequestControllerApi.DataTypeGetDataRequests.pcaf
 
     private fun postSingleDataRequest(
         companyId: String,
@@ -88,7 +87,7 @@ class QueryDataRequestsTest {
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
         withTechnicalUser(TechnicalUser.PremiumUser) {
-            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
+            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.pcaf, setOf("2022", "2023"))
             postSingleDataRequest(companyIdB, SingleDataRequest.DataType.lksg, setOf("2023"))
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -120,21 +119,21 @@ class QueryDataRequestsTest {
         assertEquals(1, lksgDataRequests.size)
         assertEquals(DataTypeEnum.lksg.value, lksgDataRequests.first().dataType)
 
-        val vsmeDataRequests =
+        val pcafDataRequests =
             api
-                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsVsme), chunkSize = chunkSize)
+                .getDataRequests(dataType = listOf(dataTypeGetDataRequestsPcaf), chunkSize = chunkSize)
                 .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(2, vsmeDataRequests.size)
-        vsmeDataRequests.forEach { assertEquals(DataTypeEnum.vsme.value, it.dataType) }
+        assertEquals(2, pcafDataRequests.size)
+        pcafDataRequests.forEach { assertEquals(DataTypeEnum.pcaf.value, it.dataType) }
 
-        val vsmeAndLksgDataRequests =
+        val pcafAndLksgDataRequests =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsVsme, dataTypeGetDataRequestsLksg), chunkSize = chunkSize,
+                    dataType = listOf(dataTypeGetDataRequestsPcaf, dataTypeGetDataRequestsLksg), chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, vsmeAndLksgDataRequests.size)
-        vsmeDataRequests.forEach {
-            assertTrue(listOf(DataTypeEnum.vsme.value, DataTypeEnum.lksg.value).contains(it.dataType))
+        assertEquals(3, pcafAndLksgDataRequests.size)
+        pcafAndLksgDataRequests.forEach {
+            assertTrue(listOf(DataTypeEnum.pcaf.value, DataTypeEnum.lksg.value).contains(it.dataType))
         }
     }
 
@@ -201,31 +200,6 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `query data requests with access status filter and assert that the expected results are being retrieved`() {
-        val grantedAccessRequests =
-            api
-                .getDataRequests(accessStatus = setOf(AccessStatus.Granted), chunkSize = chunkSize)
-                .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(0, grantedAccessRequests.size)
-
-        val publicAccessRequests =
-            api
-                .getDataRequests(accessStatus = setOf(AccessStatus.Public), chunkSize = chunkSize)
-                .filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(1, publicAccessRequests.size)
-        assertEquals(companyIdB, publicAccessRequests.first().datalandCompanyId)
-        assertEquals(AccessStatus.Public, publicAccessRequests.first().accessStatus)
-
-        val pendingAndPublicAccessRequests =
-            api
-                .getDataRequests(
-                    accessStatus = setOf(AccessStatus.Pending, AccessStatus.Public),
-                    chunkSize = chunkSize,
-                ).filter { it.creationTimestamp > timestampBeforePost }
-        assertEquals(3, pendingAndPublicAccessRequests.size)
-    }
-
-    @Test
     fun `query data requests with company id filter and assert that the expected results are being retrieved`() {
         val storedDataRequestsForRandomCompanyId =
             api
@@ -265,9 +239,10 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `query data requests and assert that email address is only populated for admin or owned companies`() {
+    fun `query data requests and assert that email address is only populated for admins`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
+            assertEquals(2, dataRequests.size)
             assertTrue(dataRequests.all { it.userEmailAddress != null })
         }
 
@@ -282,7 +257,7 @@ class QueryDataRequestsTest {
         withTechnicalUser(queryingUser) {
             val dataRequests = api.getDataRequests(datalandCompanyId = companyIdA)
             assertEquals(2, dataRequests.size)
-            assertTrue(dataRequests.all { it.userEmailAddress != null })
+            assertTrue(dataRequests.all { it.userEmailAddress == null })
         }
 
         removeCompanyOwnershipFromUser(companyIdA, queryingUser.technicalUserId)
@@ -320,9 +295,8 @@ class QueryDataRequestsTest {
         val combinedQueryResults =
             api
                 .getDataRequests(
-                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsVsme),
+                    dataType = listOf(dataTypeGetDataRequestsSfdr, dataTypeGetDataRequestsLksg, dataTypeGetDataRequestsPcaf),
                     requestStatus = setOf(RequestStatus.Open, RequestStatus.Resolved),
-                    accessStatus = setOf(AccessStatus.Pending),
                     reportingPeriods = setOf("2023"),
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }

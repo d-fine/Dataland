@@ -3,7 +3,6 @@ import { type Suite } from 'mocha';
 export interface ExecutionConfig {
   executionEnvironments: Array<ExecutionEnvironment>;
   onlyExecuteOnDatabaseReset?: boolean;
-  onlyExecuteWhenEurodatIsLive?: boolean;
 }
 export type ExecutionEnvironment = 'developmentLocal' | 'ci' | 'developmentCd' | 'previewCd';
 
@@ -17,7 +16,6 @@ export type ExecutionEnvironment = 'developmentLocal' | 'ci' | 'developmentCd' |
 export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this: Suite) => void): Suite {
   const executionEnvironment = Cypress.expose('EXECUTION_ENVIRONMENT') as ExecutionEnvironment;
   const isDatabaseReset = Cypress.expose('RESET_DATABASE') as boolean;
-  const ignoreExternalStorage = Cypress.expose('IGNORE_EXTERNAL_STORAGE') as boolean;
 
   if (!execConfig.executionEnvironments.includes(executionEnvironment)) {
     return describe(`${name} - Disabled`, () => {
@@ -39,13 +37,5 @@ export function describeIf(name: string, execConfig: ExecutionConfig, fn: (this:
       });
     });
   }
-  if (execConfig.onlyExecuteWhenEurodatIsLive && ignoreExternalStorage) {
-    return describe(`${name} - Disabled`, () => {
-      it(`Has been disabled because the tests are only run when eurodat is live`, () => {
-        // Stub-Test just so its displayed why test suit wasn't executed
-      });
-    });
-  }
-
   return describe(name, fn);
 }

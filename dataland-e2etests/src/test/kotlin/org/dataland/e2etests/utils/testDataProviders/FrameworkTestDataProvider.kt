@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsD
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
-import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import java.io.File
 import java.util.UUID
 
@@ -47,11 +46,6 @@ class FrameworkTestDataProvider<T>(
                     FrameworkTestDataConfiguration(
                         File("./build/resources/test/CompanyInformationWithSfdrData.json"),
                         File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"),
-                    ),
-                VsmeData::class.java to
-                    FrameworkTestDataConfiguration(
-                        File("./build/resources/test/CompanyInformationWithVsmeData.json"),
-                        File("./build/resources/test/CompanyInformationWithVsmePreparedFixtures.json"),
                     ),
             )
 
