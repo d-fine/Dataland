@@ -19,7 +19,7 @@ COPY ./.git/ ./.git
 
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:copyAstroWebsite --no-daemon --stacktrace
 
-FROM node:24.17.0@sha256:733e1c06ada118ed9f6133a31aa1290be6929664026fb28821500437c61f2c6f as production-stage
+FROM node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b as production-stage
 COPY ./dataland-frontend /app/dataland-frontend
 COPY ./dataland-sharedElements /app/dataland-sharedElements
 COPY --from=build-stage /app/dataland-frontend/build/clients /app/dataland-frontend/build/clients

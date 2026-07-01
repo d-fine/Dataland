@@ -11,7 +11,7 @@ FROM registry.access.redhat.com/ubi9@sha256:2c9bb68a869abf7d7417f6639509ab5eb850
 RUN mkdir -p /mnt/rootfs
 RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
-FROM quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
+FROM quay.io/keycloak/keycloak:26.4.6@sha256:d0d4037f17521a7f06137afd5a0eecb1f977f4ade773ae7755f1ee82cad8a576
 
 COPY --from=ubi-micro-build /mnt/rootfs /
 
