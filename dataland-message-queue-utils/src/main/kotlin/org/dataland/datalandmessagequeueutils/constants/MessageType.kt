@@ -13,8 +13,6 @@ object MessageType {
     const val METAINFO_UPDATED = "DataMetaInformation updated"
     const val QA_REQUESTED = "QA requested"
     const val SEND_EMAIL = "Send email"
-    const val PRIVATE_DATA_STORED = "Private Data Stored"
-    const val PRIVATE_DATA_RECEIVED = "Private Data received"
     const val QA_STATUS_UPDATED = "QA status updated"
     const val DATA_SOURCING_NON_SOURCEABLE = "DataSourcing non-sourceable" // This is for user notifications, maybe change process
     const val NON_SOURCEABILITY_CREATED = "NonSourceability created"

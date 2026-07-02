@@ -48,7 +48,9 @@
         >
           <tbody class="p-datatable-body">
             <tr>
-              <th scope="row" class="headers-bg">Value</th>
+              <th scope="row" class="headers-bg">
+                <label for="custom-value-field">Value</label>
+              </th>
               <td>
                 <InputText
                   id="custom-value-field"
@@ -61,7 +63,9 @@
               </td>
             </tr>
             <tr>
-              <th scope="row" class="headers-bg">Quality</th>
+              <th scope="row" class="headers-bg">
+                <label for="custom-quality-field">Quality</label>
+              </th>
               <td>
                 <Select
                   v-model="formData.quality"
@@ -72,11 +76,15 @@
                   fluid
                   placeholder="Select Quality"
                   data-test="custom-quality-field"
+                  inputId="custom-quality-field"
+                  aria-label="Quality"
                 />
               </td>
             </tr>
             <tr>
-              <th scope="row" class="headers-bg">Document</th>
+              <th scope="row" class="headers-bg">
+                <label for="custom-document-field">Document</label>
+              </th>
               <td>
                 <Select
                   v-model="formData.document"
@@ -87,11 +95,15 @@
                   fluid
                   placeholder="Select Document"
                   data-test="custom-document-field"
+                  inputId="custom-document-field"
+                  aria-label="Document"
                 />
               </td>
             </tr>
             <tr>
-              <th scope="row" class="headers-bg">Page(s)</th>
+              <th scope="row" class="headers-bg">
+                <label for="custom-pages-field">Page(s)</label>
+              </th>
               <td>
                 <InputText
                   id="custom-pages-field"
@@ -104,7 +116,9 @@
               </td>
             </tr>
             <tr>
-              <th scope="row" class="headers-bg">Comment</th>
+              <th scope="row" class="headers-bg">
+                <label for="custom-comment-field">Comment</label>
+              </th>
               <td>
                 <InputText
                   id="custom-comment-field"
@@ -129,6 +143,7 @@
         size="small"
         spellcheck="false"
         data-test="custom-json-textarea"
+        aria-label="Custom data point JSON"
         style="height: 10.8rem; overflow: auto; resize: none"
       />
     </div>

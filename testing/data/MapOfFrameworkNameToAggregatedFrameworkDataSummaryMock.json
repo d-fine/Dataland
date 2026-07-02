@@ -22,8 +22,5 @@
 	},
 	"pcaf": {
 		"numberOfProvidedReportingPeriods": 26
-	},
-	"vsme": {
-		"numberOfProvidedReportingPeriods": 13
 	}
 }

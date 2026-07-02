@@ -47,7 +47,6 @@ export default defineConfig({
       process.env.CYPRESS_RUN_PREPOPULATION == null ? true : process.env.CYPRESS_RUN_PREPOPULATION === 'true',
     EXECUTION_ENVIRONMENT: process.env.CYPRESS_EXECUTION_ENVIRONMENT ?? 'developmentLocal',
     RESET_DATABASE: process.env.CYPRESS_RESET_DATABASE,
-    IGNORE_EXTERNAL_STORAGE: process.env.CYPRESS_IGNORE_EXTERNAL_STORAGE,
   },
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,

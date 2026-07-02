@@ -2,8 +2,6 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
-import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -16,13 +14,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
-import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.DataRequestUpdateManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.UserAuthenticationTool
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -41,7 +37,6 @@ class RequestController
         private val singleDataRequestManager: SingleDataRequestManager,
         private val dataRequestQueryManager: DataRequestQueryManager,
         private val dataRequestUpdateManager: DataRequestUpdateManager,
-        private val companyRolesManager: CompanyRolesManager,
     ) : RequestApi {
         override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> =
             ResponseEntity.ok(
@@ -88,7 +83,6 @@ class RequestController
             emailAddress: String?,
             adminComment: String?,
             requestStatus: Set<RequestStatus>?,
-            accessStatus: Set<AccessStatus>?,
             requestPriority: Set<RequestPriority>?,
             reportingPeriods: Set<String>?,
             datalandCompanyId: String?,
@@ -104,21 +98,12 @@ class RequestController
                     datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                     reportingPeriods,
                     requestStatus,
-                    accessStatus,
                     adminComment,
                     requestPriority,
                 )
 
-            val authenticationContext = DatalandAuthentication.fromContext()
-
-            val ownedCompanyIdsByUser =
-                companyRolesManager
-                    .getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, null, authenticationContext.userId)
-                    .map { it.companyId }
-
             return ResponseEntity.ok(
                 dataRequestQueryManager.getDataRequests(
-                    ownedCompanyIdsByUser,
                     filter,
                     companySearchString,
                     chunkIndex,
@@ -133,7 +118,6 @@ class RequestController
             emailAddress: String?,
             adminComment: String?,
             requestStatus: Set<RequestStatus>?,
-            accessStatus: Set<AccessStatus>?,
             requestPriority: Set<RequestPriority>?,
             reportingPeriods: Set<String>?,
             datalandCompanyId: String?,
@@ -147,7 +131,6 @@ class RequestController
                     datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                     reportingPeriods,
                     requestStatus,
-                    accessStatus,
                     adminComment,
                     requestPriority,
                 )

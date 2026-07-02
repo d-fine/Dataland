@@ -264,7 +264,7 @@ class PreApprovalServiceTest {
             val service =
                 buildServiceWithoutLiveDataset(
                     autoPreApprovalEnabled = true,
-                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.vsme to setOf(fieldName))),
+                    exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.lksg to setOf(fieldName))),
                 )
             val reports = listOf(buildQaReport(dummyReporter1, QaReportDataPointVerdict.QaAccepted))
 

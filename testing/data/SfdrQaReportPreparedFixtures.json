@@ -2,38 +2,41 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Theresaburgh",
-			"headquartersPostalCode": "06118-6050",
-			"sector": "methodologies",
+			"headquarters": "North Johnathan",
+			"headquartersPostalCode": "12777",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"qP8fXp68xtYtx5up4vn0"
+					"fMYboJnMdT8mJ8TZBqNC"
 				],
 				"Isin": [
-					"HR32kGQnQQhH"
+					"0s9jlESjuRPo"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"9MOdIR0KO"
+				"PermId": [
+					"YFBfWqyAWW"
 				],
+				"Ticker": [
+					"wvNRyvD"
+				],
+				"Duns": [
+					"y7tjmLcXE"
+				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SK",
+			"countryCode": "PE",
 			"companyContactDetails": [
-				"Darla.Christiansen@example.com",
-				"Lola.Mann73@example.com",
-				"Colleen.Leuschke83@example.com"
+				"Lizzie51@example.com"
 			],
 			"companyAlternativeNames": [
-				"Hoppe, Von and Monahan",
-				"Kihn LLC",
-				"Runte Inc"
+				"Beer, Parker and Smitham",
+				"Bosco, Blick and Abernathy",
+				"Jerde-Boyle - Kozey",
+				"Weissnat, Erdman and Lueilwitz"
 			],
-			"companyLegalForm": null,
-			"website": "https://aggravating-outrun.org",
-			"fiscalYearEnd": "17-Nov",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://angelic-widow.info",
+			"fiscalYearEnd": "15-Mar",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -50,6 +53,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2021"
 	}
 ]

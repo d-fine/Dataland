@@ -3,13 +3,15 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    sourceSets.asMap.values.flatMap { sourceSet ->
-        sourceSet.output.classesDirs.flatMap {
-            fileTree(it) {
-                exclude("**/openApiClient/**")
-            }.files
-        }
-    },
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -83,7 +85,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -113,7 +115,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     description = "Task to generate clients for the community manager service."
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
-    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/community-manager")
@@ -143,7 +145,7 @@ tasks.register("generateSpecificationClient", org.openapitools.generator.gradle.
     description = "Task to generate clients for the specification service."
     group = "clients"
     val specificationServicePackage = "org.dataland.datalandspecificationservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/specification-service")
@@ -173,7 +175,7 @@ tasks.register("generateDataSourcingServiceClient", org.openapitools.generator.g
     description = "Task to generate clients for the data sourcing service."
     group = "clients"
     val dataSourcingServiceClientDestinationPackage = "org.dataland.dataSourcingService.openApiClient"
-    input = project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-data-sourcing-service/dataSourcingServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/data-sourcing-service")

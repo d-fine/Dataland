@@ -52,7 +52,7 @@ describe('Component test for ApiKeyCard.vue', () => {
       cy.get('ul[role="listbox"]').find('[aria-label="7 days"]').click();
       cy.get('#expiryTimeWrapper').should('contain.text', `The API Key will expire on`);
       cy.get('div#expiryTime').click();
-      cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click({ force: true });
+      cy.get('ul[role="listbox"]').find('[aria-label="Custom..."]').click();
       cy.get('#expiryTimeWrapper').should('not.exist');
       cy.get('[data-test="expiryDatePicker"]').should('be.visible');
       cy.get('button.p-datepicker-dropdown').click();

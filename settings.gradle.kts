@@ -21,8 +21,6 @@ include(
     "dataland-framework-toolbox",
     "dataland-community-manager",
     "dataland-email-service",
-    "dataland-external-storage",
-    "dataland-dummy-eurodat-client",
     "dataland-data-exporter",
     "dataland-specification-lib",
     "dataland-specification-service",
@@ -33,7 +31,7 @@ include(
 
 plugins {
     // See https://splitties.github.io/refreshVersions
-    id("de.fayard.refreshVersions") version "0.60.5"
+    id("de.fayard.refreshVersions") version "0.60.6"
 }
 
 refreshVersions {

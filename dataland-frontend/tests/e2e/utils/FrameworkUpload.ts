@@ -9,8 +9,6 @@ import {
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
-import { admin_userId } from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
 import { CompanyRole } from '@clients/communitymanager';
 import {

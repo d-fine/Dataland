@@ -31,7 +31,6 @@ Use this when the user asks to regenerate an OpenAPI spec, when a backend contra
 - `dataland-data-sourcing-service`
 - `dataland-document-manager`
 - `dataland-email-service`
-- `dataland-external-storage`
 - `dataland-internal-storage`
 - `dataland-qa-service`
 - `dataland-specification-service`

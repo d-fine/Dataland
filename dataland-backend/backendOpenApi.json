@@ -977,79 +977,6 @@
         }
       }
     },
-    "/data/vsme": {
-      "post": {
-        "tags": [
-          "vsme-data-controller"
-        ],
-        "operationId": "postVsmeJsonAndDocuments",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "companyAssociatedVsmeData",
-                  "documents"
-                ],
-                "type": "object",
-                "properties": {
-                  "companyAssociatedVsmeData": {
-                    "$ref": "#/components/schemas/CompanyAssociatedDataVsmeData"
-                  },
-                  "documents": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added data to the private data store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/sfdr": {
       "post": {
         "tags": [
@@ -4569,111 +4496,6 @@
         }
       }
     },
-    "/internal/cached/private/{dataId}": {
-      "get": {
-        "tags": [
-          "temporarily-cached-data-controller"
-        ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided data ID is retrieved.",
-        "operationId": "getReceivedPrivateJson",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved dataset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/internal/cached/private/document/{hash}": {
-      "get": {
-        "tags": [
-          "temporarily-cached-data-controller"
-        ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided sha256 hash is retrieved.",
-        "operationId": "getReceivedPrivateDocument",
-        "parameters": [
-          {
-            "name": "hash",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved blob.",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/export/{exportJobId}/state": {
       "get": {
         "tags": [
@@ -4775,223 +4597,6 @@
           },
           "404": {
             "description": "Export job Id could not be found."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/vsme/{dataId}": {
-      "get": {
-        "tags": [
-          "vsme-data-controller"
-        ],
-        "operationId": "getCompanyAssociatedVsmeData",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved dataset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataVsmeData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/vsme/documents": {
-      "get": {
-        "tags": [
-          "vsme-data-controller"
-        ],
-        "operationId": "getPrivateDocument",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "hash",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully received document.",
-            "headers": {
-              "Content-Disposition": {
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              },
-              "application/pdf": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/vsme/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "vsme-data-controller"
-        ],
-        "operationId": "getFrameworkDatasetsForCompany",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved vsme datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationVsmeData"
-                  }
-                }
-              }
-            }
           },
           "default": {
             "description": "An error occurred",
@@ -8759,119 +8364,7 @@
           }
         }
       },
-      "Address": {
-        "required": [
-          "city",
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "streetAndHouseNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "postalCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string"
-          }
-        }
-      },
-      "AreaAdjointness": {
-        "type": "string",
-        "enum": [
-          "In",
-          "Near"
-        ]
-      },
-      "BaseDataPointString": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
-        "example": [
-          {
-            "value": "lifetime value",
-            "dataSource": {
-              "fileName": "Certification",
-              "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-            }
-          },
-          {
-            "value": "technologies",
-            "dataSource": {
-              "fileName": "Policy",
-              "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-            }
-          }
-        ]
-      },
-      "BaseDataPointYesNo": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Has the sustainability report been prepared on a consolidated basis (i.e., the report includes information of the undertaking and its subsidiaries) or on an individual basis (i.e., the report is limited only to the information of the undertaking)?",
-        "example": "Yes"
-      },
-      "BaseDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "publicationDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          }
-        }
-      },
-      "CompanyAssociatedDataVsmeData": {
+      "CompanyAssociatedDataSfdrData": {
         "required": [
           "companyId",
           "data",
@@ -8886,7 +8379,7 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/VsmeData"
+            "$ref": "#/components/schemas/SfdrData"
           }
         }
       },
@@ -8915,1076 +8408,6 @@
             "fileReference": "string",
             "fileName": "string",
             "publicationDate": "2023-10-12"
-          }
-        }
-      },
-      "ExtendedDataPointBigDecimal": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Please, disclose your total water withdrawal (in m^3), i.e., the amount of water drawn into the boundaries of the organisation (or facility); pay additional attention to sites located in areas of high water-stress.",
-        "example": "{\n      \"value\" : 100.5, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
-      "ExtendedDocumentReference": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "string",
-            "nullable": true
-          },
-          "tagName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileReference": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "publicationDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          }
-        }
-      },
-      "QualityOptions": {
-        "type": "string",
-        "enum": [
-          "Audited",
-          "Reported",
-          "Estimated",
-          "Incomplete",
-          "NoDataFound"
-        ]
-      },
-      "ReleaseMedium": {
-        "type": "string",
-        "enum": [
-          "Air",
-          "Soil",
-          "Water"
-        ]
-      },
-      "VsmeBasic": {
-        "type": "object",
-        "properties": {
-          "basisForPreparation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicBasisForPreparation"
-              }
-            ]
-          },
-          "practicesForTransitioningTowardsAMoreSustainableEconomy": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy"
-              }
-            ]
-          },
-          "energyAndGreenhousGasEmissions": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicEnergyAndGreenhousGasEmissions"
-              }
-            ]
-          },
-          "pollutionOfAirWaterSoil": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicPollutionOfAirWaterSoil"
-              }
-            ]
-          },
-          "biodiversity": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicBiodiversity"
-              }
-            ]
-          },
-          "water": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWater"
-              }
-            ]
-          },
-          "resourceUseCircularEconomyAndWasteManagement": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicResourceUseCircularEconomyAndWasteManagement"
-              }
-            ]
-          },
-          "workforceGeneralCharacteristics": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkforceGeneralCharacteristics"
-              }
-            ]
-          },
-          "workforceHealthAndSafety": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkforceHealthAndSafety"
-              }
-            ]
-          },
-          "workforceRenumerationCollectiveBargainingAndTraining": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining"
-              }
-            ]
-          },
-          "workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers"
-              }
-            ]
-          }
-        }
-      },
-      "VsmeBasicBasisForPreparation": {
-        "type": "object",
-        "properties": {
-          "reportingBasis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "subsidiary": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VsmeSubsidiary"
-            }
-          },
-          "referencedReports": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            },
-            "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "publicationDate": "2023-10-12"
-              }
-            }
-          }
-        }
-      },
-      "VsmeBasicBiodiversity": {
-        "type": "object",
-        "properties": {
-          "sitesAndAreas": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VsmeSiteAndArea"
-            }
-          },
-          "totalSealedAreaPreviousYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalSealedAreaReportingYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "relativeChangeSealedArea": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
-            "nullable": true,
-            "example": 13.52
-          },
-          "totalNatureOrientedAreaOnSitePreviousYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalNatureOrientedAreaOnSiteReportingYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "relativeChangeNatureOrientedOnSite": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
-            "nullable": true,
-            "example": 13.52
-          },
-          "totalNatureOrientedAreaOffSitePreviousYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalNatureOrientedAreaOffSiteReportingYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "relativeChangeNatureOrientedOffSite": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof. ",
-            "nullable": true,
-            "example": 13.52
-          },
-          "totalUseOfLandPreviousYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalUseOfLandReportingYearInHectare": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.  (Area is in hectares.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "relativeChangeLandUse": {
-            "type": "number",
-            "description": "Please, report on the land-use of your company with respect to different kinds of surfaces/landscapes. Provide the corresponding values for the year before the reporting year, for the reporting year itself and the percentual change thereof.",
-            "nullable": true,
-            "example": 13.52
-          }
-        }
-      },
-      "VsmeBasicEnergyAndGreenhousGasEmissions": {
-        "type": "object",
-        "properties": {
-          "energyFossilFuelsInMWh": {
-            "type": "number",
-            "description": "Please disclose your total energy consumption in MWh (in the reporting period) for fossil fuels.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "electricityTotalInMWh": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "electricityNonRenewableInMWh": {
-            "type": "number",
-            "description": "Please provide the amount of electricity in MWh generated from non renewable sources.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "electricityRenewableInMWh": {
-            "type": "number",
-            "description": "Please provide the amount of electricity in MWh generated from renewable sources.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalEmissionsInTonnesOfCO2Equivalents": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope1EmissionsInTonnesOfCO2Equivalents": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2EmissionsInTonnesOfCO2Equivalents": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope3EmissionsInTonnesOfCO2Equivalents": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "VsmeBasicPollutionOfAirWaterSoil": {
-        "type": "object",
-        "properties": {
-          "pollutionEmission": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VsmePollutionEmission"
-            }
-          }
-        }
-      },
-      "VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy": {
-        "type": "object",
-        "properties": {
-          "undertakenMeasures": {
-            "type": "array",
-            "description": "Please, describe specific practices for transitioning towards a more sustainable economy in case you have them in place.",
-            "nullable": true,
-            "example": [
-              {
-                "value": "lifetime value",
-                "dataSource": {
-                  "fileName": "Certification",
-                  "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-                }
-              },
-              {
-                "value": "technologies",
-                "dataSource": {
-                  "fileName": "Policy",
-                  "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-                }
-              }
-            ],
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "VsmeBasicResourceUseCircularEconomyAndWasteManagement": {
-        "type": "object",
-        "properties": {
-          "totalWeightMaterialsInTonnes": {
-            "type": "number",
-            "description": "In case you operate manufacturing, construction and/or packaging processes, please provide the share of recycled content in your products and packaging (in per cent based on weight, during the reporting period) For this we require the total weight  (in tons, in the reporting year) of both recycled and overall materials used in products and packaging. \n\nMoreover, please provide the share of recycable content in your products and packaging (in per cent based on weight, during the reporting period). For this we require the  total weight  (in tons, in the reporting year) of both recycable materials used in products and packaging. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "weightRecycledMaterialsInTonnes": {
-            "type": "number",
-            "description": "Please disclose the weight of recycled materials in tonnes.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "percentageRecycledMaterials": {
-            "type": "number",
-            "description": "Please disclose percentage of recycled materials in regards to the total weight of maerials. ",
-            "nullable": true,
-            "example": 13.52
-          },
-          "weightRecyclableMaterialsInTonnes": {
-            "type": "number",
-            "description": "Please disclose the weight of recycable materials in tonnes.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "percentageRecyclableMaterials": {
-            "type": "number",
-            "description": "Please disclose percentage of recycable materials in regards to the total weight of maerials. ",
-            "nullable": true,
-            "example": 13.52
-          },
-          "measureWaste": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions"
-              }
-            ]
-          },
-          "wasteClassification": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VsmeWasteClassificationObject"
-            }
-          }
-        }
-      },
-      "VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions": {
-        "type": "string",
-        "description": "Please, for each type of waste, provide your total annual generation of it (in tons or m^3) differentiating whether it is non-hazardous or hazardous. Also indicate the share of it diverted to recycling or reuse (in absolute numbers). First choose the unit you want to report in.",
-        "example": "\"Option 1\"",
-        "enum": [
-          "WeightPreferred",
-          "Volume"
-        ]
-      },
-      "VsmeBasicWater": {
-        "type": "object",
-        "properties": {
-          "waterWithdrawalAllSitesInCubicMeters": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "waterWithdrawalStressSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose your water withdrawal (in m^3) from sites with high water stress.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "waterDischargeAllSitesInCubicMeters": {
-            "type": "number",
-            "description": "If applicable, we aim to determine your water consumption (as the difference between water withdrawal and water discharge). Hence, please disclose your respective water discharge from your production processes.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "waterDischargeStressSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose your water discharge (in m^3) from sites with high water stress.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "rainwaterAllSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose the amount of rainwater (in m^3) for all sites.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "rainwaterStressSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose the amount of rainwater (in m^3) for all sites with high water stress.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "waterConsumptionAllSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose the amount of water consumption (in m^3) for all sites.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "waterConsumptionStressSitesInCubicMeters": {
-            "type": "number",
-            "description": "Please disclose the amount of water consumption (in m^3) for all sites with high water stress.",
-            "nullable": true,
-            "example": 100.5
-          }
-        }
-      },
-      "VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers": {
-        "type": "object",
-        "properties": {
-          "negativeEffects": {
-            "type": "array",
-            "description": "Please disclose whether you have a process in place for identifying wether there are value chain workers, affected communities, or consumers and end-users who are affected or are likely to be affected by severe negative impacts in relation to the undertaking’s operations (i.e., its products, services and activities). If this is in place, please describe this process. If identified, please also describe the types of impacts, including where they arise and the groups that are affected by them.",
-            "nullable": true,
-            "example": [
-              {
-                "value": "lifetime value",
-                "dataSource": {
-                  "fileName": "Certification",
-                  "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
-                }
-              },
-              {
-                "value": "technologies",
-                "dataSource": {
-                  "fileName": "Policy",
-                  "fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
-                }
-              }
-            ],
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          },
-          "numberOfConvictions": {
-            "type": "number",
-            "description": "In case of convictions and fines in the reporting period, please disclose the number of convictions and the total amount of fines incurred for the violation of anti-corruption or anti-bribery laws.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "sumOfFinesInEuro": {
-            "type": "number",
-            "description": "Please disclose the sum of all fines.",
-            "nullable": true,
-            "example": 100.5
-          }
-        }
-      },
-      "VsmeBasicWorkforceGeneralCharacteristics": {
-        "type": "object",
-        "properties": {
-          "measureEmployees": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions"
-              }
-            ]
-          },
-          "numberOfEmployeesInFte": {
-            "type": "number",
-            "description": "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfEmployeesInHeadcount": {
-            "type": "number",
-            "description": "What is your number of employees? (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfTemporaryContractEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfTemporaryContractEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of employees broken down by employment contract. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfPermanentContractEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfPermanentContractEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of emplyees with a permanent contract. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfMaleEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfMaleEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of employees broken down by gender. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberFemaleEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfFemaleEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of female employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfOtherEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfOtherEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of other employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfNotReportedEmployeesInFte": {
-            "type": "number",
-            "description": "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfNotReportedEmployeesInHeadcount": {
-            "type": "number",
-            "description": "Please disclose the number of not reported employees. (Use full-time equivalents or head count according to your initial choice.)",
-            "nullable": true,
-            "example": 100.5
-          },
-          "employeesPerCountry": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VsmeEmployeesPerCountry"
-            }
-          }
-        }
-      },
-      "VsmeBasicWorkforceHealthAndSafety": {
-        "type": "object",
-        "properties": {
-          "totalHours": {
-            "type": "number",
-            "description": "Please provide the total number of hours worked in a year by all your employees.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfAccidents": {
-            "type": "integer",
-            "description": "Please disclose the number of work related accidents in the reporting year.",
-            "nullable": true,
-            "example": 100
-          },
-          "accidentLevel": {
-            "type": "number",
-            "description": "Please provide work-related accidents, namely the number of work related accidents per 100 full-time workers over a yearly timeframe (assuming 2000 work hours per worker per year).",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfTotalFatalitiesInFte": {
-            "type": "integer",
-            "description": "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
-            "nullable": true,
-            "example": 100
-          },
-          "numberOfTotalFatalitiesInHeadcount": {
-            "type": "integer",
-            "description": "Please disclose the total number of fatalities in the reporting year due to work-related injuries or work-related ill health.",
-            "nullable": true,
-            "example": 100
-          },
-          "numberOfFatalitiesOfAccidentsInFte": {
-            "type": "integer",
-            "description": "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
-            "nullable": true,
-            "example": 100
-          },
-          "numberOfFatalitiesOfAccidentsInHeadcount": {
-            "type": "integer",
-            "description": "Please, if possible, distinguish further and separately provide the numbers of  fatalities in the reporting year due to work-related injuries and work-related ill health.",
-            "nullable": true,
-            "example": 100
-          },
-          "numberOfHealthFatalitiesInFte": {
-            "type": "integer",
-            "description": "Please disclose the number of health fatalities in full time equilivants in the reporting year.",
-            "nullable": true,
-            "example": 100
-          },
-          "numberOfHealthFatalitiesInHeadcount": {
-            "type": "integer",
-            "description": "Please disclose the number of health fatalities in head count in the reporting year.",
-            "nullable": true,
-            "example": 100
-          }
-        }
-      },
-      "VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining": {
-        "type": "object",
-        "properties": {
-          "numberOfMinimumWageEmployeesInFte": {
-            "type": "number",
-            "description": "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberOfMinimumWageEmployeesInHeadcount": {
-            "type": "number",
-            "description": "What is the number of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
-            "nullable": true,
-            "example": 100.5
-          },
-          "percentageOfMinimumWageEmployees": {
-            "type": "number",
-            "description": "What is the percentage of employees (disregarding interns and apprentices) being compensated by wages based on minimum wage rules?",
-            "nullable": true,
-            "example": 13.52
-          },
-          "majorityOfMinimumWageEmployees": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "entryLevelWageInEuro": {
-            "type": "number",
-            "description": "Please provide the entry level wage you pay.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "minimumWageInEuro": {
-            "type": "number",
-            "description": "Please provide the minimum wage you pay.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "wageRatio": {
-            "type": "number",
-            "description": "Please provide the ratio of entry level wage and minimum wage.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "payGapBasis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions"
-              }
-            ]
-          },
-          "grossPayMaleInEuro": {
-            "type": "number",
-            "description": "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for male employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "grossPayFemaleInEuro": {
-            "type": "number",
-            "description": "Now taking into account all your employees, according to your choice of timeframe, please provide the gross pay for female employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalWorkHoursMale": {
-            "type": "number",
-            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalWorkHoursFemale": {
-            "type": "number",
-            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageWorkHoursMale": {
-            "type": "number",
-            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by male employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageWorkHoursFemale": {
-            "type": "number",
-            "description": "Taking into account all your employees and your choice of timeframe, please provide the number of average work hours (per week/year) by female employees. ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageHourlyPayMaleInEuroPerHour": {
-            "type": "number",
-            "description": "What is the average hourly pay for male employees?",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageHourlyPayFemaleInEuroPerHour": {
-            "type": "number",
-            "description": "What is the average hourly pay for female employees?",
-            "nullable": true,
-            "example": 100.5
-          },
-          "payGap": {
-            "type": "number",
-            "description": "What is your pay gap? ",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberBargainingAgreementsInFte": {
-            "type": "number",
-            "description": "Please state the number of employees covered by collective bargaining agreements.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "numberBargainingAgreementsInHeadcount": {
-            "type": "number",
-            "description": "Please state the number of employees covered by collective bargaining agreements.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "ratioBargainingAgreement": {
-            "type": "number",
-            "description": "Please provide the ratio of employees with a bargaining agreement with respect to all your employees.",
-            "nullable": true,
-            "example": 13.52
-          },
-          "totalTrainingHoursMale": {
-            "type": "number",
-            "description": "Please state the total numbers of annual training hours per male employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "totalTrainingHoursFemale": {
-            "type": "number",
-            "description": "Please state the total numbers of annual training hours per female employee, that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageTrainingHoursMale": {
-            "type": "number",
-            "description": "Please state average numbers of annual training hours per male employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
-            "nullable": true,
-            "example": 100.5
-          },
-          "averageTrainingHoursFemale": {
-            "type": "number",
-            "description": "Please state average numbers of annual training hours per female employee that are related to the development of skills and competences, whether acquired through formal or informal forms of capacity-building.",
-            "nullable": true,
-            "example": 100.5
-          }
-        }
-      },
-      "VsmeBasicWorkforcegeneralcharacteristicsMeasureEmployeesOptions": {
-        "type": "string",
-        "description": "You will be asked to provide information related to the number of your employees. How do you want to count them? Please stick to this measure for all the subsequent questions.",
-        "example": "\"Option 1\"",
-        "enum": [
-          "FullTimeEquivalents",
-          "HeadCount"
-        ]
-      },
-      "VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions": {
-        "type": "string",
-        "description": "Please, in the following provide pay rates and work hours. On which basis do you prefer to report?",
-        "example": "\"Option 1\"",
-        "enum": [
-          "Annual",
-          "Weekly"
-        ]
-      },
-      "VsmeData": {
-        "type": "object",
-        "properties": {
-          "basic": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/VsmeBasic"
-              }
-            ]
-          }
-        }
-      },
-      "VsmeEmployeesPerCountry": {
-        "required": [
-          "country"
-        ],
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "numberOfEmployeesInHeadCount": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "numberOfEmployeesInFullTimeEquivalent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "VsmePollutionEmission": {
-        "required": [
-          "pollutionType",
-          "releaseMedium"
-        ],
-        "type": "object",
-        "properties": {
-          "pollutionType": {
-            "type": "string"
-          },
-          "emissionInKilograms": {
-            "type": "number",
-            "nullable": true
-          },
-          "releaseMedium": {
-            "$ref": "#/components/schemas/ReleaseMedium"
-          }
-        }
-      },
-      "VsmeSiteAndArea": {
-        "required": [
-          "areaAddress",
-          "siteAddress",
-          "siteName",
-          "specificationOfAdjointness"
-        ],
-        "type": "object",
-        "properties": {
-          "siteName": {
-            "type": "string"
-          },
-          "siteAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "siteGeocoordinateLongitudeval": {
-            "type": "number",
-            "nullable": true
-          },
-          "siteGeocoordinateLatitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "areaInHectare": {
-            "type": "number",
-            "nullable": true
-          },
-          "biodiversitySensitiveArea": {
-            "type": "string",
-            "nullable": true
-          },
-          "areaAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "areaGeocoordinateLongitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "areaGeocoordinateLatitude": {
-            "type": "number",
-            "nullable": true
-          },
-          "specificationOfAdjointness": {
-            "$ref": "#/components/schemas/AreaAdjointness"
-          }
-        }
-      },
-      "VsmeSubsidiary": {
-        "required": [
-          "addressOfSubsidiary",
-          "nameOfSubsidiary"
-        ],
-        "type": "object",
-        "properties": {
-          "nameOfSubsidiary": {
-            "type": "string"
-          },
-          "addressOfSubsidiary": {
-            "$ref": "#/components/schemas/Address"
-          }
-        }
-      },
-      "VsmeWasteClassificationObject": {
-        "required": [
-          "typeOfWaste",
-          "wasteClassification"
-        ],
-        "type": "object",
-        "properties": {
-          "wasteClassification": {
-            "$ref": "#/components/schemas/WasteClassifications"
-          },
-          "typeOfWaste": {
-            "type": "string"
-          },
-          "totalAmountOfWasteInTonnes": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteRecycleOrReuseInTonnes": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteDisposalInTonnes": {
-            "type": "number",
-            "nullable": true
-          },
-          "totalAmountOfWasteInCubicMeters": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteRecycleOrReuseInCubicMeters": {
-            "type": "number",
-            "nullable": true
-          },
-          "wasteDisposalInCubicMeters": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "WasteClassifications": {
-        "type": "string",
-        "enum": [
-          "NonHazardous",
-          "Hazardous"
-        ]
-      },
-      "YesNo": {
-        "type": "string",
-        "description": "Do these constitute more than half of your employees (disregarding interns and apprentices, in the reporting measure you chose)?",
-        "example": "\"Yes\"",
-        "enum": [
-          "Yes",
-          "No"
-        ]
-      },
-      "CompanyAssociatedDataSfdrData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SfdrData"
           }
         }
       },
@@ -10022,6 +8445,37 @@
         },
         "description": "Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
         "example": "{\n      \"value\" : 100.5,\n      \"currency\" : \"USD\",\n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\",\n      \"dataSource\" : {\n      \"page\" : \"5-7\",\n      \"tagName\" : \"monetaryAmount\",\n      \"fileName\" : \"AnnualReport2020.pdf\",\n      \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n    } "
+      },
+      "ExtendedDataPointBigDecimal": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.",
+        "example": "{\n      \"value\" : 100.5, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointBigInteger": {
         "type": "object",
@@ -10155,6 +8609,45 @@
         },
         "description": "Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
         "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "string",
+            "nullable": true
+          },
+          "tagName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "QualityOptions": {
+        "type": "string",
+        "enum": [
+          "Audited",
+          "Reported",
+          "Estimated",
+          "Incomplete",
+          "NoDataFound"
+        ]
       },
       "SfdrData": {
         "type": "object",
@@ -11714,6 +10207,13 @@
           }
         }
       },
+      "YesNo": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ]
+      },
       "ExportFileType": {
         "type": "string",
         "description": "The file format for the data export.",
@@ -12909,6 +11409,33 @@
           }
         }
       },
+      "Address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "streetAndHouseNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
       "AmountWithCurrency": {
         "type": "object",
         "properties": {
@@ -12921,6 +11448,29 @@
             "nullable": true
           }
         }
+      },
+      "BaseDataPointYesNo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "Do you have any further attachments?",
+        "example": "Yes"
       },
       "BaseDataPointYesNoNa": {
         "type": "object",
@@ -12944,6 +11494,27 @@
         },
         "description": "Have the contractual relationships with private security forces been designed in a way that they comply with the applicable legal framework? (Only in the case of private security forces)",
         "example": "Yes"
+      },
+      "BaseDocumentReference": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileReference": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
       },
       "CompanyAssociatedDataLksgData": {
         "required": [
@@ -22634,21 +21205,6 @@
           "Failure"
         ]
       },
-      "DataAndMetaInformationVsmeData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/VsmeData"
-          }
-        }
-      },
       "DataAndMetaInformationSfdrData": {
         "required": [
           "data",
@@ -22867,8 +21423,7 @@
           "eutaxonomy-non-financials-2026-73",
           "nuclear-and-gas",
           "lksg",
-          "pcaf",
-          "vsme"
+          "pcaf"
         ]
       },
       "ErrorDetails": {

@@ -2,6 +2,7 @@ package org.dataland.datalandemailservice.email
 
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -47,7 +48,7 @@ class TypedEmailContentTest {
     @Test
     fun `test that late init vars specified in interfaces are correctly injected`() {
         val emailSubscriptionTracker = mock<EmailSubscriptionTracker>()
-        val content = TypedEmailContentTestData().accessToDatasetRequestedEmailContent
+        val content = CompanyOwnershipClaimApprovedEmailContent("company-id", "Company", 1)
         val subscriptionUuid = UUID.randomUUID()
         val receiver =
             mapOf(

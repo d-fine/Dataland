@@ -3,13 +3,15 @@
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
 val jacocoClasses by extra(
-    sourceSets.asMap.values.flatMap { sourceSet ->
-        sourceSet.output.classesDirs.flatMap {
-            fileTree(it) {
-                exclude("**/openApiClient/**")
-            }.files
-        }
-    },
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
 )
 val jacocoVersion: String by project
 val openApiGeneratorTimeOutThresholdInSeconds: String by project
@@ -85,7 +87,7 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     description = "Task to generate clients for the backend service."
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
-    input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/backend")
@@ -115,7 +117,7 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     description = "Task to generate clients for the QA service."
     group = "clients"
     val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
-    input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
+    inputSpec.set(project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path)
     outputDir.set(
         layout.buildDirectory
             .dir("clients/qa-service")

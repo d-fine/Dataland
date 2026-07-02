@@ -32,7 +32,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   enum RoleBasedTabs {
     MyCompany = 'MY COMPANY',
     Qa = 'QA',
-    DataAccessRequests = 'DATA REQUESTS FOR MY COMPANIES',
     AllDataRequests = 'ALL DATA REQUESTS',
   }
 
@@ -114,7 +113,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
 
     isTabVisible(RoleBasedTabs.MyCompany, true);
-    isTabVisible(RoleBasedTabs.DataAccessRequests, true);
   });
 
   it('Validate tabs for a logged-in Dataland-Reader with analyst company role', function () {
@@ -132,7 +130,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
     isTabVisible(RoleBasedTabs.Qa, false);
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
-    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.MyCompany, true);
   });
@@ -143,7 +140,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
     isTabVisible(RoleBasedTabs.MyCompany, false);
-    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.Qa, false);
   });
@@ -154,7 +150,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
 
     isTabVisible(RoleBasedTabs.AllDataRequests, false);
     isTabVisible(RoleBasedTabs.MyCompany, false);
-    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.Qa, true);
   });
@@ -164,7 +159,6 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     assertThatStandardTabsAreAllVisible();
 
     isTabVisible(RoleBasedTabs.MyCompany, false);
-    isTabVisible(RoleBasedTabs.DataAccessRequests, false);
 
     isTabVisible(RoleBasedTabs.Qa, true);
     isTabVisible(RoleBasedTabs.AllDataRequests, true);

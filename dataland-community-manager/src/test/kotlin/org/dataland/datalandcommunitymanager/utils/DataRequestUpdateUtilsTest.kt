@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -218,7 +217,6 @@ class DataRequestUpdateUtilsTest {
                     StoredDataRequestStatusObject(
                         status = requestStatusBefore,
                         creationTimestamp = 1L,
-                        accessStatus = AccessStatus.Public,
                         requestStatusChangeReason = null,
                         answeringDataId = null,
                     ),
@@ -249,7 +247,6 @@ class DataRequestUpdateUtilsTest {
                     StoredDataRequestStatusObject(
                         status = requestStatusBefore,
                         creationTimestamp = 1L,
-                        accessStatus = AccessStatus.Public,
                         requestStatusChangeReason = null,
                         answeringDataId = null,
                     ),

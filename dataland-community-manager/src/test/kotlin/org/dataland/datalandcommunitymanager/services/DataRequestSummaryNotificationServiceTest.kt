@@ -5,7 +5,6 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
@@ -106,7 +105,7 @@ class DataRequestSummaryNotificationServiceTest {
                 notifyMeImmediately = false,
             )
         val storedDataRequestStatusObject =
-            StoredDataRequestStatusObject(requestStatusBefore, 123, AccessStatus.Public, null, null)
+            StoredDataRequestStatusObject(requestStatusBefore, 123, null, null)
         val requestStatusEntity = RequestStatusEntity(storedDataRequestStatusObject, dataRequestEntity)
         dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)
 

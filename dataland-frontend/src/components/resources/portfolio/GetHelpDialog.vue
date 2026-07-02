@@ -3,16 +3,19 @@
     <div>
       <p class="header-styling">Choose a topic</p>
       <Select
-        id="get-help-topic"
         v-model="selectedTopic"
         :options="availableTopics"
         placeholder="Where do you need help with?"
+        inputId="get-help-topic"
+        aria-label="Choose a topic"
+        fluid
       />
     </div>
     <div>
       <p class="header-styling">Your message to us</p>
       <Textarea
         id="get-help-message"
+        aria-label="Your message to us"
         v-model="message"
         placeholder="Please state for which companies you need help finding identifiers to add them to your portfolio"
         rows="5"
@@ -99,10 +102,6 @@ async function sendEmail(): Promise<void> {
 
 #get-help-message {
   resize: none;
-  width: 100%;
-}
-
-#get-help-topic {
   width: 100%;
 }
 

@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -117,14 +116,13 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when the status of a data request is updated
      */
-    fun logMessageForPatchingRequestStatusOrAccessStatus(
+    fun logMessageForPatchingRequestStatus(
         dataRequestId: String,
         requestStatus: RequestStatus,
-        accessStatus: AccessStatus?,
     ) {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId with " +
-                "request status $requestStatus and access status $accessStatus.",
+                "request status $requestStatus.",
         )
     }
 

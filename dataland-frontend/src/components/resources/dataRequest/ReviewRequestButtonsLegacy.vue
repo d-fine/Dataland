@@ -105,7 +105,7 @@ import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { patchDataRequest } from '@/utils/RequestUtilsLegacy';
 import { type ErrorResponse } from '@clients/backend';
-import { type AccessStatus, RequestStatus, type StoredDataRequestMessageObject } from '@clients/communitymanager';
+import { RequestStatus, type StoredDataRequestMessageObject } from '@clients/communitymanager';
 import PrimeDialog from 'primevue/dialog';
 import { AxiosError } from 'axios';
 import EmailDetailsLegacy from '@/components/resources/dataRequest/EmailDetailsLegacy.vue';
@@ -211,14 +211,12 @@ export default defineComponent({
      * Trys to patch DataRequest, displays possible error message
      * @param dataRequestId DataRequest to be closed
      * @param requestStatusToPatch desired requestStatus
-     * @param accessStatus the access status of a request
      * @param contacts set of email contacts
      * @param message context of the email
      */
     async patchDataRequest(
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
-      accessStatus?: AccessStatus,
       contacts?: string[],
       message?: string
     ) {
@@ -226,7 +224,6 @@ export default defineComponent({
         await patchDataRequest(
           dataRequestId,
           requestStatusToPatch,
-          accessStatus,
           // as unknown as Set<string> cast required to ensure proper json is created
           contacts as unknown as Set<string>,
           message,
@@ -259,13 +256,7 @@ export default defineComponent({
      */
     async updateRequest() {
       if (this.hasValidEmailForm) {
-        await this.patchDataRequest(
-          this.dataRequestId,
-          RequestStatus.Open,
-          undefined,
-          this.emailContacts,
-          this.emailMessage
-        );
+        await this.patchDataRequest(this.dataRequestId, RequestStatus.Open, this.emailContacts, this.emailMessage);
         this.showUpdateRequestDialog = false;
       } else {
         this.toggleEmailDetailsError = !this.toggleEmailDetailsError;

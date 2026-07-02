@@ -34,6 +34,8 @@
           v-model="resubmitMessage"
           style="resize: none"
           data-test="resubmit-message"
+          id="resubmit-message"
+          aria-label="Message"
           rows="5"
           placeholder="Provide a reason for resubmitting."
         />

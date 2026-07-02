@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { ExtendedQaStatus } from '@/components/resources/datasetOverview/DatasetTableInfo.ts';
-import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
+import { RequestPriority, RequestStatus } from '@clients/communitymanager';
 import Tag from 'primevue/tag';
 import { computed, type Ref } from 'vue';
 
@@ -66,17 +66,6 @@ const { severity } = defineProps({
 
 const designToken: Ref<TagColorDefinition> = computed(() => {
   switch (severity) {
-    // access status
-    case AccessStatus.Declined:
-      return yellowTag;
-    case AccessStatus.Granted:
-      return greenTag;
-    case AccessStatus.Pending:
-      return amberTag;
-    case AccessStatus.Public:
-      return skyTag;
-    case AccessStatus.Revoked:
-      return slateTag;
     // quality status
     case ExtendedQaStatus.Pending:
       return amberTag;

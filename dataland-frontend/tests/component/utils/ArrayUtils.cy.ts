@@ -2,14 +2,14 @@ import { arraySetEquals, groupBy, range } from '@/utils/ArrayUtils';
 
 describe('Unit test for ArrayUtils', () => {
   it('verifies arraySetEquals', () => {
-    expect(arraySetEquals([1], [1])).to.be.true;
-    expect(arraySetEquals([1], [2])).to.be.false;
-    expect(arraySetEquals([1], [1, 2])).to.be.false;
-    expect(arraySetEquals([1, 2], [1])).to.be.false;
-    expect(arraySetEquals([1, 2], [2, 1])).to.be.true;
-    expect(arraySetEquals([1, 1], [1])).to.be.true;
-    expect(arraySetEquals([], [])).to.be.true;
-    expect(arraySetEquals([null], ['null'])).to.be.false;
+    expect(arraySetEquals([1], [1])).to.equal(true);
+    expect(arraySetEquals([1], [2])).to.equal(false);
+    expect(arraySetEquals([1], [1, 2])).to.equal(false);
+    expect(arraySetEquals([1, 2], [1])).to.equal(false);
+    expect(arraySetEquals([1, 2], [2, 1])).to.equal(true);
+    expect(arraySetEquals([1, 1], [1])).to.equal(true);
+    expect(arraySetEquals([], [])).to.equal(true);
+    expect(arraySetEquals([null], ['null'])).to.equal(false);
   });
 
   it('verifies range', () => {

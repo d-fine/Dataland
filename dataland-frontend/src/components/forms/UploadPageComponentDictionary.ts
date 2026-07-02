@@ -5,7 +5,6 @@ import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/field
 import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
-import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
 import ExtendedSingleSelectFormField from '@/components/forms/parts/fields/ExtendedSingleSelectFormField.vue';
 import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
 import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue';
@@ -19,17 +18,13 @@ import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFor
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import PollutionEmissionFormField from '@/components/forms/parts/fields/PollutionEmissionFormField.vue';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
 import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
 import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssessmentsFormField.vue';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
-import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
@@ -45,7 +40,6 @@ const componentNameMap: { [key: string]: any } = {
   CurrencyExtendedDataPointFormField,
   DateFormField,
   DateExtendedDataPointFormField,
-  EmployeesPerCountryFormField,
   ExtendedSingleSelectFormField,
   FreeTextFormField,
   GeneralViolationsAssessmentsFormField,
@@ -59,17 +53,13 @@ const componentNameMap: { [key: string]: any } = {
   NaceCodeFormField,
   NumberFormField,
   PercentageFormField,
-  PollutionEmissionFormField,
   ProcurementCategoriesFormField,
   ProductionSitesFormField,
   RadioButtonsExtendedDataPointFormField,
   RadioButtonsFormField,
   RiskAssessmentsFormField,
   SingleSelectFormField,
-  SiteAndAreaFormField,
-  SubsidiaryFormField,
   UploadReports,
-  WasteClassificationFormField,
   YesNoBaseDataPointFormField,
   YesNoExtendedDataPointFormField,
   YesNoFormField,

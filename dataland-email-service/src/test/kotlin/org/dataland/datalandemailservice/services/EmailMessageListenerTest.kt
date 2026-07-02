@@ -77,7 +77,6 @@ class EmailMessageListenerTest {
 
     private val allowedReceiver = listOf(EmailContact(EMAIL_ADDRESS_A), EmailContact(EMAIL_ADDRESS_C))
     private val allowedCc = listOf(EmailContact(EMAIL_ADDRESS_C))
-    private val additionalBccForNonSummaryEmail = listOf(EmailContact(EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC))
     private val allowedBcc =
         listOf(
             EmailContact(EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC),
@@ -116,42 +115,6 @@ class EmailMessageListenerTest {
         email.receivers == receiver &&
         email.cc == cc &&
         email.bcc == bcc
-
-    @Test
-    fun `test that correct email about access request is sent to correct contacts`() {
-        val typedEmailContent = testData.accessToDatasetRequestedEmailContent
-        val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
-        keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add("https://$dummyProxyPrimaryUrl")
-        val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
-        doNothing().whenever(mockEmailSender).sendEmail(any())
-
-        val emailMessageListener =
-            EmailMessageListener(
-                mockEmailSender,
-                mockEmailContactService,
-                mockEmailSubscriptionTracker,
-                dummyProxyPrimaryUrl,
-                true,
-                "  $EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC;;",
-                EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC,
-            )
-        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
-
-        val emailCaptor = argumentCaptor<Email>()
-
-        verify(mockEmailSender).sendEmail(emailCaptor.capture())
-
-        val sentEmail = emailCaptor.firstValue
-
-        assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, additionalBccForNonSummaryEmail)
-        assert(
-            keywords.all { keyword ->
-                sentEmail.content.htmlContent.contains(keyword) &&
-                    sentEmail.content.textContent.contains(keyword)
-            },
-        )
-    }
 
     @Test
     fun `test that correct data request summary email is sent to correct contacts`() {
