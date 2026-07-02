@@ -177,23 +177,24 @@ enum class DataPointConversion(
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
-        val operands = extractSumOperands(inputs)
-        val sum = operands.values.sumOf { it }
-        val quality = mergeQuality(operands.dataPoints.map { it.quality })
-        val comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType)
-        val dataSource = mergeDataSources(operands.dataPoints.mapNotNull { it.dataSource })
-
         val calculatedDataPoint =
             if (isCurrencyDataPoint(targetType, specs)) {
+                val operands = extractSumOperands<ExtendedCurrencyDataPoint>(inputs)
                 ExtendedCurrencyDataPoint(
-                    value = sum,
+                    value = operands.values.sumOf { it },
                     currency = getCommonCurrency(operands.dataPoints),
-                    quality = quality,
-                    comment = comment,
-                    dataSource = dataSource,
+                    quality = mergeQuality(operands.dataPoints.map { it.quality }),
+                    comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType),
+                    dataSource = mergeDataSources(operands.dataPoints.mapNotNull(::getDataSource)),
                 )
             } else {
-                ExtendedDataPoint(value = sum, quality = quality, comment = comment, dataSource = dataSource)
+                val operands = extractSumOperands<ExtendedDataPoint<BigDecimal>>(inputs)
+                ExtendedDataPoint(
+                    value = operands.values.sumOf { it },
+                    quality = mergeQuality(operands.dataPoints.map { it.quality }),
+                    comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType),
+                    dataSource = mergeDataSources(operands.dataPoints.mapNotNull(::getDataSource)),
+                )
             }
 
         return createUploadedDataPoint(
@@ -222,29 +223,34 @@ enum class DataPointConversion(
         multiplier: BigDecimal,
         operationName: String,
     ): UploadedDataPoint {
-        val operands = extractDivisionOperands(inputs, operationName)
-        val value =
-            operands.numeratorValue.multiply(multiplier).divide(
-                operands.denominatorValue,
-                CALCULATION_SCALE,
-                CALCULATION_ROUNDING_MODE,
-            )
-        val sources = listOf(operands.numerator, operands.denominator)
-        val quality = mergeQuality(sources.map { it.quality })
-        val comment = createComment(inputs, specs, sources, sourceFrameworksByType)
-        val dataSource = mergeDataSources(sources.mapNotNull { it.dataSource })
-
         val calculatedDataPoint =
             if (isCurrencyDataPoint(targetType, specs)) {
+                val operands =
+                    extractDivisionOperands<ExtendedCurrencyDataPoint, ExtendedDataPoint<BigDecimal>>(
+                        inputs,
+                        operationName,
+                    )
+                val sources = listOf(operands.numerator, operands.denominator)
                 ExtendedCurrencyDataPoint(
-                    value = value,
+                    value = operands.calculateValue(multiplier),
                     currency = getCurrency(operands.numerator),
-                    quality = quality,
-                    comment = comment,
-                    dataSource = dataSource,
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
                 )
             } else {
-                ExtendedDataPoint(value = value, quality = quality, comment = comment, dataSource = dataSource)
+                val operands =
+                    extractDivisionOperands<ExtendedDataPoint<BigDecimal>, ExtendedDataPoint<BigDecimal>>(
+                        inputs,
+                        operationName,
+                    )
+                val sources = listOf(operands.numerator, operands.denominator)
+                ExtendedDataPoint(
+                    value = operands.calculateValue(multiplier),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
             }
 
         return createUploadedDataPoint(
@@ -378,6 +384,13 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
 internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? =
     inputs.minByOrNull { it.fileReference }
 
+private fun getDataSource(dataPoint: ExtendedDataPointInterface<*>): ExtendedDocumentReference? =
+    when (dataPoint) {
+        is ExtendedCurrencyDataPoint -> dataPoint.dataSource
+        is ExtendedDataPoint<*> -> dataPoint.dataSource
+        else -> null
+    }
+
 /**
  * Builds the complete comment for a calculated data point.
  *
@@ -457,13 +470,15 @@ private fun getSourceFrameworkLabel(sourceFrameworks: List<FrameworkSpecificatio
         ?.joinToString(", ")
         ?: "Unknown"
 
-private data class SumOperands(
-    val dataPoints: List<ExtendedCurrencyDataPoint>,
+private data class SumOperands<T : ExtendedDataPointInterface<BigDecimal>>(
+    val dataPoints: List<T>,
     val values: List<BigDecimal>,
 )
 
-private fun extractSumOperands(inputs: Collection<UploadedDataPoint>): SumOperands {
-    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
+private inline fun <reified T : ExtendedDataPointInterface<BigDecimal>> extractSumOperands(
+    inputs: Collection<UploadedDataPoint>,
+): SumOperands<T> {
+    val dataPoints = inputs.map { defaultObjectMapper.readValue<T>(it.dataPoint) }
     require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
     val values =
         dataPoints.map {
@@ -478,21 +493,31 @@ private inline fun <reified T : ExtendedDataPointInterface<*>> extractIdentityOp
     return dataPoints.single()
 }
 
-private data class DivisionOperands(
-    val numerator: ExtendedCurrencyDataPoint,
-    val denominator: ExtendedCurrencyDataPoint,
+private data class DivisionOperands<N : ExtendedDataPointInterface<BigDecimal>, D : ExtendedDataPointInterface<BigDecimal>>(
+    val numerator: N,
+    val denominator: D,
     val numeratorValue: BigDecimal,
     val denominatorValue: BigDecimal,
-)
+) {
+    fun calculateValue(multiplier: BigDecimal): BigDecimal =
+        numeratorValue.multiply(multiplier).divide(
+            denominatorValue,
+            CALCULATION_SCALE,
+            CALCULATION_ROUNDING_MODE,
+        )
+}
 
-private fun extractDivisionOperands(
+private inline fun <
+    reified N : ExtendedDataPointInterface<BigDecimal>,
+    reified D : ExtendedDataPointInterface<BigDecimal>,
+> extractDivisionOperands(
     inputs: Collection<UploadedDataPoint>,
     operationName: String,
-): DivisionOperands {
+): DivisionOperands<N, D> {
     val nullValueErrorMessage = "Data points for $operationName must not have null value fields."
     require(inputs.size == 2) { "Exactly two data points must be provided for $operationName." }
-    val numerator = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
-    val denominator = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(1).dataPoint)
+    val numerator = defaultObjectMapper.readValue<N>(inputs.elementAt(0).dataPoint)
+    val denominator = defaultObjectMapper.readValue<D>(inputs.elementAt(1).dataPoint)
     val numeratorValue = requireNotNull(numerator.value) { nullValueErrorMessage }
     val denominatorValue = requireNotNull(denominator.value) { nullValueErrorMessage }
     require(denominatorValue.signum() != 0) { "The divisor in $operationName must not be zero." }
