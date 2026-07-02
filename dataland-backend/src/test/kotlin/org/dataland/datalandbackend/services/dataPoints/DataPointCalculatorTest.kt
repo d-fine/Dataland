@@ -124,6 +124,38 @@ class DataPointCalculatorTest {
         qaStatus = QaStatus.Accepted,
     )
 
+    private fun mockCalculationRule(
+        sourceTypes: List<String>,
+        method: String,
+    ) {
+        mockCalculationRules(listOf(CalculationRule(sourceTypes, method)), sourceTypes + targetType)
+    }
+
+    private fun mockCalculationRules(
+        rules: Collection<CalculationRule>,
+        relevantDataPointTypes: List<String>,
+    ) {
+        doReturn(mapOf<String, Collection<CalculationRule>>(targetType to rules))
+            .whenever(dataCompositionService)
+            .getAvailableCalculationRules(any())
+        doReturn(relevantDataPointTypes).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+    }
+
+    private fun mockStoredDataPoints(dataPointsById: Map<String, UploadedDataPoint>) {
+        doReturn(dataPointsById.keys.toList()).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        doReturn(dataPointsById).whenever(internalStorageAdapter).getDataPoints(any(), any())
+    }
+
+    private fun calculateData(
+        dimensions: List<BasicDatasetDimensions> = listOf(datasetDimensions),
+        deliverableDataPointTypes: Map<BasicDatasetDimensions, List<String>> =
+            mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
+    ) = dataPointCalculator.getCalculatedData(
+        datasetDimensions = dimensions,
+        deliverableDataPointTypes = deliverableDataPointTypes,
+        correlationId = correlationId,
+    )
+
     @BeforeEach
     fun setUp() {
         dataPointCalculator =
@@ -151,23 +183,10 @@ class DataPointCalculatorTest {
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
         val dataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
-                correlationId = correlationId,
-            )
+        val result = calculateData()
 
         assertTrue(result.containsKey(datasetDimensions))
         val calculatedPoints = result.getValue(datasetDimensions)
@@ -200,19 +219,10 @@ class DataPointCalculatorTest {
         doReturn(makeFrameworkSpecification(otherSourceFramework, otherSourceFrameworkName))
             .whenever(specificationService)
             .getFrameworkSpecification(otherSourceFramework)
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA), "Identity"))),
-        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf)).whenever(internalStorageAdapter).getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA), "Identity")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)),
-                correlationId = correlationId,
-            )
+        val result = calculateData(deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)))
 
         val calculatedDataPoint =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint)
@@ -226,19 +236,10 @@ class DataPointCalculatorTest {
         doReturn(mapOf(sourceTypeA to makeDataPointTypeSpecification(sourceTypeA)))
             .whenever(specificationService)
             .getDataPointSpecifications(any())
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA), "Identity"))),
-        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf)).whenever(internalStorageAdapter).getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA), "Identity")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)),
-                correlationId = correlationId,
-            )
+        val result = calculateData(deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)))
 
         val calculatedDataPoint =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint)
@@ -252,23 +253,10 @@ class DataPointCalculatorTest {
     fun `check that calculation is skipped when source data is missing`() {
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA)),
-                correlationId = correlationId,
-            )
+        val result = calculateData(deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)))
 
         assertTrue(result.isEmpty())
     }
@@ -277,28 +265,16 @@ class DataPointCalculatorTest {
     fun `check that the first applicable rule is used when multiple rules exist`() {
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(
-                targetType to
-                    listOf(
-                        CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"),
-                        CalculationRule(listOf(sourceTypeA), "Identity"),
-                    ),
+        mockCalculationRules(
+            listOf(
+                CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"),
+                CalculationRule(listOf(sourceTypeA), "Identity"),
             ),
-        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+            listOf(sourceTypeA, sourceTypeB, targetType),
+        )
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA)),
-                correlationId = correlationId,
-            )
+        val result = calculateData(deliverableDataPointTypes = mapOf(datasetDimensions to listOf(sourceTypeA)))
 
         assertTrue(result.containsKey(datasetDimensions))
         val calculatedPoints = result.getValue(datasetDimensions)
@@ -313,25 +289,10 @@ class DataPointCalculatorTest {
         val dataPointWithValue = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
         val dataPointWithoutValue = makeUploadedDataPoint(sourceTypeB, dataPointWithoutValueJson)
 
-        // Rule requires both A and B
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        // Both returned from storage, but B has no value
-        doReturn(mapOf("id-a" to dataPointWithValue, "id-b" to dataPointWithoutValue))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(mapOf("id-a" to dataPointWithValue, "id-b" to dataPointWithoutValue))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
-                correlationId = correlationId,
-            )
+        val result = calculateData()
         assertTrue(result.isEmpty())
     }
 
@@ -390,33 +351,24 @@ class DataPointCalculatorTest {
         val secondDataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson, companyId = secondCompanyId)
         val secondDataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson, companyId = secondCompanyId)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b", "id-second-a", "id-second-b"))
-            .whenever(dataAvailabilityChecker)
-            .getViewableDataPointIds(any())
-        doReturn(
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(
             mapOf(
                 "id-a" to dataPointHalf,
                 "id-b" to dataPointOne,
                 "id-second-a" to secondDataPointHalf,
                 "id-second-b" to secondDataPointOne,
             ),
-        ).whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        )
 
         val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions, secondDimensions),
+            calculateData(
+                dimensions = listOf(datasetDimensions, secondDimensions),
                 deliverableDataPointTypes =
                     mapOf(
                         datasetDimensions to listOf(sourceTypeA, sourceTypeB),
                         secondDimensions to listOf(sourceTypeA, sourceTypeB),
                     ),
-                correlationId = correlationId,
             )
         val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value
 
@@ -435,25 +387,17 @@ class DataPointCalculatorTest {
         val dataPointHalf = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
         val dataPointOne = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalf, "id-b" to dataPointOne))
 
         val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions, secondDimensions),
+            calculateData(
+                dimensions = listOf(datasetDimensions, secondDimensions),
                 deliverableDataPointTypes =
                     mapOf(
                         datasetDimensions to listOf(sourceTypeA, sourceTypeB),
                         secondDimensions to listOf(sourceTypeA, sourceTypeB),
                     ),
-                correlationId = correlationId,
             )
 
         assertEquals(1, result.size)
@@ -466,23 +410,10 @@ class DataPointCalculatorTest {
         val dataPointHalfFromAnotherPeriod = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson, reportingPeriod = "2024")
         val dataPointOneFromAnotherPeriod = makeUploadedDataPoint(sourceTypeB, numericDataPointOneJson, reportingPeriod = "2024")
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"))),
-        ).whenever(dataCompositionService)
-            .getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointHalfFromAnotherPeriod, "id-b" to dataPointOneFromAnotherPeriod))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+        mockCalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum")
+        mockStoredDataPoints(mapOf("id-a" to dataPointHalfFromAnotherPeriod, "id-b" to dataPointOneFromAnotherPeriod))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
-                correlationId = correlationId,
-            )
+        val result = calculateData()
 
         assertTrue(result.isEmpty())
     }
@@ -492,28 +423,16 @@ class DataPointCalculatorTest {
         val dataPointOne = makeUploadedDataPoint(sourceTypeA, numericDataPointOneJson)
         val dataPointZero = makeUploadedDataPoint(sourceTypeB, zeroNumericDataPointJson)
 
-        doReturn(
-            mapOf<String, Collection<CalculationRule>>(
-                targetType to
-                    listOf(
-                        CalculationRule(listOf(sourceTypeA, sourceTypeB), "Division"),
-                        CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"),
-                    ),
+        mockCalculationRules(
+            listOf(
+                CalculationRule(listOf(sourceTypeA, sourceTypeB), "Division"),
+                CalculationRule(listOf(sourceTypeA, sourceTypeB), "Sum"),
             ),
-        ).whenever(dataCompositionService).getAvailableCalculationRules(any())
-        doReturn(listOf(sourceTypeA, sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
-        doReturn(listOf("id-a", "id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
-        doReturn(mapOf("id-a" to dataPointOne, "id-b" to dataPointZero))
-            .whenever(internalStorageAdapter)
-            .getDataPoints(any(), any())
+            listOf(sourceTypeA, sourceTypeB, targetType),
+        )
+        mockStoredDataPoints(mapOf("id-a" to dataPointOne, "id-b" to dataPointZero))
 
-        val result =
-            dataPointCalculator.getCalculatedData(
-                datasetDimensions = listOf(datasetDimensions),
-                deliverableDataPointTypes =
-                    mapOf(datasetDimensions to listOf(sourceTypeA, sourceTypeB)),
-                correlationId = correlationId,
-            )
+        val result = calculateData()
         val value = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint).value
 
         assertTrue(result.containsKey(datasetDimensions))
