@@ -45,13 +45,21 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept('/community/requests/user', {});
     cy.intercept('/api/companies/mock-company-id/info', companyInformation);
     cy.intercept('/api/data/lksg/companies/mock-company-id*', [mockDataAndMetaInfo]);
-    cy.intercept(`/api/data/lksg/dataset-a`, {
-      companyId: mockDataAndMetaInfo.metaInfo.companyId,
-      reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
-      data: mockDataAndMetaInfo.data,
-    });
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockDataAndMetaInfo.metaInfo]);
-
+    cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', [
+      { companyId: 'mock-company-id', dataType: DataTypeEnum.Lksg, reportingPeriod: reportingYear.toString() },
+    ]);
+    cy.intercept(
+      {
+        method: 'GET',
+        pathname: '/api/data/lksg/',
+        query: { reportingPeriod: reportingYear.toString(), companyId: 'mock-company-id' },
+      },
+      {
+        companyId: mockDataAndMetaInfo.metaInfo.companyId,
+        reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
+        data: mockDataAndMetaInfo.data,
+      }
+    );
     //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
