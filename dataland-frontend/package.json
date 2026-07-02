@@ -53,7 +53,7 @@
     "@faker-js/faker": "10.4.0",
     "@tsconfig/node24": "24.0.4",
     "@types/markdown-it": "14.1.2",
-    "@types/node": "24.13.1",
+    "@types/node": "24.13.2",
     "@vitejs/plugin-vue": "6.0.7",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.8.0",
@@ -71,9 +71,9 @@
     "lint-staged": "17.0.8",
     "markdown-it": "14.2.0",
     "mocha": "11.7.6",
-    "npm-check-updates": "22.2.3",
+    "npm-check-updates": "22.2.9",
     "otplib": "13.4.1",
-    "prettier": "3.8.4",
+    "prettier": "3.8.5",
     "sass": "1.100.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
@@ -81,6 +81,6 @@
     "vite": "8.0.16",
     "vite-plugin-istanbul": "9.0.1",
     "vue-markdown-render": "2.3.1",
-    "vue-tsc": "3.3.3"
+    "vue-tsc": "3.3.5"
   }
 }
