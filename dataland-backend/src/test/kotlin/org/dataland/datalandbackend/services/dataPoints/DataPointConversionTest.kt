@@ -625,8 +625,8 @@ class DataPointConversionTest {
 
     @Test
     fun `check that source section uses the framework name for each source type`() {
-        val input1 = Companion.createDummyUploadedDataPoint("type1")
-        val input2 = Companion.createDummyUploadedDataPoint("type2")
+        val input1 = createDummyUploadedDataPoint("type1")
+        val input2 = createDummyUploadedDataPoint("type2")
         val dataPoints =
             listOf(
                 ExtendedDataPoint(value = BigDecimal.ONE, quality = QualityOptions.Reported),
@@ -641,7 +641,7 @@ class DataPointConversionTest {
         val comment =
             DataPointConversion.SUM.createComment(
                 listOf(input1, input2),
-                Companion.createCommentSpecs(),
+                createCommentSpecs(),
                 dataPoints,
                 sourceFrameworksByType,
             )
@@ -658,12 +658,12 @@ class DataPointConversionTest {
 
     @Test
     fun `check that unknown framework is used when source type has no framework name`() {
-        val input = Companion.createDummyUploadedDataPoint("type1")
+        val input = createDummyUploadedDataPoint("type1")
         val dataPoint = ExtendedDataPoint(value = BigDecimal.ONE, quality = QualityOptions.Reported)
         val comment =
             DataPointConversion.IDENTITY.createComment(
                 listOf(input),
-                Companion.createCommentSpecs(),
+                createCommentSpecs(),
                 listOf(dataPoint),
                 emptyMap(),
             )
@@ -680,12 +680,12 @@ class DataPointConversionTest {
         quality: QualityOptions?,
         sourceComment: String,
     ) {
-        val input = Companion.createDummyUploadedDataPoint("type1")
+        val input = createDummyUploadedDataPoint("type1")
         val dataPoint = ExtendedDataPoint(value = BigDecimal.ONE, quality = quality, comment = sourceComment)
         val comment =
             DataPointConversion.IDENTITY.createComment(
                 listOf(input),
-                Companion.createCommentSpecs(),
+                createCommentSpecs(),
                 listOf(dataPoint),
                 mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
             )
@@ -702,13 +702,13 @@ class DataPointConversionTest {
     @ParameterizedTest
     @EnumSource(value = QualityOptions::class, names = ["Reported", "Audited"])
     fun `check that source comments are omitted for reported and audited data points`(quality: QualityOptions) {
-        val input = Companion.createDummyUploadedDataPoint("type1")
+        val input = createDummyUploadedDataPoint("type1")
         val dataPoint =
             ExtendedDataPoint(value = BigDecimal.ONE, quality = quality, comment = "$quality source comment")
         val comment =
             DataPointConversion.IDENTITY.createComment(
                 listOf(input),
-                Companion.createCommentSpecs(),
+                createCommentSpecs(),
                 listOf(dataPoint),
                 mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
             )
@@ -723,12 +723,12 @@ class DataPointConversionTest {
 
     @Test
     fun `check that source comment placeholder is used for non reported data points without comments`() {
-        val input = Companion.createDummyUploadedDataPoint("type1")
+        val input = createDummyUploadedDataPoint("type1")
         val dataPoint = ExtendedDataPoint(value = BigDecimal.ONE, quality = QualityOptions.Estimated, comment = " ")
         val comment =
             DataPointConversion.IDENTITY.createComment(
                 listOf(input),
-                Companion.createCommentSpecs(),
+                createCommentSpecs(),
                 listOf(dataPoint),
                 mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
             )
