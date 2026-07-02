@@ -259,21 +259,10 @@ sonar {
                 "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
                 "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
-        property("sonar.issue.ignore.multicriteria", "upload, view, preApprovalS104, preApprovalS107")
         property("sonar.issue.ignore.multicriteria.upload.ruleKey", "typescript:S6535")
         property("sonar.issue.ignore.multicriteria.upload.resourceKey", "**/UploadConfig.ts")
         property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
         property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
-        property("sonar.issue.ignore.multicriteria.preApprovalS104.ruleKey", "kotlin:S104")
-        property(
-            "sonar.issue.ignore.multicriteria.preApprovalS104.resourceKey",
-            "dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/PreApprovalServiceTest.kt",
-        )
-        property("sonar.issue.ignore.multicriteria.preApprovalS107.ruleKey", "kotlin:S107")
-        property(
-            "sonar.issue.ignore.multicriteria.preApprovalS107.resourceKey",
-            "dataland-qa-service/src/test/kotlin/org/dataland/datalandqaservice/services/PreApprovalServiceTest.kt",
-        )
     }
 }
 
