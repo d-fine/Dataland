@@ -7,10 +7,6 @@ describe('Component test for ViewFrameworkBase', () => {
     cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', {
       fixture: 'BasicDataDimensionsMocksForOneCompany',
       times: 1,
-    });
-    cy.intercept('**/api/data/**/companies/*', {
-      fixture: 'DataAndMetaInfoMocksForOneCompany',
-      times: 1,
     }).as('dataFetch');
   });
 
