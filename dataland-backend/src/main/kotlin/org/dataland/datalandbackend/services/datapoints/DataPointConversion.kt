@@ -429,7 +429,7 @@ private fun getNumberedSourceReferences(inputs: Collection<UploadedDataPoint>): 
  * Builds the source details section for a calculated or identity-mapped data point.
  *
  * Every source entry contains the source data point type name and framework display name. Source comments are included
- * only when the source data point quality is not [QualityOptions.Reported].
+ * only when the source data point quality is not [QualityOptions.Reported] or [QualityOptions.Audited].
  *
  * @param inputs the uploaded source data points used to resolve source type names
  * @param specs the data point type specifications keyed by source data point type
@@ -449,7 +449,7 @@ private fun getSourcesSection(
             val sourceName = specs.getValue(input.dataPointType).name
             val sourceFrameworkName = getSourceFrameworkLabel(sourceFrameworksByType[input.dataPointType].orEmpty())
             val commentLine =
-                if (dataPoint.quality == QualityOptions.Reported) {
+                if (dataPoint.quality == QualityOptions.Reported || dataPoint.quality == QualityOptions.Audited) {
                     ""
                 } else {
                     val sourceComment = dataPoint.comment?.takeIf { it.isNotBlank() } ?: "none"

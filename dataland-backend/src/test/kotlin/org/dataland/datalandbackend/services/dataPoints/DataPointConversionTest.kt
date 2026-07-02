@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -182,7 +183,6 @@ class DataPointConversionTest {
         @JvmStatic
         fun provideSourceCommentQualityOptions(): Stream<Arguments> =
             Stream.of(
-                Arguments.of(QualityOptions.Audited, "Audited source comment"),
                 Arguments.of(QualityOptions.Estimated, "Estimated source comment"),
                 Arguments.of(QualityOptions.Incomplete, "Incomplete source comment"),
                 Arguments.of(QualityOptions.NoDataFound, "NoDataFound source comment"),
@@ -676,7 +676,7 @@ class DataPointConversionTest {
 
     @ParameterizedTest
     @MethodSource("provideSourceCommentQualityOptions")
-    fun `check that source comments are appended for non reported quality options`(
+    fun `check that source comments are appended for non reported and non audited quality options`(
         quality: QualityOptions?,
         sourceComment: String,
     ) {
@@ -695,6 +695,28 @@ class DataPointConversionTest {
                 "[1] Input1\n" +
                 "+ Framework: $sourceFrameworkName\n" +
                 "+ Comment: $sourceComment",
+            comment,
+        )
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = QualityOptions::class, names = ["Reported", "Audited"])
+    fun `check that source comments are omitted for reported and audited data points`(quality: QualityOptions) {
+        val input = Companion.createDummyUploadedDataPoint("type1")
+        val dataPoint =
+            ExtendedDataPoint(value = BigDecimal.ONE, quality = quality, comment = "$quality source comment")
+        val comment =
+            DataPointConversion.IDENTITY.createComment(
+                listOf(input),
+                Companion.createCommentSpecs(),
+                listOf(dataPoint),
+                mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
+            )
+
+        assertEquals(
+            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+                "[1] Input1\n" +
+                "+ Framework: $sourceFrameworkName",
             comment,
         )
     }
