@@ -71,7 +71,7 @@
     "lint-staged": "17.0.8",
     "markdown-it": "14.2.0",
     "mocha": "11.7.6",
-    "npm-check-updates": "22.2.3",
+    "npm-check-updates": "22.2.9",
     "otplib": "13.4.1",
     "prettier": "3.8.4",
     "sass": "1.100.0",
