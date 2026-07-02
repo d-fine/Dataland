@@ -73,7 +73,7 @@
     "mocha": "11.7.6",
     "npm-check-updates": "22.2.3",
     "otplib": "13.4.1",
-    "prettier": "3.8.4",
+    "prettier": "3.8.5",
     "sass": "1.100.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
