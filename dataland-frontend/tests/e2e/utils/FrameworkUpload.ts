@@ -2,15 +2,12 @@ import {
   Configuration,
   type DataMetaInformation,
   type CompanyInformation,
-  type VsmeData,
-  VsmeDataControllerApi,
   MetaDataControllerApi,
 } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
-import { CompanyRole } from '@clients/communitymanager';
 import {
   type DataPointQaReport,
   DataPointQaReportControllerApi,
@@ -166,30 +163,5 @@ export async function uploadSingleQaReportData(
 ): Promise<DataPointQaReport> {
   const qaReportApi = new DataPointQaReportControllerApi(new Configuration({ accessToken: token }));
   const response = await qaReportApi.postQaReport(dataPointId, qaReport);
-  return response.data;
-}
-
-/**
- * Uploads a single vsme dataset for a company
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param documents the documents to upload
- * @returns a promise on the created data meta information
- */
-export async function uploadVsmeFrameworkData(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: VsmeData,
-  documents: File[]
-): Promise<DataMetaInformation> {
-  await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
-  const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
-    { companyId, reportingPeriod, data },
-    documents
-  );
   return response.data;
 }
