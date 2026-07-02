@@ -243,6 +243,9 @@ class DataPointCalculatorTest {
         val calculatedDataPoint =
             defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.getValue(datasetDimensions).first().dataPoint)
         assertTrue(calculatedDataPoint.comment?.contains("Framework: Unknown") == true)
+        assertTrue(calculatedDataPoint.comment?.contains(sourceFrameworkAName) == false)
+        assertTrue(calculatedDataPoint.comment?.contains(sourceFrameworkBName) == false)
+        assertTrue(calculatedDataPoint.comment?.contains(frameworkName) == false)
     }
 
     @Test
