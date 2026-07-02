@@ -299,7 +299,7 @@ enum class DataPointConversion(
         specs: Map<DataPointType, DataPointTypeSpecification>,
         dataPoints: Collection<ExtendedDataPointInterface<*>>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
-    ): String?
+    ): String
 
     companion object {
         /**
