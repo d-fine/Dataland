@@ -2,38 +2,34 @@
 	{
 		"preparedFixture": {
 			"companyInformation": {
-				"companyName": "Kohler - Predovic",
-				"headquarters": "Fort Maechester",
-				"headquartersPostalCode": "47032-8592",
-				"sector": "solutions",
+				"companyName": "Howell - Schroeder",
+				"headquarters": "Titofort",
+				"headquartersPostalCode": "83078-6644",
+				"sector": null,
 				"identifiers": {
-					"Lei": [],
-					"Isin": [
-						"pFA5kYoP1Jze"
+					"Lei": [
+						"TVCWMaQOH2GOMklVDKhS"
 					],
-					"PermId": [],
+					"Isin": [
+						"WlJlreDWcIrL",
+						"67V42TIhCqf4"
+					],
+					"PermId": [
+						"t6Ttci1sEF"
+					],
 					"Ticker": [],
 					"Duns": [
-						"HxExvBb15"
+						"M3lhPAYfX"
 					],
-					"VatNumber": [
-						"afkrpaPGu"
-					],
+					"VatNumber": [],
 					"CompanyRegistrationNumber": []
 				},
-				"countryCode": "WF",
-				"companyContactDetails": [
-					"Marsha_Monahan-MacGyver64@example.com",
-					"Cassandre_Fritsch@example.com",
-					"Lucy.Purdy@example.com"
-				],
-				"companyAlternativeNames": [
-					"Swift, Veum and Stehr",
-					"Waters - Vandervort"
-				],
-				"companyLegalForm": "GmbH",
-				"website": "https://outlying-larva.biz/",
-				"fiscalYearEnd": "25-Apr",
+				"countryCode": "GI",
+				"companyContactDetails": null,
+				"companyAlternativeNames": [],
+				"companyLegalForm": null,
+				"website": null,
+				"fiscalYearEnd": "21-Oct",
 				"isTeaserCompany": false
 			},
 			"t": {
@@ -50,7 +46,7 @@
 							"SustainabilityReport": {
 								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 								"fileName": "SustainabilityReport",
-								"publicationDate": "2023-03-05"
+								"publicationDate": "2024-01-10"
 							}
 						}
 					}
@@ -58,16 +54,16 @@
 				"social": {
 					"humanRights": {
 						"numberOfReportedIncidentsOfHumanRightsViolations": {
-							"value": 9958,
+							"value": 6747,
 							"dataSource": {
-								"page": "148",
+								"page": "470-774",
 								"fileName": "SustainabilityReport",
 								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"tagName": "interfaces",
+								"tagName": "e-commerce",
 								"publicationDate": null
 							},
-							"comment": "synthesize cross-platform program",
-							"quality": "NoDataFound"
+							"comment": "synthesize online application",
+							"quality": "Incomplete"
 						}
 					}
 				},
@@ -81,14 +77,14 @@
 						"biodiversityProtectionPolicy": {
 							"value": "No",
 							"dataSource": {
-								"page": "3-524",
+								"page": "16-116",
 								"fileName": "SustainabilityReport",
 								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"tagName": "supply-chains",
+								"tagName": "initiatives",
 								"publicationDate": null
 							},
-							"comment": "hack auxiliary firewall",
-							"quality": "NoDataFound"
+							"comment": "transmit online matrix",
+							"quality": "Estimated"
 						}
 					}
 				}
