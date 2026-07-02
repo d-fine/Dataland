@@ -20,14 +20,14 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
     return cy
       .request({
         method: 'GET',
-        url: `/api/metadata?companyId=${companyId}&dataType=${dataType}&showOnlyActive=true`,
+        url: `/api/metadata?companyId=${companyId}&dataType=${dataType}&showOnlyActive=false`,
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         const metaInfo = response.body as Array<DataMetaInformation>;
         const dataId = metaInfo.sort((a, b) => b.uploadTime - a.uploadTime)[0]?.dataId;
         if (!dataId) {
-          throw new Error(`No active dataset found for company ${companyId} and data type ${dataType}`);
+          throw new Error(`No dataset found for company ${companyId} and data type ${dataType}`);
         }
         cy.intercept({ method: 'GET', url: `**/api/data/**/${dataId}` }).as(getRequestAlias);
         cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
