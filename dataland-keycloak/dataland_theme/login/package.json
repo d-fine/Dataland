@@ -28,6 +28,6 @@
     "npm-check-updates": "^22.2.7",
     "sass": "^1.100.0",
     "typescript": "^6.0.0",
-    "vite": "7.3.5"
+    "vite": "7.3.6"
   }
 }
