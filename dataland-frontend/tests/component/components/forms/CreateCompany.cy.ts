@@ -15,9 +15,9 @@ describe('Component test for CreateCompany', () => {
     expect(wrapper.vm.messageCounter).to.equal(0);
   });
 
-  it('Check that an error message is displayed when trying to upload a company without any identifiers', () => {
-    void wrapper.setData({ identifiers: {} });
-    void (wrapper.vm.postCompanyInformation as () => Promise<void>)();
+  it('Check that an error message is displayed when trying to upload a company without any identifiers', async () => {
+    await wrapper.setData({ identifiers: {} });
+    await (wrapper.vm.postCompanyInformation as () => Promise<void>)();
     expect(wrapper.vm.uploadSucceded).to.be.false;
     expect(wrapper.vm.postCompanyProcessed).to.be.true;
   });
