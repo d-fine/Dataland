@@ -63,7 +63,7 @@ describe('Component test for DatasetOverviewTable', () => {
     const routerPushMock = cy.stub();
     cy.stub(router, 'push').callsFake(routerPushMock);
     cy.get('tbody td').should((elements) => {
-      expect(elements.length).to.equal(6);
+      expect(elements).to.have.lengthOf(6);
     });
     cy.get('tbody td').each((element, index) => {
       if (index < expectedRowContents.length) {

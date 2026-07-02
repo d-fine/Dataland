@@ -351,7 +351,7 @@ async function updateDocumentsList(): Promise<Record<string, string>> {
     .message-container {
       margin: var(--spacing-sm) 0;
       width: 100%;
-      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     ul {

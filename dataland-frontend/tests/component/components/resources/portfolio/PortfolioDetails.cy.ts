@@ -181,18 +181,19 @@ describe('Check the portfolio details view', function (): void {
         checkHeader,
       ];
       const nothingToCheckRow = [undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+      cy.get('table').should('exist');
       assertTable('table', [expectedFirstRow, expectedSecondRow, expectedThirdRow, expectedFourthRow]);
       assertTable('table', [checkHeadersRow, nothingToCheckRow, nothingToCheckRow, nothingToCheckRow]);
     });
   });
 
   it('Check sorting', function (): void {
-    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters).then(() => {
-      checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
-      checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
-      checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
-      checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
-    });
+    interceptApiCallsAndMountAndWaitForDownload(nonMemberConfigurationParameters);
+    cy.get('table').should('exist');
+    checkSort('first-child', 'Apricot Inc.', 'Cherry Co', true);
+    checkSort('nth-child(2)', 'Banana LLC', 'Cherry Co');
+    checkSort('nth-child(3)', 'Banana LLC', 'Apricot Inc.');
+    checkSort('nth-child(4)', 'Apricot Inc.', 'Banana LL');
   });
 
   it('Check filter', function (): void {
