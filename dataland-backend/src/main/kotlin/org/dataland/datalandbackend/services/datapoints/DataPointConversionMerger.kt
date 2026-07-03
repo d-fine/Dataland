@@ -94,9 +94,15 @@ internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? 
 internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? =
     inputs.minByOrNull { it.fileReference }
 
+/**
+ * Extracts the data source of a given [dataPoint]
+ *
+ * @param dataPoint The data point provided for data source extraction
+ * @return The associated data source object
+ */
 internal fun getDataSource(dataPoint: ExtendedDataPointInterface<*>): ExtendedDocumentReference? =
     when (dataPoint) {
         is ExtendedCurrencyDataPoint -> dataPoint.dataSource
         is ExtendedDataPoint<*> -> dataPoint.dataSource
-        else -> null
+        else -> throw IllegalArgumentException("Data point of type ${dataPoint::class.java} is not supported.")
     }
