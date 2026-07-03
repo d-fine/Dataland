@@ -6,7 +6,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.model
  * @property areAllQaReportsAccepted `true` if the data point has at least one QA report and all reports were accepted.
  * @property dataPointEligible `true` if the data point type is not excluded from automatic pre-approval.
  * @property passesRandomSampling `true` if the data point was not filtered out by random sampling.
- * @property passesSignificanceCheck `true` if the change from the live data point is not considered significant.
+ * @property passesSignificanceCheck `true` if the change from the data point of the latest active dataset of the
+ * last year is not considered significant.
  */
 data class PreApprovalCheckResults(
     val areAllQaReportsAccepted: Boolean,

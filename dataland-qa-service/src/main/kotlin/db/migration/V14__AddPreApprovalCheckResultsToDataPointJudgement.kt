@@ -15,9 +15,9 @@ class V14__AddPreApprovalCheckResultsToDataPointJudgement : BaseJavaMigration() 
 
     override fun migrate(context: Context) {
         val metaData = context.connection.metaData
-        if (!metaData.getTables(null, null, DATA_POINT_JUDGEMENT_TABLE, null).next() ||
-            metaData.getColumns(null, null, DATA_POINT_JUDGEMENT_TABLE, PRE_APPROVAL_CHECK_RESULTS_COLUMN).next()
-        ) {
+        val tableExists = metaData.getTables(null, null, DATA_POINT_JUDGEMENT_TABLE, null).next()
+        val columnAlreadyExists = metaData.getColumns(null, null, DATA_POINT_JUDGEMENT_TABLE, PRE_APPROVAL_CHECK_RESULTS_COLUMN).next()
+        if (!tableExists || columnAlreadyExists) {
             return
         }
 
