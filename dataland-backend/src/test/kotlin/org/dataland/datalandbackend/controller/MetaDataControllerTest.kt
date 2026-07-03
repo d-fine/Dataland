@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
-import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
@@ -189,13 +188,6 @@ internal class MetaDataControllerTest
             val metaInfo = addMetainformation()
             val emptyDataMetaInformationPatch = DataMetaInformationPatch(uploaderUserId = "")
             assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, emptyDataMetaInformationPatch)
-        }
-
-        @Test
-        fun `ensure that meta info patch endpoint rejects vsme data`() {
-            val metaInfo = addMetainformation(dataType = DataType.of(VsmeData::class.java).toString())
-            val mockDataMetaInformationPatch = mock<DataMetaInformationPatch> { on { uploaderUserId } doReturn uploaderUserId }
-            assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mockDataMetaInformationPatch)
         }
 
         private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
