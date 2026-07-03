@@ -1,5 +1,5 @@
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
-import { PreApprovalConfig } from '@clients/qaservice';
+import { type PreApprovalConfig } from '@clients/qaservice';
 import { useApiClient } from '@/utils/useApiClient.ts';
 import { preApprovalConfigKeys } from '@/api-queries/qa-service/pre-approval/preApprovalConfigKeys.ts';
 
