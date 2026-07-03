@@ -20,7 +20,6 @@ import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.communityManager.retrieveDataRequestIdForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.communityManager.sendBulkRequestWithEmptyInputAndCheckErrorMessage
