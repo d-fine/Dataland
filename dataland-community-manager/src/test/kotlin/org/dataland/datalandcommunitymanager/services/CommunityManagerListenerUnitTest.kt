@@ -3,10 +3,8 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.PrivateDataUploadMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.BeforeEach
@@ -37,7 +35,6 @@ class CommunityManagerListenerUnitTest {
     private val correlationId = UUID.randomUUID().toString()
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
-    private val typePrivateUpload = MessageType.PRIVATE_DATA_RECEIVED
     private val typeNonSourceabilityAutoAccepted = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
     private val typeNonSourceabilityQaAccepted = MessageType.NON_SOURCEABILITY_QA_ACCEPTED
 
@@ -110,43 +107,6 @@ class CommunityManagerListenerUnitTest {
                 typeQAStatusChange, correlationId,
             )
         }
-    }
-
-    @Test
-    fun `invalid private data received message should throw exception`() {
-        val invalidPrivateDataUploadMessage =
-            PrivateDataUploadMessage(
-                dataId = invalidDataId,
-                companyId = "",
-                reportingPeriod = "",
-                framework = "vsme",
-                actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
-            )
-        assertThrows<MessageQueueRejectException> {
-            communityManagerListener.changeRequestStatusAfterPrivateDataUpload(
-                jacksonObjectMapper.writeValueAsString(invalidPrivateDataUploadMessage),
-                typePrivateUpload, correlationId,
-            )
-        }
-    }
-
-    @Test
-    fun `valid private data received message should be processed successfully`() {
-        val validPrivateDataUploadMessage =
-            PrivateDataUploadMessage(
-                dataId = validDataId,
-                companyId = "",
-                reportingPeriod = "",
-                framework = "vsme",
-                actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
-            )
-        communityManagerListener.changeRequestStatusAfterPrivateDataUpload(
-            jacksonObjectMapper.writeValueAsString(validPrivateDataUploadMessage),
-            typePrivateUpload, correlationId,
-        )
-        verify(mockDataRequestUpdateManager).processUserRequests(
-            validDataId, correlationId,
-        )
     }
 
     @Test

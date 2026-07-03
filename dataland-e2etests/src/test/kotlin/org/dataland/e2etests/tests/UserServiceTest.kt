@@ -101,7 +101,7 @@ class UserServiceTest {
             storedCompanies.map { it.companyId }.forEach {
                 assertEquals(
                     null,
-                    getAvailableReportingPeriods(it, DataTypeEnum.vsme, enrichedPortfolio),
+                    getAvailableReportingPeriods(it, DataTypeEnum.pcaf, enrichedPortfolio),
                 )
             }
             relevantPortfolioFrameworks.forEach {

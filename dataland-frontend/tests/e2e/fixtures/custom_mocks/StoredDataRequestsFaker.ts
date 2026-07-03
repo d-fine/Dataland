@@ -1,4 +1,4 @@
-import { AccessStatus, RequestPriority, RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { RequestPriority, RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { DataTypeEnum } from '@clients/backend';
 import { generateInt } from '@e2e/fixtures/common/NumberFixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures';
@@ -18,7 +18,6 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Open,
-      undefined,
       '2021',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
@@ -26,7 +25,6 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      undefined,
       '2022',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
@@ -34,7 +32,6 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      undefined,
       '2024',
       DataTypeEnum.Lksg,
       'Mock-Company-Id'
@@ -42,7 +39,6 @@ export function generateStoredDataRequests(): StoredDataRequest[] {
     manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
       generateStoredDataRequest(),
       RequestStatus.Answered,
-      undefined,
       '1996',
       DataTypeEnum.EutaxonomyNonFinancials,
       '550e8400-e29b-11d4-a716-446655440000'
@@ -61,17 +57,14 @@ export function generateStoredDataRequest(): StoredDataRequest {
   const creationTime = generateInt(timeOffsetBetweenCreationAndLastModified);
   const lastModifiedTime = generateInt(DEFAULT_TIME_OFFSET) + timeOffsetBetweenCreationAndLastModified;
   const status = pickOneElement(Object.values(RequestStatus));
-  const accessStatus = pickOneElement(Object.values(AccessStatus));
   const requestStatusHistory = [
     {
       status: RequestStatus.Open,
       creationTimestamp: creationTime,
-      accessStatus: AccessStatus.Public,
     },
     {
       status: status,
       creationTimestamp: lastModifiedTime,
-      accessStatus: accessStatus,
     },
   ];
   return {
@@ -86,7 +79,6 @@ export function generateStoredDataRequest(): StoredDataRequest {
     dataRequestStatusHistory: requestStatusHistory,
     lastModifiedDate: lastModifiedTime,
     requestStatus: status,
-    accessStatus: accessStatus,
     requestPriority: RequestPriority.Low,
   };
 }
@@ -94,7 +86,6 @@ export function generateStoredDataRequest(): StoredDataRequest {
  * Manipulates the request
  * @param input request to be manipulated
  * @param requestStatus the desired status
- * @param accessStatus the desired access status
  * @param reportingPeriod the desired reporting period
  * @param dataType the desired framework
  * @param companyId the desired company id
@@ -103,13 +94,11 @@ export function generateStoredDataRequest(): StoredDataRequest {
 export function manipulateFixtureToHaveStatusReportingPeriodDataTypeCompanyId(
   input: StoredDataRequest,
   requestStatus?: RequestStatus,
-  accessStatus?: AccessStatus,
   reportingPeriod?: string,
   dataType?: DataTypeEnum,
   companyId?: string
 ): StoredDataRequest {
   input.requestStatus = requestStatus ?? input.requestStatus;
-  input.accessStatus = accessStatus ?? input.accessStatus;
   input.reportingPeriod = reportingPeriod ?? input.reportingPeriod;
   input.dataType = dataType ?? input.dataType;
   input.datalandCompanyId = companyId ?? input.datalandCompanyId;

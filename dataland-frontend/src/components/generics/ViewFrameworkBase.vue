@@ -61,7 +61,6 @@
             />
 
             <PrimeButton
-              v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="downloadData()"
               data-test="downloadDataButton"
               label="DOWNLOAD DATA"
@@ -104,13 +103,11 @@ import TheContent from '@/components/generics/TheContent.vue';
 import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
 
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { isFrameworkEditable } from '@/utils/Frameworks';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import {
   KEYCLOAK_ROLE_ADMIN,
@@ -195,7 +192,6 @@ const isJudgeableByCurrentUser = computed(
 const isEditableByCurrentUser = computed(
   () =>
     hasUserUploaderRights.value &&
-    isFrameworkEditable(props.dataType) &&
     (!props.singleDataMetaInfoToDisplay ||
       props.singleDataMetaInfoToDisplay.currentlyActive ||
       props.singleDataMetaInfoToDisplay.qaStatus === 'Rejected')
@@ -338,7 +334,7 @@ async function handleDatasetDownload(
   downloadErrors.value = '';
   try {
     const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-    // DataExport Button does not exist for private frameworks, so cast is safe
+    // Cast is safe because all registered frameworks extend PublicFrameworkDataApi
     const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
       selectedFramework,
       apiClientProvider

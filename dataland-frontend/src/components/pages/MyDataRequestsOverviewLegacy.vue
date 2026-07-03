@@ -26,18 +26,6 @@
           selected-items-label="{0} frameworks selected"
         />
 
-        <FrameworkDataSearchDropdownFilter
-          v-model="selectedAccessStatus"
-          ref="accessStatusFilter"
-          :available-items="availableAccessStatus"
-          filter-name="Access Status"
-          data-test="requested-datasets-access-status"
-          id="access-status-filter"
-          filter-placeholder="access status"
-          class="search-filter"
-          :max-selected-labels="1"
-          selected-items-label="{0} status selected"
-        />
         <PrimeButton variant="link" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
 
@@ -93,11 +81,6 @@
                 <DatalandTag :severity="data.requestStatus" :value="data.requestStatus" />
               </template>
             </Column>
-            <Column header="ACCESS STATUS" field="accessStatus" :sortable="true">
-              <template #body="{ data }">
-                <DatalandTag :severity="data.accessStatus" :value="data.accessStatus" />
-              </template>
-            </Column>
             <Column field="resolve" header="">
               <template #body="{ data }">
                 <div
@@ -139,12 +122,8 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 
 import { ApiClientProvider } from '@/services/ApiClients';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import {
-  customCompareForRequestStatus,
-  retrieveAvailableAccessStatuses,
-  retrieveAvailableFrameworks,
-} from '@/utils/RequestsOverviewPageUtilsLegacy';
+import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { customCompareForRequestStatus, retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtilsLegacy';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
@@ -173,15 +152,11 @@ const searchBarInputFilter = ref('');
 const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
 
-const availableAccessStatus = ref<SelectableItem[]>([]);
-const selectedAccessStatus = ref<SelectableItem[]>([]);
-
 const numberOfFilteredRequests = ref(0);
 const sortField = ref<keyof ExtendedStoredDataRequest>('requestStatus');
 const sortOrder = ref(1);
 
 const frameworkFilter = ref();
-const accessStatusFilter = ref();
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
@@ -189,11 +164,10 @@ const vueRouter = useRouter();
 
 onMounted(async () => {
   availableFrameworks.value = retrieveAvailableFrameworks();
-  availableAccessStatus.value = retrieveAvailableAccessStatuses();
   await getStoredRequestDataList();
 });
 
-watch([selectedFrameworks, selectedAccessStatus, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
+watch([selectedFrameworks, waitingForData], () => updateCurrentDisplayedData(), { deep: true });
 
 watch(searchBarInput, (newSearch) => {
   searchBarInputFilter.value = newSearch;
@@ -263,16 +237,6 @@ function filterFramework(framework: string): boolean {
 }
 
 /**
- * Determines whether the specified access status matches any selected access status.
- *
- * @param {string} accessStatus - The access status to check.
- * @returns {boolean} True if the specified access status matches a selected access status, false otherwise.
- */
-function filterAccessStatus(accessStatus: string): boolean {
-  return selectedAccessStatus.value.some((s) => s.displayName === accessStatus);
-}
-
-/**
  * Filters company names based on the search bar input.
  *
  * @param {string} companyName - The name of the company to be checked against the search input.
@@ -284,17 +248,16 @@ function filterSearchInput(companyName: string): boolean {
 
 /**
  * Resets all the filters and the search bar input to their default state.
- * This clears the selected frameworks, selected access statuses, and search input values.
+ * This clears the selected frameworks and search input values.
  */
 function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
-  selectedAccessStatus.value = [];
   searchBarInput.value = '';
 }
 
 /**
  * Updates the list of currently displayed data based on filters, sorting, and pagination.
- * Filters the data requests by search input, selected frameworks, and access statuses.
+ * Filters the data requests by search input and selected frameworks.
  * Sorts the filtered data using a custom comparison function.
  * Updates the displayed data and scrolls to the top of the page.
  */
@@ -303,9 +266,6 @@ function updateCurrentDisplayedData(): void {
 
   if (selectedFrameworks.value.length > 0) {
     data = data.filter((d) => filterFramework(d.dataType));
-  }
-  if (selectedAccessStatus.value.length > 0) {
-    data = data.filter((d) => filterAccessStatus(d.accessStatus));
   }
 
   data.sort((a, b) => customCompareForExtendedStoredDataRequests(a, b));

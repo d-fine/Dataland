@@ -122,12 +122,6 @@ class MetaDataController(
                 message = "Request body must not be null nor empty",
             )
         }
-        if (metaInfo.dataType == "vsme") {
-            throw InvalidInputApiException(
-                summary = "Data of dataType ${metaInfo.dataType} cannot be patched.",
-                message = "Patching metadata is only permitted for public datasets.",
-            )
-        }
         logger.info(
             logMessageBuilder.patchDataMetaInformationMessage(
                 userId = currentUser?.userId,

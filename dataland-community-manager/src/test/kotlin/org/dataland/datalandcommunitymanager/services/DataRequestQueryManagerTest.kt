@@ -196,7 +196,7 @@ class DataRequestQueryManagerTest {
         doAnswer { invocation ->
             val extendedStoredDataRequests = invocation.getArgument<List<ExtendedStoredDataRequest>>(0)
             extendedStoredDataRequests.map { it.copy(userEmailAddress = userIdsToEmailAddresses[it.userId]) }
-        }.whenever(mockDataRequestMasker).addEmailAddressIfAllowedToSee(any(), any(), any())
+        }.whenever(mockDataRequestMasker).addEmailAddressIfAllowedToSee(any(), any())
 
         doAnswer { invocation ->
             invocation.getArgument<List<ExtendedStoredDataRequest>>(0)
@@ -229,7 +229,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call without email filter `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithoutEmailAddress,
                 null,
                 null,
@@ -252,7 +251,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call with email filter `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithEmailAddressBeta,
                 null,
                 null,
@@ -275,7 +273,6 @@ class DataRequestQueryManagerTest {
     fun `simulate getDataRequests call with search string `() {
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                emptyList(),
                 filterWithoutEmailAddress,
                 companySearchString,
                 null,

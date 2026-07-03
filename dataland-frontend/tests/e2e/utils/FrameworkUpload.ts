@@ -1,17 +1,8 @@
-import {
-  Configuration,
-  type DataMetaInformation,
-  type CompanyInformation,
-  type VsmeData,
-  VsmeDataControllerApi,
-} from '@clients/backend';
+import { Configuration, type DataMetaInformation, type CompanyInformation } from '@clients/backend';
 import { type UploadIds } from '@e2e/utils/GeneralApiUtils';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import { assignCompanyRole } from '@e2e/utils/CompanyRolesUtils';
-import { admin_userId } from '@e2e/utils/Cypress';
 import { type BasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkDefinition';
-import { CompanyRole } from '@clients/communitymanager';
 
 export type PublicApiClientConstructor<FrameworkDataType> = (
   config: Configuration
@@ -106,29 +97,4 @@ export async function uploadCompanyAndFrameworkDataForPublicToolboxFramework<Fra
       return { companyId: storedCompany.companyId, dataId: dataMetaInformation.dataId };
     });
   });
-}
-
-/**
- * Uploads a single vsme dataset for a company
- * @param token The API bearer token to use
- * @param companyId The Id of the company to upload the dataset for
- * @param reportingPeriod The reporting period to use for the upload
- * @param data The Dataset to upload
- * @param documents the documents to upload
- * @returns a promise on the created data meta information
- */
-export async function uploadVsmeFrameworkData(
-  token: string,
-  companyId: string,
-  reportingPeriod: string,
-  data: VsmeData,
-  documents: File[]
-): Promise<DataMetaInformation> {
-  await assignCompanyRole(token, CompanyRole.CompanyOwner, companyId, admin_userId);
-  const vsmeDataControllerApi = new VsmeDataControllerApi(new Configuration({ accessToken: token }));
-  const response = await vsmeDataControllerApi.postVsmeJsonAndDocuments(
-    { companyId, reportingPeriod, data },
-    documents
-  );
-  return response.data;
 }

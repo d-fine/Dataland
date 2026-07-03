@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
@@ -28,7 +27,7 @@ class QueryDataRequestsCountingTests {
 
     private val dataTypeGetNumberOfRequestsSfdr = RequestControllerApi.DataTypeGetNumberOfRequests.sfdr
     private val dataTypeGetNumberOfRequestsLksg = RequestControllerApi.DataTypeGetNumberOfRequests.lksg
-    private val dataTypeGetNumberOfRequestsVsme = RequestControllerApi.DataTypeGetNumberOfRequests.vsme
+    private val dataTypeGetNumberOfRequestsPcaf = RequestControllerApi.DataTypeGetNumberOfRequests.pcaf
 
     private fun postSingleDataRequest(
         companyId: String,
@@ -48,7 +47,7 @@ class QueryDataRequestsCountingTests {
     @BeforeAll
     fun postDataRequestsBeforeQueryTest() {
         withTechnicalUser(TechnicalUser.PremiumUser) {
-            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.vsme, setOf("2022", "2023"))
+            postSingleDataRequest(companyIdA, SingleDataRequest.DataType.pcaf, setOf("2022", "2023"))
             postSingleDataRequest(companyIdB, SingleDataRequest.DataType.lksg, setOf("2023"))
         }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -81,33 +80,13 @@ class QueryDataRequestsCountingTests {
     }
 
     @Test
-    fun `count requests with access status filters`() {
-        assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Public)),
-        )
-        assertEquals(
-            2,
-            api.getNumberOfRequests(datalandCompanyId = companyIdA, accessStatus = setOf(AccessStatus.Pending)),
-        )
-        assertEquals(
-            1,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, accessStatus = setOf(AccessStatus.Public)),
-        )
-        assertEquals(
-            0,
-            api.getNumberOfRequests(datalandCompanyId = companyIdB, accessStatus = setOf(AccessStatus.Pending)),
-        )
-    }
-
-    @Test
     fun `count requests by single data type for company A`() {
         assertEquals(2, api.getNumberOfRequests(datalandCompanyId = companyIdA))
         assertEquals(
             2,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
-                dataType = listOf(dataTypeGetNumberOfRequestsVsme),
+                dataType = listOf(dataTypeGetNumberOfRequestsPcaf),
             ),
         )
         assertEquals(
@@ -125,7 +104,7 @@ class QueryDataRequestsCountingTests {
             2,
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
-                dataType = listOf(dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme),
+                dataType = listOf(dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf),
             ),
         )
         assertEquals(
@@ -134,7 +113,7 @@ class QueryDataRequestsCountingTests {
                 datalandCompanyId = companyIdA,
                 dataType =
                     listOf(
-                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf, dataTypeGetNumberOfRequestsSfdr,
                     ),
             ),
         )
@@ -146,7 +125,7 @@ class QueryDataRequestsCountingTests {
         assertEquals(
             0,
             api.getNumberOfRequests(
-                datalandCompanyId = companyIdB, dataType = listOf(dataTypeGetNumberOfRequestsVsme),
+                datalandCompanyId = companyIdB, dataType = listOf(dataTypeGetNumberOfRequestsPcaf),
             ),
         )
         assertEquals(
@@ -161,7 +140,7 @@ class QueryDataRequestsCountingTests {
                 datalandCompanyId = companyIdB,
                 dataType =
                     listOf(
-                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf, dataTypeGetNumberOfRequestsSfdr,
                     ),
             ),
         )
@@ -175,7 +154,7 @@ class QueryDataRequestsCountingTests {
             api.getNumberOfRequests(
                 datalandCompanyId = companyIdA,
                 reportingPeriods = setOf("2022"),
-                dataType = listOf(dataTypeGetNumberOfRequestsVsme),
+                dataType = listOf(dataTypeGetNumberOfRequestsPcaf),
             ),
         )
         assertEquals(
@@ -217,7 +196,7 @@ class QueryDataRequestsCountingTests {
         assertTrue(api.getNumberOfRequests(userId = requesterUserId) >= 3)
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(dataTypeGetNumberOfRequestsVsme),
+                dataType = listOf(dataTypeGetNumberOfRequestsPcaf),
                 userId = requesterUserId,
             ) >= 2,
         )
@@ -229,7 +208,7 @@ class QueryDataRequestsCountingTests {
         )
         assertTrue(
             api.getNumberOfRequests(
-                dataType = listOf(dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme),
+                dataType = listOf(dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf),
                 userId = requesterUserId,
             ) >= 3,
         )
@@ -237,7 +216,7 @@ class QueryDataRequestsCountingTests {
             api.getNumberOfRequests(
                 dataType =
                     listOf(
-                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf, dataTypeGetNumberOfRequestsSfdr,
                     ),
                 userId = requesterUserId,
             ) >= 3,
@@ -247,13 +226,13 @@ class QueryDataRequestsCountingTests {
     @Test
     fun `count requests without company filter`() {
         assertTrue(api.getNumberOfRequests() >= 3)
-        assertTrue(api.getNumberOfRequests(dataType = listOf(dataTypeGetNumberOfRequestsVsme)) >= 2)
+        assertTrue(api.getNumberOfRequests(dataType = listOf(dataTypeGetNumberOfRequestsPcaf)) >= 2)
         assertTrue(api.getNumberOfRequests(dataType = listOf(dataTypeGetNumberOfRequestsLksg)) >= 1)
         assertTrue(
             api.getNumberOfRequests(
                 dataType =
                     listOf(
-                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme,
+                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf,
                     ),
             ) >= 3,
         )
@@ -261,7 +240,7 @@ class QueryDataRequestsCountingTests {
             api.getNumberOfRequests(
                 dataType =
                     listOf(
-                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsVsme, dataTypeGetNumberOfRequestsSfdr,
+                        dataTypeGetNumberOfRequestsLksg, dataTypeGetNumberOfRequestsPcaf, dataTypeGetNumberOfRequestsSfdr,
                     ),
             ) >= 3,
         )

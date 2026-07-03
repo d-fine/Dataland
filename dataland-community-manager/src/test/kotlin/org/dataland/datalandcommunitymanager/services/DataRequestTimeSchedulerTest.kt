@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -37,7 +36,6 @@ class DataRequestTimeSchedulerTest {
     private fun getDataRequestEntity(
         requestId: String,
         status: RequestStatus,
-        accessStatus: AccessStatus,
         lastModifiedDate: Long,
     ): DataRequestEntity {
         val dataRequestEntity =
@@ -60,7 +58,6 @@ class DataRequestTimeSchedulerTest {
                 RequestStatusEntity(
                     statusHistoryId = UUID.randomUUID().toString(),
                     requestStatus = status,
-                    accessStatus = accessStatus,
                     creationTimestamp = 0,
                     dataRequest = dataRequestEntity,
                 ),
@@ -93,11 +90,11 @@ class DataRequestTimeSchedulerTest {
         doReturn(
             listOf(
                 getDataRequestEntity(
-                    dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public,
+                    dataRequestIdStaleAndAnswered, RequestStatus.Answered,
                     staleLastModified,
                 ),
                 getDataRequestEntity(
-                    dataRequestIdStaleAndAnswered, RequestStatus.Answered, AccessStatus.Public,
+                    dataRequestIdStaleAndAnswered, RequestStatus.Answered,
                     staleLastModified,
                 ),
             ),
@@ -121,7 +118,7 @@ class DataRequestTimeSchedulerTest {
         for (status in RequestStatus.entries) {
             val dataRequestEntity =
                 getDataRequestEntity(
-                    dummyDataRequestId, status, AccessStatus.Public,
+                    dummyDataRequestId, status,
                     Instant.now().toEpochMilli(),
                 )
             dataRequestEntities.add(dataRequestEntity)

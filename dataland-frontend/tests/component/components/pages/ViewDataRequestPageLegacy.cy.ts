@@ -1,7 +1,6 @@
 import ViewDataRequestPage from '@/components/pages/ViewDataRequestPageLegacy.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
-  AccessStatus,
   RequestPriority,
   RequestStatus,
   type StoredDataRequest,
@@ -52,12 +51,9 @@ describe('Component tests for the view data request page', function (): void {
       reportingPeriod: dummyReportingYear,
       datalandCompanyId: dummyCompanyId,
       messageHistory: messageHistory,
-      dataRequestStatusHistory: [
-        { status: requestStatus, creationTimestamp: dummyCreationTime, accessStatus: AccessStatus.Public },
-      ],
+      dataRequestStatusHistory: [{ status: requestStatus, creationTimestamp: dummyCreationTime }],
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
-      accessStatus: AccessStatus.Public,
       requestPriority: RequestPriority.Low,
     };
   }
@@ -321,7 +317,7 @@ describe('Component tests for the view data request page', function (): void {
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
-        cy.get('[data-test="updateRequestButton"]').should('exist').click({ force: true });
+        cy.get('[data-test="updateRequestButton"]').should('exist').click();
         cy.get('[data-test="successText"]').should('exist');
         interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
         cy.get('button[aria-label="CLOSE"]').should('be.visible').click();

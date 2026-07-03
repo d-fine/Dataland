@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -57,46 +56,4 @@ interface TemporarilyCachedDataApi {
     fun getBatchReceivedPublicData(
         @RequestBody dataIds: List<String>,
     ): ResponseEntity<Map<String, String>>
-
-    /**
-     * This method retrieves private data entries from the temporary storage
-     * @param dataId filters the requested data to a specific entry.
-     */
-    @Operation(
-        summary = "Retrieve specific data from the cache store of the backend.",
-        description = "Data identified by the provided data ID is retrieved.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
-        ],
-    )
-    @GetMapping(
-        value = ["/private/{dataId}"],
-        produces = ["application/json"],
-    )
-    fun getReceivedPrivateJson(
-        @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<String>
-
-    /**
-     * This method retrieves data entries from the temporary storage
-     * @param hash filters the requested data to a specific entry.
-     */
-    @Operation(
-        summary = "Retrieve specific data from the cache store of the backend.",
-        description = "Data identified by the provided sha256 hash is retrieved.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved blob."),
-        ],
-    )
-    @GetMapping(
-        value = ["/private/document/{hash}"],
-        produces = ["application/octet-stream"],
-    )
-    fun getReceivedPrivateDocument(
-        @PathVariable("hash") hash: String,
-    ): ResponseEntity<InputStreamResource>
 }

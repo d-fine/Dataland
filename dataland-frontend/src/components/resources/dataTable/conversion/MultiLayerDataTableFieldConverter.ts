@@ -13,7 +13,6 @@ import { percentageValueGetterFactory } from '@/components/resources/dataTable/c
 import { multiSelectValueGetterFactory } from '@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory';
 import { getModalGetterFactory } from '@/components/resources/dataTable/conversion/GenericModalValueGetterFactory';
 import { lksgModalColumnHeaders } from '@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders';
-import { vsmeModalColumnHeaders } from '@/components/resources/dataTable/conversion/vsme/VsmeDisplayValueGetters';
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -40,8 +39,6 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
   BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
   CurrencyExtendedDataPointFormField: currencyDataPointValueGetterFactory,
-  SubsidiaryFormField: getModalGetterFactory('listOfSubsidiary', vsmeModalColumnHeaders),
-  PollutionEmissionFormField: getModalGetterFactory('pollutionEmission', vsmeModalColumnHeaders),
 };
 
 /**

@@ -1,4 +1,0 @@
-FROM scratch AS builder
-
-WORKDIR /app
-COPY ./dataland-external-storage/build/libs/*.jar ./dataland-external-storage/build/libs/

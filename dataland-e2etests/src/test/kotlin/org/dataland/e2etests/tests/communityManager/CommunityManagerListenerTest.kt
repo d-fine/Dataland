@@ -3,7 +3,6 @@ package org.dataland.e2etests.tests.communityManager
 import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -186,7 +185,6 @@ class CommunityManagerListenerTest {
         technicalUser: TechnicalUser,
         dataRequestId: UUID,
         requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
         contacts: Set<String>? = null,
         message: String? = null,
     ) {
@@ -198,7 +196,6 @@ class CommunityManagerListenerTest {
                     dataRequestPatch =
                         DataRequestPatch(
                             requestStatus = requestStatus,
-                            accessStatus = accessStatus,
                             contacts = contacts,
                             message = message,
                         ),
@@ -213,7 +210,7 @@ class CommunityManagerListenerTest {
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
             technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId,
-            requestStatus = RequestStatus.Resolved, accessStatus = null,
+            requestStatus = RequestStatus.Resolved,
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -235,7 +232,6 @@ class CommunityManagerListenerTest {
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 technicalUser = TechnicalUser.Reader, dataRequestId = dataRequestId, requestStatus = it,
-                accessStatus = null,
             )
         }
     }
@@ -249,7 +245,7 @@ class CommunityManagerListenerTest {
 
         authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
             technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId,
-            requestStatus = RequestStatus.Resolved, accessStatus = null,
+            requestStatus = RequestStatus.Resolved,
         )
     }
 
@@ -262,7 +258,6 @@ class CommunityManagerListenerTest {
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = it,
-                accessStatus = null,
             )
         }
 
@@ -272,7 +267,6 @@ class CommunityManagerListenerTest {
         RequestStatus.entries.forEach {
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = it,
-                accessStatus = null,
             )
         }
     }
@@ -386,7 +380,7 @@ class CommunityManagerListenerTest {
 
             authenticateAsTechnicalUserAndAssertThatPatchingOfDataRequestIsForbidden(
                 technicalUser = TechnicalUser.PremiumUser, dataRequestId = dataRequestId, requestStatus = null,
-                accessStatus = null, contacts = contacts, message = message,
+                contacts = contacts, message = message,
             )
         }
     }

@@ -22,10 +22,8 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.ENTRY_SET,
-    isPrivateFramework: Boolean = false,
 ) : PavedRoadFramework(
         identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures,
-        isPrivateFramework,
     ) {
     private fun ignoreErrors(
         compilationStep: String,

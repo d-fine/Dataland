@@ -65,22 +65,19 @@ class DataRequestUpdateUtils
             answeringDataId: String?,
         ): Boolean {
             val newRequestStatus = dataRequestPatch.requestStatus ?: dataRequestEntity.requestStatus
-            val newAccessStatus = dataRequestPatch.accessStatus ?: dataRequestEntity.accessStatus
 
             if (newRequestStatus != dataRequestEntity.requestStatus ||
-                newAccessStatus != dataRequestEntity.accessStatus ||
                 newRequestStatus == RequestStatus.NonSourceable
             ) {
                 communityManagerDataRequestProcessingUtils.addNewRequestStatusToHistory(
                     dataRequestEntity,
                     newRequestStatus,
-                    newAccessStatus,
                     dataRequestPatch.requestStatusChangeReason,
                     modificationTime,
                     answeringDataId,
                 )
-                dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
-                    dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
+                dataRequestLogger.logMessageForPatchingRequestStatus(
+                    dataRequestEntity.dataRequestId, newRequestStatus,
                 )
                 return true
             }

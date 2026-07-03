@@ -9,16 +9,28 @@ import { getMountingFunction } from '@ct/testUtils/Mount';
 function fillAndValidateGeneralSection(): void {
   cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection426"]')
     .find('input[type="checkbox"][value="Yes"]')
-    .click();
+    .click()
+    .should('be.checked');
   cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection427"]')
     .find('input[type="checkbox"][value="Yes"]')
-    .click();
+    .click()
+    .should('be.checked');
   cy.get('div[data-test="nuclearEnergyRelatedActivitiesSection428"]')
     .find('input[type="checkbox"][value="Yes"]')
-    .click();
-  cy.get('div[data-test="fossilGasRelatedActivitiesSection429"]').find('input[type="checkbox"][value="Yes"]').click();
-  cy.get('div[data-test="fossilGasRelatedActivitiesSection430"]').find('input[type="checkbox"][value="Yes"]').click();
-  cy.get('div[data-test="fossilGasRelatedActivitiesSection431"]').find('input[type="checkbox"][value="Yes"]').click();
+    .click()
+    .should('be.checked');
+  cy.get('div[data-test="fossilGasRelatedActivitiesSection429"]')
+    .find('input[type="checkbox"][value="Yes"]')
+    .click()
+    .should('be.checked');
+  cy.get('div[data-test="fossilGasRelatedActivitiesSection430"]')
+    .find('input[type="checkbox"][value="Yes"]')
+    .click()
+    .should('be.checked');
+  cy.get('div[data-test="fossilGasRelatedActivitiesSection431"]')
+    .find('input[type="checkbox"][value="Yes"]')
+    .click()
+    .should('be.checked');
 }
 
 /**
@@ -38,7 +50,8 @@ function fillAndValidateOtherSections(): void {
       `div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="taxonomyAlignedShareDenominator${subsection}"] input[name="mitigationAndAdaptation"]`
     )
       .clear()
-      .type('12');
+      .type('12')
+      .should('have.value', '12');
     cy.get(
       `div[data-test="nuclearAndGasTaxonomyAlignedRevenueDenominator"] div[data-test="taxonomyAlignedShareDenominator${subsection}"] input[name="mitigation"]`
     )

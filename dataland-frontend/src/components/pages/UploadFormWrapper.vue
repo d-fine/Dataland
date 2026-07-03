@@ -16,7 +16,6 @@ import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
 import CreatePcafDataset from '@/components/forms/CreatePcafDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
-import CreateVsmeDataset from '@/components/forms/CreateVsmeDataset.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import CompanyInformation from '@/components/pages/CompanyInformation.vue';
 import { redirectToMyDatasets } from '@/components/resources/uploadDataset/DatasetCreationRedirect';
@@ -41,8 +40,6 @@ const frameworkToUploadComponent = computed(() => {
       return CreateLksgDataset;
     case `${DataTypeEnum.Sfdr}`:
       return CreateSfdrDataset;
-    case `${DataTypeEnum.Vsme}`:
-      return CreateVsmeDataset;
     case `${DataTypeEnum.NuclearAndGas}`:
       return CreateNuclearAndGasDataset;
     case `${DataTypeEnum.Pcaf}`:

@@ -111,7 +111,7 @@ describe('Component tests for the data request review buttons', function (): voi
       .should('exist')
       .within(() => {
         cy.contains('button', 'UPDATE REQUEST').should('exist');
-        cy.contains('button', 'VIEW HISTORY').should('exist').click({ force: true });
+        cy.contains('button', 'VIEW HISTORY').should('exist').click();
       });
     cy.get('[data-test="viewHistoryModal"]')
       .should('exist')
@@ -119,10 +119,7 @@ describe('Component tests for the data request review buttons', function (): voi
       .within(() => {
         checkMessageHistory();
       });
-    cy.get('[data-test="updateRequestTabMenu"]')
-      .contains('button', 'UPDATE REQUEST')
-      .should('exist')
-      .click({ force: true });
+    cy.get('[data-test="updateRequestTabMenu"]').contains('button', 'UPDATE REQUEST').should('exist').click();
     checkEmailFieldsAndCheckBox(parentComponentOfEmailDetails, triggerComponentForEmailDetails);
   }
   /**

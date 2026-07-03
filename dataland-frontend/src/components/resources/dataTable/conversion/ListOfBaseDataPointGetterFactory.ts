@@ -5,7 +5,12 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import ListOfBaseDataPointModal from '@/components/resources/dataTable/modals/ListOfBaseDataPointModal.vue';
-import { type BaseDataPointString } from '@clients/backend';
+
+type BaseDataPointString = {
+  value?: string | null;
+  dataSource?: string | null;
+  comment?: string | null;
+};
 
 /**
  * Convert a list of string-wrapping base datapoints into a display object.

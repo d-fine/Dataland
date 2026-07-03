@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import Tab from 'primevue/tab';
 import TabList from 'primevue/tablist';
@@ -54,12 +54,6 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
   { id: 'my-data-requests-legacy', label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
-  {
-    id: 'data-requests-for-my-companies',
-    label: 'DATA REQUESTS FOR MY COMPANIES',
-    route: '/companyrequests',
-    isVisible: false,
-  },
   { id: 'all-data-requests', label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
   {
     id: 'all-data-requests-legacy',
@@ -137,11 +131,9 @@ function setVisibilityForTabWithQualityAssurance(): void {
 /**
  * Configures company-related tabs based on the current user's company role assignments.
  * - Shows and sets the route for the "My Company" tab when a company assignment exists.
- * - Shows the "Data requests for my companies" tab if the user is a company owner.
  */
 function configureCompanyRelatedTabs(): void {
   const myCompanyTab = getTabById('my-company');
-  const requestsForMyCompaniesTab = getTabById('data-requests-for-my-companies');
 
   const assignments = companyRoleAssignments.value ?? [];
   const firstAssignment = assignments[0];
@@ -149,16 +141,11 @@ function configureCompanyRelatedTabs(): void {
   if (!firstAssignment) {
     myCompanyTab.isVisible = false;
     myCompanyTab.route = '/companies';
-    requestsForMyCompaniesTab.isVisible = false;
     return;
   }
 
   myCompanyTab.isVisible = true;
   myCompanyTab.route = `/companies/${firstAssignment.companyId}`;
-
-  requestsForMyCompaniesTab.isVisible = assignments.some(
-    (roleAssignment) => roleAssignment.companyRole === CompanyRole.CompanyOwner
-  );
 }
 
 /**
