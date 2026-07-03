@@ -174,7 +174,7 @@ import ToggleSwitch from 'primevue/toggleswitch';
 import { computed, ref } from 'vue';
 import type { NextDataPointOption } from '@/types/JudgeDialogTypes.ts';
 import type { PreApprovalCheckResults } from '@clients/qaservice';
-import { usePreApprovalConfigQuery } from '@/api-queries/qa-service/dataset-judgement/usePreApprovalConfigQuery.ts';
+import { usePreApprovalConfigQuery } from '@/api-queries/qa-service/pre-approval/usePreApprovalConfigQuery.ts';
 
 const isInfoDialogOpen = ref(false);
 

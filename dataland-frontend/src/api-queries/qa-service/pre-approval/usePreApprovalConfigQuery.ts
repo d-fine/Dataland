@@ -1,6 +1,7 @@
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
-import type { PreApprovalConfig } from '@clients/qaservice';
-import { useApiClient } from '@/utils/useApiClient';
+import type { PreApprovalConfig } from 'build/clients/qaservice';
+import { useApiClient } from 'src/utils/useApiClient';
+import { preApprovalConfigKeys } from "./preApprovalConfigKeys.ts";
 
 /**
  * Provides a query for fetching the pre-approval configuration.
@@ -12,7 +13,7 @@ export function usePreApprovalConfigQuery(): UseQueryReturnType<PreApprovalConfi
   const apiClientProvider = useApiClient();
 
   return useQuery<PreApprovalConfig>({
-    queryKey: ['preApprovalConfig'],
+    queryKey: preApprovalConfigKeys.all,
     queryFn: async () => {
       const { data } = await apiClientProvider.apiClients.preApprovalController.getPreApprovalConfig();
       return data;
