@@ -80,7 +80,7 @@ object PreApprovalServiceTestUtils {
             datasetJudgementSupportService = mockSupportServiceWithNoLiveDataset(),
         )
 
-    @Suppress("LongParameterList")
+    @Suppress("LongParameterList", "kotlin:S107")
     fun buildServiceWithLiveDatasetForSignificanceCheck(
         originalDataPointId: String,
         liveDataPointId: String,
