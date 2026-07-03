@@ -1,6 +1,7 @@
-import { type DataTypeEnum } from '@clients/backend';
+import { type DataTypeEnum, type DataMetaInformation } from '@clients/backend';
 // @ts-ignore: Cypress types are internal; safe to ignore missing module
 import { type Interception } from 'cypress/types/net-stubbing';
+import { getAdminToken } from '@e2e/utils/Auth.ts';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
@@ -14,25 +15,24 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum
 ): Cypress.Chainable<Interception> {
-  const metaRequestAlias = 'fetchMetaInfoForPrefill';
   const getRequestAlias = 'fetchDataForPrefill';
-  cy.intercept({
-    method: 'GET',
-    url: `**/api/metadata?companyId=${companyId}`,
-  }).as(metaRequestAlias);
-  cy.visit(`/companies/${companyId}/frameworks/${dataType}`);
-  return cy.wait(`@${metaRequestAlias}`, { timeout: mediumTimeoutInMs }).then((interception) => {
-    const metaInformation = interception.response?.body as Array<{ dataId?: string; dataType?: string }> | undefined;
-    const dataId = metaInformation?.find((meta) => meta.dataType === dataType)?.dataId;
-    if (!dataId) {
-      throw new Error('No dataId found in metadata for edit navigation.');
-    }
-    cy.intercept({
-      method: 'GET',
-      url: `**/api/data/**/${dataId}`,
-    }).as(getRequestAlias);
-    cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
-    return cy.wait(`@${getRequestAlias}`, { timeout: mediumTimeoutInMs });
+  return getAdminToken().then((token: string) => {
+    return cy
+      .request({
+        method: 'GET',
+        url: `/api/metadata?companyId=${companyId}&dataType=${dataType}&showOnlyActive=false`,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        const metaInfo = response.body as Array<DataMetaInformation>;
+        const dataId = metaInfo.sort((a, b) => b.uploadTime - a.uploadTime)[0]?.dataId;
+        if (!dataId) {
+          throw new Error(`No dataset found for company ${companyId} and data type ${dataType}`);
+        }
+        cy.intercept({ method: 'GET', url: `**/api/data/**/${dataId}` }).as(getRequestAlias);
+        cy.visit(`/companies/${companyId}/frameworks/${dataType}/upload?templateDataId=${dataId}`);
+        return cy.wait(`@${getRequestAlias}`, { timeout: mediumTimeoutInMs });
+      });
   });
 }
 
