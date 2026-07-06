@@ -15,15 +15,15 @@
           :style="{
             fontSize: 'var(--font-size-sm)',
             whiteSpace: 'nowrap',
-            backgroundColor: props.preApprovalVerdictBadge.background,
-            color: props.preApprovalVerdictBadge.color,
+            backgroundColor: preApprovalVerdictBadge.background,
+            color: preApprovalVerdictBadge.color,
           }"
           data-test="pre-approval-verdict-badge"
         >
-          {{ props.preApprovalVerdictBadge.label }}
+          {{ preApprovalVerdictBadge.label }}
         </span>
         <button
-          v-if="props.isPreApprovalCheckResultsNotNull"
+          v-if="preApprovalChecklist"
           type="button"
           class="p-link"
           aria-label="Pre-approval info"
@@ -35,46 +35,18 @@
       </div>
 
       <div
-        v-if="props.isPreApprovalCheckResultsNotNull"
+        v-if="preApprovalChecklist"
         style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xxs) var(--spacing-xs)"
       >
-        <div style="padding: var(--spacing-xxs) var(--spacing-xs)">
-          <span>All QA reports accepted:</span>
+        <div
+          v-for="item in preApprovalChecklist"
+          :key="item.label"
+          style="padding: var(--spacing-xxs) var(--spacing-xs)"
+        >
+          <span>{{ item.label }}</span>
           <span
-            :class="[props.preApprovalCheckResults!.areAllQaReportsAccepted ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
-            :style="{
-              color: props.preApprovalCheckResults!.areAllQaReportsAccepted ? 'var(--p-green-600)' : 'var(--p-red-600)',
-            }"
-            aria-hidden="true"
-          />
-        </div>
-        <div style="padding: var(--spacing-xxs) var(--spacing-xs)">
-          <span>Not an exempted field:</span>
-          <span
-            :class="[props.preApprovalCheckResults!.dataPointEligible ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
-            :style="{
-              color: props.preApprovalCheckResults!.dataPointEligible ? 'var(--p-green-600)' : 'var(--p-red-600)',
-            }"
-            aria-hidden="true"
-          />
-        </div>
-        <div style="padding: var(--spacing-xxs) var(--spacing-xs)">
-          <span>Randomly selected for pre-approval:</span>
-          <span
-            :class="[props.preApprovalCheckResults!.passesRandomSampling ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
-            :style="{
-              color: props.preApprovalCheckResults!.passesRandomSampling ? 'var(--p-green-600)' : 'var(--p-red-600)',
-            }"
-            aria-hidden="true"
-          />
-        </div>
-        <div style="padding: var(--spacing-xxs) var(--spacing-xs)">
-          <span>Nonsignificant deviation:</span>
-          <span
-            :class="[props.preApprovalCheckResults!.passesSignificanceCheck ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
-            :style="{
-              color: props.preApprovalCheckResults!.passesSignificanceCheck ? 'var(--p-green-600)' : 'var(--p-red-600)',
-            }"
+            :class="[item.passed ? 'pi pi-check' : 'pi pi-times', 'ml-2']"
+            :style="{ color: item.passed ? 'var(--p-green-600)' : 'var(--p-red-600)' }"
             aria-hidden="true"
           />
         </div>
@@ -182,16 +154,42 @@ const props = defineProps<{
   options: NextDataPointOption[];
   onlyShowUnreviewed: boolean;
   selectedNextDataPointTypeId: string | null;
-  preApprovalVerdictBadge: { label: string; background: string; color: string };
   preApprovalCheckResults: PreApprovalCheckResults | null;
-  isPreApprovalCheckResultsNotNull: boolean;
 }>();
+
+// ===== Pre-Approval table data =====
+
+const preApprovalChecklist = computed(() => {
+  const results = props.preApprovalCheckResults;
+  if (!results) return null;
+  return [
+    { label: 'All QA reports accepted:', passed: results.areAllQaReportsAccepted },
+    { label: 'Not an exempted field:', passed: results.dataPointEligible },
+    { label: 'Randomly selected for pre-approval:', passed: results.passesRandomSampling },
+    { label: 'Nonsignificant deviation:', passed: results.passesSignificanceCheck },
+  ];
+});
+
+// ===== Pre-Approval badge data =====
+
+const preApprovalVerdictBadge = computed<{ label: string; background: string; color: string }>(() => {
+  if (!preApprovalChecklist.value)
+    return { label: 'PRE-APPROVAL OBJECT NOT FOUND', background: 'var(--p-yellow-100)', color: 'var(--p-yellow-700)' };
+  const allPass = preApprovalChecklist.value.every((item) => item.passed);
+  return allPass
+      ? { label: 'PRE-APPROVED', background: 'var(--p-green-100)', color: 'var(--p-green-700)' }
+      : { label: 'MANUAL REVIEW', background: 'var(--p-red-100)', color: 'var(--p-red-700)' };
+});
+
+// ===== Pre-Approval config data =====
 
 const { data: preApprovalConfig } = usePreApprovalConfigQuery();
 const samplingProbability = computed(() => preApprovalConfig.value?.samplingProbability ?? undefined);
 const displaySamplingProbability = computed(() =>
   samplingProbability.value === undefined ? 'unknown' : (1 - samplingProbability.value) * 100
 );
+
+// ===== Next data point data =====
 
 const emit = defineEmits<{
   (e: 'update:onlyShowUnreviewed', value: boolean): void;
