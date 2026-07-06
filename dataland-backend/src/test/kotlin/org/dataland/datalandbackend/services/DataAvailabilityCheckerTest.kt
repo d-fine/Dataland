@@ -235,7 +235,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
 
         assert(results.size == expectedDimensions.size) { "Incorrect number of data points found." }
         val resultingDimensions = results.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) }
-        assert(expectedDimensions.containsAll(resultingDimensions))
+        assert(expectedDimensions.containsAll(resultingDimensions)) { "Resulting dimensions did not match expected dimensions." }
     }
 
     @Test
