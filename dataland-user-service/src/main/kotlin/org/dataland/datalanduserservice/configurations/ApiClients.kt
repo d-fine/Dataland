@@ -20,7 +20,7 @@ class ApiClients(
     @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [CompanyDataControllerApi] of the backend
      */
     @Bean
     fun getCompanyDataControllerApi(
@@ -28,7 +28,7 @@ class ApiClients(
     ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [DataAvailabilityControllerApi] of the backend
      */
     @Bean
     fun getDataAvailabilityControllerApi(
@@ -36,7 +36,7 @@ class ApiClients(
     ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     * Creates an auto-authenticated version of the [InheritedRolesControllerApi] of the community manager
      */
     @Bean
     fun getInheritedRolesControllerApi(
@@ -44,7 +44,7 @@ class ApiClients(
     ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [RequestControllerApi] of the backend
      */
     @Bean
     fun getRequestControllerApi(
