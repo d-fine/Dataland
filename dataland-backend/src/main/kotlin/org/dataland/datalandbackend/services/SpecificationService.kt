@@ -22,162 +22,166 @@ import kotlin.collections.set
  */
 @Service("SpecificationService")
 class SpecificationService
-    @Autowired
-    constructor(
-        private val specificationControllerApi: SpecificationControllerApi,
-    ) {
-        // Variables to store known classifications since specifications do not change during runtime
-        private val cachedDatapointTypes = ConcurrentHashMap<DataPointType, Boolean>()
-        private val cachedDataPointSpecifications = ConcurrentHashMap<DataPointType, DataPointTypeSpecification>()
-        private val cachedFrameworkSpecifications = ConcurrentHashMap<String, FrameworkSpecification>()
-        private val cachedResolvedFrameworkSpecifications = ConcurrentHashMap<String, DataPointBaseTypeResolvedSchema>()
-        private val assembledFrameworks = mutableSetOf<String>()
-        private val nonAssembledFrameworks = mutableSetOf<String>()
+@Autowired
+constructor(
+    private val specificationControllerApi: SpecificationControllerApi,
+) {
+    // Variables to store known classifications since specifications do not change during runtime
+    private val cachedDatapointTypes = ConcurrentHashMap<DataPointType, Boolean>()
+    private val cachedDataPointSpecifications = ConcurrentHashMap<DataPointType, DataPointTypeSpecification>()
+    private val cachedFrameworkSpecifications = ConcurrentHashMap<String, FrameworkSpecification>()
+    private val cachedResolvedFrameworkSpecifications = ConcurrentHashMap<String, DataPointBaseTypeResolvedSchema>()
+    private val assembledFrameworks = mutableSetOf<String>()
+    private val nonAssembledFrameworks = mutableSetOf<String>()
 
-        companion object {
-            const val TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE = 10
-            const val WAIT_TIME_FOR_SPECIFICATION_SERVICE = 10_000L
-        }
-
-        private val logger = LoggerFactory.getLogger(javaClass)
-
-        /**
-         * Initiates the specification cache after application start up. Waits until the specification service is reachable.
-         *
-         * @param ignored the Spring context refresh event that triggers initialization
-         */
-        @EventListener
-        fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
-            waitUntilSpecificationServiceReady()
-            initializeSpecificationCache()
-        }
-
-        private fun waitUntilSpecificationServiceReady() {
-            for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
-                try {
-                    specificationControllerApi.listFrameworkSpecifications()
-                    return
-                } catch (ignore: Exception) {
-                    logger.info(
-                        "Specification service not ready yet. Attempt $attempt/$TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE. " +
-                            "Waiting $WAIT_TIME_FOR_SPECIFICATION_SERVICE milliseconds.",
-                    )
-                    Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
-                }
-            }
-            throw IllegalStateException("Specification service not ready after $TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE tries.")
-        }
-
-        /**
-         * Set up cache of frameworks to reduce communication overhead since specifications do not change during runtime
-         */
-        private fun initializeSpecificationCache() {
-            assembledFrameworks.addAll(specificationControllerApi.listFrameworkSpecifications().map { it.framework.id })
-            nonAssembledFrameworks.addAll(DataType.values.map { it.toString() } - assembledFrameworks)
-        }
-
-        /**
-         * Return a list of all known assembled frameworks
-         */
-        fun getAssembledFrameworks() = assembledFrameworks.toSet()
-
-        /**
-         * Return a list of all known non assembled frameworks
-         */
-        fun getNonAssembledFrameworks() = nonAssembledFrameworks.toSet()
-
-        /**
-         * Check if any given string represents an assembled framework
-         *
-         * @param framework string to be checked
-         * @return true if the string represents an assembled framework
-         */
-        fun isAssembledFramework(framework: String): Boolean = assembledFrameworks.contains(framework)
-
-        /**
-         * Check if any given string represents a non-assembled framework
-         *
-         * @param framework string to be checked
-         * @return true if the string represents a non-assembled framework
-         */
-        fun isNonAssembledFramework(framework: String): Boolean = nonAssembledFrameworks.contains(framework)
-
-        /**
-         * Check if any given string represents a framework (either assembled or non-assembled)
-         *
-         * @param framework string to be checked
-         * @return true if the string represents any known framework
-         */
-        fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
-
-        /**
-         * Checks if a given string represents a data point type
-         *
-         * @param dataPointType the string to be checked
-         * @return true if the string represents a data point type
-         */
-        fun isDataPointType(dataPointType: String): Boolean =
-            cachedDatapointTypes.computeIfAbsent(dataPointType) {
-                try {
-                    specificationControllerApi.getDataPointTypeSpecification(dataPointType)
-                    true
-                } catch (ignore: ClientException) {
-                    false
-                }
-            }
-
-        /**
-         * Retrieve a framework specification from the specification service
-         *
-         * @param framework the name of the framework to retrieve the specification for
-         * @return the FrameworkSpecification object
-         * @throws InvalidInputApiException if the framework is not found
-         */
-        fun getFrameworkSpecification(framework: String): FrameworkSpecification =
-            cachedFrameworkSpecifications.computeIfAbsent(framework) {
-                try {
-                    specificationControllerApi.getFrameworkSpecification(framework)
-                } catch (clientException: ClientException) {
-                    logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
-                    throw InvalidInputApiException(
-                        "Framework $framework not found.",
-                        "The specified framework $framework is not known to the specification service.",
-                    )
-                }
-            }
-
-        /**
-         * Retrieve a resolved framework specification from the specification service
-         *
-         * @param framework the name of the framework to retrieve the specification for
-         * @return the resolved schema
-         * @throws InvalidInputApiException if the framework is not found
-         */
-        fun getResolvedFrameworkSpecification(framework: String): DataPointBaseTypeResolvedSchema =
-            cachedResolvedFrameworkSpecifications.computeIfAbsent(framework) {
-                try {
-                    specificationControllerApi.getResolvedFrameworkSpecification(framework)
-                } catch (clientException: ClientException) {
-                    logger.error("Expected resolved framework specification for $framework not found: ${clientException.message}.")
-                    throw InvalidInputApiException(
-                        "Framework $framework not found.",
-                        "The specified framework $framework is not known to the specification service.",
-                    )
-                }
-            }
-
-        /**
-         * Returns the specifications for the given data point types.
-         *
-         * Specifications not yet present in the in-memory cache are fetched from the specification service and cached for future calls.
-         *
-         * @param dataPointTypes the data point types whose specifications should be retrieved
-         * @return a map from each requested data point type to its specification
-         */
-        fun getDataPointSpecifications(dataPointTypes: List<DataPointType>): Map<DataPointType, DataPointTypeSpecification> {
-            (dataPointTypes subtract cachedDataPointSpecifications.keys).forEach {
-                cachedDataPointSpecifications[it] = specificationControllerApi.getDataPointTypeSpecification(it)
-            }
-            return cachedDataPointSpecifications.filterKeys { it in dataPointTypes }
-        }
+    companion object {
+        const val TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE = 10
+        const val WAIT_TIME_FOR_SPECIFICATION_SERVICE = 10_000L
     }
+
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * Initiates the specification cache after application start up. Waits until the specification service is reachable.
+     *
+     * @param ignored the Spring context refresh event that triggers initialization
+     */
+    @EventListener
+    fun initiateSpecifications(ignored: ContextRefreshedEvent?) {
+        waitUntilSpecificationServiceReady()
+        initializeSpecificationCache()
+    }
+
+    private fun waitUntilSpecificationServiceReady() {
+        for (attempt in 1..TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE) {
+            try {
+                specificationControllerApi.listFrameworkSpecifications()
+                return
+            } catch (ignore: Exception) {
+                logger.info(
+                    "Specification service not ready yet. Attempt $attempt/$TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE. " +
+                            "Waiting $WAIT_TIME_FOR_SPECIFICATION_SERVICE milliseconds.",
+                )
+                Thread.sleep(WAIT_TIME_FOR_SPECIFICATION_SERVICE)
+            }
+        }
+        throw IllegalStateException("Specification service not ready after $TRIES_TO_WAIT_FOR_SPECIFICATION_SERVICE tries.")
+    }
+
+    /**
+     * Set up cache of frameworks to reduce communication overhead since specifications do not change during runtime
+     */
+    private fun initializeSpecificationCache() {
+        assembledFrameworks.addAll(specificationControllerApi.listFrameworkSpecifications().map { it.framework.id })
+        nonAssembledFrameworks.addAll(DataType.values.map { it.toString() } - assembledFrameworks)
+    }
+
+    /**
+     * Return a list of all known assembled frameworks
+     *
+     * @return a [Set] of [String] for all known assembled frameworks
+     */
+    fun getAssembledFrameworks() = assembledFrameworks.toSet()
+
+    /**
+     * Return a list of all known non assembled frameworks
+     *
+     * @return a [Set] of [String] for all known non assembled frameworks
+     */
+    fun getNonAssembledFrameworks() = nonAssembledFrameworks.toSet()
+
+    /**
+     * Check if any given string represents an assembled framework
+     *
+     * @param framework string to be checked
+     * @return true if the string represents an assembled framework
+     */
+    fun isAssembledFramework(framework: String): Boolean = assembledFrameworks.contains(framework)
+
+    /**
+     * Check if any given string represents a non-assembled framework
+     *
+     * @param framework string to be checked
+     * @return true if the string represents a non-assembled framework
+     */
+    fun isNonAssembledFramework(framework: String): Boolean = nonAssembledFrameworks.contains(framework)
+
+    /**
+     * Check if any given string represents a framework (either assembled or non-assembled)
+     *
+     * @param framework string to be checked
+     * @return true if the string represents any known framework
+     */
+    fun isFramework(framework: String): Boolean = isAssembledFramework(framework) || isNonAssembledFramework(framework)
+
+    /**
+     * Checks if a given string represents a data point type
+     *
+     * @param dataPointType the string to be checked
+     * @return true if the string represents a data point type
+     */
+    fun isDataPointType(dataPointType: String): Boolean =
+        cachedDatapointTypes.computeIfAbsent(dataPointType) {
+            try {
+                specificationControllerApi.getDataPointTypeSpecification(dataPointType)
+                true
+            } catch (ignore: ClientException) {
+                false
+            }
+        }
+
+    /**
+     * Retrieve a framework specification from the specification service
+     *
+     * @param framework the name of the framework to retrieve the specification for
+     * @return the FrameworkSpecification object
+     * @throws InvalidInputApiException if the framework is not found
+     */
+    fun getFrameworkSpecification(framework: String): FrameworkSpecification =
+        cachedFrameworkSpecifications.computeIfAbsent(framework) {
+            try {
+                specificationControllerApi.getFrameworkSpecification(framework)
+            } catch (clientException: ClientException) {
+                logger.error("Expected framework specification for $framework not found: ${clientException.message}.")
+                throw InvalidInputApiException(
+                    "Framework $framework not found.",
+                    "The specified framework $framework is not known to the specification service.",
+                )
+            }
+        }
+
+    /**
+     * Retrieve a resolved framework specification from the specification service
+     *
+     * @param framework the name of the framework to retrieve the specification for
+     * @return the resolved schema
+     * @throws InvalidInputApiException if the framework is not found
+     */
+    fun getResolvedFrameworkSpecification(framework: String): DataPointBaseTypeResolvedSchema =
+        cachedResolvedFrameworkSpecifications.computeIfAbsent(framework) {
+            try {
+                specificationControllerApi.getResolvedFrameworkSpecification(framework)
+            } catch (clientException: ClientException) {
+                logger.error("Expected resolved framework specification for $framework not found: ${clientException.message}.")
+                throw InvalidInputApiException(
+                    "Framework $framework not found.",
+                    "The specified framework $framework is not known to the specification service.",
+                )
+            }
+        }
+
+    /**
+     * Returns the specifications for the given data point types.
+     *
+     * Specifications not yet present in the in-memory cache are fetched from the specification service and cached for future calls.
+     *
+     * @param dataPointTypes the data point types whose specifications should be retrieved
+     * @return a map from each requested data point type to its specification
+     */
+    fun getDataPointSpecifications(dataPointTypes: List<DataPointType>): Map<DataPointType, DataPointTypeSpecification> {
+        (dataPointTypes subtract cachedDataPointSpecifications.keys).forEach {
+            cachedDataPointSpecifications[it] = specificationControllerApi.getDataPointTypeSpecification(it)
+        }
+        return cachedDataPointSpecifications.filterKeys { it in dataPointTypes }
+    }
+}
