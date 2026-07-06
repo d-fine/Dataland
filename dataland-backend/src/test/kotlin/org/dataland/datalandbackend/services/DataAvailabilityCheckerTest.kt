@@ -33,6 +33,11 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
 )
 @DefaultMocks
 class DataAvailabilityCheckerTest : BaseIntegrationTest() {
+    companion object {
+        private const val EXACTLY_ONE_RESULT_MESSAGE = "There should be exactly one result."
+        private const val BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE = "Both dimensions should be returned."
+    }
+
     @Autowired
     private lateinit var dataMetaInformationRepository: DataMetaInformationRepository
 
@@ -50,8 +55,11 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
 
     private lateinit var dbCreationUtils: DataBaseCreationUtils
 
-    private val datasetDimension = BasicDataDimensions(companyId = companyId, dataType = framework, reportingPeriod = reportingPeriod)
-    private val dataPointDimension = BasicDataDimensions(companyId = companyId, dataType = dataPointType, reportingPeriod = reportingPeriod)
+    private val datasetDimension =
+        BasicDataDimensions(companyId = companyId, dataType = framework, reportingPeriod = reportingPeriod)
+    private val dataPointDimension =
+        BasicDataDimensions(companyId = companyId, dataType = dataPointType, reportingPeriod = reportingPeriod)
+
 
     @BeforeEach
     fun setUp() {
@@ -78,7 +86,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = true)
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension))
-        assert(results.size == 1) { "There should be exactly one result." }
+        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == datasetDimension) { "The result should be the provided dimension." }
     }
 
@@ -87,7 +95,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDataPointMetaData(currentlyActive = true)
         dbCreationUtils.storeDataPointMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(dataPointDimension))
-        assert(results.size == 1) { "There should be exactly one result." }
+        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == dataPointDimension) { "The result should be the provided dimension." }
     }
 
@@ -96,8 +104,15 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDataPointMetaData()
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension, dataPointDimension))
-        assert(results.size == 2) { "Both dimensions should be returned." }
-        assert(results.containsAll(listOf(datasetDimension, dataPointDimension))) { "Both dimensions should be in the result." }
+        assert(results.size == 2) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
+        assert(
+            results.containsAll(
+                listOf(
+                    datasetDimension,
+                    dataPointDimension
+                )
+            )
+        ) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
     }
 
     @ParameterizedTest
@@ -114,7 +129,13 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData(dataType = dataType, reportingPeriod = testReportingPeriod)
         val results =
             dataAvailabilityChecker.filterViewableDimensions(
-                listOf(BasicDataDimensions(companyId = testCompanyId, dataType = dataType, reportingPeriod = testReportingPeriod)),
+                listOf(
+                    BasicDataDimensions(
+                        companyId = testCompanyId,
+                        dataType = dataType,
+                        reportingPeriod = testReportingPeriod
+                    )
+                ),
             )
         assert(results.isEmpty()) { "Invalid dimensions should be filtered out." }
     }
@@ -124,7 +145,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension))
-        assert(results.size == 1) { "There should be exactly one result." }
+        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == datasetDimension) { "The result should be the provided example." }
     }
 
@@ -137,13 +158,21 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         dbCreationUtils.storeDatasetMetaData(dataType = otherFramework, reportingPeriod = otherYear)
         dbCreationUtils.storeDatasetMetaData(dataType = otherFramework)
-        dbCreationUtils.storeDatasetMetaData(dataType = otherFramework, reportingPeriod = otherYear, currentlyActive = false)
+        dbCreationUtils.storeDatasetMetaData(
+            dataType = otherFramework,
+            reportingPeriod = otherYear,
+            currentlyActive = false
+        )
 
         val expectedDimensions =
             listOf(
                 datasetDimension,
                 BasicDataDimensions(companyId = companyId, dataType = otherFramework, reportingPeriod = otherYear),
-                BasicDataDimensions(companyId = companyId, dataType = otherFramework, reportingPeriod = reportingPeriod),
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = otherFramework,
+                    reportingPeriod = reportingPeriod
+                ),
             )
 
         val unexpectedDimensions =
@@ -167,19 +196,39 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDataPointMetaData(currentlyActive = null)
         dbCreationUtils.storeDataPointMetaData(dataPointType = anotherDataPointType, reportingPeriod = anotherYear)
         dbCreationUtils.storeDataPointMetaData(dataPointType = anotherDataPointType)
-        dbCreationUtils.storeDataPointMetaData(dataPointType = anotherDataPointType, reportingPeriod = anotherYear, currentlyActive = false)
+        dbCreationUtils.storeDataPointMetaData(
+            dataPointType = anotherDataPointType,
+            reportingPeriod = anotherYear,
+            currentlyActive = false
+        )
 
         val expectedDimensions =
             listOf(
                 dataPointDimension,
-                BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = anotherYear),
-                BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = reportingPeriod),
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = anotherDataPointType,
+                    reportingPeriod = anotherYear
+                ),
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = anotherDataPointType,
+                    reportingPeriod = reportingPeriod
+                ),
             )
 
         val unexpectedDimensions =
             listOf(
-                BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = anotherYear),
-                BasicDataDimensions(companyId = anotherId, dataType = anotherDataPointType, reportingPeriod = reportingPeriod),
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = anotherDataPointType,
+                    reportingPeriod = anotherYear
+                ),
+                BasicDataDimensions(
+                    companyId = anotherId,
+                    dataType = anotherDataPointType,
+                    reportingPeriod = reportingPeriod
+                ),
                 BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = "2020"),
             )
 
@@ -201,7 +250,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                     reportingPeriods = listOf(reportingPeriod),
                 ),
             )
-        assert(results.size == 1) { "There should be exactly one result." }
+        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == datasetDimension) { "The result should match the stored dataset dimension." }
     }
 
@@ -216,7 +265,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                     reportingPeriods = listOf(reportingPeriod),
                 ),
             )
-        assert(results.size == 1) { "There should be exactly one result." }
+        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == dataPointDimension) { "The result should match the stored data point dimension." }
     }
 
@@ -260,7 +309,14 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                     reportingPeriods = emptyList(),
                 ),
             )
-        assert(results.containsAll(listOf(datasetDimension, dataPointDimension))) { "Both dimensions should be in the result." }
+        assert(
+            results.containsAll(
+                listOf(
+                    datasetDimension,
+                    dataPointDimension
+                )
+            )
+        ) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
     }
 
     @Test
@@ -310,7 +366,14 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                 ),
             )
         assert(results.size == 2) { "Both dataset and data point dimensions should be returned." }
-        assert(results.containsAll(listOf(datasetDimension, dataPointDimension))) { "Both dimensions should be in the result." }
+        assert(
+            results.containsAll(
+                listOf(
+                    datasetDimension,
+                    dataPointDimension
+                )
+            )
+        ) { "Both dimensions should be in the result." }
     }
 
     @Test

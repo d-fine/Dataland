@@ -145,9 +145,12 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             SELECT m.*
             FROM data_meta_information m
             WHERE m.currently_active = true
-              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 OR m.company_id IN (SELECT company_id FROM company_filter))
-              AND (jsonb_array_length(CAST(:dataTypes AS jsonb)) = 0 OR m.data_type IN (SELECT data_type FROM type_filter))
-              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
+              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 
+                OR m.company_id IN (SELECT company_id FROM company_filter))
+              AND (jsonb_array_length(CAST(:dataTypes AS jsonb)) = 0 
+                OR m.data_type IN (SELECT data_type FROM type_filter))
+              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 
+                OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
             """,
     )
     fun findActiveDatasetDimensionsByFilter(

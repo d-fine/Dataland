@@ -214,6 +214,7 @@ class DataMetaInformationManagerFilterTest(
             .map { companyManager.addCompany(it) }
 
     @Suppress("LongParameterList")
+    @SuppressWarnings("kotlin:S107")
     private fun addMetainformation(
         dataId: String? = null,
         company: StoredCompanyEntity? = null,

@@ -15,10 +15,10 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
      */
     @Query(
         "SELECT dataPointMetaInformation.dataPointId FROM DataPointMetaInformationEntity dataPointMetaInformation " +
-            "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
-            "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
-            "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
-            "AND dataPointMetaInformation.currentlyActive = true ",
+                "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
+                "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
+                "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
+                "AND dataPointMetaInformation.currentlyActive = true ",
     )
     fun getActiveDataPointId(
         @Param("searchFilter") searchFilter: BasicDataPointDimensions,
@@ -73,9 +73,12 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
             SELECT m.*
             FROM data_point_meta_information m
             WHERE m.currently_active = true
-              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 OR m.company_id IN (SELECT company_id FROM company_filter))
-              AND (jsonb_array_length(CAST(:dataPointTypes AS jsonb)) = 0 OR m.data_point_type IN (SELECT data_point_type FROM type_filter))
-              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
+              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 
+                OR m.company_id IN (SELECT company_id FROM company_filter))
+              AND (jsonb_array_length(CAST(:dataPointTypes AS jsonb)) = 0 
+                OR m.data_point_type IN (SELECT data_point_type FROM type_filter))
+              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 
+                OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
             """,
     )
     fun findActiveDataPointDimensionsByFilter(

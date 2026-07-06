@@ -25,7 +25,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
       })
       .then((response) => {
         const metaInfo = response.body as Array<DataMetaInformation>;
-        const dataId = metaInfo.sort((a, b) => b.uploadTime - a.uploadTime)[0]?.dataId;
+        const dataId = metaInfo.toSorted((a, b) => b.uploadTime - a.uploadTime)[0]?.dataId;
         if (!dataId) {
           throw new Error(`No dataset found for company ${companyId} and data type ${dataType}`);
         }

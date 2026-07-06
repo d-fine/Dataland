@@ -39,6 +39,11 @@ private const val SEARCH_VIEWABLE_DIMENSIONS_PATH = "/data-availability/viewable
 class DataAvailabilityControllerTest(
     @Autowired private val mockMvc: MockMvc,
 ) {
+    companion object {
+        private const val TEST_COMPANY_ID = "test-company-id"
+        private const val CONTENT_TYPE = "application/json"
+    }
+
     @MockitoBean
     private lateinit var dataAvailabilityChecker: DataAvailabilityChecker
 
@@ -53,7 +58,7 @@ class DataAvailabilityControllerTest(
 
     private val exampleDimension =
         BasicDataDimensions(
-            companyId = "test-company-id",
+            companyId = TEST_COMPANY_ID,
             dataType = "sfdr",
             reportingPeriod = "2023",
         )
@@ -75,11 +80,11 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(FILTER_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
-                    .content("""[{"companyId":"test-company-id","dataType":"sfdr","reportingPeriod":"2023"}]""")
+                    .contentType(CONTENT_TYPE)
+                    .content("""[{"companyId":"$TEST_COMPANY_ID","dataType":"sfdr","reportingPeriod":"2023"}]""")
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
-            .andExpect(jsonPath("$[0].companyId").value("test-company-id"))
+            .andExpect(jsonPath("$[0].companyId").value(TEST_COMPANY_ID))
             .andExpect(jsonPath("$[0].dataType").value("sfdr"))
             .andExpect(jsonPath("$[0].reportingPeriod").value("2023"))
     }
@@ -92,7 +97,7 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(FILTER_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content("[]")
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
@@ -104,7 +109,7 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(FILTER_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content("[]"),
             ).andExpect(status().isUnauthorized)
     }
@@ -120,18 +125,18 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content(
                         """
                         {
-                            "companyIds": ["test-company-id"],
+                            "companyIds": ["$TEST_COMPANY_ID"],
                             "frameworksOrDataPointTypes": ["sfdr"],
                             "reportingPeriods": ["2023"]
                         }
                         """.trimIndent(),
                     ).with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
-            .andExpect(jsonPath("$[0].companyId").value("test-company-id"))
+            .andExpect(jsonPath("$[0].companyId").value(TEST_COMPANY_ID))
             .andExpect(jsonPath("$[0].dataType").value("sfdr"))
             .andExpect(jsonPath("$[0].reportingPeriod").value("2023"))
     }
@@ -145,7 +150,7 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content(
                         """
                         {
@@ -167,7 +172,7 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content(
                         """
                         {
@@ -188,11 +193,11 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content(
                         """
                         {
-                            "companyIds": ["test-company-id"],
+                            "companyIds": ["$TEST_COMPANY_ID"],
                             "frameworksOrDataPointTypes": ["sfdr"],
                             "reportingPeriods": []
                         }
@@ -206,11 +211,11 @@ class DataAvailabilityControllerTest(
         mockMvc
             .perform(
                 post(SEARCH_VIEWABLE_DIMENSIONS_PATH)
-                    .contentType("application/json")
+                    .contentType(CONTENT_TYPE)
                     .content(
                         """
                         {
-                            "companyIds": ["test-company-id"],
+                            "companyIds": ["$TEST_COMPANY_ID"],
                             "frameworksOrDataPointTypes": ["sfdr"],
                             "reportingPeriods": []
                         }
