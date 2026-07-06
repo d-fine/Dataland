@@ -60,7 +60,6 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     private val dataPointDimension =
         BasicDataDimensions(companyId = companyId, dataType = dataPointType, reportingPeriod = reportingPeriod)
 
-
     @BeforeEach
     fun setUp() {
         whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
@@ -109,9 +108,9 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
             results.containsAll(
                 listOf(
                     datasetDimension,
-                    dataPointDimension
-                )
-            )
+                    dataPointDimension,
+                ),
+            ),
         ) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
     }
 
@@ -133,8 +132,8 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                     BasicDataDimensions(
                         companyId = testCompanyId,
                         dataType = dataType,
-                        reportingPeriod = testReportingPeriod
-                    )
+                        reportingPeriod = testReportingPeriod,
+                    ),
                 ),
             )
         assert(results.isEmpty()) { "Invalid dimensions should be filtered out." }
@@ -161,7 +160,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDatasetMetaData(
             dataType = otherFramework,
             reportingPeriod = otherYear,
-            currentlyActive = false
+            currentlyActive = false,
         )
 
         val expectedDimensions =
@@ -171,7 +170,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                 BasicDataDimensions(
                     companyId = companyId,
                     dataType = otherFramework,
-                    reportingPeriod = reportingPeriod
+                    reportingPeriod = reportingPeriod,
                 ),
             )
 
@@ -199,7 +198,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         dbCreationUtils.storeDataPointMetaData(
             dataPointType = anotherDataPointType,
             reportingPeriod = anotherYear,
-            currentlyActive = false
+            currentlyActive = false,
         )
 
         val expectedDimensions =
@@ -208,12 +207,12 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                 BasicDataDimensions(
                     companyId = companyId,
                     dataType = anotherDataPointType,
-                    reportingPeriod = anotherYear
+                    reportingPeriod = anotherYear,
                 ),
                 BasicDataDimensions(
                     companyId = companyId,
                     dataType = anotherDataPointType,
-                    reportingPeriod = reportingPeriod
+                    reportingPeriod = reportingPeriod,
                 ),
             )
 
@@ -222,12 +221,12 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
                 BasicDataDimensions(
                     companyId = companyId,
                     dataType = anotherDataPointType,
-                    reportingPeriod = anotherYear
+                    reportingPeriod = anotherYear,
                 ),
                 BasicDataDimensions(
                     companyId = anotherId,
                     dataType = anotherDataPointType,
-                    reportingPeriod = reportingPeriod
+                    reportingPeriod = reportingPeriod,
                 ),
                 BasicDataDimensions(companyId = companyId, dataType = anotherDataPointType, reportingPeriod = "2020"),
             )
@@ -313,9 +312,9 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
             results.containsAll(
                 listOf(
                     datasetDimension,
-                    dataPointDimension
-                )
-            )
+                    dataPointDimension,
+                ),
+            ),
         ) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
     }
 
@@ -370,10 +369,10 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
             results.containsAll(
                 listOf(
                     datasetDimension,
-                    dataPointDimension
-                )
-            )
-        ) { "Both dimensions should be in the result." }
+                    dataPointDimension,
+                ),
+            ),
+        ) { BOTH_DIMENSIONS_SHOULD_BE_IN_RESULT_MESSAGE }
     }
 
     @Test

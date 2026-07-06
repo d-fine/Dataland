@@ -15,10 +15,10 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
      */
     @Query(
         "SELECT dataPointMetaInformation.dataPointId FROM DataPointMetaInformationEntity dataPointMetaInformation " +
-                "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
-                "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
-                "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
-                "AND dataPointMetaInformation.currentlyActive = true ",
+            "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
+            "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
+            "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
+            "AND dataPointMetaInformation.currentlyActive = true ",
     )
     fun getActiveDataPointId(
         @Param("searchFilter") searchFilter: BasicDataPointDimensions,
