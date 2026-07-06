@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.DataDimensionSearchRequest
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController
  * @param dataAvailabilityChecker the service used to determine data availability
  */
 @RestController
-class DataAvailabilityController(
-    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
+class DataAvailabilityController @Autowired constructor(
+    private val dataAvailabilityChecker: DataAvailabilityChecker,
 ) : DataAvailabilityApi {
-    override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> =
+    private val logger = LoggerFactory.getLogger(javaClass)
+    override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> {
+        logger.info("Received a request to filter the viewable dimensions with the dimensions list being $dimensions");
         ResponseEntity.ok(
             if (dimensions.isEmpty()) {
                 emptyList()
@@ -25,8 +28,10 @@ class DataAvailabilityController(
                 dataAvailabilityChecker.filterViewableDimensions(dimensions)
             },
         )
+    }
 
     override fun searchViewableDimensions(request: DataDimensionSearchRequest): ResponseEntity<List<BasicDataDimensions>> {
+        logger.info("Received a request to search the viewable dimensions list with the search request being $request")
         val dimensionsQuery = request.toDataDimensionQuery()
         if (dimensionsQuery.isEmpty()) {
             throw InvalidInputApiException(
@@ -34,6 +39,6 @@ class DataAvailabilityController(
                 "At least one of the fields must be provided and not empty.",
             )
         }
-        return ResponseEntity.ok(dataAvailabilityChecker.searchViewableDimensions(request.toDataDimensionQuery()))
+        return ResponseEntity.ok(dataAvailabilityChecker.searchViewableDimensions(dimensionsQuery))
     }
 }
