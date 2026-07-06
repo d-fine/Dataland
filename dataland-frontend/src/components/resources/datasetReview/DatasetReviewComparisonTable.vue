@@ -118,7 +118,7 @@
 
                   <!-- Original data point -->
                   <td class="vertical-align-top">
-                    <div class="flex align-items-start gap-2">
+                    <div class="flex align-items-start gap-0">
                       <MultiLayerDataTableCell
                         :content="row.originalDisplay"
                         :meta-info="dataMetaInformation as DataMetaInformation"
@@ -129,53 +129,54 @@
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-check text-green-500 ml-auto accepted-check"
+                        class="pi pi-check text-green-500 ml-3 accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Original)"
-                        class="pi pi-times text-red-500 ml-auto rejected-check"
+                        class="pi pi-times text-red-500 ml-3 rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
                   </td>
 
-                  <!-- Corrected data point -->
+                  <!-- QA-Reported data point -->
                   <td
                     v-for="qaReporter in datasetReview.qaReporters"
                     :key="qaReporter.reporterUserId"
                     class="vertical-align-top"
                   >
-                    <div class="flex align-items-start gap-2">
+                    <div class="flex align-items-start gap-0">
                       <span class="main-text-color">
                         {{ getQaDisplayText(row, qaReporter.reporterUserId) }}
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
-                        class="pi pi-check text-green-500 ml-auto accepted-check"
+                        class="pi pi-check text-green-500 ml-3 accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
-                        class="pi pi-times text-red-500 ml-auto rejected-check"
+                        class="pi pi-times text-red-500 ml-3 rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
                   </td>
 
+                  <!-- Custom data point -->
                   <td class="vertical-align-top">
-                    <div class="flex align-items-start gap-2">
+                    <div class="flex align-items-start gap-0">
                       <span v-if="getCustomDisplayValue(row.dataPointTypeId) != null">
                         {{ getCustomDisplayValue(row.dataPointTypeId) }}
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
-                        class="pi pi-check text-green-500 ml-auto accepted-check"
+                        class="pi pi-check text-green-500 ml-3 accepted-check"
                         aria-label="Accepted source"
                       ></span>
                       <span
                         v-else-if="shouldShowRejectedIcon(row, AcceptedDataPointSource.Custom)"
-                        class="pi pi-times text-red-500 ml-auto rejected-check"
+                        class="pi pi-times text-red-500 ml-3 rejected-check"
                         aria-label="Rejected source"
                       ></span>
                     </div>
