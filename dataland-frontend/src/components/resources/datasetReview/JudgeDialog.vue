@@ -104,8 +104,9 @@
         @copy-corrected="copyCorrectedToCustom"
       />
 
-      <!-- Bottom-right: Next data point selection & patch error -->
+      <!-- Bottom-right: Preapproval section & next data point selection & patch error -->
       <JudgeDialogNextSection
+        :pre-approval-check-results="preApprovalCheckResults"
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
@@ -487,6 +488,10 @@ function copyCorrectedToCustom(): void {
     customFormData.value = transformDataPointDetailToFormData(currentQaCorrectedData.value);
   }
 }
+
+// ===== Pre-Approval data =====
+
+const preApprovalCheckResults = computed(() => currentDatapointJudgement.value?.preApprovalCheckResults ?? null);
 
 // ===== Next data point =====
 
