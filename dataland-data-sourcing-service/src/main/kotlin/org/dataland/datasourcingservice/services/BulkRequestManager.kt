@@ -117,7 +117,7 @@ class BulkRequestManager
                     .filterViewableDimensions(
                         basicDataDimensions =
                             (requests + newTaxonomyEquivalentRequests).map {
-                                org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
+                                BasicDataDimensions(
                                     companyId = it.companyId,
                                     dataType = it.dataType,
                                     reportingPeriod = it.reportingPeriod,
