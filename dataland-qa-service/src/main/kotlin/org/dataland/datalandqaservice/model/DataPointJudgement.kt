@@ -56,4 +56,9 @@ data class DataPointJudgement(
         example = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE,
     )
     val reasonForCustomDataPoint: String?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_EXAMPLE,
+    )
+    val preApprovalCheckResults: PreApprovalCheckResults?,
 )

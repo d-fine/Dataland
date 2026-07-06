@@ -101,4 +101,11 @@ object QaServiceOpenApiDescriptionsAndExamples {
             "accepting the original uploaded value or the QA bot suggestion. " +
             "Only relevant when acceptedSource is Custom; null for all other sources."
     const val REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE = "The original value was incorrect and the QA report claimed there was no data found."
+
+    const val PRE_APPROVAL_CHECK_RESULTS_DESCRIPTION =
+        "Structured results of the automatic pre-approval checks for this data point. " +
+            "Each flag indicates whether the data point passed one prerequisite for automatic pre-approval of the original value."
+    const val PRE_APPROVAL_CHECK_RESULTS_EXAMPLE =
+        "{ \"areAllQaReportsAccepted\": true, \"dataPointEligible\": true, " +
+            "\"passesRandomSampling\": true, \"passesSignificanceCheck\": true }"
 }
