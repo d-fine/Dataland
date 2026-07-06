@@ -52,7 +52,8 @@ class DataPointConversionTest {
     private val currencyRef = IdWithRef(id = "extendedCurrency", ref = "dummy")
     private val currencyTargetType = "currencyTargetType"
     private val sourceFrameworkName = "Test Framework"
-    private val sourceFrameworksByType = mapOf("dummy" to listOf(createFrameworkSpecification("test-framework", sourceFrameworkName)))
+    private val sourceFrameworksByType =
+        mapOf("dummy" to listOf(createFrameworkSpecification("test-framework", sourceFrameworkName)))
     private val dummySpecs =
         mapOf(
             "dummy" to
@@ -97,6 +98,9 @@ class DataPointConversionTest {
     companion object {
         const val ORIGINAL_COMMENT = "Original source comment"
         const val SOURCE_FRAMEWORK_NAME = "Test Framework"
+        const val SOURCE_FRAMEWORK_ID = "source-framework"
+        const val DATA_POINT_WAS_MAPPED_COMMENT = "This data point was mapped from the following source: [1]\n\n***\n\n"
+        const val INPUT_HEADER_COMMENT = "[1] Input1\n"
 
         @JvmStatic
         fun provideQualityOptions(): Stream<Arguments> =
@@ -106,7 +110,10 @@ class DataPointConversionTest {
                 Arguments.of(listOf(QualityOptions.Incomplete, QualityOptions.Reported), QualityOptions.Incomplete),
                 Arguments.of(listOf(null, QualityOptions.Reported), null),
                 Arguments
-                    .of(listOf(QualityOptions.Audited, QualityOptions.Reported, QualityOptions.NoDataFound), QualityOptions.NoDataFound),
+                    .of(
+                        listOf(QualityOptions.Audited, QualityOptions.Reported, QualityOptions.NoDataFound),
+                        QualityOptions.NoDataFound,
+                    ),
             )
 
         @JvmStatic
@@ -146,7 +153,11 @@ class DataPointConversionTest {
             val input2 = createDummyUploadedDataPoint("type2")
             val specs = createCommentSpecs()
             val firstDataPoint =
-                ExtendedDataPoint(value = BigDecimal.ONE, quality = QualityOptions.Incomplete, comment = ORIGINAL_COMMENT)
+                ExtendedDataPoint(
+                    value = BigDecimal.ONE,
+                    quality = QualityOptions.Incomplete,
+                    comment = ORIGINAL_COMMENT,
+                )
             val secondDataPoint = ExtendedDataPoint(value = BigDecimal.TEN, quality = QualityOptions.Reported)
             return Stream.of(
                 Arguments.of(
@@ -154,21 +165,33 @@ class DataPointConversionTest {
                     specs,
                     listOf(firstDataPoint, secondDataPoint),
                     DataPointConversion.SUM,
-                    calculationComment("[1] + [2]", sourceBlock(1, "Input1", ORIGINAL_COMMENT), sourceBlock(2, "Input2")),
+                    calculationComment(
+                        "[1] + [2]",
+                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
+                        sourceBlock(2, "Input2"),
+                    ),
                 ),
                 Arguments.of(
                     listOf(input1, input2),
                     specs,
                     listOf(firstDataPoint, secondDataPoint),
                     DataPointConversion.DIVISION,
-                    calculationComment("[1] / [2]", sourceBlock(1, "Input1", ORIGINAL_COMMENT), sourceBlock(2, "Input2")),
+                    calculationComment(
+                        "[1] / [2]",
+                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
+                        sourceBlock(2, "Input2"),
+                    ),
                 ),
                 Arguments.of(
                     listOf(input1, input2),
                     specs,
                     listOf(firstDataPoint, secondDataPoint),
                     DataPointConversion.DIVISION_BY_PERCENT,
-                    calculationComment("100 * [1] / [2]", sourceBlock(1, "Input1", ORIGINAL_COMMENT), sourceBlock(2, "Input2")),
+                    calculationComment(
+                        "100 * [1] / [2]",
+                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
+                        sourceBlock(2, "Input2"),
+                    ),
                 ),
                 Arguments.of(
                     listOf(input1),
@@ -234,7 +257,7 @@ class DataPointConversionTest {
          * @return source framework specifications grouped by source data point type
          */
         private fun createCommentSourceFrameworksByType(): Map<DataPointType, List<FrameworkSpecification>> {
-            val sourceFramework = createFrameworkSpecification("source-framework", SOURCE_FRAMEWORK_NAME)
+            val sourceFramework = createFrameworkSpecification(SOURCE_FRAMEWORK_ID, SOURCE_FRAMEWORK_NAME)
             return mapOf(
                 "type1" to listOf(sourceFramework),
                 "type2" to listOf(sourceFramework),
@@ -263,7 +286,7 @@ class DataPointConversionTest {
                 sourcesSection(*sourceBlocks)
 
         private fun identityComment(vararg sourceBlocks: String): String =
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
                 sourcesSection(*sourceBlocks)
 
         private fun sourcesSection(vararg sourceBlocks: String): String = sourceBlocks.joinToString(separator = "\n\n")
@@ -286,7 +309,8 @@ class DataPointConversionTest {
         conversionMethod: String,
         expectedValue: String,
     ) {
-        val firstDataPoint = TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(inputFixturePaths.first())
+        val firstDataPoint =
+            TestResourceFileReader.getKotlinObject<ExtendedDataPoint<BigDecimal>>(inputFixturePaths.first())
         val inputs =
             inputFixturePaths.map { fixturePath ->
                 createUploadedDataPoint(TestResourceFileReader.getJsonString(fixturePath))
@@ -556,7 +580,7 @@ class DataPointConversionTest {
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(result.dataPoint)
         assert(resultDataPoint.value == inputDataPoint.value)
         assertEquals(
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
                 "[1] dummy\n" +
                 "+ Framework: $sourceFrameworkName\n" +
                 "+ Comment: $ORIGINAL_COMMENT",
@@ -571,12 +595,13 @@ class DataPointConversionTest {
     @Test
     fun `check that identity conversion of currency data points preserves the currency`() {
         val input = createUploadedDataPoint(createCurrencyDataPoint("0.5", "EUR", "Original currency comment"))
-        val result = applyTransformation(listOf(input), currencyTargetType, "Identity", currencySpecs, sourceFrameworksByType)
+        val result =
+            applyTransformation(listOf(input), currencyTargetType, "Identity", currencySpecs, sourceFrameworksByType)
         val resultDataPoint = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(result.dataPoint)
         assertBigDecimalEquals("0.5", resultDataPoint.value)
         assertEquals("EUR", resultDataPoint.currency)
         assertEquals(
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
                 "[1] dummy\n" +
                 "+ Framework: $sourceFrameworkName",
             resultDataPoint.comment,
@@ -620,7 +645,10 @@ class DataPointConversionTest {
         conversion: DataPointConversion,
         expected: String,
     ) {
-        assertEquals(expected, conversion.createComment(inputs, specs, dataPoints, createCommentSourceFrameworksByType()))
+        assertEquals(
+            expected,
+            conversion.createComment(inputs, specs, dataPoints, createCommentSourceFrameworksByType()),
+        )
     }
 
     @Test
@@ -687,12 +715,12 @@ class DataPointConversionTest {
                 listOf(input),
                 createCommentSpecs(),
                 listOf(dataPoint),
-                mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
+                mapOf("type1" to listOf(createFrameworkSpecification(SOURCE_FRAMEWORK_ID, sourceFrameworkName))),
             )
 
         assertEquals(
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
-                "[1] Input1\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
+                INPUT_HEADER_COMMENT +
                 "+ Framework: $sourceFrameworkName\n" +
                 "+ Comment: $sourceComment",
             comment,
@@ -710,12 +738,12 @@ class DataPointConversionTest {
                 listOf(input),
                 createCommentSpecs(),
                 listOf(dataPoint),
-                mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
+                mapOf("type1" to listOf(createFrameworkSpecification(SOURCE_FRAMEWORK_ID, sourceFrameworkName))),
             )
 
         assertEquals(
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
-                "[1] Input1\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
+                INPUT_HEADER_COMMENT +
                 "+ Framework: $sourceFrameworkName",
             comment,
         )
@@ -730,12 +758,12 @@ class DataPointConversionTest {
                 listOf(input),
                 createCommentSpecs(),
                 listOf(dataPoint),
-                mapOf("type1" to listOf(createFrameworkSpecification("source-framework", sourceFrameworkName))),
+                mapOf("type1" to listOf(createFrameworkSpecification(SOURCE_FRAMEWORK_ID, sourceFrameworkName))),
             )
 
         assertEquals(
-            "This data point was mapped from the following source: [1]\n\n***\n\n" +
-                "[1] Input1\n" +
+            DATA_POINT_WAS_MAPPED_COMMENT +
+                INPUT_HEADER_COMMENT +
                 "+ Framework: $sourceFrameworkName\n" +
                 "+ Comment: none",
             comment,
