@@ -296,6 +296,9 @@ class DataPointCalculator
 
         /**
          * Returns a list of all dimensions for which the data point type can be calculated given the available input dimensions.
+         * @param dataPointTypeSpecification the specification of the data point type to calculate
+         * @param activeSourceDataPointDimensions the list of active source data point dimensions
+         * @return a list of all dimensions for which the data point type can be calculated
          */
         private fun getCalculatableDataPointDimensions(
             dataPointTypeSpecification: DataPointTypeSpecification,
@@ -310,6 +313,9 @@ class DataPointCalculator
 
         /**
          * Returns a set of all dimensions for which the calculation rule is calculatable given the available input dimensions.
+         * @param calculationRule the calculation rule to check
+         * @param activeSourceDataPointDimensions the list of active source data point dimensions
+         * @return a set of all dimensions for which the calculation rule is calculatable
          */
         private fun getCalculatableBaseDimensions(
             calculationRule: CalculationRule,

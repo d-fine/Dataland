@@ -34,7 +34,7 @@ class DataAvailabilityChecker
          * Retrieves metadata of active datasets for the given data dimensions ignoring invalid dimensions.
          *
          * @param dataDimensions List of data dimensions to search for.
-         * @return List of DataMetaInformation objects that match the provided data dimensions.
+         * @return List of DataMetaInformationEntity objects that match the provided data dimensions.
          */
         private fun getMetaDataOfActiveDatasets(dataDimensions: List<DataDimensions>): List<DataMetaInformationEntity> =
             dataMetaInformationManager.getActiveDataMetaInformationList(
@@ -49,7 +49,7 @@ class DataAvailabilityChecker
          * An empty list in the filter means no restrictions.
          *
          * @param dataDimensionQuery dimensions filter specifying what to search for
-         * @return List of DataMetaInformation objects that match the provided data dimensions.
+         * @return List of DataMetaInformationEntity objects that match the provided data dimensions.
          */
         private fun getMetaDataOfActiveDatasets(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> {
             val datasetDimensionQuery = dataCompositionService.filterOutInvalidDatasetEntries(dataDimensionQuery)
@@ -71,12 +71,12 @@ class DataAvailabilityChecker
             )
 
         /**
-         * Retrieves metadata of active datasets for the given filter.
+         * Retrieves metadata of active data points for the given filter.
          *
          * An empty list in the filter means no restrictions.
          *
          * @param dataDimensionQuery dimensions filter specifying what to search for
-         * @return List of DataMetaInformation objects that match the provided data dimensions.
+         * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
         private fun getMetaDataOfActiveDataPoints(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> {
             val dataPointDimensionQuery = dataCompositionService.filterOutInvalidDataPointEntries(dataDimensionQuery)
@@ -124,7 +124,7 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Retrieve all active non assembled framework-based data dimensions using the given DataDimensionQuery.
+         * Retrieve all active non assembled framework-based data dimensions using the given [DataDimensionQuery].
          *
          * If no dataType is specified, all frameworks are taken into account.
          *
@@ -150,6 +150,16 @@ class DataAvailabilityChecker
             ).map { it.toBasicDataDimensions() }
         }
 
+        /**
+         * Retrieves all viewable dimensions for assembled frameworks based on the provided input dimensions.
+         *
+         * Filters the given list of dimensions to exclude invalid dataset dimensions, then checks for
+         * frameworks that are assembled. For each matching dimension, relevant data point types are
+         * extracted and converted into viewable dataset dimensions.
+         *
+         * @param dimensions A list of `BasicDataDimensions` representing the input dataset dimensions.
+         * @return A list of `BasicDataDimensions` representing the viewable dimensions for assembled frameworks.
+         */
         private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> =
             dataCompositionService
                 .filterOutInvalidDatasetDimensions(dimensions)
@@ -173,12 +183,16 @@ class DataAvailabilityChecker
                 }
 
         /**
-         * Retrieve all active assembled framework-based data dimensions using the given DataDimensionQuery.
+         * Retrieves a set of all viewable dimensions for the assembled frameworks.
          *
-         * If no dataType is specified, all frameworks are taken into account.
+         * This method determines the viewable dimensions by analyzing the specified data dimension query.
+         * It filters the assembled frameworks based on data types specified in the query, identifies relevant
+         * data point types and dimensions, and calculates viewable dataset dimensions for each framework.
          *
-         * @param dataDimensionQuery the filter to use when searching for active data dimensions
-         * @return a list of active framework data dimensions
+         * @param dataDimensionQuery An object representing the query parameters for filtering and determining which
+         * data dimensions are considered, including company IDs, data types, and reporting periods.
+         * @return A set of `BasicDataDimensions` representing all viewable dimensions for the assembled frameworks
+         * based on the given query.
          */
         private fun getAllViewableDimensionsForAssembledFrameworks(dataDimensionQuery: DataDimensionQuery): Set<BasicDataDimensions> {
             val allAssembledFrameworks = specificationService.getAssembledFrameworks()
