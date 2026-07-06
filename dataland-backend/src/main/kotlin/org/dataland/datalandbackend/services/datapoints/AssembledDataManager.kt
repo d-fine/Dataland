@@ -339,12 +339,16 @@ class AssembledDataManager
             companyManager.assertCompanyIdExists(companyId)
 
             val framework = searchFilter.dataType.toString()
+            val requestedReportingPeriod = searchFilter.reportingPeriod
             val reportingPeriods =
                 dataAvailabilityChecker
                     .searchViewableDimensions(
                         DataDimensionQuery(companyIds = listOf(companyId), dataTypes = listOf(framework)),
-                    ).map { it.reportingPeriod }
-                    .filter { searchFilter.reportingPeriod.isNullOrBlank() || it == searchFilter.reportingPeriod }
+                    ).filter {
+                        requestedReportingPeriod.isNullOrBlank() || it.reportingPeriod == requestedReportingPeriod
+                    }.map {
+                        it.reportingPeriod
+                    }
 
             return getDatasetData(
                 reportingPeriods.mapTo(mutableSetOf()) { BasicDatasetDimensions(companyId, framework, it) },

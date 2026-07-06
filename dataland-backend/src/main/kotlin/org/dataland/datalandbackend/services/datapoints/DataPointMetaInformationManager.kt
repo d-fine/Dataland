@@ -173,9 +173,10 @@ class DataPointMetaInformationManager
          * Retrieves active data point metadata entities matching the given filter criteria.
          * An empty list for any parameter means "match all" (wildcard).
          *
-         * @param dataDimensionFilter filter specifying what to search for
+         * @param dataDimensionQuery filter specifying what to search for
          * @return list of DataPointMetaInformationEntity for active data points matching the filters
          */
+        @Transactional(readOnly = true)
         fun getActiveDataPointMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> =
             if (dataDimensionQuery.isEmpty()) {
                 emptyList()
@@ -194,6 +195,7 @@ class DataPointMetaInformationManager
          * @param dataDimensions the data point dimensions to look up
          * @return list of matching active DataPointMetaInformationEntity objects
          */
+        @Transactional(readOnly = true)
         fun getActiveDataPointMetaInformationList(dataDimensions: List<DataPointDimensions>): List<DataPointMetaInformationEntity> {
             if (dataDimensions.isEmpty()) return emptyList()
             val jsonPayload =
