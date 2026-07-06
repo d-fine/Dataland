@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Index
@@ -10,7 +11,9 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.PreApprovalCheckResultsConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointJudgement
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalCheckResults
 import java.util.UUID
 
 /**
@@ -39,6 +42,9 @@ class DataPointJudgementEntity(
     @JoinColumn(name = "dataset_judgement_id")
     @ManyToOne
     var datasetJudgement: DatasetJudgementEntity? = null,
+    @Column(columnDefinition = "TEXT", nullable = true)
+    @Convert(converter = PreApprovalCheckResultsConverter::class)
+    var preApprovalCheckResults: PreApprovalCheckResults? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
@@ -52,5 +58,6 @@ class DataPointJudgementEntity(
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
             customValue = customValue,
             reasonForCustomDataPoint = reasonForCustomDataPoint,
+            preApprovalCheckResults = preApprovalCheckResults,
         )
 }
