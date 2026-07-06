@@ -61,6 +61,7 @@ const tabs = ref<Array<TabInfo>>([
     route: '/requestoverview-legacy',
     isVisible: false,
   },
+  { id: 'specifications', label: 'SPECIFICATIONS', route: '/specifications', isVisible: true },
 ]);
 
 const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || tab.id === currentTabId.value));

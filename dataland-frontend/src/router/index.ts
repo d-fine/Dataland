@@ -31,6 +31,14 @@ const AdminRequestsOverviewLegacy = (): Promise<RouteComponent> =>
 const ChooseFrameworkForDataUpload = (): Promise<RouteComponent> =>
   import('@/components/pages/ChooseFrameworkForDataUpload.vue');
 const DatasetReviewOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetReviewOverview.vue');
+const SpecificationsOverviewPage = (): Promise<RouteComponent> =>
+  import('@/components/pages/SpecificationsOverviewPage.vue');
+const SpecificationFrameworkPage = (): Promise<RouteComponent> =>
+  import('@/components/pages/SpecificationFrameworkPage.vue');
+const SpecificationDataPointTypePage = (): Promise<RouteComponent> =>
+  import('@/components/pages/SpecificationDataPointTypePage.vue');
+const SpecificationDataPointBaseTypePage = (): Promise<RouteComponent> =>
+  import('@/components/pages/SpecificationDataPointBaseTypePage.vue');
 import PlatformRedirect from '@/components/pages/PlatformRedirect.vue';
 import KeycloakRedirect from '@/components/pages/KeycloakRedirect.vue';
 
@@ -292,6 +300,45 @@ const routes = [
     meta: {
       requiresAuthentication: false,
       register: true,
+    },
+  },
+  {
+    path: '/specifications',
+    name: 'Specifications Overview',
+    component: SpecificationsOverviewPage,
+    meta: {
+      initialTabId: 'specifications',
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/specifications/frameworks/:frameworkId',
+    props: true,
+    name: 'Specification Framework Page',
+    component: SpecificationFrameworkPage,
+    meta: {
+      initialTabId: 'specifications',
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/specifications/data-point-types/:dataPointTypeId',
+    props: true,
+    name: 'Specification Data Point Type Page',
+    component: SpecificationDataPointTypePage,
+    meta: {
+      initialTabId: 'specifications',
+      requiresAuthentication: false,
+    },
+  },
+  {
+    path: '/specifications/data-point-base-types/:dataPointBaseTypeId',
+    props: true,
+    name: 'Specification Data Point Base Type Page',
+    component: SpecificationDataPointBaseTypePage,
+    meta: {
+      initialTabId: 'specifications',
+      requiresAuthentication: false,
     },
   },
   {

@@ -18,6 +18,7 @@
         <div class="grid">
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
+            <FrameworkSpecificationLink :frameworkIdentifier="dataType" />
           </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
@@ -69,6 +70,7 @@ import { type AxiosError } from 'axios';
 import type Keycloak from 'keycloak-js';
 import DatasetDisplayStatusIndicator from '@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue';
 import MultiLayerDataTableFrameworkPanel from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue';
+import FrameworkSpecificationLink from '@/components/resources/specifications/FrameworkSpecificationLink.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 import {
   type FrameworkViewConfiguration,
@@ -89,6 +91,7 @@ export default defineComponent({
     MultiLayerDataTableFrameworkPanel,
     DatasetDisplayStatusIndicator,
     ViewFrameworkBase,
+    FrameworkSpecificationLink,
   },
   props: {
     companyId: {
