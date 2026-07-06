@@ -119,7 +119,8 @@ class DataMetaInformationManager(
     fun getLatestAvailableDatasetMetaInformation(
         companyIds: Collection<String>,
         dataType: String,
-    ): List<DataMetaInformationEntity> = dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
+    ): List<DataMetaInformationEntity> =
+        dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
 
     /**
      * Retrieves active dataset metadata for the given exact list of dataset dimensions.
@@ -147,10 +148,8 @@ class DataMetaInformationManager(
      * Retrieves active dataset metadata matching the given filter criteria.
      * An empty list for any parameter means "match all" (wildcard).
      *
-     * @param companyIds company IDs to filter by (empty = all)
-     * @param dataTypes framework names to filter by (empty = all)
-     * @param reportingPeriods reporting periods to filter by (empty = all)
-     * @return list of DataMetaInformationEntity for active datasets matching the filters
+     * @param dataDimensionQuery [DataDimensionQuery] object for which metadata should be resolved
+     * @return [List] of [DataMetaInformationEntity] for active datasets matching the filters
      */
     @Transactional(readOnly = true)
     fun getActiveDataMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> =
