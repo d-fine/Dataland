@@ -177,8 +177,8 @@ const preApprovalVerdictBadge = computed<{ label: string; background: string; co
     return { label: 'PRE-APPROVAL OBJECT NOT FOUND', background: 'var(--p-yellow-100)', color: 'var(--p-yellow-700)' };
   const allPass = preApprovalChecklist.value.every((item) => item.passed);
   return allPass
-      ? { label: 'PRE-APPROVED', background: 'var(--p-green-100)', color: 'var(--p-green-700)' }
-      : { label: 'MANUAL REVIEW', background: 'var(--p-red-100)', color: 'var(--p-red-700)' };
+    ? { label: 'PRE-APPROVED', background: 'var(--p-green-100)', color: 'var(--p-green-700)' }
+    : { label: 'MANUAL REVIEW', background: 'var(--p-red-100)', color: 'var(--p-red-700)' };
 });
 
 // ===== Pre-Approval config data =====
