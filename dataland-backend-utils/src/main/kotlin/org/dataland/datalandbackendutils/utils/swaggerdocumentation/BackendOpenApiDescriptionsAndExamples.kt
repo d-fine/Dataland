@@ -33,9 +33,9 @@ object BackendOpenApiDescriptionsAndExamples {
     const val IDENTIFIERS_DESCRIPTION = "Unique identifiers associated with the company, such as LEI, PermId, ..."
     const val IDENTIFIERS_EXAMPLE =
         "[\"" +
-            "${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
-            "\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
-            "\"]"
+                "${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"," +
+                "\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}" +
+                "\"]"
 
     const val IDENTIFIER_MAP_DESCRIPTION = IDENTIFIERS_DESCRIPTION
     const val IDENTIFIER_MAP_EXAMPLE = "{\"Lei\":[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE}\"]}"
@@ -60,7 +60,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val REF_DESCRIPTION = "The direct link to the page displaying the specified dataset."
     const val REF_EXAMPLE =
         "https://dataland.com/companies/${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/" +
-            "frameworks/sfdr/$DATA_ID_EXAMPLE"
+                "frameworks/sfdr/$DATA_ID_EXAMPLE"
 
     const val LEI_DESCRIPTION = "The LEI of the company."
     const val LEI_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
@@ -82,7 +82,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val IS_NON_SOURCEABLE_DESCRIPTION =
         "If true, the method only returns meta info for datasets which are" +
-            "non-sourceable. If false, it returns sourceable data."
+                "non-sourceable. If false, it returns sourceable data."
 
     const val REASON_DESCRIPTION = "The reason why there is no source available"
     const val REASON_EXAMPLE = "Parent Uploaded"
@@ -96,7 +96,7 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val SHOW_ONLY_ACTIVE_DESCRIPTION =
         "Boolean parameter. If set to true or empty, only currently active data is returned. " +
-            "If set to false, all data is returned regardless of active status."
+                "If set to false, all data is returned regardless of active status."
 
     const val DATA_POINT_ID_DESCRIPTION = "The unique identifier of the datapoint."
     const val DATA_POINT_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
@@ -104,8 +104,8 @@ object BackendOpenApiDescriptionsAndExamples {
     const val DATA_POINT_DESCRIPTION = "The data point as a JSON string."
     const val DATA_POINT_EXAMPLE =
         "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\"," +
-            "\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\"," +
-            "\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
+                "\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\"," +
+                "\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
 
     const val DATA_POINT_TYPE_DESCRIPTION = "The data point type of the provided data point."
     const val DATA_POINT_TYPE_EXAMPLE = "extendedEnumYesNoIsNfrdMandatory"
@@ -114,9 +114,9 @@ object BackendOpenApiDescriptionsAndExamples {
         "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
     const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =
         "[\"" +
-            "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
-            "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +
-            "\"]"
+                "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
+                "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +
+                "\"]"
 
     const val BYPASS_QA_DESCRIPTION =
         "If true, data is not sent to QA."
@@ -124,7 +124,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val DATA_POINT_MAP_DESCRIPTION = "A map from data point IDs to the associated technical IDs."
     const val DATA_POINT_MAP_EXAMPLE =
         "{\"extendedEnumFiscalYearDeviation\":" +
-            "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"}"
+                "\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"}"
 
     const val REPORTING_PERIODS_LIST_DESCRIPTION =
         "The reporting periods for which the data export is requested."
@@ -134,8 +134,7 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."
     const val COMPANY_IDS_LIST_EXAMPLE =
-        """["${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}",
-            |"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}"]"""
+        """["${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}", "${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}"]"""
 
     const val FILE_FORMAT_DESCRIPTION =
         "The file format for the data export."
@@ -145,8 +144,8 @@ object BackendOpenApiDescriptionsAndExamples {
 
     const val ASSOCIATED_SUBDOMAINS_DESCRIPTION =
         "List of email subdomains associated with the company. Subdomain labels immediately follow the '@' and end immediately before " +
-            "one of the subsequent periods '.'. They represent the root domain registered by the company together with subdomains " +
-            "if applicable. They are used to suggest registered Dataland users when managing company roles."
+                "one of the subsequent periods '.'. They represent the root domain registered by the company together with subdomains " +
+                "if applicable. They are used to suggest registered Dataland users when managing company roles."
     const val ASSOCIATED_SUBDOMAINS_EXAMPLE = "[\"my-company\",\"hr.my-company\"]"
 
     const val ACCEPTED_SOURCE_DESCRIPTION = "The source from which the value of the data point was accepted."
