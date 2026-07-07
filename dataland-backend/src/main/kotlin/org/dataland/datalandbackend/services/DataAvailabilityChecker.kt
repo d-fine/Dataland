@@ -53,9 +53,18 @@ class DataAvailabilityChecker
          */
         private fun getMetaDataOfActiveDatasets(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> {
             val datasetDimensionQuery = dataCompositionService.filterOutInvalidDatasetEntries(dataDimensionQuery)
-            if (datasetDimensionQuery.isEmpty()) {
+
+            val companyIdsTurnedEmpty =
+                dataDimensionQuery.companyIds.isNotEmpty() && datasetDimensionQuery.companyIds.isEmpty()
+            val dataTypesTurnedEmpty =
+                dataDimensionQuery.dataTypes.isNotEmpty() && datasetDimensionQuery.dataTypes.isEmpty()
+            val reportingPeriodsTurnedEmpty =
+                dataDimensionQuery.reportingPeriods.isNotEmpty() && datasetDimensionQuery.reportingPeriods.isEmpty()
+
+            if (companyIdsTurnedEmpty || dataTypesTurnedEmpty || reportingPeriodsTurnedEmpty) {
                 return emptyList()
             }
+
             return dataMetaInformationManager.getActiveDataMetaInformationList(datasetDimensionQuery)
         }
 
@@ -80,9 +89,18 @@ class DataAvailabilityChecker
          */
         private fun getMetaDataOfActiveDataPoints(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> {
             val dataPointDimensionQuery = dataCompositionService.filterOutInvalidDataPointEntries(dataDimensionQuery)
-            if (dataPointDimensionQuery.isEmpty()) {
+
+            val companyIdsTurnedEmpty =
+                dataDimensionQuery.companyIds.isNotEmpty() && dataPointDimensionQuery.companyIds.isEmpty()
+            val dataTypesTurnedEmpty =
+                dataDimensionQuery.dataTypes.isNotEmpty() && dataPointDimensionQuery.dataTypes.isEmpty()
+            val reportingPeriodsTurnedEmpty =
+                dataDimensionQuery.reportingPeriods.isNotEmpty() && dataPointDimensionQuery.reportingPeriods.isEmpty()
+
+            if (companyIdsTurnedEmpty || dataTypesTurnedEmpty || reportingPeriodsTurnedEmpty) {
                 return emptyList()
             }
+
             return dataPointMetaInformationManager.getActiveDataPointMetaInformationList(dataPointDimensionQuery)
         }
 
@@ -99,7 +117,8 @@ class DataAvailabilityChecker
         fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
             val dataPointBasedDimensions =
                 getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
-            val nonAssembledFrameworkBasedDimensions = getMetaDataOfActiveDatasets(dimensions).map { it.toBasicDataDimensions() }
+            val nonAssembledFrameworkBasedDimensions =
+                getMetaDataOfActiveDatasets(dimensions).map { it.toBasicDataDimensions() }
             val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dimensions)
 
             return (dataPointBasedDimensions + nonAssembledFrameworkBasedDimensions + assembledFrameworkBasedDimensions).distinct()
@@ -116,7 +135,8 @@ class DataAvailabilityChecker
          * @return All active data dimensions matching the filter criteria
          */
         fun searchViewableDimensions(dataDimensionQuery: DataDimensionQuery): List<BasicDataDimensions> {
-            val dataPointBasedDimensions = getMetaDataOfActiveDataPoints(dataDimensionQuery).map { it.toBasicDataDimensions() }
+            val dataPointBasedDimensions =
+                getMetaDataOfActiveDataPoints(dataDimensionQuery).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions = getAllViewableDimensionsForNonAssembledFrameworks(dataDimensionQuery)
             val assembledFrameworkBasedDimensions = getAllViewableDimensionsForAssembledFrameworks(dataDimensionQuery)
 

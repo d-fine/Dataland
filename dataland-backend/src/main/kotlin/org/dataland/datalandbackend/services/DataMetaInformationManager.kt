@@ -119,8 +119,7 @@ class DataMetaInformationManager(
     fun getLatestAvailableDatasetMetaInformation(
         companyIds: Collection<String>,
         dataType: String,
-    ): List<DataMetaInformationEntity> =
-        dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
+    ): List<DataMetaInformationEntity> = dataMetaInformationRepository.findLatestActiveByCompanyIdsAndDataType(companyIds, dataType)
 
     /**
      * Retrieves active dataset metadata for the given exact list of dataset dimensions.

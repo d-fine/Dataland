@@ -193,20 +193,33 @@ class CompanyDataController
 
         override fun getTeaserCompanies(): List<String> = companyQueryManager.getTeaserCompanyIds()
 
-        override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
-            ResponseEntity.ok(
-                DataType.values.associateWith {
-                    AggregatedFrameworkDataSummary(
-                        dataAvailabilityChecker
-                            .searchViewableDimensions(
-                                DataDimensionQuery(companyIds = listOf(companyId), dataTypes = listOf(it.toString())),
-                            ).map { dimension -> dimension.reportingPeriod }
+        override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
+            val dataTypes = DataType.values.toList()
+
+            val dimensions =
+                dataAvailabilityChecker.searchViewableDimensions(
+                    DataDimensionQuery(companyIds = listOf(companyId), dataTypes = dataTypes.map { it.toString() }),
+                )
+
+            val countByDataType =
+                dimensions
+                    .groupBy { DataType.valueOf(it.dataType) }
+                    .mapValues { (_, dimensionsForType) ->
+                        dimensionsForType
+                            .map { it.reportingPeriod }
                             .toSet()
                             .size
-                            .toLong(),
+                            .toLong()
+                    }
+
+            return ResponseEntity.ok(
+                dataTypes.associateWith { dataType ->
+                    AggregatedFrameworkDataSummary(
+                        countByDataType[dataType] ?: 0L,
                     )
                 },
             )
+        }
 
         override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
             ResponseEntity.ok(

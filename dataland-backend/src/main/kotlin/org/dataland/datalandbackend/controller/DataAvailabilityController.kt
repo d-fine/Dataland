@@ -15,30 +15,33 @@ import org.springframework.web.bind.annotation.RestController
  * @param dataAvailabilityChecker the service used to determine data availability
  */
 @RestController
-class DataAvailabilityController @Autowired constructor(
-    private val dataAvailabilityChecker: DataAvailabilityChecker,
-) : DataAvailabilityApi {
-    private val logger = LoggerFactory.getLogger(javaClass)
-    override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> {
-        logger.info("Received a request to filter the viewable dimensions with the dimensions list being $dimensions");
-        ResponseEntity.ok(
-            if (dimensions.isEmpty()) {
-                emptyList()
-            } else {
-                dataAvailabilityChecker.filterViewableDimensions(dimensions)
-            },
-        )
-    }
+class DataAvailabilityController
+    @Autowired
+    constructor(
+        private val dataAvailabilityChecker: DataAvailabilityChecker,
+    ) : DataAvailabilityApi {
+        private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun searchViewableDimensions(request: DataDimensionSearchRequest): ResponseEntity<List<BasicDataDimensions>> {
-        logger.info("Received a request to search the viewable dimensions list with the search request being $request")
-        val dimensionsQuery = request.toDataDimensionQuery()
-        if (dimensionsQuery.isEmpty()) {
-            throw InvalidInputApiException(
-                "This search request must not be empty!",
-                "At least one of the fields must be provided and not empty.",
+        override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> {
+            logger.info("Received a request to filter the viewable dimensions with the dimensions list being $dimensions")
+            return ResponseEntity.ok(
+                if (dimensions.isEmpty()) {
+                    emptyList()
+                } else {
+                    dataAvailabilityChecker.filterViewableDimensions(dimensions)
+                },
             )
         }
-        return ResponseEntity.ok(dataAvailabilityChecker.searchViewableDimensions(dimensionsQuery))
+
+        override fun searchViewableDimensions(request: DataDimensionSearchRequest): ResponseEntity<List<BasicDataDimensions>> {
+            logger.info("Received a request to search the viewable dimensions list with the search request being $request")
+            val dimensionsQuery = request.toDataDimensionQuery()
+            if (dimensionsQuery.isEmpty()) {
+                throw InvalidInputApiException(
+                    "This search request must not be empty!",
+                    "At least one of the fields must be provided and not empty.",
+                )
+            }
+            return ResponseEntity.ok(dataAvailabilityChecker.searchViewableDimensions(dimensionsQuery))
+        }
     }
-}

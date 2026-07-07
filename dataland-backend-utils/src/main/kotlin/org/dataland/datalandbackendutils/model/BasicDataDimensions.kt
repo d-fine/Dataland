@@ -47,6 +47,6 @@ data class BasicDataDimensions(
         BasicDataPointDimensions(
             companyId = companyId,
             dataPointType = dataPointType,
-            reportingPeriod = reportingPeriod
+            reportingPeriod = reportingPeriod,
         )
 }
