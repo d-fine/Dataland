@@ -123,25 +123,35 @@ class DataCompositionService
         private fun filterDimensionQuery(
             dataDimensionQuery: DataDimensionQuery,
             dataTypeValidator: (String) -> Boolean,
-        ): DataDimensionQuery {
-            val filteredQuery =
-                DataDimensionQuery(
-                    companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
-                    dataTypes = dataDimensionQuery.dataTypes.filter { dataTypeValidator(it) },
-                    reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
-                )
+        ): DataDimensionQuery =
+            DataDimensionQuery(
+                companyIds = dataDimensionQuery.companyIds.filter { ValidationUtils.isUuid(it) },
+                dataTypes = dataDimensionQuery.dataTypes.filter { dataTypeValidator(it) },
+                reportingPeriods = dataDimensionQuery.reportingPeriods.filter { ValidationUtils.isReportingPeriod(it) },
+            )
 
-            val filtered = listOf(filteredQuery.companyIds, filteredQuery.dataTypes, filteredQuery.reportingPeriods)
-            val original = listOf(dataDimensionQuery.companyIds, dataDimensionQuery.dataTypes, dataDimensionQuery.reportingPeriods)
+        /**
+         * Checks whether filtering invalid values emptied at least one originally constrained query dimension.
+         *
+         * This is used to detect cases where filtering removed all values of a field that was explicitly provided,
+         * which would otherwise broaden matching semantics if treated as an unconstrained filter.
+         *
+         * @param originalQuery the unfiltered query as provided by the caller
+         * @param filteredQuery the query after invalid entries were removed
+         * @return true if any non-empty original dimension became empty after filtering
+         */
+        public fun checkIfFilteringForValidFiltersCausedEmptyDataDimensionQuery(
+            originalQuery: DataDimensionQuery,
+            filteredQuery: DataDimensionQuery,
+        ): Boolean {
+            val companyIdsTurnedEmpty =
+                originalQuery.companyIds.isNotEmpty() && filteredQuery.companyIds.isEmpty()
+            val dataTypesTurnedEmpty =
+                originalQuery.dataTypes.isNotEmpty() && filteredQuery.dataTypes.isEmpty()
+            val reportingPeriodsTurnedEmpty =
+                originalQuery.reportingPeriods.isNotEmpty() && filteredQuery.reportingPeriods.isEmpty()
 
-            if (filtered.zip(original).any { (filteredList, originalList) ->
-                    filteredList.isEmpty() && originalList.isNotEmpty()
-                }
-            ) {
-                return DataDimensionQuery(emptyList(), emptyList(), emptyList())
-            }
-
-            return filteredQuery
+            return (companyIdsTurnedEmpty || dataTypesTurnedEmpty || reportingPeriodsTurnedEmpty)
         }
 
         /**
