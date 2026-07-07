@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 /**
  * Service class that manages all operations related to bulk requests.
@@ -117,7 +118,7 @@ class BulkRequestManager
                     .filterViewableDimensions(
                         basicDataDimensions =
                             (requests + newTaxonomyEquivalentRequests).map {
-                                BasicDataDimensions(
+                                ClientBasicDataDimensions(
                                     companyId = it.companyId,
                                     dataType = it.dataType,
                                     reportingPeriod = it.reportingPeriod,
