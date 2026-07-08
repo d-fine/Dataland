@@ -281,7 +281,7 @@ async function getMetaData(): Promise<void> {
     const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.dataAvailabilityController;
     const response = await api.searchViewableDimensions({
       companyIds: [props.companyID],
-      frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+      dataTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
       reportingPeriods: [],
     });
     availableDataDimensions.value = response.data;

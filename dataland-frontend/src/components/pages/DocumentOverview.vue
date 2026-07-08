@@ -233,7 +233,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
     availableDataDimensions.value = (
       await dataAvailabilityApi.searchViewableDimensions({
         companyIds: [props.companyId],
-        frameworksOrDataPointTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+        dataTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
         reportingPeriods: [],
       })
     ).data;
