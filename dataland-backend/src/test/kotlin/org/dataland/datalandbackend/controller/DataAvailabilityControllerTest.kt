@@ -90,7 +90,7 @@ class DataAvailabilityControllerTest(
     }
 
     @Test
-    fun `filterViewableDimensions with empty list returns empty result`() {
+    fun `filterViewableDimensions with empty list returns 400 error`() {
         whenever(dataAvailabilityChecker.filterViewableDimensions(eq(emptyList<BasicDataDimensions>())))
             .doReturn(emptyList())
 
@@ -100,8 +100,7 @@ class DataAvailabilityControllerTest(
                     .contentType(CONTENT_TYPE)
                     .content("[]")
                     .with(securityContext(mockSecurityContext)),
-            ).andExpect(status().isOk)
-            .andExpect(jsonPath("$").isEmpty)
+            ).andExpect(status().isBadRequest)
     }
 
     @Test

@@ -24,12 +24,14 @@ class DataAvailabilityController
 
         override fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): ResponseEntity<List<BasicDataDimensions>> {
             logger.info("Received a request to filter the viewable dimensions with the dimensions list being $dimensions")
+            if (dimensions.isEmpty()) {
+                throw InvalidInputApiException(
+                    "This search request must not be empty!",
+                    "At least one of the fields must be provided and not empty.",
+                )
+            }
             return ResponseEntity.ok(
-                if (dimensions.isEmpty()) {
-                    emptyList()
-                } else {
-                    dataAvailabilityChecker.filterViewableDimensions(dimensions)
-                },
+                dataAvailabilityChecker.filterViewableDimensions(dimensions),
             )
         }
 
