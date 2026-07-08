@@ -134,7 +134,8 @@ object BackendOpenApiDescriptionsAndExamples {
     const val COMPANY_IDS_LIST_DESCRIPTION =
         "A list of Dataland company ids for which the data export is requested."
     const val COMPANY_IDS_LIST_EXAMPLE =
-        """["${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}", "${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}"]"""
+        """["${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}", """ +
+            """"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}"]"""
 
     const val FILE_FORMAT_DESCRIPTION =
         "The file format for the data export."
