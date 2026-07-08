@@ -249,9 +249,8 @@ describeIf(
             verifySearchResultTableExists();
             cy.intercept('GET', '**/api/companies/names*').as('companyNameAutocomplete');
 
-            cy.get('input[id=search-bar-input]')
-              .click()
-              .type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
+            cy.get('input[id=search-bar-input]').click();
+            cy.get('input[id=search-bar-input]').type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
 
             cy.wait('@companyNameAutocomplete');
 
