@@ -117,7 +117,7 @@ class BulkDataRequestManager(
                 framework = dimension.dataType,
                 reportingPeriod = dimension.reportingPeriod,
                 resourceId = "${dimension.companyId}/${dimension.dataType}/${dimension.reportingPeriod}",
-                resourceUrl = "https://$proxyPrimaryUrl/companies/${dimension.companyId}/frameworks/${dimension.dataType}/",
+                resourceUrl = "https://$proxyPrimaryUrl/companies/${dimension.companyId}/frameworks/${dimension.dataType}",
             )
         }
     }
@@ -294,25 +294,37 @@ class BulkDataRequestManager(
         reportingPeriods: Set<String>,
     ): String =
         when {
-            identifiers.isEmpty() && frameworks.isEmpty() && reportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() && reportingPeriods.isEmpty() -> {
                 "All " +
                     "provided lists are empty."
+            }
 
-            identifiers.isEmpty() && frameworks.isEmpty() ->
+            identifiers.isEmpty() && frameworks.isEmpty() -> {
                 "The lists of company identifiers and " +
                     "frameworks are empty."
+            }
 
-            identifiers.isEmpty() && reportingPeriods.isEmpty() ->
+            identifiers.isEmpty() && reportingPeriods.isEmpty() -> {
                 "The lists of company identifiers and " +
                     "reporting periods are empty."
+            }
 
-            frameworks.isEmpty() && reportingPeriods.isEmpty() ->
+            frameworks.isEmpty() && reportingPeriods.isEmpty() -> {
                 "The lists of frameworks and reporting " +
                     "periods are empty."
+            }
 
-            identifiers.isEmpty() -> "The list of company identifiers is empty."
-            frameworks.isEmpty() -> "The list of frameworks is empty."
-            else -> "The list of reporting periods is empty."
+            identifiers.isEmpty() -> {
+                "The list of company identifiers is empty."
+            }
+
+            frameworks.isEmpty() -> {
+                "The list of frameworks is empty."
+            }
+
+            else -> {
+                "The list of reporting periods is empty."
+            }
         }
 
     private fun assureValidityOfRequests(bulkDataRequest: BulkDataRequest) {
