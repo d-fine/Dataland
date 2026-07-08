@@ -11,6 +11,7 @@ import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -188,13 +189,38 @@ class DataPointCalculator
         ): UploadedDataPoint {
             val dataPointTypes = inputs.map { it.dataPointType } + dataPointDimensions.dataPointType
             val specs = specificationService.getDataPointSpecifications(dataPointTypes.distinct())
+            val sourceFrameworksByType = getSourceFrameworksByType(inputs, specs)
             return applyTransformation(
                 inputs = inputs,
                 targetType = dataPointDimensions.dataPointType,
                 method = method,
                 specs = specs,
+                sourceFrameworksByType = sourceFrameworksByType,
             )
         }
+
+        /**
+         * Resolves source framework specifications from the data point type specifications' usedBy ownership.
+         *
+         * @param inputs source data points used by a calculation
+         * @param specs data point type specifications keyed by data point type
+         * @return source framework specifications by source data point type
+         */
+        private fun getSourceFrameworksByType(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+        ): Map<DataPointType, List<FrameworkSpecification>> =
+            inputs
+                .map { it.dataPointType }
+                .distinct()
+                .associateWith { dataPointType ->
+                    specs[dataPointType]
+                        ?.usedBy
+                        .orEmpty()
+                        .map { framework ->
+                            specificationService.getFrameworkSpecification(framework.id)
+                        }
+                }
 
         /**
          * Derives the missing data points for each of the given dataset dimensions and returns them grouped per dimension.
