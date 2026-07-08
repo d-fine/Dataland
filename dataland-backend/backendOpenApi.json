@@ -10215,7 +10215,10 @@
           "companyIds": {
             "type": "array",
             "description": "A list of Dataland company ids for which the data export is requested.",
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
@@ -20842,12 +20845,15 @@
             "type": "array",
             "description": "A list of Dataland company ids for which the data export is requested.",
             "nullable": true,
-            "example": "[\"c9710c7b-9cd6-446b-85b0-3773d2aceb48\",\n            |\"1e63a842-1e65-43ed-b78a-5e7cec155c28\"]",
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
             "items": {
               "type": "string"
             }
           },
-          "frameworksOrDataPointTypes": {
+          "dataTypes": {
             "type": "array",
             "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
             "nullable": true,
