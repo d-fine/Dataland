@@ -194,7 +194,7 @@ class CsvExporter(
             .searchViewableDimensions(
                 DataDimensionSearchRequest(
                     companyIds = emptyList(),
-                    frameworksOrDataPointTypes = listOf("sfdr"),
+                    dataTypes = listOf("sfdr"),
                     reportingPeriods = emptyList(),
                 ),
             ).map {

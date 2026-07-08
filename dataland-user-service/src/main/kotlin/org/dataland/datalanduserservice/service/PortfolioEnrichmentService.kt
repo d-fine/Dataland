@@ -57,7 +57,7 @@ class PortfolioEnrichmentService
                 dataAvailabilityControllerApi.searchViewableDimensions(
                     DataDimensionSearchRequest(
                         companyIds = companyIds,
-                        frameworksOrDataPointTypes = frameworks,
+                        dataTypes = frameworks,
                         reportingPeriods = emptyList(),
                     ),
                 )
