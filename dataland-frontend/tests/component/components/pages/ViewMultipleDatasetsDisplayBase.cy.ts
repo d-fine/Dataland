@@ -47,7 +47,7 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept('/api/data/lksg/companies/mock-company-id*', [mockDataAndMetaInfo]);
     cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', [
       { companyId: 'mock-company-id', dataType: DataTypeEnum.Lksg, reportingPeriod: reportingYear.toString() },
-    ]).as("postViewableDimensionsSearch");
+    ]).as('postViewableDimensionsSearch');
     cy.intercept(
       {
         method: 'GET',
@@ -59,7 +59,7 @@ describe('Component test for the view multiple dataset display base component', 
         reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
         data: mockDataAndMetaInfo.data,
       }
-    ).as("getLkSGData");
+    ).as('getLkSGData');
     //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
@@ -70,8 +70,8 @@ describe('Component test for the view multiple dataset display base component', 
       },
     });
 
-		cy.wait("@postViewableDimensionsSearch")
-	  cy.wait("@getLkSGData")
+    cy.wait('@postViewableDimensionsSearch');
+    cy.wait('@getLkSGData');
 
     checkToggleEmptyFieldsSwitch('Number of Employees');
     cy.get('tr[data-section-label="Social"]');
