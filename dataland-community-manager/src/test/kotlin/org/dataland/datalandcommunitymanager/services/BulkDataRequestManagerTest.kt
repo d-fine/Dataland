@@ -201,7 +201,7 @@ class BulkDataRequestManagerTest {
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
                     resourceId = "${dummyCompanyIdAndName.companyId}/sfdr/$dummyReportingPeriod",
-                    resourceUrl = "https://dataland.com/companies/${dummyCompanyIdAndName.companyId}/frameworks/sfdr/",
+                    resourceUrl = "https://dataland.com/companies/${dummyCompanyIdAndName.companyId}/frameworks/sfdr",
                 ),
             )
 
