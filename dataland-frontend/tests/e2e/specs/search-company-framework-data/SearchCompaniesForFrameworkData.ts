@@ -61,6 +61,75 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
 }
 
 /**
+ * Generates all substrings of the given text that have at least `minimumLength` characters and consist only of
+ * alphanumeric characters. Restricting to alphanumeric-only substrings keeps the result safe to type into the
+ * search bar and to compare against unencoded page URLs, without having to worry about escaping or encoding.
+ * @param text the text to generate substrings from
+ * @param minimumLength the minimum length a candidate substring must have
+ * @returns the candidate substrings, in ascending order of length
+ */
+function getAlphanumericSubstringCandidates(text: string, minimumLength: number): string[] {
+  const lowerCaseText = text.toLowerCase();
+  const candidates: string[] = [];
+  for (let length = minimumLength; length <= lowerCaseText.length; length++) {
+    for (let start = 0; start + length <= lowerCaseText.length; start++) {
+      const candidate = lowerCaseText.substring(start, start + length);
+      if (/^[a-z0-9]+$/.test(candidate)) {
+        candidates.push(candidate);
+      }
+    }
+  }
+  return candidates;
+}
+
+/**
+ * Counts how many companies in the loaded EU Taxonomy Financials fixtures have a company name or an
+ * alternative name that contains the given search string (case-insensitively).
+ * @param searchString the search string to look for
+ * @returns the number of distinct matching companies
+ */
+function countCompaniesMatchingSearchString(searchString: string): number {
+  return companiesWithEuTaxonomyFinancialsData.filter((it) => {
+    const namesOfCompany = [
+      it.companyInformation.companyName,
+      ...(it.companyInformation.companyAlternativeNames ?? []),
+    ];
+    return namesOfCompany.some((name) => name.toLowerCase().includes(searchString));
+  }).length;
+}
+
+/**
+ * Scans the loaded EU Taxonomy Financials fixtures for an alphanumeric search string that is contained in the
+ * company name or an alternative name of at least `minimumNumberOfMatches` distinct companies. This avoids
+ * relying on a hardcoded substring (e.g. a specific surname) that may stop matching enough companies whenever
+ * the number of generated fake fixtures changes.
+ * @param minimumNumberOfMatches the minimum number of distinct companies the returned string must match
+ * @returns a search string that is guaranteed to yield at least `minimumNumberOfMatches` autocomplete suggestions
+ */
+function findSearchStringWithMinimumAutocompleteMatches(minimumNumberOfMatches: number): string {
+  const minimumSearchStringLength = 3; // The autocomplete component ignores queries shorter than this
+  const allNamesInFixtures = companiesWithEuTaxonomyFinancialsData.flatMap((it) => [
+    it.companyInformation.companyName,
+    ...(it.companyInformation.companyAlternativeNames ?? []),
+  ]);
+  const candidates = allNamesInFixtures.flatMap((name) =>
+    getAlphanumericSubstringCandidates(name, minimumSearchStringLength)
+  );
+
+  const matchingCandidate = candidates.find(
+    (candidate) => countCompaniesMatchingSearchString(candidate) >= minimumNumberOfMatches
+  );
+
+  if (!matchingCandidate) {
+    throw new Error(
+      `Could not find a search string matching at least ${minimumNumberOfMatches} companies among the loaded ` +
+        'EU Taxonomy Financials fake fixtures. Please check the fake fixture generation or adjust the test.'
+    );
+  }
+  return matchingCandidate;
+}
+
+/**
  * Asserts that the company name is unique in the search results. If it is not unique, the test will fail.
  * @param testCompany the company that was searched for
  */
@@ -159,9 +228,14 @@ describeIf(
       });
     });
 
-    it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
+    it('Search with autocompletion for companies with a common name fragment in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
+      // 3 must match (or be below) FrameworkDataSearchBar's default `maxNumOfDisplayedAutocompleteEntries` prop
+      // value, since that threshold controls when the "View all results" button appears further down.
+      const minimumNumberOfAutocompleteMatchesForViewAllResultsButton = 3;
+      const searchStringResultingInAtLeastThreeAutocompleteSuggestions = findSearchStringWithMinimumAutocompleteMatches(
+        minimumNumberOfAutocompleteMatchesForViewAllResultsButton
+      );
 
       getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
@@ -173,15 +247,30 @@ describeIf(
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
-            cy.get('input[id=search-bar-input]').type('abs');
-            cy.get('[data-test="view-all-results-button"]').contains('View all results').click();
+            cy.intercept('GET', '**/api/companies/names*').as('companyNameAutocomplete');
+
+            cy.get('input[id=search-bar-input]')
+              .click()
+              .type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
+
+            cy.wait('@companyNameAutocomplete');
+
+            cy.contains('[data-test="view-all-results-button"]', 'View all results')
+              .should('be.visible')
+              // The button is rendered inside the PrimeVue AutoComplete overlay.
+              // A normal Cypress click can fail because the overlay is re-rendered/hidden
+              // while Cypress performs actionability checks. Thats why the force: true is necessary
+              .click({ force: true });
 
             verifySearchResultTableExists();
-            cy.url().should('include', '/companies?input=abs');
+            cy.url().should(
+              'include',
+              `/companies?input=${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
+            );
             cy.scrollTo('top');
             cy.get('input[id=search-bar-input]').click();
             cy.get('input[id=search-bar-input]').type(
-              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
+              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
             );
             cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
