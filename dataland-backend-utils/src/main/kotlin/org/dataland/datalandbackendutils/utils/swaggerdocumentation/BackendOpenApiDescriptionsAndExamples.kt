@@ -110,9 +110,9 @@ object BackendOpenApiDescriptionsAndExamples {
     const val DATA_POINT_TYPE_DESCRIPTION = "The data point type of the provided data point."
     const val DATA_POINT_TYPE_EXAMPLE = "extendedEnumYesNoIsNfrdMandatory"
 
-    const val FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION =
+    const val DATA_TYPES_DESCRIPTION =
         "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points."
-    const val FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE =
+    const val DATA_TYPES_EXAMPLE =
         "[\"" +
                 "${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE}\"," +
                 "\"${GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DATA_POINT_TYPE_EXAMPLE}" +

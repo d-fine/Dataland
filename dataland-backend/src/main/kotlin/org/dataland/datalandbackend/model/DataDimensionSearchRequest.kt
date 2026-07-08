@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenA
  * A null value is treated as a wildcard (all values for that dimension).
  *
  * @param companyIds the company IDs to filter by; null or absent means all companies
- * @param frameworksOrDataPointTypes the frameworks or data point types to filter by;
+ * @param dataTypes the frameworks or data point types to filter by;
  *   null or absent means all types
  * @param reportingPeriods the reporting periods to filter by; null or absent means all periods
  */
@@ -29,11 +29,11 @@ data class DataDimensionSearchRequest(
         arraySchema =
             Schema(
                 type = "string",
-                description = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_DESCRIPTION,
-                example = BackendOpenApiDescriptionsAndExamples.FRAMEWORKS_OR_DATA_POINT_TYPES_EXAMPLE,
+                description = BackendOpenApiDescriptionsAndExamples.DATA_TYPES_DESCRIPTION,
+                example = BackendOpenApiDescriptionsAndExamples.DATA_TYPES_EXAMPLE,
             ),
     )
-    val frameworksOrDataPointTypes: List<String>? = null,
+    val dataTypes: List<String>? = null,
     @field:ArraySchema(
         arraySchema =
             Schema(
@@ -51,7 +51,7 @@ data class DataDimensionSearchRequest(
     fun toDataDimensionQuery(): DataDimensionQuery =
         DataDimensionQuery(
             companyIds = companyIds.orEmpty(),
-            dataTypes = frameworksOrDataPointTypes.orEmpty(),
+            dataTypes = dataTypes.orEmpty(),
             reportingPeriods = reportingPeriods.orEmpty(),
         )
 }
