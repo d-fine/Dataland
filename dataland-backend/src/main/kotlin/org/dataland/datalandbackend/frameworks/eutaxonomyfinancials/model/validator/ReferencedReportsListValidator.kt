@@ -57,7 +57,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.general?.general?.fiscalYearEnd?.dataSource?.fileReference,
             dataset.general?.general?.areAllGroupEntitiesCovered?.dataSource?.fileReference,
             dataset.general?.general?.numberOfEmployees?.dataSource?.fileReference,
-            dataset.general?.general?.isNfrdMandatory?.dataSource?.fileReference,
+            dataset.general?.general?.isEuTaxonomyDataReportedOnAMandatoryBasis?.dataSource?.fileReference,
             dataset.general?.general?.assurance?.dataSource?.fileReference,
             dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalGrossCarryingAmount?.dataSource?.fileReference,
             dataset.creditInstitution?.assetsForCalculationOfGreenAssetRatio?.totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible?.dataSource?.fileReference,

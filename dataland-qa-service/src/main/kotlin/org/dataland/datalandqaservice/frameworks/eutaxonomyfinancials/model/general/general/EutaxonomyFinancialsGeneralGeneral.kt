@@ -24,6 +24,6 @@ data class EutaxonomyFinancialsGeneralGeneral(
     @field:Valid()
     val numberOfEmployees: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val isNfrdMandatory: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val isEuTaxonomyDataReportedOnAMandatoryBasis: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     val assurance: QaReportDataPoint<AssuranceDataPoint?>? = null,
 )

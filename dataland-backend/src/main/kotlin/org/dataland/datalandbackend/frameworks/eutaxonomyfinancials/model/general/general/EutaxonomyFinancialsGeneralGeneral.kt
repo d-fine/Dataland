@@ -93,7 +93,7 @@ data class EutaxonomyFinancialsGeneralGeneral(
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the NFRD mandatory for your company?""",
+        description = """Does Article 1(2) of Regulation (EU) 2020/852 apply to the undertaking and, therefore, is EU Taxonomy data reported on a mandatory basis?""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -107,7 +107,7 @@ data class EutaxonomyFinancialsGeneralGeneral(
     } """,
     )
     @field:Valid()
-    val isNfrdMandatory: ExtendedDataPoint<YesNo?>? = null,
+    val isEuTaxonomyDataReportedOnAMandatoryBasis: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

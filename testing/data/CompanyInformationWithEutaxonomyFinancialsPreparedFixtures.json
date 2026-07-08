@@ -96,7 +96,7 @@
 						"comment": "bypass mobile system",
 						"quality": "Estimated"
 					},
-					"isNfrdMandatory": {
+					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "Yes",
 						"dataSource": {
 							"page": "395",
@@ -3036,7 +3036,7 @@
 						"comment": "hack primary panel",
 						"quality": "Reported"
 					},
-					"isNfrdMandatory": {
+					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "No",
 						"dataSource": {
 							"page": "188",
@@ -3488,7 +3488,7 @@
 						"comment": "reboot optical pixel",
 						"quality": "NoDataFound"
 					},
-					"isNfrdMandatory": {
+					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "No",
 						"dataSource": {
 							"page": "789",
@@ -6431,7 +6431,7 @@
 						"comment": "back up neural transmitter",
 						"quality": "Reported"
 					},
-					"isNfrdMandatory": {
+					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "Yes",
 						"dataSource": {
 							"page": "42",

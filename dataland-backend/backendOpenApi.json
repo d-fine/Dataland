@@ -17356,7 +17356,7 @@
               }
             ]
           },
-          "isNfrdMandatory": {
+          "isEuTaxonomyDataReportedOnAMandatoryBasis": {
             "nullable": true,
             "allOf": [
               {

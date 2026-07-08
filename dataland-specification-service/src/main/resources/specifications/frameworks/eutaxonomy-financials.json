@@ -10,7 +10,7 @@
         "fiscalYearEnd" : "extendedDateFiscalYearEnd",
         "areAllGroupEntitiesCovered" : "extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports",
         "numberOfEmployees" : "extendedDecimalNumberOfEmployees",
-        "isNfrdMandatory" : "extendedEnumYesNoIsNfrdMandatory",
+        "isEuTaxonomyDataReportedOnAMandatoryBasis" : "extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis",
         "assurance" : "customEnumEuTaxonomyReportingAssurance"
       }
     },
