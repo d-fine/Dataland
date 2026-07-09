@@ -214,7 +214,7 @@ class DataPointCalculatorTest {
     }
 
     @Test
-    fun `check that data points with null values are excluded from source data`() {
+    fun `check that data points with null values are excluded from source data for the Sum calculation rule`() {
         val dataPointWithValue = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
         val dataPointWithoutValue = makeUploadedDataPoint(sourceTypeB, dataPointWithoutValueJson)
 
@@ -238,6 +238,32 @@ class DataPointCalculatorTest {
                 correlationId = correlationId,
             )
         assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `check that data points with null values are not excluded from source data for the Identity calculation rule`() {
+//        val dataPointWithValue = makeUploadedDataPoint(sourceTypeA, numericDataPointHalfJson)
+        val dataPointWithoutValue = makeUploadedDataPoint(sourceTypeB, dataPointWithoutValueJson)
+
+        doReturn(
+            mapOf<String, Collection<CalculationRule>>(targetType to listOf(CalculationRule(listOf(sourceTypeB), "Identity"))),
+        ).whenever(dataCompositionService)
+            .getAvailableCalculationRules(any())
+        doReturn(listOf(sourceTypeB, targetType)).whenever(dataCompositionService).getRelevantDataPointTypes(framework)
+        doReturn(listOf("id-b")).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
+        // Both returned from storage, but B has no value
+        doReturn(mapOf("id-b" to dataPointWithoutValue))
+            .whenever(internalStorageAdapter)
+            .getDataPoints(any(), any())
+
+        val result =
+            dataPointCalculator.getCalculatedData(
+                datasetDimensions = listOf(datasetDimensions),
+                deliverableDataPointTypes =
+                    mapOf(datasetDimensions to listOf(sourceTypeB)),
+                correlationId = correlationId,
+            )
+        assertFalse(result.isEmpty())
     }
 
     @Test
