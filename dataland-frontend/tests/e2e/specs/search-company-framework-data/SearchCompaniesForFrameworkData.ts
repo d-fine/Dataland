@@ -1,16 +1,29 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
-import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
-import { getUploaderToken } from '@e2e/utils/Auth';
+import {
+  DataTypeEnum,
+  type EutaxonomyFinancialsData,
+  type BasicCompanyInformation,
+  type SfdrData,
+} from '@clients/backend';
+import { getAdminToken, getUploaderToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
+
+// 'abs' is guaranteed to match at least 3 companies because SfdrPreparedFixtures.ts
+// (generateSfdrFixturesForFrameworkSearchTest) appends "... = ABS" to 3 SFDR company names. If you change
+// the marker text there, update this string too. It is also used below (case-insensitively) to select which
+// SFDR prepared fixtures to upload before the autocomplete test runs.
+const searchStringResultingInAtLeastThreeAutocompleteSuggestions = 'abs';
 
 /**
  * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
@@ -61,75 +74,6 @@ function getCompanyWithAlternativeName(): FixtureData<EutaxonomyFinancialsData> 
 }
 
 /**
- * Generates all substrings of the given text that have at least `minimumLength` characters and consist only of
- * alphanumeric characters. Restricting to alphanumeric-only substrings keeps the result safe to type into the
- * search bar and to compare against unencoded page URLs, without having to worry about escaping or encoding.
- * @param text the text to generate substrings from
- * @param minimumLength the minimum length a candidate substring must have
- * @returns the candidate substrings, in ascending order of length
- */
-function getAlphanumericSubstringCandidates(text: string, minimumLength: number): string[] {
-  const lowerCaseText = text.toLowerCase();
-  const candidates: string[] = [];
-  for (let length = minimumLength; length <= lowerCaseText.length; length++) {
-    for (let start = 0; start + length <= lowerCaseText.length; start++) {
-      const candidate = lowerCaseText.substring(start, start + length);
-      if (/^[a-z0-9]+$/.test(candidate)) {
-        candidates.push(candidate);
-      }
-    }
-  }
-  return candidates;
-}
-
-/**
- * Counts how many companies in the loaded EU Taxonomy Financials fixtures have a company name or an
- * alternative name that contains the given search string (case-insensitively).
- * @param searchString the search string to look for
- * @returns the number of distinct matching companies
- */
-function countCompaniesMatchingSearchString(searchString: string): number {
-  return companiesWithEuTaxonomyFinancialsData.filter((it) => {
-    const namesOfCompany = [
-      it.companyInformation.companyName,
-      ...(it.companyInformation.companyAlternativeNames ?? []),
-    ];
-    return namesOfCompany.some((name) => name.toLowerCase().includes(searchString));
-  }).length;
-}
-
-/**
- * Scans the loaded EU Taxonomy Financials fixtures for an alphanumeric search string that is contained in the
- * company name or an alternative name of at least `minimumNumberOfMatches` distinct companies. This avoids
- * relying on a hardcoded substring (e.g. a specific surname) that may stop matching enough companies whenever
- * the number of generated fake fixtures changes.
- * @param minimumNumberOfMatches the minimum number of distinct companies the returned string must match
- * @returns a search string that is guaranteed to yield at least `minimumNumberOfMatches` autocomplete suggestions
- */
-function findSearchStringWithMinimumAutocompleteMatches(minimumNumberOfMatches: number): string {
-  const minimumSearchStringLength = 3; // The autocomplete component ignores queries shorter than this
-  const allNamesInFixtures = companiesWithEuTaxonomyFinancialsData.flatMap((it) => [
-    it.companyInformation.companyName,
-    ...(it.companyInformation.companyAlternativeNames ?? []),
-  ]);
-  const candidates = allNamesInFixtures.flatMap((name) =>
-    getAlphanumericSubstringCandidates(name, minimumSearchStringLength)
-  );
-
-  const matchingCandidate = candidates.find(
-    (candidate) => countCompaniesMatchingSearchString(candidate) >= minimumNumberOfMatches
-  );
-
-  if (!matchingCandidate) {
-    throw new Error(
-      `Could not find a search string matching at least ${minimumNumberOfMatches} companies among the loaded ` +
-        'EU Taxonomy Financials fake fixtures. Please check the fake fixture generation or adjust the test.'
-    );
-  }
-  return matchingCandidate;
-}
-
-/**
  * Asserts that the company name is unique in the search results. If it is not unique, the test will fail.
  * @param testCompany the company that was searched for
  */
@@ -161,6 +105,48 @@ describeIf(
     executionEnvironments: executionEnvironments,
   },
   () => {
+    /**
+     * Uploads the SFDR prepared fixtures whose company name contains the framework-search-test marker (see
+     * searchStringResultingInAtLeastThreeAutocompleteSuggestions above), so that the "search with autocompletion"
+     * test below can rely on them being present in the database. Prepopulation.ts does not upload
+     * CompanyInformationWithSfdrPreparedFixtures.json, so this spec has to upload the fixtures it needs itself,
+     * following the same pattern used throughout the other e2e specs that rely on specific prepared fixtures.
+     * This lives inside the describeIf callback (rather than at file scope) so it is skipped together with the
+     * rest of this suite for execution environments where it is not supposed to run (e.g. 'previewCd').
+     */
+    before(function () {
+      cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
+        const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
+        const sfdrFixturesForFrameworkSearchTest = sfdrPreparedFixtures.filter((fixture) =>
+          fixture.companyInformation.companyName
+            .toLowerCase()
+            .includes(searchStringResultingInAtLeastThreeAutocompleteSuggestions)
+        );
+        if (sfdrFixturesForFrameworkSearchTest.length === 0) {
+          throw new Error(
+            `Expected at least one SFDR prepared fixture with '${searchStringResultingInAtLeastThreeAutocompleteSuggestions}' ` +
+              'in its company name, but found none. Check that SfdrPreparedFixtures.ts and this file still agree on the marker text.'
+          );
+        }
+
+        getAdminToken().then((token) => {
+          cy.browserThen(
+            Promise.all(
+              sfdrFixturesForFrameworkSearchTest.map((fixture) =>
+                uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+                  SfdrBaseFrameworkDefinition,
+                  token,
+                  fixture.companyInformation,
+                  fixture.t,
+                  fixture.reportingPeriod
+                )
+              )
+            )
+          );
+        });
+      });
+    });
+
     describeIf(
       'Tests for LEI tooltip and that company can be found -- only executed on database reset',
       {
@@ -233,9 +219,6 @@ describeIf(
       // 3 must match (or be below) FrameworkDataSearchBar's default `maxNumOfDisplayedAutocompleteEntries` prop
       // value, since that threshold controls when the "View all results" button appears further down.
       const minimumNumberOfAutocompleteMatchesForViewAllResultsButton = 3;
-      const searchStringResultingInAtLeastThreeAutocompleteSuggestions = findSearchStringWithMinimumAutocompleteMatches(
-        minimumNumberOfAutocompleteMatchesForViewAllResultsButton
-      );
 
       getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
@@ -253,6 +236,11 @@ describeIf(
             cy.get('input[id=search-bar-input]').type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
 
             cy.wait('@companyNameAutocomplete');
+
+            cy.get('.p-autocomplete-option').should(
+              'have.length',
+              minimumNumberOfAutocompleteMatchesForViewAllResultsButton
+            );
 
             cy.contains('[data-test="view-all-results-button"]', 'View all results')
               .should('be.visible')
