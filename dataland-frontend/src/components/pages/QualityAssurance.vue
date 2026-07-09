@@ -80,7 +80,7 @@
                 <div class="flex align-items-center gap-2 px-2" style="min-width: 12rem">
                   <FrameworkDataSearchDropdownFilter
                     :modelValue="selectedFrameworks"
-                    appendTo="body"
+                    appendTo="self"
                     input-class="w-full"
                     :available-items="availableFrameworks"
                     filter-name="Framework"
