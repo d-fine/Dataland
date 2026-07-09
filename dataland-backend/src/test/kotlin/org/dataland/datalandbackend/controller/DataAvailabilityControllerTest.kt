@@ -129,7 +129,7 @@ class DataAvailabilityControllerTest(
                         """
                         {
                             "companyIds": ["$TEST_COMPANY_ID"],
-                            "frameworksOrDataPointTypes": ["sfdr"],
+                            "dataTypes": ["sfdr"],
                             "reportingPeriods": ["2023"]
                         }
                         """.trimIndent(),
@@ -154,7 +154,7 @@ class DataAvailabilityControllerTest(
                         """
                         {
                             "companyIds": [],
-                            "frameworksOrDataPointTypes": ["sfdr"],
+                            "dataTypes": ["sfdr"],
                             "reportingPeriods": ["2023"]
                         }
                         """.trimIndent(),
@@ -175,7 +175,7 @@ class DataAvailabilityControllerTest(
                     .content(
                         """
                         {
-                            "frameworksOrDataPointTypes": [],
+                            "dataTypes": [],
                             "reportingPeriods": []
                         }
                         """.trimIndent(),
@@ -197,7 +197,7 @@ class DataAvailabilityControllerTest(
                         """
                         {
                             "companyIds": ["$TEST_COMPANY_ID"],
-                            "frameworksOrDataPointTypes": ["sfdr"],
+                            "dataTypes": ["sfdr"],
                             "reportingPeriods": []
                         }
                         """.trimIndent(),
@@ -215,7 +215,7 @@ class DataAvailabilityControllerTest(
                         """
                         {
                             "companyIds": ["$TEST_COMPANY_ID"],
-                            "frameworksOrDataPointTypes": ["sfdr"],
+                            "dataTypes": ["sfdr"],
                             "reportingPeriods": []
                         }
                         """.trimIndent(),

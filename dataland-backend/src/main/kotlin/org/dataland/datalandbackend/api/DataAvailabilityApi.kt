@@ -42,7 +42,7 @@ interface DataAvailabilityApi {
 
     /**
      * Searches for all viewable data dimensions matching the given filters.
-     * @param request filter containing companyIds, frameworksOrDataPointTypes, and reportingPeriods;
+     * @param request filter containing companyIds, dataTypes, and reportingPeriods;
      *   an empty list for any field is treated as a wildcard (all values)
      */
     @Operation(
