@@ -2,6 +2,9 @@ name: CI
 env:
   GITHUB_USER: ${{ github.actor }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  RUNNER_TYPE: 'dala-ci-runner'
+  # Change the RUNNER_TYPE to 'ubuntu-latest' if the CI should run on github and
+  #'dala-ci-runner' if it should run in the OTC
 
 on:
   push:
@@ -10,7 +13,7 @@ on:
 
 jobs:
   log-everything:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
@@ -30,7 +33,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
   frontend-component-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -77,7 +80,7 @@ jobs:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
   framework-toolbox-list-frameworks:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     outputs:
       frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
     steps:
@@ -112,7 +115,7 @@ jobs:
           name: JaCoCoResultsToolbox-list
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
   framework-toolbox-consistency-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     needs:
       - framework-toolbox-list-frameworks
     strategy:
@@ -152,7 +155,7 @@ jobs:
           name: JaCoCoResultsToolbox-${{ matrix.framework }}
           path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
   framework-toolbox-integration-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
@@ -182,7 +185,7 @@ jobs:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
   gradle-based-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -259,7 +262,7 @@ jobs:
         with:
           subfolder: 'unit-tests-backend'
   e2e-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     needs:
       - rebuild-docker-images
@@ -345,7 +348,7 @@ jobs:
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     if: ${{ !cancelled() }}
     needs:
       - e2e-tests
@@ -428,7 +431,7 @@ jobs:
           name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
@@ -436,7 +439,7 @@ jobs:
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 35 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
   merge-artefacts:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     needs:
       - sonar
       - e2e-tests
@@ -509,7 +512,7 @@ jobs:
           pattern: dockerImageVersions-*
           delete-merged: true
   summary:
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.RUNNER_TYPE }}
     if: success()
     needs:
       - merge-artefacts
