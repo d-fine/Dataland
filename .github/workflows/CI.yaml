@@ -8,20 +8,10 @@ on:
     branches:
       - '**'
   workflow_dispatch:
-    inputs:
-      runner_type:
-        description: 'Runner to use for all jobs'
-        required: true
-        default: 'ubuntu-latest'
-        type: choice
-        options:
-          - dala-ci-runner
-          - ubuntu-latest
 
 jobs:
   log-everything:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
@@ -41,10 +31,9 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
-      runner_type: ${{ inputs.runner_type || 'ubuntu-latest' }}
+      runner_type: ${{ vars.RUNNER_TYPE }}
   frontend-component-tests:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -91,8 +80,7 @@ jobs:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
   framework-toolbox-list-frameworks:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     outputs:
       frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
     steps:
@@ -127,8 +115,7 @@ jobs:
           name: JaCoCoResultsToolbox-list
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
   framework-toolbox-consistency-tests:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     needs:
       - framework-toolbox-list-frameworks
     strategy:
@@ -168,8 +155,7 @@ jobs:
           name: JaCoCoResultsToolbox-${{ matrix.framework }}
           path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
   framework-toolbox-integration-tests:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/logObjects
@@ -199,8 +185,7 @@ jobs:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
   gradle-based-tests:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -277,8 +262,7 @@ jobs:
         with:
           subfolder: 'unit-tests-backend'
   e2e-tests:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
     needs:
       - rebuild-docker-images
@@ -364,8 +348,7 @@ jobs:
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
   sonar:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     if: ${{ !cancelled() }}
     needs:
       - e2e-tests
@@ -448,8 +431,7 @@ jobs:
           name: SonarStageReports
           path: ./build/reports
   manual-maintenance-check:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
@@ -457,8 +439,7 @@ jobs:
       - name: "Check if manual maintenance was executed recently"
         run: git log --since $(date -d "- 35 days" "+%x") | grep -ie "manual.maintenance" || ( echo "Last Manual Maintenance is too old. Do it now!"; exit 1)
   merge-artefacts:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     needs:
       - sonar
       - e2e-tests
@@ -531,8 +512,7 @@ jobs:
           pattern: dockerImageVersions-*
           delete-merged: true
   summary:
-    runs-on: ${{ inputs.runner_type || 'ubuntu_latest' }  
-     }
+    runs-on: ${{ vars.RUNNER_TYPE }}
     if: success()
     needs:
       - merge-artefacts
