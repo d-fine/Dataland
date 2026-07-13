@@ -13,6 +13,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.Datas
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -81,6 +82,34 @@ interface DatasetJudgementApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetId: String,
+    ): ResponseEntity<DatasetJudgementResponse>
+
+    /**
+     * @param datasetJudgementId identifier used to uniquely specify the dataset that will be deleted
+     */
+    @Operation(
+        summary = "Delete dataset judgement object.",
+        description = "Delete dataset judgement object.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully deleted the dataset judgement object"),
+            ApiResponse(responseCode = "403", description = "Only admins can delete dataset judgement objects."),
+            ApiResponse(responseCode = "404", description = "No pending judgement exists for this dataset."),
+            ApiResponse(responseCode = "409", description = "The dataset judgement does not have the pending state."),
+        ],
+    )
+    @DeleteMapping(
+        value = ["/{datasetJudgementId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun deleteDatasetJudgement(
+        @PathVariable @Parameter(
+            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
+            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+        )
+        datasetJudgementId: String,
     ): ResponseEntity<DatasetJudgementResponse>
 
     /**
