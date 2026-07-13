@@ -365,7 +365,7 @@ jobs:
         run: docker compose --project-name dala-e2e-test --profile testing down
       - name: Cleanup dataland-loki files
         if: always()
-        run: sudo rm -rf /home/ubuntu/action-runner-+([0-9])/_work/Dataland/Dataland/dataland-loki/data
+        run: ls && pwd && sudo rm -rf ./dataland-loki/data
 
   sonar:
     runs-on: ubuntu-latest
