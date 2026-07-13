@@ -211,4 +211,10 @@ class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
             service.postDatasetJudgement(UUID.randomUUID())
         }
     }
+
+    @Test
+    fun `deleteDatasetJudgement throws ResourceNotFoundException when datasetJudgement not found`() {
+        val dummyDatasetId = UUID.randomUUID()
+        assertThrows<ResourceNotFoundApiException> { service.deleteDatasetJudgement(dummyDatasetId) }
+    }
 }

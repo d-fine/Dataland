@@ -30,6 +30,10 @@ class DatasetJudgementController(
             .status(HttpStatus.CREATED)
             .body(datasetJudgementService.postDatasetJudgement(convertToUUID(datasetId)))
 
+    override fun deleteDatasetJudgement(datasetJudgementId: String): ResponseEntity<DatasetJudgementResponse> {
+        TODO("Not yet implemented")
+    }
+
     override fun getDatasetJudgementsByDatasetId(datasetId: String): ResponseEntity<List<DatasetJudgementResponse>> =
         ResponseEntity.ok(datasetJudgementService.getDatasetJudgementsByDatasetId(convertToUUID(datasetId)))
 

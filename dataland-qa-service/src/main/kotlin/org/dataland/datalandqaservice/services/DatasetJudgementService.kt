@@ -71,6 +71,21 @@ class DatasetJudgementService
         }
 
         /**
+         * Delete a dataset judgement for the given dataset ID.
+         *
+         * @param datasetId The UUID of the dataset to judge.
+         */
+        @Transactional
+        fun deleteDatasetJudgement(datasetJudgementId: UUID) {
+            datasetJudgementRepository.findById(datasetJudgementId).orElseThrow {
+                ResourceNotFoundApiException(
+                    "Dataset judgement not found",
+                    "No dataset judgement with the id: $datasetJudgementId could be found.",
+                )
+            }
+        }
+
+        /**
          * Method to set judge to current user.
          *
          * @param datasetJudgementId The UUID of the dataset judgement to update.
