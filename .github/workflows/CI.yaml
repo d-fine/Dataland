@@ -310,9 +310,16 @@ jobs:
         env:
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Login to Github Packages
+        env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
+        run: |
+          mkdir -p $DOCKER_CONFIG
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
@@ -350,6 +357,9 @@ jobs:
         if: always()
         with:
           subfolder: 'e2etests_testgroup_${{ matrix.testGroup }}'
+      - name: Cleanup Docker credentials
+        if: always()
+        run: rm -rf /tmp/docker-config-${{ github.run_id }}
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}

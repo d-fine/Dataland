@@ -58,7 +58,10 @@ jobs:
           java-version: 21
           cache: gradle
       - name: Login to Github Packages with retry
+        env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
         run: |
+          mkdir -p $DOCKER_CONFIG
           success=false
           for i in 1 2 3; do
             echo "Attempt $i to login to ghcr.io..."
@@ -78,6 +81,7 @@ jobs:
       - name: Build Docker Images
         id: build-dockerimages
         env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -100,3 +104,6 @@ jobs:
         with:
           name: parameters-${{ matrix.buildScript }}
           path: ./logs/
+      - name: Cleanup Docker credentials
+        if: always()
+        run: rm -rf /tmp/docker-config-${{ github.run_id }}
