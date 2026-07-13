@@ -360,6 +360,9 @@ jobs:
       - name: Cleanup Docker credentials
         if: always()
         run: rm -rf /tmp/docker-config-${{ github.run_id }}
+      - name: Stop Docker containers
+        if: always()
+        run: docker compose --project-name dala-e2e-test --profile testing down
   sonar:
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
