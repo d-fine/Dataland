@@ -31,7 +31,7 @@ jobs:
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
     with:
-      runner_type: ${{ vars.RUNNER_TYPE }}
+      runner_type: ubuntu-latest
   frontend-component-tests:
     runs-on: ${{ vars.RUNNER_TYPE }}
     if: github.event_name != 'workflow_dispatch'
