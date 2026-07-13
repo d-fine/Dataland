@@ -214,7 +214,23 @@ class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
 
     @Test
     fun `deleteDatasetJudgement throws ResourceNotFoundException when datasetJudgement not found`() {
-        val dummyDatasetId = UUID.randomUUID()
-        assertThrows<ResourceNotFoundApiException> { service.deleteDatasetJudgement(dummyDatasetId) }
+        val nonexistentDatasetJudgementId = UUID.randomUUID()
+        assertThrows<ResourceNotFoundApiException> { service.deleteDatasetJudgement(nonexistentDatasetJudgementId) }
+    }
+
+    @Test
+    fun `deleteDatasetJudgement throws ConflictApiException when datasetJudgement is FinishedWithDatasetAcceptance`() {
+        datasetJudgementEntity.judgementState = DatasetJudgementState.FinishedWithDatasetAcceptance
+        val dummyDatasetJudgementId = datasetJudgementEntity.datasetId
+        doReturn(java.util.Optional.of(datasetJudgementEntity)).whenever(datasetJudgementRepository).findById(any())
+        assertThrows<ConflictApiException> { service.deleteDatasetJudgement(dummyDatasetJudgementId) }
+    }
+
+    @Test
+    fun `deleteDatasetJudgement throws ConflictApiException when datasetJudgement is FinishedWithDatasetRejection`() {
+        datasetJudgementEntity.judgementState = DatasetJudgementState.FinishedWithDatasetRejection
+        val dummyDatasetJudgementId = datasetJudgementEntity.datasetId
+        doReturn(java.util.Optional.of(datasetJudgementEntity)).whenever(datasetJudgementRepository).findById(any())
+        assertThrows<ConflictApiException> { service.deleteDatasetJudgement(dummyDatasetJudgementId) }
     }
 }

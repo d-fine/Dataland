@@ -73,14 +73,22 @@ class DatasetJudgementService
         /**
          * Delete a dataset judgement for the given dataset ID.
          *
-         * @param datasetId The UUID of the dataset to judge.
+         * @param datasetJudgementId The UUID of the dataset to judge.
          */
         @Transactional
         fun deleteDatasetJudgement(datasetJudgementId: UUID) {
-            datasetJudgementRepository.findById(datasetJudgementId).orElseThrow {
-                ResourceNotFoundApiException(
-                    "Dataset judgement not found",
-                    "No dataset judgement with the id: $datasetJudgementId could be found.",
+            val datasetJudgementEntity =
+                datasetJudgementRepository.findById(datasetJudgementId).orElseThrow {
+                    ResourceNotFoundApiException(
+                        "Dataset judgement not found",
+                        "No dataset judgement with the id: $datasetJudgementId could be found.",
+                    )
+                }
+
+            if (datasetJudgementEntity.judgementState != DatasetJudgementState.Pending) {
+                throw ConflictApiException(
+                    "Dataset judgement is not pending",
+                    "Dataset judgement with the id $datasetJudgementId has the state ${datasetJudgementEntity.judgementState}",
                 )
             }
         }
