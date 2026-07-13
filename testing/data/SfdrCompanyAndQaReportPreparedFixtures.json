@@ -1,0 +1,112 @@
+[
+	{
+		"preparedFixture": {
+			"companyInformation": {
+				"companyName": "Howell - Schroeder",
+				"headquarters": "Titofort",
+				"headquartersPostalCode": "83078-6644",
+				"sector": null,
+				"identifiers": {
+					"Lei": [
+						"TVCWMaQOH2GOMklVDKhS"
+					],
+					"Isin": [
+						"WlJlreDWcIrL",
+						"67V42TIhCqf4"
+					],
+					"PermId": [
+						"t6Ttci1sEF"
+					],
+					"Ticker": [],
+					"Duns": [
+						"M3lhPAYfX"
+					],
+					"VatNumber": [],
+					"CompanyRegistrationNumber": []
+				},
+				"countryCode": "GI",
+				"companyContactDetails": null,
+				"companyAlternativeNames": [],
+				"companyLegalForm": null,
+				"website": null,
+				"fiscalYearEnd": "21-Oct",
+				"isTeaserCompany": false
+			},
+			"t": {
+				"general": {
+					"general": {
+						"dataDate": "2025-03-01",
+						"fiscalYearDeviation": {
+							"value": "NoDeviation"
+						},
+						"fiscalYearEnd": {
+							"value": "2024-12-31"
+						},
+						"referencedReports": {
+							"SustainabilityReport": {
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"fileName": "SustainabilityReport",
+								"publicationDate": "2024-01-10"
+							}
+						}
+					}
+				},
+				"social": {
+					"humanRights": {
+						"numberOfReportedIncidentsOfHumanRightsViolations": {
+							"value": 6747,
+							"dataSource": {
+								"page": "470-774",
+								"fileName": "SustainabilityReport",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "e-commerce",
+								"publicationDate": null
+							},
+							"comment": "synthesize online application",
+							"quality": "Incomplete"
+						}
+					}
+				},
+				"environmental": {
+					"biodiversity": {
+						"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+							"value": "Yes",
+							"quality": "Reported",
+							"comment": "Data was extracted."
+						},
+						"biodiversityProtectionPolicy": {
+							"value": "No",
+							"dataSource": {
+								"page": "16-116",
+								"fileName": "SustainabilityReport",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "initiatives",
+								"publicationDate": null
+							},
+							"comment": "transmit online matrix",
+							"quality": "Estimated"
+						}
+					}
+				}
+			},
+			"reportingPeriod": "2024"
+		},
+		"qaReports": {
+			"extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations": {
+				"comment": "data is wrong",
+				"verdict": "QaRejected",
+				"correctedData": "{ \"value\": 5, \"quality\": \"Estimated\"}"
+			},
+			"extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure": {
+				"comment": "some comment",
+				"verdict": "QaAccepted",
+				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Reported\"}"
+			},
+			"extendedEnumYesNoBiodiversityProtectionPolicy": {
+				"comment": "data is correct",
+				"verdict": "QaInconclusive",
+				"correctedData": "{ \"value\": \"Yes\", \"quality\": \"Reported\"}"
+			}
+		}
+	}
+]

@@ -13,6 +13,7 @@ import {
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes';
+import { generateSFDRCompanyAndQaReports } from '@e2e/fixtures/custom_mocks/SfdrCompanyAndQaReportPreparedFixtures.ts';
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -70,5 +71,9 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/SfdrLinkedDataAndQaReportPreparedFixtures.json',
     JSON.stringify(generateSfdrLinkedQaReports(), null, '\t')
+  );
+  fs.writeFileSync(
+    '../testing/data/SfdrCompanyAndQaReportPreparedFixtures.json',
+    JSON.stringify(generateSFDRCompanyAndQaReports(), null, '\t')
   );
 }

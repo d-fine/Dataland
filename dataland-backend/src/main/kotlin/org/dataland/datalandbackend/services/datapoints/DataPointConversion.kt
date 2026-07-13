@@ -1,23 +1,15 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
-import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackendutils.model.DataPointType
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import java.math.BigDecimal
-import java.math.RoundingMode
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
-private const val CALCULATION_SCALE = 10
-private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
 private val ONE_HUNDRED = BigDecimal("100")
-private const val EXTENDED_CURRENCY_BASE_TYPE = "extendedCurrency"
 
 /**
  * Closed set of strategies for deriving a data point from a collection of other data points.
@@ -30,170 +22,55 @@ enum class DataPointConversion(
     val id: String,
 ) {
     SUM("Sum") {
-        override fun createComment(
-            inputs: Collection<UploadedDataPoint>,
-            specs: Map<DataPointType, DataPointTypeSpecification>,
-            dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String {
-            val sourceNames = getQuotedSourceNames(inputs, specs)
-            val formula = sourceNames.joinToString(prefix = "\n+ ", separator = "\n+ ")
-            return "This data point was calculated as the sum of the following data points: $formula."
-        }
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+            getNumberedSourceReferences(inputs).joinToString(" + ")
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
-        ): UploadedDataPoint {
-            val calculatedDataPoint =
-                if (isCurrencyDataPoint(targetType, specs)) {
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
-                    require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
-                    val values =
-                        dataPoints.map {
-                            requireNotNull(it.value) { "Data points for summation must not have null value fields." }
-                        }
-                    ExtendedCurrencyDataPoint(
-                        value = values.sumOf { it },
-                        currency = getCommonCurrency(dataPoints),
-                        quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
-                        dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
-                    )
-                } else {
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    require(dataPoints.size >= 2) { "At least two data points must be provided for summation." }
-                    val values =
-                        dataPoints.map {
-                            requireNotNull(it.value) { "Data points for summation must not have null value fields." }
-                        }
-                    ExtendedDataPoint(
-                        value = values.sumOf { it },
-                        quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
-                        dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
-                    )
-                }
-            return createUploadedDataPoint(
-                inputs = inputs,
-                targetType = targetType,
-                calculatedDataPoint = calculatedDataPoint,
-            )
-        }
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertSum(inputs, targetType, specs, sourceFrameworksByType)
     },
 
     DIVISION("Division") {
-        override fun createComment(
-            inputs: Collection<UploadedDataPoint>,
-            specs: Map<DataPointType, DataPointTypeSpecification>,
-            dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String =
-            "This data point was calculated using the following formula: ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+            getNumberedSourceReferences(inputs).joinToString(" / ")
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
-        ): UploadedDataPoint {
-            val calculatedDataPoint =
-                if (isCurrencyDataPoint(targetType, specs)) {
-                    val (numerator, denominator) = extractNumeratorAndDenominator(inputs)
-                    ExtendedCurrencyDataPoint(
-                        value =
-                            numerator.value?.divide(
-                                denominator.value,
-                                CALCULATION_SCALE,
-                                CALCULATION_ROUNDING_MODE,
-                            ),
-                        currency = getCurrency(numerator),
-                        quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
-                        dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
-                    )
-                } else {
-                    val nullValueErrorMessage = "Data points for division must not have null value fields."
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    require(dataPoints.size == 2) { "Exactly two data points must be provided for division." }
-                    val numerator = requireNotNull(dataPoints[0].value) { nullValueErrorMessage }
-                    val denominator = requireNotNull(dataPoints[1].value) { nullValueErrorMessage }
-                    require(denominator.signum() != 0) { "The divisor in division must not be zero." }
-                    ExtendedDataPoint(
-                        value =
-                            numerator.divide(
-                                denominator,
-                                CALCULATION_SCALE,
-                                CALCULATION_ROUNDING_MODE,
-                            ),
-                        quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
-                        dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
-                    )
-                }
-
-            return createUploadedDataPoint(
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertDivision(
                 inputs = inputs,
                 targetType = targetType,
-                calculatedDataPoint = calculatedDataPoint,
+                specs = specs,
+                sourceFrameworksByType = sourceFrameworksByType,
+                multiplier = BigDecimal.ONE,
+                operationName = "division",
             )
-        }
     },
 
     DIVISION_BY_PERCENT("DivisionByPercent") {
-        override fun createComment(
-            inputs: Collection<UploadedDataPoint>,
-            specs: Map<DataPointType, DataPointTypeSpecification>,
-            dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String =
-            "This data point was calculated using the following formula: 100 * ${getQuotedSourceNames(inputs, specs).joinToString(" / ")}."
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+            "100 * ${getNumberedSourceReferences(inputs).joinToString(" / ")}"
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
-        ): UploadedDataPoint {
-            val calculatedDataPoint =
-                if (isCurrencyDataPoint(targetType, specs)) {
-                    val (numerator, denominator) = extractNumeratorAndDenominator(inputs)
-                    val result =
-                        numerator.value?.multiply(ONE_HUNDRED)?.divide(
-                            denominator.value,
-                            CALCULATION_SCALE,
-                            CALCULATION_ROUNDING_MODE,
-                        )
-                    ExtendedCurrencyDataPoint(
-                        value = result,
-                        currency = getCurrency(numerator),
-                        quality = mergeQuality(listOf(numerator.quality, denominator.quality)),
-                        comment = createComment(inputs, specs, listOf(numerator, denominator)),
-                        dataSource = mergeDataSources(listOfNotNull(numerator.dataSource, denominator.dataSource)),
-                    )
-                } else {
-                    val nullValueErrorMessage = "Data points for division by percent must not have null value fields."
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
-                    require(dataPoints.size == 2) { "Exactly two data points must be provided for division by percent." }
-                    val numerator = requireNotNull(dataPoints[0].value) { nullValueErrorMessage }
-                    val denominator = requireNotNull(dataPoints[1].value) { nullValueErrorMessage }
-                    require(denominator.signum() != 0) { "The divisor in division by percent must not be zero." }
-                    val result =
-                        numerator.multiply(ONE_HUNDRED).divide(
-                            denominator,
-                            CALCULATION_SCALE,
-                            CALCULATION_ROUNDING_MODE,
-                        )
-                    ExtendedDataPoint(
-                        value = result,
-                        quality = mergeQuality(dataPoints.map { it.quality }),
-                        comment = createComment(inputs, specs, dataPoints),
-                        dataSource = mergeDataSources(dataPoints.mapNotNull { it.dataSource }),
-                    )
-                }
-
-            return createUploadedDataPoint(
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertDivision(
                 inputs = inputs,
                 targetType = targetType,
-                calculatedDataPoint = calculatedDataPoint,
+                specs = specs,
+                sourceFrameworksByType = sourceFrameworksByType,
+                multiplier = ONE_HUNDRED,
+                operationName = "division by percent",
             )
-        }
     },
 
     IDENTITY("Identity") {
@@ -201,45 +78,18 @@ enum class DataPointConversion(
             inputs: Collection<UploadedDataPoint>,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
-        ): String? = dataPoints.single().comment
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): String =
+            "This data point was mapped from the following source: " +
+                "${getNumberedSourceReferences(inputs).single()}\n\n***\n\n" +
+                getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 
         override fun convert(
             inputs: Collection<UploadedDataPoint>,
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
-        ): UploadedDataPoint {
-            val calculatedDataPoint =
-                if (isCurrencyDataPoint(targetType, specs)) {
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(it.dataPoint) }
-                    require(dataPoints.size == 1) { "Exactly one data point must be provided for the identity rule." }
-                    dataPoints.first().let {
-                        ExtendedCurrencyDataPoint(
-                            value = it.value,
-                            currency = getCurrency(it),
-                            quality = it.quality,
-                            comment = createComment(inputs, specs, dataPoints),
-                            dataSource = it.dataSource,
-                        )
-                    }
-                } else {
-                    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<Any?>>(it.dataPoint) }
-                    require(dataPoints.size == 1) { "Exactly one data point must be provided for the identity rule." }
-                    dataPoints.first().let {
-                        ExtendedDataPoint(
-                            value = it.value,
-                            quality = it.quality,
-                            comment = createComment(inputs, specs, dataPoints),
-                            dataSource = it.dataSource,
-                        )
-                    }
-                }
-
-            return createUploadedDataPoint(
-                inputs = inputs,
-                targetType = targetType,
-                calculatedDataPoint = calculatedDataPoint,
-            )
-        }
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertIdentity(inputs, targetType, specs, sourceFrameworksByType)
     }, ;
 
     /**
@@ -248,12 +98,14 @@ enum class DataPointConversion(
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
      * @return the derived data point produced by this strategy
      */
     abstract fun convert(
         inputs: Collection<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint
 
     /**
@@ -262,13 +114,31 @@ enum class DataPointConversion(
      * @param inputs the uploaded data points used as calculation inputs
      * @param specs the data point type specifications used to resolve input display names
      * @param dataPoints the deserialized source data points used for the conversion
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
      * @return a generated comment describing the calculation
      */
-    abstract fun createComment(
+    open fun createComment(
         inputs: Collection<UploadedDataPoint>,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         dataPoints: Collection<ExtendedDataPointInterface<*>>,
-    ): String?
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): String =
+        getCalculationComment(
+            formula = getCalculationFormula(inputs),
+            inputs = inputs,
+            specs = specs,
+            dataPoints = dataPoints,
+            sourceFrameworksByType = sourceFrameworksByType,
+        )
+
+    /**
+     * Returns the formula fragment used in the generated calculation comment.
+     *
+     * @param inputs the uploaded data points used as calculation inputs
+     * @return a formula using numbered source references such as `[1]`
+     */
+    protected open fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+        throw UnsupportedOperationException("Conversion $id does not use a calculation formula.")
 
     companion object {
         /**
@@ -282,112 +152,146 @@ enum class DataPointConversion(
             entries.firstOrNull { it.id == id }
                 ?: throw IllegalArgumentException("Unsupported method: $id")
     }
-}
 
-/**
- * Checks whether [dataPointType] has the extended currency base type in [specs].
- *
- * @param dataPointType the data point type to inspect
- * @param specs the data point type specifications keyed by type
- * @return true if the type is specified as an extended currency data point
- */
-private fun isCurrencyDataPoint(
-    dataPointType: DataPointType,
-    specs: Map<DataPointType, DataPointTypeSpecification>,
-): Boolean = specs[dataPointType]?.dataPointBaseType?.id == EXTENDED_CURRENCY_BASE_TYPE
+    /**
+     * Sums the values of [inputs] into a single derived data point of [targetType].
+     *
+     * @param inputs the source data points to be summed
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived data point produced by the summation
+     */
+    protected fun convertSum(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val calculatedDataPoint =
+            if (isCurrencyDataPoint(targetType, specs)) {
+                val operands = extractSumOperands<ExtendedCurrencyDataPoint>(inputs)
+                ExtendedCurrencyDataPoint(
+                    value = operands.values.sumOf { it },
+                    currency = getCommonCurrency(operands.dataPoints),
+                    quality = mergeQuality(operands.dataPoints.map { it.quality }),
+                    comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType),
+                    dataSource = mergeDataSources(operands.dataPoints.mapNotNull(::getDataSource)),
+                )
+            } else {
+                val operands = extractSumOperands<ExtendedDataPoint<BigDecimal>>(inputs)
+                ExtendedDataPoint(
+                    value = operands.values.sumOf { it },
+                    quality = mergeQuality(operands.dataPoints.map { it.quality }),
+                    comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType),
+                    dataSource = mergeDataSources(operands.dataPoints.mapNotNull(::getDataSource)),
+                )
+            }
 
-/**
- * Returns the currency set on [dataPoint].
- *
- * @param dataPoint the currency data point to inspect
- * @return the non-null currency of the data point
- * @throws IllegalArgumentException if [dataPoint] has no currency
- */
-private fun getCurrency(dataPoint: ExtendedCurrencyDataPoint): String {
-    require(dataPoint.currency != null) { "Currency data points used in calculations must have a currency." }
-    return dataPoint.currency
-}
-
-/**
- * Returns the shared currency used by all [dataPoints].
- *
- * @param dataPoints the currency data points to inspect
- * @return the single currency used by all given data points
- * @throws IllegalArgumentException if not all data points have the same non-null currency
- */
-private fun getCommonCurrency(dataPoints: Collection<ExtendedCurrencyDataPoint>): String {
-    val currencies = dataPoints.map { getCurrency(it) }.toSet()
-    require(currencies.size == 1) { "Currency data points used in summation must all have the same currency." }
-    return currencies.single()
-}
-
-/**
- * Wraps [calculatedDataPoint] in an [UploadedDataPoint] using metadata from the first source input.
- *
- * @param inputs the source inputs providing reporting period and company ID
- * @param targetType the data point type assigned to the calculated data point
- * @param calculatedDataPoint the calculated data point object to serialize
- * @return the uploaded data point representing the calculation result
- */
-private fun <T : Any> createUploadedDataPoint(
-    inputs: Collection<UploadedDataPoint>,
-    targetType: DataPointType,
-    calculatedDataPoint: BaseDataPoint<T>,
-): UploadedDataPoint =
-    UploadedDataPoint(
-        dataPoint = defaultObjectMapper.writeValueAsString(calculatedDataPoint),
-        reportingPeriod = inputs.first().reportingPeriod,
-        companyId = inputs.first().companyId,
-        dataPointType = targetType,
-    )
-
-/**
- * Merges the given [QualityOptions] into a single entry, returning the lowest quality among them.
- *
- * @param inputs the quality values to merge
- * @return the lowest quality value among the inputs
- */
-internal fun mergeQuality(inputs: Collection<QualityOptions?>): QualityOptions? {
-    val qualityOrder =
-        listOf(
-            QualityOptions.Audited, QualityOptions.Reported, QualityOptions.Estimated, QualityOptions.Incomplete,
-            QualityOptions.NoDataFound, null,
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
         )
-    return inputs.maxByOrNull { qualityOrder.indexOf(it) }
-}
+    }
 
-/**
- * Merges the given list of [ExtendedDocumentReference] into a single reference.
- *
- * @param inputs the document references to merge
- * @return the reference with the smallest file reference, or null if no references are provided
- */
-internal fun mergeDataSources(inputs: Collection<ExtendedDocumentReference>): ExtendedDocumentReference? =
-    inputs.minByOrNull { it.fileReference }
+    /**
+     * Divides the first of [inputs] by the second, optionally scaling by [multiplier], into a data point of [targetType].
+     *
+     * @param inputs the numerator and denominator source data points
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @param multiplier a factor applied to the numerator before the division
+     * @param operationName the human-readable operation name used in validation error messages
+     * @return the derived data point produced by the division
+     */
+    protected fun convertDivision(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        multiplier: BigDecimal,
+        operationName: String,
+    ): UploadedDataPoint {
+        val calculatedDataPoint =
+            if (isCurrencyDataPoint(targetType, specs)) {
+                val operands =
+                    extractDivisionOperands<ExtendedCurrencyDataPoint, ExtendedDataPoint<BigDecimal>>(
+                        inputs,
+                        operationName,
+                    )
+                val sources = listOf(operands.numerator, operands.denominator)
+                ExtendedCurrencyDataPoint(
+                    value = operands.calculateValue(multiplier),
+                    currency = getCurrency(operands.numerator),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            } else {
+                val operands =
+                    extractDivisionOperands<ExtendedDataPoint<BigDecimal>, ExtendedDataPoint<BigDecimal>>(
+                        inputs,
+                        operationName,
+                    )
+                val sources = listOf(operands.numerator, operands.denominator)
+                ExtendedDataPoint(
+                    value = operands.calculateValue(multiplier),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            }
 
-/**
- * Resolves the display names of [inputs] in [specs] and wraps each name in double quotes.
- *
- * @param inputs the uploaded data points used as calculation inputs
- * @param specs the data point type specifications used to resolve input display names
- * @return the quoted display names of all inputs in order
- */
-private fun getQuotedSourceNames(
-    inputs: Collection<UploadedDataPoint>,
-    specs: Map<DataPointType, DataPointTypeSpecification>,
-): List<String> = inputs.map { "\"${specs.getValue(it.dataPointType).name}\"" }
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
 
-private fun extractNumeratorAndDenominator(
-    inputs: Collection<UploadedDataPoint>,
-): Pair<ExtendedCurrencyDataPoint, ExtendedDataPoint<BigDecimal>> {
-    val nullValueErrorMessage = "Data points for any type of division must not have null value fields."
-    require(inputs.size == 2) { "Exactly two data points must be provided for any type of division." }
-    val numerator = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(0).dataPoint)
-    val denominator = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
-    requireNotNull(numerator.value) { nullValueErrorMessage }
-    val denominatorValue = requireNotNull(denominator.value) { nullValueErrorMessage }
-    require(denominatorValue.signum() != 0) { "The divisor in a division must not be zero." }
-    return Pair(numerator, denominator)
+    /**
+     * Maps the single element of [inputs] into a derived data point of [targetType] without altering its value.
+     *
+     * @param inputs the single source data point to be mapped
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived data point produced by the identity mapping
+     */
+    protected fun convertIdentity(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val calculatedDataPoint =
+            if (isCurrencyDataPoint(targetType, specs)) {
+                val dataPoint = extractIdentityOperand<ExtendedCurrencyDataPoint>(inputs)
+                ExtendedCurrencyDataPoint(
+                    value = dataPoint.value,
+                    currency = getCurrency(dataPoint),
+                    quality = dataPoint.quality,
+                    comment = createComment(inputs, specs, listOf(dataPoint), sourceFrameworksByType),
+                    dataSource = dataPoint.dataSource,
+                )
+            } else {
+                val dataPoint = extractIdentityOperand<ExtendedDataPoint<Any?>>(inputs)
+                ExtendedDataPoint(
+                    value = dataPoint.value,
+                    quality = dataPoint.quality,
+                    comment = createComment(inputs, specs, listOf(dataPoint), sourceFrameworksByType),
+                    dataSource = dataPoint.dataSource,
+                )
+            }
+
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
 }
 
 /**
@@ -397,6 +301,7 @@ private fun extractNumeratorAndDenominator(
  * @param targetType the data point type assigned to the resulting data point
  * @param method the textual identifier of the conversion strategy
  * @param specs the data point type specifications used during conversion
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
  * @return the derived data point produced by the resolved strategy
  */
 fun applyTransformation(
@@ -404,4 +309,5 @@ fun applyTransformation(
     targetType: DataPointType,
     method: String,
     specs: Map<DataPointType, DataPointTypeSpecification>,
-): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType, specs)
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): UploadedDataPoint = DataPointConversion.byId(method).convert(inputs, targetType, specs, sourceFrameworksByType)

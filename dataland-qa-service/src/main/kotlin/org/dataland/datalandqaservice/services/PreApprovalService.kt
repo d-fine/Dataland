@@ -6,6 +6,7 @@ import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalCheckResults
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -59,23 +60,24 @@ class PreApprovalService(
                 datasetJudgementEntity.dataType,
             )
 
-        datasetJudgementEntity.dataPoints.forEach { dataPoint ->
-            val allQaReportsAccepted = areAllQaReportsAccepted(dataPoint)
-            val dataPointEligible = isDataPointEligible(dataPoint, datasetJudgementEntity.dataType)
-            val selectedByRandomSampling = isRandomDrawBelowSamplingProbability()
-
+        datasetJudgementEntity.dataPoints.forEach { dataPointJudgement ->
+            val allQaReportsAccepted = areAllQaReportsAccepted(dataPointJudgement)
+            val dataPointEligible = isDataPointEligible(dataPointJudgement, datasetJudgementEntity.dataType)
+            val passesRandomSampling = !isRandomDrawBelowSamplingProbability()
             val passesSignificanceCheck =
-                passesSignificanceCheck(dataPoint, datasetJudgementEntity.dataType, liveDataPoints)
+                passesSignificanceCheck(dataPointJudgement, datasetJudgementEntity.dataType, liveDataPoints)
 
-            val allChecksPass =
-                allQaReportsAccepted &&
-                    dataPointEligible &&
-                    !selectedByRandomSampling &&
-                    passesSignificanceCheck
+            dataPointJudgement.preApprovalCheckResults =
+                PreApprovalCheckResults(
+                    areAllQaReportsAccepted = allQaReportsAccepted,
+                    dataPointEligible = dataPointEligible,
+                    passesRandomSampling = passesRandomSampling,
+                    passesSignificanceCheck = passesSignificanceCheck,
+                )
 
-            if (allChecksPass) {
-                dataPoint.acceptedSource = AcceptedDataPointSource.Original
-            }
+            dataPointJudgement.preApprovalCheckResults
+                ?.takeIf { it.passes() }
+                ?.let { dataPointJudgement.acceptedSource = AcceptedDataPointSource.Original }
         }
 
         return datasetJudgementEntity

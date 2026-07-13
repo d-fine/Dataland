@@ -1,16 +1,22 @@
 import { doThingsInChunks, wrapPromiseToCypressPromise } from '@e2e/utils/Cypress';
 import { countCompaniesAndDatasetsForDataType } from '@e2e//utils/GeneralApiUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
+import { type SfdrData, DataTypeEnum } from '@clients/backend';
 import { getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { describeIf } from '@e2e/support/TestUtility';
 import { uploadAllDocuments } from '@e2e/utils/DocumentUploadUtils.ts';
-import { type PublicApiClientConstructor, uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload';
+import {
+  type PublicApiClientConstructor,
+  uploadGenericFrameworkData,
+  uploadQaReportsData,
+} from '@e2e/utils/FrameworkUpload';
 import {
   getAllPublicFrameworkIdentifiers,
   getBasePublicFrameworkDefinition,
 } from '@/frameworks/BasePublicFrameworkRegistry';
-import { type DataTypeEnum } from '@clients/backend';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
+import { type QaReportFixtureData } from '@sharedUtils/QaReportFixtures.ts';
+import { SfdrApiClient } from '@/frameworks/sfdr/ApiClient.ts';
 
 const chunkSize = 15;
 
@@ -107,6 +113,68 @@ describe(
       );
     }
 
+    /**
+     * Registers and executes an upload test suite for SFDR framework fixtures that include QA reports.
+     * Sets the `excludeBypassQaIntercept` flag before the tests and resets it afterwards,
+     * ensuring QA intercept behavior is properly applied during the upload.
+     *
+     * For each fixture entry, it uploads the company and its SFDR data (without bypassing QA),
+     * then uploads the associated QA reports. Finally, it verifies that the expected number of
+     * companies and datasets were successfully stored.
+     *
+     * @param apiClientConstructor - A constructor function for creating an SFDR API client instance.
+     * @param nameOfFixtureJson - The name of the Cypress fixture JSON file containing
+     *                            {@link QaReportFixtureData} entries for SFDR.
+     */
+    function uploadSfdrQaReportFixtures(
+      apiClientConstructor: PublicApiClientConstructor<SfdrData>,
+      nameOfFixtureJson: string
+    ): void {
+      describeIf(
+        `Upload and validate data for sfdr framework with a qa report`,
+        {
+          executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
+        },
+        () => {
+          let fixtureData: Array<QaReportFixtureData<SfdrData>> = [];
+
+          before(function () {
+            cy.fixture(nameOfFixtureJson).then(function (jsonContent) {
+              fixtureData = jsonContent as typeof fixtureData;
+            });
+            Cypress.expose('excludeBypassQaIntercept', true);
+          });
+
+          after(function () {
+            Cypress.expose('excludeBypassQaIntercept', false);
+          });
+
+          it(`Upload data for framework sfdr with qa report`, () => {
+            cy.getAdminToken().then((token) => {
+              doThingsInChunks(fixtureData, chunkSize, async (fixtureDataClosure) => {
+                const storedCompany = await getOrUploadCompanyViaApi(
+                  token,
+                  fixtureDataClosure.preparedFixture.companyInformation
+                );
+                const storedData = await uploadGenericFrameworkData(
+                  token,
+                  storedCompany.companyId,
+                  fixtureDataClosure.preparedFixture.reportingPeriod,
+                  fixtureDataClosure.preparedFixture.t,
+                  apiClientConstructor,
+                  false
+                );
+                await uploadQaReportsData(token, storedData.dataId, fixtureDataClosure.qaReports);
+              });
+            });
+          });
+          it('Checks that all the uploaded company ids and data ids can be retrieved', function () {
+            checkUploadedData(DataTypeEnum.Sfdr, fixtureData.length);
+          });
+        }
+      );
+    }
+
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllPublicFrameworkIdentifiers()) {
       const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);
@@ -116,5 +184,10 @@ describe(
         `CompanyInformationWith${dataTypeInPascalCase}Data`.replaceAll('-', '')
       );
     }
+
+    uploadSfdrQaReportFixtures(
+      (config) => new SfdrApiClient(config, undefined),
+      `SfdrCompanyAndQaReportPreparedFixtures`
+    );
   }
 );
