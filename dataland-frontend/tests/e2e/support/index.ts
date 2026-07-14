@@ -10,7 +10,8 @@ const cookieConsentValue =
 
 beforeEach(() => {
   if (Cypress.expose('EXECUTION_ENVIRONMENT') !== 'developmentLocal') {
-    cy.setCookie('CookieConsent', cookieConsentValue);
+    const appDomain = new URL(Cypress.config('baseUrl') as string).hostname;
+    cy.setCookie('CookieConsent', cookieConsentValue, { domain: appDomain });
   }
   interceptAllAndCheckFor500Errors();
   if (!Cypress.expose('excludeBypassQaIntercept')) {
