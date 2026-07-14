@@ -101,7 +101,6 @@ interface DatasetJudgementApi {
     )
     @DeleteMapping(
         value = ["/{datasetJudgementId}"],
-        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDatasetJudgement(
@@ -110,7 +109,7 @@ interface DatasetJudgementApi {
             example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
         )
         datasetJudgementId: String,
-    ): ResponseEntity<DatasetJudgementResponse>
+    ): ResponseEntity<Unit>
 
     /**
      * @param datasetId identifier used to uniquely specify the dataset
