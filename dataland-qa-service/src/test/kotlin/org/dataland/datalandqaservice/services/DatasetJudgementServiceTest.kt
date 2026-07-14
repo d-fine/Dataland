@@ -233,4 +233,14 @@ class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
         doReturn(java.util.Optional.of(datasetJudgementEntity)).whenever(datasetJudgementRepository).findById(any())
         assertThrows<ConflictApiException> { service.deleteDatasetJudgement(dummyDatasetJudgementId) }
     }
+
+    @Test
+    fun `deleteDatasetJudgement deletes dataset judgement object that is pending`() {
+        doReturn(java.util.Optional.of(datasetJudgementEntity)).whenever(datasetJudgementRepository).findById(any())
+        service.deleteDatasetJudgement(datasetJudgementEntity.dataSetJudgementId)
+
+        org.mockito.kotlin
+            .verify(datasetJudgementRepository)
+            .delete(datasetJudgementEntity)
+    }
 }

@@ -91,6 +91,8 @@ class DatasetJudgementService
                     "Dataset judgement with the id $datasetJudgementId has the state ${datasetJudgementEntity.judgementState}",
                 )
             }
+
+            datasetJudgementRepository.delete(datasetJudgementEntity)
         }
 
         /**
