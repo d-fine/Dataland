@@ -290,6 +290,12 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
+      - name: Cleanup dataland-loki files beforehand (which belong to root)
+        if: always()
+        run: sudo rm -rf ./dataland-loki/data
+      - name: Clean up runner beforehand
+        if: always()
+        uses: atos-actions/clean-self-hosted-runner@v1
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
@@ -326,6 +332,7 @@ jobs:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ci
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
@@ -363,9 +370,12 @@ jobs:
       - name: Stop Docker containers
         if: always()
         run: docker compose --project-name dala-e2e-test --profile testing down
-      - name: Cleanup dataland-loki files
+      - name: Cleanup dataland-loki files afterwards (which belong to root)
         if: always()
-        run: ls && pwd && sudo rm -rf ./dataland-loki/data
+        run: sudo rm -rf ./dataland-loki/data
+      - name: Clean up runner afterwards
+        if: always()
+        uses: atos-actions/clean-self-hosted-runner@v1
 
   sonar:
     runs-on: ubuntu-latest
