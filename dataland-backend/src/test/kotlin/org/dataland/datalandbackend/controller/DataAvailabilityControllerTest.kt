@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
@@ -91,8 +93,12 @@ class DataAvailabilityControllerTest(
 
     @Test
     fun `filterViewableDimensions with empty list returns 400 error`() {
-        whenever(dataAvailabilityChecker.filterViewableDimensions(eq(emptyList<BasicDataDimensions>())))
-            .doReturn(emptyList())
+        doThrow(
+            InvalidInputApiException(
+                "Empty list of dimensions is not allowed.",
+                "The list of dimensions to filter cannot be empty.",
+            ),
+        ).whenever(dataAvailabilityChecker).filterViewableDimensions(eq(emptyList<BasicDataDimensions>()))
 
         mockMvc
             .perform(
@@ -164,9 +170,12 @@ class DataAvailabilityControllerTest(
 
     @Test
     fun `searchViewableDimensions returns 400 when the search filter is empty`() {
-        whenever(
-            dataAvailabilityChecker.searchViewableDimensions(any<DataDimensionQuery>()),
-        ).doReturn(listOf(exampleDimension))
+        doThrow(
+            InvalidInputApiException(
+                "Empty search filter is not allowed.",
+                "At least one of the fields must be provided and not empty.",
+            ),
+        ).whenever(dataAvailabilityChecker).searchViewableDimensions(any<DataDimensionQuery>())
 
         mockMvc
             .perform(
