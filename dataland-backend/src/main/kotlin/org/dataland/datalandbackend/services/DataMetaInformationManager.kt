@@ -128,7 +128,7 @@ class DataMetaInformationManager(
      * @return list of matching active DataMetaInformationEntity objects
      */
     @Transactional(readOnly = true)
-    fun getActiveDataMetaInformationList(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformationEntity> {
+    fun getActiveDataMetaInformation(dataDimensions: List<BasicDatasetDimensions>): List<DataMetaInformationEntity> {
         if (dataDimensions.isEmpty()) return emptyList()
         val jsonPayload =
             defaultObjectMapper.writeValueAsString(
@@ -151,7 +151,7 @@ class DataMetaInformationManager(
      * @return [List] of [DataMetaInformationEntity] for active datasets matching the filters
      */
     @Transactional(readOnly = true)
-    fun getActiveDataMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> =
+    fun getActiveDataMetaInformation(dataDimensionQuery: DataDimensionQuery): List<DataMetaInformationEntity> =
         if (dataDimensionQuery.isEmpty()) {
             emptyList()
         } else {

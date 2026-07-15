@@ -72,7 +72,7 @@ class DataMetaInformationManagerFilterTest(
             )
         val combinedSingleFilters =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(
                         companyIds = listOf(storedCompanies[0].companyId),
                         dataTypes = listOf(defaultDataType.toString()),
@@ -83,7 +83,7 @@ class DataMetaInformationManagerFilterTest(
 
         val combinedMultipleFilters =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(
                         companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
                         dataTypes = listOf(defaultDataType.toString(), singleDataType),
@@ -96,7 +96,7 @@ class DataMetaInformationManagerFilterTest(
     @Test
     fun `empty filter returns no active datasets`() {
         addMetainformation()
-        val result = dataMetaInformationManager.getActiveDataMetaInformationList(DataDimensionQuery())
+        val result = dataMetaInformationManager.getActiveDataMetaInformation(DataDimensionQuery())
         assertTrue(result.isEmpty())
     }
 
@@ -104,7 +104,7 @@ class DataMetaInformationManagerFilterTest(
     fun `filter with all empty lists returns no active datasets`() {
         addMetainformation()
         val result =
-            dataMetaInformationManager.getActiveDataMetaInformationList(
+            dataMetaInformationManager.getActiveDataMetaInformation(
                 DataDimensionQuery(
                     companyIds = emptyList(),
                     dataTypes = emptyList(),
@@ -122,7 +122,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation(company = companies[1])
         val result =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(companyIds = listOf(companies[0].companyId)),
                 ).map { it.toBasicDataDimensions() }
         assertEquals(2, result.size)
@@ -138,12 +138,12 @@ class DataMetaInformationManagerFilterTest(
         val companyIds = listOf(companies[0].companyId)
         val resultWithDefaults =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(companyIds = companyIds),
                 ).map { it.toBasicDataDimensions() }
         val resultWithEmptyList =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(
                         companyIds = companyIds,
                         dataTypes = emptyList(),
@@ -160,7 +160,7 @@ class DataMetaInformationManagerFilterTest(
         val company = addCompanyToDatabase(1).first()
         addMetainformation(company = company, reportingPeriod = "2023")
         val result =
-            dataMetaInformationManager.getActiveDataMetaInformationList(
+            dataMetaInformationManager.getActiveDataMetaInformation(
                 DataDimensionQuery(
                     companyIds = listOf(company.companyId),
                     reportingPeriods = listOf("2024"),
@@ -176,7 +176,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation(company = company, currentlyActive = false)
         addMetainformation(company = company, currentlyActive = null)
         val result =
-            dataMetaInformationManager.getActiveDataMetaInformationList(
+            dataMetaInformationManager.getActiveDataMetaInformation(
                 DataDimensionQuery(companyIds = listOf(company.companyId)),
             )
         assertEquals(1, result.size)
@@ -194,7 +194,7 @@ class DataMetaInformationManagerFilterTest(
         addMetainformation(company = companyB, dataType = "lksg", reportingPeriod = "2022")
         val result =
             dataMetaInformationManager
-                .getActiveDataMetaInformationList(
+                .getActiveDataMetaInformation(
                     DataDimensionQuery(
                         companyIds = listOf(companyA.companyId, companyB.companyId),
                         dataTypes = listOf(defaultDataType.toString(), "lksg"),

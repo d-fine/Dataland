@@ -271,7 +271,7 @@ class DataManager
         ): Map<BasicDatasetDimensions, String> =
             dataDimensionsSet
                 .associateWith {
-                    metaDataManager.getActiveDataMetaInformationList(listOf(it)).firstOrNull()?.let { dataMetaInformationEntity ->
+                    metaDataManager.getActiveDataMetaInformation(listOf(it)).firstOrNull()?.let { dataMetaInformationEntity ->
                         getPublicDataset(dataMetaInformationEntity.dataId, DataType.valueOf(it.framework), correlationId).data
                     } ?: ""
                 }.filterNot { it.value.isEmpty() }

@@ -38,7 +38,7 @@ class DataAvailabilityChecker
          * @return List of DataMetaInformationEntity objects that match the provided data dimensions.
          */
         private fun getMetaDataOfActiveDatasets(dataDimensions: List<DataDimensions>): List<DataMetaInformationEntity> =
-            dataMetaInformationManager.getActiveDataMetaInformationList(
+            dataMetaInformationManager.getActiveDataMetaInformation(
                 dataCompositionService.filterOutInvalidDatasetDimensions(
                     dataDimensions.map { BasicDataDimensions(it.companyId, it.dataType, it.reportingPeriod) },
                 ),
@@ -64,7 +64,7 @@ class DataAvailabilityChecker
                 return emptyList()
             }
 
-            return dataMetaInformationManager.getActiveDataMetaInformationList(filteredForValidDataDimensionQuery)
+            return dataMetaInformationManager.getActiveDataMetaInformation(filteredForValidDataDimensionQuery)
         }
 
         /**
