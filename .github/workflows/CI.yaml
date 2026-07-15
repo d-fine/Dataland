@@ -290,12 +290,13 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - name: Cleanup dataland-loki files beforehand (which belong to root)
+      - name: Cleanup runner
         if: always()
-        run: sudo rm -rf ./dataland-loki/data
-      - name: Clean up runner beforehand
-        if: always()
-        uses: atos-actions/clean-self-hosted-runner@v1
+        run: |
+          docker compose --project-name dala-e2e-test --profile testing down
+          sudo rm -rf ./dataland-loki/data
+          atos-actions/clean-self-hosted-runner@v1
+          docker system prune -af
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
@@ -367,9 +368,7 @@ jobs:
       - name: Cleanup Docker credentials
         if: always()
         run: rm -rf /tmp/docker-config-${{ github.run_id }}
-      - name: Stop Docker containers
-        if: always()
-        run: docker compose --project-name dala-e2e-test --profile testing down
+
       - name: Cleanup dataland-loki files afterwards (which belong to root)
         if: always()
         run: sudo rm -rf ./dataland-loki/data
