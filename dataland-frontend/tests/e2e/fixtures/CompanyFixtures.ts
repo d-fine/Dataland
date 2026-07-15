@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import { type CompanyInformation } from '@clients/backend';
 import { valueOrNull } from '@e2e/utils/FakeFixtureUtils';
 import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement, generateArray } from '@e2e/fixtures/FixtureUtils';
-import { generateIso2CountryCode } from '@e2e/fixtures/common/CountryFixtures.ts';
 
 const legalForms = [
   'Public Limited Company (PLC)',
@@ -42,7 +41,7 @@ export function generateCompanyInformation(): CompanyInformation {
     headquartersPostalCode: valueOrNull(faker.location.zipCode()),
     sector: valueOrNull(faker.company.buzzNoun()),
     identifiers: getRandomIdentifiers(),
-    countryCode: generateIso2CountryCode(),
+    countryCode: faker.location.countryCode(),
     companyContactDetails: valueOrNull(generateArray(() => faker.internet.email({ provider: 'example.com' }), 0)),
     companyAlternativeNames: Array.from({ length: faker.number.int({ min: 0, max: 4 }) }, () => {
       return faker.company.name();
