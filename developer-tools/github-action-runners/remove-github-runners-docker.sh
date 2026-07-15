@@ -3,38 +3,52 @@
 # Use arrow keys to navigate, space to toggle selection, enter to confirm.
 #
 # Usage:
-#   ./remove-github-runners-docker.sh [--label <label>]
+#   ./remove-github-runners-docker.sh --token <removal-token> [--label <label>]
 #
 # Arguments:
+#   --token   Runner removal token (obtain from: Settings → Actions → Runners → select runner → Remove)
+#             A single token is valid for all removals within its expiry window.
 #   --label   Label/name-prefix used to identify runner containers to remove
 #             (default: dala-ci-runner). Matches container names starting with this prefix.
 #
-# Each selected runner is stopped via systemd (which sends SIGTERM to the container,
-# triggering clean GitHub deregistration inside entrypoint.sh), its systemd unit is
-# removed, and the container itself is removed.
+# Each selected runner is unregistered from GitHub explicitly (via `docker exec` running
+# config.sh remove --token <removal-token> inside the container). The container is only
+# stopped and removed if the unregistration was verified successful.
 #
 # Requires: docker, systemd, sudo.
 
 set -euo pipefail
 
 LABEL="dala-ci-runner"
+TOKEN=""
+RUNNER_DIR="/home/runner/actions-runner"
 
 # ---------------------------------------------------------------------------
 # Argument parsing
 # ---------------------------------------------------------------------------
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --token)
+      TOKEN="$2"
+      shift 2
+      ;;
     --label)
       LABEL="$2"
       shift 2
       ;;
     *)
       echo "Unknown argument: $1"
-      echo "Usage: $0 [--label <label>]"
+      echo "Usage: $0 --token <removal-token> [--label <label>]"
       exit 1
       ;;
   esac
 done
+
+if [[ -z "$TOKEN" ]]; then
+  echo "Error: --token is required."
+  echo "Usage: $0 --token <removal-token> [--label <label>]"
+  exit 1
+fi
 
 if ! command -v docker > /dev/null 2>&1; then
   echo "Error: docker is required on the host but was not found."
@@ -194,8 +208,37 @@ for RUNNER_NAME in "${SELECTED_NAMES[@]}"; do
   echo ""
   echo "=== Removing runner: $RUNNER_NAME ==="
 
-  # Stop via systemd so that `docker stop` sends SIGTERM to the container,
-  # allowing entrypoint.sh to unregister from GitHub cleanly.
+  # ---------------------------------------------------------------------
+  # Unregister from GitHub explicitly, using the supplied removal token,
+  # before touching the container/service. This is more reliable than
+  # relying on entrypoint.sh's SIGTERM trap, whose stored RUNNER_TOKEN
+  # (the original registration token) may have already expired.
+  # ---------------------------------------------------------------------
+  UNREGISTERED=0
+  IS_RUNNING=$(docker inspect -f '{{.State.Running}}' "$RUNNER_NAME" 2>/dev/null || echo "false")
+
+  if [[ "$IS_RUNNING" == "true" ]]; then
+    echo "  Unregistering runner from GitHub..."
+    if docker exec -u runner "$RUNNER_NAME" "$RUNNER_DIR/config.sh" remove --token "$TOKEN"; then
+      echo "  Unregistered successfully."
+      UNREGISTERED=1
+    else
+      echo "  Error: GitHub unregistration failed for $RUNNER_NAME. Skipping removal."
+      FAILED+=("$RUNNER_NAME")
+      continue
+    fi
+  else
+    echo "  Container is not running; assuming already unregistered from GitHub."
+    UNREGISTERED=1
+  fi
+
+  if [[ "$UNREGISTERED" -ne 1 ]]; then
+    echo "  Error: could not verify unregistration for $RUNNER_NAME. Skipping removal."
+    FAILED+=("$RUNNER_NAME")
+    continue
+  fi
+
+  # Stop via systemd so that `docker stop` sends SIGTERM to the container.
   if [[ -f "$SERVICE_PATH" ]]; then
     echo "  Stopping and disabling service: $SERVICE_NAME"
     sudo systemctl stop "$SERVICE_NAME" 2>/dev/null \
