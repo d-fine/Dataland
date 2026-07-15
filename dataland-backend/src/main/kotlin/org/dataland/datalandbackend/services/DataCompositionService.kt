@@ -144,7 +144,7 @@ class DataCompositionService
          * @param filteredQuery the query after invalid entries were removed
          * @return true if any non-empty original dimension became empty after filtering
          */
-        public fun checkIfFilteringForValidFiltersCausedEmptyDataDimensionQuery(
+        fun checkIfFilteringForValidFiltersCausedEmptyDataDimensionQuery(
             originalQuery: DataDimensionQuery,
             filteredQuery: DataDimensionQuery,
         ): Boolean {

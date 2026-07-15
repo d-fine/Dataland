@@ -104,7 +104,7 @@ class DataMetaInformationManager(
      * @returns the data meta information uploaded by the specified user
      */
     @Transactional(readOnly = true)
-    fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? =
+    fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets> =
         dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
