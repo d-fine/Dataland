@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoWhistleblowerProtectionPolicy",
   "name" : "Whistleblower Protection Policy",
-  "businessDefinition" : "Does the company have a policy on the protection of whistleblowers? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.) If yes, please share the policy with us.",
+  "businessDefinition" : "Existence of a policy on the protection of whistleblowers. See also Regulation (EU) 2022/1288, Annex I, top (26).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 6",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

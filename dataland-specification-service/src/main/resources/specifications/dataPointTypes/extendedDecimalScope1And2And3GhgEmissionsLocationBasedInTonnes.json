@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope1And2And3GhgEmissionsLocationBasedInTonnes",
   "name" : "Scope 1 and 2 and 3 GHG emissions (location-based)",
-  "businessDefinition" : "Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).",
+  "businessDefinition" : "Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

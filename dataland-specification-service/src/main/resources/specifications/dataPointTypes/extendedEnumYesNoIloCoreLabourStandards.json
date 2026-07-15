@@ -1,13 +1,9 @@
 {
-  "id": "extendedEnumYesNoIloCoreLabourStandards",
-  "name": "ILO Core Labour Standards",
-  "businessDefinition": "Abidance by the ILO Core Labour Standards.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14",
-  "dataPointBaseTypeId": "extendedEnumYesNo",
-  "frameworkOwnership": [
-    "eutaxonomy-non-financials",
-    "eutaxonomy-non-financials-2026-73",
-    "sfdr"
-  ],
-  "constraints": null,
-  "calculationRules": []
+  "id" : "extendedEnumYesNoIloCoreLabourStandards",
+  "name" : "ILO Core Labour Standards",
+  "businessDefinition" : "Abidance by the ILO Core Labour Standards.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73", "sfdr" ],
+  "constraints" : null,
+  "calculationRules" : [ ]
 }

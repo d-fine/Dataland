@@ -1,7 +1,7 @@
 {
   "id" : "extendedIntegerMaleBoardMembersBoardOfDirectors",
   "name" : "Male Board Members - Board of Directors",
-  "businessDefinition" : "Number of males on the board of directors of the company",
+  "businessDefinition" : "Number of males on the board of directors of the company\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13",
   "dataPointBaseTypeId" : "extendedInteger",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ],

@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope3DownstreamGhgEmissionsInTonnes",
-  "name" : "Scope 3 downstream GHG emissions ",
-  "businessDefinition" : "Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).",
+  "name" : "Scope 3 downstream GHG emissions",
+  "businessDefinition" : "Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

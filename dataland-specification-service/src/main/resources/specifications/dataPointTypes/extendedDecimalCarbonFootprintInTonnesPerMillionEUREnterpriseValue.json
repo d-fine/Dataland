@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue",
   "name" : "Carbon footprint",
-  "businessDefinition" : "Tonnes of GHG emissions per million EUR enterprise value.",
+  "businessDefinition" : "Tons of GHG emissions per million EUR enterprise value. See also (EU) 2022/1288 Annex I formula (2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 2",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

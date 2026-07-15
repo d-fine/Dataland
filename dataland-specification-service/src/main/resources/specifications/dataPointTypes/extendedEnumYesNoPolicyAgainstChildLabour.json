@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoPolicyAgainstChildLabour",
   "name" : "Policy against Child Labour",
-  "businessDefinition" : "Does the company have policies in place to abolish all forms of child labour? If yes, please share the policy with us.",
+  "businessDefinition" : "Existence of policies in place to abolish all forms of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

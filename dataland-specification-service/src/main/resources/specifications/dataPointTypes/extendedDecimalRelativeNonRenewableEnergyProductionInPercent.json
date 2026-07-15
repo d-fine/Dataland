@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalRelativeNonRenewableEnergyProductionInPercent",
   "name" : "Relative Non-Renewable Energy Production",
-  "businessDefinition" : "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).",
+  "businessDefinition" : "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable). See also Regulation (EU) 2022/1288, Annex I, top (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ],

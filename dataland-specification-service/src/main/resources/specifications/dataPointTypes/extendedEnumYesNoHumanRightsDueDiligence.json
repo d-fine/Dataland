@@ -1,13 +1,9 @@
 {
-  "id": "extendedEnumYesNoHumanRightsDueDiligence",
-  "name": "Human Rights Due Diligence",
-  "businessDefinition": "Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10",
-  "dataPointBaseTypeId": "extendedEnumYesNo",
-  "frameworkOwnership": [
-    "eutaxonomy-non-financials",
-    "eutaxonomy-non-financials-2026-73",
-    "sfdr"
-  ],
-  "constraints": null,
-  "calculationRules": []
+  "id" : "extendedEnumYesNoHumanRightsDueDiligence",
+  "name" : "Human Rights Due Diligence",
+  "businessDefinition" : "Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73", "sfdr" ],
+  "constraints" : null,
+  "calculationRules" : [ ]
 }
