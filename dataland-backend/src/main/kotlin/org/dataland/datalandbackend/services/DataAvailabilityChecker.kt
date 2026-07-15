@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.interfaces.DatasetDimensions
@@ -111,6 +112,7 @@ class DataAvailabilityChecker
          * @return The subset of the input dimensions for which active data exists
          */
         fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
+            requireNonEmptyInput(dimensions.isEmpty())
             val dataPointBasedDimensions =
                 getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions =
@@ -131,6 +133,7 @@ class DataAvailabilityChecker
          * @return All active data dimensions matching the filter criteria
          */
         fun searchViewableDimensions(dataDimensionQuery: DataDimensionQuery): List<BasicDataDimensions> {
+            requireNonEmptyInput(dataDimensionQuery.isEmpty())
             val dataPointBasedDimensions =
                 getMetaDataOfActiveDataPoints(dataDimensionQuery).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions = getAllViewableDimensionsForNonAssembledFrameworks(dataDimensionQuery)
@@ -358,4 +361,18 @@ class DataAvailabilityChecker
                         BasicBaseDimensions(it.key, dataPointMetaInfos.first().reportingPeriod) to dataPointMetaInfos
                     }
                 }.toMap()
+
+        /**
+         * Validates that the input is not empty and throws an exception if it is.
+         *
+         * @param isEmpty A boolean indicating whether the input is empty or not.
+         * Throws `InvalidInputApiException` if the value is true, signaling that the input is invalid.
+         */
+        private fun requireNonEmptyInput(isEmpty: Boolean) {
+            if (isEmpty) {
+                throw InvalidInputApiException(
+                    "This search request must not be empty!", "At least one of the fields must be provided and not empty.",
+                )
+            }
+        }
     }
