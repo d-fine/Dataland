@@ -5,7 +5,6 @@ import {
   interceptAllDataPostsAndBypassQaIfPossible,
 } from '@e2e/utils/GeneralApiUtils';
 
-
 beforeEach(() => {
   interceptAllAndCheckFor500Errors();
   if (!Cypress.expose('excludeBypassQaIntercept')) {
