@@ -81,10 +81,12 @@ class DataCompositionService
                 .toList()
 
         /**
-         * Filters out invalid entries from the filter by checking if company IDs, frameworks, and reporting periods are valid.
+         * Filters out invalid dataset entries from the provided data dimension query.
          *
-         * @param dataDimensionQuery the filter to remove invalid data from
-         * @return a new filter without any invalid entries
+         * Keeps only valid company IDs, valid reporting periods, and data types that are known frameworks.
+         *
+         * @param dataDimensionQuery the dataset dimension query to filter
+         * @return a filtered [DataDimensionQuery] containing only valid entries
          */
         fun filterOutInvalidDatasetEntries(dataDimensionQuery: DataDimensionQuery) =
             filterDimensionQuery(dataDimensionQuery) { specificationService.isFramework(it) }
@@ -102,10 +104,12 @@ class DataCompositionService
             }
 
         /**
-         * Filters out invalid entries from the filter by checking if company IDs, data point types, and reporting periods are valid.
+         * Filters out invalid data point entries from the provided data dimension query.
+         * A data point entry is considered valid if it meets the specification criteria defined
+         * by the `isDataPointType` method in the `specificationService`.
          *
-         * @param dataDimensionQuery the filter to remove invalid data from
-         * @return a new filter without any invalid entries
+         * @param dataDimensionQuery The data dimension query containing entries to be filtered.
+         * @return A filtered [DataDimensionQuery] containing only valid entries.
          */
         fun filterOutInvalidDataPointEntries(dataDimensionQuery: DataDimensionQuery) =
             filterDimensionQuery(dataDimensionQuery) { specificationService.isDataPointType(it) }
