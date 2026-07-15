@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataBaseCreationUtils
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -15,6 +16,7 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.doReturn
@@ -75,9 +77,10 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     }
 
     @Test
-    fun `filterViewableDimensions with list - empty input returns empty result`() {
-        val results = dataAvailabilityChecker.filterViewableDimensions(emptyList())
-        assert(results.isEmpty()) { "Empty input should return empty result." }
+    fun `filterViewableDimensions with list - empty throws an InvalidInputApiException`() {
+        assertThrows<InvalidInputApiException> {
+            dataAvailabilityChecker.filterViewableDimensions(emptyList())
+        }
     }
 
     @Test
