@@ -293,7 +293,7 @@ jobs:
       - name: Cleanup runner
         if: always()
         run: |
-          docker compose --project-name dala-e2e-test --profile testing down
+          docker compose --project-name dala-e2e-test --profile testing down -v
           sudo rm -rf ./dataland-loki/data
           docker system prune -af
           rm -rf /tmp/docker-config-${{ github.run_id }}
