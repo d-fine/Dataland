@@ -1,0 +1,47 @@
+[
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-financials",
+		"reportingPeriod": "2015"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-financials",
+		"reportingPeriod": "2016"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-non-financials",
+		"reportingPeriod": "2017"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-non-financials",
+		"reportingPeriod": "2018"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-non-financials",
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "eutaxonomy-non-financials",
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "lksg",
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "lksg",
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyId": "5508d486-cdd0-4b3f-a54e-ea4c478e165a",
+		"dataType": "sfdr",
+		"reportingPeriod": "2023"
+	}
+]

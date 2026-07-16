@@ -126,6 +126,7 @@ describeIf(
     const nameOfCompanyAlpha = 'company-alpha-with-three-different-framework-types-' + uniqueCompanyMarker;
     const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+      humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials202673),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
       'Documents',

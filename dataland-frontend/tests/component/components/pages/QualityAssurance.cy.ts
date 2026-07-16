@@ -495,7 +495,13 @@ describe('Component tests for the Quality Assurance page', () => {
     );
 
     cy.intercept(`**/community/requests/user`, {});
-    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
+    cy.intercept('POST', '**/api/data-availability/viewable-dimensions/search', [
+      {
+        companyId: mockDataMetaInfoForActiveDataset.companyId,
+        dataType: mockDataMetaInfoForActiveDataset.dataType,
+        reportingPeriod: mockDataMetaInfoForActiveDataset.reportingPeriod,
+      },
+    ]);
     cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, LksgFixture.companyInformation);
     cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
     cy.intercept(`**/api/data/${DataTypeEnum.Lksg}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedLksgData).as(

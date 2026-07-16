@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
@@ -17,8 +18,8 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.utils.CompanyIdentifierUtils
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.slf4j.LoggerFactory
@@ -43,7 +44,7 @@ class CompanyDataController
         private val companyQueryManager: CompanyQueryManager,
         private val companyIdentifierManager: CompanyIdentifierManager,
         private val companyBaseManager: CompanyBaseManager,
-        private val dataPointUtils: DataPointUtils,
+        private val dataAvailabilityChecker: DataAvailabilityChecker,
     ) : CompanyApi {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -192,17 +193,33 @@ class CompanyDataController
 
         override fun getTeaserCompanies(): List<String> = companyQueryManager.getTeaserCompanyIds()
 
-        override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
-            ResponseEntity.ok(
-                DataType.values.associateWith {
+        override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
+            val dataTypes = DataType.values.toList()
+
+            val dimensions =
+                dataAvailabilityChecker.searchViewableDimensions(
+                    DataDimensionQuery(companyIds = listOf(companyId), dataTypes = dataTypes.map { it.toString() }),
+                )
+
+            val countByDataType =
+                dimensions
+                    .groupBy { DataType.valueOf(it.dataType) }
+                    .mapValues { (_, dimensionsForType) ->
+                        dimensionsForType
+                            .map { it.reportingPeriod }
+                            .toSet()
+                            .size
+                            .toLong()
+                    }
+
+            return ResponseEntity.ok(
+                dataTypes.associateWith { dataType ->
                     AggregatedFrameworkDataSummary(
-                        (
-                            companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                                dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
-                        ).size.toLong(),
+                        countByDataType[dataType] ?: 0L,
                     )
                 },
             )
+        }
 
         override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> =
             ResponseEntity.ok(

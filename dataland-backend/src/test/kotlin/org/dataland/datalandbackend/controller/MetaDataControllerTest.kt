@@ -3,31 +3,22 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
-import org.dataland.datalandbackend.model.DataDimensionFilter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.SpecificationService
-import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
-import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
-import org.dataland.specificationservice.openApiClient.model.IdWithRef
-import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -35,26 +26,28 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 import kotlin.random.Random
 
-@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @Transactional
+@Rollback
 internal class MetaDataControllerTest
     @Suppress("LongParameterList")
     @Autowired
@@ -62,11 +55,17 @@ internal class MetaDataControllerTest
         private val objectMapper: ObjectMapper,
         private val companyManager: CompanyAlterationManager,
         private val dataMetaInformationManager: DataMetaInformationManager,
-        private val dataPointMetaInformationManager: DataPointMetaInformationManager,
         private val metaDataController: MetaDataController,
-        private val specificationService: SpecificationService,
         @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
     ) {
+        companion object {
+            @DynamicPropertySource
+            @JvmStatic
+            fun configureProperties(registry: DynamicPropertyRegistry) {
+                TestPostgresContainer.configureProperties(registry)
+            }
+        }
+
         private lateinit var testCompanyInformation: CompanyInformation
         private lateinit var storedCompany: StoredCompanyEntity
         private val adminUserId = "admin-user-id"
@@ -74,7 +73,6 @@ internal class MetaDataControllerTest
         private val uploaderUserId = "uploader-user-id"
         private val defaultReportingPeriod = "2023"
         private val defaultDataType = DataType.of(SfdrData::class.java)
-        private val defaultDataPointType = "default-data-point-type"
 
         val testDataProvider = TestDataProvider(objectMapper)
         private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
@@ -87,6 +85,7 @@ internal class MetaDataControllerTest
 
         @BeforeEach
         fun setup() {
+            whenever(specificationClient.listFrameworkSpecifications()).thenReturn(emptyList())
             testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
             storedCompany = companyManager.addCompany(testCompanyInformation)
             mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
@@ -104,7 +103,7 @@ internal class MetaDataControllerTest
                     ),
                 )
             mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
-            assertMetaDataNotVisible(metaInfo)
+            assertMetaDataAccessDenied(metaInfo)
             mockSecurityContext(userId = uploaderUserId, roles = expectedSetOfRolesForUploader)
             assertMetaDataVisible(metaInfo)
             mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
@@ -124,7 +123,7 @@ internal class MetaDataControllerTest
                     ),
                 )
             mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
-            assertMetaDataNotVisible(metaInfo)
+            assertMetaDataAccessDenied(metaInfo)
             mockSecurityContext(userId = "uploader-user-id-of-rejected-dataset", roles = expectedSetOfRolesForUploader)
             assertMetaDataVisible(metaInfo)
             mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
@@ -190,161 +189,10 @@ internal class MetaDataControllerTest
             assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, emptyDataMetaInformationPatch)
         }
 
-        @Test
-        fun `check that the active data endpoint works as expected for basic dataset related searches`() {
-            doReturn(emptyList<String>()).whenever(specificationClient).listFrameworkSpecifications()
-            val nonDefaultReportingPeriod = "2022"
-            val nonDefaultDataType = "lksg"
-            addMetainformation(reportingPeriod = nonDefaultReportingPeriod)
-            addMetainformation(dataType = nonDefaultDataType)
-            val allDimensions =
-                listOf(
-                    BasicDataDimensions(
-                        companyId = storedCompany.companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = nonDefaultReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompany.companyId,
-                        dataType = nonDefaultDataType,
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                )
-
-            assertThrows<InvalidInputApiException> { metaDataController.getAvailableDataDimensions() }
-
-            val noMatchesExpected = metaDataController.getAvailableDataDimensions(listOf("dummy"), listOf("dummy"), listOf("dummy")).body
-            assertTrue(noMatchesExpected.isNullOrEmpty())
-
-            val allMatchesExpected = metaDataController.getAvailableDataDimensions(listOf(storedCompany.companyId), null, null).body
-            assertTrue(allMatchesExpected == allDimensions)
-
-            val filterForYear =
-                dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(DataDimensionFilter(reportingPeriods = listOf(nonDefaultReportingPeriod)))
-            assertTrue(filterForYear.first() == allDimensions.first())
-
-            val filterForCompanyId =
-                dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(DataDimensionFilter(companyIds = listOf(storedCompany.companyId)))
-            assertTrue(filterForCompanyId == allDimensions)
-
-            val filterForType =
-                dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(DataDimensionFilter(dataTypes = listOf(nonDefaultDataType)))
-            assertTrue(filterForType.first() == allDimensions.last())
-        }
-
-        @Test
-        fun `check that the resulting data dimensions are as expected when retrieving active datasets`() {
-            val singleReportingPeriod = "2020"
-            val singleDataType = "lksg"
-            val storedCompanies = addCompanyToDatabase(3)
-            addMetainformation(company = storedCompanies[0], reportingPeriod = singleReportingPeriod)
-            addMetainformation(company = storedCompanies[1])
-            addMetainformation(company = storedCompanies[2])
-            addMetainformation(company = storedCompanies[0], currentlyActive = null, qaStatus = QaStatus.Rejected)
-            addMetainformation(company = storedCompanies[0], dataType = singleDataType)
-            val expectedDimensions =
-                listOf(
-                    BasicDataDimensions(
-                        companyId = storedCompanies[0].companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = singleReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompanies[1].companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompanies[0].companyId,
-                        dataType = singleDataType,
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                )
-            val combinedSingleFilters =
-                dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(
-                        DataDimensionFilter(
-                            companyIds = listOf(storedCompanies[0].companyId),
-                            dataTypes = listOf(defaultDataType.toString()),
-                            reportingPeriods = listOf(singleReportingPeriod),
-                        ),
-                    )
-            assertTrue(combinedSingleFilters.first() == expectedDimensions.first())
-
-            val combinedMultipleFilters =
-                dataMetaInformationManager
-                    .getActiveDataDimensionsFromDatasets(
-                        DataDimensionFilter(
-                            companyIds = listOf(storedCompanies[0].companyId, storedCompanies[1].companyId),
-                            dataTypes = listOf(defaultDataType.toString(), singleDataType),
-                            reportingPeriods = listOf(singleReportingPeriod, defaultReportingPeriod),
-                        ),
-                    )
-            assertTrue(combinedMultipleFilters == expectedDimensions)
-        }
-
-        @Test
-        fun `check that data dimensions with datasets and datapoints are retrieved correctly`() {
-            val testFramework = "test-framework"
-            val testSpecification = SimpleFrameworkSpecification(framework = IdWithRef(id = testFramework, ref = "dummy"), name = "Test")
-            doReturn(listOf(testSpecification)).whenever(specificationClient).listFrameworkSpecifications()
-            doReturn(
-                mock<FrameworkSpecification> {
-                    on { schema } doReturn
-                        "{\"category\":{\"subcategory\":{\"fieldName\":{\"id\":\"$defaultDataPointType\",\"ref\":\"dummy\"}}}}"
-                },
-            ).whenever(specificationClient).getFrameworkSpecification(testFramework)
-            specificationService.initiateSpecifications(null)
-            doAnswer { invocation ->
-                val dataPointType = invocation.getArgument<String>(0)
-                if (dataPointType == testFramework || dataPointType in DataType.values.map { it.toString() }) {
-                    throw ClientException()
-                }
-                DataPointTypeSpecification(
-                    dataPointType = IdWithRef(id = dataPointType, ref = "dummy"),
-                    name = dataPointType,
-                    businessDefinition = "",
-                    dataPointBaseType = IdWithRef(id = "extendedString", ref = ""),
-                    usedBy = emptyList(),
-                    calculationRules = emptyList(),
-                )
-            }.whenever(specificationClient).getDataPointTypeSpecification(any())
-            addMetainformation()
-            addDataPointMetainformation()
-            val allDimensions =
-                listOf(
-                    BasicDataDimensions(
-                        companyId = storedCompany.companyId,
-                        dataType = defaultDataType.toString(),
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompany.companyId,
-                        dataType = defaultDataPointType,
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                    BasicDataDimensions(
-                        companyId = storedCompany.companyId,
-                        dataType = testFramework,
-                        reportingPeriod = defaultReportingPeriod,
-                    ),
-                )
-
-            val retrievedMetaData = metaDataController.getAvailableDataDimensions(listOf(storedCompany.companyId), null, null).body
-            assertEquals(allDimensions, retrievedMetaData)
-
-            val testFrameworkExpected = metaDataController.getAvailableDataDimensions(null, listOf(testFramework), null).body
-            assertTrue(testFrameworkExpected == listOf(allDimensions.last()))
-        }
-
         private fun addCompanyToDatabase(numberOfCompanies: Int): List<StoredCompanyEntity> {
             val storedCompanies = mutableListOf<StoredCompanyEntity>()
             testDataProvider.getCompanyInformationWithoutIdentifiers(numberOfCompanies).forEach {
-                storedCompanies
-                    .add(companyManager.addCompany(it))
+                storedCompanies.add(companyManager.addCompany(it))
             }
             return storedCompanies
         }
@@ -373,20 +221,6 @@ internal class MetaDataControllerTest
                 ),
             )
 
-        private fun addDataPointMetainformation(): DataPointMetaInformationEntity =
-            dataPointMetaInformationManager.storeDataPointMetaInformation(
-                DataPointMetaInformationEntity(
-                    dataPointId = UUID.randomUUID().toString(),
-                    companyId = storedCompany.companyId,
-                    dataPointType = defaultDataPointType,
-                    reportingPeriod = defaultReportingPeriod,
-                    uploaderUserId = uploaderUserId,
-                    uploadTime = Random.nextLong(),
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                ),
-            )
-
         private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
             val allMetaInformation =
                 metaDataController
@@ -407,6 +241,18 @@ internal class MetaDataControllerTest
                         showOnlyActive = false,
                     ).body!!
             assertFalse(allMetaInformation.any { it.dataId == metaInfo.dataId })
+            assertThrows<AccessDeniedException> {
+                metaDataController.getDataMetaInfo(metaInfo.dataId)
+            }
+        }
+
+        private fun assertMetaDataAccessDenied(metaInfo: DataMetaInformationEntity) {
+            assertThrows<AccessDeniedException> {
+                metaDataController.getListOfDataMetaInfo(
+                    companyId = metaInfo.company.companyId,
+                    showOnlyActive = false,
+                )
+            }
             assertThrows<AccessDeniedException> {
                 metaDataController.getDataMetaInfo(metaInfo.dataId)
             }

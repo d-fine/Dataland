@@ -2082,13 +2082,13 @@
           },
           "resourceId": {
             "type": "string",
-            "description": "A unique identifier of a resource on Dataland. In case of newly created or duplicate open requests, it identifies the newly created or original open request. In case of a request for an already existing dataset, it identifies that dataset.",
-            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "description": "Identifier of the referenced resource. For data requests, this is the data request ID. For already existing datasets, this is a composite identifier consisting of company ID, framework, and reporting period in the format \u0027{companyId}/{framework}/{reportingPeriod}\u0027.",
+            "example": "[\"1e63a842-1e65-43ed-b78a-5e7cec155c28\",\"550e8400-e29b-41d4-a716-446655440000/SFDR/2023\"]"
           },
           "resourceUrl": {
             "type": "string",
-            "description": "A URL pointing to the resource identified by resourceId.",
-            "example": "https://dataland.com/requests/1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            "description": "A URL pointing to the referenced resource. For data requests, this points to the request page. For already existing datasets, this points to the company framework page.",
+            "example": "[\"https://dataland.com/requests/1e63a842-1e65-43ed-b78a-5e7cec155c28\",\"https://dataland.com/companies/c9710c7b-9cd6-446b-85b0-3773d2aceb48/frameworks/sfdr\"]"
           }
         }
       },

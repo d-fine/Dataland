@@ -2,8 +2,8 @@ package org.dataland.datalanddataexporter.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.api.IsinLeiDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -26,20 +26,20 @@ class ApiClients(
     ): SfdrDataControllerApi = SfdrDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
+     * Creates an auto-authenticated version of the DataAvailabilityControllerApi of the backend
+     */
+    @Bean
+    fun getDataAvailabilityControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
+    /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
      */
     @Bean
     fun getCompanyDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-
-    /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
-     */
-    @Bean
-    fun getMetaDataControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the IsinLeiDataApi of the backend
