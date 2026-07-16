@@ -90,12 +90,13 @@ class DatasetJudgementServiceDeletionDatabaseSafetyTest(
     @Test
     fun `deleteDatasetJudgement removes the judgement and its data points but keeps QA reports`() {
         datasetJudgementService.deleteDatasetJudgement(datasetJudgementEntity.dataSetJudgementId)
+        val qaReportById = dataPointQaReportRepository.findById(qaReportEntity.qaReportId)
 
         assertFalse(datasetJudgementRepository.findById(datasetJudgementEntity.dataSetJudgementId).isPresent)
-        assertTrue(dataPointQaReportRepository.findById(qaReportEntity.qaReportId).isPresent)
+        assertTrue(qaReportById.isPresent)
         assertEquals(
             qaReportEntity,
-            dataPointQaReportRepository.findById(qaReportEntity.qaReportId).get(),
+            qaReportById.get(),
         )
     }
 

@@ -85,17 +85,19 @@ interface DatasetJudgementApi {
     ): ResponseEntity<DatasetJudgementResponse>
 
     /**
+     * Delete the dataset judgement object with the datasetJudgementId
+     *
      * @param datasetJudgementId identifier used to uniquely specify the dataset that will be deleted
      */
     @Operation(
         summary = "Delete dataset judgement object.",
-        description = "Delete dataset judgement object.",
+        description = "Delete dataset judgement object (and by extension data point judgement objects) without deleting the QA reports.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "204", description = "Successfully deleted the dataset judgement object"),
             ApiResponse(responseCode = "403", description = "Only admins can delete dataset judgement objects."),
-            ApiResponse(responseCode = "404", description = "No pending judgement exists for this dataset."),
+            ApiResponse(responseCode = "404", description = "No pending judgement exists for this datasetJudgementId."),
             ApiResponse(responseCode = "409", description = "The dataset judgement does not have the pending state."),
         ],
     )
@@ -105,8 +107,8 @@ interface DatasetJudgementApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDatasetJudgement(
         @PathVariable @Parameter(
-            description = BackendOpenApiDescriptionsAndExamples.DATA_ID_DESCRIPTION,
-            example = BackendOpenApiDescriptionsAndExamples.DATA_ID_EXAMPLE,
+            description = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_DESCRIPTION,
+            example = QaServiceOpenApiDescriptionsAndExamples.DATA_JUDGEMENT_ID_EXAMPLE,
         )
         datasetJudgementId: String,
     ): ResponseEntity<Unit>
