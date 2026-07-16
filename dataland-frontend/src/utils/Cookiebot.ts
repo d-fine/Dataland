@@ -18,6 +18,6 @@ export function loadCookiebotIfEnabled(): void {
   cookiebotScript.src = cookiebotScriptSrc;
   cookiebotScript.type = 'text/javascript';
   cookiebotScript.async = true;
-  cookiebotScript.setAttribute('data-cbid', cookiebotCbid);
+  cookiebotScript.dataset.cbid = cookiebotCbid;
   document.head.appendChild(cookiebotScript);
 }
