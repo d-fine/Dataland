@@ -284,6 +284,14 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
+      - name: Cleanup runner
+        if: always()
+        run: |
+          docker compose --project-name dala-e2e-test --profile testing down -v
+          sudo rm -rf ./dataland-loki/data
+          docker system prune -af
+          rm -rf /tmp/docker-config-${{ github.run_id }}
+      - uses: atos-actions/clean-self-hosted-runner@v1
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
@@ -304,15 +312,23 @@ jobs:
         env:
           TARGETSERVER_HOST_KEYS: ${{ vars.TARGETSERVER_HOST_KEYS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Login to Github Packages
+        env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
+        run: |
+          mkdir -p $DOCKER_CONFIG
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Execute E2E Tests
         run: ./testing/e2e_test_launcher.sh
         env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
           PROXY_IMAGE: ghcr.io/d-fine/dataland/dataland_inbound_proxy:${{ env.DATALAND_INBOUND_PROXY_VERSION }}
           CYPRESS_TEST_GROUP: ${{ matrix.testGroup }}
           TEST_EXECUTOR: ${{ matrix.testExecutor }}
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          CYPRESS_EXECUTION_ENVIRONMENT: ci
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
