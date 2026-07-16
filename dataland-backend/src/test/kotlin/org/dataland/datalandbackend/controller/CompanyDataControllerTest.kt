@@ -5,22 +5,21 @@ import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
-import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyIdentifierManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.SpecificationService
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.validator.REPORTING_PERIOD_SHIFT_ERROR_MESSAGE
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
+import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -45,34 +44,33 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 import java.util.stream.Stream
 import kotlin.reflect.jvm.javaMethod
 
-@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @Transactional
 internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierManager: CompanyIdentifierManager,
     @Autowired val companyBaseManager: CompanyBaseManager,
-    @Autowired private val dataPointUtils: DataPointUtils,
+    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
     @Autowired private val specificationService: SpecificationService,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
-
-    @MockitoBean private val dataPointMetaInformationRepository = mock<DataPointMetaInformationRepository>()
 
     @MockitoBean private val specificationClient = mock<SpecificationControllerApi>()
     lateinit var companyController: CompanyDataController
@@ -85,11 +83,17 @@ internal class CompanyDataControllerTest(
                 companyQueryManager,
                 companyIdentifierManager,
                 companyBaseManager,
-                dataPointUtils,
+                dataAvailabilityChecker,
             )
     }
 
     companion object {
+        @DynamicPropertySource
+        @JvmStatic
+        fun configureProperties(registry: DynamicPropertyRegistry) {
+            TestPostgresContainer.configureProperties(registry)
+        }
+
         private const val TEST_LEI = "testLei"
         private const val TEST_CHILD_LEI = "testChildLei"
 
@@ -316,15 +320,6 @@ internal class CompanyDataControllerTest(
                 calculationRules = emptyList(),
             )
         }.whenever(specificationClient).getDataPointTypeSpecification(any())
-        doReturn(
-            listOf(
-                mock<DataPointMetaInformationEntity> {
-                    on { reportingPeriod } doReturn "2023"
-                },
-            ),
-        ).whenever(dataPointMetaInformationRepository)
-            .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(eq(setOf(testDataPointTypeName)), any<String>())
-
         val testCompanyId = UUID.randomUUID().toString()
         val result = companyController.getAggregatedFrameworkDataSummary(testCompanyId)
         assertEquals(0, result.body?.get(DataType.valueOf("sfdr"))?.numberOfProvidedReportingPeriods)

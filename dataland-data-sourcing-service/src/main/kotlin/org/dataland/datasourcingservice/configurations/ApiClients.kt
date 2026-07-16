@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
@@ -27,6 +28,14 @@ class ApiClients(
     fun getMetaDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the DataAvailabilityControllerApi of the backend
+     */
+    @Bean
+    fun getDataAvailabilityControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend

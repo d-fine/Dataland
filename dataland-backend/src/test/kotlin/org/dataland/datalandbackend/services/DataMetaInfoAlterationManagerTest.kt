@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -21,6 +20,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -31,7 +31,7 @@ import org.mockito.kotlin.whenever
 class DataMetaInfoAlterationManagerTest {
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
-    private val mockDataPointUtils = mock<DataPointUtils>()
+    private val mockSpecificationService = mock<SpecificationService>()
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockMessageQueuePublications = mock<MessageQueuePublications>()
     private lateinit var dataMetaInfoAlterationManager: DataMetaInfoAlterationManager
@@ -74,7 +74,7 @@ class DataMetaInfoAlterationManagerTest {
             .whenever(mockDataMetaInformationManager)
             .getDataMetaInformationByDataId(any())
         doReturn(storableDataset).whenever(mockDataManager).getPublicDataset(any(), any(), any())
-        doReturn(null).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
+        doThrow(InvalidInputApiException("", "")).whenever(mockSpecificationService).getFrameworkSpecification(any())
         doNothing().whenever(mockMessageQueuePublications).publishDatasetMetaInfoPatchMessage(any(), any(), any())
 
         doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(any())
@@ -84,7 +84,7 @@ class DataMetaInfoAlterationManagerTest {
             DataMetaInfoAlterationManager(
                 this.mockDataManager,
                 this.mockDataMetaInformationManager,
-                this.mockDataPointUtils,
+                this.mockSpecificationService,
                 this.mockKeycloakUserService,
                 this.mockMessageQueuePublications,
             )
@@ -113,7 +113,7 @@ class DataMetaInfoAlterationManagerTest {
 
     @Test
     fun `test that patch functionality runs as expected on happy path for assembled datasets`() {
-        doReturn(mock<FrameworkSpecification>()).whenever(mockDataPointUtils).getFrameworkSpecificationOrNull(any())
+        doReturn(mock<FrameworkSpecification>()).whenever(mockSpecificationService).getFrameworkSpecification(any())
         val dataMetaInformationPatch = DataMetaInformationPatch(newValidUploaderUserId)
 
         assertDoesNotThrow {

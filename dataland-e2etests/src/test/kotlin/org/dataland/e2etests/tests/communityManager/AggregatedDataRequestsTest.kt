@@ -8,10 +8,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.checkThatNumberOfRejectedIdentifiersIsAsExpected
-import org.dataland.e2etests.utils.communityManager.findAggregatedDataRequestDataTypeForFramework
-import org.dataland.e2etests.utils.communityManager.findRequestControllerApiDataTypeForFramework
 import org.dataland.e2etests.utils.communityManager.generateCompaniesWithOneRandomValueForEachIdentifierType
-import org.dataland.e2etests.utils.communityManager.generateMapWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.communityManager.iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount
@@ -30,85 +27,6 @@ class AggregatedDataRequestsTest {
     @BeforeAll
     fun authenticateAsReader() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-    }
-
-    private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
-        technicalUser: TechnicalUser,
-        identifiers: Set<String>,
-        frameworks: Set<BulkDataRequest.DataTypes>,
-        reportingPeriods: Set<String>,
-    ) {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val responseForReader =
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, frameworks, reportingPeriods, notifyMeImmediately = false),
-            )
-        checkThatNumberOfRejectedIdentifiersIsAsExpected(responseForReader, 0)
-    }
-
-    @Test
-    fun `post bulk data requests for different users and check that aggregation works properly`() {
-        val identifierMap = generateMapWithOneRandomValueForEachIdentifierType()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
-        val reportingPeriods = setOf("2022", "2023")
-        TechnicalUser.entries.forEach {
-            authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
-                it, identifierMap.values.toSet(), frameworks, reportingPeriods,
-            )
-        }
-        val aggregatedDataRequests = requestControllerApi.getAggregatedOpenDataRequests()
-        iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, reportingPeriods,
-            identifierMap.values.toSet(), TechnicalUser.entries.size.toLong(),
-        )
-    }
-
-    private fun checkAggregationForNonTrivialFrameworkFilter(
-        frameworks: Set<BulkDataRequest.DataTypes>,
-        reportingPeriods: Set<String>,
-        identifiers: Set<String>,
-    ) {
-        listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
-            val randomFrameworks = frameworks.shuffled().take(numberOfRandomFrameworks)
-            val aggregatedDataRequests =
-                requestControllerApi.getAggregatedOpenDataRequests(
-                    dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
-                )
-            iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-                aggregatedDataRequests, randomFrameworks.toSet(), reportingPeriods, identifiers, 1,
-            )
-            val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
-            frameworksNotToBeFound.forEach { framework ->
-                assertFalse(
-                    aggregatedDataRequests.any {
-                        it.dataType == findAggregatedDataRequestDataTypeForFramework(framework)
-                    },
-                )
-            }
-        }
-    }
-
-    @Test
-    fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
-        val frameworks = enumValues<BulkDataRequest.DataTypes>().toSet()
-        val reportingPeriods = setOf("2023")
-        val identifierMap = mapOf(IdentifierType.Lei to generateRandomLei())
-        generateCompaniesWithOneRandomValueForEachIdentifierType(identifierMap)
-        val response =
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods, notifyMeImmediately = false),
-            )
-        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
-        checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap.values.toSet())
-        val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedOpenDataRequests(dataTypes = null)
-        iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-            aggregatedDataRequestsWithoutFilter, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
-        )
-        val aggregatedDataRequestsForEmptyList = requestControllerApi.getAggregatedOpenDataRequests(dataTypes = emptyList())
-        iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-            aggregatedDataRequestsForEmptyList, frameworks, reportingPeriods, identifierMap.values.toSet(), 1,
-        )
     }
 
     @Test
