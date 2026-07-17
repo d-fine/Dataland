@@ -15,12 +15,10 @@ import '@/assets/theme/main.css';
 import '@formkit/themes/genesis';
 import router from './router';
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
-import { loadCookiebotIfEnabled } from '@/utils/Cookiebot';
 /**
  * The main entrypoint of the dataland frontend initiating the vue app
  */
 function instantiateVueApp(): void {
-  loadCookiebotIfEnabled();
   const app = createApp(App);
   const queryClient = new QueryClient(); // Standard query client (stale time: 5 minutes)
   const pinia = createPinia();
