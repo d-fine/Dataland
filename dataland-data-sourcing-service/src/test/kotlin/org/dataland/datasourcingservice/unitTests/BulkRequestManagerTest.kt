@@ -2,10 +2,7 @@ package org.dataland.datasourcingservice.unitTests
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.Query
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -34,13 +31,14 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 class BulkRequestManagerTest {
     private lateinit var bulkRequestManager: BulkRequestManager
     private val mockDataSourcingValidator = mock<DataSourcingValidator>()
     private val mockDataSourcingQueryManager = mock<DataSourcingQueryManager>()
     private val mockRequestCreationService = mock<RequestCreationService>()
-    private val mockMetaDataControllerApi = mock<MetaDataControllerApi>()
+    private val mockDataAvailabilityControllerApi = mock<DataAvailabilityControllerApi>()
     private val mockEntityManager = mock<EntityManager>()
     private val mockQuery = mock<Query>()
 
@@ -95,9 +93,13 @@ class BulkRequestManagerTest {
             BasicDataDimensions(companyIdentifier1, dataType1, reportingPeriod1),
         )
 
-    private val dataMetaInformationList =
+    private val existingDatasetDimensionsList =
         dataDimensionsWithExistingDatasets.map {
-            createDataMetaInformation(it.companyId, it.dataType, it.reportingPeriod)
+            ClientBasicDataDimensions(
+                companyId = it.companyId,
+                dataType = it.dataType,
+                reportingPeriod = it.reportingPeriod,
+            )
         }
 
     private val acceptedDataDimensions =
@@ -142,23 +144,6 @@ class BulkRequestManagerTest {
             dataSourcingEntity = null,
         )
 
-    private fun createDataMetaInformation(
-        companyId: String,
-        dataType: String,
-        reportingPeriod: String,
-    ): DataMetaInformation =
-        DataMetaInformation(
-            dataId = UUID.randomUUID().toString(),
-            companyId = companyId,
-            dataType = DataTypeEnum.decode(dataType)!!,
-            uploadTime = 0L,
-            reportingPeriod = reportingPeriod,
-            currentlyActive = true,
-            qaStatus = QaStatus.Accepted,
-            uploaderUserId = UUID.randomUUID().toString(),
-            ref = null,
-        )
-
     private fun mockValidatorAccepting(
         companyIds: Set<String>,
         dataTypes: Set<String>,
@@ -190,7 +175,7 @@ class BulkRequestManagerTest {
             mockDataSourcingValidator,
             mockDataSourcingQueryManager,
             mockRequestCreationService,
-            mockMetaDataControllerApi,
+            mockDataAvailabilityControllerApi,
             mockEntityManager,
         )
     }
@@ -233,9 +218,9 @@ class BulkRequestManagerTest {
                 createRequestEntity(it.companyId, it.dataType, it.reportingPeriod)
             },
         ).whenever(mockQuery).resultList
-        doReturn(dataMetaInformationList)
-            .whenever(mockMetaDataControllerApi)
-            .retrieveMetaDataOfActiveDatasets(any())
+        doReturn(existingDatasetDimensionsList)
+            .whenever(mockDataAvailabilityControllerApi)
+            .filterViewableDimensions(any())
     }
 
     private fun createBulkRequestManager() {
@@ -244,7 +229,7 @@ class BulkRequestManagerTest {
                 dataSourcingValidator = mockDataSourcingValidator,
                 dataSourcingQueryManager = mockDataSourcingQueryManager,
                 requestCreationService = mockRequestCreationService,
-                metaDataController = mockMetaDataControllerApi,
+                dataAvailabilityController = mockDataAvailabilityControllerApi,
                 entityManager = mockEntityManager,
             )
     }
@@ -337,9 +322,16 @@ class BulkRequestManagerTest {
 
         mockValidatorAccepting(setOf(companyId), setOf(oldDataType), setOf(reportingPeriod))
         mockNoExistingDatabaseRequests()
-        doReturn(listOf(createDataMetaInformation(companyId, newDataType, reportingPeriod)))
-            .whenever(mockMetaDataControllerApi)
-            .retrieveMetaDataOfActiveDatasets(any())
+        doReturn(
+            listOf(
+                ClientBasicDataDimensions(
+                    companyId = companyId,
+                    dataType = newDataType,
+                    reportingPeriod = reportingPeriod,
+                ),
+            ),
+        ).whenever(mockDataAvailabilityControllerApi)
+            .filterViewableDimensions(any())
 
         val response =
             bulkRequestManager.processBulkDataRequest(

@@ -24,12 +24,12 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -113,7 +113,6 @@ class AssembledDataManagerTest {
     private lateinit var dataDeliveryService: DataDeliveryService
     private lateinit var assembledDataManager: AssembledDataManager
     private lateinit var specificationService: SpecificationService
-    private lateinit var dataPointUtils: DataPointUtils
     private lateinit var internalStorageAdapter: InternalStorageAdapter
     private lateinit var dataPointCalculator: DataPointCalculator
 
@@ -189,12 +188,10 @@ class AssembledDataManagerTest {
         dataPointCalculator =
             DataPointCalculator(
                 dataCompositionService,
-                dataAvailabilityChecker,
                 internalStorageAdapter,
                 specificationService,
                 metaDataManager,
             )
-        dataPointUtils = DataPointUtils(specificationClient, metaDataManager, dataCompositionService, dataPointCalculator)
         dataDeliveryService =
             DataDeliveryService(
                 dataCompositionService, dataAvailabilityChecker,
@@ -205,7 +202,8 @@ class AssembledDataManagerTest {
                 dataManager, messageQueuePublications, dataPointValidator,
                 datasetDatapointRepository, spyDataPointManager,
                 referencedReportsUtilities,
-                companyQueryManager, dataPointUtils, dataDeliveryService, datasetAssembler, specificationService,
+                companyQueryManager, metaDataManager, dataCompositionService, dataAvailabilityChecker,
+                dataDeliveryService, datasetAssembler, specificationService,
             )
     }
 
@@ -276,7 +274,6 @@ class AssembledDataManagerTest {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)
         setMockData(dataPointMap, dataContentMap)
-        doReturn(listOf(dataPointId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
 
         val dynamicDataset =
             assertDoesNotThrow {
@@ -289,8 +286,6 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that exceptions are thrown only in the expected cases in the context of dynamic datasets`() {
-        doReturn(null).whenever(metaDataManager).getCurrentlyActiveDataId(any())
-
         assertDoesNotThrow {
             assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)
         }
@@ -345,7 +340,6 @@ class AssembledDataManagerTest {
         val dataPointSpec = getSpecificationFromRealDataPointTypeFile(calculatedDataPointSpec)
         val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
-        doReturn(listOf(sourceOneId, sourceTwoId)).whenever(dataAvailabilityChecker).getViewableDataPointIds(any())
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
         setMockData(dataPointMap, dataContentMap)
         val dynamicDataset =
@@ -384,42 +378,27 @@ class AssembledDataManagerTest {
         ).whenever(datasetDatapointRepository).findById(datasetId)
 
         doAnswer { invocation ->
-            val dataPointId = invocation.getArgument<Collection<String>>(0)
-            dataPointId.map { dataPointId ->
-                DataPointMetaInformationEntity(
-                    dataPointId = dataPointId,
-                    companyId = companyId,
-                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                    reportingPeriod = reportingPeriod,
-                    uploaderUserId = uploaderUserId,
-                    uploadTime = Instant.now().toEpochMilli(),
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                )
+            invocation.getArgument<Collection<String>>(0).map { dataPointId ->
+                makeDataPointMetaInfo(dataPointId, dataPoints.filterValues { it == dataPointId }.keys.first())
             }
         }.whenever(metaDataManager).getDataPointMetaInformationByIds(any())
 
+        doReturn(
+            dataPoints.map { (dataPointType, dataPointId) -> makeDataPointMetaInfo(dataPointId, dataPointType) },
+        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<List<DataPointDimensions>>())
+
         doAnswer { invocation ->
             val dimensionsByDataset =
-                invocation.getArgument<Map<BasicDatasetDimensions, List<BasicDataPointDimensions>>>(0)
+                invocation.getArgument<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>>(0)
             dimensionsByDataset.mapValues { (_, dimensions) ->
                 dimensions.mapNotNull { dimension ->
                     dataPoints[dimension.dataPointType]?.let { dataPointId ->
-                        DataPointMetaInformationEntity(
-                            dataPointId = dataPointId,
-                            companyId = dimension.companyId,
-                            dataPointType = dimension.dataPointType,
-                            reportingPeriod = dimension.reportingPeriod,
-                            uploaderUserId = uploaderUserId,
-                            uploadTime = Instant.now().toEpochMilli(),
-                            currentlyActive = true,
-                            qaStatus = QaStatus.Accepted,
-                        )
+                        makeDataPointMetaInfo(dataPointId, dimension.dataPointType, dimension.companyId, dimension.reportingPeriod)
                     }
                 }
             }
         }.whenever(dataAvailabilityChecker)
-            .getViewableDataPointMetaData(any<Map<BasicDatasetDimensions, List<BasicDataPointDimensions>>>())
+            .getViewableDataPointMetaData(any<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>>())
 
         doAnswer { invocation ->
             val dataPointId = invocation.getArgument<List<String>>(1)
@@ -433,4 +412,20 @@ class AssembledDataManagerTest {
             }
         }.whenever(storageClient).selectBatchDataPointsByIds(any(), any())
     }
+
+    private fun makeDataPointMetaInfo(
+        dataPointId: String,
+        dataPointType: String,
+        companyId: String = this.companyId,
+        reportingPeriod: String = this.reportingPeriod,
+    ) = DataPointMetaInformationEntity(
+        dataPointId = dataPointId,
+        companyId = companyId,
+        dataPointType = dataPointType,
+        reportingPeriod = reportingPeriod,
+        uploaderUserId = uploaderUserId,
+        uploadTime = Instant.now().toEpochMilli(),
+        currentlyActive = true,
+        qaStatus = QaStatus.Accepted,
+    )
 }

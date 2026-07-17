@@ -1,10 +1,12 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,15 +46,6 @@ class DataPointMetaInformationManager
         @Transactional(readOnly = true)
         fun getDataPointMetaInformationByIds(dataPointIds: Collection<String>): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
-
-        /**
-         * Get the currently active data id for a specific set of data point dimensions
-         * @param dataPointDimensions the data point dimensions to get the currently active data id for
-         * @return the id of the currently active data point
-         */
-        @Transactional(readOnly = true)
-        fun getCurrentlyActiveDataId(dataPointDimensions: BasicDataPointDimensions): String? =
-            dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
 
         /**
          * Method to get the data point dimensions from a data id
@@ -121,12 +114,7 @@ class DataPointMetaInformationManager
             require(dataPointDimensions.toSet().size == tasks.size) {
                 "The data point dimensions must be unique for each task."
             }
-            val allPotentiallyInvolvedEntities =
-                dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
-                    companyIds = dataPointDimensions.map { it.companyId },
-                    dataPointTypes = dataPointDimensions.map { it.dataPointType },
-                    reportingPeriods = dataPointDimensions.map { it.reportingPeriod },
-                )
+            val allPotentiallyInvolvedEntities = getActiveDataPointMetaInformationList(dataPointDimensions)
             val currentlyActiveEntityByDimension =
                 allPotentiallyInvolvedEntities.associateBy {
                     BasicDataPointDimensions(it.companyId, it.dataPointType, it.reportingPeriod)
@@ -163,22 +151,6 @@ class DataPointMetaInformationManager
         }
 
         /**
-         * Method to get the reporting periods with active data points for a specific set of data point types and one company
-         * @param dataPointTypes the data point types to filter for
-         * @param companyId the company to filter for
-         * @return the reporting periods with at least one active data point
-         */
-        fun getActiveDataPointMetaInformation(
-            dataPointTypes: Set<String>,
-            companyId: String,
-        ): List<DataPointMetaInformationEntity> =
-            dataPointMetaInformationRepositoryInterface
-                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
-                    dataPointTypes = dataPointTypes,
-                    companyId = companyId,
-                )
-
-        /**
          * Method to get the latest upload time of active data points given a set of data point types for a specific company
          * @param dataPointTypes the data point types to filter for
          * @param companyId the company to filter for
@@ -198,14 +170,44 @@ class DataPointMetaInformationManager
                 .maxOf { it }
 
         /**
-         * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods provided
-         * @param dataDimensionFilter the data with company IDs, data point types, and reporting periods to filter by
-         * @return a list of all active data point meta information entities
+         * Retrieves active data point metadata entities matching the given filter criteria.
+         * An empty list for any parameter means "match all" (wildcard).
+         *
+         * @param dataDimensionQuery filter specifying what to search for
+         * @return list of DataPointMetaInformationEntity for active data points matching the filters
          */
-        fun getActiveDataPointMetaInformationList(dataDimensionFilter: DataDimensionFilter): List<DataPointMetaInformationEntity> =
-            dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
-                companyIds = dataDimensionFilter.companyIds,
-                dataPointTypes = dataDimensionFilter.dataTypes,
-                reportingPeriods = dataDimensionFilter.reportingPeriods,
-            )
+        @Transactional(readOnly = true)
+        fun getActiveDataPointMetaInformationList(dataDimensionQuery: DataDimensionQuery): List<DataPointMetaInformationEntity> =
+            if (dataDimensionQuery.isEmpty()) {
+                emptyList()
+            } else {
+                dataPointMetaInformationRepositoryInterface
+                    .findActiveDataPointDimensionsByFilter(
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.companyIds),
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.dataTypes),
+                        defaultObjectMapper.writeValueAsString(dataDimensionQuery.reportingPeriods),
+                    )
+            }
+
+        /**
+         * Retrieves active data point metadata for the given exact list of data point dimensions.
+         *
+         * @param dataDimensions the data point dimensions to look up
+         * @return list of matching active DataPointMetaInformationEntity objects
+         */
+        @Transactional(readOnly = true)
+        fun getActiveDataPointMetaInformationList(dataDimensions: List<DataPointDimensions>): List<DataPointMetaInformationEntity> {
+            if (dataDimensions.isEmpty()) return emptyList()
+            val jsonPayload =
+                defaultObjectMapper.writeValueAsString(
+                    dataDimensions.map {
+                        mapOf(
+                            "company_id" to it.companyId,
+                            "data_point_type" to it.dataPointType,
+                            "reporting_period" to it.reportingPeriod,
+                        )
+                    },
+                )
+            return dataPointMetaInformationRepositoryInterface.findActiveDataPointsByDimensionsJson(jsonPayload)
+        }
     }

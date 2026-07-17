@@ -36,4 +36,17 @@ data class BasicDataDimensions(
      */
     fun toBasicDatasetDimensions(framework: DatasetType = dataType) =
         BasicDatasetDimensions(companyId = companyId, framework = framework, reportingPeriod = reportingPeriod)
+
+    /**
+     * Converts the basic data dimensions object to a basic data point dimensions object.
+     *
+     * @param dataPointType the data point type of the data point the dimensions shall be converted to, defaults to the data type
+     * @return the basic data point dimensions object
+     */
+    fun toBasicDataPointDimensions(dataPointType: DataPointType = dataType) =
+        BasicDataPointDimensions(
+            companyId = companyId,
+            dataPointType = dataPointType,
+            reportingPeriod = reportingPeriod,
+        )
 }

@@ -160,7 +160,7 @@ class DataDeliveryServiceTest {
         doReturn(mapOf(datasetDimensions to metaData))
             .whenever(dataAvailabilityChecker)
             .getViewableDataPointMetaData(
-                argThat<Map<BasicDatasetDimensions, List<BasicDataPointDimensions>>> {
+                argThat<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>> {
                     keys == setOf(datasetDimensions)
                 },
             )
