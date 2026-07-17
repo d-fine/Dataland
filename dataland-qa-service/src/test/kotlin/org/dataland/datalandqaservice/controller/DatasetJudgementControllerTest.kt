@@ -83,6 +83,20 @@ class DatasetJudgementControllerTest {
     }
 
     @Test
+    fun `deleteDatasetJudgement delegates to service and returns no content`() {
+        val datasetJudgementId = UUID.randomUUID()
+
+        val result = controller.deleteDatasetJudgement(datasetJudgementId.toString())
+
+        assertEquals(HttpStatus.NO_CONTENT, result.statusCode)
+        assertEquals(null, result.body)
+
+        val idCaptor = argumentCaptor<UUID>()
+        verify(datasetJudgementService).deleteDatasetJudgement(idCaptor.capture())
+        assertEquals(datasetJudgementId, idCaptor.firstValue)
+    }
+
+    @Test
     fun `setJudge delegates to service`() {
         val id = UUID.randomUUID()
         val serviceResponse = mock<DatasetJudgementResponse>()
