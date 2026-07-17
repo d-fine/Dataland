@@ -670,7 +670,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'waterConsumptionInCubicMeters',
-            label: 'Water Consumption',
+            label: 'Water Withdrawal',
             description:
               'Amount of water withdrawn by the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
 
@@ -694,7 +694,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'relativeWaterUsageInCubicMetersPerMillionEURRevenue',
-            label: 'Relative Water Usage',
+            label: 'Water Withdrawal Intensity',
             description:
               'Amount in cubic meters of water withdrawn per million EUR revenue.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
 
@@ -959,7 +959,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'violationOfTaxRulesAndRegulation',
-            label: 'Violation Of Tax Rules And Regulation',
+            label: 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
             description:
               'Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10',
 
@@ -1248,7 +1248,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'reportedChildLabourIncidents',
-            label: 'Reported Child Labour Incidents',
+            label: 'Risk of Child Labour Incidents',
             description:
               'Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
 
@@ -1258,7 +1258,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'reportedForcedOrCompulsoryLabourIncidents',
-            label: 'Reported Forced Or Compulsory Labour Incidents',
+            label: 'Risk of Forced Or Compulsory Labour Incidents',
             description:
               'Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
 
@@ -1296,7 +1296,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'reportedConvictionsOfBriberyAndCorruption',
-            label: 'Reported Convictions Of Bribery and Corruption',
+            label: 'Number of Reported Convictions Of Bribery and Corruption',
             description:
               'Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
 

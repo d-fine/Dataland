@@ -1020,7 +1020,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Water Consumption',
+            label: 'Water Withdrawal',
             explanation:
               'Amount of water withdrawn by the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
             shouldDisplay: (): boolean => true,
@@ -1030,7 +1030,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.environmental?.water?.waterConsumptionInCubicMeters?.value,
                   'Cubic Meters'
                 ),
-                'Water Consumption',
+                'Water Withdrawal',
                 dataset.environmental?.water?.waterConsumptionInCubicMeters
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -1053,7 +1053,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Relative Water Usage',
+            label: 'Water Withdrawal Intensity',
             explanation:
               'Amount in cubic meters of water withdrawn per million EUR revenue.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
             shouldDisplay: (): boolean => true,
@@ -1063,7 +1063,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
                   'Cubic Meters \/ \u20ACM Revenue'
                 ),
-                'Relative Water Usage',
+                'Water Withdrawal Intensity',
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -1461,7 +1461,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Violation Of Tax Rules And Regulation',
+            label: 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
             explanation:
               'Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10',
             shouldDisplay: (): boolean => true,
@@ -1470,7 +1470,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value
                 ),
-                'Violation Of Tax Rules And Regulation',
+                'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
                 dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1907,14 +1907,14 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Child Labour Incidents',
+            label: 'Risk of Child Labour Incidents',
             explanation:
               'Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
-                'Reported Child Labour Incidents',
+                'Risk of Child Labour Incidents',
                 dataset.social?.humanRights?.reportedChildLabourIncidents
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1922,7 +1922,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Forced Or Compulsory Labour Incidents',
+            label: 'Risk of Forced Or Compulsory Labour Incidents',
             explanation:
               'Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
             shouldDisplay: (): boolean => true,
@@ -1931,7 +1931,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(
                   dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value
                 ),
-                'Reported Forced Or Compulsory Labour Incidents',
+                'Risk of Forced Or Compulsory Labour Incidents',
                 dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1984,7 +1984,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Convictions Of Bribery and Corruption',
+            label: 'Number of Reported Convictions Of Bribery and Corruption',
             explanation:
               'Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
             shouldDisplay: (): boolean => true,
@@ -1994,7 +1994,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption?.value,
                   ''
                 ),
-                'Reported Convictions Of Bribery and Corruption',
+                'Number of Reported Convictions Of Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
