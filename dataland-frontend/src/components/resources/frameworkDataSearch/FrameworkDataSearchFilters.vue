@@ -169,7 +169,7 @@ export default defineComponent({
         .map((countryCode) => {
           return {
             countryCode: countryCode,
-            displayName: getCountryNameFromCountryCode(countryCode) as string,
+            displayName: getCountryNameFromCountryCode(countryCode) ?? countryCode,
             disabled: false,
           };
         })
