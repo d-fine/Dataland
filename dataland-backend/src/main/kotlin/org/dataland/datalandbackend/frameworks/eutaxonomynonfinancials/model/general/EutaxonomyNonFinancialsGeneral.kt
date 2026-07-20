@@ -132,7 +132,8 @@ data class EutaxonomyNonFinancialsGeneral(
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.""",
+        description = """Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -166,7 +167,8 @@ data class EutaxonomyNonFinancialsGeneral(
     val oecdGuidelinesForMultinationalEnterprisesCompliancePolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company abide by the ILO Core Labour Standards?""",
+        description = """Abidance by the ILO Core Labour Standards.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -183,7 +185,8 @@ data class EutaxonomyNonFinancialsGeneral(
     val iloCoreLabourStandards: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.""",
+        description = """Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",

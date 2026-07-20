@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope3GhgEmissionsInTonnes",
   "name" : "Scope 3 GHG emissions",
-  "businessDefinition" : "Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).",
+  "businessDefinition" : "Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
