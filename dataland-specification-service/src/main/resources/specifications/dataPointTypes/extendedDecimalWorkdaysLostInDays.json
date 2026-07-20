@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalWorkdaysLostInDays",
   "name" : "Workdays Lost",
-  "businessDefinition" : "Number of workdays lost to injuries, accidents, fatalities or illness in total",
+  "businessDefinition" : "Number of workdays lost to injuries, accidents, fatalities or illness in total.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ],

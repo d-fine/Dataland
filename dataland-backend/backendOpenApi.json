@@ -8378,7 +8378,7 @@
             "nullable": true
           }
         },
-        "description": "Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
+        "description": "Amount of fines for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17",
         "example": "{\n      \"value\" : 100.5,\n      \"currency\" : \"USD\",\n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\",\n      \"dataSource\" : {\n      \"page\" : \"5-7\",\n      \"tagName\" : \"monetaryAmount\",\n      \"fileName\" : \"AnnualReport2020.pdf\",\n      \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n    } "
       },
       "ExtendedDataPointBigDecimal": {
@@ -8409,7 +8409,7 @@
             ]
           }
         },
-        "description": "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.",
+        "description": "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 8",
         "example": "{\n      \"value\" : 100.5, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointBigInteger": {
@@ -8440,7 +8440,7 @@
             ]
           }
         },
-        "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
+        "description": "Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17",
         "example": "{\n      \"value\" : 100, \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointLocalDate": {
@@ -8542,7 +8542,7 @@
             ]
           }
         },
-        "description": "Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
+        "description": "Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13",
         "example": "{\n      \"value\" :  \"Yes\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDocumentReference": {

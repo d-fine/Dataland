@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoHighlyBiodiverseGrasslandExposure",
   "name" : "Highly Biodiverse Grassland Exposure",
-  "businessDefinition" : "Does the company have sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status?",
+  "businessDefinition" : "Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

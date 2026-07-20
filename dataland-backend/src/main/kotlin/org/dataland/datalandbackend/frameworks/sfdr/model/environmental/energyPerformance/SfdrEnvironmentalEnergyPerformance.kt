@@ -18,7 +18,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).""",
+        description = """Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -36,7 +37,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).""",
+        description = """Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -54,7 +56,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).""",
+        description = """Total value of non-renewable energy produced, meaning energy from sources other than renewable sources. See also Regulation (EU) 2022/1288, Annex I, top (7).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -72,7 +75,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).""",
+        description = """Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable). See also Regulation (EU) 2022/1288, Annex I, top (7).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -90,7 +94,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).""",
+        description = """Total value of non-renewable energy consumed, meaning energy from sources other than renewable sources. See also Regulation (EU) 2022/1288, Annex I, top (7).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -108,7 +113,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).""",
+        description = """Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable). See also Regulation (EU) 2022/1288, Annex I, top (7).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -128,7 +134,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).""",
+        description = """"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1). See also Regulation (EU) 2022/1288, Annex I, top (9).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -146,7 +153,8 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from fossil fuels (sum of crude oil, natural gas, lignite and coal, etc.) (non-renewable energy source).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -164,7 +172,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -182,7 +190,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -200,7 +208,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -218,7 +226,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -236,7 +244,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -254,7 +262,7 @@ data class SfdrEnvironmentalEnergyPerformance(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.""",
+        description = """Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",

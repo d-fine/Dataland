@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents",
   "name" : "Reported Forced Or Compulsory Labour Incidents",
-  "businessDefinition" : "Does the company have reported incidents of forced or compulsory labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
+  "businessDefinition" : "Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

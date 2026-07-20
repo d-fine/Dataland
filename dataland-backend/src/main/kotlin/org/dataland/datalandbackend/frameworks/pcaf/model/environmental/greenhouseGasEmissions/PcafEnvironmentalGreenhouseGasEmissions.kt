@@ -15,7 +15,8 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).""",
+        description = """Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -33,7 +34,8 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -51,7 +53,8 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -69,7 +72,8 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).""",
+        description = """Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",

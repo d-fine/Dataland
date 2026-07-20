@@ -16,7 +16,8 @@ data class SfdrEnvironmentalWater(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Emissions to water in tonnes (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See  Regulation (EU) 2022/1288, Annex I, top (12).""",
+        description = """Emissions to water in tons (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See Regulation (EU) 2022/1288, Annex I, top (12).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 8""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -34,7 +35,8 @@ data class SfdrEnvironmentalWater(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .""",
+        description = """Amount of water withdrawn by the company.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -52,7 +54,8 @@ data class SfdrEnvironmentalWater(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .""",
+        description = """Amount of water recycled or reused by the company.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -70,7 +73,8 @@ data class SfdrEnvironmentalWater(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Amount in cubic meters of fresh water used per million EUR revenue. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1.""",
+        description = """Amount in cubic meters of water withdrawn per million EUR revenue.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -87,7 +91,8 @@ data class SfdrEnvironmentalWater(
     val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies and procedures for water management? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.) If yes, please share the relevant documents with us.""",
+        description = """Existence of a policy for water management.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factors 7, 8""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -104,7 +109,8 @@ data class SfdrEnvironmentalWater(
     val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy? See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.""",
+        description = """Sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 8""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
