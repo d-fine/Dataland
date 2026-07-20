@@ -2,7 +2,7 @@ package org.dataland.datasourcingservice.services
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions as ClientBasicDataDimensions
 
 /**
  * Service class that manages all operations related to bulk requests.
@@ -25,7 +26,7 @@ class BulkRequestManager
         private val dataSourcingValidator: DataSourcingValidator,
         private val dataSourcingQueryManager: DataSourcingQueryManager,
         private val requestCreationService: RequestCreationService,
-        private val metaDataController: MetaDataControllerApi,
+        private val dataAvailabilityController: DataAvailabilityControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
     ) {
         /**
@@ -113,11 +114,11 @@ class BulkRequestManager
             val newTaxonomyEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
 
             val activeDatasetDimensions =
-                metaDataController
-                    .retrieveMetaDataOfActiveDatasets(
+                dataAvailabilityController
+                    .filterViewableDimensions(
                         basicDataDimensions =
                             (requests + newTaxonomyEquivalentRequests).map {
-                                org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions(
+                                ClientBasicDataDimensions(
                                     companyId = it.companyId,
                                     dataType = it.dataType,
                                     reportingPeriod = it.reportingPeriod,
@@ -126,7 +127,7 @@ class BulkRequestManager
                     ).map {
                         BasicDataDimensions(
                             companyId = it.companyId,
-                            dataType = it.dataType.toString(),
+                            dataType = it.dataType,
                             reportingPeriod = it.reportingPeriod,
                         )
                     }.toSet()
@@ -161,7 +162,7 @@ class BulkRequestManager
 
             return if (dataDimensions.isNotEmpty()) {
                 val query = entityManager.createNativeQuery(queryToExecute, RequestEntity::class.java)
-                return query.resultList
+                query.resultList
                     .filterIsInstance<RequestEntity>()
                     .map {
                         BasicDataDimensions(

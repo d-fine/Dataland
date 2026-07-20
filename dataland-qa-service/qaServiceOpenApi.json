@@ -3168,6 +3168,72 @@
             "default-bearer-auth": []
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "dataset-judgement-controller"
+        ],
+        "summary": "Delete dataset judgement object.",
+        "description": "Delete dataset judgement object (and by extension data point judgement objects) without deleting the QA reports.",
+        "operationId": "deleteDatasetJudgement",
+        "parameters": [
+          {
+            "name": "datasetJudgementId",
+            "in": "path",
+            "description": "The unique identifier of the data judgment.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted the dataset judgement object",
+            "content": {}
+          },
+          "403": {
+            "description": "Only admins can delete dataset judgement objects.",
+            "content": {}
+          },
+          "404": {
+            "description": "No pending judgement exists for this datasetJudgementId.",
+            "content": {}
+          },
+          "409": {
+            "description": "The dataset judgement does not have the pending state.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
       }
     },
     "/dataset-judgements/{datasetId}/datasetId": {

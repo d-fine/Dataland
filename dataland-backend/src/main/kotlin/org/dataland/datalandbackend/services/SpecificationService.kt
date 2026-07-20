@@ -77,6 +77,20 @@ class SpecificationService
         }
 
         /**
+         * Return a list of all known assembled frameworks
+         *
+         * @return a [Set] of [String] for all known assembled frameworks
+         */
+        fun getAssembledFrameworks() = assembledFrameworks.toSet()
+
+        /**
+         * Return a list of all known non assembled frameworks
+         *
+         * @return a [Set] of [String] for all known non assembled frameworks
+         */
+        fun getNonAssembledFrameworks() = nonAssembledFrameworks.toSet()
+
+        /**
          * Check if any given string represents an assembled framework
          *
          * @param framework string to be checked
