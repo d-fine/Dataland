@@ -90,6 +90,12 @@ internal data class EuTaxonomyActivityOperands<
     val nonAlignedActivitiesValue: Iterable<EuTaxonomyActivity>?,
     val alignedActivitiesValue: Iterable<EuTaxonomyAlignedActivity>?,
 ) {
+    /**
+     * Merges the non-aligned and aligned activity lists into a single list of eligible-or-aligned activities,
+     * combining entries that share the same activity name, NACE codes, and currency.
+     *
+     * @return the merged activities, or `null` if neither list contains any entries
+     */
     fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
         val nonAlignedActivitiesMap =
             nonAlignedActivitiesValue?.groupBy { activity ->
@@ -199,6 +205,16 @@ internal data class EuTaxonomyActivityOperands<
     }
 }
 
+/**
+ * Determines the merged substantial contribution for a single criterion from the aligned activities sharing
+ * an identifier, using the highest reported value (`null` is treated as lower than any value).
+ *
+ * @param substantialContributions the per-aligned-activity contribution values for this criterion
+ * @param relativeEligibleShareInPrecent the value to return when the highest contribution is strictly positive
+ * @return `null` if there is no aligned activity or all contributions are `null`; `0` if the highest
+ *   contribution is `0`; otherwise [relativeEligibleShareInPrecent]
+ * @throws IllegalArgumentException if the highest contribution is negative
+ */
 private fun determineSubstantialContributions(
     substantialContributions: List<BigDecimal?>?,
     relativeEligibleShareInPrecent: BigDecimal?,
@@ -212,6 +228,14 @@ private fun determineSubstantialContributions(
     }
 }
 
+/**
+ * Determines the merged yes/no flag for a set of aligned activities sharing an identifier, using the
+ * strictest reported value under the order `null < No < Yes`.
+ *
+ * @param activities the per-aligned-activity flag values
+ * @return the highest-ranked value in [activities] according to `null < No < Yes`, or `null` if [activities]
+ *   is `null` or empty
+ */
 private fun determineYesNoActivity(activities: List<YesNo?>?): YesNo? {
     val yesNoOrder =
         listOf(null, YesNo.No, YesNo.Yes)
