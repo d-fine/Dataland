@@ -1,14 +1,24 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.custom.EuTaxonomyEligibleOrAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.Collections.emptyList
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
 private val CALCULATION_ROUNDING_MODE = RoundingMode.HALF_UP
+
+private const val NON_ALIGNED_ACTIVITIES_BASE_TYPE = "extendedEuTaxonomyNonAlignedActivitiesComponent"
+private const val ALIGNED_ACTIVITIES_BASE_TYPE = "extendedEuTaxonomyAlignedActivitiesComponent"
 
 internal data class SumOperands<T : ExtendedDataPointInterface<BigDecimal>>(
     val dataPoints: List<T>,
@@ -68,3 +78,163 @@ internal inline fun <
         denominatorValue = denominatorValue,
     )
 }
+
+internal data class EuTaxonomyActivityOperands<
+    N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
+    A: ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?
+>(
+    val nonAlignedActivities: N?,
+    val alignedActivities: A?,
+    val nonAlignedActivitiesValue: Iterable<EuTaxonomyActivity>?,
+    val alignedActivitiesValue: Iterable<EuTaxonomyAlignedActivity>?,
+){
+    fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
+        val nonAlignedActivitiesGrouped = nonAlignedActivitiesValue?.groupBy {
+            activity -> Triple(
+                activity.activityName,
+                activity.naceCodes?.toSet(),
+                activity.share?.absoluteShare?.currency
+            )
+        }
+        val duplicateNonAlignedActivities = nonAlignedActivitiesGrouped?.filterValues { it.size > 1 }?.keys
+        require(duplicateNonAlignedActivities.isNullOrEmpty()) {
+            "There must only be a single non-aligned activity with the same activity name, set of NACE codes and the same currency."
+        }
+        val alignedActivitiesGrouped = alignedActivitiesValue?.groupBy {
+                activity -> Triple(
+            activity.activityName,
+            activity.naceCodes?.toSet(),
+            activity.share?.absoluteShare?.currency
+        )
+        }
+        val duplicateAlignedActivities = alignedActivitiesGrouped?.filterValues { it.size > 1 }?.keys
+        require(duplicateAlignedActivities.isNullOrEmpty()) {
+            "There must only be a single aligned activity with the same activity name, set of NACE codes and the same currency."
+        }
+
+        val nonAlignedActivitiesMap = nonAlignedActivitiesGrouped?.mapValues {it.value[0]}
+        val alignedActivitiesMap = alignedActivitiesGrouped?.mapValues {it.value[0]}
+        val listOfIdentifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
+
+        var eligibleOrAlignedActivities : MutableList<EuTaxonomyEligibleOrAlignedActivity>? = null // return null if there is no identifier
+        for (identifier in listOfIdentifiers) {
+            if(eligibleOrAlignedActivities == null) {
+                eligibleOrAlignedActivities = emptyList()
+            }
+            val alignedActivity = alignedActivitiesMap?.get(identifier)
+            val alignedRelativeShare = alignedActivity?.share?.relativeShareInPercent
+            val nonAlignedRelativeShare = nonAlignedActivitiesMap?.get(identifier)?.share?.relativeShareInPercent
+            val relativeEligibleShareInPercent =
+                when { alignedRelativeShare == null && nonAlignedRelativeShare == null -> null
+                    else -> (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+
+                }
+            eligibleOrAlignedActivities.add(EuTaxonomyEligibleOrAlignedActivity(
+                activityName = identifier.first,
+                naceCodes = identifier.second?.toList(),
+                relativeEligibleShareInPercent = relativeEligibleShareInPercent,
+                share = alignedActivitiesMap?.get(identifier)?.share,
+                substantialContributionToClimateChangeMitigationInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToClimateChangeMitigationInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                substantialContributionToClimateChangeAdaptationInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToClimateChangeAdaptationInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                substantialContributionToTransitionToACircularEconomyInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToTransitionToACircularEconomyInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                substantialContributionToPollutionPreventionAndControlInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToPollutionPreventionAndControlInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent = determineSubstantialContributions(
+                    alignedActivity?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
+                    relativeEligibleShareInPercent
+                ),
+                enablingActivity = determineYesNoActivity(alignedActivity?.enablingActivity),
+                transitionalActivity = determineYesNoActivity(alignedActivity?.transitionalActivity),
+            ))
+        }
+
+        return eligibleOrAlignedActivities
+    }
+}
+
+private inline fun determineSubstantialContributions(
+    substantialContribution : BigDecimal?,
+    relativeEligibleShareInPrecent : BigDecimal?
+) : BigDecimal? {
+    if(substantialContribution == null) {
+        return null
+    }
+    return relativeEligibleShareInPrecent
+}
+
+private inline fun determineYesNoActivity(activity : YesNo?) : YesNo? {
+    return activity
+}
+
+/**
+ * Resolves the [dataPointBaseType] id of [dataPointType] using [specs].
+ *
+ * @param dataPointType the data point type to inspect
+ * @param specs the data point type specifications keyed by type
+ * @return the id of the data point base type, or null if unknown
+ */
+internal fun getDataPointBaseTypeId(
+    dataPointType: DataPointType,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): String? = specs[dataPointType]?.dataPointBaseType?.id
+
+/**
+ * Extracts the non-aligned and aligned activity lists from [inputs] for the EU taxonomy activity merge.
+ *
+ * The two inputs are distinguished by their [UploadedDataPoint.dataPointType]'s data point base type, resolved via
+ * [specs], rather than by their position in [inputs] or by their JSON content. Content-based discrimination (e.g.
+ * trying to deserialize into the narrower non-aligned type and checking for failure) is not reliable, since a JSON
+ * serializer producing the uploaded data may omit null fields entirely, making an aligned activity with all-null
+ * aligned-only fields structurally indistinguishable from a non-aligned activity.
+ *
+ * @param inputs the two source data points to be merged
+ * @param specs the data point type specifications used to resolve each input's role
+ * @return the extracted non-aligned and aligned activity operands
+ */
+internal inline fun <
+    reified N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
+    reified A : ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?,
+> extractEuTaxonomyActivityLists(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): EuTaxonomyActivityOperands<N, A> {
+    require(inputs.size == 2) { "Exactly two data points must be provided for the merged inputs." }
+
+    val nonAlignedInput =
+        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == NON_ALIGNED_ACTIVITIES_BASE_TYPE }
+            ?: throw IllegalArgumentException(
+                "Exactly one input of base type $NON_ALIGNED_ACTIVITIES_BASE_TYPE must be provided for the merge.",
+            )
+    val alignedInput =
+        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == ALIGNED_ACTIVITIES_BASE_TYPE }
+            ?: throw IllegalArgumentException(
+                "Exactly one input of base type $ALIGNED_ACTIVITIES_BASE_TYPE must be provided for the merge.",
+            )
+
+    val nonAlignedActivities = defaultObjectMapper.readValue<N>(nonAlignedInput.dataPoint)
+    val alignedActivities = defaultObjectMapper.readValue<A>(alignedInput.dataPoint)
+    val nonAlignedActivitiesValue = nonAlignedActivities?.value
+    val alignedActivitiesValue = alignedActivities?.value
+    return EuTaxonomyActivityOperands(
+        nonAlignedActivities = nonAlignedActivities,
+        alignedActivities = alignedActivities,
+        nonAlignedActivitiesValue = nonAlignedActivitiesValue,
+        alignedActivitiesValue = alignedActivitiesValue,
+    )
+}
+

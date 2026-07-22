@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
@@ -90,6 +92,25 @@ enum class DataPointConversion(
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint = convertIdentity(inputs, targetType, specs, sourceFrameworksByType)
+    },
+
+    EU_TAXONOMY_ACTVITY_MERGE("EuTaxonomyActivityMerge") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): String =
+            "This activities list was mapped from the EU Taxonomy (2020/852) framework by merging the activities in the activity lists " +
+                getNumberedSourceReferences(inputs).joinToString(", ") +
+                getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertEuTaxonomyActivityMerge(inputs, targetType, specs, sourceFrameworksByType)
     }, ;
 
     /**
@@ -286,6 +307,38 @@ enum class DataPointConversion(
                 )
             }
 
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
+
+    protected fun convertEuTaxonomyActivityMerge(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val activityLists =
+            extractEuTaxonomyActivityLists<
+                ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
+                ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
+            >(inputs, specs)
+        val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
+        val calculatedDataPoint =
+            ExtendedDataPoint(
+                value = activityLists.mergeLists(),
+                quality = mergeQuality(sources.map { it?.quality }),
+                comment =
+                    createComment(
+                        inputs,
+                        specs,
+                        listOfNotNull(activityLists.alignedActivities, activityLists.nonAlignedActivities),
+                        sourceFrameworksByType,
+                    ),
+                dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
+            )
         return createUploadedDataPoint(
             inputs = inputs,
             targetType = targetType,
