@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.Re
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.custom.EuTaxonomyEligibleOrAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackend.model.generics.AmountWithCurrency
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
@@ -152,58 +153,85 @@ internal data class EuTaxonomyActivityOperands<
                     else -> (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
                 }
             eligibleOrAlignedActivities.add(
-                EuTaxonomyEligibleOrAlignedActivity(
-                    activityName = identifier.first,
-                    naceCodes = identifier.second?.toList(),
-                    relativeEligibleShareInPercent = relativeEligibleShareInPercent,
-                    share =
-                        RelativeAndAbsoluteFinancialShare(
-                            absoluteShare = alignedAbsoluteShare,
-                            relativeShareInPercent = alignedRelativeShare,
-                        ),
-                    substantialContributionToClimateChangeMitigationInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map { it.substantialContributionToClimateChangeMitigationInPercent },
-                            relativeEligibleShareInPercent,
-                        ),
-                    substantialContributionToClimateChangeAdaptationInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map { it.substantialContributionToClimateChangeAdaptationInPercent },
-                            relativeEligibleShareInPercent,
-                        ),
-                    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map {
-                                it.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
-                            },
-                            relativeEligibleShareInPercent,
-                        ),
-                    substantialContributionToTransitionToACircularEconomyInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map { it.substantialContributionToTransitionToACircularEconomyInPercent },
-                            relativeEligibleShareInPercent,
-                        ),
-                    substantialContributionToPollutionPreventionAndControlInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map { it.substantialContributionToPollutionPreventionAndControlInPercent },
-                            relativeEligibleShareInPercent,
-                        ),
-                    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent =
-                        determineSubstantialContributions(
-                            alignedActivities?.map {
-                                it.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
-                            },
-                            relativeEligibleShareInPercent,
-                        ),
-                    enablingActivity = determineYesNoActivity(alignedActivities?.map { it.enablingActivity }),
-                    transitionalActivity = determineYesNoActivity(alignedActivities?.map { it.transitionalActivity }),
+                createEuTaxonomyEligibleOrAlignedActivity(
+                    identifier,
+                    alignedAbsoluteShare,
+                    alignedRelativeShare,
+                    relativeEligibleShareInPercent,
+                    alignedActivities,
                 ),
             )
         }
-
         return eligibleOrAlignedActivities
     }
 }
+
+/**
+ * Builds a single merged [EuTaxonomyEligibleOrAlignedActivity] for one activity [identifier], combining the
+ * pre-computed shares with the per-criterion substantial contributions and flags of the aligned activities
+ * sharing that identifier.
+ *
+ * @param identifier the activity name, NACE codes, and currency shared by the merged activities
+ * @param alignedAbsoluteShare the combined absolute share reported by the aligned activities, or `null` if none
+ * @param alignedRelativeShare the combined relative share in percent reported by the aligned activities, or `null` if none
+ * @param relativeEligibleShareInPercent the combined eligible share in percent across aligned and non-aligned activities
+ * @param alignedActivities the aligned activities sharing [identifier], used to derive the substantial
+ *   contributions and yes/no flags
+ * @return the merged eligible-or-aligned activity
+ */
+private fun createEuTaxonomyEligibleOrAlignedActivity(
+    identifier: Triple<Activity, Set<String>?, String?>,
+    alignedAbsoluteShare: AmountWithCurrency?,
+    alignedRelativeShare: BigDecimal?,
+    relativeEligibleShareInPercent: BigDecimal?,
+    alignedActivities: List<EuTaxonomyAlignedActivity>?,
+): EuTaxonomyEligibleOrAlignedActivity =
+    EuTaxonomyEligibleOrAlignedActivity(
+        activityName = identifier.first,
+        naceCodes = identifier.second?.toList(),
+        relativeEligibleShareInPercent = relativeEligibleShareInPercent,
+        share =
+            RelativeAndAbsoluteFinancialShare(
+                absoluteShare = alignedAbsoluteShare,
+                relativeShareInPercent = alignedRelativeShare,
+            ),
+        substantialContributionToClimateChangeMitigationInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map { it.substantialContributionToClimateChangeMitigationInPercent },
+                relativeEligibleShareInPercent,
+            ),
+        substantialContributionToClimateChangeAdaptationInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map { it.substantialContributionToClimateChangeAdaptationInPercent },
+                relativeEligibleShareInPercent,
+            ),
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map {
+                    it.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+                },
+                relativeEligibleShareInPercent,
+            ),
+        substantialContributionToTransitionToACircularEconomyInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map { it.substantialContributionToTransitionToACircularEconomyInPercent },
+                relativeEligibleShareInPercent,
+            ),
+        substantialContributionToPollutionPreventionAndControlInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map { it.substantialContributionToPollutionPreventionAndControlInPercent },
+                relativeEligibleShareInPercent,
+            ),
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent =
+            determineSubstantialContributions(
+                alignedActivities?.map {
+                    it.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+                },
+                relativeEligibleShareInPercent,
+            ),
+        enablingActivity = determineYesNoActivity(alignedActivities?.map { it.enablingActivity }),
+        transitionalActivity = determineYesNoActivity(alignedActivities?.map { it.transitionalActivity }),
+    )
 
 /**
  * Determines the merged substantial contribution for a single criterion from the aligned activities sharing
