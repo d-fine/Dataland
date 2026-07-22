@@ -614,7 +614,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdBeta}`);
   });
 
-  it.only('Check display of error message.', () => {
+  it('Check display of error message.', () => {
     mountQaAssurancePageWithMocks();
     cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, (request) => {
       request.reply(403, {
@@ -631,7 +631,6 @@ describe('Component tests for the Quality Assurance page', () => {
     }).as('createDatasetReviewForbidden');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
     cy.wait('@createDatasetReviewForbidden');
-    cy.pause();
     cy.get('[data-test="confirmation-modal-error-message"]')
       .should('be.visible')
       .and('contain', 'Access Denied: Access to this resource has been denied.');
