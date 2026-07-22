@@ -106,7 +106,7 @@ describeIf(
       })
     );
 
-    it.only('Check creating a Judgement and reassigning the Judge works as expected', () => {
+    it('Check creating a Judgement and reassigning the Judge works as expected', () => {
       const dataSetId = uploadedDataMetaInfo.dataId;
       checkoutDataset(dataSetId);
       startJudgement(dataSetId);
