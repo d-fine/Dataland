@@ -3,9 +3,11 @@ package org.dataland.datalandbackend.services.datapoints
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.RelativeAndAbsoluteFinancialShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.custom.EuTaxonomyEligibleOrAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.generics.AmountWithCurrency
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
@@ -81,108 +83,143 @@ internal inline fun <
 
 internal data class EuTaxonomyActivityOperands<
     N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
-    A: ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?
+    A : ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?,
 >(
     val nonAlignedActivities: N?,
     val alignedActivities: A?,
     val nonAlignedActivitiesValue: Iterable<EuTaxonomyActivity>?,
     val alignedActivitiesValue: Iterable<EuTaxonomyAlignedActivity>?,
-){
+) {
     fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
-        val nonAlignedActivitiesGrouped = nonAlignedActivitiesValue?.groupBy {
-            activity -> Triple(
-                activity.activityName,
-                activity.naceCodes?.toSet(),
-                activity.share?.absoluteShare?.currency
-            )
-        }
-        val duplicateNonAlignedActivities = nonAlignedActivitiesGrouped?.filterValues { it.size > 1 }?.keys
-        require(duplicateNonAlignedActivities.isNullOrEmpty()) {
-            "There must only be a single non-aligned activity with the same activity name, set of NACE codes and the same currency."
-        }
-        val alignedActivitiesGrouped = alignedActivitiesValue?.groupBy {
-                activity -> Triple(
-            activity.activityName,
-            activity.naceCodes?.toSet(),
-            activity.share?.absoluteShare?.currency
-        )
-        }
-        val duplicateAlignedActivities = alignedActivitiesGrouped?.filterValues { it.size > 1 }?.keys
-        require(duplicateAlignedActivities.isNullOrEmpty()) {
-            "There must only be a single aligned activity with the same activity name, set of NACE codes and the same currency."
-        }
-
-        val nonAlignedActivitiesMap = nonAlignedActivitiesGrouped?.mapValues {it.value[0]}
-        val alignedActivitiesMap = alignedActivitiesGrouped?.mapValues {it.value[0]}
+        val nonAlignedActivitiesMap =
+            nonAlignedActivitiesValue?.groupBy { activity ->
+                Triple(
+                    activity.activityName,
+                    activity.naceCodes?.toSet(),
+                    activity.share?.absoluteShare?.currency,
+                )
+            }
+        val alignedActivitiesMap =
+            alignedActivitiesValue?.groupBy { activity ->
+                Triple(
+                    activity.activityName,
+                    activity.naceCodes?.toSet(),
+                    activity.share?.absoluteShare?.currency,
+                )
+            }
         val listOfIdentifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
 
-        var eligibleOrAlignedActivities : MutableList<EuTaxonomyEligibleOrAlignedActivity>? = null // return null if there is no identifier
+        var eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity>? = null // return null if there is no identifier
         for (identifier in listOfIdentifiers) {
-            if(eligibleOrAlignedActivities == null) {
+            if (eligibleOrAlignedActivities == null) {
                 eligibleOrAlignedActivities = emptyList()
             }
-            val alignedActivity = alignedActivitiesMap?.get(identifier)
-            val alignedRelativeShare = alignedActivity?.share?.relativeShareInPercent
-            val nonAlignedRelativeShare = nonAlignedActivitiesMap?.get(identifier)?.share?.relativeShareInPercent
-            val relativeEligibleShareInPercent =
-                when { alignedRelativeShare == null && nonAlignedRelativeShare == null -> null
-                    else -> (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+            val alignedActivities = alignedActivitiesMap?.get(identifier)
+            val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
+            val alignedAbsoluteShare =
+                AmountWithCurrency(
+                    // When no aligned activity with identifier exist or all share.absoluteShare.amount are null, return null
+                    amount =
+                        when {
+                            (alignedActivities == null || alignedActivities.none { it.share?.absoluteShare?.amount != null }) -> null
+                            else -> alignedActivities.sumOf { it.share?.absoluteShare?.amount ?: BigDecimal.ZERO }
+                        },
+                    currency = identifier.third,
+                )
+            val alignedRelativeShare =
+                when {
+                    // When no aligned activity with identifier exist or all relativeShareInPercent are null, return null
+                    (alignedActivities == null || alignedActivities.none { it.share?.relativeShareInPercent != null }) -> null
 
+                    else -> alignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
                 }
-            eligibleOrAlignedActivities.add(EuTaxonomyEligibleOrAlignedActivity(
-                activityName = identifier.first,
-                naceCodes = identifier.second?.toList(),
-                relativeEligibleShareInPercent = relativeEligibleShareInPercent,
-                share = alignedActivitiesMap?.get(identifier)?.share,
-                substantialContributionToClimateChangeMitigationInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToClimateChangeMitigationInPercent,
-                    relativeEligibleShareInPercent
+            val nonAlignedRelativeShare =
+                when {
+                    // When no non-aligned activity with identifier exist or all relativeShareInPercent are null, return null
+                    (nonAlignedActivities == null || nonAlignedActivities.none { it.share?.relativeShareInPercent != null }) -> null
+
+                    else -> nonAlignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
+                }
+            val relativeEligibleShareInPercent =
+                when {
+                    alignedRelativeShare == null && nonAlignedRelativeShare == null -> null
+                    else -> (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+                }
+            eligibleOrAlignedActivities.add(
+                EuTaxonomyEligibleOrAlignedActivity(
+                    activityName = identifier.first,
+                    naceCodes = identifier.second?.toList(),
+                    relativeEligibleShareInPercent = relativeEligibleShareInPercent,
+                    share =
+                        RelativeAndAbsoluteFinancialShare(
+                            absoluteShare = alignedAbsoluteShare,
+                            relativeShareInPercent = alignedRelativeShare,
+                        ),
+                    substantialContributionToClimateChangeMitigationInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map { it.substantialContributionToClimateChangeMitigationInPercent },
+                            relativeEligibleShareInPercent,
+                        ),
+                    substantialContributionToClimateChangeAdaptationInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map { it.substantialContributionToClimateChangeAdaptationInPercent },
+                            relativeEligibleShareInPercent,
+                        ),
+                    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map {
+                                it.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent
+                            },
+                            relativeEligibleShareInPercent,
+                        ),
+                    substantialContributionToTransitionToACircularEconomyInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map { it.substantialContributionToTransitionToACircularEconomyInPercent },
+                            relativeEligibleShareInPercent,
+                        ),
+                    substantialContributionToPollutionPreventionAndControlInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map { it.substantialContributionToPollutionPreventionAndControlInPercent },
+                            relativeEligibleShareInPercent,
+                        ),
+                    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent =
+                        determineSubstantialContributions(
+                            alignedActivities?.map {
+                                it.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent
+                            },
+                            relativeEligibleShareInPercent,
+                        ),
+                    enablingActivity = determineYesNoActivity(alignedActivities?.map { it.enablingActivity }),
+                    transitionalActivity = determineYesNoActivity(alignedActivities?.map { it.transitionalActivity }),
                 ),
-                substantialContributionToClimateChangeAdaptationInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToClimateChangeAdaptationInPercent,
-                    relativeEligibleShareInPercent
-                ),
-                substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-                    relativeEligibleShareInPercent
-                ),
-                substantialContributionToTransitionToACircularEconomyInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToTransitionToACircularEconomyInPercent,
-                    relativeEligibleShareInPercent
-                ),
-                substantialContributionToPollutionPreventionAndControlInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToPollutionPreventionAndControlInPercent,
-                    relativeEligibleShareInPercent
-                ),
-                substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent = determineSubstantialContributions(
-                    alignedActivity?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-                    relativeEligibleShareInPercent
-                ),
-                enablingActivity = determineYesNoActivity(alignedActivity?.enablingActivity),
-                transitionalActivity = determineYesNoActivity(alignedActivity?.transitionalActivity),
-            ))
+            )
         }
 
         return eligibleOrAlignedActivities
     }
 }
 
-private inline fun determineSubstantialContributions(
-    substantialContribution : BigDecimal?,
-    relativeEligibleShareInPrecent : BigDecimal?
-) : BigDecimal? {
-    if(substantialContribution == null) {
-        return null
+private fun determineSubstantialContributions(
+    substantialContributions: List<BigDecimal?>?,
+    relativeEligibleShareInPrecent: BigDecimal?,
+): BigDecimal? {
+    val maxSubstantialContribution = substantialContributions?.maxWithOrNull(nullsFirst())
+    return when {
+        maxSubstantialContribution == null -> null
+        maxSubstantialContribution > BigDecimal.ZERO -> relativeEligibleShareInPrecent
+        maxSubstantialContribution == BigDecimal.ZERO -> BigDecimal.ZERO
+        else -> throw IllegalArgumentException("A substantial contribution must not be negative.")
     }
-    return relativeEligibleShareInPrecent
 }
 
-private inline fun determineYesNoActivity(activity : YesNo?) : YesNo? {
-    return activity
+private fun determineYesNoActivity(activities: List<YesNo?>?): YesNo? {
+    val yesNoOrder =
+        listOf(null, YesNo.No, YesNo.Yes)
+    return activities?.maxByOrNull { yesNoOrder.indexOf(it) }
 }
 
 /**
- * Resolves the [dataPointBaseType] id of [dataPointType] using [specs].
+ * Resolves the dataPointBaseType id of [dataPointType] using [specs].
  *
  * @param dataPointType the data point type to inspect
  * @param specs the data point type specifications keyed by type
@@ -237,4 +274,3 @@ internal inline fun <
         alignedActivitiesValue = alignedActivitiesValue,
     )
 }
-
