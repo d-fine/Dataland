@@ -91,7 +91,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 GHG emissions',
             explanation:
-              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -109,7 +109,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions',
             explanation:
-              'Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).',
+              'Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -127,7 +127,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (location-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -145,7 +145,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (market-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -163,7 +163,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions',
             explanation:
-              'Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).',
+              'Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -181,7 +181,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions (location-based)',
             explanation:
-              'Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -199,7 +199,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions (market-based)',
             explanation:
-              'Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -217,7 +217,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 3 GHG emissions',
             explanation:
-              'Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -235,7 +235,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 3 upstream GHG emissions',
             explanation:
-              'Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).',
+              'Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -251,9 +251,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Scope 3 downstream GHG emissions ',
+            label: 'Scope 3 downstream GHG emissions',
             explanation:
-              'Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).',
+              'Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -261,7 +261,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes?.value,
                   'Tonnes'
                 ),
-                'Scope 3 downstream GHG emissions ',
+                'Scope 3 downstream GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -271,7 +271,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions',
             explanation:
-              'Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share).',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii) and Regulation (EU) 2022/1288, Annex I, top (4) and formula (2)+(3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -289,7 +289,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions (location-based)',
             explanation:
-              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -307,7 +307,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions (market-based)',
             explanation:
-              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -343,7 +343,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Enterprise Value',
             explanation:
-              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -361,7 +361,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total Revenue',
             explanation:
-              "Total revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
+              "Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm\'s total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -378,7 +378,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Carbon footprint',
-            explanation: 'Tonnes of GHG emissions per million EUR enterprise value.',
+            explanation:
+              'Tons of GHG emissions per million EUR enterprise value. See also (EU) 2022/1288 Annex I formula (2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -397,7 +398,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity',
             explanation:
-              'Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.',
+              'Tons of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -415,7 +416,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 1',
             explanation:
-              'Tonnes of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
+              'Tons of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions). See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -433,7 +434,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 2',
             explanation:
-              'Tonnes of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
+              'Tons of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -451,7 +452,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 3',
             explanation:
-              'Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
+              'Tons of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -469,7 +470,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 4',
             explanation:
-              'Tonnes of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
+              'Tons of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -487,7 +488,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Fossil Fuel Sector Exposure',
             explanation:
-              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).',
+              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 4',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -503,7 +504,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Financed scope 1 and scope 2 emissions',
-            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies.',
+            explanation:
+              'The sum of scope 1 and scope 2 emissions of financed companies.\nIs part of scope 3 emissions and can be reported in Category 15 (Investments).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -520,7 +522,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Financed scope 3 emissions',
-            explanation: 'The scope 3 emissions of financed companies.',
+            explanation:
+              'The scope 3 emissions of financed companies.\nIs part of scope 3 emissions and can be reported in Category 15 (Investments).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -546,7 +549,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Renewable Energy Production',
             explanation:
-              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
+              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -564,7 +567,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Renewable Energy Consumption',
             explanation:
-              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
+              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -582,7 +585,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Production',
             explanation:
-              'Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
+              'Total value of non-renewable energy produced, meaning energy from sources other than renewable sources. See also Regulation (EU) 2022/1288, Annex I, top (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -600,7 +603,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Relative Non-Renewable Energy Production',
             explanation:
-              'Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).',
+              'Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable). See also Regulation (EU) 2022/1288, Annex I, top (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -618,7 +621,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption',
             explanation:
-              'Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
+              'Total value of non-renewable energy consumed, meaning energy from sources other than renewable sources. See also Regulation (EU) 2022/1288, Annex I, top (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -636,7 +639,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Relative Non-Renewable Energy Consumption',
             explanation:
-              'Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).',
+              'Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable). See also Regulation (EU) 2022/1288, Annex I, top (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -653,7 +656,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Applicable High Impact Climate Sectors',
-            explanation: 'Sector applicable activities.',
+            explanation:
+              'Sector applicable activities. See also Regulation (EU) 2022/1288, Annex I, top (9).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatHighImpactClimateSectorForDisplay(
@@ -666,7 +670,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total High Impact Climate Sector Energy Consumption',
             explanation:
-              '"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).',
+              '"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1). See also Regulation (EU) 2022/1288, Annex I, top (9).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -684,7 +688,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Fossil Fuels',
             explanation:
-              'Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from fossil fuels (sum of crude oil, natural gas, lignite and coal, etc.) (non-renewable energy source).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -702,7 +706,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Crude Oil',
             explanation:
-              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -720,7 +724,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Natural Gas',
             explanation:
-              'Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -738,7 +742,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Lignite',
             explanation:
-              'Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -756,7 +760,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Coal',
             explanation:
-              'Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -774,7 +778,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Nuclear Energy',
             explanation:
-              'Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -792,7 +796,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Other',
             explanation:
-              'Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
+              'Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse sustainability indicator 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -818,7 +822,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Primary Forest And Wooded Land Of Native Species Exposure',
             explanation:
-              'Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.',
+              'Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. See also Regulation (EU) 2022/1288, Annex I, top (19).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -835,7 +839,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Protected Areas Exposure',
             explanation:
-              'Sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions. For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.',
+              'Sites or operations that are partially or fully located in or near protected or biodiversity-sensitive areas, where their activities adversely impact these regions.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -850,7 +854,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Rare Or Endangered Ecosystems Exposure',
             explanation:
-              'Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).',
+              'Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. See also Regulation (EU) 2022/1288, Annex I, top 18(a).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -867,7 +871,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Highly Biodiverse Grassland Exposure',
             explanation:
-              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.',
+              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -884,7 +888,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             explanation:
-              'Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
+              'Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EC) No 1893/2006, Annex I, Division 20.2.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 9',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -901,7 +905,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Land Degradation Desertification Soil Sealing Exposure',
             explanation:
-              'Involvement in activities, which cause land degradation, desertification or soil sealing. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.',
+              'Involvement in activities, which cause land degradation, desertification or soil sealing.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -918,7 +922,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Sustainable Agriculture Policy',
             explanation:
-              'Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.',
+              'Existence of sustainable land or agriculture practices or policies.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 11',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -933,7 +937,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Sustainable Oceans And Seas Policy',
             explanation:
-              'Existence of sustainable oceans or seas practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.',
+              'Existence of sustainable oceans or seas practices or policies.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -950,7 +954,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Threatened Species Exposure',
             explanation:
-              'Operations, which affect threatened species. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .',
+              'Operations, which affect threatened species. See also Regulation (EU) 2022/1288, Annex I, top (20).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 14.1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -965,7 +969,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Biodiversity Protection Policy',
             explanation:
-              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2 .',
+              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 14.2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -980,7 +984,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Deforestation Policy',
             explanation:
-              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.',
+              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See also Regulation (EU) 2022/1288, Annex I, top (21).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 15',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1003,7 +1007,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions To Water',
             explanation:
-              'Emissions to water in tonnes (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See  Regulation (EU) 2022/1288, Annex I, top (12).',
+              'Emissions to water in tons (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See Regulation (EU) 2022/1288, Annex I, top (12).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 8',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1016,9 +1020,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Water Consumption',
+            label: 'Water Withdrawal',
             explanation:
-              'Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
+              'Amount of water withdrawn by the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1026,7 +1030,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.environmental?.water?.waterConsumptionInCubicMeters?.value,
                   'Cubic Meters'
                 ),
-                'Water Consumption',
+                'Water Withdrawal',
                 dataset.environmental?.water?.waterConsumptionInCubicMeters
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -1036,7 +1040,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Water Reused',
             explanation:
-              'Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .',
+              'Amount of water recycled or reused by the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1049,9 +1053,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Relative Water Usage',
+            label: 'Water Withdrawal Intensity',
             explanation:
-              'Amount in cubic meters of fresh water used per million EUR revenue. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1.',
+              'Amount in cubic meters of water withdrawn per million EUR revenue.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1059,7 +1063,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
                   'Cubic Meters \/ \u20ACM Revenue'
                 ),
-                'Relative Water Usage',
+                'Water Withdrawal Intensity',
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -1069,7 +1073,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Water Management Policy',
             explanation:
-              'Existence of policies and procedures for water management. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.',
+              'Existence of a policy for water management.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factors 7, 8',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1084,7 +1088,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'High Water Stress Area Exposure',
             explanation:
-              'Sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
+              'Sites or operations that are located, either partially or entirely, in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 8',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1107,7 +1111,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Hazardous and Radioactive Waste',
             explanation:
-              'Tonnes of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactice waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).',
+              'Tons of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactive waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 9',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1125,7 +1129,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Recycled Waste',
             explanation:
-              'Tonnes of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17) and table 2, indicator nr. 13.',
+              'Tons of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1148,7 +1152,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Inorganic Pollutants',
             explanation:
-              'Tonnes of emissions by inorganic pollutants. Inorganic pollutants include those resulting from radiant energy, noise, heat, or light, as well as substances like arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, iron, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27) and table 2, indicator nr. 1.',
+              'Tons of emissions by inorganic pollutants. Inorganic pollutants include substances like arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1166,7 +1170,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Air Pollutants',
             explanation:
-              'Tonnes of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and table 2, indicator nr. 2 and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.',
+              'Tons of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1184,7 +1188,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Ozone Depletion Substances',
             explanation:
-              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and table 2, indicator nr. 3 and the Montreal Protocol on Substances that Deplete the Ozone Layer.",
+              "Tons of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and the Montreal Protocol on Substances that Deplete the Ozone Layer.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 3",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1202,7 +1206,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Carbon Reduction Initiatives',
             explanation:
-              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.',
+              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 4',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1233,7 +1237,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Human Rights Legal Proceedings',
-            explanation: 'Involvement in Human Rights related legal proceedings.',
+            explanation:
+              'Involvement in Human Rights related legal proceedings.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 14',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1249,7 +1254,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'ILO Core Labour Standards',
-            explanation: 'Abidance by the ILO Core Labour Standards.',
+            explanation:
+              'Abidance by the ILO Core Labour Standards.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1277,7 +1283,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Corruption Legal Proceedings',
-            explanation: 'Involvement in corruption-related legal proceedings.',
+            explanation:
+              'Involvement in corruption-related legal proceedings.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 16',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1311,7 +1318,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Due Diligence Policy',
             explanation:
-              'Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.',
+              'Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1327,7 +1334,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Child Labour',
-            explanation: 'Existence of policies in place to abolish all forms of child labour.',
+            explanation:
+              'Existence of policies in place to abolish all forms of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1341,7 +1349,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Forced Labour',
-            explanation: 'Existence of policies in place to abolish all forms of forced labour.',
+            explanation:
+              'Existence of policies in place to abolish all forms of forced labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1373,7 +1382,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'ISO 14001 Certificate',
-            explanation: 'The company is ISO 14001 certified.',
+            explanation: 'The whole company is ISO 14001 certified.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1388,7 +1397,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Policy against Bribery and Corruption',
             explanation:
-              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.',
+              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 15',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1452,16 +1461,16 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Violation Of Tax Rules And Regulation',
+            label: 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
             explanation:
-              'Involvement in a violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
+              'Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value
                 ),
-                'Violation Of Tax Rules And Regulation',
+                'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
                 dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1471,7 +1480,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'UN Global Compact Principles Compliance Policy',
             explanation:
-              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1488,7 +1497,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'OECD Guidelines For Multinational Enterprises Grievance Handling',
             explanation:
-              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
+              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1505,7 +1514,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Average Gross Hourly Earnings Male Employees',
-            explanation: 'Average gross hourly earnings of male employees',
+            explanation:
+              'Average gross hourly earnings of male employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
@@ -1518,7 +1528,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Average Gross Hourly Earnings Female Employees',
-            explanation: 'Average gross hourly earnings of female employees',
+            explanation:
+              'Average gross hourly earnings of female employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
@@ -1532,7 +1543,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Unadjusted gender pay gap',
             explanation:
-              '(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).',
+              '(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1550,7 +1561,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Female Board Members - Supervisory Board',
             explanation:
-              'Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
+              'Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1567,7 +1578,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Female Board Members - Board of Directors',
-            explanation: 'Number of females on the board of directors of the company',
+            explanation:
+              'Number of females on the board of directors of the company\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1585,7 +1597,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Male Board Members - Supervisory Board',
             explanation:
-              'Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company',
+              'Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1602,7 +1614,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Male Board Members - Board of Directors',
-            explanation: 'Number of males on the board of directors of the company',
+            explanation:
+              'Number of males on the board of directors of the company\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1620,7 +1633,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Board gender diversity - Supervisory Board',
             explanation:
-              'Percentage of female board members among all supervisory board members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
+              'Percentage of female board members among all supervisory board members.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1638,7 +1651,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Board gender diversity - Board of Directors',
             explanation:
-              'Percentage of female board members among all board of directors members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
+              'Percentage of female board members among all board of directors members.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1656,7 +1669,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Controversial Weapons Exposure',
             explanation:
-              'Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.',
+              'Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 14',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1673,7 +1686,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Workplace Accident Prevention Policy',
             explanation:
-              'Existence of a workplace accident prevention policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.',
+              'Existence of a workplace accident prevention policy.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1690,7 +1703,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Rate Of Accidents',
             explanation:
-              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 2.',
+              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1704,7 +1717,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Workdays Lost',
-            explanation: 'Number of workdays lost to injuries, accidents, fatalities or illness in total',
+            explanation:
+              'Number of workdays lost to injuries, accidents, fatalities or illness in total.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1719,7 +1733,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Supplier Code Of Conduct',
             explanation:
-              'Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.',
+              'Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labour, and forced labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 4',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1734,7 +1748,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Grievance Handling Mechanism',
             explanation:
-              'Existence of a grievance/complaints handling mechanism related to employee matters. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.',
+              'Existence of a grievance/complaints handling mechanism related to employee matters.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 5',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1751,7 +1765,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Whistleblower Protection Policy',
             explanation:
-              'Existence of a policy on the protection of whistleblowers. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.',
+              'Existence of a policy on the protection of whistleblowers. See also Regulation (EU) 2022/1288, Annex I, top (26).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 6',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1768,7 +1782,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Reported Incidents Of Discrimination',
             explanation:
-              'Number of reported discrimination-related incidents. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.1 .',
+              'Number of reported discrimination-related incidents.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 7.1',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1786,7 +1800,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Sanctioned Incidents Of Discrimination',
             explanation:
-              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.2 .',
+              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 7.2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1804,7 +1818,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Excessive CEO pay ratio',
             explanation:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 8',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1850,7 +1864,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Policy',
             explanation:
-              'Existence of a human rights policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.',
+              'Existence of a human rights policy.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 9',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1865,7 +1879,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Due Diligence',
             explanation:
-              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
+              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1880,7 +1894,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Trafficking In Human Beings Policy',
             explanation:
-              'Existence of a policy against trafficking in human beings. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.',
+              'Existence of a policy against trafficking in human beings.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 11',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1893,14 +1907,14 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Child Labour Incidents',
+            label: 'Risk of Child Labour Incidents',
             explanation:
-              'Reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
+              'Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
-                'Reported Child Labour Incidents',
+                'Risk of Child Labour Incidents',
                 dataset.social?.humanRights?.reportedChildLabourIncidents
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1908,16 +1922,16 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Forced Or Compulsory Labour Incidents',
+            label: 'Risk of Forced Or Compulsory Labour Incidents',
             explanation:
-              'Reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
+              'Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
                   dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value
                 ),
-                'Reported Forced Or Compulsory Labour Incidents',
+                'Risk of Forced Or Compulsory Labour Incidents',
                 dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
@@ -1927,7 +1941,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Number Of Reported Incidents Of Human Rights Violations',
             explanation:
-              'Number of cases of severe human rights issues and incidents connected to the company. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 14. ',
+              'Number of cases of severe human rights issues and incidents connected to the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 14',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1953,7 +1967,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Cases of Insufficient Action against Bribery and Corruption',
             explanation:
-              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 16. ',
+              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 16',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1970,9 +1984,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Reported Convictions Of Bribery and Corruption',
+            label: 'Number of Reported Convictions Of Bribery and Corruption',
             explanation:
-              'Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
+              'Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1980,7 +1994,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption?.value,
                   ''
                 ),
-                'Reported Convictions Of Bribery and Corruption',
+                'Number of Reported Convictions Of Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -1990,7 +2004,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total Amount Of Reported Fines Of Bribery and Corruption',
             explanation:
-              'Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
+              'Amount of fines for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(

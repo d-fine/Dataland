@@ -100,7 +100,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'unGlobalCompactPrinciplesCompliancePolicy',
             label: 'UN Global Compact Principles Compliance Policy',
-            description: 'Existence of a policy to monitor compliance with the UNGC principles.',
+            description:
+              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11',
             unit: '',
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -119,7 +120,8 @@ export const eutaxonomyNonFinancialsDataModel = [
           {
             name: 'iloCoreLabourStandards',
             label: 'ILO Core Labour Standards',
-            description: 'Abidance by the ILO Core Labour Standards.',
+            description:
+              'Abidance by the ILO Core Labour Standards. Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14',
             unit: '',
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -129,7 +131,7 @@ export const eutaxonomyNonFinancialsDataModel = [
             name: 'humanRightsDueDiligence',
             label: 'Human Rights Due Diligence',
             description:
-              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.',
+              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10',
             unit: '',
             component: 'YesNoExtendedDataPointFormField',
             required: false,

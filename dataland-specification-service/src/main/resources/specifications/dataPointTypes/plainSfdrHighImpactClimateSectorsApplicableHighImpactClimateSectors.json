@@ -1,7 +1,7 @@
 {
   "id" : "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
   "name" : "Applicable High Impact Climate Sectors",
-  "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L).",
+  "businessDefinition" : "Sector applicable activities. See also Regulation (EU) 2022/1288, Annex I, top (9).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6",
   "dataPointBaseTypeId" : "plainSfdrHighImpactClimateSectors",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

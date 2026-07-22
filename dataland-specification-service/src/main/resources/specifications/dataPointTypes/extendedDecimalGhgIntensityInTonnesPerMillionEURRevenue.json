@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue",
   "name" : "GHG intensity",
-  "businessDefinition" : "Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.",
+  "businessDefinition" : "Tons of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

@@ -16,7 +16,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).""",
+        description = """Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -33,7 +34,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).""",
+        description = """Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -51,7 +53,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -69,7 +72,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).""",
+        description = """Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -86,7 +90,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).""",
+        description = """Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -103,7 +108,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).""",
+        description = """Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -120,7 +126,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).""",
+        description = """Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -138,7 +145,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).""",
+        description = """Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -155,7 +163,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).""",
+        description = """Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -172,7 +181,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope3UpstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).""",
+        description = """Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -189,7 +199,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope3DownstreamGhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share).""",
+        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii) and Regulation (EU) 2022/1288, Annex I, top (4) and formula (2)+(3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -206,7 +217,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).""",
+        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -223,7 +235,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope1And2And3GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).""",
+        description = """Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(i)+(ii)+(iii).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -257,7 +270,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope4GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). """,
+        description = """The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -274,7 +288,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val enterpriseValueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total revenue in EUR for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time.""",
+        description = """Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm's total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -291,7 +306,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val totalRevenueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of GHG emissions per million EUR enterprise value.""",
+        description = """Tons of GHG emissions per million EUR enterprise value. See also (EU) 2022/1288 Annex I formula (2).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 2""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -308,7 +324,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val carbonFootprintInTonnesPerMillionEUREnterpriseValue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions.""",
+        description = """Tons of GHG emissions per million EUR revenue, preferably calculated using the location-based method and the equity share approach for emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -325,7 +342,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).""",
+        description = """Tons of scope 1 GHG emissions per million EUR revenue. Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions). See also Regulation (EU) 2022/1288, Annex I, formula (3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -342,7 +360,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityScope1InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.""",
+        description = """Tons of scope 2 GHG emissions per million EUR revenue. Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -359,7 +378,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityScope2InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.""",
+        description = """Tons of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -376,7 +396,7 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityScope3InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.""",
+        description = """Tons of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -393,7 +413,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val ghgIntensityScope4InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels? (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).""",
+        description = """(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 4""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -410,7 +431,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """The sum of scope 1 and scope 2 emissions of financed companies.""",
+        description = """The sum of scope 1 and scope 2 emissions of financed companies.
+Is part of scope 3 emissions and can be reported in Category 15 (Investments).""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -427,7 +449,8 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val financedScope1AndScope2Emissions: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """The scope 3 emissions of financed companies.""",
+        description = """The scope 3 emissions of financed companies.
+Is part of scope 3 emissions and can be reported in Category 15 (Investments).""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",

@@ -141,7 +141,7 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         type: 'cell',
         label: 'UN Global Compact Principles Compliance Policy',
         explanation:
-          'Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.',
+          'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -172,7 +172,8 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
       {
         type: 'cell',
         label: 'ILO Core Labour Standards',
-        explanation: 'Does the company abide by the ILO Core Labour Standards?',
+        explanation:
+          'Abidance by the ILO Core Labour Standards.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
@@ -187,7 +188,7 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         type: 'cell',
         label: 'Human Rights Due Diligence',
         explanation:
-          'Does the company have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
+          'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(

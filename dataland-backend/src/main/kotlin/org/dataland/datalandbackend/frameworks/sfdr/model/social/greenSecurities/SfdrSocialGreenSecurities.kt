@@ -13,7 +13,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class SfdrSocialGreenSecurities(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?""",
+        description = """Possession of securities in investments that are not certified as green under a future EU legal act setting up an EU Green Bond Standard.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
