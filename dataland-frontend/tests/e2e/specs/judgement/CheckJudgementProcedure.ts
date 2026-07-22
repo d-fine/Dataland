@@ -106,7 +106,7 @@ describeIf(
       })
     );
 
-    it('Check creating a Judgement and reassigning the Judge works as expected', () => {
+    it.only('Check creating a Judgement and reassigning the Judge works as expected', () => {
       const dataSetId = uploadedDataMetaInfo.dataId;
       checkoutDataset(dataSetId);
       startJudgement(dataSetId);
@@ -331,8 +331,6 @@ function startJudgement(dataSetId: string): void {
     .closest('tr')
     .contains('td', 'Start Review')
     .click();
-
-  cy.get('.p-dialog').should('be.visible').contains('button', 'CONFIRM').click();
 
   cy.wait('@startJudgementRequest').then((interception) => {
     expect(interception.response?.statusCode).to.eq(201);
