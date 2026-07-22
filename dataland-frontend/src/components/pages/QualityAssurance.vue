@@ -416,7 +416,7 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
     return;
   }
   selectedDataId.value = qaDataObject.dataId;
-  confirmStartReview();
+  void confirmStartReview();
 }
 
 /**
