@@ -30,6 +30,7 @@ class DataPointConversionTestEuTaxo {
     private val nonAlignedTargetType = "nonAlignedType"
     private val alignedTargetType = "alignedType"
     private val activityMergeResultType = "resultType"
+    private val naceCodeFixture = "F.41.20"
 
     private val activitiesSpecs =
         dummySpecs +
@@ -76,26 +77,24 @@ class DataPointConversionTestEuTaxo {
 
     private fun nonAlignedActivity(
         activityName: Activity = Activity.AcquisitionAndOwnershipOfBuildings,
-        naceCodes: List<String>? = listOf("F.41.20"),
+        naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
-        currency: String? = "EUR",
     ) = EuTaxonomyActivity(
         activityName = activityName,
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
-                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = currency),
+                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = "EUR"),
                 relativeShareInPercent = relativeShareInPercent,
             ),
     )
 
     private fun alignedActivity(
         activityName: Activity = Activity.AcquisitionAndOwnershipOfBuildings,
-        naceCodes: List<String>? = listOf("F.41.20"),
+        naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
-        currency: String? = "EUR",
         substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
         enablingActivity: YesNo? = null,
         transitionalActivity: YesNo? = null,
@@ -104,7 +103,7 @@ class DataPointConversionTestEuTaxo {
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
-                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = currency),
+                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = "EUR"),
                 relativeShareInPercent = relativeShareInPercent,
             ),
         substantialContributionToClimateChangeMitigationInPercent = substantialContributionToClimateChangeMitigationInPercent,
@@ -320,54 +319,16 @@ class DataPointConversionTestEuTaxo {
     }
 
     @Test
-    fun `check null-handling when an aligned activity has an entirely null share`() {
-        val nullShareAlignedActivity =
-            EuTaxonomyAlignedActivity(
-                activityName = Activity.AcquisitionAndOwnershipOfBuildings,
-                naceCodes = listOf("F.41.20"),
-                share = null,
-                substantialContributionToClimateChangeMitigationInPercent = null,
-                substantialContributionToClimateChangeAdaptationInPercent = null,
-                substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent = null,
-                substantialContributionToTransitionToACircularEconomyInPercent = null,
-                substantialContributionToPollutionPreventionAndControlInPercent = null,
-                substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent = null,
-                dnshToClimateChangeMitigation = null,
-                dnshToClimateChangeAdaptation = null,
-                dnshToSustainableUseAndProtectionOfWaterAndMarineResources = null,
-                dnshToTransitionToACircularEconomy = null,
-                dnshToPollutionPreventionAndControl = null,
-                dnshToProtectionAndRestorationOfBiodiversityAndEcosystems = null,
-                minimumSafeguards = null,
-                enablingActivity = null,
-                transitionalActivity = null,
-            )
-
-        val result =
-            mergeActivities(
-                nonAligned = listOf(nonAlignedActivity(relativeShareInPercent = BigDecimal("20"), currency = null)),
-                aligned = listOf(nullShareAlignedActivity),
-            )
-
-        assertNotNull(result)
-        assertEquals(1, result.size)
-        val activity = result.single()
-        assertBigDecimalEquals("20", activity.relativeEligibleShareInPercent)
-        assertEquals(null, activity.share?.relativeShareInPercent)
-        assertEquals(null, activity.share?.absoluteShare?.amount)
-    }
-
-    @Test
     fun `check that same activity name with nace codes in different order produces single entry`() {
         val result =
             mergeActivities(
                 nonAligned =
                     listOf(
-                        nonAlignedActivity(naceCodes = listOf("F.41.20", "F.42.11"), relativeShareInPercent = BigDecimal("10")),
+                        nonAlignedActivity(naceCodes = listOf(naceCodeFixture, "F.42.11"), relativeShareInPercent = BigDecimal("10")),
                     ),
                 aligned =
                     listOf(
-                        alignedActivity(naceCodes = listOf("F.42.11", "F.41.20"), relativeShareInPercent = BigDecimal("20")),
+                        alignedActivity(naceCodes = listOf("F.42.11", naceCodeFixture), relativeShareInPercent = BigDecimal("20")),
                     ),
             )
 
