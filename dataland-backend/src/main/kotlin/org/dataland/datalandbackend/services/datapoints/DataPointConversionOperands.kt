@@ -152,17 +152,18 @@ private fun determineAlignedAbsoluteShare(
     alignedActivities: List<EuTaxonomyAlignedActivity>?,
     currency: String?,
 ): AmountWithCurrency? =
-    when{
-        (alignedActivities == null || alignedActivities.all {it.share?.absoluteShare == null}) -> null
-        else -> AmountWithCurrency(
-            // When no aligned activity with identifier exist or all share.absoluteShare.amount are null, return null
-            amount =
-                when {
-                    alignedActivities.all { it.share?.absoluteShare?.amount == null } -> null
-                    else -> alignedActivities.sumOf { it.share?.absoluteShare?.amount ?: BigDecimal.ZERO }
-                },
-            currency = currency,
-        )
+    when {
+        (alignedActivities == null || alignedActivities.all { it.share?.absoluteShare == null }) -> null
+        else ->
+            AmountWithCurrency(
+                // When no aligned activity with identifier exist or all share.absoluteShare.amount are null, return null
+                amount =
+                    when {
+                        alignedActivities.all { it.share?.absoluteShare?.amount == null } -> null
+                        else -> alignedActivities.sumOf { it.share?.absoluteShare?.amount ?: BigDecimal.ZERO }
+                    },
+                currency = currency,
+            )
     }
 
 /**
@@ -217,12 +218,14 @@ private fun createEuTaxonomyEligibleOrAlignedActivity(
         activityName = identifier.first,
         naceCodes = identifier.second?.toList(),
         relativeEligibleShareInPercent = relativeEligibleShareInPercent,
-        share = when {
+        share =
+            when {
                 (alignedActivities == null || alignedActivities.all { it.share == null }) -> null
-                else -> RelativeAndAbsoluteFinancialShare(
-                    absoluteShare = alignedAbsoluteShare,
-                    relativeShareInPercent = alignedRelativeShare,
-                )
+                else ->
+                    RelativeAndAbsoluteFinancialShare(
+                        absoluteShare = alignedAbsoluteShare,
+                        relativeShareInPercent = alignedRelativeShare,
+                    )
             },
         substantialContributionToClimateChangeMitigationInPercent =
             determineSubstantialContributions(
