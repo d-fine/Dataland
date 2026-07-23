@@ -14,7 +14,6 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.Collections.emptyList
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
@@ -119,34 +118,17 @@ internal data class EuTaxonomyActivityOperands<
         var eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity>? = null // return null if there is no identifier
         for (identifier in listOfIdentifiers) {
             if (eligibleOrAlignedActivities == null) {
-                eligibleOrAlignedActivities = emptyList()
+                eligibleOrAlignedActivities = mutableListOf()
             }
             val alignedActivities = alignedActivitiesMap?.get(identifier)
             val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
             val alignedAbsoluteShare =
-                AmountWithCurrency(
-                    // When no aligned activity with identifier exist or all share.absoluteShare.amount are null, return null
-                    amount =
-                        when {
-                            (alignedActivities == null || alignedActivities.none { it.share?.absoluteShare?.amount != null }) -> null
-                            else -> alignedActivities.sumOf { it.share?.absoluteShare?.amount ?: BigDecimal.ZERO }
-                        },
+                determineAlignedAbsoluteShare(
+                    alignedActivities = alignedActivities,
                     currency = identifier.third,
                 )
-            val alignedRelativeShare =
-                when {
-                    // When no aligned activity with identifier exist or all relativeShareInPercent are null, return null
-                    (alignedActivities == null || alignedActivities.none { it.share?.relativeShareInPercent != null }) -> null
-
-                    else -> alignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
-                }
-            val nonAlignedRelativeShare =
-                when {
-                    // When no non-aligned activity with identifier exist or all relativeShareInPercent are null, return null
-                    (nonAlignedActivities == null || nonAlignedActivities.none { it.share?.relativeShareInPercent != null }) -> null
-
-                    else -> nonAlignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
-                }
+            val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
+            val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
             val relativeEligibleShareInPercent =
                 when {
                     alignedRelativeShare == null && nonAlignedRelativeShare == null -> null
@@ -165,6 +147,51 @@ internal data class EuTaxonomyActivityOperands<
         return eligibleOrAlignedActivities
     }
 }
+
+private fun determineAlignedAbsoluteShare(
+    alignedActivities: List<EuTaxonomyAlignedActivity>?,
+    currency: String?,
+): AmountWithCurrency? =
+    when{
+        (alignedActivities == null || alignedActivities.all {it.share?.absoluteShare == null}) -> null
+        else -> AmountWithCurrency(
+            // When no aligned activity with identifier exist or all share.absoluteShare.amount are null, return null
+            amount =
+                when {
+                    alignedActivities.all { it.share?.absoluteShare?.amount == null } -> null
+                    else -> alignedActivities.sumOf { it.share?.absoluteShare?.amount ?: BigDecimal.ZERO }
+                },
+            currency = currency,
+        )
+    }
+
+/**
+ * Sums the relative share in percent across the aligned activities sharing an identifier.
+ *
+ * @param alignedActivities the aligned activities sharing an identifier
+ * @return the summed relative share, or `null` if [alignedActivities] is `null` or all relativeShareInPercent
+ *   values are `null`
+ */
+private fun determineAlignedRelativeShare(alignedActivities: List<EuTaxonomyAlignedActivity>?): BigDecimal? =
+    when {
+        // When no aligned activity with identifier exist or all relativeShareInPercent are null, return null
+        (alignedActivities == null || alignedActivities.all { it.share?.relativeShareInPercent == null }) -> null
+        else -> alignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
+    }
+
+/**
+ * Sums the relative share in percent across the non-aligned activities sharing an identifier.
+ *
+ * @param nonAlignedActivities the non-aligned activities sharing an identifier
+ * @return the summed relative share, or `null` if [nonAlignedActivities] is `null` or all relativeShareInPercent
+ *   values are `null`
+ */
+private fun determineNonAlignedRelativeShare(nonAlignedActivities: List<EuTaxonomyActivity>?): BigDecimal? =
+    when {
+        // When no non-aligned activity with identifier exist or all relativeShareInPercent are null, return null
+        (nonAlignedActivities == null || nonAlignedActivities.all { it.share?.relativeShareInPercent == null }) -> null
+        else -> nonAlignedActivities.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO }
+    }
 
 /**
  * Builds a single merged [EuTaxonomyEligibleOrAlignedActivity] for one activity [identifier], combining the
@@ -190,11 +217,13 @@ private fun createEuTaxonomyEligibleOrAlignedActivity(
         activityName = identifier.first,
         naceCodes = identifier.second?.toList(),
         relativeEligibleShareInPercent = relativeEligibleShareInPercent,
-        share =
-            RelativeAndAbsoluteFinancialShare(
-                absoluteShare = alignedAbsoluteShare,
-                relativeShareInPercent = alignedRelativeShare,
-            ),
+        share = when {
+                (alignedActivities == null || alignedActivities.all { it.share == null }) -> null
+                else -> RelativeAndAbsoluteFinancialShare(
+                    absoluteShare = alignedAbsoluteShare,
+                    relativeShareInPercent = alignedRelativeShare,
+                )
+            },
         substantialContributionToClimateChangeMitigationInPercent =
             determineSubstantialContributions(
                 alignedActivities?.map { it.substantialContributionToClimateChangeMitigationInPercent },
