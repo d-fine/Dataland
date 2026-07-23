@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services.dataPoints
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.RelativeAndAbsoluteFinancialShare
@@ -9,7 +10,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackend.model.generics.AmountWithCurrency
-import org.dataland.datalandbackend.services.datapoints.EuTaxonomyActivityOperands
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
 import org.dataland.datalandbackend.utils.assertBigDecimalEquals
 import org.dataland.datalandbackend.utils.createUploadedDataPoint
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 
-class DataPointConversionTestEuTaxo {
+class DataPointConversionEuTaxonomyTest {
     private val nonAlignedRef = IdWithRef(id = "extendedEuTaxonomyNonAlignedActivitiesComponent", ref = "dummy")
     private val alignedRef = IdWithRef(id = "extendedEuTaxonomyAlignedActivitiesComponent", ref = "dummy")
     private val nonAlignedTargetType = "nonAlignedType"
@@ -125,18 +125,21 @@ class DataPointConversionTestEuTaxo {
         nonAligned: List<EuTaxonomyActivity>?,
         aligned: List<EuTaxonomyAlignedActivity>?,
     ): List<EuTaxonomyEligibleOrAlignedActivity>? {
-        val operands =
-            EuTaxonomyActivityOperands<
-                ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
-                ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
-            >(
-                nonAlignedActivities = null,
-                alignedActivities = null,
-                nonAlignedActivitiesValue = nonAligned,
-                alignedActivitiesValue = aligned,
+        val result =
+            applyTransformation(
+                listOf(createNonAlignedInput(nonAligned), createAlignedInput(aligned)),
+                activityMergeResultType,
+                "EuTaxonomyActivityMerge",
+                activitiesSpecs,
+                sourceFrameworksByType,
             )
-        return operands
-            .mergeLists()
+
+        val extendedDataPoint =
+            defaultObjectMapper.readValue<ExtendedDataPoint<List<EuTaxonomyEligibleOrAlignedActivity>?>>(
+                result.dataPoint,
+            )
+
+        return extendedDataPoint.value
             ?.sortedBy { it.activityName.name + it.naceCodes.orEmpty().joinToString() }
     }
 
