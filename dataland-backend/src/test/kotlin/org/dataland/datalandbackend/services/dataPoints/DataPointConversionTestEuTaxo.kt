@@ -76,12 +76,11 @@ class DataPointConversionTestEuTaxo {
     ).copy(dataPointType = alignedTargetType)
 
     private fun nonAlignedActivity(
-        activityName: Activity = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
     ) = EuTaxonomyActivity(
-        activityName = activityName,
+        activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
@@ -91,7 +90,6 @@ class DataPointConversionTestEuTaxo {
     )
 
     private fun alignedActivity(
-        activityName: Activity = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
@@ -99,7 +97,7 @@ class DataPointConversionTestEuTaxo {
         enablingActivity: YesNo? = null,
         transitionalActivity: YesNo? = null,
     ) = EuTaxonomyAlignedActivity(
-        activityName = activityName,
+        activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
