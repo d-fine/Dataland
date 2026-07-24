@@ -11,11 +11,22 @@ import org.dataland.datalandbackend.services.datapoints.DataPointConversion
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
 import org.dataland.datalandbackend.services.datapoints.mergeDataSources
 import org.dataland.datalandbackend.services.datapoints.mergeQuality
+import org.dataland.datalandbackend.utils.SOURCE_FRAMEWORK_ID
+import org.dataland.datalandbackend.utils.SOURCE_FRAMEWORK_NAME
 import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackend.utils.assertBigDecimalEquals
+import org.dataland.datalandbackend.utils.createCommentSourceFrameworksByType
+import org.dataland.datalandbackend.utils.createCommentSpecs
+import org.dataland.datalandbackend.utils.createDummyUploadedDataPoint
+import org.dataland.datalandbackend.utils.createFrameworkSpecification
+import org.dataland.datalandbackend.utils.createUploadedDataPoint
+import org.dataland.datalandbackend.utils.dummySpecs
+import org.dataland.datalandbackend.utils.sourceBlock
+import org.dataland.datalandbackend.utils.sourceFrameworksByType
+import org.dataland.datalandbackend.utils.sourcesSection
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -28,44 +39,10 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.stream.Stream
 
-/**
- * Creates a minimal framework specification fixture for source framework comment rendering tests.
- *
- * @param frameworkId framework identifier to set on the fixture
- * @param frameworkName framework display name to set on the fixture
- * @return a framework specification fixture
- */
-private fun createFrameworkSpecification(
-    frameworkId: String,
-    frameworkName: String,
-): FrameworkSpecification =
-    FrameworkSpecification(
-        framework = IdWithRef(id = frameworkId, ref = "dummy"),
-        name = frameworkName,
-        businessDefinition = "dummy",
-        schema = "{}",
-        referencedReportJsonPath = null,
-    )
-
 class DataPointConversionTest {
-    private val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
     private val currencyRef = IdWithRef(id = "extendedCurrency", ref = "dummy")
     private val currencyTargetType = "currencyTargetType"
-    private val sourceFrameworkName = "Test Framework"
-    private val sourceFrameworksByType =
-        mapOf("dummy" to listOf(createFrameworkSpecification("test-framework", sourceFrameworkName)))
-    private val dummySpecs =
-        mapOf(
-            "dummy" to
-                DataPointTypeSpecification(
-                    dataPointType = dummyRef,
-                    name = "dummy",
-                    businessDefinition = "dummy",
-                    dataPointBaseType = dummyRef,
-                    usedBy = emptyList(),
-                    calculationRules = emptyList(),
-                ),
-        )
+    private val sourceFrameworkName = SOURCE_FRAMEWORK_NAME
     private val currencySpecs =
         dummySpecs +
             (
@@ -80,25 +57,8 @@ class DataPointConversionTest {
                     )
             )
 
-    private fun assertBigDecimalEquals(
-        expectedValue: String,
-        actualValue: BigDecimal?,
-    ) {
-        assertEquals(0, BigDecimal(expectedValue).compareTo(actualValue))
-    }
-
-    private fun createUploadedDataPoint(dataPoint: String): UploadedDataPoint =
-        UploadedDataPoint(
-            dataPoint = dataPoint,
-            companyId = "dummy",
-            reportingPeriod = "dummy",
-            dataPointType = "dummy",
-        )
-
     companion object {
         const val ORIGINAL_COMMENT = "Original source comment"
-        const val SOURCE_FRAMEWORK_NAME = "Test Framework"
-        const val SOURCE_FRAMEWORK_ID = "source-framework"
         const val DATA_POINT_WAS_MAPPED_COMMENT = "This data point was mapped from the following source: [1]\n\n***\n\n"
         const val INPUT_HEADER_COMMENT = "[1] Input1\n"
 
@@ -234,50 +194,6 @@ class DataPointConversionTest {
         private const val DATA_POINT_WITHOUT_VALUE = "json/dataPoints/dataPointWithoutValue.json"
         private const val NUMERICA_DATA_POINT_ZERO = "json/dataPoints/numericDataPointZero.json"
 
-        private fun createDummyUploadedDataPoint(dataPointType: String) =
-            UploadedDataPoint(
-                dataPoint = "dummy",
-                companyId = "dummy",
-                reportingPeriod = "dummy",
-                dataPointType = dataPointType,
-            )
-
-        private fun createCommentSpecs(): Map<DataPointType, DataPointTypeSpecification> {
-            val dummyRef = IdWithRef(id = "dummy", ref = "dummy")
-            return mapOf(
-                "type1" to createDummySpec(dummyRef, "Input1"),
-                "type2" to createDummySpec(dummyRef, "Input2"),
-                "type3" to createDummySpec(dummyRef, "Input3"),
-            )
-        }
-
-        /**
-         * Creates source framework fixtures for the data point types used by the comment test cases.
-         *
-         * @return source framework specifications grouped by source data point type
-         */
-        private fun createCommentSourceFrameworksByType(): Map<DataPointType, List<FrameworkSpecification>> {
-            val sourceFramework = createFrameworkSpecification(SOURCE_FRAMEWORK_ID, SOURCE_FRAMEWORK_NAME)
-            return mapOf(
-                "type1" to listOf(sourceFramework),
-                "type2" to listOf(sourceFramework),
-                "type3" to listOf(sourceFramework),
-            )
-        }
-
-        private fun createDummySpec(
-            dummyRef: IdWithRef,
-            name: String,
-        ): DataPointTypeSpecification =
-            DataPointTypeSpecification(
-                dataPointType = dummyRef,
-                name = name,
-                businessDefinition = "dummy",
-                dataPointBaseType = dummyRef,
-                usedBy = emptyList(),
-                calculationRules = emptyList(),
-            )
-
         private fun calculationComment(
             formula: String,
             vararg sourceBlocks: String,
@@ -288,18 +204,6 @@ class DataPointConversionTest {
         private fun identityComment(vararg sourceBlocks: String): String =
             DATA_POINT_WAS_MAPPED_COMMENT +
                 sourcesSection(*sourceBlocks)
-
-        private fun sourcesSection(vararg sourceBlocks: String): String = sourceBlocks.joinToString(separator = "\n\n")
-
-        private fun sourceBlock(
-            index: Int,
-            sourceName: String,
-            sourceComment: String? = null,
-            frameworkName: String = SOURCE_FRAMEWORK_NAME,
-        ): String =
-            "[$index] $sourceName\n" +
-                "+ Framework: $frameworkName" +
-                (sourceComment?.let { "\n+ Comment: $it" } ?: "")
     }
 
     @ParameterizedTest
