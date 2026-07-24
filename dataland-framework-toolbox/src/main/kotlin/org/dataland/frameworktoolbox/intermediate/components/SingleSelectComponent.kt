@@ -115,6 +115,10 @@ open class SingleSelectComponent(
                                 "extractDatapointValue",
                                 "@/components/resources/dataTable/conversion/DataPoints",
                             ),
+                            TypeScriptImport(
+                                enumName,
+                                "@clients/backend",
+                            ),
                         ),
                     ),
                     label, getTypescriptFieldAccessor(),

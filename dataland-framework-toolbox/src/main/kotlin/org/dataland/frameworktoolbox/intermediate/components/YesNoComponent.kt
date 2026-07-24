@@ -54,6 +54,10 @@ class YesNoComponent(
                                 "extractDatapointValue",
                                 "@/components/resources/dataTable/conversion/DataPoints",
                             ),
+                            TypeScriptImport(
+                                "YesNoNa",
+                                "@clients/backend",
+                            ),
                         ),
                     ),
                     label, getTypescriptFieldAccessor(),
