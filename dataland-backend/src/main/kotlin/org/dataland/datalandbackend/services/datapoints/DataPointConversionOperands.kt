@@ -270,19 +270,19 @@ private fun createEuTaxonomyEligibleOrAlignedActivity(
  * an identifier, using the highest reported value (`null` is treated as lower than any value).
  *
  * @param substantialContributions the per-aligned-activity contribution values for this criterion
- * @param relativeEligibleShareInPrecent the value to return when the highest contribution is strictly positive
+ * @param relativeEligibleShareInPercent the value to return when the highest contribution is strictly positive
  * @return `null` if there is no aligned activity or all contributions are `null`; `0` if the highest
- *   contribution is `0`; otherwise [relativeEligibleShareInPrecent]
+ *   contribution is `0`; otherwise [relativeEligibleShareInPercent]
  * @throws IllegalArgumentException if the highest contribution is negative
  */
 private fun determineSubstantialContributions(
     substantialContributions: List<BigDecimal?>?,
-    relativeEligibleShareInPrecent: BigDecimal?,
+    relativeEligibleShareInPercent: BigDecimal?,
 ): BigDecimal? {
     val maxSubstantialContribution = substantialContributions?.maxWithOrNull(nullsFirst())
     return when {
         maxSubstantialContribution == null -> null
-        maxSubstantialContribution > BigDecimal.ZERO -> relativeEligibleShareInPrecent
+        maxSubstantialContribution > BigDecimal.ZERO -> relativeEligibleShareInPercent
         maxSubstantialContribution.compareTo(BigDecimal.ZERO) == 0 -> BigDecimal.ZERO // comparesTo only checks for equality in value.
         else -> throw IllegalArgumentException("A substantial contribution must not be negative.")
     }
