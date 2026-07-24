@@ -10,7 +10,8 @@ import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTa
 import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
 import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { humanizeStringOrNumber, toSafeDisplayString } from '@/utils/StringFormatter';
+import { wrapDataPointJson } from '@/utils/JudgeDialogUtils';
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check
@@ -116,6 +117,54 @@ export function wrapDisplayValueWithDatapointInformation(
       },
     } as AvailableMLDTDisplayObjectTypes;
   }
+}
+
+/**
+ * Extracts the raw `.value` field out of a stored data point JSON string.
+ *
+ * This is the "by-datapoint" equivalent of walking a full framework dataset down to a
+ * single field's value: instead of a dataset-relative accessor (e.g. `dataset.foo.bar.value`),
+ * this works directly on a single stored data point's own JSON (e.g. a QA report's
+ * `correctedData` or a reviewer's `customValue`).
+ * @param dataPoint the raw JSON string of a single stored data point
+ * @returns the parsed `.value` field, or null when it is missing or the JSON cannot be parsed
+ */
+export function extractDatapointValue(dataPoint: string): unknown {
+  return wrapDataPointJson(dataPoint)?.value ?? null;
+}
+
+/**
+ * Wraps an existing MLDTDisplayValue with datapoint document-support display information
+ * (quality, comment, data source), reading that information directly out of a single
+ * stored data point's own JSON, instead of out of a field within a full framework dataset.
+ * This is the "by-datapoint" equivalent of {@link wrapDisplayValueWithDatapointInformation}.
+ * @param inputValue the original value to wrap
+ * @param fieldLabel the label of the field to wrap
+ * @param dataPoint the raw JSON string of a single stored data point
+ * @returns the wrapped display-value
+ */
+export function wrapDisplayValueWithDatapointInformationByDataPoint(
+  inputValue: AvailableMLDTDisplayObjectTypes,
+  fieldLabel: string,
+  dataPoint: string
+): AvailableMLDTDisplayObjectTypes {
+  const parsed = wrapDataPointJson(dataPoint);
+  const datapointProperties: DatapointProperties | undefined = parsed
+    ? {
+        quality: humanizeStringOrNumber(parsed.quality as string | number | null | undefined),
+        dataSource: parsed.dataSource
+          ? {
+              fileReference: parsed.dataSource.fileReference ?? '',
+              fileName: parsed.dataSource.fileName ?? undefined,
+              page: parsed.dataSource.page != null ? String(parsed.dataSource.page) : undefined,
+              tagName: parsed.dataSource.tagName ?? undefined,
+              publicationDate: parsed.dataSource.publicationDate ?? undefined,
+            }
+          : null,
+        comment: toSafeDisplayString(parsed.comment) || null,
+      }
+    : undefined;
+  return wrapDisplayValueWithDatapointInformation(inputValue, fieldLabel, datapointProperties);
 }
 
 /**

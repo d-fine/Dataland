@@ -52,7 +52,20 @@ data object SimpleDocumentSupport : DocumentSupport {
         innerLambda: FrameworkDisplayValueByDataPointLambda,
         fieldLabel: String?,
         dataPointAccessor: String,
-    ): FrameworkDisplayValueByDataPointLambda = innerLambda
+    ): FrameworkDisplayValueByDataPointLambda {
+        requireNotNull(fieldLabel)
+        return FrameworkDisplayValueByDataPointLambda(
+            "wrapDisplayValueWithDatapointInformationByDataPoint(${innerLambda.lambdaBody}," +
+                " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
+                " dataPoint)",
+            imports =
+                innerLambda.imports +
+                    TypeScriptImport(
+                        "wrapDisplayValueWithDatapointInformationByDataPoint",
+                        "@/components/resources/dataTable/conversion/DataPoints",
+                    ),
+        )
+    }
 
     override fun getDataAccessor(
         dataPointAccessor: String,
