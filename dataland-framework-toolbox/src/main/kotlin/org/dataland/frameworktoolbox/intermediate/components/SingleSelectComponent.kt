@@ -96,18 +96,24 @@ open class SingleSelectComponent(
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {
-            is NoDocumentSupport -> uploadMode.component
-            is ExtendedDocumentSupport ->
+            is NoDocumentSupport -> {
+                uploadMode.component
+            }
+
+            is ExtendedDocumentSupport -> {
                 if (uploadMode == UploadMode.Dropdown) {
                     "Extended${uploadMode.component}"
                 } else {
                     "RadioButtonsExtendedDataPointFormField"
                 }
-            else ->
+            }
+
+            else -> {
                 throw IllegalArgumentException(
                     "SingleSelectComponent ${uploadMode.component} does not " +
                         "support document support $documentSupport",
                 )
+            }
         }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
