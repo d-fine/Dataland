@@ -53,7 +53,7 @@ data class SectionConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
-        valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda,
+        valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda? = null,
         uploadComponentName: String,
         dataPointTypeId: String,
     ): CellConfigBuilder {

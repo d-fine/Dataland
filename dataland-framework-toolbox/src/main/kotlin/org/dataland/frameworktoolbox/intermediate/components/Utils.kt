@@ -14,7 +14,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
     component: ComponentBase,
     valueGetter: FrameworkDisplayValueLambda,
-    valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda,
+    valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda? = null,
 ) {
     addCell(
         label =

@@ -4,7 +4,7 @@
   <#if cellConfig.explanation??>explanation: "${cellConfig.explanation?js_string}",</#if>
   shouldDisplay: <@frameworklambda cellConfig.shouldDisplay/>,
   valueGetter: <@frameworklambda cellConfig.valueGetter/>,
-    valueGetterByDataPoint: <@frameworklambda cellConfig.valueGetterByDataPoint/>,
+  <#if cellConfig.valueGetterByDataPoint??>valueGetterByDataPoint: <@frameworklambda cellConfig.valueGetterByDataPoint/>,</#if>
   uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
   dataPointTypeId: "${cellConfig.dataPointTypeId?js_string}",
 }</#macro>
