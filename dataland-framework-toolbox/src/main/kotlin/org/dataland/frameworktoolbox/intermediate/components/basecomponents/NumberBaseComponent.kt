@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValue
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -121,6 +122,24 @@ open class NumberBaseComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueByDataPointLambda(
+                        "formatNumberForDatatable(extractDatapointValue(dataPoint) as number," +
+                            " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
+                        setOf(
+                            TypeScriptImport(
+                                "formatNumberForDatatable",
+                                "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
+                            ),
+                            TypeScriptImport(
+                                "extractDatapointValue",
+                                "@/components/resources/dataTable/conversion/DataPoints",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 }

@@ -12,6 +12,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -53,7 +54,7 @@ open class Iso2CountryCodesMultiSelectComponent(
                 FrameworkDisplayValueLambda(
                     "{\n" +
                         mappings +
-                        generateReturnStatement() +
+                        generateReturnStatement(getTypescriptFieldAccessor()) +
                         "}",
                     setOf(
                         TypeScriptImport(
@@ -70,6 +71,32 @@ open class Iso2CountryCodesMultiSelectComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueByDataPointLambda(
+                        "{\n" +
+                            mappings +
+                            generateReturnStatement("(extractDatapointValue(dataPoint) as string[] | null | undefined)") +
+                            "}",
+                        setOf(
+                            TypeScriptImport(
+                                "formatListOfStringsForDatatable",
+                                "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                            ),
+                            TypeScriptImport(
+                                "getOriginalNameFromTechnicalName",
+                                "@/components/resources/dataTable/conversion/Utils",
+                            ),
+                            TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
+                            TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
+                            TypeScriptImport(
+                                "extractDatapointValue",
+                                "@/components/resources/dataTable/conversion/DataPoints",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 
@@ -110,9 +137,9 @@ open class Iso2CountryCodesMultiSelectComponent(
         )
     }
 
-    private fun generateReturnStatement(): String =
+    private fun generateReturnStatement(valueAccessor: String): String =
         "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
+            "$valueAccessor?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"

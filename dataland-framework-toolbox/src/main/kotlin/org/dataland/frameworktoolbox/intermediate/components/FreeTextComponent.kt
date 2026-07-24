@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -41,6 +42,23 @@ class FreeTextComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueByDataPointLambda(
+                        "formatFreeTextForDatatable(extractDatapointValue(dataPoint) as string)",
+                        setOf(
+                            TypeScriptImport(
+                                "formatFreeTextForDatatable",
+                                "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
+                            ),
+                            TypeScriptImport(
+                                "extractDatapointValue",
+                                "@/components/resources/dataTable/conversion/DataPoints",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 

@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBui
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -42,6 +43,23 @@ class DateComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueByDataPointLambda(
+                        "formatStringForDatatable(extractDatapointValue(dataPoint) as string)",
+                        setOf(
+                            TypeScriptImport(
+                                "formatStringForDatatable",
+                                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                            ),
+                            TypeScriptImport(
+                                "extractDatapointValue",
+                                "@/components/resources/dataTable/conversion/DataPoints",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 

@@ -14,6 +14,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
@@ -70,13 +71,16 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        val fieldAccessor = getTypescriptFieldAccessor()
+        val dataPointValueAccessor =
+            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
                     "((): AvailableMLDTDisplayObjectTypes =>{\n" +
                         generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement() +
+                        generateReturnStatement(dataPointValueAccessor) +
                         "})()",
                     setOf(
                         TypeScriptImport(
@@ -91,6 +95,30 @@ open class SingleSelectComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueByDataPointLambda(
+                        "((): AvailableMLDTDisplayObjectTypes =>{\n" +
+                            generateTsCodeForSelectOptionsMappingObject(options) +
+                            generateReturnStatement("extractDatapointValue(dataPoint) as $enumName") +
+                            "})()",
+                        setOf(
+                            TypeScriptImport(
+                                "formatStringForDatatable",
+                                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                            ),
+                            TypeScriptImport(
+                                "getOriginalNameFromTechnicalName",
+                                "@/components/resources/dataTable/conversion/Utils",
+                            ),
+                            TypeScriptImport(
+                                "extractDatapointValue",
+                                "@/components/resources/dataTable/conversion/DataPoints",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 
@@ -143,13 +171,9 @@ open class SingleSelectComponent(
         )
     }
 
-    private fun generateReturnStatement(): String {
-        val fieldAccessor = getTypescriptFieldAccessor()
-        val dataPointValueAccessor =
-            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
-        return "return formatStringForDatatable(\n" +
-            "$dataPointValueAccessor ? " +
-            "getOriginalNameFromTechnicalName($dataPointValueAccessor, mappings) : \"\"\n" +
+    private fun generateReturnStatement(valueAccessor: String): String =
+        "return formatStringForDatatable(\n" +
+            "$valueAccessor ? " +
+            "getOriginalNameFromTechnicalName($valueAccessor, mappings) : \"\"\n" +
             ")\n"
-    }
 }
