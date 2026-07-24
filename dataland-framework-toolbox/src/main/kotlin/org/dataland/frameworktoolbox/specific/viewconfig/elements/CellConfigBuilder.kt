@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.viewconfig.elements
 
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -20,9 +21,10 @@ class CellConfigBuilder(
     var explanation: String?,
     var shouldDisplay: FrameworkBooleanLambda,
     var valueGetter: FrameworkDisplayValueLambda,
+    var valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda,
     var uploadComponentName: String,
     var dataPointTypeId: String,
 ) : ViewConfigElement {
     override val imports: Set<TypeScriptImport>
-        get() = valueGetter.imports
+        get() = valueGetter.imports + valueGetterByDataPoint.imports
 }

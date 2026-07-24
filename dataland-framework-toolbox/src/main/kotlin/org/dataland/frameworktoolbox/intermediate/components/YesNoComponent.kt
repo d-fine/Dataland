@@ -40,6 +40,19 @@ class YesNoComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+            valueGetterByDataPoint =
+                documentSupport.getFrameworkDisplayValueByDataPointLambda(
+                    FrameworkDisplayValueLambda(
+                        "formatYesNoValueForDatatable(dataPoint : String)",
+                        setOf(
+                            TypeScriptImport(
+                                "formatYesNoValueForDatatable",
+                                "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
+                            ),
+                        ),
+                    ),
+                    label, getTypescriptFieldAccessor(),
+                ),
         )
     }
 

@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.datapoints
 
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -25,6 +26,12 @@ data object NoDocumentSupport : DocumentSupport {
         fieldLabel: String?,
         dataPointAccessor: String,
     ): FrameworkDisplayValueLambda = innerLambda
+
+    override fun getFrameworkDisplayValueByDataPointLambda(
+        innerLambda: FrameworkDisplayValueByDataPointLambda,
+        fieldLabel: String?,
+        dataPointAccessor: String,
+    ): FrameworkDisplayValueByDataPointLambda = innerLambda
 
     override fun getDataAccessor(
         dataPointAccessor: String,

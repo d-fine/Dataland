@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.viewconfig.elements
 
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -52,6 +53,7 @@ data class SectionConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
+        valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda,
         uploadComponentName: String,
         dataPointTypeId: String,
     ): CellConfigBuilder {
@@ -62,6 +64,7 @@ data class SectionConfigBuilder(
                 explanation = explanation,
                 shouldDisplay = shouldDisplay,
                 valueGetter = valueGetter,
+                valueGetterByDataPoint = valueGetterByDataPoint,
                 uploadComponentName = uploadComponentName,
                 dataPointTypeId = dataPointTypeId,
             )

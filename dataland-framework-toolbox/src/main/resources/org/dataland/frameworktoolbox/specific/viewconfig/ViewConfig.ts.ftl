@@ -4,6 +4,7 @@
   <#if cellConfig.explanation??>explanation: "${cellConfig.explanation?js_string}",</#if>
   shouldDisplay: <@frameworklambda cellConfig.shouldDisplay/>,
   valueGetter: <@frameworklambda cellConfig.valueGetter/>,
+    valueGetterByDataPoint: <@frameworklambda cellConfig.valueGetterByDataPoint/>,
   uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
   dataPointTypeId: "${cellConfig.dataPointTypeId?js_string}",
 }</#macro>
@@ -16,7 +17,8 @@
   <#if sectionConfig.labelBadgeColor??>labelBadgeColor: "${sectionConfig.labelBadgeColor.value?js_string}",</#if>
 }</#macro>
 <#macro frameworklambda lambda>
-(<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>): ${lambda.returnParameter} => ${lambda.lambdaBody}
+    (<#if lambda.usesDataset>dataset: ${frameworkDataType}<#elseif lambda.usesDataPoint>dataPoint: string</#if>): ${lambda.
+returnParameter} => ${lambda.lambdaBody}
 </#macro>
 
 <#macro mldtconfig items>
