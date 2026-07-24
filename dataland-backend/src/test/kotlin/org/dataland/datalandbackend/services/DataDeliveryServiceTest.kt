@@ -156,6 +156,62 @@ class DataDeliveryServiceTest {
         verify(datasetAssembler, times(0)).assembleSingleDataset(any(), any())
     }
 
+    @Test
+    fun `check that empty dataset dimensions are not resurrected by calculated data from related frameworks`() {
+        // Dataset dimensions object mimicking a company with data only for a related framework
+        val ghostDimensions = BasicDatasetDimensions(companyId, "related-framework", reportingPeriod)
+
+        /*
+        Common data points between a framework and a related framework should be ignored by getViewableDataPointMetaData().
+        Return emptyList() for a dataset dimensions object of a related framework.
+         */
+        doReturn(
+            mapOf(
+                datasetDimensions to listOf(makeMetaData()),
+                ghostDimensions to emptyList(),
+            ),
+        ).whenever(dataAvailabilityChecker)
+            .getViewableDataPointMetaData(any<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>>())
+
+        // Extend stubbing behavior form setup() for a dataset dimensions object of a related framework.
+        doReturn(listOf(directDataPointType, calculatedDataPointType))
+            .whenever(dataCompositionService)
+            .getRelevantDataPointTypes("related-framework")
+
+        doReturn(mapOf(directDataPointId to directDataPoint))
+            .whenever(internalStorageAdapter)
+            .getDataPoints(listOf(directDataPointId), correlationId)
+
+        /*
+        Dataset dimensions object of a related framework must not be passed to getCalculatedData().
+        Check by returning corresponding calculated data point if it gets passed to getCalculatedData().
+         */
+        doReturn(mapOf(ghostDimensions to listOf(calculatedDataPoint)))
+            .whenever(dataPointCalculator)
+            .getCalculatedData(
+                argThat { datasetDimensions -> ghostDimensions in datasetDimensions },
+                any(),
+                any(),
+            )
+
+        doReturn("assembled").whenever(datasetAssembler).assembleSingleDataset(any(), any())
+
+        val result =
+            dataDeliveryService.getAssembledDatasets(
+                listOf(datasetDimensions, ghostDimensions), correlationId,
+            )
+
+        // Dataset dimensions object of a related framework must not appear in the result
+        assertEquals(setOf(datasetDimensions), result.keys)
+
+        // calculator() must not have been called with dataset dimensions object of a related framework
+        verify(dataPointCalculator).getCalculatedData(
+            datasetDimensions = setOf(datasetDimensions),
+            correlationId = correlationId,
+            deliverableDataPointTypes = mapOf(datasetDimensions to listOf(directDataPointType)),
+        )
+    }
+
     private fun mockViewableDataPointMetaData(metaData: List<DataPointMetaInformationEntity>) {
         doReturn(mapOf(datasetDimensions to metaData))
             .whenever(dataAvailabilityChecker)

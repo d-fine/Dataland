@@ -65,7 +65,7 @@ class DataDeliveryService
                 }
             val calculatedData =
                 dataPointCalculator.getCalculatedData(
-                    datasetDimensions = dataDimensions,
+                    datasetDimensions = deliverableDataPointMetaData.keys,
                     correlationId = correlationId,
                     deliverableDataPointTypes = deliverableDataPointTypes,
                 )
