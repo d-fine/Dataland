@@ -584,7 +584,6 @@ describe('Component tests for the Quality Assurance page', () => {
       });
     }).as('createDatasetReview');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
-    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReview');
     cy.get('@routerPush').should('have.been.calledWith', `/qualityassurance/review/${datasetReviewIdAlpha}`);
   });
@@ -631,11 +630,11 @@ describe('Component tests for the Quality Assurance page', () => {
       });
     }).as('createDatasetReviewForbidden');
     cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
-    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
     cy.wait('@createDatasetReviewForbidden');
     cy.get('[data-test="confirmation-modal-error-message"]')
       .should('be.visible')
       .and('contain', 'Access Denied: Access to this resource has been denied.');
+    cy.get('[data-test="ok-confirmation-modal-button"]').should('be.visible').click();
   });
 
   it('Check QA-overview-page for RESET FILTERS button behaviour', () => {

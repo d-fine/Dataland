@@ -332,8 +332,6 @@ function startJudgement(dataSetId: string): void {
     .contains('td', 'Start Review')
     .click();
 
-  cy.get('.p-dialog').should('be.visible').contains('button', 'CONFIRM').click();
-
   cy.wait('@startJudgementRequest').then((interception) => {
     expect(interception.response?.statusCode).to.eq(201);
   });
