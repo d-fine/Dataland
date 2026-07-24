@@ -283,7 +283,7 @@ private fun determineSubstantialContributions(
     return when {
         maxSubstantialContribution == null -> null
         maxSubstantialContribution > BigDecimal.ZERO -> relativeEligibleShareInPrecent
-        maxSubstantialContribution == BigDecimal.ZERO -> BigDecimal.ZERO
+        maxSubstantialContribution.compareTo(BigDecimal.ZERO) == 0 -> BigDecimal.ZERO // comparesTo only checks for equality in value.
         else -> throw IllegalArgumentException("A substantial contribution must not be negative.")
     }
 }
