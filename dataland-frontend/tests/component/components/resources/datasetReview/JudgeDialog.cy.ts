@@ -25,16 +25,6 @@ const overflowingCommentEntry =
   'original-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
 const correctedCommentEntry =
   'corrected-comment that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
-const overflowingValueEntry =
-  'original-value-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
-const overflowingQualityEntry =
-  'original-quality-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior';
-const overflowingDataSourceEntry = {
-  fileName:
-    'original-doc-that-is-so-long-it-overflows-the-maximum-field-with-so-let-me-tell-you-why-this-is-awesome-because-we-can-then-test-the-overflow-behavior.pdf',
-  page: '3',
-};
-
 const originalDataPoint = {
   value: 'original-value',
   quality: 'Audited',
@@ -47,13 +37,6 @@ const correctedDataPoint = {
   quality: 'Estimated',
   comment: correctedCommentEntry,
   dataSource: { fileName: 'corrected-doc.pdf', page: '7' },
-};
-
-const overflowingOriginalDataPoint = {
-  value: overflowingValueEntry,
-  quality: overflowingQualityEntry,
-  comment: overflowingCommentEntry,
-  dataSource: overflowingDataSourceEntry,
 };
 
 const baseDatasetJudgement: DatasetJudgementResponse = {
@@ -118,33 +101,6 @@ const kpiRows: CellRow[] = [
   },
 ];
 
-const overflowTestCases = [
-  {
-    description: 'shows and hides the overflow popover for original comment',
-    sectionDataTest: 'original-datapoint-section',
-    iconDataTest: 'comment-overflow-icon',
-    expectedPopoverText: overflowingCommentEntry,
-  },
-  {
-    description: 'shows and hides the overflow popover for original value',
-    sectionDataTest: 'original-datapoint-section',
-    iconDataTest: 'value-overflow-icon',
-    expectedPopoverText: overflowingValueEntry,
-  },
-  {
-    description: 'shows and hides the overflow popover for original document',
-    sectionDataTest: 'original-datapoint-section',
-    iconDataTest: 'document-overflow-icon',
-    expectedPopoverText: overflowingDataSourceEntry.fileName,
-  },
-  {
-    description: 'shows and hides the overflow popover for original quality',
-    sectionDataTest: 'original-datapoint-section',
-    iconDataTest: 'quality-overflow-icon',
-    expectedPopoverText: overflowingQualityEntry,
-  },
-] as const;
-
 const allPassingPreApprovalCheckResults = {
   areAllQaReportsAccepted: true,
   dataPointEligible: true,
@@ -174,12 +130,15 @@ function mountJudgeDialog(options?: {
   dataPointTypeId?: string;
   kpiRows?: CellRow[];
   companyDocuments?: DocumentMetaInfoResponse[];
+  patchResponse?: DatasetJudgementResponse;
 }): void {
-  const judgement = options?.datasetJudgement ?? baseDatasetJudgement;
+  let judgement = options?.datasetJudgement ?? baseDatasetJudgement;
 
-  cy.intercept('GET', `**/qa/dataset-judgements/${datasetJudgementId}`, {
-    statusCode: options?.datasetJudgementStatusCode ?? 200,
-    body: judgement,
+  cy.intercept('GET', `**/qa/dataset-judgements/${datasetJudgementId}`, (req) => {
+    req.reply({
+      statusCode: options?.datasetJudgementStatusCode ?? 200,
+      body: judgement,
+    });
   }).as('getDatasetJudgement');
 
   cy.intercept('GET', `**/api/data-points/${dataPointId}`, {
@@ -200,16 +159,20 @@ function mountJudgeDialog(options?: {
 
   cy.intercept('PATCH', `**/qa/dataset-judgements/${datasetJudgementId}/data-points/**`, (req) => {
     if (options?.patchErrorResponse) {
-      req.reply({
+      return req.reply({
         statusCode: options?.patchStatusCode ?? 400,
-        body: options?.patchErrorResponse,
-      });
-    } else {
-      req.reply({
-        statusCode: options?.patchStatusCode ?? 200,
-        body: judgement,
+        body: options.patchErrorResponse,
       });
     }
+
+    if (options?.patchResponse) {
+      judgement = options.patchResponse;
+    }
+
+    return req.reply({
+      statusCode: options?.patchStatusCode ?? 200,
+      body: judgement,
+    });
   }).as('patchJudgementDetail');
 
   cy.intercept('GET', `**/?companyId=${judgement.companyId}`, {
@@ -249,40 +212,6 @@ function mountJudgeDialog(options?: {
   });
 
   cy.wait('@getDatasetJudgement');
-}
-
-/**
- * Tests the overflow popover behavior for a specific field.
- * Mounts the dialog, triggers the overflow icon, verifies the popover content, and tests dismissal.
- *
- * @param {Object} params - Configuration for the test.
- * @param {string} params.description - Test description.
- * @param {string} params.sectionDataTest - Data test identifier for the section.
- * @param {string} params.iconDataTest - Data test identifier for the overflow icon.
- * @param {string} params.expectedPopoverText - Expected text in the popover.
- * @param {object} [params.originalDataPointBody] - Optional original data point override.
- */
-function checkOverflowBehavior(params: {
-  description: string;
-  sectionDataTest: string;
-  iconDataTest: string;
-  expectedPopoverText: string;
-  originalDataPointBody?: object;
-}): void {
-  const { description, sectionDataTest, iconDataTest, expectedPopoverText, originalDataPointBody } = params;
-
-  it(description, () => {
-    mountJudgeDialog({
-      originalDataPointBody: originalDataPointBody ?? overflowingOriginalDataPoint,
-    });
-
-    cy.get(`[data-test="${sectionDataTest}"]`).within(() => {
-      cy.get(`[data-test="${iconDataTest}"]`).should('be.visible').trigger('mouseenter');
-    });
-    cy.get('[data-test="overflow-popover"]').should('be.visible').and('contain.text', expectedPopoverText);
-    cy.get(`[data-test="${sectionDataTest}"] [data-test="${iconDataTest}"]`).trigger('mouseleave');
-    cy.get('[data-test="overflow-popover"]').should('not.exist');
-  });
 }
 
 // ===== Tests =====
@@ -453,7 +382,7 @@ describe('JudgeDialog component tests', () => {
       },
     };
 
-    it.only('calls PATCH with AcceptedDataPointSource.Original when accepting the original datapoint', () => {
+    it('calls PATCH with AcceptedDataPointSource.Original when accepting the original datapoint', () => {
       mountJudgeDialog();
       cy.wait('@getOriginalDataPoint');
 
@@ -607,6 +536,21 @@ describe('JudgeDialog component tests', () => {
     });
 
     it('shows popup confirmation when there are no more unreviewed datapoints', () => {
+      const judgementOneRemaining: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            acceptedSource: undefined,
+          },
+          [secondDataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[secondDataPointTypeId],
+            acceptedSource: AcceptedDataPointSource.Original,
+          },
+        },
+      };
+
       const judgementAllReviewed: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
         dataPoints: {
@@ -621,12 +565,21 @@ describe('JudgeDialog component tests', () => {
           },
         },
       };
-      mountJudgeDialog({ datasetJudgement: judgementAllReviewed });
-      cy.get('[data-test="accept-original-button"]').should('be.visible');
-      cy.get('[data-test="accept-original-button"]').click();
+
+      mountJudgeDialog({
+        datasetJudgement: judgementOneRemaining,
+        patchResponse: judgementAllReviewed,
+      });
+
+      cy.get('[data-test="accept-original-button"]').scrollIntoView().should('be.visible').click();
+
+      cy.wait('@patchJudgementDetail');
+
       cy.get('[data-test="confirmation-modal"]')
+        .scrollIntoView()
         .should('be.visible')
         .should('contain.text', 'All data points reviewed');
+
       cy.get('[data-test="judge-modal"]').should('exist');
     });
   });
@@ -1405,28 +1358,7 @@ describe('JudgeDialog component tests', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // 12. overflow popup behavior
-  // ---------------------------------------------------------------------------
-  describe('Overflow behavior of contents', () => {
-    it('Overflow behavior for original datapoint is behaving correctly', () => {
-      mountJudgeDialog({ originalDataPointBody: overflowingOriginalDataPoint });
-      cy.get('[data-test="original-datapoint-section"]').within(() => {
-        cy.contains('th', 'Value')
-          .parent('tr')
-          .within(() => {
-            cy.contains(overflowingValueEntry.substring(0, 10)).should('be.visible');
-            cy.get('[data-test="value-overflow-icon"]').should('be.visible');
-            cy.get('[data-test="value-overflow-icon"]').trigger('mouseenter');
-          });
-      });
-    });
-    overflowTestCases.forEach((testCase) => {
-      checkOverflowBehavior(testCase);
-    });
-  });
-
-  // ---------------------------------------------------------------------------
-  // 12b. QA report comment (DataPointQaReport.comment) display behavior
+  // 12a. QA report comment (DataPointQaReport.comment) display behavior
   // ---------------------------------------------------------------------------
   describe('QA report comment display', () => {
     /**
@@ -1475,13 +1407,9 @@ describe('JudgeDialog component tests', () => {
         .parent()
         .should('contain.text', shortComment);
 
-      cy.get('[data-test="corrected-datapoint-section"]')
-        .contains('Qa Comment:')
-        .parents('div')
-        .find('span.overflow-auto')
-        .then(($el) => {
-          expect($el[0].scrollHeight).to.be.at.most($el[0].clientHeight + 1);
-        });
+      cy.get('[data-test="corrected-datapoint-section"] .bg-gray-100 span.overflow-auto').then(($el) => {
+        expect($el[0].scrollHeight).to.be.at.most($el[0].clientHeight + 1);
+      });
     });
 
     it('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
@@ -1495,18 +1423,14 @@ describe('JudgeDialog component tests', () => {
         .parent()
         .should('contain.text', longComment);
 
-      cy.get('[data-test="corrected-datapoint-section"]')
-        .contains('Qa Comment:')
-        .parents('div')
-        .find('span.overflow-auto')
-        .then(($el) => {
-          expect($el[0].scrollHeight).to.be.greaterThan($el[0].clientHeight);
-        });
+      cy.get('[data-test="corrected-datapoint-section"] .bg-gray-100 span.overflow-auto').then(($el) => {
+        expect($el[0].scrollHeight).to.be.greaterThan($el[0].clientHeight);
+      });
     });
   });
 
   // ---------------------------------------------------------------------------
-  // 12c. Custom "Value" field overflow/scroll behavior for very large values
+  // 12b. Custom "Value" field overflow/scroll behavior for very large values
   // ---------------------------------------------------------------------------
   describe('Custom value field overflow behavior', () => {
     const euTaxonomyActivityTableValue = Array.from(

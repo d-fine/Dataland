@@ -75,14 +75,6 @@
       </div>
     </div>
 
-    <div class="judge-modal__section-actions" style="margin-top: auto; padding-top: var(--spacing-xs)">
-      <PrimeButton
-        :label="acceptLabel"
-        @click="emit('accept')"
-        :disabled="acceptDisabled"
-        :data-test="acceptDataTest"
-      />
-    </div>
     <div class="p-3 mb-2 border-round border-2 bg-gray-100 border-gray-300 mt-2" v-if="currentQaReportComment">
       <span class="font-bold" scope="row">Qa Comment:</span>
       <div>
@@ -95,6 +87,15 @@
           </span>
         </div>
       </div>
+    </div>
+
+    <div class="judge-modal__section-actions" style="margin-top: auto; padding-top: var(--spacing-xs)">
+      <PrimeButton
+        :label="acceptLabel"
+        @click="emit('accept')"
+        :disabled="acceptDisabled"
+        :data-test="acceptDataTest"
+      />
     </div>
   </section>
 </template>

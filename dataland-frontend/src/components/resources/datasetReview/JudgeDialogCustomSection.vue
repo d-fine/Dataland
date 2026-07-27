@@ -53,6 +53,7 @@
               </th>
               <td>
                 <Textarea
+                  ref="customValueTextarea"
                   id="custom-value-field"
                   v-model="formData.value"
                   rows="1"
@@ -65,10 +66,11 @@
                   :style="{
                     lineHeight: '1.25rem',
                     maxHeight: '6.25rem',
-                    overflowY: 'auto',
+                    overflowY: isCustomValueOverflowing ? 'auto' : 'hidden',
                     overflowX: 'hidden',
                     resize: 'none',
                   }"
+                  @input="updateTextareaOverflowStates"
                 />
               </td>
             </tr>
@@ -131,6 +133,7 @@
               </th>
               <td>
                 <Textarea
+                  ref="customCommentTextarea"
                   id="custom-comment-field"
                   v-model="formData.comment"
                   rows="1"
@@ -143,10 +146,11 @@
                   :style="{
                     lineHeight: '1.25rem',
                     maxHeight: '6.25rem',
-                    overflowY: 'auto',
+                    overflowY: isCustomCommentOverflowing ? 'auto' : 'hidden',
                     overflowX: 'hidden',
                     resize: 'none',
                   }"
+                  @input="updateTextareaOverflowStates"
                 />
               </td>
             </tr>
@@ -200,7 +204,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import PrimeButton from 'primevue/button';
 import Select from 'primevue/select';
 import ToggleSwitch from 'primevue/toggleswitch';
@@ -235,12 +239,15 @@ const emit = defineEmits<{
 }>();
 
 const editModeEnabled = defineModel<boolean>('editModeEnabled', { default: false });
+
 const jsonValue = defineModel<string>('json', {
   default: () => DEFAULT_CUSTOM_JSON,
 });
+
 const formData = defineModel<CustomFormData>('formData', {
   default: () => DEFAULT_CUSTOM_FORM_DATA,
 });
+
 const reasonForCustomDataPoint = defineModel<string>('reasonForCustomDataPoint', { default: '' });
 
 const selectedDocumentOption = computed<DocumentOption | null>(
@@ -251,11 +258,13 @@ const isFormValid = computed<boolean>(() => {
   const f = formData.value;
   const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
   const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
+
   return hasAnyContent && pagesPatternOk;
 });
 
 const isJsonValid = computed<boolean>(() => {
   if (!jsonValue.value.trim()) return false;
+
   try {
     JSON.parse(jsonValue.value);
     return true;
@@ -266,8 +275,63 @@ const isJsonValid = computed<boolean>(() => {
 
 const isCustomInputValid = computed<boolean>(() => (editModeEnabled.value ? isJsonValid.value : isFormValid.value));
 
+const customValueTextarea = ref<unknown>(null);
+const customCommentTextarea = ref<unknown>(null);
+
+const isCustomValueOverflowing = ref(false);
+const isCustomCommentOverflowing = ref(false);
+
+/**
+ * Safely resolves the native textarea element from either a direct DOM ref
+ * or a PrimeVue component ref.
+ *
+ * @param refValue - Vue ref value.
+ * @returns The native textarea element, if found.
+ */
+function getTextareaElement(refValue: unknown): HTMLTextAreaElement | null {
+  if (refValue instanceof HTMLTextAreaElement) {
+    return refValue;
+  }
+
+  if (
+    refValue &&
+    typeof refValue === 'object' &&
+    '$el' in refValue &&
+    (refValue as { $el: unknown }).$el instanceof HTMLTextAreaElement
+  ) {
+    return (refValue as { $el: HTMLTextAreaElement }).$el;
+  }
+
+  return null;
+}
+
+/**
+ * Checks whether the given element has vertical overflow.
+ *
+ * @param element - Element to check.
+ * @returns True if the element has vertical overflow.
+ */
+function hasVerticalOverflow(element: HTMLElement | null): boolean {
+  if (!element) return false;
+
+  return element.scrollHeight > element.clientHeight + 1;
+}
+
+/**
+ * Updates overflow state for the custom value and custom comment textareas.
+ *
+ * @returns Nothing.
+ */
+function updateTextareaOverflowStates(): void {
+  nextTick(() => {
+    isCustomValueOverflowing.value = hasVerticalOverflow(getTextareaElement(customValueTextarea.value));
+    isCustomCommentOverflowing.value = hasVerticalOverflow(getTextareaElement(customCommentTextarea.value));
+  });
+}
+
 /**
  * Converts the form data into the JSON structure expected by the backend and updates the jsonValue.
+ *
  * @returns Nothing
  */
 function formDataToJson(): void {
@@ -275,11 +339,14 @@ function formDataToJson(): void {
 }
 
 /**
- * Parses the JSON from jsonValue and updates the form data accordingly. If the JSON is invalid, the form data is left unchanged.
+ * Parses the JSON from jsonValue and updates the form data accordingly.
+ * If the JSON is invalid, the form data is left unchanged.
+ *
  * @returns Nothing
  */
 function jsonToFormData(): void {
   const parsed = parseDataPointJsonToFormData(jsonValue.value);
+
   if (parsed !== null) {
     formData.value = parsed;
   }
@@ -291,7 +358,25 @@ watch(
     if (newQuality === QualityOptions.NoDataFound) {
       formData.value = { ...formData.value, value: '', document: '', pages: '', comment: '' };
     }
+
+    updateTextareaOverflowStates();
   }
+);
+
+watch(
+  () => formData.value.value,
+  () => {
+    updateTextareaOverflowStates();
+  },
+  { immediate: true }
+);
+
+watch(
+  () => formData.value.comment,
+  () => {
+    updateTextareaOverflowStates();
+  },
+  { immediate: true }
 );
 
 watch(editModeEnabled, (newVal) => {
@@ -300,6 +385,8 @@ watch(editModeEnabled, (newVal) => {
   } else {
     jsonToFormData();
   }
+
+  updateTextareaOverflowStates();
 });
 </script>
 

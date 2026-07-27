@@ -135,6 +135,9 @@
         :options="nextDataPointOptions"
         @go-to="navigateToDataPoint(selectedNextDataPointTypeId)"
       />
+
+      <!-- spacer for cookie button at the bottom-->
+      <div class="pt-4"></div>
     </div>
 
     <Popover
