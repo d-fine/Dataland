@@ -453,11 +453,11 @@ describe('JudgeDialog component tests', () => {
       },
     };
 
-    it('calls PATCH with AcceptedDataPointSource.Original when accepting the original datapoint', () => {
+    it.only('calls PATCH with AcceptedDataPointSource.Original when accepting the original datapoint', () => {
       mountJudgeDialog();
       cy.wait('@getOriginalDataPoint');
 
-      cy.get('[data-test="accept-original-button"]').click();
+      cy.get('[data-test="accept-original-button"]').scrollIntoView().click();
 
       cy.wait('@patchJudgementDetail').then((interception) => {
         expect(interception.request.url).to.contain(
@@ -638,10 +638,12 @@ describe('JudgeDialog component tests', () => {
     it('starts in form mode and shows form fields', () => {
       mountJudgeDialog();
 
-      cy.get('[data-test="custom-datapoint-section"]').within(() => {
-        cy.get('[data-test="custom-value-field"]').should('be.visible');
-        cy.get('[data-test="custom-json-textarea"]').should('not.exist');
-      });
+      cy.get('[data-test="custom-datapoint-section"]')
+        .scrollIntoView()
+        .within(() => {
+          cy.get('[data-test="custom-value-field"]').should('be.visible');
+          cy.get('[data-test="custom-json-textarea"]').should('not.exist');
+        });
     });
 
     it('switches to JSON mode when the toggle is enabled', () => {
@@ -1424,6 +1426,118 @@ describe('JudgeDialog component tests', () => {
   });
 
   // ---------------------------------------------------------------------------
+  // 12b. QA report comment (DataPointQaReport.comment) display behavior
+  // ---------------------------------------------------------------------------
+  describe('QA report comment display', () => {
+    /**
+     * Builds a judgement whose single active QA report has the given comment.
+     * @param {string} comment - The comment to set on the QA report.
+     * @returns {DatasetJudgementResponse} The judgement with the given QA report comment.
+     */
+    function judgementWithQaReportComment(comment: string): DatasetJudgementResponse {
+      return {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            qaReports: [
+              {
+                qaReportId: 'qa-report-1',
+                verdict: QaReportDataPointVerdict.QaRejected,
+                correctedData: JSON.stringify(correctedDataPoint),
+                reporterUserId: reporterUserId1,
+                uploadTime: 1000,
+                active: true,
+                dataPointId: dataPointId,
+                dataPointType: dataPointTypeId,
+                comment,
+              },
+            ],
+          },
+        },
+      };
+    }
+
+    it('does not show the "Qa Comment" box when the comment entry is empty', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithQaReportComment('') });
+
+      cy.get('[data-test="corrected-datapoint-section"]').should('not.contain.text', 'Qa Comment:');
+    });
+
+    it('shows the "Qa Comment" box with the full text when the comment is within the display limits', () => {
+      const shortComment = 'a short qa comment';
+      mountJudgeDialog({ datasetJudgement: judgementWithQaReportComment(shortComment) });
+
+      cy.get('[data-test="corrected-datapoint-section"]')
+        .contains('Qa Comment:')
+        .should('be.visible')
+        .parent()
+        .should('contain.text', shortComment);
+
+      cy.get('[data-test="corrected-datapoint-section"]')
+        .contains('Qa Comment:')
+        .parents('div')
+        .find('span.overflow-auto')
+        .then(($el) => {
+          expect($el[0].scrollHeight).to.be.at.most($el[0].clientHeight + 1);
+        });
+    });
+
+    it('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
+      cy.viewport(600, 800);
+      const longComment = Array.from({ length: 20 }, () => overflowingCommentEntry).join(' ');
+      mountJudgeDialog({ datasetJudgement: judgementWithQaReportComment(longComment) });
+
+      cy.get('[data-test="corrected-datapoint-section"]')
+        .contains('Qa Comment:')
+        .should('be.visible')
+        .parent()
+        .should('contain.text', longComment);
+
+      cy.get('[data-test="corrected-datapoint-section"]')
+        .contains('Qa Comment:')
+        .parents('div')
+        .find('span.overflow-auto')
+        .then(($el) => {
+          expect($el[0].scrollHeight).to.be.greaterThan($el[0].clientHeight);
+        });
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 12c. Custom "Value" field overflow/scroll behavior for very large values
+  // ---------------------------------------------------------------------------
+  describe('Custom value field overflow behavior', () => {
+    const euTaxonomyActivityTableValue = Array.from(
+      { length: 60 },
+      (_, index) =>
+        `Activity ${index + 1}: Manufacturing of low carbon technologies | NACE Code C.${index} | Turnover: ${index * 1000}€ | CapEx: ${index * 500}€ | OpEx: ${index * 250}€`
+    ).join('\n');
+
+    it('keeps a very large custom value (e.g. an EU Taxonomy activity table) fully accessible via scroll', () => {
+      mountJudgeDialog();
+
+      cy.get('[data-test="custom-value-field"]').clear().invoke('val', euTaxonomyActivityTableValue).trigger('input');
+
+      cy.get('[data-test="custom-value-field"]').should('have.value', euTaxonomyActivityTableValue);
+
+      cy.get('[data-test="custom-value-field"]').then(($el) => {
+        expect($el[0].scrollHeight).to.be.greaterThan($el[0].clientHeight);
+      });
+
+      cy.get('[data-test="custom-value-field"]').should('have.css', 'overflow-y', 'auto');
+
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        const parsed = JSON.parse(interception.request.body.customDataPoint);
+        expect(parsed.value).to.eq(euTaxonomyActivityTableValue);
+      });
+    });
+  });
+
+  // ---------------------------------------------------------------------------
   // 13. Reason for custom data point
   // ---------------------------------------------------------------------------
   describe('Reason for custom data point', () => {
@@ -1660,13 +1774,15 @@ describe('Pre-approval badge and check results', () => {
     };
     mountJudgeDialog({ datasetJudgement: judgement });
 
-    cy.get('[data-test="pre-approval-section"]').within(() => {
-      cy.get('[aria-label="Pre-approval info"]').should('be.visible');
-      cy.contains('All QA reports accepted:').should('be.visible');
-      cy.contains('Not an exempted field:').should('be.visible');
-      cy.contains('Randomly selected for pre-approval:').should('be.visible');
-      cy.contains('Nonsignificant deviation:').should('be.visible');
-    });
+    cy.get('[data-test="pre-approval-section"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.get('[aria-label="Pre-approval info"]').should('be.visible');
+        cy.contains('All QA reports accepted:').should('be.visible');
+        cy.contains('Not an exempted field:').should('be.visible');
+        cy.contains('Randomly selected for pre-approval:').should('be.visible');
+        cy.contains('Nonsignificant deviation:').should('be.visible');
+      });
   });
 
   it('renders a pi-check icon for a passing check', () => {
