@@ -52,13 +52,23 @@
                 <label for="custom-value-field">Value</label>
               </th>
               <td>
-                <InputText
+                <Textarea
                   id="custom-value-field"
                   v-model="formData.value"
+                  rows="1"
+                  autoResize
                   size="small"
                   fluid
                   placeholder="Enter Value"
                   data-test="custom-value-field"
+                  class="p-inputtext-sm"
+                  :style="{
+                    lineHeight: '1.25rem',
+                    maxHeight: '6.25rem',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    resize: 'none',
+                  }"
                 />
               </td>
             </tr>
@@ -120,13 +130,23 @@
                 <label for="custom-comment-field">Comment</label>
               </th>
               <td>
-                <InputText
+                <Textarea
                   id="custom-comment-field"
                   v-model="formData.comment"
+                  rows="1"
+                  autoResize
                   size="small"
                   fluid
                   placeholder="Write a comment"
                   data-test="custom-comment-field"
+                  class="p-inputtext-sm"
+                  :style="{
+                    lineHeight: '1.25rem',
+                    maxHeight: '6.25rem',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    resize: 'none',
+                  }"
                 />
               </td>
             </tr>

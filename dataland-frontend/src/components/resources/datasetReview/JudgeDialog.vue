@@ -4,7 +4,20 @@
     :dismissable-mask="true"
     :draggable="false"
     :modal="true"
-    :pt="{ root: { style: { width: '80vw', maxHeight: '80vh' } } }"
+    :style="{
+      width: '100vw',
+      height: 'calc(100vh - 100px)',
+      maxHeight: 'calc(100vh - 100px)',
+      margin: '100px 0 0 0',
+      borderBottomLeftRadius: '0',
+      borderBottomRightRadius: '0',
+    }"
+    :contentStyle="{
+      height: '100%',
+      overflow: 'auto',
+      borderBottomLeftRadius: '0',
+      borderBottomRightRadius: '0',
+    }"
     v-model:visible="isOpen"
     @hide="emit('close')"
     data-test="judge-modal"
@@ -62,10 +75,13 @@
         @hide-popover="hidePopover"
       />
 
+      {{ currentQaReport }}
+
       <!-- Top-right: Reviewed data point (QA reports) -->
       <JudgeDialogTopSection
         title="Reviewed data point"
         :data="currentQaCorrectedData"
+        :currentQaReportComment="currentQaReport?.comment"
         empty-text="No QA reports available."
         accept-label="ACCEPT REVIEWED"
         :accept-disabled="isQaReportAcceptButtonDisabled"

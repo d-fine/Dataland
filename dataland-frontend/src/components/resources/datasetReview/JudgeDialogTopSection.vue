@@ -61,26 +61,48 @@
               <th scope="row" class="headers-bg">{{ row.label }}</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                  <span
+                    class="flex-1 overflow-auto"
+                    style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
+                  >
                     {{ row.value ?? '—' }}
                   </span>
-                  <PrimeButton
-                    v-if="!row.noOverflow && isOverflowing(String(row.value ?? ''))"
-                    :data-test="`${row.label.toLowerCase()}-overflow-icon`"
-                    label="+"
-                    variant="text"
-                    rounded
-                    size="small"
-                    class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(row.value ?? ''))"
-                    @mouseleave="emit('hidePopover')"
-                    :aria-label="`Show full ${row.label.toLowerCase()}`"
-                  />
+                  <button
+                    v-tooltip.top="`Copy: ${row.value}`"
+                    type="button"
+                    class="p-link"
+                    aria-label="Pre-approval info"
+                    style="
+                      background: none;
+                      border: none;
+                      padding: 0;
+                      cursor: pointer;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                    v-if="row.value"
+                    @click="copyValue(row.value)"
+                  >
+                    <em class="material-icons ml-2" aria-hidden="true">content_copy</em>
+                  </button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div v-if="currentQaReportComment">
+      <h3>Qa Comment</h3>
+
+      <div class="flex align-items-center gap-1" style="min-width: 0">
+        <span
+          class="flex-1 overflow-auto"
+          style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
+        >
+          {{ currentQaReportComment ?? '—' }}
+        </span>
       </div>
     </div>
 
@@ -121,14 +143,13 @@ const props = defineProps<{
   isAccepted?: boolean;
   indexOfAcceptedQaReport?: number;
   sectionType: 'original' | 'qa';
+  currentQaReportComment: string | null;
 }>();
 
 const emit = defineEmits<{
   accept: [];
   prev: [];
   next: [];
-  showPopover: [event: MouseEvent, text: string];
-  hidePopover: [];
 }>();
 
 const tableRows = computed(() => [
@@ -186,14 +207,11 @@ const errorMessage = computed(() => {
     : 'Failed to load data point. Please try again later!';
 });
 
-/**
- * Checks if the given text exceeds the defined overflow threshold.
- * @param text The text to check for overflow.
- * @returns True if the text length exceeds the overflow threshold, false otherwise.
- */
-function isOverflowing(text: string): boolean {
-  return text.length > OVERFLOW_THRESHOLD;
-}
+const copyValue = async (value: unknown) => {
+  if (value == null) return;
+
+  await navigator.clipboard.writeText(String(value));
+};
 </script>
 
 <style scoped lang="scss">
