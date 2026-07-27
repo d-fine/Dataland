@@ -147,7 +147,13 @@
                     class="vertical-align-top"
                   >
                     <div class="flex align-items-start gap-0">
-                      <span class="main-text-color">
+                      <MultiLayerDataTableCell
+                        v-if="row.qaReviewDisplay.get(qaReporter.reporterUserId)"
+                        :content="row.qaReviewDisplay.get(qaReporter.reporterUserId) as AvailableMLDTDisplayObjectTypes"
+                        :meta-info="dataMetaInformation as DataMetaInformation"
+                        :inReviewMode="true"
+                      />
+                      <span v-else class="main-text-color">
                         {{ getQaDisplayText(row, qaReporter.reporterUserId) }}
                       </span>
                       <span
@@ -166,7 +172,13 @@
                   <!-- Custom data point -->
                   <td class="vertical-align-top">
                     <div class="flex align-items-start gap-0">
-                      <span v-if="getCustomDisplayValue(row.dataPointTypeId) != null">
+                      <MultiLayerDataTableCell
+                        v-if="row.customDisplay"
+                        :content="row.customDisplay"
+                        :meta-info="dataMetaInformation as DataMetaInformation"
+                        :inReviewMode="true"
+                      />
+                      <span v-else-if="getCustomDisplayValue(row.dataPointTypeId) != null">
                         {{ getCustomDisplayValue(row.dataPointTypeId) }}
                       </span>
                       <span
@@ -195,7 +207,7 @@
 import { computed, watch } from 'vue';
 import MultiLayerDataTableCell from '@/components/resources/dataTable/MultiLayerDataTableCell.vue';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import type { MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import type { MLDTCellConfig, MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import type { AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import type {
   DataMetaInformation,
@@ -219,8 +231,8 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toSafeDisplayString, toTitleCase } from '@/utils/StringFormatter.ts';
-
 import { wrapDataPointJson } from '@/utils/DataPoint.ts';
+import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
@@ -324,6 +336,8 @@ export type CellRow = {
   label: string;
   dataPointTypeId?: string;
   originalDisplay: AvailableMLDTDisplayObjectTypes;
+  qaReviewDisplay: Map<string, AvailableMLDTDisplayObjectTypes>;
+  customDisplay?: AvailableMLDTDisplayObjectTypes;
   explanation?: string;
 };
 
@@ -356,6 +370,8 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
         label: cell.label,
         dataPointTypeId: cell.dataPointTypeId,
         originalDisplay: cell.valueGetter(data),
+        qaReviewDisplay: getQaReviewMap(cell),
+        customDisplay: getCustomDisplay(cell),
         explanation: cell.explanation,
       };
 
@@ -366,6 +382,88 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
     }
   }
   return rows;
+}
+
+/**
+ * Builds a map from reporter user id to the rich display value of that reporter's
+ * corrected data point (if any), so it can be rendered via MultiLayerDataTableCell.
+ *
+ * @param {MLDTCellConfig<FrameworkData>} cell - The cell configuration to build the QA review map for.
+ * @returns {Map<string, AvailableMLDTDisplayObjectTypes>} Map of reporterUserId to display value.
+ */
+function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, AvailableMLDTDisplayObjectTypes> {
+  const qaReviewMap = new Map<string, AvailableMLDTDisplayObjectTypes>();
+  if (!cell.dataPointTypeId || !cell.valueGetterByDataPoint) {
+    return qaReviewMap;
+  }
+
+  for (const qaReporter of props.datasetReview.qaReporters) {
+    const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
+    const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
+    if (display != null) {
+      qaReviewMap.set(qaReporter.reporterUserId, display);
+    }
+  }
+  return qaReviewMap;
+}
+
+/**
+ * Returns a short human-readable label for QA verdicts that don't carry a corrected value
+ * worth displaying (Accepted / Inconclusive / Not Attempted), or null for verdicts where the
+ * actual corrected data point value should be displayed instead (e.g. QaRejected).
+ *
+ * @param {QaReportDataPointVerdict} [verdict] - The QA report verdict to map.
+ * @returns {string | null} The label, or null when the verdict has no dedicated simple text.
+ */
+function getQaVerdictSimpleText(verdict?: QaReportDataPointVerdict): string | null {
+  switch (verdict) {
+    case QaReportDataPointVerdict.QaAccepted:
+      return 'QA Accepted';
+    case QaReportDataPointVerdict.QaInconclusive:
+      return 'QA Inconclusive';
+    case QaReportDataPointVerdict.QaNotAttempted:
+      return 'QA Not Attempted';
+    default:
+      return null;
+  }
+}
+
+/**
+ * Builds the display value for a single QA report: a simple text object for verdicts like
+ * Accepted/Inconclusive/Not Attempted, or the rich corrected-data display otherwise.
+ *
+ * @param {DataPointQaReport | undefined} qaReport - The QA report to build a display value for.
+ * @param {(dataPoint: string) => AvailableMLDTDisplayObjectTypes} valueGetterByDataPoint - The cell's
+ * data-point-based value getter.
+ * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when there is nothing to show.
+ */
+function getQaReviewDisplayForReport(
+  qaReport: DataPointQaReport | undefined,
+  valueGetterByDataPoint: (dataPoint: string) => AvailableMLDTDisplayObjectTypes
+): AvailableMLDTDisplayObjectTypes | undefined {
+  if (!qaReport) return undefined;
+  const simpleText = getQaVerdictSimpleText(qaReport.verdict);
+  if (simpleText != null) return formatStringForDatatable(simpleText);
+  if (qaReport.correctedData != null) return valueGetterByDataPoint(qaReport.correctedData);
+  return undefined;
+}
+
+/**
+ * Builds the rich display value for the custom data point column (if a custom value
+ * was submitted for this data point), so it can be rendered via MultiLayerDataTableCell.
+ *
+ * @param {MLDTCellConfig<FrameworkData>} cell - The cell configuration to build the custom display for.
+ * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
+ */
+function getCustomDisplay(cell: MLDTCellConfig<FrameworkData>): AvailableMLDTDisplayObjectTypes | undefined {
+  if (!cell.dataPointTypeId || !cell.valueGetterByDataPoint) {
+    return undefined;
+  }
+  const reviewInfo = getReviewInfo(cell.dataPointTypeId);
+  if (reviewInfo?.customValue == null) {
+    return undefined;
+  }
+  return cell.valueGetterByDataPoint(reviewInfo.customValue);
 }
 
 const allRows = computed<KpiRow[]>(() => {
@@ -422,13 +520,13 @@ function getRowDataTest(row: KpiRow): string | undefined {
  * Looks up the datasetReview entry for the row's data point type and
  * returns the DataPointQaReport for the given reporter if present.
  *
- * @param {CellRow} row - The table cell row describing the data point.
+ * @param {string} dataPointTypeId - The data point type id that describes the data type of the data point.
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
  * @returns {DataPointQaReport | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(row: CellRow, reporterUserId: string): DataPointQaReport | undefined {
-  if (!row.dataPointTypeId) return undefined;
-  const datapointEntry = props.datasetReview.dataPoints[row.dataPointTypeId];
+function getQaReportFor(dataPointTypeId: string, reporterUserId: string): DataPointQaReport | undefined {
+  if (!dataPointTypeId) return undefined;
+  const datapointEntry = props.datasetReview.dataPoints[dataPointTypeId];
   if (!datapointEntry) return undefined;
   return datapointEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
 }
@@ -516,7 +614,10 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
     }
 
     case AcceptedDataPointSource.Qa: {
-      const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
+      const report =
+        reporterUserId == null || !cellRow.dataPointTypeId
+          ? undefined
+          : getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
       const corrected = getCorrectedDisplayFromQaReport(report);
       return corrected == null || corrected === '';
     }
@@ -544,7 +645,10 @@ function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSourc
   if (isCellEmpty(cellRow, source, reporterUserId)) return false;
   if (isAcceptedSource(cellRow, source, reporterUserId)) return false;
   if (source === AcceptedDataPointSource.Qa) {
-    const report = reporterUserId == null ? undefined : getQaReportFor(cellRow, reporterUserId);
+    const report =
+      reporterUserId == null || !cellRow.dataPointTypeId
+        ? undefined
+        : getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
     if (!report) return false;
   }
   return true;
@@ -575,19 +679,8 @@ function isRowEmpty(cellRow: CellRow): boolean {
  * @returns {string} Short label for the QA verdict or the corrected display value.
  */
 function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
-  const report = getQaReportFor(cellRow, reporterUserId);
-  switch (report?.verdict) {
-    case QaReportDataPointVerdict.QaAccepted:
-      return 'QA Accepted';
-    case QaReportDataPointVerdict.QaRejected:
-      return getCorrectedDisplayFromQaReport(report) ?? '–';
-    case QaReportDataPointVerdict.QaInconclusive:
-      return 'QA Inconclusive';
-    case QaReportDataPointVerdict.QaNotAttempted:
-      return 'QA Not Attempted';
-    default:
-      return getCorrectedDisplayFromQaReport(report) ?? '–';
-  }
+  const report = cellRow.dataPointTypeId ? getQaReportFor(cellRow.dataPointTypeId, reporterUserId) : undefined;
+  return getQaVerdictSimpleText(report?.verdict) ?? getCorrectedDisplayFromQaReport(report) ?? '–';
 }
 </script>
 
