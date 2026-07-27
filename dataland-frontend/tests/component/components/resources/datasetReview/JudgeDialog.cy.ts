@@ -109,12 +109,14 @@ const kpiRows: CellRow[] = [
     label: 'KPI Alpha Label',
     dataPointTypeId: dataPointTypeId,
     originalDisplay: MLDTDisplayObjectForEmptyString,
+    qaReviewDisplay: new Map(),
   },
   {
     type: 'cell',
     label: 'KPI Beta Label',
     dataPointTypeId: secondDataPointTypeId,
     originalDisplay: MLDTDisplayObjectForEmptyString,
+    qaReviewDisplay: new Map(),
   },
 ];
 
