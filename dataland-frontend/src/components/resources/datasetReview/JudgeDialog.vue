@@ -39,15 +39,17 @@
     <div
       style="
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto 1fr;
-        gap: var(--spacing-lg);
+        grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+        grid-template-rows: auto 1px auto;
+        column-gap: var(--spacing-lg);
+        row-gap: var(--spacing-lg);
         flex: 1;
         min-height: 0;
       "
     >
       <!-- Top-left: Original data point -->
       <JudgeDialogTopSection
+        style="grid-column: 1; grid-row: 1"
         title="Original data point"
         :data="originalData"
         :is-loading="isOriginalLoading"
@@ -66,11 +68,12 @@
         @hide-popover="hidePopover"
       />
 
-      <!-- Top-right: Reviewed data point (QA reports) -->
+      <!-- Top-right: Reviewed data point -->
       <JudgeDialogTopSection
+        style="grid-column: 3; grid-row: 1"
         title="Reviewed data point"
         :data="currentQaCorrectedData"
-        :currentQaReportComment="currentQaReport?.comment"
+        :currentQaReportComment="currentQaReport?.comment ?? 'heeeeeyyyyyy test'"
         empty-text="No QA reports available."
         accept-label="ACCEPT REVIEWED"
         :accept-disabled="isQaReportAcceptButtonDisabled"
@@ -93,8 +96,21 @@
         @hide-popover="hidePopover"
       />
 
+      <!-- Vertical divider -->
+      <div
+        aria-hidden="true"
+        style="grid-column: 2; grid-row: 1 / 4; background: var(--p-surface-200); width: 1px; min-height: 100%"
+      ></div>
+
+      <!-- Horizontal divider -->
+      <div
+        aria-hidden="true"
+        style="grid-column: 1 / 4; grid-row: 2; background: var(--p-surface-200); height: 1px; width: 100%"
+      ></div>
+
       <!-- Bottom-left: Custom data point -->
       <JudgeDialogCustomSection
+        style="grid-column: 1; grid-row: 3"
         v-model:edit-mode-enabled="editModeEnabled"
         v-model:json="customJson"
         v-model:form-data="customFormData"
@@ -109,8 +125,9 @@
         @copy-corrected="copyCorrectedToCustom"
       />
 
-      <!-- Bottom-right: Preapproval section & next data point selection & patch error -->
+      <!-- Bottom-right: Preapproval section & next data point selection -->
       <JudgeDialogNextSection
+        style="grid-column: 3; grid-row: 3"
         :pre-approval-check-results="preApprovalCheckResults"
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"

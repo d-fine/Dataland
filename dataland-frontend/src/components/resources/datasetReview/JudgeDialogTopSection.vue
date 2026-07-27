@@ -70,21 +70,21 @@
                 </div>
               </td>
             </tr>
+            <tr class="bg-gray-50" v-if="currentQaReportComment">
+              <th scope="row" class="headers-bg">Qa&nbsp;Comment</th>
+              <td>
+                <div class="flex align-items-center gap-1" style="min-width: 0">
+                  <span
+                    class="flex-1 overflow-auto"
+                    style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
+                  >
+                    {{ currentQaReportComment ?? '—' }}
+                  </span>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <div v-if="currentQaReportComment">
-      <h3>Qa Comment</h3>
-
-      <div class="flex align-items-center gap-1" style="min-width: 0">
-        <span
-          class="flex-1 overflow-auto"
-          style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
-        >
-          {{ currentQaReportComment ?? '—' }}
-        </span>
       </div>
     </div>
 
