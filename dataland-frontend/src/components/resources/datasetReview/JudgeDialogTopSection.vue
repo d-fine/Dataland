@@ -70,19 +70,6 @@
                 </div>
               </td>
             </tr>
-            <tr class="bg-gray-50" v-if="currentQaReportComment">
-              <th scope="row" class="headers-bg">Qa&nbsp;Comment</th>
-              <td>
-                <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span
-                    class="flex-1 overflow-auto"
-                    style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
-                  >
-                    {{ currentQaReportComment ?? '—' }}
-                  </span>
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -95,6 +82,19 @@
         :disabled="acceptDisabled"
         :data-test="acceptDataTest"
       />
+    </div>
+    <div class="p-3 mb-2 border-round border-2 bg-gray-100 border-gray-300 mt-2" v-if="currentQaReportComment">
+      <span class="font-bold" scope="row">Qa Comment:</span>
+      <div>
+        <div class="flex align-items-center gap-1" style="min-width: 0">
+          <span
+            class="flex-1 overflow-auto"
+            style="min-width: 0; white-space: normal; line-height: 1.25rem; max-height: 6.25rem"
+          >
+            {{ currentQaReportComment ?? '—' }}
+          </span>
+        </div>
+      </div>
     </div>
   </section>
 </template>

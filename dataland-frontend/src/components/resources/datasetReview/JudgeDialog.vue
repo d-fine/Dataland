@@ -46,6 +46,7 @@
         flex: 1;
         min-height: 0;
       "
+      class="-mt-3"
     >
       <!-- Top-left: Original data point -->
       <JudgeDialogTopSection
@@ -73,7 +74,7 @@
         style="grid-column: 3; grid-row: 1"
         title="Reviewed data point"
         :data="currentQaCorrectedData"
-        :currentQaReportComment="currentQaReport?.comment ?? 'heeeeeyyyyyy test'"
+        :currentQaReportComment="currentQaReport?.comment"
         empty-text="No QA reports available."
         accept-label="ACCEPT REVIEWED"
         :accept-disabled="isQaReportAcceptButtonDisabled"
