@@ -106,8 +106,6 @@ import type { ParsedSingleDataPoint } from '@/types/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { computed } from 'vue';
 
-const OVERFLOW_THRESHOLD = 40;
-
 const props = defineProps<{
   title: string;
   data: ParsedSingleDataPoint | null;
@@ -126,7 +124,7 @@ const props = defineProps<{
   isAccepted?: boolean;
   indexOfAcceptedQaReport?: number;
   sectionType: 'original' | 'qa';
-  currentQaReportComment: string | null;
+  currentQaReportComment?: string | null;
 }>();
 
 const emit = defineEmits<{
@@ -189,12 +187,6 @@ const errorMessage = computed(() => {
     ? `Failed to load data point: ${backendMessage}`
     : 'Failed to load data point. Please try again later!';
 });
-
-const copyValue = async (value: unknown) => {
-  if (value == null) return;
-
-  await navigator.clipboard.writeText(String(value));
-};
 </script>
 
 <style scoped lang="scss">

@@ -323,7 +323,7 @@ function hasVerticalOverflow(element: HTMLElement | null): boolean {
  * @returns Nothing.
  */
 function updateTextareaOverflowStates(): void {
-  nextTick(() => {
+  void nextTick(() => {
     isCustomValueOverflowing.value = hasVerticalOverflow(getTextareaElement(customValueTextarea.value));
     isCustomCommentOverflowing.value = hasVerticalOverflow(getTextareaElement(customCommentTextarea.value));
   });
