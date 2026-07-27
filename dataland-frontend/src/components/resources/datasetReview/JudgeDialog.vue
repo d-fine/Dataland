@@ -1,24 +1,15 @@
 <template>
-  <PrimeDialog
+  <PrimeDrawer
     id="judgeModal"
-    :dismissable-mask="true"
-    :draggable="false"
+    v-model:visible="isOpen"
+    position="bottom"
     :modal="true"
+    :dismissable="true"
     :style="{
       width: '100vw',
       height: 'calc(100vh - 100px)',
       maxHeight: 'calc(100vh - 100px)',
-      margin: '100px 0 0 0',
-      borderBottomLeftRadius: '0',
-      borderBottomRightRadius: '0',
     }"
-    :contentStyle="{
-      height: '100%',
-      overflow: 'auto',
-      borderBottomLeftRadius: '0',
-      borderBottomRightRadius: '0',
-    }"
-    v-model:visible="isOpen"
     @hide="emit('close')"
     data-test="judge-modal"
   >
@@ -142,7 +133,7 @@
         {{ popoverText }}
       </div>
     </Popover>
-  </PrimeDialog>
+  </PrimeDrawer>
   <PopupConfirmationModal
     v-model:visible="isErrorModalVisible"
     :header="errorModalHeader"
@@ -186,7 +177,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import PrimeDialog from 'primevue/dialog';
+import PrimeDrawer from 'primevue/drawer';
 import Popover from 'primevue/popover';
 
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
