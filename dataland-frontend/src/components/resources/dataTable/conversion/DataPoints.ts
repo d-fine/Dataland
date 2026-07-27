@@ -1,4 +1,4 @@
-import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
+import { type BaseDataPoint, type ExtendedDataPoint, wrapDataPointJson } from '@/utils/DataPoint';
 import { type Field } from '@/utils/GenericFrameworkTypes';
 import {
   type AvailableMLDTDisplayObjectTypes,
@@ -11,7 +11,6 @@ import { type BaseDocumentReference, type ExtendedDocumentReference } from '@cli
 import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { humanizeStringOrNumber, toSafeDisplayString } from '@/utils/StringFormatter';
-import { wrapDataPointJson } from '@/utils/JudgeDialogUtils';
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check

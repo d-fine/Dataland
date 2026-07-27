@@ -179,18 +179,11 @@ import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmat
 import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
 import JudgeDialogCustomSection from '@/components/resources/datasetReview/JudgeDialogCustomSection.vue';
 import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
-import type {
-  CustomFormData,
-  ParsedSingleDataPoint,
-  DocumentOption,
-  NextDataPointOption,
-} from '@/types/JudgeDialogTypes.ts';
+import type { CustomFormData, DocumentOption, NextDataPointOption } from '@/types/JudgeDialogTypes.ts';
 
 import {
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
-  unwrapDataPointJson,
-  wrapDataPointJson,
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
   DEFAULT_CUSTOM_FORM_DATA,
@@ -210,6 +203,7 @@ import type { CellRow } from '@/components/resources/datasetReview/DatasetReview
 import { type AxiosError } from 'axios';
 import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
 import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import { type ParsedSingleDataPoint, unwrapDataPointJson, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 // ===== Props & emits =====
 

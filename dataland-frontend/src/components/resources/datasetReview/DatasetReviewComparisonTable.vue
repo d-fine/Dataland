@@ -219,7 +219,8 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery.ts';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { toSafeDisplayString, toTitleCase } from '@/utils/StringFormatter.ts';
-import { wrapDataPointJson } from '@/utils/JudgeDialogUtils.ts';
+
+import { wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 defineOptions({ name: 'DatasetReviewComparisonTable' });
 
