@@ -67,24 +67,6 @@
                   >
                     {{ row.value ?? '—' }}
                   </span>
-                  <button
-                    v-tooltip.top="`Copy: ${row.value}`"
-                    type="button"
-                    class="p-link"
-                    aria-label="Pre-approval info"
-                    style="
-                      background: none;
-                      border: none;
-                      padding: 0;
-                      cursor: pointer;
-                      display: inline-flex;
-                      align-items: center;
-                    "
-                    v-if="row.value"
-                    @click="copyValue(row.value)"
-                  >
-                    <em class="material-icons ml-2" aria-hidden="true">content_copy</em>
-                  </button>
                 </div>
               </td>
             </tr>

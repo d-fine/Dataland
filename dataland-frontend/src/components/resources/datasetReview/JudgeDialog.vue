@@ -75,8 +75,6 @@
         @hide-popover="hidePopover"
       />
 
-      {{ currentQaReport }}
-
       <!-- Top-right: Reviewed data point (QA reports) -->
       <JudgeDialogTopSection
         title="Reviewed data point"
