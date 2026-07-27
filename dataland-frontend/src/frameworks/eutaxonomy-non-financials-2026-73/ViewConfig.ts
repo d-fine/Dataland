@@ -4,9 +4,14 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatEuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataForTable } from '@/components/resources/dataTable/conversion/EuTaxonomyNonFinancialsEligibleOrAlignedActivitiesDataGetterFactory';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  wrapDisplayValueWithDatapointInformation,
+  extractDatapointValue,
+  wrapDisplayValueWithDatapointInformationByDataPoint,
+} from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { type YesNoNa, type EutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions } from '@clients/backend';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
@@ -42,6 +47,27 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Fiscal Year Deviation',
             dataset.general?.fiscalYearDeviation
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            ((): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                Deviation: 'Deviation',
+                NoDeviation: 'No Deviation',
+              };
+              return formatStringForDatatable(
+                (extractDatapointValue(dataPoint) as EutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions)
+                  ? getOriginalNameFromTechnicalName(
+                      extractDatapointValue(
+                        dataPoint
+                      ) as EutaxonomyNonFinancials202673GeneralFiscalYearDeviationOptions,
+                      mappings
+                    )
+                  : ''
+              );
+            })(),
+            'Fiscal Year Deviation',
+            dataPoint
+          ),
         uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumFiscalYearDeviation',
       },
@@ -56,6 +82,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Fiscal Year End',
             dataset.general?.fiscalYearEnd
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatStringForDatatable(extractDatapointValue(dataPoint) as string),
+            'Fiscal Year End',
+            dataPoint
+          ),
         uploadComponentName: 'DateExtendedDataPointFormField',
         dataPointTypeId: 'extendedDateFiscalYearEnd',
       },
@@ -69,6 +101,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value),
             'Scope Of Entities',
             dataset.general?.scopeOfEntities
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'Scope Of Entities',
+            dataPoint
           ),
         uploadComponentName: 'YesNoNaExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoNaScopeOfEntities',
@@ -85,6 +123,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Is EU Taxonomy data reported on a mandatory basis?',
             dataset.general?.isEuTaxonomyDataReportedOnAMandatoryBasis
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'Is EU Taxonomy data reported on a mandatory basis?',
+            dataPoint
+          ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoIsEuTaxonomyDataReportedOnAMandatoryBasis',
       },
@@ -98,6 +142,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting?.value),
             'EU Taxonomy Activity Level Reporting',
             dataset.general?.euTaxonomyActivityLevelReporting
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'EU Taxonomy Activity Level Reporting',
+            dataPoint
           ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoEuTaxonomyActivityLevelReporting',
@@ -134,6 +184,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Number of Employees',
             dataset.general?.numberOfEmployees
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+            'Number of Employees',
+            dataPoint
+          ),
         uploadComponentName: 'BigDecimalExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalNumberOfEmployees',
       },
@@ -148,6 +204,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatYesNoValueForDatatable(dataset.general?.unGlobalCompactPrinciplesCompliancePolicy?.value),
             'UN Global Compact Principles Compliance Policy',
             dataset.general?.unGlobalCompactPrinciplesCompliancePolicy
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'UN Global Compact Principles Compliance Policy',
+            dataPoint
           ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy',
@@ -166,6 +228,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'OECD Guidelines for Multinational Enterprises Compliance Policy',
             dataset.general?.oecdGuidelinesForMultinationalEnterprisesCompliancePolicy
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'OECD Guidelines for Multinational Enterprises Compliance Policy',
+            dataPoint
+          ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesCompliancePolicy',
       },
@@ -181,6 +249,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'ILO Core Labour Standards',
             dataset.general?.iloCoreLabourStandards
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'ILO Core Labour Standards',
+            dataPoint
+          ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoIloCoreLabourStandards',
       },
@@ -195,6 +269,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatYesNoValueForDatatable(dataset.general?.humanRightsDueDiligence?.value),
             'Human Rights Due Diligence',
             dataset.general?.humanRightsDueDiligence
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+            'Human Rights Due Diligence',
+            dataPoint
           ),
         uploadComponentName: 'YesNoExtendedDataPointFormField',
         dataPointTypeId: 'extendedEnumYesNoHumanRightsDueDiligence',
@@ -236,6 +316,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.revenue?.eligibleShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRevenueEligibleShareRelativeShareInPercent',
           },
@@ -270,6 +356,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.revenue?.alignedShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRevenueAlignedShareRelativeShareInPercent',
           },
@@ -288,6 +380,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.revenue?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeMitigationInPercentAligned',
       },
@@ -303,6 +401,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToClimateChangeAdaptationInPercentAligned',
@@ -324,6 +428,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             dataset.revenue
               ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalRevenueSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
@@ -341,6 +451,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
       },
@@ -357,6 +473,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
@@ -378,6 +500,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             dataset.revenue
               ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -394,6 +522,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Enabling Share In Percent',
             dataset.revenue?.enablingShareInPercent
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Enabling Share In Percent',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueEnablingShareInPercent',
       },
@@ -408,6 +542,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.revenue?.transitionalShareInPercent?.value),
             'Transitional Share In Percent',
             dataset.revenue?.transitionalShareInPercent
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Transitional Share In Percent',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueTransitionalShareInPercent',
@@ -429,6 +569,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 formatPercentageForDatatable(dataset.revenue?.nonAssessedShare?.relativeShareInPercent?.value),
                 'Relative Share in Percent',
                 dataset.revenue?.nonAssessedShare?.relativeShareInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRevenueNonAssessedShareRelativeShareInPercent',
@@ -488,6 +634,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.capex?.eligibleShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalCapexEligibleShareRelativeShareInPercent',
           },
@@ -522,6 +674,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.capex?.alignedShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalCapexAlignedShareRelativeShareInPercent',
           },
@@ -540,6 +698,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.capex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeMitigationInPercentAligned',
       },
@@ -555,6 +719,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.capex?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToClimateChangeAdaptationInPercentAligned',
@@ -575,6 +745,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalCapexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
@@ -592,6 +768,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
       },
@@ -608,6 +790,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
@@ -628,6 +816,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -644,6 +838,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Enabling Share In Percent',
             dataset.capex?.enablingShareInPercent
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Enabling Share In Percent',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexEnablingShareInPercent',
       },
@@ -658,6 +858,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.capex?.transitionalShareInPercent?.value),
             'Transitional Share In Percent',
             dataset.capex?.transitionalShareInPercent
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Transitional Share In Percent',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexTransitionalShareInPercent',
@@ -679,6 +885,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 formatPercentageForDatatable(dataset.capex?.nonAssessedShare?.relativeShareInPercent?.value),
                 'Relative Share in Percent',
                 dataset.capex?.nonAssessedShare?.relativeShareInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalCapexNonAssessedShareRelativeShareInPercent',
@@ -738,6 +950,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.opex?.eligibleShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalOpexEligibleShareRelativeShareInPercent',
           },
@@ -772,6 +990,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 'Relative Share in Percent',
                 dataset.opex?.alignedShare?.relativeShareInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalOpexAlignedShareRelativeShareInPercent',
           },
@@ -790,6 +1014,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataset.opex?.substantialContributionToClimateChangeMitigationInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToClimateChangeMitigationInPercentAligned',
       },
@@ -805,6 +1035,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataset.opex?.substantialContributionToClimateChangeAdaptationInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToClimateChangeAdaptationInPercentAligned',
@@ -825,6 +1061,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalOpexSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned',
@@ -842,6 +1084,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
       },
@@ -858,6 +1106,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             ),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
@@ -878,6 +1132,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId:
           'extendedDecimalOpexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -894,6 +1154,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Enabling Share In Percent',
             dataset.opex?.enablingShareInPercent
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Enabling Share In Percent',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexEnablingShareInPercent',
       },
@@ -908,6 +1174,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.opex?.transitionalShareInPercent?.value),
             'Transitional Share In Percent',
             dataset.opex?.transitionalShareInPercent
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+            'Transitional Share In Percent',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalOpexTransitionalShareInPercent',
@@ -929,6 +1201,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
                 formatPercentageForDatatable(dataset.opex?.nonAssessedShare?.relativeShareInPercent?.value),
                 'Relative Share in Percent',
                 dataset.opex?.nonAssessedShare?.relativeShareInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Relative Share in Percent',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalOpexNonAssessedShareRelativeShareInPercent',

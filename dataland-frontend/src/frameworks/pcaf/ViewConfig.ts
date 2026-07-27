@@ -3,9 +3,18 @@ import { type PcafData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  wrapDisplayValueWithDatapointInformation,
+  extractDatapointValue,
+  wrapDisplayValueWithDatapointInformationByDataPoint,
+} from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
+import {
+  type PcafGeneralCompanyCompanyExchangeStatusOptions,
+  type PcafGeneralCompanyMainPcafSectorOptions,
+  type PcafGeneralGeneralFiscalYearDeviationOptions,
+} from '@clients/backend';
 export const pcafViewConfiguration: MLDTConfig<PcafData> = [
   {
     type: 'section',
@@ -40,6 +49,25 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Fiscal Year Deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as PcafGeneralGeneralFiscalYearDeviationOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as PcafGeneralGeneralFiscalYearDeviationOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataPoint
+              ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
@@ -53,6 +81,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
                 'Fiscal Year End',
                 dataset.general?.general?.fiscalYearEnd
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatStringForDatatable(extractDatapointValue(dataPoint) as string),
+                'Fiscal Year End',
+                dataPoint
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
             dataPointTypeId: 'extendedDateFiscalYearEnd',
@@ -98,6 +132,36 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Main PCAF sector',
                 dataset.general?.company?.mainPcafSector
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    CommunicationServices: 'Communication Services',
+                    ConsumerDiscretionary: 'Consumer Discretionary',
+                    ConsumerStaples: 'Consumer Staples',
+                    Energy: 'Energy',
+                    Financials: 'Financials',
+                    HealthCare: 'Health Care',
+                    Industrials: 'Industrials',
+                    Industry: 'Industry',
+                    InformationTechnology: 'Information Technology',
+                    Materials: 'Materials',
+                    RealEstate: 'Real Estate',
+                    Sovereign: 'Sovereign',
+                    Utilities: 'Utilities',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as PcafGeneralCompanyMainPcafSectorOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as PcafGeneralCompanyMainPcafSectorOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Main PCAF sector',
+                dataPoint
+              ),
             uploadComponentName: 'ExtendedSingleSelectFormField',
             dataPointTypeId: 'extendedEnumPcafMainSector',
           },
@@ -124,6 +188,25 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 })(),
                 'Company exchange status',
                 dataset.general?.company?.companyExchangeStatus
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Listed: 'Listed',
+                    Unlisted: 'Unlisted',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as PcafGeneralCompanyCompanyExchangeStatusOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as PcafGeneralCompanyCompanyExchangeStatusOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Company exchange status',
+                dataPoint
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumCompanyExchangeStatus',
@@ -155,6 +238,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Market capitalization',
                 dataset.companyValue?.listedCompany?.marketCapitalizationInEUR
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Market capitalization',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalMarketCapitalizationInEUR',
           },
@@ -170,6 +259,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Book value of debt',
                 dataset.companyValue?.listedCompany?.bookValueOfDebtInEUR
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Book value of debt',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalBookValueOfDebtInEUR',
           },
@@ -184,6 +279,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 formatNumberForDatatable(dataset.companyValue?.listedCompany?.minoritiesInterestInEUR?.value, 'EUR'),
                 'Minorities interest',
                 dataset.companyValue?.listedCompany?.minoritiesInterestInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Minorities interest',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalMinoritiesInterestInEUR',
@@ -206,6 +307,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 formatNumberForDatatable(dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
                 'Total equity and debt',
                 dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Total equity and debt',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
@@ -241,6 +348,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1GhgEmissionsInTonnes',
           },
@@ -258,6 +371,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 ),
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (location-based)',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope2GhgEmissionsLocationBasedInTonnes',
@@ -277,6 +396,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (market-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope2GhgEmissionsMarketBasedInTonnes',
           },
@@ -294,6 +419,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 ),
                 'Scope 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 3 GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope3GhgEmissionsInTonnes',
@@ -328,6 +459,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Market capitalization',
                 dataset.companyValueEstimation?.listedCompany?.marketCapitalizationInEUR
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Market capitalization',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedMarketCapitalizationInEUR',
           },
@@ -346,6 +483,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Book value of debt',
                 dataset.companyValueEstimation?.listedCompany?.bookValueOfDebtInEUR
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Book value of debt',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedBookValueOfDebtInEUR',
           },
@@ -363,6 +506,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 ),
                 'Minorities interest',
                 dataset.companyValueEstimation?.listedCompany?.minoritiesInterestInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Minorities interest',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedMinoritiesInterestInEUR',
@@ -388,6 +537,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 ),
                 'Total equity and debt',
                 dataset.companyValueEstimation?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Total equity and debt',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedTotalEquityAndDebtInEUR',
@@ -423,6 +578,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedScope1GhgEmissionsInTonnes',
           },
@@ -442,6 +603,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (location-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsLocationBasedInTonnes',
           },
@@ -460,6 +627,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (market-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedScope2GhgEmissionsMarketBasedInTonnes',
           },
@@ -477,6 +650,12 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                 ),
                 'Scope 3 GHG emissions',
                 dataset.environmentalEstimation?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 3 GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEstimatedScope3GhgEmissionsInTonnes',

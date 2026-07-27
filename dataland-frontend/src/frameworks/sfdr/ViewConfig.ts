@@ -4,8 +4,13 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  wrapDisplayValueWithDatapointInformation,
+  extractDatapointValue,
+  wrapDisplayValueWithDatapointInformationByDataPoint,
+} from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { type YesNoNa, type SfdrGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
 import { formatHighImpactClimateSectorForDisplay } from '@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
@@ -29,6 +34,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.dataDate),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(extractDatapointValue(dataPoint) as string),
             uploadComponentName: 'DateFormField',
             dataPointTypeId: 'plainDateSfdrDataDate',
           },
@@ -53,6 +60,25 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Fiscal Year Deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as SfdrGeneralGeneralFiscalYearDeviationOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as SfdrGeneralGeneralFiscalYearDeviationOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataPoint
+              ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
@@ -66,6 +92,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
                 'Fiscal Year End',
                 dataset.general?.general?.fiscalYearEnd
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatStringForDatatable(extractDatapointValue(dataPoint) as string),
+                'Fiscal Year End',
+                dataPoint
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
             dataPointTypeId: 'extendedDateFiscalYearEnd',
@@ -102,6 +134,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1GhgEmissionsInTonnes',
           },
@@ -119,6 +157,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 2 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope2GhgEmissionsInTonnes',
@@ -138,6 +182,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (location-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope2GhgEmissionsLocationBasedInTonnes',
           },
@@ -155,6 +205,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 2 GHG emissions (market-based)',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope2GhgEmissionsMarketBasedInTonnes',
@@ -174,6 +230,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2GhgEmissionsInTonnes',
           },
@@ -191,6 +253,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 1 and 2 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 GHG emissions (location-based)',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2GhgEmissionsLocationBasedInTonnes',
@@ -210,6 +278,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 GHG emissions (market-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2GhgEmissionsMarketBasedInTonnes',
           },
@@ -227,6 +301,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 3 GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope3GhgEmissionsInTonnes',
@@ -246,6 +326,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 3 upstream GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3UpstreamGhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 3 upstream GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope3UpstreamGhgEmissionsInTonnes',
           },
@@ -263,6 +349,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 3 downstream GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope3DownstreamGhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 3 downstream GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope3DownstreamGhgEmissionsInTonnes',
@@ -282,6 +374,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 and 3 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 and 3 GHG emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2And3GhgEmissionsInTonnes',
           },
@@ -299,6 +397,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 1 and 2 and 3 GHG emissions (location-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 and 3 GHG emissions (location-based)',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2And3GhgEmissionsLocationBasedInTonnes',
@@ -318,6 +422,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Scope 1 and 2 and 3 GHG emissions (market-based)',
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 1 and 2 and 3 GHG emissions (market-based)',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope1And2And3GhgEmissionsMarketBasedInTonnes',
           },
@@ -335,6 +445,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Scope 4 GHG emissions',
                 dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Scope 4 GHG emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalScope4GhgEmissionsInTonnes',
@@ -354,6 +470,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Enterprise Value',
                 dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Enterprise Value',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEnterpriseValueInEUR',
           },
@@ -371,6 +493,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Total Revenue',
                 dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'EUR'),
+                'Total Revenue',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalTotalRevenueInEUR',
@@ -391,6 +519,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Carbon footprint',
                 dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEUREnterpriseValue
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number,
+                  'Tonnes \/ \u20ACM Enterprise Value'
+                ),
+                'Carbon footprint',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalCarbonFootprintInTonnesPerMillionEUREnterpriseValue',
           },
@@ -408,6 +545,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'GHG intensity',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes \/ \u20ACM Revenue'),
+                'GHG intensity',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue',
@@ -427,6 +570,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 1',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes \/ \u20ACM Revenue'),
+                'GHG intensity - scope 1',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityScope1InTonnesPerMillionEURRevenue',
           },
@@ -444,6 +593,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'GHG intensity - scope 2',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes \/ \u20ACM Revenue'),
+                'GHG intensity - scope 2',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityScope2InTonnesPerMillionEURRevenue',
@@ -463,6 +618,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 3',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes \/ \u20ACM Revenue'),
+                'GHG intensity - scope 3',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityScope3InTonnesPerMillionEURRevenue',
           },
@@ -481,6 +642,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'GHG intensity - scope 4',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes \/ \u20ACM Revenue'),
+                'GHG intensity - scope 4',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityScope4InTonnesPerMillionEURRevenue',
           },
@@ -497,6 +664,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Fossil Fuel Sector Exposure',
                 dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fossil Fuel Sector Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFossilFuelSectorExposure',
@@ -516,6 +689,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Financed scope 1 and scope 2 emissions',
                 dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Financed scope 1 and scope 2 emissions',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalFinancedScope1AndScope2Emissions',
           },
@@ -533,6 +712,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Financed scope 3 emissions',
                 dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Financed scope 3 emissions',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalFinancedScope3Emissions',
@@ -560,6 +745,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Renewable Energy Production',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRenewableEnergyProductionInGWh',
           },
@@ -577,6 +768,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Renewable Energy Consumption',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRenewableEnergyConsumptionInGWh',
@@ -596,6 +793,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Production',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyProductionInGWh',
           },
@@ -613,6 +816,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Relative Non-Renewable Energy Production',
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Percent'),
+                'Relative Non-Renewable Energy Production',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRelativeNonRenewableEnergyProductionInPercent',
@@ -632,6 +841,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionInGWh',
           },
@@ -649,6 +864,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Relative Non-Renewable Energy Consumption',
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Percent'),
+                'Relative Non-Renewable Energy Consumption',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRelativeNonRenewableEnergyConsumptionInPercent',
@@ -681,6 +902,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Total High Impact Climate Sector Energy Consumption',
                 dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Total High Impact Climate Sector Energy Consumption',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalTotalHighImpactClimateSectorEnergyConsumptionInGWh',
           },
@@ -698,6 +925,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Non-Renewable Energy Consumption Fossil Fuels',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Fossil Fuels',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionFossilFuelsInGWh',
@@ -717,6 +950,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Crude Oil',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Crude Oil',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionCrudeOilInGWh',
           },
@@ -734,6 +973,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Non-Renewable Energy Consumption Natural Gas',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Natural Gas',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionNaturalGasInGWh',
@@ -753,6 +998,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Lignite',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Lignite',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionLigniteInGWh',
           },
@@ -770,6 +1021,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Non-Renewable Energy Consumption Coal',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Coal',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionCoalInGWh',
@@ -789,6 +1046,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Non-Renewable Energy Consumption Nuclear Energy',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Nuclear Energy',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionNuclearEnergyInGWh',
           },
@@ -806,6 +1069,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Non-Renewable Energy Consumption Other',
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'GWh'),
+                'Non-Renewable Energy Consumption Other',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRenewableEnergyConsumptionOtherInGWh',
@@ -832,6 +1101,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Primary Forest And Wooded Land Of Native Species Exposure',
                 dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Primary Forest And Wooded Land Of Native Species Exposure',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure',
           },
@@ -846,6 +1121,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.protectedAreasExposure?.value),
                 'Protected Areas Exposure',
                 dataset.environmental?.biodiversity?.protectedAreasExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Protected Areas Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoProtectedAreasExposure',
@@ -864,6 +1145,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Rare Or Endangered Ecosystems Exposure',
                 dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Rare Or Endangered Ecosystems Exposure',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoRareOrEndangeredEcosystemsExposure',
           },
@@ -880,6 +1167,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Highly Biodiverse Grassland Exposure',
                 dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Highly Biodiverse Grassland Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHighlyBiodiverseGrasslandExposure',
@@ -898,6 +1191,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Manufacture Of Agrochemical Pesticides Products',
                 dataset.environmental?.biodiversity?.manufactureOfAgrochemicalPesticidesProducts
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Manufacture Of Agrochemical Pesticides Products',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoManufactureOfAgrochemicalPesticidesProducts',
           },
@@ -915,6 +1214,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Land Degradation Desertification Soil Sealing Exposure',
                 dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Land Degradation Desertification Soil Sealing Exposure',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoLandDegradationDesertificationSoilSealingExposure',
           },
@@ -929,6 +1234,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.sustainableAgriculturePolicy?.value),
                 'Sustainable Agriculture Policy',
                 dataset.environmental?.biodiversity?.sustainableAgriculturePolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Sustainable Agriculture Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoSustainableAgriculturePolicy',
@@ -947,6 +1258,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Sustainable Oceans And Seas Policy',
                 dataset.environmental?.biodiversity?.sustainableOceansAndSeasPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Sustainable Oceans And Seas Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoSustainableOceansAndSeasPolicy',
           },
@@ -961,6 +1278,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.threatenedSpeciesExposure?.value),
                 'Threatened Species Exposure',
                 dataset.environmental?.biodiversity?.threatenedSpeciesExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Threatened Species Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoThreatenedSpeciesExposure',
@@ -977,6 +1300,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Biodiversity Protection Policy',
                 dataset.environmental?.biodiversity?.biodiversityProtectionPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Biodiversity Protection Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoBiodiversityProtectionPolicy',
           },
@@ -991,6 +1320,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.deforestationPolicy?.value),
                 'Deforestation Policy',
                 dataset.environmental?.biodiversity?.deforestationPolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Deforestation Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoDeforestationPolicy',
@@ -1015,6 +1350,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions To Water',
                 dataset.environmental?.water?.emissionsToWaterInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Emissions To Water',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEmissionsToWaterInTonnes',
           },
@@ -1033,6 +1374,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Withdrawal',
                 dataset.environmental?.water?.waterConsumptionInCubicMeters
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Cubic Meters'),
+                'Water Withdrawal',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalWaterConsumptionInCubicMeters',
           },
@@ -1047,6 +1394,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.environmental?.water?.waterReusedInCubicMeters?.value, 'Cubic Meters'),
                 'Water Reused',
                 dataset.environmental?.water?.waterReusedInCubicMeters
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Cubic Meters'),
+                'Water Reused',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalWaterReusedInCubicMeters',
@@ -1066,6 +1419,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Withdrawal Intensity',
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Cubic Meters \/ \u20ACM Revenue'),
+                'Water Withdrawal Intensity',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRelativeWaterUsageInCubicMetersPerMillionEURRevenue',
           },
@@ -1081,6 +1440,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Water Management Policy',
                 dataset.environmental?.water?.waterManagementPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Water Management Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoWaterManagementPolicy',
           },
@@ -1095,6 +1460,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.water?.highWaterStressAreaExposure?.value),
                 'High Water Stress Area Exposure',
                 dataset.environmental?.water?.highWaterStressAreaExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'High Water Stress Area Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHighWaterStressAreaExposure',
@@ -1122,6 +1493,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Hazardous and Radioactive Waste',
                 dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Hazardous and Radioactive Waste',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalHazardousAndRadioactiveWasteInTonnes',
           },
@@ -1136,6 +1513,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value, 'Tonnes'),
                 'Non-Recycled Waste',
                 dataset.environmental?.waste?.nonRecycledWasteInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Non-Recycled Waste',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNonRecycledWasteInTonnes',
@@ -1163,6 +1546,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions of Inorganic Pollutants',
                 dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Emissions of Inorganic Pollutants',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEmissionsOfInorganicPollutantsInTonnes',
           },
@@ -1180,6 +1569,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Emissions of Air Pollutants',
                 dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Emissions of Air Pollutants',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEmissionsOfAirPollutantsInTonnes',
@@ -1199,6 +1594,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Emissions of Ozone Depletion Substances',
                 dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Tonnes'),
+                'Emissions of Ozone Depletion Substances',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes',
           },
@@ -1213,6 +1614,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.environmental?.emissions?.carbonReductionInitiatives?.value),
                 'Carbon Reduction Initiatives',
                 dataset.environmental?.emissions?.carbonReductionInitiatives
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Carbon Reduction Initiatives',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoCarbonReductionInitiatives',
@@ -1248,6 +1655,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Legal Proceedings',
                 dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Human Rights Legal Proceedings',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHumanRightsLegalProceedings',
           },
@@ -1263,6 +1676,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'ILO Core Labour Standards',
                 dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'ILO Core Labour Standards',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoIloCoreLabourStandards',
           },
@@ -1276,6 +1695,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value),
                 'Environmental Policy',
                 dataset.social?.socialAndEmployeeMatters?.environmentalPolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Environmental Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoEnvironmentalPolicy',
@@ -1294,6 +1719,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Corruption Legal Proceedings',
                 dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Corruption Legal Proceedings',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoCorruptionLegalProceedings',
           },
@@ -1310,6 +1741,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Transparency Disclosure Policy',
                 dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Transparency Disclosure Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoTransparencyDisclosurePolicy',
@@ -1328,6 +1765,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Due Diligence Policy',
                 dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Human Rights Due Diligence Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHumanRightsDueDiligencePolicy',
           },
@@ -1342,6 +1785,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value),
                 'Policy against Child Labour',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Policy against Child Labour',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoPolicyAgainstChildLabour',
@@ -1360,6 +1809,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Forced Labour',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Policy against Forced Labour',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoPolicyAgainstForcedLabour',
           },
@@ -1376,6 +1831,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Discrimination in the Workplace',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Policy against Discrimination in the Workplace',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoPolicyAgainstDiscriminationInTheWorkplace',
           },
@@ -1389,6 +1850,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value),
                 'ISO 14001 Certificate',
                 dataset.social?.socialAndEmployeeMatters?.iso14001Certificate
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'ISO 14001 Certificate',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoIso14001Certificate',
@@ -1407,6 +1874,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Policy against Bribery and Corruption',
                 dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Policy against Bribery and Corruption',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoPolicyAgainstBriberyAndCorruption',
           },
@@ -1423,6 +1896,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Fair Business Marketing Advertising Policy',
                 dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fair Business Marketing Advertising Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFairBusinessMarketingAdvertisingPolicy',
@@ -1441,6 +1920,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Technologies Expertise Transfer Policy',
                 dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Technologies Expertise Transfer Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoTechnologiesExpertiseTransferPolicy',
           },
@@ -1455,6 +1940,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value),
                 'Fair Competition Policy',
                 dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fair Competition Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFairCompetitionPolicy',
@@ -1473,6 +1964,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
                 dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoViolationOfTaxRulesAndRegulation',
           },
@@ -1489,6 +1986,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'UN Global Compact Principles Compliance Policy',
                 dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'UN Global Compact Principles Compliance Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy',
@@ -1507,6 +2010,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'OECD Guidelines For Multinational Enterprises Grievance Handling',
                 dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'OECD Guidelines For Multinational Enterprises Grievance Handling',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling',
@@ -1554,6 +2063,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Unadjusted gender pay gap',
                 dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Percent'),
+                'Unadjusted gender pay gap',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalUnadjustedGenderPayGapInPercent',
           },
@@ -1571,6 +2086,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Female Board Members - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersSupervisoryBoard
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Female Board Members - Supervisory Board',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerFemaleBoardMembersSupervisoryBoard',
@@ -1590,6 +2111,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Female Board Members - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.femaleBoardMembersBoardOfDirectors
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Female Board Members - Board of Directors',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerFemaleBoardMembersBoardOfDirectors',
           },
@@ -1607,6 +2134,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Male Board Members - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.maleBoardMembersSupervisoryBoard
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Male Board Members - Supervisory Board',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerMaleBoardMembersSupervisoryBoard',
@@ -1626,6 +2159,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Male Board Members - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.maleBoardMembersBoardOfDirectors
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Male Board Members - Board of Directors',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerMaleBoardMembersBoardOfDirectors',
           },
@@ -1643,6 +2182,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Board gender diversity - Supervisory Board',
                 dataset.social?.socialAndEmployeeMatters?.boardGenderDiversitySupervisoryBoardInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Percent'),
+                'Board gender diversity - Supervisory Board',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalBoardGenderDiversitySupervisoryBoardInPercent',
@@ -1662,6 +2207,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Board gender diversity - Board of Directors',
                 dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Percent'),
+                'Board gender diversity - Board of Directors',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent',
           },
@@ -1678,6 +2229,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Controversial Weapons Exposure',
                 dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Controversial Weapons Exposure',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoControversialWeaponsExposure',
@@ -1696,6 +2253,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Workplace Accident Prevention Policy',
                 dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Workplace Accident Prevention Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoWorkplaceAccidentPreventionPolicy',
           },
@@ -1710,6 +2273,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.value, ''),
                 'Rate Of Accidents',
                 dataset.social?.socialAndEmployeeMatters?.rateOfAccidents
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Rate Of Accidents',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRateOfAccidents',
@@ -1726,6 +2295,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Workdays Lost',
                 dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, 'Days'),
+                'Workdays Lost',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalWorkdaysLostInDays',
           },
@@ -1740,6 +2315,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value),
                 'Supplier Code Of Conduct',
                 dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Supplier Code Of Conduct',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoSupplierCodeOfConduct',
@@ -1758,6 +2339,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Grievance Handling Mechanism',
                 dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Grievance Handling Mechanism',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoGrievanceHandlingMechanism',
           },
@@ -1774,6 +2361,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Whistleblower Protection Policy',
                 dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Whistleblower Protection Policy',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoWhistleblowerProtectionPolicy',
@@ -1793,6 +2386,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Reported Incidents Of Discrimination',
                 dataset.social?.socialAndEmployeeMatters?.reportedIncidentsOfDiscrimination
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Reported Incidents Of Discrimination',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerReportedIncidentsOfDiscrimination',
           },
@@ -1811,6 +2410,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Sanctioned Incidents Of Discrimination',
                 dataset.social?.socialAndEmployeeMatters?.sanctionedIncidentsOfDiscrimination
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Sanctioned Incidents Of Discrimination',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerSanctionedIncidentsOfDiscrimination',
           },
@@ -1825,6 +2430,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio?.value, ''),
                 'Excessive CEO pay ratio',
                 dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Excessive CEO pay ratio',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalExcessiveCeoPayRatio',
@@ -1849,6 +2460,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Securities Not Certified As Green',
                 dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Securities Not Certified As Green',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoSecuritiesNotCertifiedAsGreen',
           },
@@ -1872,6 +2489,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Human Rights Policy',
                 dataset.social?.humanRights?.humanRightsPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Human Rights Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHumanRightsPolicy',
           },
@@ -1886,6 +2509,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsDueDiligence?.value),
                 'Human Rights Due Diligence',
                 dataset.social?.humanRights?.humanRightsDueDiligence
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Human Rights Due Diligence',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoHumanRightsDueDiligence',
@@ -1902,6 +2531,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Trafficking In Human Beings Policy',
                 dataset.social?.humanRights?.traffickingInHumanBeingsPolicy
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Trafficking In Human Beings Policy',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoTraffickingInHumanBeingsPolicy',
           },
@@ -1916,6 +2551,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
                 'Risk of Child Labour Incidents',
                 dataset.social?.humanRights?.reportedChildLabourIncidents
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Risk of Child Labour Incidents',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoReportedChildLabourIncidents',
@@ -1934,6 +2575,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Risk of Forced Or Compulsory Labour Incidents',
                 dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Risk of Forced Or Compulsory Labour Incidents',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents',
           },
@@ -1951,6 +2598,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Number Of Reported Incidents Of Human Rights Violations',
                 dataset.social?.humanRights?.numberOfReportedIncidentsOfHumanRightsViolations
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Number Of Reported Incidents Of Human Rights Violations',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations',
@@ -1979,6 +2632,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 'Cases of Insufficient Action against Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.casesOfInsufficientActionAgainstBriberyAndCorruption
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Cases of Insufficient Action against Bribery and Corruption',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption',
           },
@@ -1996,6 +2655,12 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Number of Reported Convictions Of Bribery and Corruption',
                 dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Number of Reported Convictions Of Bribery and Corruption',
+                dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedIntegerReportedConvictionsOfBriberyAndCorruption',

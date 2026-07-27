@@ -3,13 +3,18 @@ import { type EutaxonomyFinancialsData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  wrapDisplayValueWithDatapointInformation,
+  extractDatapointValue,
+  wrapDisplayValueWithDatapointInformationByDataPoint,
+} from '@/components/resources/dataTable/conversion/DataPoints';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
+import { type YesNoNa, type EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
@@ -47,6 +52,27 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Fiscal Year Deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Deviation: 'Deviation',
+                    NoDeviation: 'No Deviation',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(
+                            dataPoint
+                          ) as EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Fiscal Year Deviation',
+                dataPoint
+              ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
@@ -61,6 +87,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Fiscal Year End',
                 dataset.general?.general?.fiscalYearEnd
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatStringForDatatable(extractDatapointValue(dataPoint) as string),
+                'Fiscal Year End',
+                dataPoint
+              ),
             uploadComponentName: 'DateExtendedDataPointFormField',
             dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
@@ -74,6 +106,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 formatYesNoValueForDatatable(dataset.general?.general?.areAllGroupEntitiesCovered?.value),
                 'Are all Group Entities covered?',
                 dataset.general?.general?.areAllGroupEntitiesCovered
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Are all Group Entities covered?',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports',
@@ -90,6 +128,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Number of Employees',
                 dataset.general?.general?.numberOfEmployees
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number, ''),
+                'Number of Employees',
+                dataPoint
+              ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalNumberOfEmployees',
           },
@@ -103,6 +147,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 formatYesNoValueForDatatable(dataset.general?.general?.isNfrdMandatory?.value),
                 'Is NFRD mandatory?',
                 dataset.general?.general?.isNfrdMandatory
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Is NFRD mandatory?',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoIsNfrdMandatory',
@@ -263,6 +313,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentEligible',
@@ -282,6 +338,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -303,6 +365,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
@@ -322,6 +390,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -343,6 +417,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -362,6 +442,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -383,6 +469,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
@@ -402,6 +494,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -423,6 +521,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -442,6 +546,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -465,6 +575,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
@@ -486,6 +602,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -509,6 +631,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
@@ -531,6 +659,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -550,6 +684,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -571,6 +711,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
@@ -589,6 +735,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -610,6 +762,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -629,6 +787,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -650,6 +814,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
@@ -670,6 +840,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
@@ -689,6 +865,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -712,6 +894,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
@@ -733,6 +921,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -756,6 +950,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
@@ -778,6 +978,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
@@ -798,6 +1004,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
@@ -817,6 +1029,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -839,6 +1057,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionTurnoverBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
@@ -858,6 +1082,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -879,6 +1109,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
                 dataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -908,6 +1144,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentEligible',
@@ -927,6 +1169,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -948,6 +1196,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds',
@@ -967,6 +1221,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -988,6 +1248,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -1007,6 +1273,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1028,6 +1300,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentAligned',
@@ -1047,6 +1325,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichUseOfProceeds
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Use of Proceeds',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1068,6 +1352,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -1087,6 +1377,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToClimateChangeAdaptationInPercentOfWhichAdapting
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Climate Change Adaptation in Percent - Of which Adapting',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1110,6 +1406,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible',
@@ -1131,6 +1433,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1154,6 +1462,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds',
@@ -1176,6 +1490,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -1195,6 +1515,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1216,6 +1542,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentAligned',
@@ -1234,6 +1566,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichUseOfProceeds
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Use of Proceeds',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1255,6 +1593,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -1274,6 +1618,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1295,6 +1645,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentAligned',
@@ -1315,6 +1671,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds',
@@ -1334,6 +1696,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToPollutionPreventionAndControlInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1357,6 +1725,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible',
@@ -1378,6 +1752,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1401,6 +1781,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds',
@@ -1423,6 +1809,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling',
@@ -1443,6 +1835,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible',
@@ -1462,6 +1860,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1484,6 +1888,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Use of Proceeds',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds',
@@ -1503,6 +1913,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1524,6 +1940,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
                 dataset.creditInstitution?.capexBasedGreenAssetRatioStock
                   ?.substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Transitional',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1561,6 +1983,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Weighted Average Value of all Investments - Turnover-based in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
           },
@@ -1579,6 +2007,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - CapEx-based in Percent',
                 dataset.assetManagement?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Weighted Average Value of all Investments - CapEx-based in Percent',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalAssetManagementWeightedAverageValueOfAllInvestmentsCapexBasedInPercent',
@@ -1640,6 +2074,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
@@ -1661,6 +2101,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1684,6 +2130,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -1704,6 +2156,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1727,6 +2185,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -1748,6 +2212,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1771,6 +2241,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -1792,6 +2268,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1815,6 +2297,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -1836,6 +2324,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1859,6 +2353,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
@@ -1881,6 +2381,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -1902,6 +2408,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1932,6 +2444,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
@@ -1953,6 +2471,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -1976,6 +2500,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -1996,6 +2526,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2019,6 +2555,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -2040,6 +2582,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2063,6 +2611,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -2083,6 +2637,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2106,6 +2666,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -2127,6 +2693,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2150,6 +2722,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
@@ -2172,6 +2750,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -2193,6 +2777,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
                 dataset.assetManagement?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2274,6 +2864,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Proportion of Absolute Premiums of Taxonomy-aligned Activities',
                 dataset.insuranceReinsurance?.underwritingKpi?.proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Proportion of Absolute Premiums of Taxonomy-aligned Activities',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyAlignedActivities',
@@ -2294,6 +2890,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.underwritingKpi
                   ?.proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Proportion of Absolute Premiums of Taxonomy-eligible but Taxonomy-non-aligned Activities',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities',
@@ -2313,6 +2915,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Proportion of Absolute Premiums of Taxonomy-non-eligible Activities',
                 dataset.insuranceReinsurance?.underwritingKpi
                   ?.proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Proportion of Absolute Premiums of Taxonomy-non-eligible Activities',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2342,6 +2950,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsTurnoverBasedInPercent
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Weighted Average Value of all Investments - Turnover-based in Percent',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceWeightedAverageValueOfAllInvestmentsTurnoverBasedInPercent',
@@ -2361,6 +2975,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Weighted Average Value of all Investments - CapEx-based in Percent',
                 dataset.insuranceReinsurance?.averageValueOfTaxonomyAlignedUndertakings
                   ?.weightedAverageValueOfAllInvestmentsCapexBasedInPercent
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Weighted Average Value of all Investments - CapEx-based in Percent',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2423,6 +3043,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
@@ -2444,6 +3070,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2467,6 +3099,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -2487,6 +3125,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2510,6 +3154,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -2531,6 +3181,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2554,6 +3210,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -2575,6 +3237,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2598,6 +3266,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -2619,6 +3293,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2642,6 +3322,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
@@ -2664,6 +3350,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -2685,6 +3377,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased
                   ?.shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2715,6 +3413,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned',
@@ -2736,6 +3440,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2759,6 +3469,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional',
@@ -2779,6 +3495,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2802,6 +3524,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling',
@@ -2823,6 +3551,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2846,6 +3580,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling',
@@ -2866,6 +3606,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2889,6 +3635,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling',
@@ -2910,6 +3662,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -2933,6 +3691,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling',
@@ -2955,6 +3719,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned',
@@ -2976,6 +3746,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
                 dataset.insuranceReinsurance?.breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBased
                   ?.shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3030,6 +3806,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
@@ -3050,6 +3832,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3073,6 +3861,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
@@ -3095,6 +3889,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
@@ -3116,6 +3916,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
@@ -3136,6 +3942,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3159,6 +3971,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
@@ -3180,6 +3998,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3203,6 +4027,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
@@ -3225,6 +4055,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
@@ -3244,6 +4080,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3265,6 +4107,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
@@ -3285,6 +4133,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3308,6 +4162,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
@@ -3329,6 +4189,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3352,6 +4218,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
@@ -3373,6 +4245,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3396,6 +4274,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
@@ -3417,6 +4301,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3440,6 +4330,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
@@ -3461,6 +4357,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3484,6 +4386,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
@@ -3505,6 +4413,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3551,6 +4465,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible',
@@ -3570,6 +4490,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3593,6 +4519,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
@@ -3615,6 +4547,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
@@ -3636,6 +4574,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible',
@@ -3655,6 +4599,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3678,6 +4628,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
@@ -3699,6 +4655,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3722,6 +4684,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
@@ -3744,6 +4712,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
@@ -3763,6 +4737,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3784,6 +4764,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
@@ -3804,6 +4790,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3827,6 +4819,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible',
@@ -3847,6 +4845,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3870,6 +4874,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
@@ -3891,6 +4901,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3914,6 +4930,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
@@ -3935,6 +4957,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -3958,6 +4986,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
@@ -3979,6 +5013,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4002,6 +5042,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesCapexBasedCapexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
@@ -4023,6 +5069,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4070,6 +5122,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
@@ -4090,6 +5148,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4113,6 +5177,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
@@ -4135,6 +5205,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
@@ -4156,6 +5232,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
@@ -4176,6 +5258,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4199,6 +5287,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
@@ -4220,6 +5314,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4243,6 +5343,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
@@ -4265,6 +5371,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
@@ -4284,6 +5396,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4305,6 +5423,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
@@ -4325,6 +5449,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4348,6 +5478,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
@@ -4369,6 +5505,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4392,6 +5534,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
@@ -4413,6 +5561,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4436,6 +5590,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
@@ -4457,6 +5617,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4480,6 +5646,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
@@ -4501,6 +5673,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4524,6 +5702,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesTurnoverBasedTurnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
@@ -4545,6 +5729,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
                 dataset.investmentFirms?.otherServicesTurnoverBased
                   ?.turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'Turnover-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4592,6 +5782,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible',
@@ -4612,6 +5808,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4635,6 +5837,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional',
@@ -4657,6 +5865,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling',
@@ -4678,6 +5892,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible',
@@ -4698,6 +5918,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4721,6 +5947,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Climate Change Adaptation - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling',
@@ -4742,6 +5974,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4765,6 +6003,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned',
@@ -4787,6 +6031,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling',
@@ -4806,6 +6056,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4827,6 +6083,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned',
@@ -4847,6 +6109,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4870,6 +6138,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible',
@@ -4891,6 +6165,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4914,6 +6194,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Pollution Prevention and Control - Of which Enabling',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling',
@@ -4935,6 +6221,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -4958,6 +6250,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned',
@@ -4979,6 +6277,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -5002,6 +6306,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Eligible',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible',
@@ -5023,6 +6333,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Aligned',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
@@ -5046,6 +6362,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Transitional',
+                dataPoint
+              ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:
               'extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional',
@@ -5067,6 +6389,12 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                 'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
                 dataset.investmentFirms?.otherServicesCapexBased
                   ?.capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number),
+                'CapEx-based Proportion of Revenue substantially contributing to any of the six Environmental Objectives - Of which Enabling',
+                dataPoint
               ),
             uploadComponentName: 'PercentageExtendedDataPointFormField',
             dataPointTypeId:

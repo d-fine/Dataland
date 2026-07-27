@@ -4,7 +4,12 @@ import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatNuclearAndGasTaxonomyShareDataForTable } from '@/components/resources/dataTable/conversion/NuclearAndGasValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  wrapDisplayValueWithDatapointInformation,
+  extractDatapointValue,
+  wrapDisplayValueWithDatapointInformationByDataPoint,
+} from '@/components/resources/dataTable/conversion/DataPoints';
+import { type YesNoNa } from '@clients/backend';
 export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
   {
     type: 'section',
@@ -30,6 +35,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear Energy related Activities (Section 4.26)',
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection426
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Nuclear Energy related Activities (Section 4.26)',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection426',
           },
@@ -44,6 +55,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 formatYesNoValueForDatatable(dataset.general?.general?.nuclearEnergyRelatedActivitiesSection427?.value),
                 'Nuclear Energy related Activities (Section 4.27)',
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection427
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Nuclear Energy related Activities (Section 4.27)',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection427',
@@ -60,6 +77,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Nuclear Energy related Activities (Section 4.28)',
                 dataset.general?.general?.nuclearEnergyRelatedActivitiesSection428
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Nuclear Energy related Activities (Section 4.28)',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoNuclearEnergyRelatedActivitiesSection428',
           },
@@ -74,6 +97,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 formatYesNoValueForDatatable(dataset.general?.general?.fossilGasRelatedActivitiesSection429?.value),
                 'Fossil Gas related Activities (Section 4.29)',
                 dataset.general?.general?.fossilGasRelatedActivitiesSection429
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fossil Gas related Activities (Section 4.29)',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection429',
@@ -90,6 +119,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 'Fossil Gas related Activities (Section 4.30)',
                 dataset.general?.general?.fossilGasRelatedActivitiesSection430
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fossil Gas related Activities (Section 4.30)',
+                dataPoint
+              ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection430',
           },
@@ -104,6 +139,12 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 formatYesNoValueForDatatable(dataset.general?.general?.fossilGasRelatedActivitiesSection431?.value),
                 'Fossil Gas related Activities (Section 4.31)',
                 dataset.general?.general?.fossilGasRelatedActivitiesSection431
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
+                'Fossil Gas related Activities (Section 4.31)',
+                dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoFossilGasRelatedActivitiesSection431',
