@@ -25,8 +25,7 @@ export const ABOUT_PAGE_CONTENT = {
     supportLine: {
       beforeFoundation: 'Dataland is part of the ',
       betweenFoundationAndDfine: ' foundation, with strategic support from ',
-      betweenDfineAndPwc: ' and ',
-      afterPwc: '.',
+      afterDfine: '.',
     },
   },
   leadership: {
