@@ -368,7 +368,7 @@ class ApiAccessor {
         showOnlyActive: Boolean? = null,
         reportingPeriod: String? = null,
     ): Int {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         return metaDataControllerApi.getListOfDataMetaInfo(companyId, dataType, showOnlyActive, reportingPeriod).size
     }
 

@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoCorruptionLegalProceedings",
   "name" : "Corruption Legal Proceedings",
-  "businessDefinition" : "Has the company been involved in corruption-related legal proceedings?",
+  "businessDefinition" : "Involvement in corruption-related legal proceedings.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 16",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

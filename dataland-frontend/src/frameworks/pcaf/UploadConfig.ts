@@ -213,7 +213,7 @@ export const pcafDataModel = [
             name: 'scope1GhgEmissionsInTonnes',
             label: 'Scope 1 GHG emissions',
             description:
-              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -225,7 +225,7 @@ export const pcafDataModel = [
             name: 'scope2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 2 GHG emissions (location-based)',
             description:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -237,7 +237,7 @@ export const pcafDataModel = [
             name: 'scope2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 2 GHG emissions (market-based)',
             description:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -249,7 +249,7 @@ export const pcafDataModel = [
             name: 'scope3GhgEmissionsInTonnes',
             label: 'Scope 3 GHG emissions',
             description:
-              'Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -341,7 +341,7 @@ export const pcafDataModel = [
             name: 'scope1GhgEmissionsInTonnes',
             label: 'Scope 1 GHG emissions',
             description:
-              'Estimation of Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -353,7 +353,7 @@ export const pcafDataModel = [
             name: 'scope2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 2 GHG emissions (location-based)',
             description:
-              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -365,7 +365,7 @@ export const pcafDataModel = [
             name: 'scope2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 2 GHG emissions (market-based)',
             description:
-              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -377,7 +377,7 @@ export const pcafDataModel = [
             name: 'scope3GhgEmissionsInTonnes',
             label: 'Scope 3 GHG emissions',
             description:
-              'Estimation of Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',

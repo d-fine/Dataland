@@ -15,7 +15,8 @@ data class SfdrEnvironmentalWaste(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactice waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).""",
+        description = """Tons of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactive waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 9""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -33,7 +34,8 @@ data class SfdrEnvironmentalWaste(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Tonnes of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17) and table 2, indicator nr. 13.""",
+        description = """Tons of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 13""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",

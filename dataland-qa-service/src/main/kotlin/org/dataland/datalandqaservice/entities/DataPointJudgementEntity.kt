@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -30,8 +29,15 @@ class DataPointJudgementEntity(
     val dataPointType: String,
     @Column(name = "data_point_id")
     val dataPointId: String,
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "data_point_id", referencedColumnName = "data_point_id")
+    /**
+     * QA reports are independently owned resources managed via [DataPointQaReportEntity]'s dedicated
+     * API (see DataPointQaReportManager). This is a read-only association used to display the latest
+     * QA reports for a data point within a judgement; it must not cascade any persistence operation
+     * (in particular removal) onto the referenced QA report rows, since they must survive independently
+     * of any dataset judgement's lifecycle.
+     */
+    @OneToMany
+    @JoinColumn(name = "data_point_id", referencedColumnName = "data_point_id", insertable = false, updatable = false)
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,

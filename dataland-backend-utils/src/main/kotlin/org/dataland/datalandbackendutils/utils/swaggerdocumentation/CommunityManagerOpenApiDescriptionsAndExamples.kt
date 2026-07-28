@@ -103,13 +103,20 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
     const val USER_PROVIDED_IDENTIFIER_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
 
     const val RESOURCE_ID_DESCRIPTION =
-        "A unique identifier of a resource on Dataland. In case of newly created or duplicate open requests, " +
-            "it identifies the newly created or original open request. " +
-            "In case of a request for an already existing dataset, it identifies that dataset."
-    const val RESOURCE_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
+        "Identifier of the referenced resource. For data requests, this is the data request ID. " +
+            "For already existing datasets, this is a composite identifier consisting of company ID, framework, " +
+            "and reporting period in the format '{companyId}/{framework}/{reportingPeriod}'."
+    const val RESOURCE_ID_EXAMPLE =
+        "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
+            "\"550e8400-e29b-41d4-a716-446655440000/SFDR/2023\"]"
 
-    const val RESOURCE_URL_DESCRIPTION = "A URL pointing to the resource identified by resourceId."
-    const val RESOURCE_URL_EXAMPLE = "https://dataland.com/requests/$RESOURCE_ID_EXAMPLE"
+    const val RESOURCE_URL_DESCRIPTION =
+        "A URL pointing to the referenced resource. For data requests, this points to the request page. " +
+            "For already existing datasets, this points to the company framework page."
+    const val RESOURCE_URL_EXAMPLE =
+        "[\"https://dataland.com/requests/${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
+            " \"https://dataland.com/companies/" +
+            "${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/frameworks/sfdr\"]"
 
     const val COMPANY_RIGHT_DESCRIPTION = "One of the Dataland-specific rights which can be assigned to a company on Dataland."
 

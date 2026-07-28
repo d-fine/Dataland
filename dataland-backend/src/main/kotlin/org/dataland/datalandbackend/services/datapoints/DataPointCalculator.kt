@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import org.dataland.datalandbackend.model.DataDimensionFilter
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.DataCompositionService
 import org.dataland.datalandbackend.services.InternalStorageAdapter
 import org.dataland.datalandbackend.services.SpecificationService
@@ -25,7 +24,6 @@ class DataPointCalculator
     @Autowired
     constructor(
         private val dataCompositionService: DataCompositionService,
-        private val dataAvailabilityChecker: DataAvailabilityChecker,
         private val internalStorageAdapter: InternalStorageAdapter,
         private val specificationService: SpecificationService,
         private val metaDataManager: DataPointMetaInformationManager,
@@ -50,7 +48,7 @@ class DataPointCalculator
                     .flatMap { (datasetDimension, types) ->
                         datasetDimension.toBasicDataPointDimensions(types)
                     }
-            val allAvailableIds = dataAvailabilityChecker.getViewableDataPointIds(allDimensions)
+            val allAvailableIds = metaDataManager.getActiveDataPointMetaInformationList(allDimensions).map { it.dataPointId }.distinct()
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allAvailableIds, correlationId = correlationId)
@@ -285,37 +283,18 @@ class DataPointCalculator
         }
 
         /**
-         * Finds active source data point dimensions that can be used to calculate any of the given target data point types.
+         * For a collection of target data point types, finds all DataPointDimensions calculatable under the constraint of the given filter
          *
-         * A source data point dimension is returned only if all inputs of at least one calculation rule are active for the
-         * same company and reporting period.
-         *
-         * @param dataPointTypes target data point types whose calculation rules should be checked
-         * @param companyId company for which active source data points should be considered
-         * @return active source dimensions grouped by calculatable reporting periods
-         */
-        fun getActiveSourceDataPointDimensions(
-            dataPointTypes: Collection<DataPointType>,
-            companyId: String,
-        ): Set<BasicDataPointDimensions> =
-            getActiveSourceDataPointDimensions(
-                dataPointTypes = dataPointTypes,
-                dataDimensionFilter = DataDimensionFilter(companyIds = listOf(companyId)),
-            )
-
-        /**
-         * Finds active source data point dimensions that can be used to calculate any of the given target data point types.
-         *
-         * A source data point dimension is returned only if all inputs of at least one calculation rule are active for the
+         * A data point dimension is returned only if all inputs of at least one calculation rule are active for the
          * same company and reporting period. Company and reporting-period filters are applied to the source data points.
          *
          * @param dataPointTypes target data point types whose calculation rules should be checked
-         * @param dataDimensionFilter filter whose company and reporting-period constraints should be applied
-         * @return active source dimensions grouped by calculatable company/reporting-period pairs
+         * @param dataDimensionQuery filter whose company and reporting-period constraints should be applied
+         * @return calculatable data point dimensions
          */
-        fun getActiveSourceDataPointDimensions(
+        fun getCalculatableDataPointDimensions(
             dataPointTypes: Collection<DataPointType>,
-            dataDimensionFilter: DataDimensionFilter,
+            dataDimensionQuery: DataDimensionQuery,
         ): Set<BasicDataPointDimensions> {
             val specs = specificationService.getDataPointSpecifications(dataPointTypes.toList())
 
@@ -329,52 +308,47 @@ class DataPointCalculator
             val activeSourceDataPointDimensions =
                 metaDataManager
                     .getActiveDataPointMetaInformationList(
-                        DataDimensionFilter(
-                            companyIds = dataDimensionFilter.companyIds,
+                        DataDimensionQuery(
+                            companyIds = dataDimensionQuery.companyIds,
                             dataTypes = sourceDataPointTypes.distinct(),
-                            reportingPeriods = dataDimensionFilter.reportingPeriods,
+                            reportingPeriods = dataDimensionQuery.reportingPeriods,
                         ),
                     ).map {
                         it.toBasicDataPointDimensions()
-                    }.groupBy {
-                        BasicBaseDimensions(
-                            companyId = it.companyId,
-                            reportingPeriod = it.reportingPeriod,
-                        )
                     }
 
-            return specs.values
-                .flatMap { specification ->
-                    specification.calculationRules.orEmpty()
-                }.flatMap { calculationRule ->
-                    getActiveSourceDataPointDimensionsForRule(
-                        calculationRule = calculationRule,
-                        activeSourceDataPointDimensions = activeSourceDataPointDimensions,
-                    )
-                }.toSet()
+            return specs.values.flatMap { getCalculatableDataPointDimensions(it, activeSourceDataPointDimensions) }.toSet()
         }
 
         /**
-         * Returns source dimensions for all company/reporting-period groups where the given rule is fully satisfiable.
-         *
-         * @param calculationRule calculation rule whose inputs must be active
-         * @param activeSourceDataPointDimensions active source dimensions grouped by base dimensions
-         * @return active source dimensions that satisfy the rule
+         * Returns a list of all dimensions for which the data point type can be calculated given the available input dimensions.
+         * @param dataPointTypeSpecification the specification of the data point type to calculate
+         * @param activeSourceDataPointDimensions the list of active source data point dimensions
+         * @return a list of all dimensions for which the data point type can be calculated
          */
-        private fun getActiveSourceDataPointDimensionsForRule(
+        private fun getCalculatableDataPointDimensions(
+            dataPointTypeSpecification: DataPointTypeSpecification,
+            activeSourceDataPointDimensions: List<BasicDataPointDimensions>,
+        ): List<BasicDataPointDimensions> =
+            dataPointTypeSpecification.calculationRules.flatMap { calculationRule ->
+                getCalculatableBaseDimensions(
+                    calculationRule,
+                    activeSourceDataPointDimensions.groupBy { it.toBaseDimensions() },
+                ).map { it.toBasicDataPointDimensions(dataPointTypeSpecification.dataPointType.id) }
+            }
+
+        /**
+         * Returns a set of all dimensions for which the calculation rule is calculatable given the available input dimensions.
+         * @param calculationRule the calculation rule to check
+         * @param activeSourceDataPointDimensions the list of active source data point dimensions
+         * @return a set of all dimensions for which the calculation rule is calculatable
+         */
+        private fun getCalculatableBaseDimensions(
             calculationRule: CalculationRule,
             activeSourceDataPointDimensions: Map<BasicBaseDimensions, List<BasicDataPointDimensions>>,
-        ): List<BasicDataPointDimensions> =
+        ): Set<BasicBaseDimensions> =
             activeSourceDataPointDimensions
                 .filter { (_, dimensions) ->
                     dimensions.map { it.dataPointType }.toSet().containsAll(calculationRule.inputs)
-                }.flatMap { (baseDimensions, _) ->
-                    calculationRule.inputs.map { dataPointType ->
-                        BasicDataPointDimensions(
-                            companyId = baseDimensions.companyId,
-                            dataPointType = dataPointType,
-                            reportingPeriod = baseDimensions.reportingPeriod,
-                        )
-                    }
-                }
+                }.keys
     }

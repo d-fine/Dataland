@@ -81,5 +81,27 @@ class FrameworkUploadConfigBuilder(
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npmInstall"))
 
         EsLintPrettierRunner(into, listOf(uploadConfigTsPath)).run()
+
+        // WORKAROUND to display different labels without breaking the API. Remove once API is updated!!!
+        val uploadConfigFile = java.io.File("$frameworkConfigDir/UploadConfig.ts")
+        var uploadConfigContent = uploadConfigFile.readText()
+
+        val replacements =
+            listOf(
+                listOf("'Water Consumption'", "'Water Withdrawal'"),
+                listOf("'Relative Water Usage'", "'Water Withdrawal Intensity'"),
+                listOf(
+                    "'Violation Of Tax Rules And Regulation'",
+                    "'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises'",
+                ),
+                listOf("'Reported Child Labour Incidents'", "'Risk of Child Labour Incidents'"),
+                listOf("'Reported Forced Or Compulsory Labour Incidents'", "'Risk of Forced Or Compulsory Labour Incidents'"),
+                listOf("'Reported Convictions Of Bribery and Corruption'", "'Number of Reported Convictions Of Bribery and Corruption'"),
+            )
+
+        for (replacement in replacements) {
+            uploadConfigContent = uploadConfigContent.replace(replacement[0], replacement[1])
+        }
+        uploadConfigFile.writeText(uploadConfigContent)
     }
 }

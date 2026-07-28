@@ -1,57 +1,41 @@
-import { type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
+import { type BasicDataDimensions, DataTypeEnum } from '@clients/backend';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import { mount } from 'cypress/vue';
 
 describe('Component test for ChangeFrameworkDropdown', () => {
   const companyId: string = 'dummy-companyId';
   const dataType: string = 'Documents';
-  const listOfDataMetaInfo: Array<DataMetaInformation> = [
+  const listOfDataMetaInfo: Array<BasicDataDimensions> = [
     {
-      dataId: 'dummy-dataId-1',
       companyId: companyId,
       dataType: DataTypeEnum.Lksg,
-      uploadTime: 123,
       reportingPeriod: '2022',
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     {
-      dataId: 'dummy-dataId-2',
       companyId: companyId,
       dataType: DataTypeEnum.Sfdr,
-      uploadTime: 123,
       reportingPeriod: '2022',
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     {
-      dataId: 'dummy-dataId-3',
       companyId: companyId,
       dataType: DataTypeEnum.Lksg,
-      uploadTime: 123,
       reportingPeriod: '2022',
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
     {
-      dataId: 'dummy-dataId-4',
       companyId: companyId,
       dataType: DataTypeEnum.Sfdr,
-      uploadTime: 123,
       reportingPeriod: '2022',
-      currentlyActive: true,
-      qaStatus: QaStatus.Accepted,
     },
   ];
 
   /**
    * counts the number of different entries in the dropdown component depending on the given array of
-   * DataMetaInformation.
-   * @param dataMetaInfoArray list of relevant metadata information
-   * @returns the number of distinct framework types among the metadata information plus 1 because
+   * BasicDataDimensions.
+   * @param dataMetaInfoArray list of available data dimensions
+   * @returns the number of distinct framework types among the data dimensions plus 1 because
    * the dropdown also has an entry linking to the documents page
    */
-  function countDropdownEntries(dataMetaInfoArray: Array<DataMetaInformation>): number {
+  function countDropdownEntries(dataMetaInfoArray: Array<BasicDataDimensions>): number {
     const uniqueDataTypes = new Set<string>();
 
     for (const item of dataMetaInfoArray) {
@@ -67,7 +51,7 @@ describe('Component test for ChangeFrameworkDropdown', () => {
       props: {
         companyId: companyId,
         dataType: dataType,
-        dataMetaInformation: listOfDataMetaInfo,
+        availableDataDimensions: listOfDataMetaInfo,
       },
     }).then(() => {
       // Dropdown is closed

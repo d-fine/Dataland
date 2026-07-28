@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalGhgIntensityScope3InTonnesPerMillionEURRevenue",
   "name" : "GHG intensity - scope 3",
-  "businessDefinition" : "Tonnes of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.",
+  "businessDefinition" : "Tons of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

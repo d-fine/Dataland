@@ -45,13 +45,21 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept('/community/requests/user', {});
     cy.intercept('/api/companies/mock-company-id/info', companyInformation);
     cy.intercept('/api/data/lksg/companies/mock-company-id*', [mockDataAndMetaInfo]);
-    cy.intercept(`/api/data/lksg/dataset-a`, {
-      companyId: mockDataAndMetaInfo.metaInfo.companyId,
-      reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
-      data: mockDataAndMetaInfo.data,
-    });
-    cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockDataAndMetaInfo.metaInfo]);
-
+    cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', [
+      { companyId: 'mock-company-id', dataType: DataTypeEnum.Lksg, reportingPeriod: reportingYear.toString() },
+    ]).as('postViewableDimensionsSearch');
+    cy.intercept(
+      {
+        method: 'GET',
+        pathname: '/api/data/lksg/',
+        query: { reportingPeriod: reportingYear.toString(), companyId: 'mock-company-id' },
+      },
+      {
+        companyId: mockDataAndMetaInfo.metaInfo.companyId,
+        reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
+        data: mockDataAndMetaInfo.data,
+      }
+    ).as('getLkSGData');
     //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
@@ -61,6 +69,9 @@ describe('Component test for the view multiple dataset display base component', 
         reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
       },
     });
+
+    cy.wait('@postViewableDimensionsSearch');
+    cy.wait('@getLkSGData');
 
     checkToggleEmptyFieldsSwitch('Number of Employees');
     cy.get('tr[data-section-label="Social"]');
@@ -74,7 +85,6 @@ describe('Component test for the view multiple dataset display base component', 
  * @param toggledFieldName Name of a field which is toggled by the input switch
  */
 function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
-  cy.wait(100);
   cy.get('span').contains(toggledFieldName).should('not.exist');
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should('exist');
   cy.get('div[data-test="hideEmptyDataToggleButton"]').should('have.class', 'p-toggleswitch-checked').click();

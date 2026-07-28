@@ -4,9 +4,8 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component test for ViewFrameworkBase', () => {
   beforeEach(() => {
-    cy.intercept('/api/metadata*', { fixture: 'MetaInfoDataMocksForOneCompany', times: 1 }).as('metaDataFetch');
-    cy.intercept('**/api/data/**/companies/*', {
-      fixture: 'DataAndMetaInfoMocksForOneCompany',
+    cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', {
+      fixture: 'BasicDataDimensionsMocksForOneCompany',
       times: 1,
     }).as('dataFetch');
   });
@@ -25,7 +24,7 @@ describe('Component test for ViewFrameworkBase', () => {
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
         cy.wrap(component).its('isDataProcessedSuccessfully').should('be.true');
-        cy.wrap(component).its('dataMetaInformation').its('length').should('equal', 9);
+        cy.wrap(component).its('availableDataDimensions').its('length').should('equal', 9);
       });
     });
   });

@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoHumanRightsLegalProceedings",
   "name" : "Human Rights Legal Proceedings",
-  "businessDefinition" : "Has the company been involved in Human Rights related legal proceedings?",
+  "businessDefinition" : "Involvement in Human Rights related legal proceedings.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 14",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

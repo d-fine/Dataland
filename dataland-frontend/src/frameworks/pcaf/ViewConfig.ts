@@ -230,7 +230,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 1 GHG emissions',
             explanation:
-              'Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -248,7 +248,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (location-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -266,7 +266,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (market-based)',
             explanation:
-              'Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -284,7 +284,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 3 GHG emissions',
             explanation:
-              'Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -412,7 +412,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 1 GHG emissions',
             explanation:
-              'Estimation of Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -430,7 +430,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (location-based)',
             explanation:
-              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the location-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -449,7 +449,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions (market-based)',
             explanation:
-              'Estimation of Scope 2 greenhouse gas emissions in tonnes from the consumption of purchased electricity, steam, or other sources of energy computed using the market-based method (equity share approach preferably used).',
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -467,7 +467,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             type: 'cell',
             label: 'Scope 3 GHG emissions',
             explanation:
-              'Estimation of Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
+              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(

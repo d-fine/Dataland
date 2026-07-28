@@ -28,6 +28,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
       generateSfdrDataWithoutNulls(),
       generateSfdrDataWithoutNulls()
     ),
+    ...generateSfdrFixturesForFrameworkSearchTest(),
   ];
 }
 
@@ -37,6 +38,34 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  */
 function generateSfdrDataWithoutNulls(): FixtureData<SfdrData> {
   return generateSfdrFixtures(1, 0)[0];
+}
+
+/**
+ * Generates three SFDR fixtures and manipulates their company names so that the "search with autocompletion for
+ * companies with a common name fragment" e2e test (SearchCompaniesForFrameworkData.ts) can reliably find at
+ * least three matching companies. The number of fixtures (3) matches that test's
+ * `minimumNumberOfAutocompleteMatchesForViewAllResultsButton`.
+ * @returns the manipulated SFDR fixtures
+ */
+function generateSfdrFixturesForFrameworkSearchTest(): Array<FixtureData<SfdrData>> {
+  const fixtures = generateSfdrFixtures(3, 0);
+  fixtures.forEach((fixture) => {
+    manipulateFixtureCompanyNameForFrameworkSearchTest(fixture);
+  });
+
+  return fixtures;
+}
+
+/**
+ * Appends a fixed marker to the company name so this fixture can be found via the framework search bar.
+ * The marker text must contain the search string hardcoded in SearchCompaniesForFrameworkData.ts as
+ * `searchStringResultingInAtLeastThreeAutocompleteSuggestions` (currently 'abs'); update both places together.
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureCompanyNameForFrameworkSearchTest(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = input.companyInformation.companyName + ' - FAKE IDENTIFIER FOR TEST = ABS';
+  return input;
 }
 
 /**

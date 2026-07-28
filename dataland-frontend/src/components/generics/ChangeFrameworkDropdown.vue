@@ -13,7 +13,7 @@
     </span>
     <span v-if="dropdownExtended" class="p-dropdown-trigger p-dropdown-items" data-test="chooseFrameworkList">
       <a
-        v-for="option in getFrameworkListSorted(dataMetaInformation)"
+        v-for="option in getFrameworkListSorted(availableDataDimensions)"
         :key="option.label"
         :href="option.value"
         class="p-dropdown-item"
@@ -29,7 +29,7 @@
 import { type PropType, ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation } from '@clients/backend';
+import { type BasicDataDimensions, type DataTypeEnum } from '@clients/backend';
 
 const props = defineProps({
   companyId: {
@@ -40,8 +40,8 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  dataMetaInformation: {
-    type: Array as PropType<Array<DataMetaInformation>>,
+  availableDataDimensions: {
+    type: Array as PropType<Array<BasicDataDimensions>>,
     required: true,
   },
 });
@@ -67,17 +67,19 @@ function handleClickOutside(event: MouseEvent): void {
 const dropdownExtended = ref<boolean>(false);
 
 /**
- * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
- * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
+ * Uses a list of available data dimensions to derive all distinct frameworks that occur in that list. Only if those
+ * distinct frameworks are also included in the frontend constant which contains all frameworks that have view-pages
  * implemented, the distinct frameworks are set as options for the framework-dropdown element.
- * @param dataMetaInformation an array of data meta info
+ * @param availableDataDimensions an array of available data dimensions
  */
-function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>): { label: string; value: string }[] {
+function getFrameworkListSorted(
+  availableDataDimensions: Array<BasicDataDimensions>
+): { label: string; value: string }[] {
   const setOfAvailableFrameworksForCompany = [
-    ...new Set(dataMetaInformation.map((individualMetaInfo) => individualMetaInfo.dataType)),
+    ...new Set(availableDataDimensions.map((individualMetaInfo) => individualMetaInfo.dataType)),
   ];
   const dataTypesInDropdown = setOfAvailableFrameworksForCompany
-    .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType))
+    .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType as DataTypeEnum))
     .sort((a, b) => a.localeCompare(b))
     .map((dataType) => {
       return {

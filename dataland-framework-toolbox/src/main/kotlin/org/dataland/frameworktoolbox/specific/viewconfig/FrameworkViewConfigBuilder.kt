@@ -112,5 +112,27 @@ class FrameworkViewConfigBuilder(
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npmInstall"))
 
         EsLintPrettierRunner(into, generatedTsFiles).run()
+
+        // WORKAROUND to display different labels without breaking the API. Remove once API is updated!!!
+        val viewConfigFile = java.io.File("$frameworkConfigDir/ViewConfig.ts")
+        var viewConfigContent = viewConfigFile.readText()
+
+        val replacements =
+            listOf(
+                listOf("'Water Consumption'", "'Water Withdrawal'"),
+                listOf("'Relative Water Usage'", "'Water Withdrawal Intensity'"),
+                listOf(
+                    "'Violation Of Tax Rules And Regulation'",
+                    "'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises'",
+                ),
+                listOf("'Reported Child Labour Incidents'", "'Risk of Child Labour Incidents'"),
+                listOf("'Reported Forced Or Compulsory Labour Incidents'", "'Risk of Forced Or Compulsory Labour Incidents'"),
+                listOf("'Reported Convictions Of Bribery and Corruption'", "'Number of Reported Convictions Of Bribery and Corruption'"),
+            )
+
+        for (replacement in replacements) {
+            viewConfigContent = viewConfigContent.replace(replacement[0], replacement[1])
+        }
+        viewConfigFile.writeText(viewConfigContent)
     }
 }

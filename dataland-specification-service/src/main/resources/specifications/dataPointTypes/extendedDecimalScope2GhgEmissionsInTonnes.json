@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope2GhgEmissionsInTonnes",
   "name" : "Scope 2 GHG emissions",
-  "businessDefinition" : "Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).",
+  "businessDefinition" : "Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

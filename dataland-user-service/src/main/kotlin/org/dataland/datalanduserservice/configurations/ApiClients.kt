@@ -3,7 +3,7 @@ package org.dataland.datalanduserservice.configurations
 import okhttp3.OkHttpClient
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +20,7 @@ class ApiClients(
     @Value("\${dataland.data-sourcing-service.base-url}") private val dataSourcingServiceBaseUrl: String,
 ) {
     /**
-     * Creates an auto-authenticated version of the CompanyDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [CompanyDataControllerApi] of the backend
      */
     @Bean
     fun getCompanyDataControllerApi(
@@ -28,15 +28,15 @@ class ApiClients(
     ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [DataAvailabilityControllerApi] of the backend
      */
     @Bean
-    fun getMetaDataControllerApi(
+    fun getDataAvailabilityControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): MetaDataControllerApi = MetaDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+    ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the InheritedRolesControllerApi of the community manager
+     * Creates an auto-authenticated version of the [InheritedRolesControllerApi] of the community manager
      */
     @Bean
     fun getInheritedRolesControllerApi(
@@ -44,7 +44,7 @@ class ApiClients(
     ): InheritedRolesControllerApi = InheritedRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     * Creates an auto-authenticated version of the [RequestControllerApi] of the backend
      */
     @Bean
     fun getRequestControllerApi(

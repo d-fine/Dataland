@@ -34,7 +34,7 @@
             <PrimeButton
               v-if="autocompleteArray && autocompleteArray.length >= maxNumOfDisplayedAutocompleteEntries"
               severity="secondary"
-              @click="executeSearchIfNoItemFocused"
+              @click.stop="executeSearchFromViewAllResultsButton"
               label="View all results"
               fluid
               data-test="view-all-results-button"
@@ -202,16 +202,45 @@ export default defineComponent({
     },
 
     /**
-     * Called when enter is pressed in the search bar. Performs a company search with the new search bar text
-     * if no specific company is highlighted
+     * Executes the search operation by triggering relevant actions.
+     * Hides the autocomplete suggestion box, emits a search confirmation event,
+     * and initiates a company query based on the current search input.
+     *
+     * @return {void} No return value.
      */
-    executeSearchIfNoItemFocused() {
+    executeSearch(): void {
+      this.autocomplete?.hide();
+      this.$emit('search-confirmed', this.searchBarInput);
+      void this.queryCompany();
+    },
+
+    /**
+     * Executes a search operation if no item is currently focused and the necessary conditions are met.
+     * The method checks that there are enough characters provided, no option is currently focused,
+     * and keys were previously pressed to trigger the search execution.
+     *
+     * @return {void} This method does not return a value.
+     */
+    executeSearchIfNoItemFocused(): void {
       if (!this.areNotEnoughCharactersProvided && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
-        this.autocomplete?.hide();
-        this.$emit('search-confirmed', this.searchBarInput);
-        void this.queryCompany();
+        this.executeSearch();
       }
     },
+
+    /**
+     * Executes a search operation if the required character conditions are met.
+     *
+     * This method checks if the minimum character requirement is satisfied.
+     * If the condition is met, it triggers the search execution process.
+     *
+     * @return {void} Does not return a value.
+     */
+    executeSearchFromViewAllResultsButton(): void {
+      if (!this.areNotEnoughCharactersProvided) {
+        this.executeSearch();
+      }
+    },
+
     /**
      * Performs the company search if the parent component indicated it wants to receive the given chunk of the
      * complete search results

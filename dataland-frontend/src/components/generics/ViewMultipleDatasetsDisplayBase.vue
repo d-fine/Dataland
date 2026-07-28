@@ -61,7 +61,7 @@
 <script lang="ts">
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { defineComponent, inject, type PropType } from 'vue';
-import type { DataMetaInformation, DataTypeEnum } from '@clients/backend';
+import { type BasicDataDimensions, type DataMetaInformation, type DataTypeEnum, QaStatus } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -110,7 +110,7 @@ export default defineComponent({
     return {
       isWaitingForListOfDataIdsToDisplay: true,
       isListOfDataIdsToDisplayFound: false,
-      receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, DataMetaInformation>,
+      receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo: {} as Map<string, BasicDataDimensions>,
       singleDataMetaInfoToDisplay: undefined as undefined | DataMetaInformation,
       humanizeString: humanizeStringOrNumber,
       isDataIdInUrlInvalid: false,
@@ -134,17 +134,10 @@ export default defineComponent({
     },
     reportingPeriod(newReportingPeriod: string) {
       if (newReportingPeriod) {
-        const dataMetaInfoForNewlyChosenReportingPeriod =
+        const dimensionsForPeriod =
           this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(newReportingPeriod);
-        if (dataMetaInfoForNewlyChosenReportingPeriod) {
-          this.getMetaDataForDataId(dataMetaInfoForNewlyChosenReportingPeriod.dataId).catch((err) =>
-            console.log(
-              'Retrieving meta data information for data ID ' +
-                dataMetaInfoForNewlyChosenReportingPeriod.dataId +
-                ' failed with error ' +
-                String(err)
-            )
-          );
+        if (dimensionsForPeriod) {
+          this.setSingleDataMetaInfoToDisplay(this.synthesizeActiveMetaInfo(dimensionsForPeriod));
         } else {
           this.isReportingPeriodInUrlInvalid = true;
         }
@@ -199,6 +192,25 @@ export default defineComponent({
     },
 
     /**
+     * Synthesizes a DataMetaInformation object representing the currently-active (accepted) dataset
+     * for the given BasicDataDimensions. Used for the reportingPeriod-in-URL route, which always
+     * targets the active/accepted version. The dataId is left empty because assembled frameworks
+     * have no usable dataId; the data panel falls back to getCompanyAssociatedDataByDimensions.
+     * @param dimensions the availability dimensions to synthesize from
+     */
+    synthesizeActiveMetaInfo(dimensions: BasicDataDimensions): DataMetaInformation {
+      return {
+        dataId: '',
+        companyId: dimensions.companyId,
+        dataType: dimensions.dataType as DataTypeEnum,
+        reportingPeriod: dimensions.reportingPeriod,
+        uploadTime: 0,
+        currentlyActive: true,
+        qaStatus: QaStatus.Accepted,
+      };
+    },
+
+    /**
      * Method to asynchronously retrieve the meta data associated to a given data ID
      * @param dataId the data id to retrieve meta info for
      */
@@ -218,7 +230,7 @@ export default defineComponent({
         }
       } catch (error) {
         const axiosError = error as AxiosError;
-        if (axiosError.response?.status == 404) {
+        if (axiosError.response?.status == 404 || axiosError.response?.status == 403) {
           this.handleInvalidDataIdPassedInUrl();
         }
       }
@@ -231,10 +243,11 @@ export default defineComponent({
       if (this.dataId) {
         await this.getMetaDataForDataId(this.dataId);
       } else if (!this.dataId && this.reportingPeriod) {
-        const activeDataMetaInfoWithReportingPeriodFromUrl =
-          this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(this.reportingPeriod);
-        if (activeDataMetaInfoWithReportingPeriodFromUrl) {
-          this.setSingleDataMetaInfoToDisplay(activeDataMetaInfoWithReportingPeriodFromUrl);
+        const dimensionsForPeriod = this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo.get(
+          this.reportingPeriod
+        );
+        if (dimensionsForPeriod) {
+          this.setSingleDataMetaInfoToDisplay(this.synthesizeActiveMetaInfo(dimensionsForPeriod));
         } else {
           this.handleInvalidReportingPeriodPassedInUrl();
         }
@@ -244,14 +257,14 @@ export default defineComponent({
     },
 
     /**
-     * Stores the received map of distinct reporting periods to active meta info from the
+     * Stores the received map of distinct reporting periods to active dimensions from the
      * "updateActiveDataMetaInfoForChosenFramework" event, then triggers a controller-method which picks the data
      * meta infos for the datasets to display, and finally terminates the loading-state of the component.
      * @param receivedMapOfReportingPeriodsToActiveDataMetaInfo 1-to-1 map between reporting periods and corresponding
-     * active data meta information objects
+     * active BasicDataDimensions
      */
     handleUpdateActiveDataMetaInfo(
-      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, DataMetaInformation>
+      receivedMapOfReportingPeriodsToActiveDataMetaInfo: Map<string, BasicDataDimensions>
     ) {
       this.receivedMapOfDistinctReportingPeriodsToActiveDataMetaInfo =
         receivedMapOfReportingPeriodsToActiveDataMetaInfo;

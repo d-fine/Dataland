@@ -13,7 +13,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class SfdrEnvironmentalBiodiversity(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments? Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.""",
+        description = """Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. See also Regulation (EU) 2022/1288, Annex I, top (19).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -30,7 +31,8 @@ data class SfdrEnvironmentalBiodiversity(
     val primaryForestAndWoodedLandOfNativeSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions? For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.""",
+        description = """Sites or operations that are partially or fully located in or near protected or biodiversity-sensitive areas, where their activities adversely impact these regions.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -47,7 +49,8 @@ data class SfdrEnvironmentalBiodiversity(
     val protectedAreasExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated? For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).""",
+        description = """Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. See also Regulation (EU) 2022/1288, Annex I, top 18(a).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -64,7 +67,8 @@ data class SfdrEnvironmentalBiodiversity(
     val rareOrEndangeredEcosystemsExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status?""",
+        description = """Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -81,7 +85,8 @@ data class SfdrEnvironmentalBiodiversity(
     val highlyBiodiverseGrasslandExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company involved in manufacture of pesticides and other agrochemical products? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.""",
+        description = """Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EC) No 1893/2006, Annex I, Division 20.2.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 9""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -98,7 +103,8 @@ data class SfdrEnvironmentalBiodiversity(
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company involved in activities, which cause land degradation, desertification or soil sealing? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.""",
+        description = """Involvement in activities, which cause land degradation, desertification or soil sealing.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 10""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -115,7 +121,8 @@ data class SfdrEnvironmentalBiodiversity(
     val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sustainable land or agriculture practices or policies? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.) If yes, please share the relevant documents with us.""",
+        description = """Existence of sustainable land or agriculture practices or policies.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 11""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -132,7 +139,8 @@ data class SfdrEnvironmentalBiodiversity(
     val sustainableAgriculturePolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have sustainable oceans or seas practices or policies? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.) If yes, please share the relevant documents with us.""",
+        description = """Existence of sustainable oceans or seas practices or policies.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 12""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -149,7 +157,8 @@ data class SfdrEnvironmentalBiodiversity(
     val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have operations, which affect threatened species? See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .""",
+        description = """Operations, which affect threatened species. See also Regulation (EU) 2022/1288, Annex I, top (20).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 14.1""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -166,7 +175,8 @@ data class SfdrEnvironmentalBiodiversity(
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2.) If yes, please share the policy with us.""",
+        description = """Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 14.2""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -183,7 +193,8 @@ data class SfdrEnvironmentalBiodiversity(
     val biodiversityProtectionPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.""",
+        description = """Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See also Regulation (EU) 2022/1288, Annex I, top (21).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 15""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",

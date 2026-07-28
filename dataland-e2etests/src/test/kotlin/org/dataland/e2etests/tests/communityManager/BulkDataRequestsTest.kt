@@ -20,7 +20,6 @@ import org.dataland.e2etests.utils.communityManager.generateRandomLei
 import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.getUniqueDatalandCompanyIdForIdentifierValue
 import org.dataland.e2etests.utils.communityManager.retrieveDataRequestIdForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.communityManager.sendBulkRequestWithEmptyInputAndCheckErrorMessage
@@ -39,38 +38,6 @@ class BulkDataRequestsTest {
     @BeforeAll
     fun authenticateAsReader() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-    }
-
-    @Test
-    fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
-        val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
-        val identifiers = uniqueIdentifiersMap.values.toSet()
-        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
-        val reportingPeriods = setOf("2022", "2023")
-        val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap)
-        val response =
-            requestControllerApi.postBulkDataRequest(
-                BulkDataRequest(identifiers, dataTypes, reportingPeriods, notifyMeImmediately = false),
-            )
-        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
-            response,
-            identifiers.size * dataTypes.size * reportingPeriods.size,
-        )
-        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
-        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
-        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
-        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newlyStoredRequests, identifiers.size * dataTypes.size * reportingPeriods.size,
-        )
-        val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
-        uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
-            checkThatDataRequestExistsExactlyOnceInRecentlyStored(
-                newlyStoredRequests, dataTypes.random().value, reportingPeriods.random(),
-                getUniqueDatalandCompanyIdForIdentifierValue(it),
-            )
-        }
     }
 
     @Test

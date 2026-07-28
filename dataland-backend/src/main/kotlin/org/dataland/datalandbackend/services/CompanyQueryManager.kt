@@ -5,12 +5,10 @@ import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.CompanyIdentifierValidationResult
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
-import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.IsinLeiRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -34,7 +32,6 @@ class CompanyQueryManager
     @Autowired
     constructor(
         private val companyRepository: StoredCompanyRepository,
-        private val dataMetaInfoRepository: DataMetaInformationRepository,
         private val companyIdentifierRepository: CompanyIdentifierRepository,
         private val isinLeiRepository: IsinLeiRepository,
         @Value("\${isin.chunk.size:10}")
@@ -207,24 +204,6 @@ class CompanyQueryManager
             companyId?.let {
                 getCompanyByIdAndAssertExistence(it).isTeaserCompany
             } ?: false
-
-        /**
-         * Get all reporting periods for which at least one active dataset of the specified company and data type exists
-         * @param companyId the ID of the company
-         * @param dataType the data type for which the datasets should be counted
-         * @returns the reporting periods of active datasets of the specified company and data type
-         */
-        @Transactional
-        fun getAllReportingPeriodsWithActiveDatasets(
-            companyId: String,
-            dataType: DataType,
-        ): Set<String> =
-            dataMetaInfoRepository
-                .getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
-                    companyId = companyId,
-                    dataType = dataType.name,
-                    currentlyActive = true,
-                )
 
         /**
          * A method to retrieve a list of subsidiaries of an ultimate parent company.

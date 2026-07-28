@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoReportedChildLabourIncidents",
   "name" : "Reported Child Labour Incidents",
-  "businessDefinition" : "Does the company have reported incidents of child labor within own operations or supply chain? Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.",
+  "businessDefinition" : "Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

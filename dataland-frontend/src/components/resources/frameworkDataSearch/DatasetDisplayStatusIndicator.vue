@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import { type DataMetaInformation, QaStatus } from '@clients/backend';
+import { type BasicDataDimensions, type DataMetaInformation, QaStatus } from '@clients/backend';
 import PrimeButton from 'primevue/button';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import router from '@/router';
@@ -30,7 +30,7 @@ export default defineComponent({
       type: Object as PropType<DataMetaInformation | null>,
     },
     receivedMapOfReportingPeriodsToActiveDataMetaInfo: {
-      type: Object as PropType<Map<string, DataMetaInformation>>,
+      type: Object as PropType<Map<string, BasicDataDimensions>>,
       required: true,
     },
     isMultiview: {

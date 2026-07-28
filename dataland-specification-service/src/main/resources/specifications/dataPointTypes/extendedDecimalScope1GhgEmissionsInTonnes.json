@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope1GhgEmissionsInTonnes",
   "name" : "Scope 1 GHG emissions",
-  "businessDefinition" : "Scope 1 greenhouse gas emissions in tonnes, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).",
+  "businessDefinition" : "Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],

@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoCarbonReductionInitiatives",
   "name" : "Carbon Reduction Initiatives",
-  "businessDefinition" : "Does the company have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement? (See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.) If yes, please share the relevant documents with us.",
+  "businessDefinition" : "Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 4",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

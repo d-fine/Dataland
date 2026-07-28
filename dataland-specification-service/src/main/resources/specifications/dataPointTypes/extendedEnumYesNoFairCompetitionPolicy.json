@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoFairCompetitionPolicy",
   "name" : "Fair Competition Policy",
-  "businessDefinition" : "Does the company have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.",
+  "businessDefinition" : "Existence of policies and procedures in place related to fair competition and anti-competitive cartels.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

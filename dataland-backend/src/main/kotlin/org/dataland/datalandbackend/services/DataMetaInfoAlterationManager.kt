@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
@@ -21,7 +20,7 @@ class DataMetaInfoAlterationManager
     constructor(
         private val dataManager: DataManager,
         private val dataMetaInformationManager: DataMetaInformationManager,
-        private val dataPointUtils: DataPointUtils,
+        private val specificationService: SpecificationService,
         private val keycloakUserService: KeycloakUserService,
         private val messageQueuePublications: MessageQueuePublications,
     ) {
@@ -54,41 +53,39 @@ class DataMetaInfoAlterationManager
                 )
             }
 
-            when (dataPointUtils.getFrameworkSpecificationOrNull(dataMetaInformation.dataType)) {
-                null -> {
-                    logger.info("Retrieving StorableDataset with dataId $dataId from Storage. CorrelationId: $correlationId.")
-                    val updatedStorableDataset: StorableDataset =
-                        dataManager
-                            .getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
-                            .copy(uploaderUserId = dataMetaInformationPatch.uploaderUserId)
+            try {
+                specificationService.getFrameworkSpecification(dataMetaInformation.dataType)
+                logger.info(
+                    "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
+                        "CorrelationId: $correlationId.",
+                )
+                dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+                messageQueuePublications.publishDatasetMetaInfoPatchMessage(
+                    dataId,
+                    dataMetaInformation.uploaderUserId,
+                    correlationId,
+                )
+            } catch (_: InvalidInputApiException) {
+                // No framework specification available
+                logger.info("Retrieving StorableDataset with dataId $dataId from Storage. CorrelationId: $correlationId.")
+                val updatedStorableDataset: StorableDataset =
+                    dataManager
+                        .getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
+                        .copy(uploaderUserId = dataMetaInformationPatch.uploaderUserId)
 
-                    logger.info(
-                        "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
-                            "CorrelationId: $correlationId.",
-                    )
-                    dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+                logger.info(
+                    "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
+                        "CorrelationId: $correlationId.",
+                )
+                dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
 
-                    logger.info("Storing updated StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
+                logger.info("Storing updated StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
 
-                    dataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
-                        dataId = dataId,
-                        storableDataset = updatedStorableDataset,
-                        correlationId = correlationId,
-                    )
-                }
-
-                else -> {
-                    logger.info(
-                        "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +
-                            "CorrelationId: $correlationId.",
-                    )
-                    dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
-                    messageQueuePublications.publishDatasetMetaInfoPatchMessage(
-                        dataId,
-                        dataMetaInformation.uploaderUserId,
-                        correlationId,
-                    )
-                }
+                dataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
+                    dataId = dataId,
+                    storableDataset = updatedStorableDataset,
+                    correlationId = correlationId,
+                )
             }
 
             return dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)

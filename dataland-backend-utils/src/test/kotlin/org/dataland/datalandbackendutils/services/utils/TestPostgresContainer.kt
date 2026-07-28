@@ -25,5 +25,6 @@ object TestPostgresContainer {
         registry.add("spring.jpa.show-sql") { "false" }
         registry.add("spring.jpa.properties.hibernate.format_sql") { "false" }
         registry.add("spring.flyway.enabled") { "false" }
+        registry.add("spring.datasource.hikari.maximum-pool-size") { "10" }
     }
 }

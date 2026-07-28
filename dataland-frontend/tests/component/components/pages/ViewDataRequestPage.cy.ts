@@ -193,17 +193,18 @@ describe('Component tests for the view data request page', function (): void {
   }
 
   /**
-   * Mocks the data-sourcing-manager answer for active datasets of the user
+   * Mocks the data-availability answer for active datasets of the user
    *
    * @param hasActiveDataset boolean indicating whether to return an active dataset or an empty array
    */
   function interceptUserActiveDatasetOnMounted(hasActiveDataset: boolean): void {
-    const dummyMetaData = {
+    const dummyDimension = {
       companyId: dummyCompanyId,
       dataType: dummyFramework,
+      reportingPeriod: dummyReportingYear,
     };
-    cy.intercept(`**/api/metadata?**`, {
-      body: hasActiveDataset ? [dummyMetaData] : [],
+    cy.intercept('POST', `**/api/data-availability/viewable-dimensions/filter`, {
+      body: hasActiveDataset ? [dummyDimension] : [],
       status: 200,
     });
   }

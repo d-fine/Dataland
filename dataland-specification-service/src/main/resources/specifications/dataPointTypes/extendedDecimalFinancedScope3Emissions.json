@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalFinancedScope3Emissions",
   "name" : "Financed scope 3 emissions",
-  "businessDefinition" : "The scope 3 emissions of financed companies.",
+  "businessDefinition" : "The scope 3 emissions of financed companies.\nIs part of scope 3 emissions and can be reported in Category 15 (Investments).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,

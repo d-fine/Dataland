@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 
-@SpringBootTest(classes = [DatalandBackend::class])
-@Testcontainers
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @DefaultMocks
 class IsinLeiManagerTest(
     @Autowired private val storedCompanyRepository: StoredCompanyRepository,
@@ -34,10 +34,6 @@ class IsinLeiManagerTest(
     // Even though this class uses a test container for integration testing, it is not possible to use the BaseIntegrationTest class.
     // The use of @Async does not work with the @Transactional and @Rollback annotations in the BaseIntegrationTest class.
     companion object {
-        @Container
-        @JvmStatic
-        val postgres = TestPostgresContainer.postgres
-
         @DynamicPropertySource
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {

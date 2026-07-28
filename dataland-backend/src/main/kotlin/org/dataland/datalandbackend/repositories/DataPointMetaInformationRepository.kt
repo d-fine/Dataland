@@ -25,30 +25,66 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     ): String?
 
     /**
-     * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods
+     * Retrieves active data points matching the JSON-encoded list of data point dimensions.
      */
     @Query(
-        "SELECT dataPointMetaInformation FROM DataPointMetaInformationEntity dataPointMetaInformation " +
-            "WHERE (:#{#reportingPeriods == null || #reportingPeriods.isEmpty()} = true " +
-            "OR dataPointMetaInformation.reportingPeriod IN :#{#reportingPeriods}) " +
-            "AND (:#{#companyIds == null || #companyIds.isEmpty()} = true " +
-            "OR dataPointMetaInformation.companyId IN :#{#companyIds}) " +
-            "AND (:#{#dataPointTypes == null || #dataPointTypes.isEmpty()} = true " +
-            "OR dataPointMetaInformation.dataPointType IN :#{#dataPointTypes}) " +
-            "AND dataPointMetaInformation.currentlyActive = true",
+        nativeQuery = true,
+        value =
+            """
+            WITH requested AS (
+                SELECT DISTINCT company_id, data_point_type, reporting_period
+                FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                    AS dim(company_id text, data_point_type text, reporting_period text)
+            )
+            SELECT m.*
+            FROM requested dim
+            JOIN data_point_meta_information m
+                ON m.company_id = dim.company_id
+                AND m.data_point_type = dim.data_point_type
+                AND m.reporting_period = dim.reporting_period
+            WHERE m.currently_active = true
+            """,
     )
-    fun getBulkActiveDataPoints(
-        @Param("companyIds") companyIds: List<String>?,
-        @Param("dataPointTypes") dataPointTypes: List<String>?,
-        @Param("reportingPeriods") reportingPeriods: List<String>?,
+    fun findActiveDataPointsByDimensionsJson(
+        @Param("jsonPayload") jsonPayload: String,
     ): List<DataPointMetaInformationEntity>
 
     /**
-     * Retrieves all data meta information of active data points matching one of the data point types and the company
+     * Retrieves active data point dimensions matching the given filter criteria.
+     * An empty JSON array for any filter means "match all" (wildcard).
      */
-    fun findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
-        dataPointTypes: Set<String>,
-        companyId: String,
+    @Query(
+        nativeQuery = true,
+        value =
+            """
+            WITH
+                company_filter AS (
+                    SELECT value AS company_id
+                    FROM jsonb_array_elements_text(CAST(:companyIds AS jsonb))
+                ),
+                type_filter AS (
+                    SELECT value AS data_point_type
+                    FROM jsonb_array_elements_text(CAST(:dataPointTypes AS jsonb))
+                ),
+                period_filter AS (
+                    SELECT value AS reporting_period
+                    FROM jsonb_array_elements_text(CAST(:reportingPeriods AS jsonb))
+                )
+            SELECT m.*
+            FROM data_point_meta_information m
+            WHERE m.currently_active = true
+              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 
+                OR m.company_id IN (SELECT company_id FROM company_filter))
+              AND (jsonb_array_length(CAST(:dataPointTypes AS jsonb)) = 0 
+                OR m.data_point_type IN (SELECT data_point_type FROM type_filter))
+              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 
+                OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
+            """,
+    )
+    fun findActiveDataPointDimensionsByFilter(
+        @Param("companyIds") companyIds: String,
+        @Param("dataPointTypes") dataPointTypes: String,
+        @Param("reportingPeriods") reportingPeriods: String,
     ): List<DataPointMetaInformationEntity>
 
     /**
@@ -58,13 +94,5 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
         dataPointTypes: Set<String>,
         companyId: String,
         reportingPeriod: String,
-    ): List<DataPointMetaInformationEntity>
-
-    /**
-     * Retrieves all data meta information of active data points matching one of the provided data point types and the company IDs
-     */
-    fun findByCompanyIdInAndDataPointTypeInAndCurrentlyActiveTrue(
-        companyId: Collection<String>,
-        dataPointTypes: Set<String>,
     ): List<DataPointMetaInformationEntity>
 }

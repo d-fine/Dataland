@@ -18,7 +18,8 @@ import java.math.BigInteger
 data class SfdrSocialSocialAndEmployeeMatters(
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Has the company been involved in Human Rights related legal proceedings?""",
+        description = """Involvement in Human Rights related legal proceedings.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 14""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -35,7 +36,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val humanRightsLegalProceedings: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company abide by the ILO Core Labour Standards?""",
+        description = """Abidance by the ILO Core Labour Standards.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factors 12, 13, 14""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -52,7 +54,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val iloCoreLabourStandards: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have an environmental policy? If yes, please share the policy with us.""",
+        description = """Existence of an environmental policy.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -69,7 +71,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val environmentalPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Has the company been involved in corruption-related legal proceedings?""",
+        description = """Involvement in corruption-related legal proceedings.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 16""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -86,7 +89,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val corruptionLegalProceedings: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.""",
+        description = """Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -103,7 +106,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val transparencyDisclosurePolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.""",
+        description = """Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -120,7 +124,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val humanRightsDueDiligencePolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies in place to abolish all forms of child labour? If yes, please share the policy with us.""",
+        description = """Existence of policies in place to abolish all forms of child labour.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -137,7 +142,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val policyAgainstChildLabour: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.""",
+        description = """Existence of policies in place to abolish all forms of forced labour.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -154,7 +160,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val policyAgainstForcedLabour: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.""",
+        description = """Existence of policies in place to eliminate discrimination in the workplace.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -171,7 +177,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val policyAgainstDiscriminationInTheWorkplace: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.""",
+        description = """The whole company is ISO 14001 certified.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -188,7 +194,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val iso14001Certificate: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.) If yes, please share the policy with us.""",
+        description = """Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 15""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -205,7 +212,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val policyAgainstBriberyAndCorruption: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.""",
+        description = """Existence of policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -222,7 +229,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val fairBusinessMarketingAdvertisingPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.""",
+        description = """Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -239,7 +246,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val technologiesExpertiseTransferPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.""",
+        description = """Existence of policies and procedures in place related to fair competition and anti-competitive cartels.""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -256,7 +263,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val fairCompetitionPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company involved in a violation of OECD Guidelines for Multinational Enterprises for Taxation? In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.""",
+        description = """Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -273,7 +281,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val violationOfTaxRulesAndRegulation: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the relevant documents with us.""",
+        description = """Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -290,7 +299,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val unGlobalCompactPrinciplesCompliancePolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises? (See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.) If yes, please share the policy with us.""",
+        description = """Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 11""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -308,7 +318,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Average gross hourly earnings of male employees""",
+        description = """Average gross hourly earnings of male employees
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12""",
         example = """{
       "value" : 100.5,
       "currency" : "USD",
@@ -325,7 +336,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Average gross hourly earnings of female employees""",
+        description = """Average gross hourly earnings of female employees
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12""",
         example = """{
       "value" : 100.5,
       "currency" : "USD",
@@ -341,7 +353,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).""",
+        description = """(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -359,7 +372,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company""",
+        description = """Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -377,7 +391,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of females on the board of directors of the company""",
+        description = """Number of females on the board of directors of the company
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -395,7 +410,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company""",
+        description = """Number of males on the supervisory board, i.e. means the administrative, management or supervisory body of a company
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -413,7 +429,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of males on the board of directors of the company""",
+        description = """Number of males on the board of directors of the company
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -432,7 +449,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MaximumValue(maximumValue = 100)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Percentage of female board members among all supervisory board members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.""",
+        description = """Percentage of female board members among all supervisory board members.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -451,7 +469,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MaximumValue(maximumValue = 100)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Percentage of female board members among all board of directors members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.""",
+        description = """Percentage of female board members among all board of directors members.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 13""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -468,7 +487,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val boardGenderDiversityBoardOfDirectorsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Is the company involved in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons? See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.""",
+        description = """Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 14""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -485,7 +505,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a workplace accident prevention policy? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.) If yes, please share the policy with us.""",
+        description = """Existence of a workplace accident prevention policy.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 1""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -503,7 +524,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 2.""",
+        description = """Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 2""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -521,7 +543,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of workdays lost to injuries, accidents, fatalities or illness in total""",
+        description = """Number of workdays lost to injuries, accidents, fatalities or illness in total.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 3""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -538,7 +561,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.) If yes, please share the document with us.""",
+        description = """Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labour, and forced labour.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 4""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -555,7 +579,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val supplierCodeOfConduct: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a grievance/complaints handling mechanism related to employee matters? See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.""",
+        description = """Existence of a grievance/complaints handling mechanism related to employee matters.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 5""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -572,7 +597,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val grievanceHandlingMechanism: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Does the company have a policy on the protection of whistleblowers? (See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.) If yes, please share the policy with us.""",
+        description = """Existence of a policy on the protection of whistleblowers. See also Regulation (EU) 2022/1288, Annex I, top (26).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 6""",
         example = """{
       "value" :  "Yes" , 
       "quality" : "Reported",
@@ -590,7 +616,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of reported discrimination-related incidents. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.1 .""",
+        description = """Number of reported discrimination-related incidents.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 7.1""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -608,7 +635,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Number of discrimination related incidents reported that lead to any kind of penalty and/or fine. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.2 .""",
+        description = """Number of discrimination related incidents reported that lead to any kind of penalty and/or fine.
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 7.2""",
         example = """{
       "value" : 100, 
       "quality" : "Reported",
@@ -626,7 +654,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.""",
+        description = """Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).
+Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 8""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",

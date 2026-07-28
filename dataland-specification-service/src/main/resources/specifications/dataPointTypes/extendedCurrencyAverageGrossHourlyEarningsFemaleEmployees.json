@@ -1,7 +1,7 @@
 {
   "id" : "extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees",
   "name" : "Average Gross Hourly Earnings Female Employees",
-  "businessDefinition" : "Average gross hourly earnings of female employees",
+  "businessDefinition" : "Average gross hourly earnings of female employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12",
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ],

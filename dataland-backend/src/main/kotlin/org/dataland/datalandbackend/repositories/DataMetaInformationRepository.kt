@@ -70,23 +70,6 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): DataMetaInformationEntity?
 
     /**
-     * Gets the distinct reporting periods matching the search parameters provided
-     * @param companyId the ID of the company to filter for
-     * @param dataType the data type to filter for
-     * @param currentlyActive the currently active filter
-     * @returns the distinct reporting periods matching the search parameter
-     */
-    @Query(
-        "SELECT DISTINCT d.reportingPeriod FROM DataMetaInformationEntity d " +
-            "WHERE d.company.companyId = ?1 AND d.dataType = ?2 AND d.currentlyActive = ?3",
-    )
-    fun getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
-        companyId: String,
-        dataType: String,
-        currentlyActive: Boolean,
-    ): Set<String>
-
-    /**
      * Queries the meta information for datasets uploaded by a specific user
      * @param userId the id of the user for whom to query data meta information
      * @returns the data meta information uploaded by the specified user
@@ -113,42 +96,67 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     )
     fun getUserUploadsDataMetaInfos(userId: String): List<DatasetMetaInfoEntityForMyDatasets>
 
-    /** Queries the meta information for an active dataset for the data dimension provided
-     * @param reportingPeriod the reporting period of the dataset
-     * @param companyId the company ID of the dataset
-     * @param dataType the data type of the dataset
-     * @returns the data meta information entry of the active dataset for the given data dimension
+    /**
+     * Retrieves active datasets matching the JSON-encoded list of dataset dimensions.
      */
     @Query(
-        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
-            "WHERE dataMetaInformation.reportingPeriod = :reportingPeriod " +
-            "AND dataMetaInformation.company.companyId = :companyId " +
-            "AND dataMetaInformation.dataType = :dataType " +
-            "AND dataMetaInformation.currentlyActive = true",
+        nativeQuery = true,
+        value =
+            """
+            WITH requested AS (
+                SELECT DISTINCT company_id, framework, reporting_period
+                FROM jsonb_to_recordset(CAST(:jsonPayload AS jsonb))
+                    AS dim(company_id text, framework text, reporting_period text)
+            )
+            SELECT m.*
+            FROM requested dim
+            JOIN data_meta_information m
+                ON m.company_id = dim.company_id
+                AND m.data_type = dim.framework
+                AND m.reporting_period = dim.reporting_period
+            WHERE m.currently_active = true
+            """,
     )
-    fun findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
-        @Param("reportingPeriod") reportingPeriod: String,
-        @Param("companyId") companyId: String,
-        @Param("dataType") dataType: String,
-    ): DataMetaInformationEntity?
+    fun findActiveDatasetsByDimensionsJson(
+        @Param("jsonPayload") jsonPayload: String,
+    ): List<DataMetaInformationEntity>
 
     /**
-     * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods
+     * Retrieves active dataset dimensions matching the given filter criteria.
+     * An empty JSON array for any filter means "match all" (wildcard).
      */
     @Query(
-        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
-            "WHERE (:#{#reportingPeriods == null || #reportingPeriods.isEmpty()} = true " +
-            "OR dataMetaInformation.reportingPeriod IN :#{#reportingPeriods}) " +
-            "AND (:#{#companyIds == null || #companyIds.isEmpty()} = true " +
-            "OR dataMetaInformation.company.companyId IN :#{#companyIds}) " +
-            "AND (:#{#dataTypes == null || #dataTypes.isEmpty()} = true " +
-            "OR dataMetaInformation.dataType IN :#{#dataTypes}) " +
-            "AND dataMetaInformation.currentlyActive = true",
+        nativeQuery = true,
+        value =
+            """
+            WITH
+                company_filter AS (
+                    SELECT value AS company_id
+                    FROM jsonb_array_elements_text(CAST(:companyIds AS jsonb))
+                ),
+                type_filter AS (
+                    SELECT value AS data_type
+                    FROM jsonb_array_elements_text(CAST(:dataTypes AS jsonb))
+                ),
+                period_filter AS (
+                    SELECT value AS reporting_period
+                    FROM jsonb_array_elements_text(CAST(:reportingPeriods AS jsonb))
+                )
+            SELECT m.*
+            FROM data_meta_information m
+            WHERE m.currently_active = true
+              AND (jsonb_array_length(CAST(:companyIds AS jsonb)) = 0 
+                OR m.company_id IN (SELECT company_id FROM company_filter))
+              AND (jsonb_array_length(CAST(:dataTypes AS jsonb)) = 0 
+                OR m.data_type IN (SELECT data_type FROM type_filter))
+              AND (jsonb_array_length(CAST(:reportingPeriods AS jsonb)) = 0 
+                OR m.reporting_period IN (SELECT reporting_period FROM period_filter))
+            """,
     )
-    fun getBulkActiveDatasets(
-        @Param("companyIds") companyIds: List<String>?,
-        @Param("dataTypes") dataTypes: List<String>?,
-        @Param("reportingPeriods") reportingPeriods: List<String>?,
+    fun findActiveDatasetDimensionsByFilter(
+        @Param("companyIds") companyIds: String,
+        @Param("dataTypes") dataTypes: String,
+        @Param("reportingPeriods") reportingPeriods: String,
     ): List<DataMetaInformationEntity>
 
     /**

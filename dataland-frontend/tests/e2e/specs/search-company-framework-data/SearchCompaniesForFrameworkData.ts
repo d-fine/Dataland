@@ -1,16 +1,29 @@
 import { searchBasicCompanyInformationForDataType } from '@e2e//utils/GeneralApiUtils';
-import { DataTypeEnum, type EutaxonomyFinancialsData, type BasicCompanyInformation } from '@clients/backend';
-import { getUploaderToken } from '@e2e/utils/Auth';
+import {
+  DataTypeEnum,
+  type EutaxonomyFinancialsData,
+  type BasicCompanyInformation,
+  type SfdrData,
+} from '@clients/backend';
+import { getAdminToken, getUploaderToken } from '@e2e/utils/Auth';
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { describeIf, type ExecutionEnvironment } from '@e2e/support/TestUtility';
 import { assertDefined } from '@/utils/TypeScriptUtils';
+import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
+import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
 const executionEnvironments: ExecutionEnvironment[] = ['developmentLocal', 'ci', 'developmentCd'];
+
+// 'abs' is guaranteed to match at least 3 companies because SfdrPreparedFixtures.ts
+// (generateSfdrFixturesForFrameworkSearchTest) appends "... = ABS" to 3 SFDR company names. If you change
+// the marker text there, update this string too. It is also used below (case-insensitively) to select which
+// SFDR prepared fixtures to upload before the autocomplete test runs.
+const searchStringResultingInAtLeastThreeAutocompleteSuggestions = 'abs';
 
 /**
  * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
@@ -92,6 +105,48 @@ describeIf(
     executionEnvironments: executionEnvironments,
   },
   () => {
+    /**
+     * Uploads the SFDR prepared fixtures whose company name contains the framework-search-test marker (see
+     * searchStringResultingInAtLeastThreeAutocompleteSuggestions above), so that the "search with autocompletion"
+     * test below can rely on them being present in the database. Prepopulation.ts does not upload
+     * CompanyInformationWithSfdrPreparedFixtures.json, so this spec has to upload the fixtures it needs itself,
+     * following the same pattern used throughout the other e2e specs that rely on specific prepared fixtures.
+     * This lives inside the describeIf callback (rather than at file scope) so it is skipped together with the
+     * rest of this suite for execution environments where it is not supposed to run (e.g. 'previewCd').
+     */
+    before(function () {
+      cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then(function (jsonContent) {
+        const sfdrPreparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
+        const sfdrFixturesForFrameworkSearchTest = sfdrPreparedFixtures.filter((fixture) =>
+          fixture.companyInformation.companyName
+            .toLowerCase()
+            .includes(searchStringResultingInAtLeastThreeAutocompleteSuggestions)
+        );
+        if (sfdrFixturesForFrameworkSearchTest.length === 0) {
+          throw new Error(
+            `Expected at least one SFDR prepared fixture with '${searchStringResultingInAtLeastThreeAutocompleteSuggestions}' ` +
+              'in its company name, but found none. Check that SfdrPreparedFixtures.ts and this file still agree on the marker text.'
+          );
+        }
+
+        getAdminToken().then((token) => {
+          cy.browserThen(
+            Promise.all(
+              sfdrFixturesForFrameworkSearchTest.map((fixture) =>
+                uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+                  SfdrBaseFrameworkDefinition,
+                  token,
+                  fixture.companyInformation,
+                  fixture.t,
+                  fixture.reportingPeriod
+                )
+              )
+            )
+          );
+        });
+      });
+    });
+
     describeIf(
       'Tests for LEI tooltip and that company can be found -- only executed on database reset',
       {
@@ -159,9 +214,11 @@ describeIf(
       });
     });
 
-    it('Search with autocompletion for companies with "abs" in it, click and use arrow keys, find searched company in recommendation', () => {
+    it('Search with autocompletion for companies with a common name fragment in it, click and use arrow keys, find searched company in recommendation', () => {
       const primevueHighlightedSuggestionClass = 'p-focus';
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = 'abs';
+      // 3 must match (or be below) FrameworkDataSearchBar's default `maxNumOfDisplayedAutocompleteEntries` prop
+      // value, since that threshold controls when the "View all results" button appears further down.
+      const minimumNumberOfAutocompleteMatchesForViewAllResultsButton = 3;
 
       getUploaderToken().then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
@@ -173,15 +230,34 @@ describeIf(
             cy.visitAndCheckAppMount('/companies');
 
             verifySearchResultTableExists();
-            cy.get('input[id=search-bar-input]').type('abs');
-            cy.get('[data-test="view-all-results-button"]').contains('View all results').click();
+            cy.intercept('GET', '**/api/companies/names*').as('companyNameAutocomplete');
+
+            cy.get('input[id=search-bar-input]').click();
+            cy.get('input[id=search-bar-input]').type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
+
+            cy.wait('@companyNameAutocomplete');
+
+            cy.get('.p-autocomplete-option').should(
+              'have.length',
+              minimumNumberOfAutocompleteMatchesForViewAllResultsButton
+            );
+
+            cy.contains('[data-test="view-all-results-button"]', 'View all results')
+              .should('be.visible')
+              // The button is rendered inside the PrimeVue AutoComplete overlay.
+              // A normal Cypress click can fail because the overlay is re-rendered/hidden
+              // while Cypress performs actionability checks. Thats why the force: true is necessary
+              .click({ force: true });
 
             verifySearchResultTableExists();
-            cy.url().should('include', '/companies?input=abs');
+            cy.url().should(
+              'include',
+              `/companies?input=${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
+            );
             cy.scrollTo('top');
             cy.get('input[id=search-bar-input]').click();
             cy.get('input[id=search-bar-input]').type(
-              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastTwoAutocompleteSuggestions}`
+              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
             );
             cy.get('.p-autocomplete-list-container').should('exist');
             cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
