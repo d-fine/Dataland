@@ -125,7 +125,7 @@ open class NumberBaseComponent(
             valueGetterByDataPoint =
                 documentSupport.getFrameworkDisplayValueByDataPointLambda(
                     FrameworkDisplayValueByDataPointLambda(
-                        "formatNumberForDatatable(extractDatapointValue(dataPoint) as number," +
+                        "formatNumberForDatatable(Number(extractDatapointValue(dataPoint))," +
                             " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
                         setOf(
                             TypeScriptImport(

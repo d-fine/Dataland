@@ -396,7 +396,8 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
   if (!cell.dataPointTypeId) {
     return qaReviewMap;
   }
-  if (!cell.valueGetterByDataPoint) { // Fallback in case no valueGetterByDataPoint function is implemented for this data point
+  if (!cell.valueGetterByDataPoint) {
+    // Fallback in case no valueGetterByDataPoint function is implemented for this data point
     for (const qaReporter of props.datasetReview.qaReporters) {
       const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
       const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
@@ -411,14 +412,14 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
       }
     }
   } else {
-      for (const qaReporter of props.datasetReview.qaReporters) {
-        const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
-        const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
-        if (display != null) {
-          qaReviewMap.set(qaReporter.reporterUserId, display);
-        }
+    for (const qaReporter of props.datasetReview.qaReporters) {
+      const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
+      const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
+      if (display != null) {
+        qaReviewMap.set(qaReporter.reporterUserId, display);
       }
     }
+  }
   return qaReviewMap;
 }
 
