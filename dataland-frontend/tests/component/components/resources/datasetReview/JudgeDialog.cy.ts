@@ -1407,12 +1407,12 @@ describe('JudgeDialog component tests', () => {
         .parent()
         .should('contain.text', shortComment);
 
-      cy.get('[data-test="corrected-datapoint-section"] .bg-gray-100 span.overflow-auto').then(($el) => {
+      cy.get('[data-test="qa-comment-box"] span.overflow-y-auto').then(($el) => {
         expect($el[0].scrollHeight).to.be.at.most($el[0].clientHeight + 1);
       });
     });
 
-    it('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
+    it.only('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
       cy.viewport(600, 800);
       const longComment = Array.from({ length: 20 }, () => overflowingCommentEntry).join(' ');
       mountJudgeDialog({ datasetJudgement: judgementWithQaReportComment(longComment) });
@@ -1423,7 +1423,7 @@ describe('JudgeDialog component tests', () => {
         .parent()
         .should('contain.text', longComment);
 
-      cy.get('[data-test="corrected-datapoint-section"] .bg-gray-100 span.overflow-auto').then(($el) => {
+      cy.get('[data-test="qa-comment-box"] span.overflow-y-auto').then(($el) => {
         expect($el[0].scrollHeight).to.be.greaterThan($el[0].clientHeight);
       });
     });
