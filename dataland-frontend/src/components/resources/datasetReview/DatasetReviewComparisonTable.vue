@@ -393,17 +393,32 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
  */
 function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, AvailableMLDTDisplayObjectTypes> {
   const qaReviewMap = new Map<string, AvailableMLDTDisplayObjectTypes>();
-  if (!cell.dataPointTypeId || !cell.valueGetterByDataPoint) {
+  if (!cell.dataPointTypeId) {
     return qaReviewMap;
   }
-
-  for (const qaReporter of props.datasetReview.qaReporters) {
-    const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
-    const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
-    if (display != null) {
-      qaReviewMap.set(qaReporter.reporterUserId, display);
+  if (!cell.valueGetterByDataPoint) { // Fallback in case no valueGetterByDataPoint function is implemented for this data point
+    for (const qaReporter of props.datasetReview.qaReporters) {
+      const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
+      const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
+      let display: AvailableMLDTDisplayObjectTypes | undefined;
+      if (simpleText != null) {
+        display = formatStringForDatatable(simpleText);
+      } else {
+        display = formatStringForDatatable(getCorrectedDisplayFromQaReport(qaReport));
+      }
+      if (display != null) {
+        qaReviewMap.set(qaReporter.reporterUserId, display);
+      }
     }
-  }
+  } else {
+      for (const qaReporter of props.datasetReview.qaReporters) {
+        const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
+        const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
+        if (display != null) {
+          qaReviewMap.set(qaReporter.reporterUserId, display);
+        }
+      }
+    }
   return qaReviewMap;
 }
 
