@@ -1412,7 +1412,7 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
-    it.only('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
+    it('shows the "Qa Comment" box in a scrollable container with the full text when the comment exceeds the display limits', () => {
       cy.viewport(600, 800);
       const longComment = Array.from({ length: 20 }, () => overflowingCommentEntry).join(' ');
       mountJudgeDialog({ datasetJudgement: judgementWithQaReportComment(longComment) });
