@@ -64,8 +64,7 @@
                   data-test="custom-value-field"
                   class="p-inputtext-sm"
                   :style="{
-                    lineHeight: '1.25rem',
-                    maxHeight: '6.25rem',
+                    maxHeight: '5lh',
                     overflowY: isCustomValueOverflowing ? 'auto' : 'hidden',
                     overflowX: 'hidden',
                     resize: 'none',
@@ -144,8 +143,7 @@
                   data-test="custom-comment-field"
                   class="p-inputtext-sm"
                   :style="{
-                    lineHeight: '1.25rem',
-                    maxHeight: '6.25rem',
+                    maxHeight: '5lh',
                     overflowY: isCustomCommentOverflowing ? 'auto' : 'hidden',
                     overflowX: 'hidden',
                     resize: 'none',
@@ -314,7 +312,7 @@ function getTextareaElement(refValue: unknown): HTMLTextAreaElement | null {
 function hasVerticalOverflow(element: HTMLElement | null): boolean {
   if (!element) return false;
 
-  return element.scrollHeight > element.clientHeight + 1;
+  return element.scrollHeight > element.clientHeight + 3; //adding a small offset that's disregarded for setting the scrollbar. - otherwise there's a overflow of 2px on edge.
 }
 
 /**
