@@ -18,6 +18,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -30,6 +31,7 @@ class EuTaxonomyAssuranceComponent(
 ) : ComponentBase(identifier, parent) {
     private val fullyQualifiedNameOfKotlinType =
         "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint"
+    private val formatterImportPath = "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addPropertyWithDocumentSupport(
@@ -74,10 +76,32 @@ class EuTaxonomyAssuranceComponent(
                 setOf(
                     TypeScriptImport(
                         "formatAssuranceForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+                        formatterImportPath,
                     ),
                 ),
             ),
+            valueGetterByDataPoint =
+                FrameworkDisplayValueByDataPointLambda(
+                    "formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, \"${
+                        StringEscapeUtils.escapeEcmaScript(
+                            label,
+                        )
+                    }\")",
+                    setOf(
+                        TypeScriptImport(
+                            "formatAssuranceForDataTable",
+                            formatterImportPath,
+                        ),
+                        TypeScriptImport(
+                            "parseDataPoint",
+                            "@/components/resources/dataTable/conversion/DataPoints",
+                        ),
+                        TypeScriptImport(
+                            "AssuranceDataPoint",
+                            "@clients/backend",
+                        ),
+                    ),
+                ),
         )
         createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder)
     }
@@ -117,7 +141,7 @@ class EuTaxonomyAssuranceComponent(
                     setOf(
                         TypeScriptImport(
                             "formatAssuranceProviderForDataTable",
-                            "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+                            formatterImportPath,
                         ),
                     ),
                 ),
