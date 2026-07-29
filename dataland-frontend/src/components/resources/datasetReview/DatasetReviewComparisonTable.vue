@@ -398,6 +398,7 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
   }
   if (!cell.valueGetterByDataPoint) {
     // Fallback in case no valueGetterByDataPoint function is implemented for this data point
+    console.log(`The data point with label ${cell.label} does not seem to have a valueGetterByDataPoint() function implemented.`);
     for (const qaReporter of props.datasetReview.qaReporters) {
       const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
       const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
