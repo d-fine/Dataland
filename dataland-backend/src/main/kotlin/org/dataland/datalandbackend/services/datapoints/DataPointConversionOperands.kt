@@ -127,8 +127,11 @@ internal data class EuTaxonomyActivityOperands<
             val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
             val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
             val relativeEligibleShareInPercent =
-                if (alignedRelativeShare == null && nonAlignedRelativeShare == null) null
-                else (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+                if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
+                    null
+                } else {
+                    (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+                }
             eligibleOrAlignedActivities.add(
                 createEuTaxonomyEligibleOrAlignedActivity(
                     identifier,
