@@ -2,7 +2,10 @@ import { type EutaxonomyNonFinancialsData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration.ts';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer.ts';
 import { formatPercentageForDatatable } from '@/components/resources/dataTable/conversion/PercentageValueGetterFactory.ts';
-import { wrapDisplayValueWithDatapointInformation } from '@/components/resources/dataTable/conversion/DataPoints.ts';
+import {
+  parseDataPoint,
+  wrapDisplayValueWithDatapointInformation,
+} from '@/components/resources/dataTable/conversion/DataPoints.ts';
 import { formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable } from '@/components/resources/dataTable/conversion/EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory.ts';
 import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory.ts';
@@ -14,6 +17,8 @@ import {
 } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory.ts';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory.ts';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { type EuTaxonomyAlignedActivity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
+import { type ExtendedDataPoint } from '@/utils/DataPoint.ts';
 export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
   {
     type: 'section',
@@ -840,6 +845,12 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'revenue'
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            parseDataPoint(dataPoint) as ExtendedDataPoint<EuTaxonomyAlignedActivity[]>,
+            'Aligned Activities',
+            'revenue'
+          ),
         uploadComponentName: 'Non-editable',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentRevenueAlignedActivities',
       },
@@ -1510,6 +1521,12 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'capex'
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            parseDataPoint(dataPoint) as ExtendedDataPoint<EuTaxonomyAlignedActivity[]>,
+            'Aligned Activities',
+            'capex'
+          ),
         uploadComponentName: 'Non-editable',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities',
       },
@@ -1822,6 +1839,12 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dataset.opex?.alignedActivities,
+            'Aligned Activities',
+            'opex'
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
+            parseDataPoint(dataPoint) as ExtendedDataPoint<EuTaxonomyAlignedActivity[]>,
             'Aligned Activities',
             'opex'
           ),

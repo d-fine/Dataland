@@ -133,6 +133,16 @@ export function extractDatapointValue(dataPoint: string): unknown {
 }
 
 /**
+ * Parses a given data point string and processes it into the desired format.
+ *
+ * @param {string} dataPoint - The data point in string format to be parsed.
+ * @return {unknown} The parsed and processed data point.
+ */
+export function parseDataPoint(dataPoint: string): unknown {
+  return wrapDataPointJson(dataPoint);
+}
+
+/**
  * Wraps an existing MLDTDisplayValue with datapoint document-support display information
  * (quality, comment, data source), reading that information directly out of a single
  * stored data point's own JSON, instead of out of a field within a full framework dataset.
