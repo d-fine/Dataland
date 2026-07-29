@@ -1383,7 +1383,7 @@ describe('JudgeDialog component tests', () => {
                 active: true,
                 dataPointId: dataPointId,
                 dataPointType: dataPointTypeId,
-                comment,
+                comment: comment,
               },
             ],
           },
