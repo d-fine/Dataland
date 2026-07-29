@@ -3,14 +3,19 @@ import { type SfdrData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory';
-import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import {
+  parseDataPoint,
   wrapDisplayValueWithDatapointInformation,
   extractDatapointValue,
   wrapDisplayValueWithDatapointInformationByDataPoint,
 } from '@/components/resources/dataTable/conversion/DataPoints';
+import {
+  type CurrencyDataPoint,
+  type YesNoNa,
+  type SfdrGeneralGeneralFiscalYearDeviationOptions,
+} from '@clients/backend';
+import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
-import { type YesNoNa, type SfdrGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
 import { formatHighImpactClimateSectorForDisplay } from '@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
@@ -2049,6 +2054,11 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees,
                 'Average Gross Hourly Earnings Male Employees'
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                parseDataPoint(dataPoint) as CurrencyDataPoint,
+                'Average Gross Hourly Earnings Male Employees'
+              ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyAverageGrossHourlyEarningsMaleEmployees',
           },
@@ -2061,6 +2071,11 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
                 dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees,
+                'Average Gross Hourly Earnings Female Employees'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                parseDataPoint(dataPoint) as CurrencyDataPoint,
                 'Average Gross Hourly Earnings Female Employees'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
@@ -2692,6 +2707,11 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
                 dataset.social?.antiCorruptionAndAntiBribery?.totalAmountOfReportedFinesOfBriberyAndCorruption,
+                'Total Amount Of Reported Fines Of Bribery and Corruption'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(
+                parseDataPoint(dataPoint) as CurrencyDataPoint,
                 'Total Amount Of Reported Fines Of Bribery and Corruption'
               ),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',

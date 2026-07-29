@@ -3,13 +3,20 @@ import { type NuclearAndGasData } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { formatNuclearAndGasTaxonomyShareDataForTable } from '@/components/resources/dataTable/conversion/NuclearAndGasValueGetterFactory';
-import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import {
+  parseDataPoint,
   wrapDisplayValueWithDatapointInformation,
   extractDatapointValue,
   wrapDisplayValueWithDatapointInformationByDataPoint,
 } from '@/components/resources/dataTable/conversion/DataPoints';
-import { type YesNoNa } from '@clients/backend';
+import {
+  type ExtendedDataPointNuclearAndGasNonEligible,
+  type ExtendedDataPointNuclearAndGasEligibleButNotAligned,
+  type ExtendedDataPointNuclearAndGasAlignedNumerator,
+  type ExtendedDataPointNuclearAndGasAlignedDenominator,
+  type YesNoNa,
+} from '@clients/backend';
+import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
   {
     type: 'section',
@@ -168,6 +175,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedRevenueDenominator,
                 'Nuclear and Gas Taxonomy-aligned Revenue (denominator)'
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasAlignedDenominator,
+                'Nuclear and Gas Taxonomy-aligned Revenue (denominator)'
+              ),
             uploadComponentName: 'NuclearAndGasFormElement',
             dataPointTypeId:
               'extendedNuclearAndGasAlignedDenominatorComponentNuclearAndGasTaxonomyAlignedRevenueDenominator',
@@ -181,6 +193,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
                 dataset.general?.taxonomyAlignedDenominator?.nuclearAndGasTaxonomyAlignedCapexDenominator,
+                'Nuclear and Gas Taxonomy-aligned CapEx (denominator)'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasAlignedDenominator,
                 'Nuclear and Gas Taxonomy-aligned CapEx (denominator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
@@ -206,6 +223,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedRevenueNumerator,
                 'Nuclear and Gas Taxonomy-aligned Revenue (numerator)'
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasAlignedNumerator,
+                'Nuclear and Gas Taxonomy-aligned Revenue (numerator)'
+              ),
             uploadComponentName: 'NuclearAndGasFormElement',
             dataPointTypeId:
               'extendedNuclearAndGasAlignedNumeratorComponentNuclearAndGasTaxonomyAlignedRevenueNumerator',
@@ -219,6 +241,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
                 dataset.general?.taxonomyAlignedNumerator?.nuclearAndGasTaxonomyAlignedCapexNumerator,
+                'Nuclear and Gas Taxonomy-aligned CapEx (numerator)'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasAlignedNumerator,
                 'Nuclear and Gas Taxonomy-aligned CapEx (numerator)'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
@@ -243,6 +270,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedRevenue,
                 'Nuclear and Gas Taxonomy-eligible but not aligned Revenue'
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasEligibleButNotAligned,
+                'Nuclear and Gas Taxonomy-eligible but not aligned Revenue'
+              ),
             uploadComponentName: 'NuclearAndGasFormElement',
             dataPointTypeId:
               'extendedNuclearAndGasEligibleButNotAlignedComponentNuclearAndGasTaxonomyEligibleButNotAlignedRevenue',
@@ -256,6 +288,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
                 dataset.general?.taxonomyEligibleButNotAligned?.nuclearAndGasTaxonomyEligibleButNotAlignedCapex,
+                'Nuclear and Gas Taxonomy-eligible but not aligned CapEx'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasEligibleButNotAligned,
                 'Nuclear and Gas Taxonomy-eligible but not aligned CapEx'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
@@ -281,6 +318,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
                 dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleRevenue,
                 'Nuclear and Gas Taxonomy-non-eligible Revenue'
               ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasNonEligible,
+                'Nuclear and Gas Taxonomy-non-eligible Revenue'
+              ),
             uploadComponentName: 'NuclearAndGasFormElement',
             dataPointTypeId: 'extendedNuclearAndGasNonEligibleComponentNuclearAndGasTaxonomyNonEligibleRevenue',
           },
@@ -293,6 +335,11 @@ export const nuclearAndGasViewConfiguration: MLDTConfig<NuclearAndGasData> = [
             valueGetter: (dataset: NuclearAndGasData): AvailableMLDTDisplayObjectTypes =>
               formatNuclearAndGasTaxonomyShareDataForTable(
                 dataset.general?.taxonomyNonEligible?.nuclearAndGasTaxonomyNonEligibleCapex,
+                'Nuclear and Gas Taxonomy-non-eligible CapEx'
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatNuclearAndGasTaxonomyShareDataForTable(
+                parseDataPoint(dataPoint) as ExtendedDataPointNuclearAndGasNonEligible,
                 'Nuclear and Gas Taxonomy-non-eligible CapEx'
               ),
             uploadComponentName: 'NuclearAndGasFormElement',
