@@ -194,7 +194,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+            formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
             'Number of Employees',
             dataPoint
           ),
@@ -328,7 +328,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -370,7 +370,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -412,7 +412,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -474,7 +474,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -511,7 +511,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
             dataPoint
           ),
@@ -533,7 +533,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataPoint
           ),
@@ -555,7 +555,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -579,7 +579,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
             dataPoint
           ),
@@ -602,7 +602,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
             dataPoint
           ),
@@ -625,7 +625,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
             dataPoint
           ),
@@ -647,7 +647,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataPoint
           ),
@@ -669,7 +669,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -693,7 +693,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
             dataPoint
           ),
@@ -719,7 +719,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
             dataPoint
           ),
@@ -746,7 +746,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataPoint
           ),
@@ -774,7 +774,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -802,7 +802,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
             dataPoint
           ),
@@ -825,7 +825,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             dataPoint
           ),
@@ -847,7 +847,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataPoint
           ),
@@ -869,7 +869,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -893,7 +893,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
             dataPoint
           ),
@@ -917,7 +917,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
             dataPoint
           ),
@@ -941,7 +941,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataPoint
           ),
@@ -965,7 +965,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -989,7 +989,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
             dataPoint
           ),
@@ -1016,7 +1016,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
             dataPoint
           ),
@@ -1043,7 +1043,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataPoint
           ),
@@ -1071,7 +1071,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1099,7 +1099,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
             dataPoint
           ),
@@ -1142,7 +1142,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Enabling Share In Percent',
             dataPoint
           ),
@@ -1163,7 +1163,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Transitional Share In Percent',
             dataPoint
           ),
@@ -1212,7 +1212,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -1254,7 +1254,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -1296,7 +1296,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -1358,7 +1358,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -1395,7 +1395,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Eligible',
             dataPoint
           ),
@@ -1417,7 +1417,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataPoint
           ),
@@ -1439,7 +1439,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1463,7 +1463,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Enabling Share',
             dataPoint
           ),
@@ -1486,7 +1486,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Transitional Share',
             dataPoint
           ),
@@ -1509,7 +1509,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Eligible',
             dataPoint
           ),
@@ -1531,7 +1531,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataPoint
           ),
@@ -1553,7 +1553,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1577,7 +1577,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Enabling Share',
             dataPoint
           ),
@@ -1603,7 +1603,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Eligible',
             dataPoint
           ),
@@ -1629,7 +1629,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataPoint
           ),
@@ -1657,7 +1657,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1685,7 +1685,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Enabling Share',
             dataPoint
           ),
@@ -1708,7 +1708,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Eligible',
             dataPoint
           ),
@@ -1730,7 +1730,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataPoint
           ),
@@ -1752,7 +1752,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1775,7 +1775,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Enabling Share',
             dataPoint
           ),
@@ -1799,7 +1799,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Eligible',
             dataPoint
           ),
@@ -1822,7 +1822,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataPoint
           ),
@@ -1845,7 +1845,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1869,7 +1869,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Enabling Share',
             dataPoint
           ),
@@ -1895,7 +1895,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Eligible',
             dataPoint
           ),
@@ -1921,7 +1921,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataPoint
           ),
@@ -1949,7 +1949,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Of which use of proceeds',
             dataPoint
           ),
@@ -1977,7 +1977,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Enabling Share',
             dataPoint
           ),
@@ -2020,7 +2020,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Enabling Share In Percent',
             dataPoint
           ),
@@ -2041,7 +2041,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Transitional Share In Percent',
             dataPoint
           ),
@@ -2090,7 +2090,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -2132,7 +2132,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -2174,7 +2174,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -2232,7 +2232,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+                formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
                 'Relative Share in Percent',
                 dataPoint
               ),
@@ -2269,7 +2269,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Mitigation In Percent - Aligned',
             dataPoint
           ),
@@ -2291,7 +2291,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Climate Change Adaptation In Percent - Aligned',
             dataPoint
           ),
@@ -2316,7 +2316,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent - Aligned',
             dataPoint
           ),
@@ -2339,7 +2339,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Transition to a Circular Economy In Percent - Aligned',
             dataPoint
           ),
@@ -2362,7 +2362,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Pollution Prevention and Control In Percent - Aligned',
             dataPoint
           ),
@@ -2387,7 +2387,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent - Aligned',
             dataPoint
           ),
@@ -2429,7 +2429,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Enabling Share In Percent',
             dataPoint
           ),
@@ -2450,7 +2450,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
-            formatPercentageForDatatable(Number(extractDatapointValue(dataPoint))),
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
             'Transitional Share In Percent',
             dataPoint
           ),
