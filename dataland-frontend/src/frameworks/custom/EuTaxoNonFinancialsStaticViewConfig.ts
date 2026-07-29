@@ -3,6 +3,8 @@ import {
   type EuTaxonomyActivity,
   type YesNoNa,
   type EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions,
+  type AssuranceDataPoint,
+  type CurrencyDataPoint,
 } from '@clients/backend';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration.ts';
 import { type AvailableMLDTDisplayObjectTypes } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer.ts';
@@ -163,6 +165,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
         uploadComponentName: 'Non-editable',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
       },
@@ -299,6 +303,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.revenue?.totalAmount, 'Total Amount'),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
         uploadComponentName: 'CurrencyDataPointFormField',
         dataPointTypeId: 'extendedCurrencyTotalAmount',
       },
@@ -337,6 +343,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyRevenueNonEligibleShareAbsoluteShare',
           },
@@ -377,6 +385,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyRevenueEligibleShareAbsoluteShare',
           },
@@ -417,6 +427,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyRevenueNonAlignedShareAbsoluteShare',
           },
@@ -477,6 +489,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.revenue?.alignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyRevenueAlignedShareAbsoluteShare',
           },
@@ -1173,6 +1187,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.capex?.totalAmount, 'Total Amount'),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
         uploadComponentName: 'CurrencyDataPointFormField',
         dataPointTypeId: 'extendedCurrencyCapexTotalAmount',
       },
@@ -1211,6 +1227,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyCapexNonEligibleShareAbsoluteShare',
           },
@@ -1251,6 +1269,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyCapexEligibleShareAbsoluteShare',
           },
@@ -1291,6 +1311,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyCapexNonAlignedShareAbsoluteShare',
           },
@@ -1351,6 +1373,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.capex?.alignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyCapexAlignedShareAbsoluteShare',
           },
@@ -2041,6 +2065,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.opex?.totalAmount, 'Total Amount'),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
         uploadComponentName: 'CurrencyDataPointFormField',
         dataPointTypeId: 'extendedCurrencyOpexTotalAmount',
       },
@@ -2079,6 +2105,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.nonEligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyOpexNonEligibleShareAbsoluteShare',
           },
@@ -2119,6 +2147,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.eligibleShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyOpexEligibleShareAbsoluteShare',
           },
@@ -2159,6 +2189,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.nonAlignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyOpexNonAlignedShareAbsoluteShare',
           },
@@ -2215,6 +2247,8 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.opex?.alignedShare?.absoluteShare, 'Absolute Share'),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Absolute Share'),
             uploadComponentName: 'CurrencyExtendedDataPointFormField',
             dataPointTypeId: 'extendedCurrencyOpexAlignedShareAbsoluteShare',
           },
