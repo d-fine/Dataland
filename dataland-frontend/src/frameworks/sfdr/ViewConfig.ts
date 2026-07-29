@@ -136,7 +136,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 GHG emissions',
                 dataPoint
               ),
@@ -160,7 +160,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 2 GHG emissions',
                 dataPoint
               ),
@@ -184,7 +184,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 2 GHG emissions (location-based)',
                 dataPoint
               ),
@@ -208,7 +208,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 2 GHG emissions (market-based)',
                 dataPoint
               ),
@@ -232,7 +232,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 GHG emissions',
                 dataPoint
               ),
@@ -256,7 +256,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 GHG emissions (location-based)',
                 dataPoint
               ),
@@ -280,7 +280,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 GHG emissions (market-based)',
                 dataPoint
               ),
@@ -304,7 +304,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 3 GHG emissions',
                 dataPoint
               ),
@@ -328,7 +328,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 3 upstream GHG emissions',
                 dataPoint
               ),
@@ -352,7 +352,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 3 downstream GHG emissions',
                 dataPoint
               ),
@@ -376,7 +376,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 and 3 GHG emissions',
                 dataPoint
               ),
@@ -400,7 +400,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 and 3 GHG emissions (location-based)',
                 dataPoint
               ),
@@ -424,7 +424,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 1 and 2 and 3 GHG emissions (market-based)',
                 dataPoint
               ),
@@ -448,7 +448,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Scope 4 GHG emissions',
                 dataPoint
               ),
@@ -472,7 +472,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'EUR'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
                 'Enterprise Value',
                 dataPoint
               ),
@@ -496,7 +496,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'EUR'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
                 'Total Revenue',
                 dataPoint
               ),
@@ -522,7 +522,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(
-                  Number(extractDatapointValue(dataPoint)),
+                  extractDatapointValue(dataPoint) as number | null | undefined,
                   'Tonnes \/ \u20ACM Enterprise Value'
                 ),
                 'Carbon footprint',
@@ -548,7 +548,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Tonnes \/ \u20ACM Revenue'
+                ),
                 'GHG intensity',
                 dataPoint
               ),
@@ -572,7 +575,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Tonnes \/ \u20ACM Revenue'
+                ),
                 'GHG intensity - scope 1',
                 dataPoint
               ),
@@ -596,7 +602,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Tonnes \/ \u20ACM Revenue'
+                ),
                 'GHG intensity - scope 2',
                 dataPoint
               ),
@@ -620,7 +629,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Tonnes \/ \u20ACM Revenue'
+                ),
                 'GHG intensity - scope 3',
                 dataPoint
               ),
@@ -644,7 +656,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Tonnes \/ \u20ACM Revenue'
+                ),
                 'GHG intensity - scope 4',
                 dataPoint
               ),
@@ -691,7 +706,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Financed scope 1 and scope 2 emissions',
                 dataPoint
               ),
@@ -715,7 +730,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Financed scope 3 emissions',
                 dataPoint
               ),
@@ -747,7 +762,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Renewable Energy Production',
                 dataPoint
               ),
@@ -771,7 +786,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Renewable Energy Consumption',
                 dataPoint
               ),
@@ -795,7 +810,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Production',
                 dataPoint
               ),
@@ -819,7 +834,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Percent'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Percent'),
                 'Relative Non-Renewable Energy Production',
                 dataPoint
               ),
@@ -843,7 +858,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption',
                 dataPoint
               ),
@@ -867,7 +882,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Percent'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Percent'),
                 'Relative Non-Renewable Energy Consumption',
                 dataPoint
               ),
@@ -904,7 +919,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Total High Impact Climate Sector Energy Consumption',
                 dataPoint
               ),
@@ -928,7 +943,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Fossil Fuels',
                 dataPoint
               ),
@@ -952,7 +967,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Crude Oil',
                 dataPoint
               ),
@@ -976,7 +991,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Natural Gas',
                 dataPoint
               ),
@@ -1000,7 +1015,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Lignite',
                 dataPoint
               ),
@@ -1024,7 +1039,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Coal',
                 dataPoint
               ),
@@ -1048,7 +1063,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Nuclear Energy',
                 dataPoint
               ),
@@ -1072,7 +1087,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'GWh'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'GWh'),
                 'Non-Renewable Energy Consumption Other',
                 dataPoint
               ),
@@ -1352,7 +1367,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Emissions To Water',
                 dataPoint
               ),
@@ -1376,7 +1391,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Cubic Meters'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Cubic Meters'),
                 'Water Withdrawal',
                 dataPoint
               ),
@@ -1397,7 +1412,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Cubic Meters'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Cubic Meters'),
                 'Water Reused',
                 dataPoint
               ),
@@ -1421,7 +1436,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Cubic Meters \/ \u20ACM Revenue'),
+                formatNumberForDatatable(
+                  extractDatapointValue(dataPoint) as number | null | undefined,
+                  'Cubic Meters \/ \u20ACM Revenue'
+                ),
                 'Water Withdrawal Intensity',
                 dataPoint
               ),
@@ -1495,7 +1513,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Hazardous and Radioactive Waste',
                 dataPoint
               ),
@@ -1516,7 +1534,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Non-Recycled Waste',
                 dataPoint
               ),
@@ -1548,7 +1566,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Emissions of Inorganic Pollutants',
                 dataPoint
               ),
@@ -1572,7 +1590,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Emissions of Air Pollutants',
                 dataPoint
               ),
@@ -1596,7 +1614,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Tonnes'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
                 'Emissions of Ozone Depletion Substances',
                 dataPoint
               ),
@@ -2065,7 +2083,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Percent'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Percent'),
                 'Unadjusted gender pay gap',
                 dataPoint
               ),
@@ -2089,7 +2107,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Female Board Members - Supervisory Board',
                 dataPoint
               ),
@@ -2113,7 +2131,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Female Board Members - Board of Directors',
                 dataPoint
               ),
@@ -2137,7 +2155,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Male Board Members - Supervisory Board',
                 dataPoint
               ),
@@ -2161,7 +2179,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Male Board Members - Board of Directors',
                 dataPoint
               ),
@@ -2185,7 +2203,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Percent'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Percent'),
                 'Board gender diversity - Supervisory Board',
                 dataPoint
               ),
@@ -2209,7 +2227,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Percent'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Percent'),
                 'Board gender diversity - Board of Directors',
                 dataPoint
               ),
@@ -2276,7 +2294,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Rate Of Accidents',
                 dataPoint
               ),
@@ -2297,7 +2315,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), 'Days'),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Days'),
                 'Workdays Lost',
                 dataPoint
               ),
@@ -2388,7 +2406,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Reported Incidents Of Discrimination',
                 dataPoint
               ),
@@ -2412,7 +2430,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Sanctioned Incidents Of Discrimination',
                 dataPoint
               ),
@@ -2433,7 +2451,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Excessive CEO pay ratio',
                 dataPoint
               ),
@@ -2601,7 +2619,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Number Of Reported Incidents Of Human Rights Violations',
                 dataPoint
               ),
@@ -2634,7 +2652,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Cases of Insufficient Action against Bribery and Corruption',
                 dataPoint
               ),
@@ -2658,7 +2676,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(Number(extractDatapointValue(dataPoint)), ''),
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
                 'Number of Reported Convictions Of Bribery and Corruption',
                 dataPoint
               ),
