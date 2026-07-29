@@ -14,6 +14,7 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.reflect.full.memberProperties
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private const val CALCULATION_SCALE = 10
@@ -142,9 +143,19 @@ internal data class EuTaxonomyActivityOperands<
                 ),
             )
         }
-        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
+        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }?.filter { !isMeaningless(it) }?.toMutableList()
     }
 }
+
+/**
+ * Checks whether [activity] carries no meaningful data beyond identification, i.e. every property except
+ * `activityName` and `naceCodes` is `null`.
+ */
+private fun isMeaningless(activity: EuTaxonomyEligibleOrAlignedActivity): Boolean =
+    EuTaxonomyEligibleOrAlignedActivity::class
+        .memberProperties
+        .filter { it.name != "activityName" && it.name != "naceCodes" }
+        .all { property -> property.get(activity) == null }
 
 /**
  * Computes the combined absolute share for aligned activities, or `null` if none report one.

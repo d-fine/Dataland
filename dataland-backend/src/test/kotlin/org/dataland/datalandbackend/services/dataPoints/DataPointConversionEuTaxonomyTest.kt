@@ -79,6 +79,7 @@ class DataPointConversionEuTaxonomyTest {
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
+        currency: String? = "EUR",
     ) = EuTaxonomyActivity(
         activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
@@ -96,12 +97,13 @@ class DataPointConversionEuTaxonomyTest {
         substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
         enablingActivity: YesNo? = null,
         transitionalActivity: YesNo? = null,
+        currency: String? = "EUR",
     ) = EuTaxonomyAlignedActivity(
         activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
-                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = "EUR"),
+                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency),
                 relativeShareInPercent = relativeShareInPercent,
             ),
         substantialContributionToClimateChangeMitigationInPercent = substantialContributionToClimateChangeMitigationInPercent,
@@ -217,8 +219,7 @@ class DataPointConversionEuTaxonomyTest {
         assertEquals(1, result.size)
         val activity = result.single()
         assertBigDecimalEquals("30", activity.relativeEligibleShareInPercent)
-        assertEquals(null, activity.share?.relativeShareInPercent)
-        assertEquals(null, activity.share?.absoluteShare?.amount)
+        assertEquals(null, activity.share)
         assertEquals(null, activity.substantialContributionToClimateChangeMitigationInPercent)
         assertEquals(null, activity.enablingActivity)
         assertEquals(null, activity.transitionalActivity)
@@ -264,6 +265,7 @@ class DataPointConversionEuTaxonomyTest {
                         alignedActivity(
                             relativeShareInPercent = BigDecimal("40"),
                             absoluteShareAmount = BigDecimal("200"),
+                            substantialContributionToClimateChangeMitigationInPercent = BigDecimal("100"),
                         ),
                     ),
             )
@@ -274,6 +276,7 @@ class DataPointConversionEuTaxonomyTest {
         assertBigDecimalEquals("60", activity.relativeEligibleShareInPercent)
         assertBigDecimalEquals("40", activity.share?.relativeShareInPercent)
         assertBigDecimalEquals("200", activity.share?.absoluteShare?.amount)
+        assertBigDecimalEquals("40", activity.substantialContributionToClimateChangeMitigationInPercent)
     }
 
     @Test
@@ -304,19 +307,7 @@ class DataPointConversionEuTaxonomyTest {
         assertBigDecimalEquals("30", activity.relativeEligibleShareInPercent)
         assertEquals(YesNo.Yes, activity.enablingActivity)
         assertEquals(YesNo.Yes, activity.transitionalActivity)
-        assertBigDecimalEquals("30", activity.substantialContributionToClimateChangeMitigationInPercent)
-    }
-
-    @Test
-    fun `check null-handling when one activity list is entirely absent`() {
-        val result =
-            mergeActivities(
-                nonAligned = null,
-                aligned = listOf(alignedActivity(relativeShareInPercent = BigDecimal("40"))),
-            )
-
-        assertNotNull(result)
-        assertEquals(1, result.size)
+        assertBigDecimalEquals("25", activity.substantialContributionToClimateChangeMitigationInPercent)
     }
 
     @Test
@@ -335,5 +326,53 @@ class DataPointConversionEuTaxonomyTest {
 
         assertNotNull(result)
         assertEquals(1, result.size)
+    }
+
+    @Test
+    fun `Check that meaningless activities are deleted`() {
+        val result =
+            mergeActivities(
+                nonAligned =
+                    listOf(
+                        nonAlignedActivity(absoluteShareAmount = BigDecimal("10"), currency = null),
+                    ),
+                aligned = listOf(),
+            )
+        assertNotNull(result)
+        assertEquals(0, result.size)
+    }
+
+    @Test
+    fun `Check that activities with different currencies are not merged and activity that is meaningless is deleted`() {
+        val result =
+            mergeActivities(
+                nonAligned =
+                    listOf(
+                        nonAlignedActivity(absoluteShareAmount = BigDecimal("10"), currency = "EUR"),
+                        nonAlignedActivity(absoluteShareAmount = BigDecimal("5"), currency = "USD"),
+                    ),
+                aligned = listOf(alignedActivity(absoluteShareAmount = BigDecimal("10"), currency = "USD")),
+            )
+        assertNotNull(result)
+        assertEquals(1, result.size)
+        val activity = result.single()
+        assertNotNull(activity.share)
+        assertNotNull(activity.share.absoluteShare)
+        assertBigDecimalEquals("10", activity.share.absoluteShare.amount)
+    }
+
+    @Test
+    fun `Check that activities with different currencies are not merged without deletion of meaningless activity`() {
+        val result =
+            mergeActivities(
+                nonAligned = listOf(nonAlignedActivity(absoluteShareAmount = BigDecimal("10"), currency = "USD")),
+                aligned =
+                    listOf(
+                        alignedActivity(absoluteShareAmount = BigDecimal("10"), currency = "EUR"),
+                        alignedActivity(absoluteShareAmount = BigDecimal("5"), currency = "USD"),
+                    ),
+            )
+        assertNotNull(result)
+        assertEquals(2, result.size)
     }
 }
