@@ -69,7 +69,7 @@ class PercentageComponent(
             valueGetterByDataPoint =
                 documentSupport.getFrameworkDisplayValueByDataPointLambda(
                     FrameworkDisplayValueByDataPointLambda(
-                        "formatPercentageForDatatable(Number(extractDatapointValue(dataPoint)))",
+                        "formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined)",
                         setOf(
                             TypeScriptImport(
                                 "formatPercentageForDatatable",
