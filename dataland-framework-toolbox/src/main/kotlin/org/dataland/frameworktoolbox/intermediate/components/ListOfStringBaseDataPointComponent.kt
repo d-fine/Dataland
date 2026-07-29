@@ -10,6 +10,7 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -64,6 +65,27 @@ class ListOfStringBaseDataPointComponent(
                     ),
                 ),
             ),
+            valueGetterByDataPoint =
+                FrameworkDisplayValueByDataPointLambda(
+                    "{\n" +
+                        "return formatListOfBaseDataPoint(\n" +
+                        "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
+                        "parseDataPoint(dataPoint) as Parameters<typeof formatListOfBaseDataPoint>[1],\n" +
+                        "\"$descriptionColumnHeader\",\n" +
+                        "\"$documentColumnHeader\",\n" +
+                        ")\n" +
+                        "}",
+                    setOf(
+                        TypeScriptImport(
+                            "formatListOfBaseDataPoint",
+                            "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "parseDataPoint",
+                            "@/components/resources/dataTable/conversion/DataPoints",
+                        ),
+                    ),
+                ),
         )
     }
 

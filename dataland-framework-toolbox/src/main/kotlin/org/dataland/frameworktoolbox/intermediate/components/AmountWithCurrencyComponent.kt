@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -38,6 +39,30 @@ class AmountWithCurrencyComponent(
                     ),
                 ),
             ),
+            valueGetterByDataPoint =
+                FrameworkDisplayValueByDataPointLambda(
+                    "formatStringForDatatable(\n" +
+                        "formatAmountWithCurrency(parseDataPoint(dataPoint) as AmountWithCurrency)\n" +
+                        ")",
+                    setOf(
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "formatAmountWithCurrency",
+                            "@/utils/Formatter",
+                        ),
+                        TypeScriptImport(
+                            "parseDataPoint",
+                            "@/components/resources/dataTable/conversion/DataPoints",
+                        ),
+                        TypeScriptImport(
+                            "AmountWithCurrency",
+                            "@clients/backend",
+                        ),
+                    ),
+                ),
         )
     }
 
