@@ -101,8 +101,8 @@ enum class DataPointConversion(
             dataPoints: Collection<ExtendedDataPointInterface<*>>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): String =
-            "This activities list was mapped from the EU Taxonomy (2020/852) framework by merging the activities in the activity lists " +
-                getNumberedSourceReferences(inputs).joinToString(", ") +
+            "This list of activities was mapped from the EU Taxonomy (2020/852) framework by merging the activities " +
+                "in the activity lists " + getNumberedSourceReferences(inputs).joinToString(", ") + "\n\n***\n\n" +
                 getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 
         override fun convert(
