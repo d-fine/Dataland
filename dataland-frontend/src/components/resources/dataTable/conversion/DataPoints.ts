@@ -139,7 +139,7 @@ export function extractDatapointValue(dataPoint: string): unknown {
  * @return {unknown} The parsed and processed data point.
  */
 export function parseDataPoint(dataPoint: string): unknown {
-  return wrapDataPointJson(dataPoint);
+  return wrapDataPointJson(dataPoint) ?? null;
 }
 
 /**
