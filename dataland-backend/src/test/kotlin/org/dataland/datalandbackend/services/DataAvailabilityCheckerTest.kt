@@ -8,10 +8,14 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.utils.DataAvailabilityIgnoredFieldsUtils
 import org.dataland.datalandbackend.utils.DataBaseCreationUtils
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.dataland.specificationservice.openApiClient.model.SimpleFrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
@@ -20,6 +24,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -55,6 +60,12 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var specificationClient: SpecificationControllerApi
 
+    @Autowired
+    private lateinit var specificationService: SpecificationService
+
+    @Autowired
+    private lateinit var dataCompositionService: DataCompositionService
+
     private lateinit var dbCreationUtils: DataBaseCreationUtils
 
     private val datasetDimension =
@@ -62,18 +73,45 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     private val dataPointDimension =
         BasicDataDimensions(companyId = companyId, dataType = dataPointType, reportingPeriod = reportingPeriod)
 
+    private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+
+    /**
+     * Builds a minimal, valid [DataPointTypeSpecification] for the given data point type so that mocked calls to
+     * the specification client do not return null (which would cause an NPE further down the line, since specs are
+     * cached in a [java.util.concurrent.ConcurrentHashMap] that does not allow null values).
+     */
+    private fun makeDataPointTypeSpecification(dataPointType: String) =
+        DataPointTypeSpecification(
+            dataPointType = IdWithRef(id = dataPointType, ref = ""),
+            name = dataPointType,
+            businessDefinition = "",
+            dataPointBaseType = IdWithRef(id = "numeric", ref = ""),
+            usedBy = listOf(IdWithRef(id = framework, ref = "")),
+            calculationRules = emptyList(),
+        )
+
     @BeforeEach
     fun setUp() {
         whenever(specificationClient.listFrameworkSpecifications()).thenReturn(
             listOf(SimpleFrameworkSpecification(IdWithRef(framework, "dummy"), "Test Framework")),
         )
-        doReturn(null).whenever(specificationClient).getDataPointTypeSpecification(dataPointType)
+        whenever(specificationClient.getFrameworkSpecification(framework)).thenReturn(frameworkSpecification)
+
+        doThrow(ClientException()).whenever(specificationClient).getDataPointTypeSpecification(framework)
         dbCreationUtils =
             DataBaseCreationUtils(
                 storedCompanyRepository = storedCompanyRepository,
                 dataMetaInformationRepository = dataMetaInformationRepository,
                 dataPointMetaInformationRepository = dataPointMetaInformationRepository,
             )
+
+        specificationService.initiateSpecifications(null)
+
+        dataCompositionService.getRelevantDataPointTypes(framework).forEach { relevantDataPointType ->
+            whenever(specificationClient.getDataPointTypeSpecification(relevantDataPointType))
+                .thenReturn(makeDataPointTypeSpecification(relevantDataPointType))
+        }
     }
 
     @Test
@@ -149,6 +187,28 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension))
         assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
         assert(results.first() == datasetDimension) { "The result should be the provided example." }
+    }
+
+    @Test
+    fun `filterViewableDimensions with list - multiple dimensions, company has no data`() {
+        val dimensions =
+            listOf(
+                datasetDimension,
+                datasetDimension,
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = "lksg",
+                    reportingPeriod = reportingPeriod,
+                ),
+                BasicDataDimensions(
+                    companyId = companyId,
+                    dataType = "sfdr",
+                    reportingPeriod = "2025",
+                ),
+            )
+
+        val results = dataAvailabilityChecker.filterViewableDimensions(dimensions)
+        assert(results.size == 0) { "Incorrect number of dimensions found." }
     }
 
     @Test

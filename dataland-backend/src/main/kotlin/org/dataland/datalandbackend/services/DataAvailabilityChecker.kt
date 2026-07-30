@@ -179,27 +179,46 @@ class DataAvailabilityChecker
          * @param dimensions A list of `BasicDataDimensions` representing the input dataset dimensions.
          * @return A list of `BasicDataDimensions` representing the viewable dimensions for assembled frameworks.
          */
-        private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> =
-            dataCompositionService
-                .filterOutInvalidDatasetDimensions(dimensions)
-                .filter { specificationService.isAssembledFramework(it.framework) }
+        private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): Set<BasicDataDimensions> {
+            // filter out all non-existing, non-assembled frameworks and duplicate dimensions
+            val assembledDimensions =
+                dataCompositionService
+                    .filterOutInvalidDatasetDimensions(dimensions)
+                    .filter { specificationService.isAssembledFramework(it.framework) }
+                    .toSet()
+
+            return assembledDimensions
                 .flatMap { dimension ->
-                    dataCompositionService
-                        .getRelevantDataPointTypes(dimension.framework)
-                        .map { dataPointType ->
-                            dimension.framework to
+                    val relevantDataPointTypes =
+                        dataCompositionService
+                            .getRelevantDataPointTypes(dimension.framework)
+                    val relevantDataPointDimensions =
+                        relevantDataPointTypes
+                            .map { dataPointType ->
                                 BasicDataPointDimensions(
-                                    dimension.companyId,
-                                    dataPointType,
-                                    dimension.reportingPeriod,
+                                    companyId = dimension.companyId,
+                                    dataPointType = dataPointType,
+                                    reportingPeriod = dimension.reportingPeriod,
                                 )
-                        }
-                }.groupBy(
-                    keySelector = { it.first },
-                    valueTransform = { it.second },
-                ).flatMap { (framework, dataPointDimensions) ->
-                    getViewableDatasetDimensions(dataPointDimensions, framework)
-                }
+                            }
+                    val activeDataPointDimensions =
+                        getMetaDataOfActiveDataPoints(
+                            relevantDataPointDimensions,
+                        ).map { it.toBasicDataPointDimensions() }.toSet()
+
+                    val calculatableDataPointDimensions =
+                        dataPointCalculator.getCalculatableDataPointDimensions(
+                            dataPointTypes = relevantDataPointTypes,
+                            dataDimensionQuery =
+                                DataDimensionQuery(
+                                    companyIds = listOf(dimension.companyId),
+                                    reportingPeriods = listOf(dimension.reportingPeriod),
+                                ),
+                        )
+
+                    getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, dimension.framework)
+                }.toSet()
+        }
 
         /**
          * Retrieves a set of all viewable dimensions for the assembled frameworks.
@@ -251,7 +270,7 @@ class DataAvailabilityChecker
          * dataset dimensions is returned if and only if the group contains more than the ignored fields.
          *
          * This function is only meaningful, if the data point types of the passed data point dimensions are part of the
-         * given framework.
+         * given framework and corresponding active data exists.
          *
          * @param dataPointDimensions the available data point dimensions that determine if a dataset dimension is available
          * @param framework the framework used to construct the dataset dimensions
