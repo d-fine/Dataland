@@ -25,8 +25,7 @@ export const ABOUT_PAGE_CONTENT = {
     supportLine: {
       beforeFoundation: 'Dataland is part of the ',
       betweenFoundationAndDfine: ' foundation, with strategic support from ',
-      betweenDfineAndPwc: ' and ',
-      afterPwc: '.',
+      afterDfine: '.',
     },
   },
   leadership: {
@@ -95,7 +94,7 @@ export const COMPANY_COPY = {
   title: 'Company',
   text1:
     'Dataland is a non-profit initiative building shared infrastructure for high-quality sustainability data. The platform provides structured, source-based ESG data to financial institutions across Europe.',
-  text2: 'Dataland is part of the Werte-Stiftung foundation, with strategic support from d-fine and PwC.',
+  text2: 'Dataland is part of the Werte-Stiftung foundation, with strategic support from d-fine.',
 };
 
 export const NEWS_ITEMS: NewsItem[] = [

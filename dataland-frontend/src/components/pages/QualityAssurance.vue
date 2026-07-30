@@ -247,6 +247,8 @@
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
+                  :loading="loadingDataId === slotProps.data.dataId"
+                  :disabled="loadingDataId !== null"
                 />
                 <span v-else>
                   {{ slotProps.data.reviewStatus }}
@@ -268,8 +270,9 @@
     :header="confirmationModal.header"
     :message="confirmationModal.message"
     :error-message="confirmationModal.errorMessage"
-    :is-loading="isCreatingReview"
     @confirm="confirmationModal.onConfirm"
+    :show-cancel-button="false"
+    confirm-label="OK"
   />
 </template>
 
@@ -336,7 +339,7 @@ const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
 const showNotEnoughCharactersWarning = ref(false);
 const selectedDataId = ref<string>('');
-const isCreatingReview = ref(false);
+const loadingDataId = ref<string | null>(null);
 
 const debounceInMs = 300;
 let timerId = 0;
@@ -405,7 +408,6 @@ function handleRowAction(qaDataObject: QaReviewRow): void {
 
 /**
  * Handles the click on the review button in the QA table.
- * If no review exists yet, a confirmation modal is shown and the review is created before navigation.
  * If a review already exists, the user is directly navigated to the corresponding dataset review page.
  */
 function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
@@ -413,14 +415,8 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
     void goToDatasetReviewPage(qaDataObject.datasetReviewId);
     return;
   }
-
   selectedDataId.value = qaDataObject.dataId;
-  openConfirmationModal(
-    'Start Review',
-    'Are you sure you want to start a review for this dataset? \n\n' +
-      'Once started, the review cannot be deleted and will be visible for other reviewers on Dataland.',
-    () => void confirmStartReview()
-  );
+  void confirmStartReview();
 }
 
 /**
@@ -440,18 +436,25 @@ function goToDatasetReviewPage(datasetReviewId: string): ReturnType<typeof route
 /**
  * Confirms the start of a dataset review in the confirmation modal.
  * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
+ * Opens a confirmation modal with an error message if the dataset review creation fails.
  */
 async function confirmStartReview(): Promise<void> {
-  isCreatingReview.value = true;
+  loadingDataId.value = selectedDataId.value;
 
   try {
     const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetJudgement(
       selectedDataId.value
     );
-
     confirmationModal.value.visible = false;
     await goToDatasetReviewPage(response.data.dataSetJudgementId);
   } catch (error) {
+    openConfirmationModal(
+      'Failed to start review',
+      'An error occurred while trying to make the postDatasetJudgement call.',
+      () => {
+        confirmationModal.value.visible = false;
+      }
+    );
     if (error instanceof AxiosError) {
       confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
     } else {
@@ -459,7 +462,7 @@ async function confirmStartReview(): Promise<void> {
     }
     console.error(confirmationModal.value.errorMessage);
   } finally {
-    isCreatingReview.value = false;
+    loadingDataId.value = null;
   }
 }
 
