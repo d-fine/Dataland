@@ -133,29 +133,31 @@ internal data class EuTaxonomyActivityOperands<
                 } else {
                     (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
                 }
-            eligibleOrAlignedActivities.add(
+            val activity =
                 createEuTaxonomyEligibleOrAlignedActivity(
                     identifier,
                     alignedAbsoluteShare,
                     alignedRelativeShare,
                     relativeEligibleShareInPercent,
                     alignedActivities,
-                ),
-            )
+                )
+            if (isRelevant(activity)) {
+                eligibleOrAlignedActivities.add(activity)
+            }
         }
-        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }?.filter { !isMeaningless(it) }?.toMutableList()
+        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
     }
 }
 
 /**
- * Checks whether [activity] carries no meaningful data beyond identification, i.e. every property except
- * `activityName` and `naceCodes` is `null`.
+ * Checks whether [activity] carries no meaningful data beyond identification, i.e. it returns true if there is a property except
+ * `activityName` and `naceCodes` that is not `null`.
  */
-private fun isMeaningless(activity: EuTaxonomyEligibleOrAlignedActivity): Boolean =
+private fun isRelevant(activity: EuTaxonomyEligibleOrAlignedActivity): Boolean =
     EuTaxonomyEligibleOrAlignedActivity::class
         .memberProperties
         .filter { it.name != "activityName" && it.name != "naceCodes" }
-        .all { property -> property.get(activity) == null }
+        .any { property -> property.get(activity) != null }
 
 /**
  * Computes the combined absolute share for aligned activities, or `null` if none report one.
