@@ -39,6 +39,7 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
     properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
 )
 @DefaultMocks
+@Suppress("kotlin:S104")
 class DataAvailabilityCheckerTest : BaseIntegrationTest() {
     companion object {
         private const val EXACTLY_ONE_RESULT_MESSAGE = "There should be exactly one result."
@@ -208,7 +209,7 @@ class DataAvailabilityCheckerTest : BaseIntegrationTest() {
             )
 
         val results = dataAvailabilityChecker.filterViewableDimensions(dimensions)
-        assert(results.size == 0) { "Incorrect number of dimensions found." }
+        assert(results.isEmpty()) { "Incorrect number of dimensions found." }
     }
 
     @Test
