@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.enums.enumEntries
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BulkDataRequestsTest {
@@ -147,7 +148,7 @@ class BulkDataRequestsTest {
     @Test
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty`() {
         val validIdentifiers = setOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
-        val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
+        val dataTypes = enumEntries<BulkDataRequest.DataTypes>().toSet()
         val reportingPeriods = setOf("2023")
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptySet(), reportingPeriods)
@@ -156,5 +157,32 @@ class BulkDataRequestsTest {
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
+    }
+
+    @Test
+    fun `post a bulk data request to a company with no active datasets  and check that a new data request exists`() {
+        val leiForCompany = generateRandomLei()
+        val companyId = getIdForUploadedCompanyWithIdentifiers(lei = leiForCompany)
+        val framework = BulkDataRequest.DataTypes.lksg
+        val reportingPeriod = "2023"
+        val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
+        val response =
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    setOf(companyId),
+                    setOf(framework),
+                    setOf(reportingPeriod),
+                    notifyMeImmediately = false,
+                ),
+            )
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
+        checkThatTheNumberOfAlreadyExistingRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
+        val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, 1)
+        checkThatDataRequestExistsExactlyOnceInRecentlyStored(
+            newlyStoredRequests, framework.value, reportingPeriod, companyId,
+        )
     }
 }
