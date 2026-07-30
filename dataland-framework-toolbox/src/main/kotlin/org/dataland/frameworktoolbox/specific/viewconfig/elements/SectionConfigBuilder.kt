@@ -48,6 +48,7 @@ data class SectionConfigBuilder(
     /**
      * Adds a new cell to this section
      */
+    @Suppress("LongParameterList")
     fun addCell(
         label: String,
         explanation: String?,
