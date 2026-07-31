@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
 
 class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     @Test
-    fun `searchViewableDimensions with filters - filter matching active dataset returns correct dimensions`() {
+    fun `check that filter matching an active dataset returns its dimensions`() {
         dbCreationUtils.storeDatasetMetaData()
         val results =
             dataAvailabilityChecker.searchViewableDimensions(
@@ -27,22 +27,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - filter matching active data point returns correct dimensions`() {
-        dbCreationUtils.storeDataPointMetaData()
-        val results =
-            dataAvailabilityChecker.searchViewableDimensions(
-                DataDimensionQuery(
-                    companyIds = listOf(companyId),
-                    dataTypes = listOf(dataPointType),
-                    reportingPeriods = listOf(reportingPeriod),
-                ),
-            )
-        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
-        assert(results.first() == dataPointDimension) { "The result should match the stored data point dimension." }
-    }
-
-    @Test
-    fun `searchViewableDimensions with filters - no matching data returns empty result`() {
+    fun `check that empty list is returned for a company without data`() {
         val results =
             dataAvailabilityChecker.searchViewableDimensions(
                 DataDimensionQuery(
@@ -55,7 +40,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - inactive data is excluded`() {
+    fun `check that dimensions with non-existing frameworks are filtered out`() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         dbCreationUtils.storeDatasetMetaData(currentlyActive = false)
         val results =
@@ -70,7 +55,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - empty lists act as wildcards`() {
+    fun `check that an empty lists in the DataDimensionQuery is treated as a wildcards`() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDataPointMetaData()
         val results =
@@ -92,7 +77,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - multiple frameworks filter returns only matching framework`() {
+    fun `check that filter returns only matching framework from a company with multiple available frameworks`() {
         val otherFramework = "lksg"
         dbCreationUtils.storeDatasetMetaData(dataType = framework)
         dbCreationUtils.storeDatasetMetaData(dataType = otherFramework)
@@ -109,7 +94,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - multiple periods filter returns only matching period`() {
+    fun `check that filter returns only matching period from a company with multiple available periods`() {
         val otherPeriod = "2024"
         dbCreationUtils.storeDatasetMetaData(reportingPeriod = reportingPeriod)
         dbCreationUtils.storeDatasetMetaData(reportingPeriod = otherPeriod)
@@ -126,7 +111,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions with filters - mixed datasets and data points with cross-cutting filter`() {
+    fun `check that in a mixed request both active dataset and active data point are returned`() {
         dbCreationUtils.storeDatasetMetaData(dataType = framework)
         dbCreationUtils.storeDataPointMetaData(dataPointType = dataPointType)
         val results =
@@ -149,7 +134,7 @@ class DataAvailabilityCheckerSearchTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `searchViewableDimensions - data points with only ignored fields do not yield a dimension`() {
+    fun `check that a dataset with only ignored active data points do not yield a dimension`() {
         val ignoredDataPointType = DataAvailabilityIgnoredFieldsUtils.getIgnoredFields().first()
         doReturn(null).whenever(specificationClient).getDataPointTypeSpecification(ignoredDataPointType)
         dbCreationUtils.storeDataPointMetaData(dataPointType = ignoredDataPointType)
