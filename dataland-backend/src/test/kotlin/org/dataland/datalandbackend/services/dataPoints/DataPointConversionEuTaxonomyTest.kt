@@ -80,17 +80,18 @@ class DataPointConversionEuTaxonomyTest {
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
-        currency: String? = "EUR",
+        currency: String? = "EUR"
     ) = EuTaxonomyActivity(
         activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
         share =
             RelativeAndAbsoluteFinancialShare(
-                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = "EUR"),
+                absoluteShare = AmountWithCurrency(amount = absoluteShareAmount, currency = currency),
                 relativeShareInPercent = relativeShareInPercent,
             ),
     )
 
+    @Suppress("LongParameterList")
     private fun alignedActivity(
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
