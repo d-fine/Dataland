@@ -13,14 +13,14 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
 
 class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     @Test
-    fun `filterViewableDimensions with list - empty throws an InvalidInputApiException`() {
+    fun `check that an empty throws an InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
             dataAvailabilityChecker.filterViewableDimensions(emptyList())
         }
     }
 
     @Test
-    fun `filterViewableDimensions with list - active dataset is returned`() {
+    fun `check that only the dataset stored as currentlyActive is returned`() {
         dbCreationUtils.storeDatasetMetaData(currentlyActive = true)
         dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension))
@@ -29,7 +29,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `filterViewableDimensions with list - active data point is returned`() {
+    fun `check that only the data point stored as currentlyActive is returned`() {
         dbCreationUtils.storeDataPointMetaData(currentlyActive = true)
         dbCreationUtils.storeDataPointMetaData(currentlyActive = null)
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(dataPointDimension))
@@ -38,7 +38,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `filterViewableDimensions with list - active dataset and active data point are both returned`() {
+    fun `check that in a mixed request both active dataset and active data point are returned`() {
         dbCreationUtils.storeDatasetMetaData()
         dbCreationUtils.storeDataPointMetaData()
         val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension, dataPointDimension))
@@ -59,7 +59,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
         "$companyId, unknowntype, $reportingPeriod",
         "$companyId, $framework, 12345",
     )
-    fun `filterViewableDimensions with list - invalid dimensions are filtered out`(
+    fun `check that dimensions with non-existing frameworks are filtered out`(
         testCompanyId: String,
         dataType: String,
         testReportingPeriod: String,
@@ -79,16 +79,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `check that the availability check returns active datasets as expected`() {
-        dbCreationUtils.storeDatasetMetaData()
-        dbCreationUtils.storeDatasetMetaData(currentlyActive = null)
-        val results = dataAvailabilityChecker.filterViewableDimensions(listOf(datasetDimension))
-        assert(results.size == 1) { EXACTLY_ONE_RESULT_MESSAGE }
-        assert(results.first() == datasetDimension) { "The result should be the provided example." }
-    }
-
-    @Test
-    fun `filterViewableDimensions with list - multiple dimensions, company has no data`() {
+    fun `check that empty list is returned for a company without data`() {
         val dimensions =
             listOf(
                 datasetDimension,
@@ -110,7 +101,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `filterViewableDimensions with list - multiple dimensions mix of active inactive and non-existent`() {
+    fun `check that for a mix of active, inactive and non-existent datasets the right Dimensions are returned - part 1`() {
         val otherYear = "2024"
         val otherFramework = "lksg"
         val otherId = UUID.randomUUID().toString()
@@ -148,7 +139,7 @@ class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     }
 
     @Test
-    fun `check that multiple data point dimensions are retrieved correctly`() {
+    fun `check that for a mix of active, inactive and non-existent datasets the right Dimensions are returned - part 2`() {
         val anotherYear = "2024"
         val anotherDataPointType = "anotherDataPoint"
         val anotherId = UUID.randomUUID().toString()

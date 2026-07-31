@@ -170,17 +170,17 @@ class DataAvailabilityChecker
         }
 
         /**
-         * Retrieves all viewable dimensions for assembled frameworks based on the provided input dimensions.
+         * Retrieves all viewable dataset dimensions for assembled frameworks based on the provided input dimensions.
          *
-         * Filters the given list of dimensions to exclude invalid dataset dimensions, then checks for
-         * frameworks that are assembled. For each matching dimension, relevant data point types are
-         * extracted and converted into viewable dataset dimensions.
+         * Filters the given dimensions to exclude invalid dataset dimensions, then keeps only those belonging to
+         * assembled frameworks. For each remaining dimension, the relevant data point types of its framework are
+         * determined, and both the active (persisted) and calculatable data point dimensions for those types are
+         * collected. The combined set of data point dimensions is then converted into viewable dataset dimensions.
          *
          * @param dimensions A list of `BasicDataDimensions` representing the input dataset dimensions.
-         * @return A list of `BasicDataDimensions` representing the viewable dimensions for assembled frameworks.
+         * @return A set of `BasicDataDimensions` representing the viewable dimensions for assembled frameworks.
          */
         private fun getAllViewableDimensionsForAssembledFrameworks(dimensions: List<BasicDataDimensions>): Set<BasicDataDimensions> {
-            // filter out all non-existing, non-assembled frameworks and duplicate dimensions
             val assembledDimensions =
                 dataCompositionService
                     .filterOutInvalidDatasetDimensions(dimensions)
