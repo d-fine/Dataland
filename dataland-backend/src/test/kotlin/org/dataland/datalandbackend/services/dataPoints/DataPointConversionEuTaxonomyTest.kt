@@ -21,6 +21,7 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
+import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 
@@ -329,7 +330,7 @@ class DataPointConversionEuTaxonomyTest {
     }
 
     @Test
-    fun `Check that meaningless activities are deleted`() {
+    fun `Check that non-relevant activities are not added`() {
         val result =
             mergeActivities(
                 nonAligned =
@@ -338,12 +339,11 @@ class DataPointConversionEuTaxonomyTest {
                     ),
                 aligned = listOf(),
             )
-        assertNotNull(result)
-        assertEquals(0, result.size)
+        assertNull(result)
     }
 
     @Test
-    fun `Check that activities with different currencies are not merged and activity that is meaningless is deleted`() {
+    fun `Check that activities with different currencies are not merged and activity that is non-relevant is not added`() {
         val result =
             mergeActivities(
                 nonAligned =
