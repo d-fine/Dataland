@@ -331,7 +331,7 @@ class DataPointConversionEuTaxonomyTest {
     }
 
     @Test
-    fun `Check that non-relevant activities are not added`() {
+    fun `check that non-relevant activities are not added`() {
         val result =
             mergeActivities(
                 nonAligned =
@@ -344,7 +344,7 @@ class DataPointConversionEuTaxonomyTest {
     }
 
     @Test
-    fun `Check that activities with different currencies are not merged and activity that is non-relevant is not added`() {
+    fun `check that activities with different currencies are not merged and that the non-relevant activity is not added`() {
         val result =
             mergeActivities(
                 nonAligned =
@@ -363,7 +363,7 @@ class DataPointConversionEuTaxonomyTest {
     }
 
     @Test
-    fun `Check that activities with different currencies are not merged without deletion of meaningless activity`() {
+    fun `check that activities with different currencies are not merged and that a relevant activity is not deleted`() {
         val result =
             mergeActivities(
                 nonAligned = listOf(nonAlignedActivity(absoluteShareAmount = BigDecimal("10"), currency = "USD")),

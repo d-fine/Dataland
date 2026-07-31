@@ -277,7 +277,7 @@ private fun createEuTaxonomyEligibleOrAlignedActivity(
  *   contribution is `0`; otherwise [alignedRelativeShare]
  * @throws IllegalArgumentException if the highest contribution is negative
  */
-@Suppress("ktlint:standard:max-line-length", "MaxLineLength","kotlin:S103")
+@Suppress("ktlint:standard:max-line-length", "MaxLineLength", "kotlin:S103")
 private fun determineSubstantialContributions(
     substantialContributions: List<BigDecimal?>?,
     alignedRelativeShare: BigDecimal?,
