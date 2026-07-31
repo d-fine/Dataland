@@ -80,7 +80,22 @@
           option-value="dataPointTypeId"
           :filter="true"
           placeholder="Select next data point"
-          :pt="{ root: { style: { flex: '1' } } }"
+          :pt="{
+            root: {
+              style: {
+                flex: '1 1 0',
+                minWidth: '0',
+                maxWidth: '100%',
+              },
+            },
+            label: {
+              style: {
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+            },
+          }"
           data-test="next-datapoint-select"
         >
           <template #option="slotProps">

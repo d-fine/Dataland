@@ -61,26 +61,35 @@
               <th scope="row" class="headers-bg">{{ row.label }}</th>
               <td>
                 <div class="flex align-items-center gap-1" style="min-width: 0">
-                  <span class="flex-1 white-space-nowrap overflow-hidden text-overflow-ellipsis" style="min-width: 0">
+                  <span
+                    class="flex-1 overflow-x-hidden overflow-y-auto break-words"
+                    style="min-width: 0; white-space: normal; max-height: 5lh"
+                  >
                     {{ row.value ?? '—' }}
                   </span>
-                  <PrimeButton
-                    v-if="!row.noOverflow && isOverflowing(String(row.value ?? ''))"
-                    :data-test="`${row.label.toLowerCase()}-overflow-icon`"
-                    label="+"
-                    variant="text"
-                    rounded
-                    size="small"
-                    class="judge-modal__overflow-btn flex-shrink-0"
-                    @mouseenter="(e) => emit('showPopover', e, String(row.value ?? ''))"
-                    @mouseleave="emit('hidePopover')"
-                    :aria-label="`Show full ${row.label.toLowerCase()}`"
-                  />
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div
+      data-test="qa-comment-box"
+      class="p-3 mb-2 border-round border-2 bg-gray-100 border-gray-300 mt-2"
+      v-if="currentQaReportComment"
+    >
+      <span class="font-bold" scope="row">Qa Comment:</span>
+      <div>
+        <div class="flex align-items-center gap-1" style="min-width: 0">
+          <span
+            class="flex-1 overflow-x-hidden overflow-y-auto break-words"
+            style="min-width: 0; white-space: normal; max-height: 5lh"
+          >
+            {{ currentQaReportComment ?? '—' }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -101,8 +110,6 @@ import type { ParsedSingleDataPoint } from '@/types/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { computed } from 'vue';
 
-const OVERFLOW_THRESHOLD = 40;
-
 const props = defineProps<{
   title: string;
   data: ParsedSingleDataPoint | null;
@@ -121,14 +128,13 @@ const props = defineProps<{
   isAccepted?: boolean;
   indexOfAcceptedQaReport?: number;
   sectionType: 'original' | 'qa';
+  currentQaReportComment?: string | null;
 }>();
 
 const emit = defineEmits<{
   accept: [];
   prev: [];
   next: [];
-  showPopover: [event: MouseEvent, text: string];
-  hidePopover: [];
 }>();
 
 const tableRows = computed(() => [
@@ -185,15 +191,6 @@ const errorMessage = computed(() => {
     ? `Failed to load data point: ${backendMessage}`
     : 'Failed to load data point. Please try again later!';
 });
-
-/**
- * Checks if the given text exceeds the defined overflow threshold.
- * @param text The text to check for overflow.
- * @returns True if the text length exceeds the overflow threshold, false otherwise.
- */
-function isOverflowing(text: string): boolean {
-  return text.length > OVERFLOW_THRESHOLD;
-}
 </script>
 
 <style scoped lang="scss">
