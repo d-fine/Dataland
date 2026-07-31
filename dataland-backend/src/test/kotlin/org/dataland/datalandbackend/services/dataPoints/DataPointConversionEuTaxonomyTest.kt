@@ -80,7 +80,7 @@ class DataPointConversionEuTaxonomyTest {
         naceCodes: List<String>? = listOf(naceCodeFixture),
         relativeShareInPercent: BigDecimal? = null,
         absoluteShareAmount: BigDecimal? = null,
-        currency: String? = "EUR"
+        currency: String? = "EUR",
     ) = EuTaxonomyActivity(
         activityName = Activity.AcquisitionAndOwnershipOfBuildings,
         naceCodes = naceCodes,
