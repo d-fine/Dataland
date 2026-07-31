@@ -163,7 +163,7 @@ class BulkDataRequestsTest {
     fun `post a bulk data request to a company with no active datasets  and check that a new data request exists`() {
         val leiForCompany = generateRandomLei()
         val companyId = getIdForUploadedCompanyWithIdentifiers(lei = leiForCompany)
-        val framework = BulkDataRequest.DataTypes.lksg
+        val framework = BulkDataRequest.DataTypes.sfdr
         val reportingPeriod = "2023"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response =
