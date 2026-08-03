@@ -40,11 +40,13 @@ class FrameworkViewConfigBuilder(
                 "viewConfig" to rootSectionConfigBuilder.children,
                 "frameworkDataType" to frameworkDataType,
                 "viewConfigConstName" to getNameFromLabel(framework.identifier),
-                "imports" to TypeScriptImport.mergeImports(
-                    rootSectionConfigBuilder.imports + TypeScriptImport(
-                        "type $frameworkDataType", "@clients/backend"
-                    )
-                ),
+                "imports" to
+                    TypeScriptImport.mergeImports(
+                        rootSectionConfigBuilder.imports +
+                            TypeScriptImport(
+                                "type $frameworkDataType", "@clients/backend",
+                            ),
+                    ),
             )
 
         val freemarkerTemplate =
@@ -85,7 +87,7 @@ class FrameworkViewConfigBuilder(
             listOf(
                 Pair(
                     "/specific/viewconfig/BasePublicFrameworkDefinition.ts.ftl",
-                    baseDirectoryPath / "BaseFrameworkDefinition.ts"
+                    baseDirectoryPath / "BaseFrameworkDefinition.ts",
                 ),
                 Pair(
                     "/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
@@ -136,11 +138,11 @@ class FrameworkViewConfigBuilder(
                 listOf("'Reported Child Labour Incidents'", "'Risk of Child Labour Incidents'"),
                 listOf(
                     "'Reported Forced Or Compulsory Labour Incidents'",
-                    "'Risk of Forced Or Compulsory Labour Incidents'"
+                    "'Risk of Forced Or Compulsory Labour Incidents'",
                 ),
                 listOf(
                     "'Reported Convictions Of Bribery and Corruption'",
-                    "'Number of Reported Convictions Of Bribery and Corruption'"
+                    "'Number of Reported Convictions Of Bribery and Corruption'",
                 ),
             )
 
