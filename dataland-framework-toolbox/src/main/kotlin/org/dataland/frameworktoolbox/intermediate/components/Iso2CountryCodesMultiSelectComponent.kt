@@ -48,57 +48,76 @@ open class Iso2CountryCodesMultiSelectComponent(
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+
+        val fieldAccessor = getTypescriptFieldAccessor()
+
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "{\n" +
-                        mappings +
-                        generateReturnStatement(getTypescriptFieldAccessor()) +
-                        "}",
-                    setOf(
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                        TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                        TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
+                    createDisplayValueCode(
+                        generateReturnStatement(fieldAccessor),
                     ),
+                    displayValueImports(),
                 ),
-                label, getTypescriptFieldAccessor(),
+                label,
+                fieldAccessor,
             ),
             valueGetterByDataPoint =
                 documentSupport.getFrameworkDisplayValueByDataPointLambda(
                     FrameworkDisplayValueByDataPointLambda(
-                        "{\n" +
-                            mappings +
-                            generateReturnStatement("(extractDatapointValue(dataPoint) as string[] | null | undefined)") +
-                            "}",
-                        setOf(
-                            TypeScriptImport(
-                                "formatListOfStringsForDatatable",
-                                "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "getOriginalNameFromTechnicalName",
-                                "@/components/resources/dataTable/conversion/Utils",
-                            ),
-                            TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                            TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
+                        createDisplayValueCode(
+                            generateReturnStatement(
+                                "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
                             ),
                         ),
+                        displayValueByDataPointImports(),
                     ),
-                    label, getTypescriptFieldAccessor(),
+                    label,
+                    fieldAccessor,
                 ),
         )
     }
+
+    private fun createDisplayValueCode(returnStatement: String): String =
+        "{\n" +
+            mappings +
+            returnStatement +
+            "}"
+
+    private fun displayValueImports(): Set<TypeScriptImport> =
+        setOf(
+            TypeScriptImport(
+                "formatListOfStringsForDatatable",
+                "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+            ),
+            TypeScriptImport(
+                "getOriginalNameFromTechnicalName",
+                "@/components/resources/dataTable/conversion/Utils",
+            ),
+            TypeScriptImport(
+                "DropdownDatasetIdentifier",
+                filePathOfPremadeDropdownDatasets,
+            ),
+            TypeScriptImport(
+                "getDatasetAsMap",
+                filePathOfPremadeDropdownDatasets,
+            ),
+        )
+
+    private fun displayValueByDataPointImports(): Set<TypeScriptImport> =
+        displayValueImports() +
+            TypeScriptImport(
+                "extractDatapointValue",
+                "@/components/resources/dataTable/conversion/DataPoints",
+            )
+
+    private fun generateReturnStatement(valueAccessor: String): String =
+        "return formatListOfStringsForDatatable(" +
+            "$valueAccessor?.map(it => \n" +
+            "   getOriginalNameFromTechnicalName(it, mappings)), " +
+            "'${escapeEcmaScript(label)}'" +
+            ")"
 
     override fun getUploadComponentName(): String = "MultiSelectFormField"
 
@@ -137,9 +156,9 @@ open class Iso2CountryCodesMultiSelectComponent(
         )
     }
 
-    private fun generateReturnStatement(valueAccessor: String): String =
+    private fun generateReturnStatement(): String =
         "return formatListOfStringsForDatatable(" +
-            "$valueAccessor?.map(it => \n" +
+            "${getTypescriptFieldAccessor()}?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"

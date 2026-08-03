@@ -72,59 +72,64 @@ open class SingleSelectComponent(
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         val fieldAccessor = getTypescriptFieldAccessor()
-        val dataPointValueAccessor =
-            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
+        val valueAccessor =
+            if (documentSupport == ExtendedDocumentSupport) {
+                "$fieldAccessor?.value"
+            } else {
+                fieldAccessor
+            }
+
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "((): AvailableMLDTDisplayObjectTypes =>{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement(dataPointValueAccessor) +
-                        "})()",
-                    setOf(
-                        TypeScriptImport(
-                            "formatStringForDatatable",
-                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                    ),
+                    createDisplayValueCode(generateReturnStatement(valueAccessor)),
+                    displayValueImports,
                 ),
-                label, getTypescriptFieldAccessor(),
+                label,
+                fieldAccessor,
             ),
             valueGetterByDataPoint =
                 documentSupport.getFrameworkDisplayValueByDataPointLambda(
                     FrameworkDisplayValueByDataPointLambda(
-                        "((): AvailableMLDTDisplayObjectTypes =>{\n" +
-                            generateTsCodeForSelectOptionsMappingObject(options) +
-                            generateReturnStatement("extractDatapointValue(dataPoint) as $enumName") +
-                            "})()",
-                        setOf(
-                            TypeScriptImport(
-                                "formatStringForDatatable",
-                                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "getOriginalNameFromTechnicalName",
-                                "@/components/resources/dataTable/conversion/Utils",
-                            ),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
-                            ),
-                            TypeScriptImport(
-                                "type $enumName",
-                                "@clients/backend",
-                            ),
+                        createDisplayValueCode(
+                            generateReturnStatement("extractDatapointValue(dataPoint) as $enumName"),
                         ),
+                        displayValueByDataPointImports,
                     ),
-                    label, getTypescriptFieldAccessor(),
+                    label,
+                    fieldAccessor,
                 ),
         )
     }
+
+    private fun createDisplayValueCode(returnStatement: String): String =
+        "((): AvailableMLDTDisplayObjectTypes =>{\n" +
+            generateTsCodeForSelectOptionsMappingObject(options) +
+            returnStatement +
+            "})()"
+
+    private val displayValueImports =
+        setOf(
+            TypeScriptImport(
+                "formatStringForDatatable",
+                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+            ),
+            TypeScriptImport(
+                "getOriginalNameFromTechnicalName",
+                "@/components/resources/dataTable/conversion/Utils",
+            ),
+        )
+
+    private val displayValueByDataPointImports =
+        displayValueImports +
+            setOf(
+                TypeScriptImport(
+                    "extractDatapointValue",
+                    "@/components/resources/dataTable/conversion/DataPoints",
+                ),
+                TypeScriptImport("type $enumName", "@clients/backend"),
+            )
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {
