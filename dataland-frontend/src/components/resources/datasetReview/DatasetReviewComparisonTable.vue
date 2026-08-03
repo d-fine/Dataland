@@ -419,7 +419,6 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
     }
   }
   return qaReviewMap;
-
 }
 
 /**
@@ -496,6 +495,10 @@ function getCustomDisplay(cell: MLDTCellConfig<FrameworkData>): AvailableMLDTDis
   const reviewInfo = getReviewInfo(cell.dataPointTypeId);
   if (reviewInfo?.customValue == null) {
     return undefined;
+  }
+  if (!cell.valueGetterByDataPoint) {
+    // Fallback in case valueGetterByDataPoint is not implemented for this datapoint.
+    return formatStringForDatatable(getCustomDisplayValue(cell.dataPointTypeId));
   }
   return cell.valueGetterByDataPoint(reviewInfo.customValue);
 }
