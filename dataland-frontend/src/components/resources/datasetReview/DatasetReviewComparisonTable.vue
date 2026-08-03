@@ -404,13 +404,7 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
     );
     for (const qaReporter of props.datasetReview.qaReporters) {
       const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
-      const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
-      let display: AvailableMLDTDisplayObjectTypes | undefined;
-      if (simpleText != null) {
-        display = formatStringForDatatable(simpleText);
-      } else {
-        display = formatStringForDatatable(getCorrectedDisplayFromQaReport(qaReport));
-      }
+      const display = getQaReviewFallbackDisplayForReport(qaReport);
       if (display != null) {
         qaReviewMap.set(qaReporter.reporterUserId, display);
       }
@@ -425,6 +419,7 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
     }
   }
   return qaReviewMap;
+
 }
 
 /**
@@ -466,6 +461,25 @@ function getQaReviewDisplayForReport(
   if (simpleText != null) return formatStringForDatatable(simpleText);
   if (qaReport.correctedData != null) return valueGetterByDataPoint(qaReport.correctedData);
   return undefined;
+}
+
+/**
+ * Builds a fallback display value for a QA report when no data-point-specific value getter
+ * is available. Uses a simple verdict label (Accepted/Inconclusive/Not Attempted) when
+ * applicable, otherwise falls back to the corrected value extracted from the report's JSON payload.
+ *
+ * @param {DataPointQaReport | undefined} qaReport - The QA report to build a display value for.
+ * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
+ */
+function getQaReviewFallbackDisplayForReport(qaReport: DataPointQaReport | undefined) {
+  const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
+  let display: AvailableMLDTDisplayObjectTypes | undefined;
+  if (simpleText != null) {
+    display = formatStringForDatatable(simpleText);
+  } else {
+    display = formatStringForDatatable(getCorrectedDisplayFromQaReport(qaReport));
+  }
+  return display;
 }
 
 /**
