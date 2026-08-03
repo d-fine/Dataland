@@ -97,7 +97,7 @@ class EuTaxonomyAssuranceComponent(
                             "@/components/resources/dataTable/conversion/DataPoints",
                         ),
                         TypeScriptImport(
-                            "AssuranceDataPoint",
+                            "type AssuranceDataPoint",
                             "@clients/backend",
                         ),
                     ),

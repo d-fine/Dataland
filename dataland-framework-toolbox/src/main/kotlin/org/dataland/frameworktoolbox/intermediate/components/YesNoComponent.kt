@@ -55,7 +55,7 @@ class YesNoComponent(
                                 "@/components/resources/dataTable/conversion/DataPoints",
                             ),
                             TypeScriptImport(
-                                "YesNoNa",
+                                "type YesNoNa",
                                 "@clients/backend",
                             ),
                         ),

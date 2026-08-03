@@ -116,7 +116,7 @@ open class SingleSelectComponent(
                                 "@/components/resources/dataTable/conversion/DataPoints",
                             ),
                             TypeScriptImport(
-                                enumName,
+                                "type $enumName",
                                 "@clients/backend",
                             ),
                         ),

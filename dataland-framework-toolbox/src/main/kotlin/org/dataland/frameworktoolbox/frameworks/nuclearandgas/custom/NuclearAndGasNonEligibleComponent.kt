@@ -97,7 +97,7 @@ class NuclearAndGasNonEligibleComponent(
                             "@/components/resources/dataTable/conversion/DataPoints",
                         ),
                         TypeScriptImport(
-                            "ExtendedDataPointNuclearAndGasNonEligible",
+                            "type ExtendedDataPointNuclearAndGasNonEligible",
                             "@clients/backend",
                         ),
                     ),

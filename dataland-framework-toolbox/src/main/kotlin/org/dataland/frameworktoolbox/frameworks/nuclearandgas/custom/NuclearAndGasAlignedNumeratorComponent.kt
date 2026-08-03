@@ -97,7 +97,7 @@ class NuclearAndGasAlignedNumeratorComponent(
                             "@/components/resources/dataTable/conversion/DataPoints",
                         ),
                         TypeScriptImport(
-                            "ExtendedDataPointNuclearAndGasAlignedNumerator",
+                            "type ExtendedDataPointNuclearAndGasAlignedNumerator",
                             "@clients/backend",
                         ),
                     ),

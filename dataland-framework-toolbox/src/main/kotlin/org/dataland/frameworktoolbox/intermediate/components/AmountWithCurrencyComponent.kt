@@ -58,7 +58,7 @@ class AmountWithCurrencyComponent(
                             "@/components/resources/dataTable/conversion/DataPoints",
                         ),
                         TypeScriptImport(
-                            "AmountWithCurrency",
+                            "type AmountWithCurrency",
                             "@clients/backend",
                         ),
                     ),

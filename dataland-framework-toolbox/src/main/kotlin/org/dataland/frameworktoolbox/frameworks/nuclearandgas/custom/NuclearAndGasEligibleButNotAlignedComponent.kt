@@ -97,7 +97,7 @@ class NuclearAndGasEligibleButNotAlignedComponent(
                             "@/components/resources/dataTable/conversion/DataPoints",
                         ),
                         TypeScriptImport(
-                            "ExtendedDataPointNuclearAndGasEligibleButNotAligned",
+                            "type ExtendedDataPointNuclearAndGasEligibleButNotAligned",
                             "@clients/backend",
                         ),
                     ),
