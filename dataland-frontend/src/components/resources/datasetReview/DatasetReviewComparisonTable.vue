@@ -470,7 +470,9 @@ function getQaReviewDisplayForReport(
  * @param {DataPointQaReport | undefined} qaReport - The QA report to build a display value for.
  * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
  */
-function getQaReviewFallbackDisplayForReport(qaReport: DataPointQaReport | undefined) {
+function getQaReviewFallbackDisplayForReport(
+  qaReport: DataPointQaReport | undefined
+): AvailableMLDTDisplayObjectTypes | undefined {
   const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
   let display: AvailableMLDTDisplayObjectTypes | undefined;
   if (simpleText != null) {
