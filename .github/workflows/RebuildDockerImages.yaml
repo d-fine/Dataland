@@ -1,6 +1,12 @@
 name: "Rebuild Docker Images Action"
 on:
   workflow_call:
+    inputs:
+      runner_type:
+        description: 'Runner to use for all jobs'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
     outputs:
       dataland_e2tests_version:
         description: The Version for the E2Etest Image
@@ -9,7 +15,7 @@ on:
 # The idea for dynamically creating the matrix jobs comes from https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
 jobs:
   gather-buildscripts:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner_type }}
     outputs:
       buildscript_json_array: ${{ steps.gather-buildscripts-step.outputs.BUILDSCRIPT_JSON_ARRAY }}
     steps:
@@ -22,7 +28,7 @@ jobs:
           echo "BUILDSCRIPT_JSON_ARRAY=$BUILDSCRIPT_JSON_ARRAY" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
   rebuild-docker-images:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner_type }}
     needs: gather-buildscripts
     outputs:
       dataland_e2etests_version: ${{ steps.build-dockerimages.outputs.DATALAND_E2ETESTS_VERSION }}
@@ -52,7 +58,10 @@ jobs:
           java-version: 21
           cache: gradle
       - name: Login to Github Packages with retry
+        env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
         run: |
+          mkdir -p $DOCKER_CONFIG
           success=false
           for i in 1 2 3; do
             echo "Attempt $i to login to ghcr.io..."
@@ -72,6 +81,7 @@ jobs:
       - name: Build Docker Images
         id: build-dockerimages
         env:
+          DOCKER_CONFIG: /tmp/docker-config-${{ github.run_id }}
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -94,3 +104,6 @@ jobs:
         with:
           name: parameters-${{ matrix.buildScript }}
           path: ./logs/
+      - name: Cleanup Docker credentials
+        if: always()
+        run: rm -rf /tmp/docker-config-${{ github.run_id }}
