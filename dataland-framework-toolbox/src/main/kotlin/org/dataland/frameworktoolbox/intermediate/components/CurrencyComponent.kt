@@ -13,9 +13,6 @@ import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeRefere
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -59,44 +56,21 @@ class CurrencyComponent(
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
-                "formatCurrencyForDisplay(${getTypescriptFieldAccessor()}, \"${
-                    StringEscapeUtils.escapeEcmaScript(
-                        label,
-                    )
-                }\")",
+        val escapedLabel = StringEscapeUtils.escapeEcmaScript(label)
+        addParsedDataPointValueCell(
+            sectionConfigBuilder,
+            formatterImports =
                 setOf(
                     TypeScriptImport(
                         "formatCurrencyForDisplay",
                         "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
                     ),
                 ),
-            ),
-            valueGetterByDataPoint =
-                FrameworkDisplayValueByDataPointLambda(
-                    "formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, \"${
-                        StringEscapeUtils.escapeEcmaScript(
-                            label,
-                        )
-                    }\")",
-                    setOf(
-                        TypeScriptImport(
-                            "formatCurrencyForDisplay",
-                            "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "parseDataPoint",
-                            "@/components/resources/dataTable/conversion/DataPoints",
-                        ),
-                        TypeScriptImport(
-                            "type CurrencyDataPoint",
-                            "@clients/backend",
-                        ),
-                    ),
-                ),
-        )
+            dataPointValueExpression = "parseDataPoint(dataPoint) as CurrencyDataPoint",
+            additionalDataPointImports = setOf(TypeScriptImport("type CurrencyDataPoint", "@clients/backend")),
+        ) { valueExpression ->
+            "formatCurrencyForDisplay($valueExpression, \"$escapedLabel\")"
+        }
     }
 
     override fun getUploadComponentName(): String =

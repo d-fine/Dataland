@@ -10,13 +10,9 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * A DataComponent represents a date (with Year, Month, and Day)
+ * A DateComponent represents a date (with Year, Month, and Day)
  */
 class DateComponent(
     identifier: String,
@@ -28,40 +24,13 @@ class DateComponent(
             getExample(EXAMPLE_PLAIN_DATE_COMPONENT),
         )
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatStringForDatatable",
-                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        "formatStringForDatatable(extractDatapointValue(dataPoint) as string)",
-                        setOf(
-                            TypeScriptImport(
-                                "formatStringForDatatable",
-                                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
-                            ),
-                        ),
-                    ),
-                    label, getTypescriptFieldAccessor(),
-                ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addSingleArgumentFormatterCell(
+            sectionConfigBuilder,
+            formatterFunction = "formatStringForDatatable",
+            formatterModule = "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+            dataPointCastType = "string",
         )
-    }
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {

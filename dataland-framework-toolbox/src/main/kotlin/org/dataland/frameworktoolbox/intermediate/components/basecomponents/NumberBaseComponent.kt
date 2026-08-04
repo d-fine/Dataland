@@ -3,14 +3,11 @@ package org.dataland.frameworktoolbox.intermediate.components.basecomponents
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addDocumentSupportedValueCell
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -107,39 +104,20 @@ open class NumberBaseComponent(
         }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
-                        " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
-                    setOf(
-                        TypeScriptImport(
-                            "formatNumberForDatatable",
-                            "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
-                        ),
+        val escapedUnitSuffix = StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            formatterImports =
+                setOf(
+                    TypeScriptImport(
+                        "formatNumberForDatatable",
+                        "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
                     ),
                 ),
-                label, getTypescriptFieldAccessor(),
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        "formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined," +
-                            " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
-                        setOf(
-                            TypeScriptImport(
-                                "formatNumberForDatatable",
-                                "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
-                            ),
-                        ),
-                    ),
-                    label, getTypescriptFieldAccessor(),
-                ),
-        )
+            dataPointValueExpression = "extractDatapointValue(dataPoint) as number | null | undefined",
+        ) { valueExpression ->
+            "formatNumberForDatatable($valueExpression," +
+                " \"$escapedUnitSuffix\")"
+        }
     }
 }

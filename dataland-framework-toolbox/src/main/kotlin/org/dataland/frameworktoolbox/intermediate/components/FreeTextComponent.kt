@@ -8,10 +8,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A FreeTextComponent represents an arbitrary textual value that may contain multiple lines or even
@@ -27,40 +23,13 @@ class FreeTextComponent(
             getExample(EXAMPLE_PLAIN_FREE_TEXT_COMPONENT),
         )
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatFreeTextForDatatable",
-                            "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        "formatFreeTextForDatatable(extractDatapointValue(dataPoint) as string)",
-                        setOf(
-                            TypeScriptImport(
-                                "formatFreeTextForDatatable",
-                                "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
-                            ),
-                        ),
-                    ),
-                    label, getTypescriptFieldAccessor(),
-                ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addSingleArgumentFormatterCell(
+            sectionConfigBuilder,
+            formatterFunction = "formatFreeTextForDatatable",
+            formatterModule = "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
+            dataPointCastType = "string",
         )
-    }
 
     override fun getUploadComponentName(): String = "FreeTextFormField"
 

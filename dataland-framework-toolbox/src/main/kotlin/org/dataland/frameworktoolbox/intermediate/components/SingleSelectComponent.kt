@@ -14,8 +14,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
@@ -79,28 +77,15 @@ open class SingleSelectComponent(
                 fieldAccessor
             }
 
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    createDisplayValueCode(generateReturnStatement(valueAccessor)),
-                    displayValueImports,
-                ),
-                label,
-                fieldAccessor,
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        createDisplayValueCode(
-                            generateReturnStatement("extractDatapointValue(dataPoint) as $enumName"),
-                        ),
-                        displayValueByDataPointImports,
-                    ),
-                    label,
-                    fieldAccessor,
-                ),
-        )
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            formatterImports = displayValueImports,
+            dataPointValueExpression = "extractDatapointValue(dataPoint) as $enumName",
+            additionalDataPointImports = setOf(TypeScriptImport("type $enumName", "@clients/backend")),
+            datasetValueExpression = valueAccessor,
+        ) { valueExpression ->
+            createDisplayValueCode(generateReturnStatement(valueExpression))
+        }
     }
 
     private fun createDisplayValueCode(returnStatement: String): String =
@@ -120,16 +105,6 @@ open class SingleSelectComponent(
                 "@/components/resources/dataTable/conversion/Utils",
             ),
         )
-
-    private val displayValueByDataPointImports =
-        displayValueImports +
-            setOf(
-                TypeScriptImport(
-                    "extractDatapointValue",
-                    "@/components/resources/dataTable/conversion/DataPoints",
-                ),
-                TypeScriptImport("type $enumName", "@clients/backend"),
-            )
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {

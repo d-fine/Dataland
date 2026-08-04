@@ -12,8 +12,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -49,34 +47,14 @@ open class Iso2CountryCodesMultiSelectComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
 
-        val fieldAccessor = getTypescriptFieldAccessor()
-
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    createDisplayValueCode(
-                        generateReturnStatement(fieldAccessor),
-                    ),
-                    displayValueImports(),
-                ),
-                label,
-                fieldAccessor,
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        createDisplayValueCode(
-                            generateReturnStatement(
-                                "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
-                            ),
-                        ),
-                        displayValueByDataPointImports(),
-                    ),
-                    label,
-                    fieldAccessor,
-                ),
-        )
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            formatterImports = displayValueImports(),
+            dataPointValueExpression = "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
+            datasetValueExpression = getTypescriptFieldAccessor(),
+        ) { valueExpression ->
+            createDisplayValueCode(generateReturnStatement(valueExpression))
+        }
     }
 
     private fun createDisplayValueCode(returnStatement: String): String =
@@ -104,13 +82,6 @@ open class Iso2CountryCodesMultiSelectComponent(
                 filePathOfPremadeDropdownDatasets,
             ),
         )
-
-    private fun displayValueByDataPointImports(): Set<TypeScriptImport> =
-        displayValueImports() +
-            TypeScriptImport(
-                "extractDatapointValue",
-                "@/components/resources/dataTable/conversion/DataPoints",
-            )
 
     private fun generateReturnStatement(valueAccessor: String): String =
         "return formatListOfStringsForDatatable(" +
@@ -155,11 +126,4 @@ open class Iso2CountryCodesMultiSelectComponent(
                 ),
         )
     }
-
-    private fun generateReturnStatement(): String =
-        "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
-            "   getOriginalNameFromTechnicalName(it, mappings)), " +
-            "'${escapeEcmaScript(label)}'" +
-            ")"
 }

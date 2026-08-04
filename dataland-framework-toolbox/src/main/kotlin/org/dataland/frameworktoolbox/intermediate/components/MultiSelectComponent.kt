@@ -13,8 +13,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
@@ -52,54 +50,28 @@ open class MultiSelectComponent(
         )
     }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement(getTypescriptFieldAccessor()) +
-                        "}",
-                    setOf(
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            formatterImports =
+                setOf(
+                    TypeScriptImport(
+                        "formatListOfStringsForDatatable",
+                        "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                    ),
+                    TypeScriptImport(
+                        "getOriginalNameFromTechnicalName",
+                        "@/components/resources/dataTable/conversion/Utils",
                     ),
                 ),
-                label, getTypescriptFieldAccessor(),
-            ),
-            valueGetterByDataPoint =
-                documentSupport.getFrameworkDisplayValueByDataPointLambda(
-                    FrameworkDisplayValueByDataPointLambda(
-                        "{\n" +
-                            generateTsCodeForSelectOptionsMappingObject(options) +
-                            generateReturnStatement("(extractDatapointValue(dataPoint) as string[] | null | undefined)") +
-                            "}",
-                        setOf(
-                            TypeScriptImport(
-                                "formatListOfStringsForDatatable",
-                                "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                            ),
-                            TypeScriptImport(
-                                "getOriginalNameFromTechnicalName",
-                                "@/components/resources/dataTable/conversion/Utils",
-                            ),
-                            TypeScriptImport(
-                                "extractDatapointValue",
-                                "@/components/resources/dataTable/conversion/DataPoints",
-                            ),
-                        ),
-                    ),
-                    label, getTypescriptFieldAccessor(),
-                ),
-        )
-    }
+            dataPointValueExpression = "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
+            datasetValueExpression = getTypescriptFieldAccessor(),
+        ) { valueExpression ->
+            "{\n" +
+                generateTsCodeForSelectOptionsMappingObject(options) +
+                generateReturnStatement(valueExpression) +
+                "}"
+        }
 
     override fun getUploadComponentName(): String = "MultiSelectFormField"
 
