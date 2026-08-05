@@ -6,8 +6,8 @@
 # init: The profile to be used if keycloak-db should be re-initialized
 
 x-common-proxy-env: &proxy-env
-  NO_PROXY: "localhost,127.0.0.1,*.internal,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
-  no_proxy: "localhost,127.0.0.1,*.internal,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
+  NO_PROXY: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
+  no_proxy: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
 x-java-memory-limits:
