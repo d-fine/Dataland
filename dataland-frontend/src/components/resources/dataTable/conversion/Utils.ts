@@ -91,7 +91,9 @@ export function buildApiBody(
     return '';
   }
   const dataPointObj: ExtendedDataPointType = {};
-  if (dataPointValue) dataPointObj.value = dataPointValue;
+  if (dataPointValue !== undefined && dataPointValue !== null) {
+    dataPointObj.value = dataPointValue;
+  }
   if (currency) dataPointObj.currency = currency;
   if (extendedDataPoint?.quality) dataPointObj.quality = extendedDataPoint.quality;
   if (extendedDataPoint?.comment) dataPointObj.comment = extendedDataPoint.comment;

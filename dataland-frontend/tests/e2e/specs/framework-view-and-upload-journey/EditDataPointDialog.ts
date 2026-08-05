@@ -155,6 +155,27 @@ describeIf(
         .should('contain', QualityOptions.Incomplete);
     });
 
+    it('should allow setting a BigDecimal datapoint to zero', () => {
+      navigateToEditMode();
+      openEditDialog('extendedDecimalScope1GhgEmissionsInTonnes');
+
+      cy.get('div.p-dialog-content')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible').clear().type('0');
+        });
+
+      cy.get('[data-test="big-decimal-input"] input').blur();
+      saveDataPoint();
+
+      cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
+        .closest('td')
+        .next('td')
+        .within(() => {
+          cy.get('span[meta-info]').should('contain', '0 Tonnes');
+        });
+    });
+
     it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
       navigateToEditMode();
       openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
