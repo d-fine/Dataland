@@ -5,9 +5,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
 import org.dataland.frameworktoolbox.intermediate.group.create
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.CellConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -29,18 +26,8 @@ class ViewConfigCellsTest {
             documentSupport = support
         }
 
-    private fun newSection(): SectionConfigBuilder =
-        SectionConfigBuilder(
-            parentSection = null,
-            label = "root",
-            expandOnPageLoad = false,
-            shouldDisplay = FrameworkBooleanLambda.TRUE,
-        )
-
-    private fun onlyCell(section: SectionConfigBuilder): CellConfigBuilder = section.children.single() as CellConfigBuilder
-
     @Test
-    fun `addSingleArgumentFormatterCell should build parallel dataset and datapoint getters`() {
+    fun `addSingleArgumentFormatterCell check if dataset and datapoint getters are build`() {
         val component = stringComponent(NoDocumentSupport)
         val section = newSection()
 
@@ -62,7 +49,7 @@ class ViewConfigCellsTest {
     }
 
     @Test
-    fun `addDocumentSupportedValueCell should wrap both getters and only the datapoint getter should reference dataPoint`() {
+    fun `addDocumentSupportedValueCell - check if both getters are build only the datapoint getter references dataPoint`() {
         val component = stringComponent(SimpleDocumentSupport)
         val section = newSection()
 
@@ -92,7 +79,7 @@ class ViewConfigCellsTest {
     }
 
     @Test
-    fun `additionalDataPointImports should only reach the datapoint getter`() {
+    fun `additionalDataPointImports - check that it only creates imports for the datapoint getter`() {
         val component = stringComponent(NoDocumentSupport)
         val section = newSection()
         val extraImport = TypeScriptImport("type YesNoNa", "@clients/backend")
@@ -110,7 +97,7 @@ class ViewConfigCellsTest {
     }
 
     @Test
-    fun `addParsedDataPointValueCell should skip document support wrapping and use parseDataPoint`() {
+    fun `addParsedDataPointValueCell - check that it skip document support wrapping and use parseDataPoint`() {
         val component = stringComponent(SimpleDocumentSupport)
         val section = newSection()
 
@@ -135,7 +122,7 @@ class ViewConfigCellsTest {
     }
 
     @Test
-    fun `explicit datasetValueExpression should be honoured and buildBody should be applied identically to both getters`() {
+    fun `datasetValueExpression - check that it overrides the default accessor and buildBody wraps both getters`() {
         val component = stringComponent(NoDocumentSupport)
         val section = newSection()
 
