@@ -142,13 +142,12 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
-      <<: *proxy-env
     logging:
       <<: *loki-logging
   accounting-service-db:
@@ -183,13 +182,12 @@ services:
             condition: service_healthy
         <<: *uncritical-constants-env
         environment:
-          <<: *rabbit-mq-user-and-pass
+          <<: [*rabbit-mq-user-and-pass, *proxy-env]
           JAVA_TOOL_OPTIONS: *java-tool-options
           DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
-          <<: *proxy-env
         logging:
           <<: *loki-logging
   data-sourcing-service-db:
@@ -221,14 +219,13 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      <<: *proxy-env
     depends_on:
       document-manager-db:
         condition: service_healthy
@@ -268,13 +265,12 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
-      <<: *proxy-env
     logging:
       <<: *loki-logging
   backend-db:
@@ -374,13 +370,12 @@ services:
       - internal
       - internal-storage-db
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION:-1}
-      <<: *proxy-env
     depends_on:
       internal-storage-db:
         condition: service_healthy
@@ -566,7 +561,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -574,7 +569,6 @@ services:
       QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:-true}
-      <<: *proxy-env
     depends_on:
       qa-service-db:
         condition: service_healthy
@@ -612,14 +606,13 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
-      <<: *proxy-env
     depends_on:
       user-service-db:
         condition: service_healthy
@@ -675,14 +668,13 @@ services:
     expose:
       - "8080"
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
-      <<: *proxy-env
     depends_on:
       community-manager-db:
         condition: service_healthy
@@ -741,7 +733,7 @@ services:
         condition: service_healthy
 
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
@@ -752,7 +744,6 @@ services:
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       EMAIL_SERVICE_DRY_RUN: ${EMAIL_SERVICE_DRY_RUN:-false}
       ADDITIONAL_RECIPIENTS_BCC: ${ADDITIONAL_RECIPIENTS_BCC}
-      <<: *proxy-env
     logging:
       <<: *loki-logging
   email-service-db:
