@@ -1,0 +1,229 @@
+package org.dataland.datalandbackend.services.datapoints
+
+import com.fasterxml.jackson.module.kotlin.readValue
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials202673.custom.EuTaxonomyEligibleOrAlignedActivity
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
+import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import java.math.BigDecimal
+import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
+
+/**
+ * Common contract of the operand containers an EU taxonomy share can be derived from.
+ */
+internal interface EuTaxonomyActivitiesOperands {
+    /**
+     * The source data points the share is derived from, in the order they are reported in generated comments.
+     */
+    val sources: List<ExtendedDataPointInterface<out Iterable<*>?>?>
+
+    /**
+     * Computes the eligible share restricted to [activities].
+     */
+    fun calculateEligibleShare(activities: List<Activity>): BigDecimal?
+
+    /**
+     * Computes the aligned share restricted to [activities].
+     */
+    fun calculateAlignedShare(activities: List<Activity>): BigDecimal?
+}
+
+/**
+ * Selects the aligned or the eligible share of these operands according to [rule].
+ *
+ * @param rule the rule describing the activity group and whether the aligned or the eligible share is requested
+ * @return the requested share, or null if it cannot be determined
+ */
+internal fun EuTaxonomyActivitiesOperands.calculateShare(rule: EuTaxonomyShareRule): BigDecimal? =
+    if (rule.isAligned) calculateAlignedShare(rule.activities) else calculateEligibleShare(rule.activities)
+
+/**
+ * Extracts the activity operands the EU taxonomy share is derived from.
+ *
+ * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs are
+ * read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
+ *
+ * @param inputs the source data points the share is derived from
+ * @param specs the data point type specifications used to resolve each input's role
+ * @return the extracted operands
+ * @throws IllegalArgumentException if neither one nor two inputs are provided
+ */
+internal fun extractEuTaxonomyActivitiesOperands(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): EuTaxonomyActivitiesOperands =
+    when (inputs.size) {
+        1 ->
+            extractEuTaxonomy2026ActivityList<
+                ExtendedDataPoint<Iterable<EuTaxonomyEligibleOrAlignedActivity>?>?,
+            >(inputs, specs)
+
+        2 ->
+            extractEuTaxonomyActivityLists<
+                ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
+                ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
+            >(inputs, specs)
+
+        else -> throw IllegalArgumentException("The EuTaxonomyShare conversion only supports one or two inputs.")
+    }
+
+internal data class EuTaxonomy2020ActivityOperands<
+    N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
+    A : ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?,
+>(
+    val nonAlignedActivities: N?,
+    val alignedActivities: A?,
+    val nonAlignedActivitiesValue: Iterable<EuTaxonomyActivity>?,
+    val alignedActivitiesValue: Iterable<EuTaxonomyAlignedActivity>?,
+) : EuTaxonomyActivitiesOperands {
+    override val sources: List<ExtendedDataPointInterface<out Iterable<*>?>?>
+        get() = listOf(alignedActivities, nonAlignedActivities)
+
+    /**
+     * Merges the non-aligned and aligned activity lists into a single list of eligible-or-aligned activities,
+     * combining entries that share the same activity name, NACE codes, and currency.
+     *
+     * @return the merged activities, or `null` if neither list contains any entries
+     */
+    fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
+        val nonAlignedActivitiesMap =
+            nonAlignedActivitiesValue?.groupBy { activity ->
+                Triple(
+                    activity.activityName,
+                    activity.naceCodes?.toSet(),
+                    activity.share?.absoluteShare?.currency,
+                )
+            }
+        val alignedActivitiesMap =
+            alignedActivitiesValue?.groupBy { activity ->
+                Triple(
+                    activity.activityName,
+                    activity.naceCodes?.toSet(),
+                    activity.share?.absoluteShare?.currency,
+                )
+            }
+        val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
+
+        val eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity> = mutableListOf()
+        for (identifier in identifiers) {
+            val alignedActivities = alignedActivitiesMap?.get(identifier)
+            val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
+            val alignedAbsoluteShare =
+                determineAlignedAbsoluteShare(
+                    alignedActivities = alignedActivities,
+                    currency = identifier.third,
+                )
+            val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
+            val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
+            val relativeEligibleShareInPercent =
+                if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
+                    null
+                } else {
+                    (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+                }
+            val activity =
+                createEuTaxonomyEligibleOrAlignedActivity(
+                    identifier,
+                    alignedAbsoluteShare,
+                    alignedRelativeShare,
+                    relativeEligibleShareInPercent,
+                    alignedActivities,
+                )
+            if (isActivityRelevant(activity)) {
+                eligibleOrAlignedActivities.add(activity)
+            }
+        }
+        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
+    }
+
+    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal? = TODO()
+
+    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal? = TODO()
+}
+
+/**
+ * Extracts the non-aligned and aligned activity lists from [inputs] for the EU taxonomy activity merge.
+ *
+ * The two inputs are distinguished by their [UploadedDataPoint.dataPointType]'s data point base type, resolved via
+ * [specs], rather than by their position in [inputs] or by their JSON content. Content-based discrimination (e.g.
+ * trying to deserialize into the narrower non-aligned type and checking for failure) is not reliable, since a JSON
+ * serializer producing the uploaded data may omit null fields entirely, making an aligned activity with all-null
+ * aligned-only fields structurally indistinguishable from a non-aligned activity.
+ *
+ * @param inputs the two source data points to be merged
+ * @param specs the data point type specifications used to resolve each input's role
+ * @return an [EuTaxonomy2020ActivityOperands] containing the extracted non-aligned and aligned activity operands
+ */
+internal inline fun <
+    reified N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
+    reified A : ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?,
+> extractEuTaxonomyActivityLists(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): EuTaxonomy2020ActivityOperands<N, A> {
+    require(inputs.size == 2) { "Exactly two data points must be provided to extract." }
+
+    val nonAlignedInput =
+        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE }
+            ?: throw IllegalArgumentException(
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} must be provided for the merge.",
+            )
+    val alignedInput =
+        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE }
+            ?: throw IllegalArgumentException(
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided for the merge.",
+            )
+
+    val nonAlignedActivities = defaultObjectMapper.readValue<N>(nonAlignedInput.dataPoint)
+    val alignedActivities = defaultObjectMapper.readValue<A>(alignedInput.dataPoint)
+    return EuTaxonomy2020ActivityOperands(
+        nonAlignedActivities = nonAlignedActivities,
+        alignedActivities = alignedActivities,
+        nonAlignedActivitiesValue = nonAlignedActivities?.value,
+        alignedActivitiesValue = alignedActivities?.value,
+    )
+}
+
+internal data class EuTaxonomy2026ActivityOperand<
+    E : ExtendedDataPointInterface<Iterable<EuTaxonomyEligibleOrAlignedActivity>?>?,
+>(
+    val eligibleOrAlignedActivities: E?,
+    val eligibleOrAlignedActivitiesValue: Iterable<EuTaxonomyEligibleOrAlignedActivity>?,
+) : EuTaxonomyActivitiesOperands {
+    override val sources: List<ExtendedDataPointInterface<out Iterable<*>?>?>
+        get() = listOf(eligibleOrAlignedActivities)
+
+    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal? = TODO()
+
+    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal? = TODO()
+}
+
+internal inline fun <
+    reified E : ExtendedDataPointInterface<Iterable<EuTaxonomyEligibleOrAlignedActivity>?>?,
+> extractEuTaxonomy2026ActivityList(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): EuTaxonomy2026ActivityOperand<E> {
+    require(inputs.size == 1) { "Exactly one data point must be provided to extract." }
+
+    val eligibleOrAlignedInput =
+        inputs.singleOrNull {
+            getDataPointBaseTypeId(it.dataPointType, specs) ==
+                EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE
+        }
+            ?: throw IllegalArgumentException(
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE}" +
+                    "must be provided for the merge.",
+            )
+
+    val eligibleOrAlignedActivities = defaultObjectMapper.readValue<E>(eligibleOrAlignedInput.dataPoint)
+    return EuTaxonomy2026ActivityOperand(
+        eligibleOrAlignedActivities = eligibleOrAlignedActivities,
+        eligibleOrAlignedActivitiesValue = eligibleOrAlignedActivities?.value,
+    )
+}

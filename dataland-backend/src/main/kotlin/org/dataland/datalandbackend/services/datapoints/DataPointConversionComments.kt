@@ -85,3 +85,24 @@ internal fun getSourceFrameworkLabel(sourceFrameworks: List<FrameworkSpecificati
         .takeIf { it.isNotEmpty() }
         ?.joinToString(", ")
         ?: "Unknown"
+
+/**
+ * Creates the comment for the EU taxonomy share conversion.
+ *
+ * The comment names the source activity lists the share was derived from and lists them in a sources section.
+ *
+ * @param inputs the uploaded source data points the share was derived from
+ * @param specs the data point type specifications used to resolve source display names
+ * @param dataPoints the deserialized source data points used to inspect quality and source comments
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the generated conversion comment
+ */
+internal fun createCommentEuTaxonomyShare(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+    dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): String =
+    "This share was derived from the EU Taxonomy (2020/852) framework based on the activity lists " +
+        getNumberedSourceReferences(inputs).joinToString(", ") + "\n\n***\n\n" +
+        getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
