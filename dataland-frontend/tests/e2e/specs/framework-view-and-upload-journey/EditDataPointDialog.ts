@@ -162,10 +162,9 @@ describeIf(
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input')
-              .should('be.visible')
-              .clear()
-              .type('0');
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible');
+            cy.get('[data-test="big-decimal-input"] input').clear();
+            cy.get('[data-test="big-decimal-input"] input').type('0');
         });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
@@ -220,7 +219,8 @@ describeIf(
       cy.get('.p-select-overlay').should('be.visible');
 
       cy.get('.p-select-overlay').within(() => {
-        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist').scrollIntoView();
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist');
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').scrollIntoView();
       });
       cy.get('.p-select-overlay').within(() => {
         cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').click();
