@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.ALIGNED_DATA_POINT_TYPES
-import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.ELIGIBLE_DATA_POINT_TYPES
 import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.FOSSIL_GAS_ACTIVITIES
 import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.FOSSIL_GAS_DATA_POINT_TYPES
 import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.NUCLEAR_ACTIVITIES
@@ -86,7 +86,7 @@ internal fun resolveEuTaxonomyShareRule(targetType: DataPointType): EuTaxonomySh
         },
         when {
             ALIGNED_DATA_POINT_TYPES.contains(targetType) -> true
-            ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE.contains(targetType) -> false
+            ELIGIBLE_DATA_POINT_TYPES.contains(targetType) -> false
             else -> throw IllegalArgumentException("$targetType is not supported")
-        }
+        },
     )
