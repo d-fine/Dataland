@@ -155,20 +155,23 @@ describeIf(
         .should('contain', QualityOptions.Incomplete);
     });
 
-    it('should allow setting a BigDecimal datapoint to zero', () => {
+    it('should allow setting a BigDecimalDatapoint to zero', () => {
       navigateToEditMode();
-      openEditDialog('extendedDecimalScope1GhgEmissionsInTonnes');
+      openEditDialog('extendedDecimalScope3GhgEmissionsInTonnes');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
-          cy.get('[data-test="big-decimal-input"] input').should('be.visible').clear().type('0');
+          cy.get('[data-test="big-decimal-input"] input')
+              .should('be.visible')
+              .clear()
+              .type('0');
         });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
       saveDataPoint();
 
-      cy.contains('span.table-left-label', 'Scope 1 GHG emissions')
+      cy.contains('span.table-left-label', 'Scope 3 GHG emissions')
         .closest('td')
         .next('td')
         .within(() => {
