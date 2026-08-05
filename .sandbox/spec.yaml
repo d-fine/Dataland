@@ -50,3 +50,4 @@ commands:
 # time ./manageLocalStack.sh --reset
 # set -a && source ../environments/.env.dev && set +a
 # npm run prepopulate
+# localhost,127.0.0.1,::1,gateway.docker.internal
