@@ -5,7 +5,9 @@
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
 
-
+x-common-proxy-env: &proxy-env
+  NO_PROXY: "localhost,127.0.0.1,*.internal,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
+  no_proxy: "localhost,127.0.0.1,*.internal,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
 x-java-memory-limits:
@@ -55,6 +57,7 @@ services:
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
       DISABLE_HSTS: ${DISABLE_HSTS}
+      <<: *proxy-env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
@@ -103,6 +106,7 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -144,6 +148,7 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET: ${DATALAND_ACCOUNTING_SERVICE_CLIENT_SECRET}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   accounting-service-db:
@@ -184,6 +189,7 @@ services:
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+          <<: *proxy-env
         logging:
           <<: *loki-logging
   data-sourcing-service-db:
@@ -222,6 +228,7 @@ services:
       DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      <<: *proxy-env
     depends_on:
       document-manager-db:
         condition: service_healthy
@@ -267,6 +274,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   backend-db:
@@ -372,6 +380,7 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION: ${INTERNAL_STORAGE_MIGRATION_BASELINE_VERSION:-1}
+      <<: *proxy-env
     depends_on:
       internal-storage-db:
         condition: service_healthy
@@ -429,6 +438,7 @@ services:
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
+      <<: *proxy-env
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -564,6 +574,7 @@ services:
       QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
       AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS: ${AUTO_PREAPPROVAL_QA_ACCEPTED_DATAPOINTS:-true}
+      <<: *proxy-env
     depends_on:
       qa-service-db:
         condition: service_healthy
@@ -608,6 +619,7 @@ services:
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
+      <<: *proxy-env
     depends_on:
       user-service-db:
         condition: service_healthy
@@ -670,6 +682,7 @@ services:
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION: ${COMMUNITY_MANAGER_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: ${DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET}
+      <<: *proxy-env
     depends_on:
       community-manager-db:
         condition: service_healthy
@@ -711,6 +724,7 @@ services:
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   email-service:
@@ -738,6 +752,7 @@ services:
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       EMAIL_SERVICE_DRY_RUN: ${EMAIL_SERVICE_DRY_RUN:-false}
       ADDITIONAL_RECIPIENTS_BCC: ${ADDITIONAL_RECIPIENTS_BCC}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   email-service-db:
