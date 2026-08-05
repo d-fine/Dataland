@@ -337,15 +337,15 @@ enum class DataPointConversion(
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
-        val activityLists =
+        val operands =
             extractEuTaxonomy2020ActivityLists<
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
-        val sources = activityLists.sources
+        val sources = operands.sources
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = activityLists.mergeLists(),
+                value = operands.mergeLists(),
                 quality = mergeQuality(sources.map { it?.quality }),
                 comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
