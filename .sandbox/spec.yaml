@@ -1,0 +1,52 @@
+schemaVersion: "1"
+kind: sandbox
+name: dataland
+sandbox:
+  #image: "ubuntu:latest"
+  image: "docker/sandbox-templates:opencode-docker"
+  entrypoint:
+    run: [ bash ]
+    # source env variables into bashrc?
+
+network:
+  allowedDomains:
+    - "packages.adoptium.net:443"
+    - "fnm.vercel.app:443"
+#    - "get.docker.com:443"
+    - "opencode.ai:443"
+    - "registry.npmjs.org:443"
+    - "download.cypress.io:443"
+    - "cdn.cypress.io:443"
+    - "local-dev.dataland.com:443"
+    - "keycloak:8080"
+
+commands:
+  install:
+    - command: "apt-get update && apt-get -y install unzip curl wget apt-transport-https gpg"
+      description: Install basic packages required for other installations
+    #- command: "curl -fsSL https://get.docker.com | bash"
+    #  description: another dummy
+    - command: "apt-get -y install libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb"
+      description: Install Cypress prerequisites
+    - command: |
+       wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor | tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
+       echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
+       apt-get update && apt-get -y install temurin-21-jdk
+      description: Install Java temurin 21 according to https://adoptium.net/installation/linux#deb-installation-on-debian-or-ubuntu
+#    - command: "echo PATH=/usr/lib/jvm/temurin-21-jdk-amd64/bin:$PATH >> ~/.bashrc"
+#      description: Set Java 21 as default version
+#    - command: "curl -o- https://fnm.vercel.app/install | bash && source ~/.bashrc && fnm install 24"
+#      description: Install node 24 and npm
+    # && npm install -g npm"
+    #- command: "for d in dataland-frontend dataland-website dataland-sharedElements dataland-keycloak/dataland_theme/login; do (cd "$d" && npm install); done"
+    # description:
+    #- command: ""
+    # description: Install docker
+    #- command: "curl -fsSL https://opencode.ai/install | bash"
+    # description: Install OpenCode
+
+
+# manuell:  echo PATH=/usr/lib/jvm/temurin-21-jdk-amd64/bin:$PATH >> ~/.bashrc && source ~/.bashrc && curl -o- https://fnm.vercel.app/install | bash && source ~/.bashrc && fnm install 24 && opencode upgrade
+# time ./manageLocalStack.sh --reset
+# set -a && source ../environments/.env.dev && set +a
+# npm run prepopulate
