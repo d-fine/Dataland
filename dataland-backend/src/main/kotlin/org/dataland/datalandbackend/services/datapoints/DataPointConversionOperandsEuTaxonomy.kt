@@ -25,12 +25,12 @@ internal interface EuTaxonomyActivitiesOperands {
     /**
      * Computes the eligible share restricted to [activities].
      */
-    fun calculateEligibleShare(activities: List<Activity>): BigDecimal?
+    fun calculateEligibleShare(activities: List<Activity>): BigDecimal
 
     /**
      * Computes the aligned share restricted to [activities].
      */
-    fun calculateAlignedShare(activities: List<Activity>): BigDecimal?
+    fun calculateAlignedShare(activities: List<Activity>): BigDecimal
 }
 
 /**
@@ -64,7 +64,7 @@ internal fun extractEuTaxonomyActivitiesOperands(
             >(inputs, specs)
 
         2 ->
-            extractEuTaxonomyActivityLists<
+            extractEuTaxonomy2020ActivityLists<
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
@@ -141,9 +141,22 @@ internal data class EuTaxonomy2020ActivityOperands<
         return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
     }
 
-    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal? = TODO()
+    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal {
+        val nonAlignedRelativeShare =
+            nonAlignedActivitiesValue
+                ?.filter { activity -> activities.contains(activity.activityName) }
+                ?.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO } ?: BigDecimal.ZERO
+        val alignedRelativeShare =
+            alignedActivitiesValue
+                ?.filter { activity -> activities.contains(activity.activityName) }
+                ?.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO } ?: BigDecimal.ZERO
+        return nonAlignedRelativeShare + alignedRelativeShare
+    }
 
-    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal? = TODO()
+    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal =
+        alignedActivitiesValue
+            ?.filter { activity -> activities.contains(activity.activityName) }
+            ?.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO } ?: BigDecimal.ZERO
 }
 
 /**
@@ -162,7 +175,7 @@ internal data class EuTaxonomy2020ActivityOperands<
 internal inline fun <
     reified N : ExtendedDataPointInterface<Iterable<EuTaxonomyActivity>?>?,
     reified A : ExtendedDataPointInterface<Iterable<EuTaxonomyAlignedActivity>?>?,
-> extractEuTaxonomyActivityLists(
+> extractEuTaxonomy2020ActivityLists(
     inputs: Collection<UploadedDataPoint>,
     specs: Map<DataPointType, DataPointTypeSpecification>,
 ): EuTaxonomy2020ActivityOperands<N, A> {
@@ -171,12 +184,12 @@ internal inline fun <
     val nonAlignedInput =
         inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE }
             ?: throw IllegalArgumentException(
-                "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} must be provided for the merge.",
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract.",
             )
     val alignedInput =
         inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE }
             ?: throw IllegalArgumentException(
-                "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided for the merge.",
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract.",
             )
 
     val nonAlignedActivities = defaultObjectMapper.readValue<N>(nonAlignedInput.dataPoint)
@@ -198,9 +211,15 @@ internal data class EuTaxonomy2026ActivityOperand<
     override val sources: List<ExtendedDataPointInterface<out Iterable<*>?>?>
         get() = listOf(eligibleOrAlignedActivities)
 
-    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal? = TODO()
+    override fun calculateEligibleShare(activities: List<Activity>): BigDecimal =
+        eligibleOrAlignedActivitiesValue
+            ?.filter { activity -> activities.contains(activity.activityName) }
+            ?.sumOf { it.relativeEligibleShareInPercent ?: BigDecimal.ZERO } ?: BigDecimal.ZERO
 
-    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal? = TODO()
+    override fun calculateAlignedShare(activities: List<Activity>): BigDecimal =
+        eligibleOrAlignedActivitiesValue
+            ?.filter { activity -> activities.contains(activity.activityName) }
+            ?.sumOf { it.share?.relativeShareInPercent ?: BigDecimal.ZERO } ?: BigDecimal.ZERO
 }
 
 internal inline fun <
@@ -218,7 +237,7 @@ internal inline fun <
         }
             ?: throw IllegalArgumentException(
                 "Exactly one input of base type ${EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE}" +
-                    "must be provided for the merge.",
+                    "must be provided to extract.",
             )
 
     val eligibleOrAlignedActivities = defaultObjectMapper.readValue<E>(eligibleOrAlignedInput.dataPoint)

@@ -338,22 +338,16 @@ enum class DataPointConversion(
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
         val activityLists =
-            extractEuTaxonomyActivityLists<
+            extractEuTaxonomy2020ActivityLists<
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
-        val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
+        val sources = activityLists.sources
         val calculatedDataPoint =
             ExtendedDataPoint(
                 value = activityLists.mergeLists(),
                 quality = mergeQuality(sources.map { it?.quality }),
-                comment =
-                    createComment(
-                        inputs,
-                        specs,
-                        listOfNotNull(activityLists.alignedActivities, activityLists.nonAlignedActivities),
-                        sourceFrameworksByType,
-                    ),
+                comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
             )
         return createUploadedDataPoint(
@@ -364,12 +358,15 @@ enum class DataPointConversion(
     }
 
     /**
-     * Derives the share of the eligible or aligned activities of a single activity group from the eligible-or-aligned
-     * activity list of the EU taxonomy 2026/73 framework.
+     * Derives the share of the eligible or aligned activities of a single activity group from the reported activity
+     * lists.
      *
-     * @param inputs the single source data point holding the eligible-or-aligned activity list
+     * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs
+     * are read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
+     *
+     * @param inputs the source data points holding the activity lists
      * @param targetType the data point type assigned to the resulting data point
-     * @param specs the data point type specifications used to resolve the input's role
+     * @param specs the data point type specifications used to resolve each input's role
      * @param sourceFrameworksByType framework specifications associated with each source data point type
      * @return the derived share as an [ExtendedDecimalDataPoint]
      */

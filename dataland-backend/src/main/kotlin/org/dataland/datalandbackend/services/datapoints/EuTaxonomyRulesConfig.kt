@@ -1,6 +1,12 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.ALIGNED_DATA_POINT_TYPES
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.FOSSIL_GAS_ACTIVITIES
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.FOSSIL_GAS_DATA_POINT_TYPES
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.NUCLEAR_ACTIVITIES
+import org.dataland.datalandbackend.services.datapoints.EuTaxonomyRulesConfig.NUCLEAR_DATA_POINT_TYPES
 import org.dataland.datalandbackendutils.model.DataPointType
 
 /**
@@ -21,6 +27,14 @@ internal object EuTaxonomyRulesConfig {
      * The data point base type identifying the eligible or aligned activities input of an EU taxonomy rules.
      */
     const val ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE = "extendedEuTaxonomyEligibleOrAlignedActivitiesComponent"
+
+    val FOSSIL_GAS_DATA_POINT_TYPES = listOf("")
+
+    val NUCLEAR_DATA_POINT_TYPES = listOf("")
+
+    val ALIGNED_DATA_POINT_TYPES = listOf("")
+
+    val ELIGIBLE_DATA_POINT_TYPES = listOf("")
 
     /**
      * Nuclear energy activities as defined by the EU taxonomy complementary climate delegated act.
@@ -64,8 +78,15 @@ internal data class EuTaxonomyShareRule(
  * @return the rule describing the activity group and whether the aligned or the eligible share is requested
  */
 internal fun resolveEuTaxonomyShareRule(targetType: DataPointType): EuTaxonomyShareRule =
-    TODO(
-        "The target data point types of the EuTaxonomyShare conversion are not specified yet. Once they exist, map " +
-            "$targetType to EuTaxonomyRulesConfig.NUCLEAR_ACTIVITIES or EuTaxonomyRulesConfig.FOSSIL_GAS_ACTIVITIES " +
-            "and to the eligible or the aligned share.",
+    EuTaxonomyShareRule(
+        when {
+            FOSSIL_GAS_DATA_POINT_TYPES.contains(targetType) -> FOSSIL_GAS_ACTIVITIES
+            NUCLEAR_DATA_POINT_TYPES.contains(targetType) -> NUCLEAR_ACTIVITIES
+            else -> throw IllegalArgumentException("$targetType is not supported")
+        },
+        when {
+            ALIGNED_DATA_POINT_TYPES.contains(targetType) -> true
+            ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE.contains(targetType) -> false
+            else -> throw IllegalArgumentException("$targetType is not supported")
+        }
     )
