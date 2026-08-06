@@ -72,7 +72,7 @@ open class SingleSelectComponent(
             sectionConfigBuilder,
             ValueGetterSpec(
                 formatterImports = displayValueImports,
-                dataPointCastType = "$enumName",
+                dataPointCastType = enumName,
                 additionalDataPointImports = setOf(TypeScriptImport("type $enumName", "@clients/backend")),
             ) { valueExpression ->
                 createDisplayValueCode(generateReturnStatement(valueExpression))
