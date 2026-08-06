@@ -83,4 +83,28 @@ class DataPointConversionEuTaxonomySubstantialContributionTest {
         assertEquals(true, comment.contains(Activity.AcquisitionAndOwnershipOfBuildings.value))
         assertEquals(true, comment.contains(Activity.Afforestation.value))
     }
+
+    @Test
+    fun `check that the comment lists the activities without substantial contributions due to a missing relative share`() {
+        val extendedDataPoint =
+            mergeActivitiesExtendedDataPoint(
+                nonAligned = null,
+                aligned =
+                    listOf(
+                        alignedActivity(
+                            activityName = Activity.AcquisitionAndOwnershipOfBuildings,
+                            relativeShareInPercent = null,
+                            absoluteShareAmount = BigDecimal("100"),
+                            substantialContributionToClimateChangeMitigationInPercent = BigDecimal("50"),
+                            substantialContributionToClimateChangeAdaptationInPercent = BigDecimal("50"),
+                        ),
+                    ),
+            )
+
+        val comment = extendedDataPoint.comment
+        assertNotNull(comment)
+        assertEquals(false, comment.contains("more than one substantial contribution"))
+        assertEquals(true, comment.contains("Aligned activities without relative share cannot have substantial contributions"))
+        assertEquals(true, comment.contains(Activity.AcquisitionAndOwnershipOfBuildings.value))
+    }
 }
