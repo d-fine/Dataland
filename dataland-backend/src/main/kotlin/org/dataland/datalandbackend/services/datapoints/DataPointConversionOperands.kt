@@ -99,60 +99,82 @@ internal data class EuTaxonomyActivityOperands<
      *   activities for which conflicting substantial contributions were detected and removed
      */
     fun mergeLists(): Pair<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>> {
-        val nonAlignedActivitiesMap =
-            nonAlignedActivitiesValue?.groupBy { activity ->
-                Triple(
-                    activity.activityName,
-                    activity.naceCodes?.toSet(),
-                    activity.share?.absoluteShare?.currency,
-                )
-            }
-        val alignedActivitiesMap =
-            alignedActivitiesValue?.groupBy { activity ->
-                Triple(
-                    activity.activityName,
-                    activity.naceCodes?.toSet(),
-                    activity.share?.absoluteShare?.currency,
-                )
-            }
+        val nonAlignedActivitiesMap = groupActivitiesByIdentifier(nonAlignedActivitiesValue) { activityIdentifier(it) }
+        val alignedActivitiesMap = groupActivitiesByIdentifier(alignedActivitiesValue) { activityIdentifier(it) }
         val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
 
         val eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity> = mutableListOf()
         val activitiesWithConflictingSubstantialContributions: MutableList<Activity> = mutableListOf()
         for (identifier in identifiers) {
-            val alignedActivities = alignedActivitiesMap?.get(identifier)
-            val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
-            val alignedAbsoluteShare =
-                determineAlignedAbsoluteShare(
-                    alignedActivities = alignedActivities,
-                    currency = identifier.third,
-                )
-            val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
-            val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
-            val relativeEligibleShareInPercent =
-                if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
-                    null
-                } else {
-                    (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
-                }
-            val activity =
-                createEuTaxonomyEligibleOrAlignedActivity(
-                    identifier,
-                    alignedAbsoluteShare,
-                    alignedRelativeShare,
-                    relativeEligibleShareInPercent,
-                    alignedActivities,
-                )
-            val (adjustedActivity, hadConflict) = removeConflictingSubstantialContribution(activity)
-            if (isRelevant(adjustedActivity)) {
-                if (hadConflict) {
-                    activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
-                }
-                eligibleOrAlignedActivities.add(adjustedActivity)
+            val mergedActivity =
+                buildMergedActivity(
+                    identifier = identifier,
+                    alignedActivities = alignedActivitiesMap?.get(identifier),
+                    nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier),
+                ) ?: continue
+            val (adjustedActivity, hadConflict) = mergedActivity
+            if (hadConflict) {
+                activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
             }
+            eligibleOrAlignedActivities.add(adjustedActivity)
         }
         return Pair(eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }, activitiesWithConflictingSubstantialContributions)
     }
+}
+
+/**
+ * Groups [activities] by the identifier derived from each entry via [identifierOf], mirroring the grouping used to
+ * match non-aligned and aligned activities sharing the same activity name, NACE codes, and currency.
+ */
+private fun <T> groupActivitiesByIdentifier(
+    activities: Iterable<T>?,
+    identifierOf: (T) -> Triple<Activity, Set<String>?, String?>,
+): Map<Triple<Activity, Set<String>?, String?>, List<T>>? = activities?.groupBy(identifierOf)
+
+private fun activityIdentifier(activity: EuTaxonomyActivity): Triple<Activity, Set<String>?, String?> =
+    Triple(activity.activityName, activity.naceCodes?.toSet(), activity.share?.absoluteShare?.currency)
+
+private fun activityIdentifier(activity: EuTaxonomyAlignedActivity): Triple<Activity, Set<String>?, String?> =
+    Triple(activity.activityName, activity.naceCodes?.toSet(), activity.share?.absoluteShare?.currency)
+
+/**
+ * Builds the merged [EuTaxonomyEligibleOrAlignedActivity] for a single activity [identifier] from the aligned and
+ * non-aligned activities sharing that identifier, resolving any substantial contribution conflict.
+ *
+ * @param identifier the activity name, NACE codes, and currency shared by the merged activities
+ * @param alignedActivities the aligned activities sharing [identifier], or `null` if there are none
+ * @param nonAlignedActivities the non-aligned activities sharing [identifier], or `null` if there are none
+ * @return a pair of the merged activity and whether a substantial contribution conflict was resolved for it, or
+ *   `null` if the merged activity is not relevant (see [isRelevant])
+ */
+private fun buildMergedActivity(
+    identifier: Triple<Activity, Set<String>?, String?>,
+    alignedActivities: List<EuTaxonomyAlignedActivity>?,
+    nonAlignedActivities: List<EuTaxonomyActivity>?,
+): Pair<EuTaxonomyEligibleOrAlignedActivity, Boolean>? {
+    val alignedAbsoluteShare =
+        determineAlignedAbsoluteShare(
+            alignedActivities = alignedActivities,
+            currency = identifier.third,
+        )
+    val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
+    val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
+    val relativeEligibleShareInPercent =
+        if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
+            null
+        } else {
+            (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+        }
+    val activity =
+        createEuTaxonomyEligibleOrAlignedActivity(
+            identifier,
+            alignedAbsoluteShare,
+            alignedRelativeShare,
+            relativeEligibleShareInPercent,
+            alignedActivities,
+        )
+    val (adjustedActivity, hadConflict) = removeConflictingSubstantialContribution(activity)
+    return if (isRelevant(adjustedActivity)) adjustedActivity to hadConflict else null
 }
 
 /**
@@ -318,8 +340,12 @@ private fun determineSubstantialContributions(
     val maxSubstantialContribution = substantialContributions?.maxWithOrNull(nullsFirst())
     return when {
         maxSubstantialContribution == null -> null
+
         maxSubstantialContribution > BigDecimal.ZERO -> alignedRelativeShare
-        maxSubstantialContribution.compareTo(BigDecimal.ZERO) == 0 -> BigDecimal.ZERO // comparesTo only checks for equality in value.
+
+        maxSubstantialContribution.compareTo(BigDecimal.ZERO) == 0 -> BigDecimal.ZERO
+
+        // comparesTo only checks for equality in value.
         else -> throw IllegalArgumentException("A substantial contribution must not be negative.")
     }
 }
