@@ -38,7 +38,7 @@ class PercentageComponent(
             getSchemaAnnotationWithSuppressMaxLineLength(
                 uploadPageExplanation,
                 getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT),
-            ),
+            ) + getNoUploadAnnotation(hasNoUpload),
         )
     }
 
@@ -47,7 +47,7 @@ class PercentageComponent(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),
-            getNoUploadAnnotation(hasNoUpload),
+            listOf(),
         )
     }
 

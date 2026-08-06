@@ -24,6 +24,7 @@ class PercentageComponentFactory(
          */
         fun hasNoUploadOption(input: String): Boolean = input.contains(NO_UPLOAD_OPTION)
     }
+
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Percentage"
 
     override fun generateComponent(
