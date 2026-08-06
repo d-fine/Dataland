@@ -328,7 +328,7 @@ enum class DataPointConversion(
         val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = activityLists.mergeLists(),
+                value = activityLists.mergeLists().first,
                 quality = mergeQuality(sources.map { it?.quality }),
                 comment =
                     createComment(

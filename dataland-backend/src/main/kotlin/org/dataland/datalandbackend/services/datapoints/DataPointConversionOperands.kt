@@ -95,9 +95,10 @@ internal data class EuTaxonomyActivityOperands<
      * Merges the non-aligned and aligned activity lists into a single list of eligible-or-aligned activities,
      * combining entries that share the same activity name, NACE codes, and currency.
      *
-     * @return the merged activities, or `null` if neither list contains any entries
+     * @return a [Pair] of the merged activities (or `null` if neither list contains any entries) and the names of the
+     *   activities for which conflicting substantial contributions were detected and removed
      */
-    fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
+    fun mergeLists(): Pair<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>> {
         val nonAlignedActivitiesMap =
             nonAlignedActivitiesValue?.groupBy { activity ->
                 Triple(
@@ -117,6 +118,7 @@ internal data class EuTaxonomyActivityOperands<
         val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
 
         val eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity> = mutableListOf()
+        val activitiesWithConflictingSubstantialContributions: MutableList<Activity> = mutableListOf()
         for (identifier in identifiers) {
             val alignedActivities = alignedActivitiesMap?.get(identifier)
             val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
@@ -141,11 +143,15 @@ internal data class EuTaxonomyActivityOperands<
                     relativeEligibleShareInPercent,
                     alignedActivities,
                 )
-            if (isRelevant(activity)) {
-                eligibleOrAlignedActivities.add(activity)
+            val (adjustedActivity, hadConflict) = removeConflictingSubstantialContribution(activity)
+            if (isRelevant(adjustedActivity)) {
+                if (hadConflict) {
+                    activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
+                }
+                eligibleOrAlignedActivities.add(adjustedActivity)
             }
         }
-        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
+        return Pair(eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }, activitiesWithConflictingSubstantialContributions)
     }
 }
 
@@ -158,6 +164,33 @@ private fun isRelevant(activity: EuTaxonomyEligibleOrAlignedActivity): Boolean =
         .memberProperties
         .filter { it.name != "activityName" && it.name != "naceCodes" }
         .any { property -> property.get(activity) != null }
+
+/**
+ * Checks the substantial contribution fields (the `BigDecimal?` fields named `substantialContributionTo...InPercent`) of
+ * [activity]. If more than one of them is non-null, returns a copy of [activity] with all of them set to `null` together
+ * with `true` to signal that a conflict was resolved; otherwise returns [activity] unchanged together with `false`.
+ */
+private fun removeConflictingSubstantialContribution(
+    activity: EuTaxonomyEligibleOrAlignedActivity,
+): Pair<EuTaxonomyEligibleOrAlignedActivity, Boolean> {
+    val substantialContributionProperties =
+        EuTaxonomyEligibleOrAlignedActivity::class
+            .memberProperties
+            .filter { it.name.startsWith("substantialContributionTo") }
+    val nonNullCount = substantialContributionProperties.count { property -> property.get(activity) != null }
+    return if (nonNullCount > 1) {
+        activity.copy(
+            substantialContributionToClimateChangeMitigationInPercent = null,
+            substantialContributionToClimateChangeAdaptationInPercent = null,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent = null,
+            substantialContributionToTransitionToACircularEconomyInPercent = null,
+            substantialContributionToPollutionPreventionAndControlInPercent = null,
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent = null,
+        ) to true
+    } else {
+        activity to false
+    }
+}
 
 /**
  * Computes the combined absolute share for aligned activities, or `null` if none report one.
