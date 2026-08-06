@@ -326,17 +326,30 @@ enum class DataPointConversion(
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
         val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
+        val (mergedActivities, activitiesWithConflictingSubstantialContributions) = activityLists.mergeLists()
+        val baseComment =
+            createComment(
+                inputs,
+                specs,
+                listOfNotNull(activityLists.alignedActivities, activityLists.nonAlignedActivities),
+                sourceFrameworksByType,
+            )
+        val comment =
+            if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
+                baseComment + "\n\n" +
+                    "For the following activities, more than one substantial contribution was reported as non-zero " +
+                    "in the old framework. Since the substantial contributions are expected to sum up to the " +
+                    "activity's aligned relative share, but the correct scaling could not be determined from the " +
+                    "old framework, no substantial contributions were mapped for these activities: " +
+                    activitiesWithConflictingSubstantialContributions.joinToString(", ") { it.value } + "."
+            } else {
+                baseComment
+            }
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = activityLists.mergeLists().first,
+                value = mergedActivities,
                 quality = mergeQuality(sources.map { it?.quality }),
-                comment =
-                    createComment(
-                        inputs,
-                        specs,
-                        listOfNotNull(activityLists.alignedActivities, activityLists.nonAlignedActivities),
-                        sourceFrameworksByType,
-                    ),
+                comment = comment,
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
             )
         return createUploadedDataPoint(
