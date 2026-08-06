@@ -413,6 +413,66 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
         dataPointTypeId: 'extendedDecimalRevenueTransitionalShareInPercent',
       },
       {
+        type: 'cell',
+        label: 'Relative Share of Nuclear Activities in Percent - Eligible',
+        explanation:
+          'Relative share of the revenue that is associated with taxonomy-eligible nuclear activities (referred to in Sections 4.26, 4.27 and 4.28 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.relativeShareOfNuclearActivitiesInPercentEligible?.value),
+            'Relative Share of Nuclear Activities in Percent - Eligible',
+            dataset.revenue?.relativeShareOfNuclearActivitiesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Nuclear Activities in Percent - Aligned',
+        explanation:
+          'Relative share of the revenue that is associated with taxonomy-aligned nuclear activities (referred to in Sections 4.26, 4.27 and 4.28 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.relativeShareOfNuclearActivitiesInPercentAligned?.value),
+            'Relative Share of Nuclear Activities in Percent - Aligned',
+            dataset.revenue?.relativeShareOfNuclearActivitiesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Fossil Gas Activities in Percent - Eligible',
+        explanation:
+          'Relative share of the revenue that is associated with taxonomy-eligible fossil gas activities (referred to in Sections 4.29, 4.30 and 4.31 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentEligible?.value),
+            'Relative Share of Fossil Gas Activities in Percent - Eligible',
+            dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Fossil Gas Activities in Percent - Aligned',
+        explanation:
+          'Relative share of the revenue that is associated with taxonomy-aligned fossil gas activities (referred to in Sections 4.29, 4.30 and 4.31 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentAligned?.value),
+            'Relative Share of Fossil Gas Activities in Percent - Aligned',
+            dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentAligned',
+      },
+      {
         type: 'section',
         label: 'Non-Assessed Share',
         expandOnPageLoad: true,
@@ -661,6 +721,66 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexTransitionalShareInPercent',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Nuclear Activities in Percent - Eligible',
+        explanation:
+          'Relative share of the CapEx that is associated with taxonomy-eligible nuclear activities (referred to in Sections 4.26, 4.27 and 4.28 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.relativeShareOfNuclearActivitiesInPercentEligible?.value),
+            'Relative Share of Nuclear Activities in Percent - Eligible',
+            dataset.capex?.relativeShareOfNuclearActivitiesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Nuclear Activities in Percent - Aligned',
+        explanation:
+          'Relative share of the CapEx that is associated with taxonomy-aligned nuclear activities (referred to in Sections 4.26, 4.27 and 4.28 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.relativeShareOfNuclearActivitiesInPercentAligned?.value),
+            'Relative Share of Nuclear Activities in Percent - Aligned',
+            dataset.capex?.relativeShareOfNuclearActivitiesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentAligned',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Fossil Gas Activities in Percent - Eligible',
+        explanation:
+          'Relative share of the CapEx that is associated with taxonomy-eligible fossil gas activities (referred to in Sections 4.29, 4.30 and 4.31 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.relativeShareOfFossilGasActivitiesInPercentEligible?.value),
+            'Relative Share of Fossil Gas Activities in Percent - Eligible',
+            dataset.capex?.relativeShareOfFossilGasActivitiesInPercentEligible
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentEligible',
+      },
+      {
+        type: 'cell',
+        label: 'Relative Share of Fossil Gas Activities in Percent - Aligned',
+        explanation:
+          'Relative share of the CapEx that is associated with taxonomy-aligned fossil gas activities (referred to in Sections 4.29, 4.30 and 4.31 of Annexes I and II to Delegated Regulation (EU) 2021/2139)',
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatPercentageForDatatable(dataset.capex?.relativeShareOfFossilGasActivitiesInPercentAligned?.value),
+            'Relative Share of Fossil Gas Activities in Percent - Aligned',
+            dataset.capex?.relativeShareOfFossilGasActivitiesInPercentAligned
+          ),
+        uploadComponentName: 'PercentageExtendedDataPointFormField',
+        dataPointTypeId: 'extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentAligned',
       },
       {
         type: 'section',
