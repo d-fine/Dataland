@@ -58,7 +58,6 @@ open class NumberBaseComponent(
         example: String,
         minimumValue: Long?,
         maximumValue: Long?,
-        hasNoUpload: Boolean = false,
     ): List<Annotation> {
         val annotations =
             getMinMaxDatamodelAnnotations(minimumValue, maximumValue) +
