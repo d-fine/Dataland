@@ -340,8 +340,8 @@ enum class DataPointConversion(
                     "For the following activities, more than one substantial contribution was reported as non-zero " +
                     "in the old framework. Since the substantial contributions are expected to sum up to the " +
                     "activity's aligned relative share, but the correct scaling could not be determined from the " +
-                    "old framework, no substantial contributions were mapped for these activities:\n\n • " +
-                    activitiesWithConflictingSubstantialContributions.joinToString(", • ") { it.value } + "."
+                    "old framework, no substantial contributions were mapped for these activities:\n\n" +
+                    activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
             } else {
                 baseComment
             }
