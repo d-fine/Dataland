@@ -28,24 +28,29 @@ internal object EuTaxonomyRulesConfig {
      */
     const val ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE = "extendedEuTaxonomyEligibleOrAlignedActivitiesComponent"
 
-    val FOSSIL_GAS_DATA_POINT_TYPES = listOf(
-        "relativeShareOfFossilGasActivitiesInPercentEligible",
-        "relativeShareOfFossilGasActivitiesInPercentAligned")
-
-    val NUCLEAR_DATA_POINT_TYPES = listOf(
-        "relativeShareOfNuclearActivitiesInPercentEligible",
-        "relativeShareOfNuclearActivitiesInPercentAligned",
+    val FOSSIL_GAS_DATA_POINT_TYPES =
+        listOf(
+            "relativeShareOfFossilGasActivitiesInPercentEligible",
+            "relativeShareOfFossilGasActivitiesInPercentAligned",
         )
 
-    val ALIGNED_DATA_POINT_TYPES = listOf(
-        "relativeShareOfFossilGasActivitiesInPercentEligible",
-        "relativeShareOfNuclearActivitiesInPercentEligible"
-    )
+    val NUCLEAR_DATA_POINT_TYPES =
+        listOf(
+            "relativeShareOfNuclearActivitiesInPercentEligible",
+            "relativeShareOfNuclearActivitiesInPercentAligned",
+        )
 
-    val ELIGIBLE_DATA_POINT_TYPES = listOf(
-        "relativeShareOfFossilGasActivitiesInPercentAligned",
-        "relativeShareOfNuclearActivitiesInPercentAligned"
-    )
+    val ALIGNED_DATA_POINT_TYPES =
+        listOf(
+            "relativeShareOfFossilGasActivitiesInPercentEligible",
+            "relativeShareOfNuclearActivitiesInPercentEligible",
+        )
+
+    val ELIGIBLE_DATA_POINT_TYPES =
+        listOf(
+            "relativeShareOfFossilGasActivitiesInPercentAligned",
+            "relativeShareOfNuclearActivitiesInPercentAligned",
+        )
 
     /**
      * Nuclear energy activities as defined by the EU taxonomy complementary climate delegated act.
