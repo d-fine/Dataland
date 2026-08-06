@@ -28,13 +28,24 @@ internal object EuTaxonomyRulesConfig {
      */
     const val ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE = "extendedEuTaxonomyEligibleOrAlignedActivitiesComponent"
 
-    val FOSSIL_GAS_DATA_POINT_TYPES = listOf("")
+    val FOSSIL_GAS_DATA_POINT_TYPES = listOf(
+        "relativeShareOfFossilGasActivitiesInPercentEligible",
+        "relativeShareOfFossilGasActivitiesInPercentAligned")
 
-    val NUCLEAR_DATA_POINT_TYPES = listOf("")
+    val NUCLEAR_DATA_POINT_TYPES = listOf(
+        "relativeShareOfNuclearActivitiesInPercentEligible",
+        "relativeShareOfNuclearActivitiesInPercentAligned",
+        )
 
-    val ALIGNED_DATA_POINT_TYPES = listOf("")
+    val ALIGNED_DATA_POINT_TYPES = listOf(
+        "relativeShareOfFossilGasActivitiesInPercentEligible",
+        "relativeShareOfNuclearActivitiesInPercentEligible"
+    )
 
-    val ELIGIBLE_DATA_POINT_TYPES = listOf("")
+    val ELIGIBLE_DATA_POINT_TYPES = listOf(
+        "relativeShareOfFossilGasActivitiesInPercentAligned",
+        "relativeShareOfNuclearActivitiesInPercentAligned"
+    )
 
     /**
      * Nuclear energy activities as defined by the EU taxonomy complementary climate delegated act.
@@ -80,13 +91,13 @@ internal data class EuTaxonomyShareRule(
 internal fun resolveEuTaxonomyShareRule(targetType: DataPointType): EuTaxonomyShareRule =
     EuTaxonomyShareRule(
         when {
-            FOSSIL_GAS_DATA_POINT_TYPES.contains(targetType) -> FOSSIL_GAS_ACTIVITIES
-            NUCLEAR_DATA_POINT_TYPES.contains(targetType) -> NUCLEAR_ACTIVITIES
+            FOSSIL_GAS_DATA_POINT_TYPES.any { targetType.contains(it, true) } -> FOSSIL_GAS_ACTIVITIES
+            NUCLEAR_DATA_POINT_TYPES.any { targetType.contains(it, true) } -> NUCLEAR_ACTIVITIES
             else -> throw IllegalArgumentException("$targetType is not supported")
         },
         when {
-            ALIGNED_DATA_POINT_TYPES.contains(targetType) -> true
-            ELIGIBLE_DATA_POINT_TYPES.contains(targetType) -> false
+            ALIGNED_DATA_POINT_TYPES.any { targetType.contains(it, true) } -> true
+            ELIGIBLE_DATA_POINT_TYPES.any { targetType.contains(it, true) } -> false
             else -> throw IllegalArgumentException("$targetType is not supported")
         },
     )
