@@ -32,7 +32,6 @@ class PercentageComponentFactory(
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
         return componentGroup.create<PercentageComponent>(
