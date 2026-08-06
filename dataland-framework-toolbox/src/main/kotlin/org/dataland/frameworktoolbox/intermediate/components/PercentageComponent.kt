@@ -27,6 +27,7 @@ class PercentageComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
+    var hasNoUpload: Boolean = false
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -46,7 +47,7 @@ class PercentageComponent(
             documentSupport,
             identifier,
             TypeReference("java.math.BigDecimal", isNullable),
-            listOf(),
+            getNoUploadAnnotation(hasNoUpload),
         )
     }
 
