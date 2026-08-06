@@ -98,13 +98,14 @@ internal data class EuTaxonomyActivityOperands<
      * @return a [Pair] of the merged activities (or `null` if neither list contains any entries) and the names of the
      *   activities for which conflicting substantial contributions were detected and removed
      */
-    fun mergeLists(): Pair<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>> {
+    fun mergeLists(): Triple<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>, List<Activity>> {
         val nonAlignedActivitiesMap = groupActivitiesByIdentifier(nonAlignedActivitiesValue) { activityIdentifier(it) }
         val alignedActivitiesMap = groupActivitiesByIdentifier(alignedActivitiesValue) { activityIdentifier(it) }
         val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
 
         val eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity> = mutableListOf()
         val activitiesWithConflictingSubstantialContributions: MutableList<Activity> = mutableListOf()
+        val activitiesWithoutAlignedShares: MutableList<Activity> = mutableListOf()
         for (identifier in identifiers) {
             val mergedActivity =
                 buildMergedActivity(
@@ -116,9 +117,17 @@ internal data class EuTaxonomyActivityOperands<
             if (hadConflict) {
                 activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
             }
+            if (adjustedActivity.share?.relativeShareInPercent == null) {
+                activitiesWithoutAlignedShares.add(adjustedActivity.activityName)
+            }
             eligibleOrAlignedActivities.add(adjustedActivity)
         }
-        return Pair(eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }, activitiesWithConflictingSubstantialContributions)
+        return Triple(
+            eligibleOrAlignedActivities.takeIf {
+                it.isNotEmpty()
+            },
+            activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares,
+        )
     }
 }
 

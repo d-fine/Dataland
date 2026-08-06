@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.Eu
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -326,7 +327,9 @@ enum class DataPointConversion(
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
         val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
-        val (mergedActivities, activitiesWithConflictingSubstantialContributions) = activityLists.mergeLists()
+        val (mergedActivities, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares) =
+            activityLists
+                .mergeLists()
         val baseComment =
             createComment(
                 inputs,
@@ -335,16 +338,7 @@ enum class DataPointConversion(
                 sourceFrameworksByType,
             )
         val comment =
-            if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
-                baseComment + "\n\n" +
-                    "For the following activities, more than one substantial contribution was reported as non-zero " +
-                    "in the old framework. Since the substantial contributions are expected to sum up to the " +
-                    "activity's aligned relative share, but the correct scaling could not be determined from the " +
-                    "old framework, no substantial contributions were mapped for these activities:\n\n" +
-                    activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
-            } else {
-                baseComment
-            }
+            extendEuTaxonomyActivityComment(baseComment, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares)
         val calculatedDataPoint =
             ExtendedDataPoint(
                 value = mergedActivities,
@@ -358,6 +352,38 @@ enum class DataPointConversion(
             calculatedDataPoint = calculatedDataPoint,
         )
     }
+}
+
+private fun extendEuTaxonomyActivityComment(
+    baseComment: String,
+    activitiesWithConflictingSubstantialContributions: List<Activity>,
+    activitiesWithoutAlignedShares: List<Activity>,
+): String {
+    var comment = baseComment
+    comment =
+        if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
+            comment + "\n\n" +
+                "For the following activities, more than one substantial contribution was reported as non-zero " +
+                "in the old framework. Since the substantial contributions are expected to sum up to the " +
+                "activity's aligned relative share, but the correct scaling could not be determined from the " +
+                "old framework, no substantial contributions were mapped for these activities:\n\n" +
+                activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    comment =
+        if (activitiesWithoutAlignedShares.isNotEmpty()) {
+            comment + "\n\n" +
+                "Aligned activities without relative share cannot have substantial contributions," +
+                "whose values must add up to the relative share. Thus, the substantial contributions" +
+                "were removed for these activities:\n\n" +
+                activitiesWithoutAlignedShares.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    return comment
 }
 
 /**
