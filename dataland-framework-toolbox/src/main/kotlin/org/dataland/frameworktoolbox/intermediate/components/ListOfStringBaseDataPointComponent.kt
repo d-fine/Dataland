@@ -44,26 +44,28 @@ class ListOfStringBaseDataPointComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
-        addParsedDataPointValueCell(
+        addNonDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatListOfBaseDataPoint",
-                        "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatListOfBaseDataPoint",
+                            "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
+                        ),
                     ),
-                ),
-            dataPointValueExpression = "parseDataPoint(dataPoint) as Parameters<typeof formatListOfBaseDataPoint>[1]",
-        ) { valueExpression ->
-            "{\n" +
-                "return formatListOfBaseDataPoint(\n" +
-                "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
-                "$valueExpression,\n" +
-                "\"$descriptionColumnHeader\",\n" +
-                "\"$documentColumnHeader\",\n" +
-                ")\n" +
-                "}"
-        }
+                dataPointCastType = "Parameters<typeof formatListOfBaseDataPoint>[1]",
+            ) { valueExpression ->
+                "{\n" +
+                    "return formatListOfBaseDataPoint(\n" +
+                    "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
+                    "$valueExpression,\n" +
+                    "\"$descriptionColumnHeader\",\n" +
+                    "\"$documentColumnHeader\",\n" +
+                    ")\n" +
+                    "}"
+            },
+        )
 
     override fun getUploadComponentName(): String = "ListOfBaseDataPointsFormField"
 

@@ -12,7 +12,6 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
@@ -53,25 +52,26 @@ open class MultiSelectComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
         addDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatListOfStringsForDatatable",
-                        "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatListOfStringsForDatatable",
+                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
                     ),
-                    TypeScriptImport(
-                        "getOriginalNameFromTechnicalName",
-                        "@/components/resources/dataTable/conversion/Utils",
-                    ),
-                ),
-            dataPointValueExpression = "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
-            datasetValueExpression = getTypescriptFieldAccessor(),
-        ) { valueExpression ->
-            "{\n" +
-                generateTsCodeForSelectOptionsMappingObject(options) +
-                generateReturnStatement(valueExpression) +
-                "}"
-        }
+                dataPointCastType = "string[] | null | undefined",
+            ) { valueExpression ->
+                "{\n" +
+                    generateTsCodeForSelectOptionsMappingObject(options) +
+                    generateReturnStatement(valueExpression) +
+                    "}"
+            },
+        )
 
     override fun getUploadComponentName(): String = "MultiSelectFormField"
 

@@ -13,7 +13,6 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
@@ -69,23 +68,16 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        val fieldAccessor = getTypescriptFieldAccessor()
-        val valueAccessor =
-            if (documentSupport == ExtendedDocumentSupport) {
-                "$fieldAccessor?.value"
-            } else {
-                fieldAccessor
-            }
-
         addDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports = displayValueImports,
-            dataPointValueExpression = "extractDatapointValue(dataPoint) as $enumName",
-            additionalDataPointImports = setOf(TypeScriptImport("type $enumName", "@clients/backend")),
-            datasetValueExpression = valueAccessor,
-        ) { valueExpression ->
-            createDisplayValueCode(generateReturnStatement(valueExpression))
-        }
+            ValueGetterSpec(
+                formatterImports = displayValueImports,
+                dataPointCastType = "$enumName",
+                additionalDataPointImports = setOf(TypeScriptImport("type $enumName", "@clients/backend")),
+            ) { valueExpression ->
+                createDisplayValueCode(generateReturnStatement(valueExpression))
+            },
+        )
     }
 
     private fun createDisplayValueCode(returnStatement: String): String =

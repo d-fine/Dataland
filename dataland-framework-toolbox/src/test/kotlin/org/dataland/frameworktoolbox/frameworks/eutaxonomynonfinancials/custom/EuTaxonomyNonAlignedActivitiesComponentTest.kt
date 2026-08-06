@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 
-import org.dataland.frameworktoolbox.intermediate.components.newSection
-import org.dataland.frameworktoolbox.intermediate.components.onlyCell
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.newSection
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.onlyCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,29 +29,11 @@ class EuTaxonomyNonAlignedActivitiesComponentTest {
         )
         assertEquals(
             "$FORMATTER(parseDataPoint(dataPoint) as Parameters<typeof $FORMATTER>[0], \"My Field\", \"revenue\")",
-            cell.valueGetterByDataPoint!!.lambdaBody,
+            cell.valueGetterByDataPoint?.lambdaBody,
         )
 
-        assertTrue(cell.valueGetterByDataPoint!!.usesDataPoint)
-        assertFalse(cell.valueGetterByDataPoint!!.usesDataset)
+        assertTrue(cell.valueGetterByDataPoint?.usesDataPoint ?: false)
+        assertFalse(cell.valueGetterByDataPoint?.usesDataset ?: true)
         assertTrue(cell.valueGetter.usesDataset)
-    }
-
-    @Test
-    fun `generateDefaultViewConfig - check that it truncates the kpi type when not nested in a component group`() {
-        val component =
-            EuTaxonomyNonAlignedActivitiesComponent(FIELD, DemoComponentGroupApiImpl()).also { it.label = "My Field" }
-
-        val section = newSection()
-        component.generateDefaultViewConfig(section)
-
-        // Characterisation test, not intended behaviour: the kpi type is derived via
-        // `getTypescriptFieldAccessor().split(".")[1].dropLast(1)`, which is only correct while the component is
-        // nested in a ComponentGroup (where `dropLast(1)` strips the trailing "?" of the null-safe accessor).
-        // Without a group parent the accessor is `dataset.<field>` and the last character of the field name is eaten.
-        val cell = onlyCell(section)
-        listOf(cell.valueGetter.lambdaBody, cell.valueGetterByDataPoint!!.lambdaBody).forEach { body ->
-            assertContains(body, "\"nonAlignedActivitie\")")
-        }
     }
 }

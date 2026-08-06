@@ -1,5 +1,8 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.assertGettersDifferOnlyInValueExpression
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.newSection
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.onlyCell
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
 import org.dataland.frameworktoolbox.intermediate.group.create
@@ -35,7 +38,7 @@ class ComponentViewConfigTest {
         val cell = onlyCell(section)
         assertEquals("formatFreeTextForDatatable($DATASET_ACCESSOR)", cell.valueGetter.lambdaBody)
         assertEquals(
-            "formatFreeTextForDatatable(extractDatapointValue(dataPoint) as string)",
+            "formatFreeTextForDatatable((extractDatapointValue(dataPoint) as string))",
             cell.valueGetterByDataPoint!!.lambdaBody,
         )
         assertFalse(cell.valueGetter.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
@@ -48,7 +51,7 @@ class ComponentViewConfigTest {
         component<AmountWithCurrencyComponent>().generateDefaultViewConfig(section)
 
         val cell = onlyCell(section)
-        val dataPointExpression = "parseDataPoint(dataPoint) as AmountWithCurrency"
+        val dataPointExpression = "(parseDataPoint(dataPoint) as AmountWithCurrency)"
         assertEquals(
             "formatStringForDatatable(\nformatAmountWithCurrency($DATASET_ACCESSOR)\n)",
             cell.valueGetter.lambdaBody,
@@ -72,7 +75,7 @@ class ComponentViewConfigTest {
         }.generateDefaultViewConfig(section)
 
         val cell = onlyCell(section)
-        val dataPointExpression = "parseDataPoint(dataPoint) as Parameters<typeof formatListOfBaseDataPoint>[1]"
+        val dataPointExpression = "(parseDataPoint(dataPoint) as Parameters<typeof formatListOfBaseDataPoint>[1])"
 
         listOf(cell.valueGetter.lambdaBody, cell.valueGetterByDataPoint!!.lambdaBody).forEach { body ->
             assertContains(body, "'$LABEL'")
@@ -94,7 +97,8 @@ class ComponentViewConfigTest {
             cell.valueGetter.lambdaBody,
         )
         assertEquals(
-            "formatNaceCodesForDatatable(\nextractDatapointValue(dataPoint) as string[] | null | undefined,\n'$LABEL',\n)",
+            "formatNaceCodesForDatatable(\n(extractDatapointValue(dataPoint) as string[] | null | undefined),\n" +
+                "'$LABEL',\n)",
             cell.valueGetterByDataPoint!!.lambdaBody,
         )
     }

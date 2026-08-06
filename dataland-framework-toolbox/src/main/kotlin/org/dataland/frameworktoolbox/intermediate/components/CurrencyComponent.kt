@@ -57,20 +57,22 @@ class CurrencyComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val escapedLabel = StringEscapeUtils.escapeEcmaScript(label)
-        addParsedDataPointValueCell(
+        addNonDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatCurrencyForDisplay",
-                        "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatCurrencyForDisplay",
+                            "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
+                        ),
                     ),
-                ),
-            dataPointValueExpression = "parseDataPoint(dataPoint) as CurrencyDataPoint",
-            additionalDataPointImports = setOf(TypeScriptImport("type CurrencyDataPoint", "@clients/backend")),
-        ) { valueExpression ->
-            "formatCurrencyForDisplay($valueExpression, \"$escapedLabel\")"
-        }
+                dataPointCastType = "CurrencyDataPoint",
+                additionalDataPointImports = setOf(TypeScriptImport("type CurrencyDataPoint", "@clients/backend")),
+            ) { valueExpression ->
+                "formatCurrencyForDisplay($valueExpression, \"$escapedLabel\")"
+            },
+        )
     }
 
     override fun getUploadComponentName(): String =

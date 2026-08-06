@@ -37,20 +37,22 @@ class NaceCodesComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
         addDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatNaceCodesForDatatable",
-                        "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatNaceCodesForDatatable",
+                            "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory",
+                        ),
                     ),
-                ),
-            dataPointValueExpression = "extractDatapointValue(dataPoint) as string[] | null | undefined",
-        ) { valueExpression ->
-            "formatNaceCodesForDatatable(\n" +
-                "$valueExpression,\n" +
-                "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
-                ")"
-        }
+                dataPointCastType = "string[] | null | undefined",
+            ) { valueExpression ->
+                "formatNaceCodesForDatatable(\n" +
+                    "$valueExpression,\n" +
+                    "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
+                    ")"
+            },
+        )
 
     override fun getUploadComponentName(): String = "NaceCodeFormField"
 

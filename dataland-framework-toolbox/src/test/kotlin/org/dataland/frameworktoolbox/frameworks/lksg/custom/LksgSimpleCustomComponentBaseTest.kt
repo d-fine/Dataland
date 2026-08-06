@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.lksg.custom
 
-import org.dataland.frameworktoolbox.intermediate.components.newSection
-import org.dataland.frameworktoolbox.intermediate.components.onlyCell
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.newSection
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.onlyCell
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.junit.jupiter.api.Assertions.assertEquals

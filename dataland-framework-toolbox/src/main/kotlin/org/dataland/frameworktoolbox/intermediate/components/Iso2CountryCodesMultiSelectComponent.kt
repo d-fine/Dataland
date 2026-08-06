@@ -11,7 +11,6 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -49,12 +48,13 @@ open class Iso2CountryCodesMultiSelectComponent(
 
         addDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports = displayValueImports(),
-            dataPointValueExpression = "(extractDatapointValue(dataPoint) as string[] | null | undefined)",
-            datasetValueExpression = getTypescriptFieldAccessor(),
-        ) { valueExpression ->
-            createDisplayValueCode(generateReturnStatement(valueExpression))
-        }
+            ValueGetterSpec(
+                formatterImports = displayValueImports(),
+                dataPointCastType = "string[] | null | undefined",
+            ) { valueExpression ->
+                createDisplayValueCode(generateReturnStatement(valueExpression))
+            },
+        )
     }
 
     private fun createDisplayValueCode(returnStatement: String): String =

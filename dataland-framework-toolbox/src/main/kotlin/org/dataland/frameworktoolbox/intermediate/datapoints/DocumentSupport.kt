@@ -70,15 +70,19 @@ sealed interface DocumentSupport {
     ): FrameworkDisplayValueLambda
 
     /**
-     * Calculate a Framework Display Lambda for a datapoint with original lambda innerLambda given the current DocumentSupport requirements
+     * Calculate a Framework Display Lambda for a datapoint with original lambda innerLambda given the current
+     * DocumentSupport requirements
+     *
+     * Deliberately takes no data-point accessor: the resulting lambda receives the data point as its own
+     * `dataPoint` parameter and must not reference `dataset`, since `FrameworkLambda.usesDataset` inspects the
+     * lambda body to decide which parameter signature the FreeMarker template emits.
+     *
      * @param innerLambda a lambda for displaying the underlying datapoint
      * @param fieldLabel a human-readable label for the field
-     * @param dataPointAccessor a ts-accessor to the containing datapoint
      */
     fun getFrameworkDisplayValueByDataPointLambda(
         innerLambda: FrameworkDisplayValueByDataPointLambda,
         fieldLabel: String?,
-        dataPointAccessor: String,
     ): FrameworkDisplayValueByDataPointLambda
 
     /**

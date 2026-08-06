@@ -51,7 +51,6 @@ data object SimpleDocumentSupport : DocumentSupport {
     override fun getFrameworkDisplayValueByDataPointLambda(
         innerLambda: FrameworkDisplayValueByDataPointLambda,
         fieldLabel: String?,
-        dataPointAccessor: String,
     ): FrameworkDisplayValueByDataPointLambda {
         requireNotNull(fieldLabel)
         return FrameworkDisplayValueByDataPointLambda(

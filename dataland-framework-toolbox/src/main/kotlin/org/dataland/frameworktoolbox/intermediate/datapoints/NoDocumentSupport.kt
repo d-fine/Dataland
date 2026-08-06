@@ -30,7 +30,6 @@ data object NoDocumentSupport : DocumentSupport {
     override fun getFrameworkDisplayValueByDataPointLambda(
         innerLambda: FrameworkDisplayValueByDataPointLambda,
         fieldLabel: String?,
-        dataPointAccessor: String,
     ): FrameworkDisplayValueByDataPointLambda = innerLambda
 
     override fun getDataAccessor(

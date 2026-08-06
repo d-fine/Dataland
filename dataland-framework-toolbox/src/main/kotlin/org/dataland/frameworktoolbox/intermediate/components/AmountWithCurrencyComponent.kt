@@ -19,26 +19,28 @@ class AmountWithCurrencyComponent(
         "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
     ) {
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
-        addParsedDataPointValueCell(
+        addNonDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatStringForDatatable",
-                        "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "formatAmountWithCurrency",
+                            "@/utils/Formatter",
+                        ),
                     ),
-                    TypeScriptImport(
-                        "formatAmountWithCurrency",
-                        "@/utils/Formatter",
-                    ),
-                ),
-            dataPointValueExpression = "parseDataPoint(dataPoint) as AmountWithCurrency",
-            additionalDataPointImports = setOf(TypeScriptImport("type AmountWithCurrency", "@clients/backend")),
-        ) { valueExpression ->
-            "formatStringForDatatable(\n" +
-                "formatAmountWithCurrency($valueExpression)\n" +
-                ")"
-        }
+                dataPointCastType = "AmountWithCurrency",
+                additionalDataPointImports = setOf(TypeScriptImport("type AmountWithCurrency", "@clients/backend")),
+            ) { valueExpression ->
+                "formatStringForDatatable(\n" +
+                    "formatAmountWithCurrency($valueExpression)\n" +
+                    ")"
+            },
+        )
 
     override fun getUploadComponentName(): String = "AmountWithCurrencyFormField"
 

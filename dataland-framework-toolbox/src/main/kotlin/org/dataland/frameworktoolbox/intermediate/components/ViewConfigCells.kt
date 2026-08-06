@@ -13,83 +13,95 @@ private val PARSE_DATAPOINT_IMPORT =
     TypeScriptImport("parseDataPoint", "@/components/resources/dataTable/conversion/DataPoints")
 
 /**
+ * Describes how the dataset-based and the data-point-based value-getter lambdas of a standard cell are built.
+ *
+ * The data-point-based value expression itself is not part of this spec: it is derived by the consuming function,
+ * which pairs the correct reader (`extractDatapointValue` or `parseDataPoint`) with the matching TypeScript import.
+ * Only the cast type varies per component. The derived expression is always parenthesized so that it stays valid
+ * in every context a [buildBody] may place it in (call argument, ternary condition, `?.` receiver).
+ *
+ * @param formatterImports the TypeScript imports required by [buildBody]'s formatter function
+ * @param dataPointCastType the TypeScript type the read datapoint value is cast to
+ * @param additionalDataPointImports extra TypeScript imports only needed for the data-point-based value-getter
+ * @param buildBody builds the lambda body from a value expression (either the dataset field accessor or the
+ * derived data-point value expression)
+ */
+data class ValueGetterSpec(
+    val formatterImports: Set<TypeScriptImport>,
+    val dataPointCastType: String,
+    val additionalDataPointImports: Set<TypeScriptImport> = emptySet(),
+    val buildBody: (valueExpression: String) -> String,
+)
+
+/**
  * Adds a standard cell to the section whose value-getters are wrapped with the component's DocumentSupport
  * (e.g., BaseDataPoint / ExtendedDataPoint wrapping). The data-point-based value-getter reads the raw
  * datapoint value via `extractDatapointValue`.
  *
  * @param sectionConfigBuilder the section to add the cell to
- * @param formatterImports the TypeScript imports required by [buildBody]'s formatter function
- * @param dataPointValueExpression the TypeScript expression used to read the value for the data-point-based
- * value-getter, typically `extractDatapointValue(dataPoint) as <Type>`
- * @param additionalDataPointImports extra TypeScript imports only needed for the data-point-based value-getter
- * @param datasetValueExpression the TypeScript expression used to read the value for the dataset-based
- * value-getter, defaults to [getTypescriptFieldAccessor] with `valueAccessor = true`
- * @param buildBody builds the lambda body from a value expression (either [datasetValueExpression] or
- * [dataPointValueExpression])
+ * @param valueGetterSpec describes how both value-getters are built; see [ValueGetterSpec]. The dataset-based
+ * value-getter reads [getTypescriptFieldAccessor] with `valueAccessor = true`, i.e. the document-support-aware
+ * accessor that unwraps `.value` where the DocumentSupport requires it.
  */
-@Suppress("LongParameterList")
 fun ComponentBase.addDocumentSupportedValueCell(
     sectionConfigBuilder: SectionConfigBuilder,
-    formatterImports: Set<TypeScriptImport>,
-    dataPointValueExpression: String,
-    additionalDataPointImports: Set<TypeScriptImport> = emptySet(),
-    datasetValueExpression: String = getTypescriptFieldAccessor(true),
-    buildBody: (valueExpression: String) -> String,
+    valueGetterSpec: ValueGetterSpec,
 ) {
-    val fieldAccessor = getTypescriptFieldAccessor()
+    val datasetValueExpression = getTypescriptFieldAccessor(true)
+    val dataPointValueExpression = "(extractDatapointValue(dataPoint) as ${valueGetterSpec.dataPointCastType})"
     sectionConfigBuilder.addStandardCellWithValueGetterFactory(
         this,
         documentSupport.getFrameworkDisplayValueLambda(
             FrameworkDisplayValueLambda(
-                buildBody(datasetValueExpression),
-                formatterImports,
+                valueGetterSpec.buildBody(datasetValueExpression),
+                valueGetterSpec.formatterImports,
             ),
-            label, fieldAccessor,
+            label, getTypescriptFieldAccessor(),
         ),
         valueGetterByDataPoint =
             documentSupport.getFrameworkDisplayValueByDataPointLambda(
                 FrameworkDisplayValueByDataPointLambda(
-                    buildBody(dataPointValueExpression),
-                    formatterImports + EXTRACT_DATAPOINT_VALUE_IMPORT + additionalDataPointImports,
+                    valueGetterSpec.buildBody(dataPointValueExpression),
+                    valueGetterSpec.formatterImports + EXTRACT_DATAPOINT_VALUE_IMPORT +
+                        valueGetterSpec.additionalDataPointImports,
                 ),
-                label, fieldAccessor,
+                label,
             ),
     )
 }
 
 /**
  * Adds a standard cell to the section whose value-getters are NOT wrapped with the component's DocumentSupport.
- * The data-point-based value-getter reads the whole data point via `parseDataPoint`.
+ * The formatter referenced by [ValueGetterSpec.buildBody] is expected to render the document affordance itself,
+ * which is why the data-point-based value-getter reads the whole data point via `parseDataPoint` instead of just
+ * its value.
+ *
+ * This is independent of whether the component has document support: components using this function may well
+ * require a document support (e.g. CurrencyComponent requires ExtendedDocumentSupport). "Non document supported"
+ * refers only to the absence of the DocumentSupport wrapping around the generated value-getters.
  *
  * @param sectionConfigBuilder the section to add the cell to
- * @param formatterImports the TypeScript imports required by [buildBody]'s formatter function
- * @param dataPointValueExpression the TypeScript expression used to read the value for the data-point-based
- * value-getter, typically `parseDataPoint(dataPoint) as <Type>`
- * @param additionalDataPointImports extra TypeScript imports only needed for the data-point-based value-getter
- * @param datasetValueExpression the TypeScript expression used to read the value for the dataset-based
- * value-getter, defaults to [getTypescriptFieldAccessor]
- * @param buildBody builds the lambda body from a value expression (either [datasetValueExpression] or
- * [dataPointValueExpression])
+ * @param valueGetterSpec describes how both value-getters are built; see [ValueGetterSpec]. The dataset-based
+ * value-getter reads the raw [getTypescriptFieldAccessor], i.e. the whole data point rather than its `.value`,
+ * because the formatter consumes the whole data point.
  */
-@Suppress("LongParameterList")
-fun ComponentBase.addParsedDataPointValueCell(
+fun ComponentBase.addNonDocumentSupportedValueCell(
     sectionConfigBuilder: SectionConfigBuilder,
-    formatterImports: Set<TypeScriptImport>,
-    dataPointValueExpression: String,
-    additionalDataPointImports: Set<TypeScriptImport> = emptySet(),
-    datasetValueExpression: String = getTypescriptFieldAccessor(),
-    buildBody: (valueExpression: String) -> String,
+    valueGetterSpec: ValueGetterSpec,
 ) {
+    val datasetValueExpression = getTypescriptFieldAccessor()
+    val dataPointValueExpression = "(parseDataPoint(dataPoint) as ${valueGetterSpec.dataPointCastType})"
     sectionConfigBuilder.addStandardCellWithValueGetterFactory(
         this,
         FrameworkDisplayValueLambda(
-            buildBody(datasetValueExpression),
-            formatterImports,
+            valueGetterSpec.buildBody(datasetValueExpression),
+            valueGetterSpec.formatterImports,
         ),
         valueGetterByDataPoint =
             FrameworkDisplayValueByDataPointLambda(
-                buildBody(dataPointValueExpression),
-                formatterImports + PARSE_DATAPOINT_IMPORT + additionalDataPointImports,
+                valueGetterSpec.buildBody(dataPointValueExpression),
+                valueGetterSpec.formatterImports + PARSE_DATAPOINT_IMPORT +
+                    valueGetterSpec.additionalDataPointImports,
             ),
     )
 }
@@ -112,7 +124,9 @@ fun ComponentBase.addSingleArgumentFormatterCell(
     additionalDataPointImports: Set<TypeScriptImport> = emptySet(),
 ) = addDocumentSupportedValueCell(
     sectionConfigBuilder,
-    formatterImports = setOf(TypeScriptImport(formatterFunction, formatterModule)),
-    dataPointValueExpression = "extractDatapointValue(dataPoint) as $dataPointCastType",
-    additionalDataPointImports = additionalDataPointImports,
-) { valueExpression -> "$formatterFunction($valueExpression)" }
+    ValueGetterSpec(
+        formatterImports = setOf(TypeScriptImport(formatterFunction, formatterModule)),
+        dataPointCastType = dataPointCastType,
+        additionalDataPointImports = additionalDataPointImports,
+    ) { valueExpression -> "$formatterFunction($valueExpression)" },
+)

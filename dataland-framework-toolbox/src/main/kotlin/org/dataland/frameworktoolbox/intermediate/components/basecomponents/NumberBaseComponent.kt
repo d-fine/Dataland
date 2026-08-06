@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components.basecomponents
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.ValueGetterSpec
 import org.dataland.frameworktoolbox.intermediate.components.addDocumentSupportedValueCell
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
@@ -107,17 +108,19 @@ open class NumberBaseComponent(
         val escapedUnitSuffix = StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")
         addDocumentSupportedValueCell(
             sectionConfigBuilder,
-            formatterImports =
-                setOf(
-                    TypeScriptImport(
-                        "formatNumberForDatatable",
-                        "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatNumberForDatatable",
+                            "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
+                        ),
                     ),
-                ),
-            dataPointValueExpression = "extractDatapointValue(dataPoint) as number | null | undefined",
-        ) { valueExpression ->
-            "formatNumberForDatatable($valueExpression," +
-                " \"$escapedUnitSuffix\")"
-        }
+                dataPointCastType = "number | null | undefined",
+            ) { valueExpression ->
+                "formatNumberForDatatable($valueExpression," +
+                    " \"$escapedUnitSuffix\")"
+            },
+        )
     }
 }
