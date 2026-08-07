@@ -77,8 +77,6 @@ class ViewConfigCellsTest {
             byDataPoint.lambdaBody,
         )
 
-        // This is the invariant the FreeMarker template relies on to pick the lambda's parameter signature
-        // (see FrameworkLambda.usesDataset / usesDataPoint and ViewConfig.ts.ftl).
         assertTrue(byDataPoint.usesDataPoint)
         assertFalse(byDataPoint.usesDataset)
         assertTrue(cell.valueGetter.usesDataset)
@@ -121,11 +119,9 @@ class ViewConfigCellsTest {
         val cell = ViewConfigTestUtils.onlyCell(section)
         val byDataPoint = assertNotNull(cell.valueGetterByDataPoint)
 
-        // Unlike addDocumentSupportedValueCell, neither getter is wrapped with document-support information.
         assertFalse(cell.valueGetter.lambdaBody.contains("wrapDisplayValueWithDatapointInformation"))
         assertFalse(byDataPoint.lambdaBody.contains("wrapDisplayValueWithDatapointInformation"))
 
-        // The default dataset expression is the raw field accessor, not the document-support value accessor.
         assertEquals("formatX(dataset.myField)", cell.valueGetter.lambdaBody)
         assertEquals("formatX((parseDataPoint(dataPoint) as string))", byDataPoint.lambdaBody)
 
@@ -135,9 +131,6 @@ class ViewConfigCellsTest {
 
     @Test
     fun `dataset getter - check that only the document supported variant unwraps the value accessor`() {
-        // addDocumentSupportedValueCell reads the document-support-aware accessor, so under a document support
-        // that wraps the value it appends `?.value`; addNonDocumentSupportedValueCell always reads the raw
-        // accessor, because its formatter consumes the whole data point.
         val documentSupportedSection = ViewConfigTestUtils.newSection()
         stringComponent(SimpleDocumentSupport).addDocumentSupportedValueCell(
             documentSupportedSection,
@@ -171,9 +164,7 @@ class ViewConfigCellsTest {
             ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "MyType") { it },
         )
         val nonDocumentSupportedGetter = assertNotNull(ViewConfigTestUtils.onlyCell(nonDocumentSupportedSection).valueGetterByDataPoint)
-
-        // The reader function is derived from the called function, so it can no longer be mismatched with the
-        // import that same function adds.
+        
         assertEquals("(extractDatapointValue(dataPoint) as MyType)", documentSupportedGetter.lambdaBody)
         assertTrue(documentSupportedGetter.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
         assertFalse(documentSupportedGetter.imports.contains(PARSE_DATAPOINT_IMPORT))

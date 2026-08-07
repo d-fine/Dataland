@@ -40,8 +40,6 @@ class LksgSimpleCustomComponentBaseTest {
             byDataPoint.lambdaBody,
         )
 
-        // This component hand-writes both getters instead of routing through ViewConfigCells, so a copy-paste of the
-        // wrong formatter name is the realistic regression here.
         assertTrue(cell.valueGetter.imports.contains(TypeScriptImport(FORMATTER, FORMATTER_MODULE)))
         assertTrue(byDataPoint.imports.contains(TypeScriptImport(FORMATTER, FORMATTER_MODULE)))
         assertTrue(
