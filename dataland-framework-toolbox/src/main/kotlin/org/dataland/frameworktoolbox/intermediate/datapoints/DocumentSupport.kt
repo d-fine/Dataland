@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.datapoints
 
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.model.TemplateDocumentSupport
 
@@ -67,6 +68,22 @@ sealed interface DocumentSupport {
         fieldLabel: String?,
         dataPointAccessor: String,
     ): FrameworkDisplayValueLambda
+
+    /**
+     * Calculate a Framework Display Lambda for a datapoint with original lambda innerLambda given the current
+     * DocumentSupport requirements
+     *
+     * Deliberately takes no data-point accessor: the resulting lambda receives the data point as its own
+     * `dataPoint` parameter and must not reference `dataset`, since `FrameworkLambda.usesDataset` inspects the
+     * lambda body to decide which parameter signature the FreeMarker template emits.
+     *
+     * @param innerLambda a lambda for displaying the underlying datapoint
+     * @param fieldLabel a human-readable label for the field
+     */
+    fun getFrameworkDisplayValueByDataPointLambda(
+        innerLambda: FrameworkDisplayValueByDataPointLambda,
+        fieldLabel: String?,
+    ): FrameworkDisplayValueByDataPointLambda
 
     /**
      * Calculate a TS-Accessor for getting the value of a datapoint with the current DocumentSupport requirements

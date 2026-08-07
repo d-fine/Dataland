@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -13,6 +14,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
     component: ComponentBase,
     valueGetter: FrameworkDisplayValueLambda,
+    valueGetterByDataPoint: FrameworkDisplayValueByDataPointLambda? = null,
 ) {
     addCell(
         label =
@@ -22,6 +24,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
+        valueGetterByDataPoint = valueGetterByDataPoint,
         uploadComponentName = component.getUploadComponentName(),
         dataPointTypeId = component.dataPointTypeId ?: "Framework specification not compiled by the Framework Toolbox",
     )
