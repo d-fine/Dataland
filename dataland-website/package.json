@@ -38,7 +38,7 @@
     "eslint": "10.2.1",
     "eslint-plugin-astro": "1.7.0",
     "eslint-plugin-cypress": "6.3.1",
-    "eslint-plugin-vue": "10.8.0",
+    "eslint-plugin-vue": "10.10.0",
     "npm-check-updates": "22.2.9",
     "prettier": "3.8.5",
     "prettier-plugin-astro": "0.14.1",
