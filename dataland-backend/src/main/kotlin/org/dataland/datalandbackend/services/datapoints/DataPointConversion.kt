@@ -354,7 +354,11 @@ enum class DataPointConversion(
                 sourceFrameworksByType,
             )
         val comment =
-            extendCreateCommentEuTaxonomyActivitiesMerge(baseComment, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares)
+            extendCreateCommentEuTaxonomyActivitiesMerge(
+                baseComment,
+                activitiesWithConflictingSubstantialContributions,
+                activitiesWithoutAlignedShares,
+            )
         val calculatedDataPoint =
             ExtendedDataPoint(
                 value = mergedActivities,
