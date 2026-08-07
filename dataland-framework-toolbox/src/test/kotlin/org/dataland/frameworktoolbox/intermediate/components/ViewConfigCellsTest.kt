@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.newSection
-import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils.onlyCell
+import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertContains
+import kotlin.test.assertNotNull
 
 private val EXTRACT_DATAPOINT_VALUE_IMPORT =
     TypeScriptImport("extractDatapointValue", "@/components/resources/dataTable/conversion/DataPoints")
@@ -32,7 +32,7 @@ class ViewConfigCellsTest {
     @Test
     fun `addSingleArgumentFormatterCell check if dataset and datapoint getters are build`() {
         val component = stringComponent(NoDocumentSupport)
-        val section = newSection()
+        val section = ViewConfigTestUtils.newSection()
 
         component.addSingleArgumentFormatterCell(
             section,
@@ -41,20 +41,21 @@ class ViewConfigCellsTest {
             dataPointCastType = "string",
         )
 
-        val cell = onlyCell(section)
+        val cell = ViewConfigTestUtils.onlyCell(section)
+        val byDataPoint = assertNotNull(cell.valueGetterByDataPoint)
         assertEquals("formatStringForDatatable(dataset.myField)", cell.valueGetter.lambdaBody)
         assertEquals(
             "formatStringForDatatable((extractDatapointValue(dataPoint) as string))",
-            cell.valueGetterByDataPoint!!.lambdaBody,
+            byDataPoint.lambdaBody,
         )
-        assertEquals(cell.valueGetter.imports + EXTRACT_DATAPOINT_VALUE_IMPORT, cell.valueGetterByDataPoint!!.imports)
-        assertEquals(cell.valueGetter.imports + cell.valueGetterByDataPoint!!.imports, cell.imports)
+        assertEquals(cell.valueGetter.imports + EXTRACT_DATAPOINT_VALUE_IMPORT, byDataPoint.imports)
+        assertEquals(cell.valueGetter.imports + byDataPoint.imports, cell.imports)
     }
 
     @Test
     fun `addDocumentSupportedValueCell - check if both getters are build only the datapoint getter references dataPoint`() {
         val component = stringComponent(SimpleDocumentSupport)
-        val section = newSection()
+        val section = ViewConfigTestUtils.newSection()
 
         component.addDocumentSupportedValueCell(
             section,
@@ -64,7 +65,8 @@ class ViewConfigCellsTest {
             ) { valueExpression -> "formatX($valueExpression)" },
         )
 
-        val cell = onlyCell(section)
+        val cell = ViewConfigTestUtils.onlyCell(section)
+        val byDataPoint = assertNotNull(cell.valueGetterByDataPoint)
 
         assertEquals(
             "wrapDisplayValueWithDatapointInformation(formatX(dataset.myField?.value), \"My Field\", dataset.myField)",
@@ -73,20 +75,20 @@ class ViewConfigCellsTest {
         assertEquals(
             "wrapDisplayValueWithDatapointInformationByDataPoint(" +
                 "formatX((extractDatapointValue(dataPoint) as string)), \"My Field\", dataPoint)",
-            cell.valueGetterByDataPoint!!.lambdaBody,
+            byDataPoint.lambdaBody,
         )
 
         // This is the invariant the FreeMarker template relies on to pick the lambda's parameter signature
         // (see FrameworkLambda.usesDataset / usesDataPoint and ViewConfig.ts.ftl).
-        assertTrue(cell.valueGetterByDataPoint!!.usesDataPoint)
-        assertFalse(cell.valueGetterByDataPoint!!.usesDataset)
+        assertTrue(byDataPoint.usesDataPoint)
+        assertFalse(byDataPoint.usesDataset)
         assertTrue(cell.valueGetter.usesDataset)
     }
 
     @Test
     fun `additionalDataPointImports - check that it only creates imports for the datapoint getter`() {
         val component = stringComponent(NoDocumentSupport)
-        val section = newSection()
+        val section = ViewConfigTestUtils.newSection()
         val extraImport = TypeScriptImport("type YesNoNa", "@clients/backend")
 
         component.addDocumentSupportedValueCell(
@@ -98,15 +100,16 @@ class ViewConfigCellsTest {
             ) { valueExpression -> "formatX($valueExpression)" },
         )
 
-        val cell = onlyCell(section)
-        assertTrue(cell.valueGetterByDataPoint!!.imports.contains(extraImport))
+        val cell = ViewConfigTestUtils.onlyCell(section)
+        val byDataPoint = assertNotNull(cell.valueGetterByDataPoint)
+        assertTrue(byDataPoint.imports.contains(extraImport))
         assertFalse(cell.valueGetter.imports.contains(extraImport))
     }
 
     @Test
     fun `addNonDocumentSupportedValueCell - check that it skips document support wrapping and uses parseDataPoint`() {
         val component = stringComponent(SimpleDocumentSupport)
-        val section = newSection()
+        val section = ViewConfigTestUtils.newSection()
 
         component.addNonDocumentSupportedValueCell(
             section,
@@ -116,18 +119,19 @@ class ViewConfigCellsTest {
             ) { valueExpression -> "formatX($valueExpression)" },
         )
 
-        val cell = onlyCell(section)
+        val cell = ViewConfigTestUtils.onlyCell(section)
+        val byDataPoint = assertNotNull(cell.valueGetterByDataPoint)
 
         // Unlike addDocumentSupportedValueCell, neither getter is wrapped with document-support information.
         assertFalse(cell.valueGetter.lambdaBody.contains("wrapDisplayValueWithDatapointInformation"))
-        assertFalse(cell.valueGetterByDataPoint!!.lambdaBody.contains("wrapDisplayValueWithDatapointInformation"))
+        assertFalse(byDataPoint.lambdaBody.contains("wrapDisplayValueWithDatapointInformation"))
 
         // The default dataset expression is the raw field accessor, not the document-support value accessor.
         assertEquals("formatX(dataset.myField)", cell.valueGetter.lambdaBody)
-        assertEquals("formatX((parseDataPoint(dataPoint) as string))", cell.valueGetterByDataPoint!!.lambdaBody)
+        assertEquals("formatX((parseDataPoint(dataPoint) as string))", byDataPoint.lambdaBody)
 
-        assertTrue(cell.valueGetterByDataPoint!!.imports.contains(PARSE_DATAPOINT_IMPORT))
-        assertFalse(cell.valueGetterByDataPoint!!.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
+        assertTrue(byDataPoint.imports.contains(PARSE_DATAPOINT_IMPORT))
+        assertFalse(byDataPoint.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
     }
 
     @Test
@@ -135,39 +139,39 @@ class ViewConfigCellsTest {
         // addDocumentSupportedValueCell reads the document-support-aware accessor, so under a document support
         // that wraps the value it appends `?.value`; addNonDocumentSupportedValueCell always reads the raw
         // accessor, because its formatter consumes the whole data point.
-        val documentSupportedSection = newSection()
+        val documentSupportedSection = ViewConfigTestUtils.newSection()
         stringComponent(SimpleDocumentSupport).addDocumentSupportedValueCell(
             documentSupportedSection,
             ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "string") { "PRE[$it]POST" },
         )
-        assertContains(onlyCell(documentSupportedSection).valueGetter.lambdaBody, "PRE[dataset.myField?.value]POST")
+        assertContains(ViewConfigTestUtils.onlyCell(documentSupportedSection).valueGetter.lambdaBody, "PRE[dataset.myField?.value]POST")
 
-        val nonDocumentSupportedSection = newSection()
+        val nonDocumentSupportedSection = ViewConfigTestUtils.newSection()
         stringComponent(SimpleDocumentSupport).addNonDocumentSupportedValueCell(
             nonDocumentSupportedSection,
             ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "string") { "PRE[$it]POST" },
         )
         assertEquals(
             "PRE[dataset.myField]POST",
-            onlyCell(nonDocumentSupportedSection).valueGetter.lambdaBody,
+            ViewConfigTestUtils.onlyCell(nonDocumentSupportedSection).valueGetter.lambdaBody,
         )
     }
 
     @Test
     fun `dataPointCastType - check that each function pairs its own reader function with the matching import`() {
-        val documentSupportedSection = newSection()
+        val documentSupportedSection = ViewConfigTestUtils.newSection()
         stringComponent(NoDocumentSupport).addDocumentSupportedValueCell(
             documentSupportedSection,
             ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "MyType") { it },
         )
-        val documentSupportedGetter = onlyCell(documentSupportedSection).valueGetterByDataPoint!!
+        val documentSupportedGetter = assertNotNull(ViewConfigTestUtils.onlyCell(documentSupportedSection).valueGetterByDataPoint)
 
-        val nonDocumentSupportedSection = newSection()
+        val nonDocumentSupportedSection = ViewConfigTestUtils.newSection()
         stringComponent(NoDocumentSupport).addNonDocumentSupportedValueCell(
             nonDocumentSupportedSection,
             ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "MyType") { it },
         )
-        val nonDocumentSupportedGetter = onlyCell(nonDocumentSupportedSection).valueGetterByDataPoint!!
+        val nonDocumentSupportedGetter = assertNotNull(ViewConfigTestUtils.onlyCell(nonDocumentSupportedSection).valueGetterByDataPoint)
 
         // The reader function is derived from the called function, so it can no longer be mismatched with the
         // import that same function adds.
