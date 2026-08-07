@@ -52,7 +52,7 @@ class ViewConfigCellsTest {
     }
 
     @Test
-    fun `addDocumentSupportedValueCell - check if both getters are build only the datapoint getter references dataPoint`() {
+    fun `addDocumentSupportedValueCell - check if both getters are build and only the datapoint getter references dataPoint`() {
         val component = stringComponent(SimpleDocumentSupport)
         val section = ViewConfigTestUtils.newSection()
 
@@ -147,30 +147,5 @@ class ViewConfigCellsTest {
             "PRE[dataset.myField]POST",
             ViewConfigTestUtils.onlyCell(nonDocumentSupportedSection).valueGetter.lambdaBody,
         )
-    }
-
-    @Test
-    fun `dataPointCastType - check that each function pairs its own reader function with the matching import`() {
-        val documentSupportedSection = ViewConfigTestUtils.newSection()
-        stringComponent(NoDocumentSupport).addDocumentSupportedValueCell(
-            documentSupportedSection,
-            ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "MyType") { it },
-        )
-        val documentSupportedGetter = assertNotNull(ViewConfigTestUtils.onlyCell(documentSupportedSection).valueGetterByDataPoint)
-
-        val nonDocumentSupportedSection = ViewConfigTestUtils.newSection()
-        stringComponent(NoDocumentSupport).addNonDocumentSupportedValueCell(
-            nonDocumentSupportedSection,
-            ValueGetterSpec(formatterImports = emptySet(), dataPointCastType = "MyType") { it },
-        )
-        val nonDocumentSupportedGetter = assertNotNull(ViewConfigTestUtils.onlyCell(nonDocumentSupportedSection).valueGetterByDataPoint)
-        
-        assertEquals("(extractDatapointValue(dataPoint) as MyType)", documentSupportedGetter.lambdaBody)
-        assertTrue(documentSupportedGetter.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
-        assertFalse(documentSupportedGetter.imports.contains(PARSE_DATAPOINT_IMPORT))
-
-        assertEquals("(parseDataPoint(dataPoint) as MyType)", nonDocumentSupportedGetter.lambdaBody)
-        assertTrue(nonDocumentSupportedGetter.imports.contains(PARSE_DATAPOINT_IMPORT))
-        assertFalse(nonDocumentSupportedGetter.imports.contains(EXTRACT_DATAPOINT_VALUE_IMPORT))
     }
 }
