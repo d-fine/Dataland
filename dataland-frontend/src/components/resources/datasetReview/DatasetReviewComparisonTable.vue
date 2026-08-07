@@ -418,7 +418,7 @@ function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, Availa
  * @param {DataPointQaReport | undefined} qaReport - The QA report to build a display value for.
  * @param {(dataPoint: string) => AvailableMLDTDisplayObjectTypes} valueGetterByDataPoint - The cell's
  * data-point-based value getter.
- * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when there is nothing to show.
+ * @returns {AvailableMLDTDisplayObjectTypes} The display value.
  */
 function getQaReviewDisplayForReport(
   qaReport: DataPointQaReport | undefined,
@@ -444,7 +444,7 @@ function getQaReviewDisplayForReport(
  * was submitted for this data point), so it can be rendered via MultiLayerDataTableCell.
  *
  * @param {MLDTCellConfig<FrameworkData>} cell - The cell configuration to build the custom display for.
- * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
+ * @returns {AvailableMLDTDisplayObjectTypes} The display value.
  */
 function getCustomDisplay(cell: MLDTCellConfig<FrameworkData>): AvailableMLDTDisplayObjectTypes {
   if (!cell.dataPointTypeId) {
