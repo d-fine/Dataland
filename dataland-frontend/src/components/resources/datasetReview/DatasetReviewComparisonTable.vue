@@ -125,7 +125,7 @@
                         :inReviewMode="true"
                       />
                       <span v-if="isCellEmpty(row, AcceptedDataPointSource.Original)" class="main-text-color">
-                        &ndash;
+                        {{ NO_DATA_POINT_VALUE_FOUND_LABEL }}
                       </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Original)"
@@ -148,14 +148,10 @@
                   >
                     <div class="flex align-items-start gap-0">
                       <MultiLayerDataTableCell
-                        v-if="row.qaReviewDisplay.get(qaReporter.reporterUserId)"
                         :content="row.qaReviewDisplay.get(qaReporter.reporterUserId) as AvailableMLDTDisplayObjectTypes"
                         :meta-info="dataMetaInformation as DataMetaInformation"
                         :inReviewMode="true"
                       />
-                      <span v-else class="main-text-color">
-                        {{ getQaDisplayText(row, qaReporter.reporterUserId) }}
-                      </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Qa, qaReporter.reporterUserId)"
                         class="pi pi-check text-green-500 ml-3 accepted-check"
@@ -173,14 +169,10 @@
                   <td class="vertical-align-top">
                     <div class="flex align-items-start gap-0">
                       <MultiLayerDataTableCell
-                        v-if="row.customDisplay"
                         :content="row.customDisplay"
                         :meta-info="dataMetaInformation as DataMetaInformation"
                         :inReviewMode="true"
                       />
-                      <span v-else-if="getCustomDisplayValue(row.dataPointTypeId) != null">
-                        {{ getCustomDisplayValue(row.dataPointTypeId) }}
-                      </span>
                       <span
                         v-if="isAcceptedSource(row, AcceptedDataPointSource.Custom)"
                         class="pi pi-check text-green-500 ml-3 accepted-check"
@@ -325,6 +317,9 @@ const sortedReports = computed(() => {
   }
 });
 
+const NO_DATA_POINT_VALUE_FOUND_LABEL = '-';
+const NO_DATA_POINT_ID_FOUND_LABEL = '';
+
 type SectionRow = {
   type: 'section';
   label: string;
@@ -337,7 +332,7 @@ export type CellRow = {
   dataPointTypeId?: string;
   originalDisplay: AvailableMLDTDisplayObjectTypes;
   qaReviewDisplay: Map<string, AvailableMLDTDisplayObjectTypes>;
-  customDisplay?: AvailableMLDTDisplayObjectTypes;
+  customDisplay: AvailableMLDTDisplayObjectTypes;
   explanation?: string;
 };
 
@@ -392,54 +387,28 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
  * @returns {Map<string, AvailableMLDTDisplayObjectTypes>} Map of reporterUserId to display value.
  */
 function getQaReviewMap(cell: MLDTCellConfig<FrameworkData>): Map<string, AvailableMLDTDisplayObjectTypes> {
-  const qaReviewMap = new Map<string, AvailableMLDTDisplayObjectTypes>();
   if (!cell.dataPointTypeId) {
-    return qaReviewMap;
+    // create a Map that displays an empty string for each qaReporter. If this is missing we get a NullPointerException.
+    return new Map(
+      props.datasetReview.qaReporters.map((qaReporter) => [
+        qaReporter.reporterUserId,
+        formatStringForDatatable(NO_DATA_POINT_ID_FOUND_LABEL),
+      ])
+    );
   }
+  const qaReviewMap = new Map<string, AvailableMLDTDisplayObjectTypes>();
   if (!cell.valueGetterByDataPoint) {
     // Fallback in case no valueGetterByDataPoint function is implemented for this data point
     console.log(
       `The data point with label ${cell.label} does not seem to have a valueGetterByDataPoint() function implemented. ` +
         `Falling back to using a simple string to display value.`
     );
-    for (const qaReporter of props.datasetReview.qaReporters) {
-      const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
-      const display = getQaReviewFallbackDisplayForReport(qaReport);
-      if (display != null) {
-        qaReviewMap.set(qaReporter.reporterUserId, display);
-      }
-    }
-  } else {
-    for (const qaReporter of props.datasetReview.qaReporters) {
-      const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
-      const display = getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint);
-      if (display != null) {
-        qaReviewMap.set(qaReporter.reporterUserId, display);
-      }
-    }
+  }
+  for (const qaReporter of props.datasetReview.qaReporters) {
+    const qaReport = getQaReportFor(cell.dataPointTypeId, qaReporter.reporterUserId);
+    qaReviewMap.set(qaReporter.reporterUserId, getQaReviewDisplayForReport(qaReport, cell.valueGetterByDataPoint));
   }
   return qaReviewMap;
-}
-
-/**
- * Returns a short human-readable label for QA verdicts that don't carry a corrected value
- * worth displaying (Accepted / Inconclusive / Not Attempted), or null for verdicts where the
- * actual corrected data point value should be displayed instead (e.g. QaRejected).
- *
- * @param {QaReportDataPointVerdict} [verdict] - The QA report verdict to map.
- * @returns {string | null} The label, or null when the verdict has no dedicated simple text.
- */
-function getQaVerdictSimpleText(verdict?: QaReportDataPointVerdict): string | null {
-  switch (verdict) {
-    case QaReportDataPointVerdict.QaAccepted:
-      return 'QA Accepted';
-    case QaReportDataPointVerdict.QaInconclusive:
-      return 'QA Inconclusive';
-    case QaReportDataPointVerdict.QaNotAttempted:
-      return 'QA Not Attempted';
-    default:
-      return null;
-  }
 }
 
 /**
@@ -453,34 +422,21 @@ function getQaVerdictSimpleText(verdict?: QaReportDataPointVerdict): string | nu
  */
 function getQaReviewDisplayForReport(
   qaReport: DataPointQaReport | undefined,
-  valueGetterByDataPoint: (dataPoint: string) => AvailableMLDTDisplayObjectTypes
-): AvailableMLDTDisplayObjectTypes | undefined {
-  if (!qaReport) return undefined;
-  const simpleText = getQaVerdictSimpleText(qaReport.verdict);
-  if (simpleText != null) return formatStringForDatatable(simpleText);
-  if (qaReport.correctedData != null) return valueGetterByDataPoint(qaReport.correctedData);
-  return undefined;
-}
-
-/**
- * Builds a fallback display value for a QA report when no data-point-specific value getter
- * is available. Uses a simple verdict label (Accepted/Inconclusive/Not Attempted) when
- * applicable, otherwise falls back to the corrected value extracted from the report's JSON payload.
- *
- * @param {DataPointQaReport | undefined} qaReport - The QA report to build a display value for.
- * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
- */
-function getQaReviewFallbackDisplayForReport(
-  qaReport: DataPointQaReport | undefined
-): AvailableMLDTDisplayObjectTypes | undefined {
-  const simpleText = getQaVerdictSimpleText(qaReport?.verdict);
-  let display: AvailableMLDTDisplayObjectTypes | undefined;
-  if (simpleText != null) {
-    display = formatStringForDatatable(simpleText);
-  } else {
-    display = formatStringForDatatable(getCorrectedDisplayFromQaReport(qaReport));
+  valueGetterByDataPoint?: (dataPoint: string) => AvailableMLDTDisplayObjectTypes
+): AvailableMLDTDisplayObjectTypes {
+  switch (qaReport?.verdict) {
+    case QaReportDataPointVerdict.QaAccepted:
+      return formatStringForDatatable('QA Accepted');
+    case QaReportDataPointVerdict.QaInconclusive:
+      return formatStringForDatatable('QA Inconclusive');
+    case QaReportDataPointVerdict.QaNotAttempted:
+      return formatStringForDatatable('QA Not Attempted');
+    default:
+      if (valueGetterByDataPoint && qaReport?.correctedData != null) {
+        return valueGetterByDataPoint(qaReport.correctedData);
+      }
+      return formatStringForDatatable(getCorrectedDisplayFromQaReport(qaReport) ?? NO_DATA_POINT_VALUE_FOUND_LABEL);
   }
-  return display;
 }
 
 /**
@@ -490,19 +446,18 @@ function getQaReviewFallbackDisplayForReport(
  * @param {MLDTCellConfig<FrameworkData>} cell - The cell configuration to build the custom display for.
  * @returns {AvailableMLDTDisplayObjectTypes | undefined} The display value, or undefined when unavailable.
  */
-function getCustomDisplay(cell: MLDTCellConfig<FrameworkData>): AvailableMLDTDisplayObjectTypes | undefined {
-  if (!cell.dataPointTypeId || !cell.valueGetterByDataPoint) {
-    return undefined;
+function getCustomDisplay(cell: MLDTCellConfig<FrameworkData>): AvailableMLDTDisplayObjectTypes {
+  if (!cell.dataPointTypeId) {
+    return formatStringForDatatable(NO_DATA_POINT_ID_FOUND_LABEL);
   }
-  const reviewInfo = getReviewInfo(cell.dataPointTypeId);
-  if (reviewInfo?.customValue == null) {
-    return undefined;
+  const customValue = getReviewInfo(cell.dataPointTypeId)?.customValue;
+  if (!customValue) {
+    return formatStringForDatatable(NO_DATA_POINT_VALUE_FOUND_LABEL);
   }
-  if (!cell.valueGetterByDataPoint) {
-    // Fallback in case valueGetterByDataPoint is not implemented for this datapoint.
-    return formatStringForDatatable(getCustomDisplayValue(cell.dataPointTypeId));
+  if (cell.valueGetterByDataPoint) {
+    return cell.valueGetterByDataPoint(customValue);
   }
-  return cell.valueGetterByDataPoint(reviewInfo.customValue);
+  return formatStringForDatatable(getCustomDisplayValue(cell.dataPointTypeId) ?? NO_DATA_POINT_VALUE_FOUND_LABEL);
 }
 
 const allRows = computed<KpiRow[]>(() => {
@@ -563,8 +518,8 @@ function getRowDataTest(row: KpiRow): string | undefined {
  * @param {string} reporterUserId - The userId of the user who uploaded the QA report.
  * @returns {DataPointQaReport | undefined} The matching QA report summary or undefined when not found.
  */
-function getQaReportFor(dataPointTypeId: string, reporterUserId: string): DataPointQaReport | undefined {
-  if (!dataPointTypeId) return undefined;
+function getQaReportFor(dataPointTypeId?: string, reporterUserId?: string): DataPointQaReport | undefined {
+  if (!dataPointTypeId || !reporterUserId) return undefined;
   const datapointEntry = props.datasetReview.dataPoints[dataPointTypeId];
   if (!datapointEntry) return undefined;
   return datapointEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
@@ -653,10 +608,7 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
     }
 
     case AcceptedDataPointSource.Qa: {
-      const report =
-        reporterUserId == null || !cellRow.dataPointTypeId
-          ? undefined
-          : getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
+      const report = getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
       const corrected = getCorrectedDisplayFromQaReport(report);
       return corrected == null || corrected === '';
     }
@@ -684,10 +636,7 @@ function shouldShowRejectedIcon(cellRow: CellRow, source: AcceptedDataPointSourc
   if (isCellEmpty(cellRow, source, reporterUserId)) return false;
   if (isAcceptedSource(cellRow, source, reporterUserId)) return false;
   if (source === AcceptedDataPointSource.Qa) {
-    const report =
-      reporterUserId == null || !cellRow.dataPointTypeId
-        ? undefined
-        : getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
+    const report = getQaReportFor(cellRow.dataPointTypeId, reporterUserId);
     if (!report) return false;
   }
   return true;
@@ -710,17 +659,6 @@ function isRowEmpty(cellRow: CellRow): boolean {
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllColumns;
 }
 
-/**
- * Return the display text for a cell's QA report (verdict label or corrected value).
- *
- * @param {CellRow} cellRow - Table cell row describing the data point.
- * @param {string} reporterUserId - Reporter user id to look up the QA report.
- * @returns {string} Short label for the QA verdict or the corrected display value.
- */
-function getQaDisplayText(cellRow: CellRow, reporterUserId: string): string {
-  const report = cellRow.dataPointTypeId ? getQaReportFor(cellRow.dataPointTypeId, reporterUserId) : undefined;
-  return getQaVerdictSimpleText(report?.verdict) ?? getCorrectedDisplayFromQaReport(report) ?? '–';
-}
 </script>
 
 <style scoped>
