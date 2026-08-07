@@ -43,6 +43,6 @@
     "prettier": "3.8.5",
     "prettier-plugin-astro": "0.14.1",
     "tailwindcss": "4.2.4",
-    "vue-eslint-parser": "10.4.0"
+    "vue-eslint-parser": "10.4.1"
   }
 }
