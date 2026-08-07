@@ -658,7 +658,6 @@ function isRowEmpty(cellRow: CellRow): boolean {
 
   return isOriginalEmpty && isCustomEmpty && isQaEmptyForAllColumns;
 }
-
 </script>
 
 <style scoped>
