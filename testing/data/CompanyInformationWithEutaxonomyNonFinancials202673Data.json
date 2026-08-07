@@ -244,6 +244,10 @@
 					"comment": "synthesize bluetooth port",
 					"quality": "NoDataFound"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 59.93,
@@ -443,6 +447,10 @@
 					"comment": "input cross-platform matrix",
 					"quality": "NoDataFound"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": null
 				},
@@ -850,6 +858,10 @@
 					"quality": "NoDataFound"
 				},
 				"transitionalShareInPercent": null,
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": null
 				},
@@ -1079,6 +1091,10 @@
 					"comment": "calculate mobile feed",
 					"quality": null
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 43.41,
@@ -1857,6 +1873,10 @@
 					"comment": "reboot online port",
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 57.59,
@@ -1978,6 +1998,10 @@
 					"quality": "Audited"
 				},
 				"transitionalShareInPercent": null,
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": null
 				},
@@ -2385,6 +2409,10 @@
 					"quality": "Incomplete"
 				},
 				"transitionalShareInPercent": null,
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 30.85,
@@ -2677,6 +2705,10 @@
 					"comment": null,
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": null,
@@ -3231,6 +3263,10 @@
 					"comment": null,
 					"quality": "Reported"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 73.97,
@@ -3410,6 +3446,10 @@
 					"quality": "Incomplete"
 				},
 				"transitionalShareInPercent": null,
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 75.24,
@@ -3793,6 +3833,10 @@
 					"comment": "index multi-byte capacitor",
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 42.92,
@@ -4078,6 +4122,10 @@
 					"comment": null,
 					"quality": "Incomplete"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 59.89,
@@ -4766,6 +4814,10 @@
 					"comment": "calculate solid state protocol",
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": null
 				},
@@ -4877,6 +4929,10 @@
 					"comment": "index redundant matrix",
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 7.23,
@@ -5401,6 +5457,10 @@
 					"quality": "Estimated"
 				},
 				"transitionalShareInPercent": null,
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": null,
@@ -5550,6 +5610,10 @@
 					"comment": "hack primary driver",
 					"quality": "Estimated"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 73.51,
@@ -6163,6 +6227,10 @@
 					"comment": "parse back-end interface",
 					"quality": null
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 47.76,
@@ -6312,6 +6380,10 @@
 					"comment": "connect redundant bandwidth",
 					"quality": "NoDataFound"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 74.11,
@@ -6829,6 +6901,10 @@
 					"comment": "input wireless circuit",
 					"quality": "Audited"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 45.14,
@@ -6985,6 +7061,10 @@
 					"comment": null,
 					"quality": "NoDataFound"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": null,

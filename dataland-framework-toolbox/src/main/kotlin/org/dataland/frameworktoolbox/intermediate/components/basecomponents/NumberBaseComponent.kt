@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWith
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.NoUploadAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -76,6 +77,17 @@ open class NumberBaseComponent(
         if (minimumValue != null || maximumValue != null) {
             minimumValue?.let { annotations.add(MinimumValueAnnotation(it)) }
             maximumValue?.let { annotations.add(MaximumValueAnnotation(it)) }
+        }
+        return annotations
+    }
+
+    /**
+     * Returns a list of datamodel annotations to enforce the NoUpload rule
+     */
+    fun getNoUploadAnnotation(hasNoUpload: Boolean): List<Annotation> {
+        val annotations = mutableListOf<Annotation>()
+        if (hasNoUpload) {
+            annotations.add(NoUploadAnnotation())
         }
         return annotations
     }

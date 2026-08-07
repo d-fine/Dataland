@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -85,3 +86,56 @@ internal fun getSourceFrameworkLabel(sourceFrameworks: List<FrameworkSpecificati
         .takeIf { it.isNotEmpty() }
         ?.joinToString(", ")
         ?: "Unknown"
+
+internal fun extendCreateCommentEuTaxonomyActivitiesMerge(
+    baseComment: String,
+    activitiesWithConflictingSubstantialContributions: List<Activity>,
+    activitiesWithoutAlignedShares: List<Activity>,
+): String {
+    var comment = baseComment
+    comment =
+        if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
+            comment + "\n\n" +
+                "For the following activities, more than one substantial contribution was reported as non-zero " +
+                "in the old framework. Since the substantial contributions are expected to sum up to the " +
+                "activity's aligned relative share, but the correct scaling could not be determined from the " +
+                "old framework, no substantial contributions were mapped for these activities:\n\n" +
+                activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    comment =
+        if (activitiesWithoutAlignedShares.isNotEmpty()) {
+            comment + "\n\n" +
+                "Activities without relative aligned share cannot have substantial contributions," +
+                "whose values must add up to the relative share. Thus, the substantial contributions" +
+                "were removed for these activities:\n\n" +
+                activitiesWithoutAlignedShares.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    return comment
+}
+
+/**
+ * Creates the comment for the EU taxonomy share conversion.
+ *
+ * The comment names the source activity lists the share was derived from and lists them in a sources section.
+ *
+ * @param inputs the uploaded source data points the share was derived from
+ * @param specs the data point type specifications used to resolve source display names
+ * @param dataPoints the deserialized source data points used to inspect quality and source comments
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the generated conversion comment
+ */
+internal fun createCommentEuTaxonomyShare(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+    dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): String =
+    "This share was derived from the EU Taxonomy (2020/852) framework based on the activity lists " +
+        getNumberedSourceReferences(inputs).joinToString(", ") + "\n\n***\n\n" +
+        getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)

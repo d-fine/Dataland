@@ -84,6 +84,10 @@ export function generateEutaxonomyNonFinancials202673Data(
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       enablingShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      relativeShareOfNuclearActivitiesInPercentEligible: null,
+      relativeShareOfNuclearActivitiesInPercentAligned: null,
+      relativeShareOfFossilGasActivitiesInPercentEligible: null,
+      relativeShareOfFossilGasActivitiesInPercentAligned: null,
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
@@ -118,6 +122,10 @@ export function generateEutaxonomyNonFinancials202673Data(
         dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       enablingShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       transitionalShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
+      relativeShareOfNuclearActivitiesInPercentEligible: null,
+      relativeShareOfNuclearActivitiesInPercentAligned: null,
+      relativeShareOfFossilGasActivitiesInPercentEligible: null,
+      relativeShareOfFossilGasActivitiesInPercentAligned: null,
       nonAssessedShare: {
         relativeShareInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomPercentageValue()),
       },
