@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport

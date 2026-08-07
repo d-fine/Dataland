@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.dataland.frameworktoolbox.intermediate.components.ViewConfigTestUtils
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
 import org.dataland.frameworktoolbox.intermediate.group.create
