@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedDecimalDataPoint
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -343,11 +344,23 @@ enum class DataPointConversion(
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
         val sources = operands.sources
+        val (mergedActivities, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares) =
+            operands
+                .mergeLists()
+        val baseComment =
+            createComment(
+                inputs,
+                specs,
+                sources.filterNotNull(),
+                sourceFrameworksByType,
+            )
+        val comment =
+            extendEuTaxonomyActivityComment(baseComment, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares)
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = operands.mergeLists(),
+                value = mergedActivities,
                 quality = mergeQuality(sources.map { it?.quality }),
-                comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
+                comment = comment,
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
             )
         return createUploadedDataPoint(
@@ -356,41 +369,73 @@ enum class DataPointConversion(
             calculatedDataPoint = calculatedDataPoint,
         )
     }
+}
 
-    /**
-     * Derives the share of the eligible or aligned activities of a single activity group from the reported activity
-     * lists.
-     *
-     * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs
-     * are read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
-     *
-     * @param inputs the source data points holding the activity lists
-     * @param targetType the data point type assigned to the resulting data point
-     * @param specs the data point type specifications used to resolve each input's role
-     * @param sourceFrameworksByType framework specifications associated with each source data point type
-     * @return the derived share as an [ExtendedDecimalDataPoint]
-     */
-    protected fun convertEuTaxonomyShare(
-        inputs: Collection<UploadedDataPoint>,
-        targetType: DataPointType,
-        specs: Map<DataPointType, DataPointTypeSpecification>,
-        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
-    ): UploadedDataPoint {
-        val operands = extractEuTaxonomyActivitiesOperands(inputs, specs)
-        val sources = operands.sources
-        val calculatedDataPoint =
-            ExtendedDecimalDataPoint(
-                value = operands.calculateShare(resolveEuTaxonomyShareRule(targetType)),
-                quality = mergeQuality(sources.map { it?.quality }),
-                comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
-                dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
-            )
-        return createUploadedDataPoint(
-            inputs = inputs,
-            targetType = targetType,
-            calculatedDataPoint = calculatedDataPoint,
+private fun extendEuTaxonomyActivityComment(
+    baseComment: String,
+    activitiesWithConflictingSubstantialContributions: List<Activity>,
+    activitiesWithoutAlignedShares: List<Activity>,
+): String {
+    var comment = baseComment
+    comment =
+        if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
+            comment + "\n\n" +
+                "For the following activities, more than one substantial contribution was reported as non-zero " +
+                "in the old framework. Since the substantial contributions are expected to sum up to the " +
+                "activity's aligned relative share, but the correct scaling could not be determined from the " +
+                "old framework, no substantial contributions were mapped for these activities:\n\n" +
+                activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    comment =
+        if (activitiesWithoutAlignedShares.isNotEmpty()) {
+            comment + "\n\n" +
+                "Activities without relative aligned share cannot have substantial contributions," +
+                "whose values must add up to the relative share. Thus, the substantial contributions" +
+                "were removed for these activities:\n\n" +
+                activitiesWithoutAlignedShares.joinToString("\n") { "- ${it.value}" }
+        } else {
+            comment
+        }
+
+    return comment
+}
+
+/**
+ * Derives the share of the eligible or aligned activities of a single activity group from the reported activity
+ * lists.
+ *
+ * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs
+ * are read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
+ *
+ * @param inputs the source data points holding the activity lists
+ * @param targetType the data point type assigned to the resulting data point
+ * @param specs the data point type specifications used to resolve each input's role
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the derived share as an [ExtendedDecimalDataPoint]
+ */
+protected fun convertEuTaxonomyShare(
+    inputs: Collection<UploadedDataPoint>,
+    targetType: DataPointType,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): UploadedDataPoint {
+    val operands = extractEuTaxonomyActivitiesOperands(inputs, specs)
+    val sources = operands.sources
+    val calculatedDataPoint =
+        ExtendedDecimalDataPoint(
+            value = operands.calculateShare(resolveEuTaxonomyShareRule(targetType)),
+            quality = mergeQuality(sources.map { it?.quality }),
+            comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
+            dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
         )
-    }
+    return createUploadedDataPoint(
+        inputs = inputs,
+        targetType = targetType,
+        calculatedDataPoint = calculatedDataPoint,
+    )
 }
 
 /**
