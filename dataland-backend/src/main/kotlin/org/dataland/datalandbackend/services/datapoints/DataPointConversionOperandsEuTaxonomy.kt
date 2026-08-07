@@ -88,57 +88,39 @@ internal data class EuTaxonomy2020ActivityOperands<
      * Merges the non-aligned and aligned activity lists into a single list of eligible-or-aligned activities,
      * combining entries that share the same activity name, NACE codes, and currency.
      *
-     * @return the merged activities, or `null` if neither list contains any entries
+     * @return a [Pair] of the merged activities (or `null` if neither list contains any entries) and the names of the
+     *   activities for which conflicting substantial contributions were detected and removed
      */
-    fun mergeLists(): MutableList<EuTaxonomyEligibleOrAlignedActivity>? {
-        val nonAlignedActivitiesMap =
-            nonAlignedActivitiesValue?.groupBy { activity ->
-                Triple(
-                    activity.activityName,
-                    activity.naceCodes?.toSet(),
-                    activity.share?.absoluteShare?.currency,
-                )
-            }
-        val alignedActivitiesMap =
-            alignedActivitiesValue?.groupBy { activity ->
-                Triple(
-                    activity.activityName,
-                    activity.naceCodes?.toSet(),
-                    activity.share?.absoluteShare?.currency,
-                )
-            }
+    fun mergeLists(): Triple<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>, List<Activity>> {
+        val nonAlignedActivitiesMap = groupActivitiesByIdentifier(nonAlignedActivitiesValue) { activityIdentifier(it) }
+        val alignedActivitiesMap = groupActivitiesByIdentifier(alignedActivitiesValue) { activityIdentifier(it) }
         val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
 
         val eligibleOrAlignedActivities: MutableList<EuTaxonomyEligibleOrAlignedActivity> = mutableListOf()
+        val activitiesWithConflictingSubstantialContributions: MutableList<Activity> = mutableListOf()
+        val activitiesWithoutAlignedShares: MutableList<Activity> = mutableListOf()
         for (identifier in identifiers) {
-            val alignedActivities = alignedActivitiesMap?.get(identifier)
-            val nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier)
-            val alignedAbsoluteShare =
-                determineAlignedAbsoluteShare(
-                    alignedActivities = alignedActivities,
-                    currency = identifier.third,
-                )
-            val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
-            val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
-            val relativeEligibleShareInPercent =
-                if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
-                    null
-                } else {
-                    (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
-                }
-            val activity =
-                createEuTaxonomyEligibleOrAlignedActivity(
-                    identifier,
-                    alignedAbsoluteShare,
-                    alignedRelativeShare,
-                    relativeEligibleShareInPercent,
-                    alignedActivities,
-                )
-            if (isActivityRelevant(activity)) {
-                eligibleOrAlignedActivities.add(activity)
+            val mergedActivity =
+                buildMergedActivity(
+                    identifier = identifier,
+                    alignedActivities = alignedActivitiesMap?.get(identifier),
+                    nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier),
+                ) ?: continue
+            val (adjustedActivity, hadConflict) = mergedActivity
+            if (hadConflict) {
+                activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
             }
+            if (adjustedActivity.share?.relativeShareInPercent == null) {
+                activitiesWithoutAlignedShares.add(adjustedActivity.activityName)
+            }
+            eligibleOrAlignedActivities.add(adjustedActivity)
         }
-        return eligibleOrAlignedActivities.takeIf { it.isNotEmpty() }
+        return Triple(
+            eligibleOrAlignedActivities.takeIf {
+                it.isNotEmpty()
+            },
+            activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares,
+        )
     }
 
     override fun calculateEligibleShare(activities: List<Activity>): BigDecimal {

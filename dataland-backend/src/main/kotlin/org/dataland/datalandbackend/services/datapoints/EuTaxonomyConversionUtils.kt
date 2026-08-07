@@ -59,6 +59,88 @@ internal fun determineNonAlignedRelativeShare(nonAlignedActivities: List<EuTaxon
     nonAlignedActivities?.mapNotNull { it.share?.relativeShareInPercent }?.takeIf { it.isNotEmpty() }?.sumOf { it }
 
 /**
+ * Groups [activities] by the identifier derived from each entry via [identifierOf], mirroring the grouping used to
+ * match non-aligned and aligned activities sharing the same activity name, NACE codes, and currency.
+ */
+internal fun <T> groupActivitiesByIdentifier(
+    activities: Iterable<T>?,
+    identifierOf: (T) -> Triple<Activity, Set<String>?, String?>,
+): Map<Triple<Activity, Set<String>?, String?>, List<T>>? = activities?.groupBy(identifierOf)
+
+internal fun activityIdentifier(activity: EuTaxonomyActivity): Triple<Activity, Set<String>?, String?> =
+    Triple(activity.activityName, activity.naceCodes?.toSet(), activity.share?.absoluteShare?.currency)
+
+internal fun activityIdentifier(activity: EuTaxonomyAlignedActivity): Triple<Activity, Set<String>?, String?> =
+    Triple(activity.activityName, activity.naceCodes?.toSet(), activity.share?.absoluteShare?.currency)
+
+/**
+ * Builds the merged [EuTaxonomyEligibleOrAlignedActivity] for a single activity [identifier] from the aligned and
+ * non-aligned activities sharing that identifier, resolving any substantial contribution conflict.
+ *
+ * @param identifier the activity name, NACE codes, and currency shared by the merged activities
+ * @param alignedActivities the aligned activities sharing [identifier], or `null` if there are none
+ * @param nonAlignedActivities the non-aligned activities sharing [identifier], or `null` if there are none
+ * @return a pair of the merged activity and whether a substantial contribution conflict was resolved for it, or
+ *   `null` if the merged activity is not relevant (see [isActivityRelevant])
+ */
+internal fun buildMergedActivity(
+    identifier: Triple<Activity, Set<String>?, String?>,
+    alignedActivities: List<EuTaxonomyAlignedActivity>?,
+    nonAlignedActivities: List<EuTaxonomyActivity>?,
+): Pair<EuTaxonomyEligibleOrAlignedActivity, Boolean>? {
+    val alignedAbsoluteShare =
+        determineAlignedAbsoluteShare(
+            alignedActivities = alignedActivities,
+            currency = identifier.third,
+        )
+    val alignedRelativeShare = determineAlignedRelativeShare(alignedActivities)
+    val nonAlignedRelativeShare = determineNonAlignedRelativeShare(nonAlignedActivities)
+    val relativeEligibleShareInPercent =
+        if (alignedRelativeShare == null && nonAlignedRelativeShare == null) {
+            null
+        } else {
+            (alignedRelativeShare ?: BigDecimal.ZERO) + (nonAlignedRelativeShare ?: BigDecimal.ZERO)
+        }
+    val activity =
+        createEuTaxonomyEligibleOrAlignedActivity(
+            identifier,
+            alignedAbsoluteShare,
+            alignedRelativeShare,
+            relativeEligibleShareInPercent,
+            alignedActivities,
+        )
+    val (adjustedActivity, hadConflict) = removeConflictingSubstantialContribution(activity)
+    return if (isActivityRelevant(adjustedActivity)) adjustedActivity to hadConflict else null
+}
+
+/**
+ * Checks the substantial contribution fields (the `BigDecimal?` fields named `substantialContributionTo...InPercent`) of
+ * [activity]. If more than one of them is non-null, returns a copy of [activity] with all of them set to `null` together
+ * with `true` to signal that a conflict was resolved; otherwise returns [activity] unchanged together with `false`.
+ */
+internal fun removeConflictingSubstantialContribution(
+    activity: EuTaxonomyEligibleOrAlignedActivity,
+): Pair<EuTaxonomyEligibleOrAlignedActivity, Boolean> {
+    val substantialContributionProperties =
+        EuTaxonomyEligibleOrAlignedActivity::class
+            .memberProperties
+            .filter { it.name.startsWith("substantialContributionTo") }
+    val nonNullCount = substantialContributionProperties.count { property -> property.get(activity) != null }
+    return if (nonNullCount > 1) {
+        activity.copy(
+            substantialContributionToClimateChangeMitigationInPercent = null,
+            substantialContributionToClimateChangeAdaptationInPercent = null,
+            substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent = null,
+            substantialContributionToTransitionToACircularEconomyInPercent = null,
+            substantialContributionToPollutionPreventionAndControlInPercent = null,
+            substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent = null,
+        ) to true
+    } else {
+        activity to false
+    }
+}
+
+/**
  * Builds a single merged [EuTaxonomyEligibleOrAlignedActivity] for one activity [identifier], combining the
  * pre-computed shares with the per-criterion substantial contributions and flags of the aligned activities
  * sharing that identifier.
