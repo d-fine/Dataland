@@ -91,13 +91,15 @@ class PercentageComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         sectionBuilder.addAtomicExpression(
             identifier,
-            if (hasNoUpload) "null" else {
+            if (hasNoUpload) {
+                "null"
+            } else {
                 documentSupport.getFixtureExpression(
                     fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
                     nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
                     nullable = isNullable,
                 )
-            }
+            },
         )
     }
 
