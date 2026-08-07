@@ -139,7 +139,7 @@ class DataPointConversionEuTaxonomyTest {
         assertEquals(
             false,
             extendedDataPoint.comment
-                ?.contains("Aligned activities without relative share cannot have substantial contributions"),
+                ?.contains("Activities without relative aligned share cannot have substantial contributions,"),
         )
     }
 

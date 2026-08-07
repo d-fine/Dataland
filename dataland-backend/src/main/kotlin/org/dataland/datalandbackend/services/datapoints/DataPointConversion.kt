@@ -375,7 +375,7 @@ private fun extendEuTaxonomyActivityComment(
     comment =
         if (activitiesWithoutAlignedShares.isNotEmpty()) {
             comment + "\n\n" +
-                "Aligned activities without relative share cannot have substantial contributions," +
+                "Activities without relative aligned share cannot have substantial contributions," +
                 "whose values must add up to the relative share. Thus, the substantial contributions" +
                 "were removed for these activities:\n\n" +
                 activitiesWithoutAlignedShares.joinToString("\n") { "- ${it.value}" }

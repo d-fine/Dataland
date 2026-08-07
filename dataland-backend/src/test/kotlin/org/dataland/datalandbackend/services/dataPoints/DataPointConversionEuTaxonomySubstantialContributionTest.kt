@@ -104,7 +104,7 @@ class DataPointConversionEuTaxonomySubstantialContributionTest {
         val comment = extendedDataPoint.comment
         assertNotNull(comment)
         assertEquals(false, comment.contains("more than one substantial contribution"))
-        assertEquals(true, comment.contains("Aligned activities without relative share cannot have substantial contributions"))
+        assertEquals(true, comment.contains("Activities without relative aligned share cannot have substantial contributions,"))
         assertEquals(true, comment.contains(Activity.AcquisitionAndOwnershipOfBuildings.value))
     }
 }
