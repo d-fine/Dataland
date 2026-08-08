@@ -155,6 +155,29 @@ describeIf(
         .should('contain', QualityOptions.Incomplete);
     });
 
+    it('should allow setting a BigDecimalDatapoint to zero', () => {
+      navigateToEditMode();
+      openEditDialog('extendedDecimalScope3GhgEmissionsInTonnes');
+
+      cy.get('div.p-dialog-content')
+        .should('be.visible')
+        .within(() => {
+          cy.get('[data-test="big-decimal-input"] input').should('be.visible');
+            cy.get('[data-test="big-decimal-input"] input').clear();
+            cy.get('[data-test="big-decimal-input"] input').type('0');
+        });
+
+      cy.get('[data-test="big-decimal-input"] input').blur();
+      saveDataPoint();
+
+      cy.contains('span.table-left-label', 'Scope 3 GHG emissions')
+        .closest('td')
+        .next('td')
+        .within(() => {
+          cy.get('span[meta-info]').should('contain', '0 Tonnes');
+        });
+    });
+
     it('should open a YesNo EditDataPointDialog, edit all fields and save changes successfully', () => {
       navigateToEditMode();
       openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
@@ -196,7 +219,8 @@ describeIf(
       cy.get('.p-select-overlay').should('be.visible');
 
       cy.get('.p-select-overlay').within(() => {
-        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist').scrollIntoView();
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').should('exist');
+        cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').scrollIntoView();
       });
       cy.get('.p-select-overlay').within(() => {
         cy.contains('li.p-select-option', 'East Caribbean Dollar (XCD)').click();
