@@ -203,7 +203,7 @@ private fun isRelevant(activity: EuTaxonomyEligibleOrAlignedActivity): Boolean =
 
 /**
  * Checks the substantial contribution fields (the `BigDecimal?` fields named `substantialContributionTo...InPercent`) of
- * [activity]. If more than one of them is non-null, returns a copy of [activity] with all of them set to `null` together
+ * [activity]. If more than one of them is non-null and greater zero, returns a copy of [activity] with all of them set to `null` together
  * with `true` to signal that a conflict was resolved; otherwise returns [activity] unchanged together with `false`.
  */
 private fun removeConflictingSubstantialContribution(
