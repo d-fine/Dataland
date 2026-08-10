@@ -328,8 +328,7 @@ enum class DataPointConversion(
             >(inputs, specs)
         val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
         val (mergedActivities, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares) =
-            activityLists
-                .mergeLists()
+            activityLists.mergeLists()
         val baseComment =
             createComment(
                 inputs,
@@ -341,7 +340,7 @@ enum class DataPointConversion(
             extendEuTaxonomyActivityComment(baseComment, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares)
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = mergedActivities,
+                value = mergedActivities.takeIf { it.isNotEmpty() },
                 quality = mergeQuality(sources.map { it?.quality }),
                 comment = comment,
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
