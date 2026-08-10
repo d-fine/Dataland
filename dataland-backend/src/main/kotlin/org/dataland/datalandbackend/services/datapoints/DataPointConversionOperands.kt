@@ -213,7 +213,11 @@ private fun removeConflictingSubstantialContribution(
         EuTaxonomyEligibleOrAlignedActivity::class
             .memberProperties
             .filter { it.name.startsWith("substantialContributionTo") }
-    val nonNullCount = substantialContributionProperties.count { property -> property.get(activity) != null }
+    val nonNullCount =
+        substantialContributionProperties.count { property ->
+            val value = property.get(activity)
+            value is BigDecimal && value > BigDecimal.ZERO
+        }
     return if (nonNullCount > 1) {
         activity.copy(
             substantialContributionToClimateChangeMitigationInPercent = null,

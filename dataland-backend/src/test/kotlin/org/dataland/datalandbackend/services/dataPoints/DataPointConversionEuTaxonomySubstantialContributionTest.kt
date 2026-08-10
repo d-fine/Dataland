@@ -37,6 +37,31 @@ class DataPointConversionEuTaxonomySubstantialContributionTest {
     }
 
     @Test
+    fun `check that 0 is not counting as a conflicting substantial contribution`() {
+        val result =
+            mergeActivitiesExtendedDataPoint(
+                nonAligned = null,
+                aligned =
+                    listOf(
+                        alignedActivity(
+                            relativeShareInPercent = BigDecimal("50"),
+                            absoluteShareAmount = BigDecimal("100"),
+                            substantialContributionToClimateChangeMitigationInPercent = BigDecimal("0"),
+                            substantialContributionToClimateChangeAdaptationInPercent = BigDecimal("50"),
+                        ),
+                    ),
+            ).value
+
+        assertNotNull(result)
+        assertEquals(1, result.size)
+        val activity = result.single()
+        assertNotNull(activity.share)
+        assertBigDecimalEquals("100", activity.share.absoluteShare?.amount)
+        assertBigDecimalEquals("0", activity.substantialContributionToClimateChangeMitigationInPercent)
+        assertBigDecimalEquals("50", activity.substantialContributionToClimateChangeAdaptationInPercent)
+    }
+
+    @Test
     fun `check that an activity relevant only due to a substantial contribution conflict is fully removed`() {
         val conflictingActivity =
             alignedActivity(
