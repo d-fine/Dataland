@@ -130,8 +130,6 @@ class DataPointConversionEuTaxonomyTest {
         assertEquals(null, activity.substantialContributionToClimateChangeAdaptationInPercent)
         assertEquals(YesNo.Yes, activity.enablingActivity)
         assertEquals(YesNo.No, activity.transitionalActivity)
-        // Regression check: additional comment notes must only be added when substantial contributions actually conflict
-        // or when the relative aligned share is null.
         assertEquals(
             false,
             extendedDataPoint.comment?.contains("more than one substantial contribution"),

@@ -24,7 +24,7 @@ const val ALIGNED_TARGET_TYPE = "alignedType"
 const val ACTIVITY_MERGE_RESULT_TYPE = "resultType"
 const val NACE_CODE_FIXTURE = "F.41.20"
 
-// These synthetic specs let extractEuTaxonomyActivityLists resolve which input is the non-aligned and
+// These synthetic specs let extractEuTaxonomy2020ActivityLists resolve which input is the non-aligned and
 // which is the aligned activity list purely by dataPointBaseType id, mirroring how the merge logic
 // distinguishes inputs by type rather than by position or content.
 val activityMergeSpecs =
@@ -54,7 +54,7 @@ val activityMergeSpecs =
 
 /**
  * Wraps [activities] into an [org.dataland.datalandbackend.model.datapoints.UploadedDataPoint] tagged with the
- * non-aligned target type, since [org.dataland.datalandbackend.services.datapoints.extractEuTaxonomyActivityLists]
+ * non-aligned target type, since [org.dataland.datalandbackend.services.datapoints.extractEuTaxonomy2020ActivityLists]
  * relies on the data point type to identify which input is the non-aligned activity list.
  */
 fun createNonAlignedInput(

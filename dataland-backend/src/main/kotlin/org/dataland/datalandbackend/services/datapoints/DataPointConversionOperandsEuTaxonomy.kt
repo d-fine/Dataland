@@ -42,6 +42,12 @@ internal interface EuTaxonomyActivitiesOperands {
 internal fun EuTaxonomyActivitiesOperands.calculateShare(rule: EuTaxonomyShareRule): BigDecimal? =
     if (rule.isAligned) calculateAlignedShare(rule.activities) else calculateEligibleShare(rule.activities)
 
+internal data class MergedListWithCommentData(
+    val mergedList: List<EuTaxonomyEligibleOrAlignedActivity>,
+    val conflictedSubstantialContributions: List<Activity>,
+    val nullShares: List<Activity>,
+)
+
 /**
  * Extracts the activity operands the EU taxonomy share is derived from.
  *
@@ -88,10 +94,11 @@ internal data class EuTaxonomy2020ActivityOperands<
      * Merges the non-aligned and aligned activity lists into a single list of eligible-or-aligned activities,
      * combining entries that share the same activity name, NACE codes, and currency.
      *
-     * @return a [Pair] of the merged activities (or `null` if neither list contains any entries) and the names of the
-     *   activities for which conflicting substantial contributions were detected and removed
+     * @return a [MergedListWithCommentData] of the merged activities and the names of the
+     *   activities for which (a) conflicting substantial contributions were detected and removed
+     *   (b) the relative aligned share was null.
      */
-    fun mergeLists(): Triple<List<EuTaxonomyEligibleOrAlignedActivity>?, List<Activity>, List<Activity>> {
+    fun mergeLists(): MergedListWithCommentData {
         val nonAlignedActivitiesMap = groupActivitiesByIdentifier(nonAlignedActivitiesValue) { activityIdentifier(it) }
         val alignedActivitiesMap = groupActivitiesByIdentifier(alignedActivitiesValue) { activityIdentifier(it) }
         val identifiers = nonAlignedActivitiesMap?.keys.orEmpty() + alignedActivitiesMap?.keys.orEmpty()
@@ -100,13 +107,12 @@ internal data class EuTaxonomy2020ActivityOperands<
         val activitiesWithConflictingSubstantialContributions: MutableList<Activity> = mutableListOf()
         val activitiesWithoutAlignedShares: MutableList<Activity> = mutableListOf()
         for (identifier in identifiers) {
-            val mergedActivity =
+            val (adjustedActivity, hadConflict) =
                 buildMergedActivity(
                     identifier = identifier,
                     alignedActivities = alignedActivitiesMap?.get(identifier),
                     nonAlignedActivities = nonAlignedActivitiesMap?.get(identifier),
                 ) ?: continue
-            val (adjustedActivity, hadConflict) = mergedActivity
             if (hadConflict) {
                 activitiesWithConflictingSubstantialContributions.add(adjustedActivity.activityName)
             }
@@ -115,11 +121,10 @@ internal data class EuTaxonomy2020ActivityOperands<
             }
             eligibleOrAlignedActivities.add(adjustedActivity)
         }
-        return Triple(
-            eligibleOrAlignedActivities.takeIf {
-                it.isNotEmpty()
-            },
-            activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares,
+        return MergedListWithCommentData(
+            eligibleOrAlignedActivities,
+            activitiesWithConflictingSubstantialContributions,
+            activitiesWithoutAlignedShares,
         )
     }
 
