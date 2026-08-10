@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.Eu
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
-import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -322,7 +321,7 @@ enum class DataPointConversion(
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
         val activityLists =
-            extractEuTaxonomyActivityLists<
+            extractEuTaxonomy2020ActivityLists<
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
@@ -337,7 +336,11 @@ enum class DataPointConversion(
                 sourceFrameworksByType,
             )
         val comment =
-            extendEuTaxonomyActivityComment(baseComment, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares)
+            extendCreateCommentEuTaxonomyActivitiesMerge(
+                baseComment,
+                activitiesWithConflictingSubstantialContributions,
+                activitiesWithoutAlignedShares,
+            )
         val calculatedDataPoint =
             ExtendedDataPoint(
                 value = mergedActivities.takeIf { it.isNotEmpty() },
@@ -351,38 +354,6 @@ enum class DataPointConversion(
             calculatedDataPoint = calculatedDataPoint,
         )
     }
-}
-
-private fun extendEuTaxonomyActivityComment(
-    baseComment: String,
-    activitiesWithConflictingSubstantialContributions: List<Activity>,
-    activitiesWithoutAlignedShares: List<Activity>,
-): String {
-    var comment = baseComment
-    comment =
-        if (activitiesWithConflictingSubstantialContributions.isNotEmpty()) {
-            comment + "\n\n" +
-                "For the following activities, more than one substantial contribution was reported as non-zero " +
-                "in the old framework. Since the substantial contributions are expected to sum up to the " +
-                "activity's aligned relative share, but the correct scaling could not be determined from the " +
-                "old framework, no substantial contributions were mapped for these activities:\n\n" +
-                activitiesWithConflictingSubstantialContributions.joinToString("\n") { "- ${it.value}" }
-        } else {
-            comment
-        }
-
-    comment =
-        if (activitiesWithoutAlignedShares.isNotEmpty()) {
-            comment + "\n\n" +
-                "Activities without relative aligned share cannot have substantial contributions," +
-                "whose values must add up to the relative share. Thus, the substantial contributions" +
-                "were removed for these activities:\n\n" +
-                activitiesWithoutAlignedShares.joinToString("\n") { "- ${it.value}" }
-        } else {
-            comment
-        }
-
-    return comment
 }
 
 /**
