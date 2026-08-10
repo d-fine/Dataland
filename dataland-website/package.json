@@ -21,21 +21,21 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "@astrojs/mdx": "^6.0.0",
-    "@astrojs/sitemap": "^3.3.1",
+    "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vue": "^6.0.0",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "astro": "^7.0.0",
+    "astro": "^7.2.0",
     "typescript": "^6.0.0",
-    "vue": "^3.5.32"
+    "vue": "^3.5.41"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.1",
+    "@tailwindcss/vite": "^4.3.3",
     "@typescript-eslint/eslint-plugin": "8.66.0",
     "@typescript-eslint/parser": "8.66.0",
     "@vue/eslint-config-prettier": "10.2.0",
-    "eslint": "10.8.0",
+    "eslint": "10.8.1",
     "eslint-plugin-astro": "1.7.0",
     "eslint-plugin-cypress": "6.3.1",
     "eslint-plugin-vue": "10.10.0",
