@@ -3,10 +3,9 @@ import {
   parseFormDataToDataPointJson,
   parseDataPointJsonToFormData,
   transformDataPointDetailToFormData,
-  unwrapDataPointJson,
-  wrapDataPointJson,
 } from '@/utils/JudgeDialogUtils';
-import type { CustomFormData, ParsedSingleDataPoint, DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { type ParsedSingleDataPoint, unwrapDataPointJson, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 describe('parseFormDataToDataPointJson', () => {
   const emptyForm: CustomFormData = {

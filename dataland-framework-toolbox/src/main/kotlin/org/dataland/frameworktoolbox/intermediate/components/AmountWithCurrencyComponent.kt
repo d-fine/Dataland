@@ -6,8 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -20,26 +18,29 @@ class AmountWithCurrencyComponent(
         identifier, parent,
         "org.dataland.datalandbackend.model.generics.AmountWithCurrency",
     ) {
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addNonDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "formatAmountWithCurrency",
+                            "@/utils/Formatter",
+                        ),
+                    ),
+                dataPointCastType = "AmountWithCurrency",
+                additionalDataPointImports = setOf(TypeScriptImport("type AmountWithCurrency", "@clients/backend")),
+            ) { valueExpression ->
                 "formatStringForDatatable(\n" +
-                    "formatAmountWithCurrency(${getTypescriptFieldAccessor()})\n" +
-                    ")",
-                setOf(
-                    TypeScriptImport(
-                        "formatStringForDatatable",
-                        "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                    ),
-                    TypeScriptImport(
-                        "formatAmountWithCurrency",
-                        "@/utils/Formatter",
-                    ),
-                ),
-            ),
+                    "formatAmountWithCurrency($valueExpression)\n" +
+                    ")"
+            },
         )
-    }
 
     override fun getUploadComponentName(): String = "AmountWithCurrencyFormField"
 

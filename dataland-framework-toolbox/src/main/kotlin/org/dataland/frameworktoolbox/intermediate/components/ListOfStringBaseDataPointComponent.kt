@@ -9,8 +9,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -45,27 +43,29 @@ class ListOfStringBaseDataPointComponent(
         )
     }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            FrameworkDisplayValueLambda(
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addNonDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports =
+                    setOf(
+                        TypeScriptImport(
+                            "formatListOfBaseDataPoint",
+                            "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
+                        ),
+                    ),
+                dataPointCastType = "Parameters<typeof formatListOfBaseDataPoint>[1]",
+            ) { valueExpression ->
                 "{\n" +
                     "return formatListOfBaseDataPoint(\n" +
                     "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
-                    "${getTypescriptFieldAccessor()},\n" +
+                    "$valueExpression,\n" +
                     "\"$descriptionColumnHeader\",\n" +
                     "\"$documentColumnHeader\",\n" +
                     ")\n" +
-                    "}",
-                setOf(
-                    TypeScriptImport(
-                        "formatListOfBaseDataPoint",
-                        "@/components/resources/dataTable/conversion/ListOfBaseDataPointGetterFactory",
-                    ),
-                ),
-            ),
+                    "}"
+            },
         )
-    }
 
     override fun getUploadComponentName(): String = "ListOfBaseDataPointsFormField"
 

@@ -13,8 +13,6 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
@@ -70,44 +68,56 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "((): AvailableMLDTDisplayObjectTypes =>{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement() +
-                        "})()",
-                    setOf(
-                        TypeScriptImport(
-                            "formatStringForDatatable",
-                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports = displayValueImports,
+                dataPointCastType = enumName,
+                additionalDataPointImports = setOf(TypeScriptImport("type $enumName", "@clients/backend")),
+            ) { valueExpression ->
+                createDisplayValueCode(generateReturnStatement(valueExpression))
+            },
         )
     }
 
+    private fun createDisplayValueCode(returnStatement: String): String =
+        "((): AvailableMLDTDisplayObjectTypes =>{\n" +
+            generateTsCodeForSelectOptionsMappingObject(options) +
+            returnStatement +
+            "})()"
+
+    private val displayValueImports =
+        setOf(
+            TypeScriptImport(
+                "formatStringForDatatable",
+                "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+            ),
+            TypeScriptImport(
+                "getOriginalNameFromTechnicalName",
+                "@/components/resources/dataTable/conversion/Utils",
+            ),
+        )
+
     override fun getUploadComponentName(): String =
         when (documentSupport) {
-            is NoDocumentSupport -> uploadMode.component
-            is ExtendedDocumentSupport ->
+            is NoDocumentSupport -> {
+                uploadMode.component
+            }
+
+            is ExtendedDocumentSupport -> {
                 if (uploadMode == UploadMode.Dropdown) {
                     "Extended${uploadMode.component}"
                 } else {
                     "RadioButtonsExtendedDataPointFormField"
                 }
-            else ->
+            }
+
+            else -> {
                 throw IllegalArgumentException(
                     "SingleSelectComponent ${uploadMode.component} does not " +
                         "support document support $documentSupport",
                 )
+            }
         }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
@@ -137,13 +147,9 @@ open class SingleSelectComponent(
         )
     }
 
-    private fun generateReturnStatement(): String {
-        val fieldAccessor = getTypescriptFieldAccessor()
-        val dataPointValueAccessor =
-            if (documentSupport == ExtendedDocumentSupport) "$fieldAccessor?.value" else fieldAccessor
-        return "return formatStringForDatatable(\n" +
-            "$dataPointValueAccessor ? " +
-            "getOriginalNameFromTechnicalName($dataPointValueAccessor, mappings) : \"\"\n" +
+    private fun generateReturnStatement(valueAccessor: String): String =
+        "return formatStringForDatatable(\n" +
+            "$valueAccessor ? " +
+            "getOriginalNameFromTechnicalName($valueAccessor, mappings) : \"\"\n" +
             ")\n"
-    }
 }
