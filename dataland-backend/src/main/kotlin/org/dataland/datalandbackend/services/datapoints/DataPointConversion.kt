@@ -361,7 +361,7 @@ enum class DataPointConversion(
             )
         val calculatedDataPoint =
             ExtendedDataPoint(
-                value = mergedActivities,
+                value = mergedActivities.takeIf { it.isNotEmpty() },
                 quality = mergeQuality(sources.map { it?.quality }),
                 comment = comment,
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
