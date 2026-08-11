@@ -112,7 +112,6 @@ class DataAvailabilityChecker
          * @return The subset of the input dimensions for which active data exists
          */
         fun filterViewableDimensions(dimensions: List<BasicDataDimensions>): List<BasicDataDimensions> {
-            requireNonEmptyInput(dimensions.isEmpty())
             val dataPointBasedDimensions =
                 getMetaDataOfActiveDataPoints(dimensions.map { it.toBasicDataPointDimensions() }).map { it.toBasicDataDimensions() }
             val nonAssembledFrameworkBasedDimensions =
