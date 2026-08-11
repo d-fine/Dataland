@@ -6,6 +6,12 @@ set_java_version() {
   source_bashrc
 }
 
+set_automatic_sourcing() {
+  echo set -a >> ~/.bashrc
+  source /srv/data/dataland/environments/.env.dev  >> ~/.bashrc
+  set +a  >> ~/.bashrc
+}
+
 install_node() {
   curl -o- https://fnm.vercel.app/install | bash
   source_bashrc
@@ -26,3 +32,4 @@ source_bashrc() {
 set_java_version
 install_node
 update_opencode
+set_automatic_sourcing

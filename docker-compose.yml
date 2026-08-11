@@ -5,13 +5,15 @@
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
 
+# These are envs/settings which are required for several services and therefore maintained centrally here:
 x-common-proxy-env: &proxy-env
   NO_PROXY: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
   no_proxy: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
-
-# These are envs/settings which are required for several services and therefore maintained centrally here:
+# NOTE: JVM HTTP clients (Spring Boot's RestTemplate/WebClient, Keycloak's Quarkus HTTP stack, ...) do NOT
+# consult the NO_PROXY/no_proxy environment variables above - they only honor the JVM system property
+# -Dhttp.nonProxyHosts. The list below intentionally mirrors the NO_PROXY list above
 x-java-memory-limits:
-  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-}" # Forces Spring Boot to stay lean and not consume more memory than necessary, which is especially important for the testing profile where all services run together. Set JAVA_TOOL_OPTIONS="-Xms128m -Xmx384m" in CI to apply memory limits.
+  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-} -Dhttp.nonProxyHosts=localhost|127.*|[::1]|gateway.docker.internal|host.docker.internal|internal-storage|api-key-manager|accounting-service|data-sourcing-service|document-manager|backend|keycloak|rabbitmq|qa-service|user-service|community-manager|specification-service|email-service"
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
@@ -350,6 +352,7 @@ services:
     command: sh -c "cd /app/dataland-frontend && npm install && npm run dev"
     <<: *uncritical-constants-env
     environment:
+      <<: *proxy-env
       POLLING: "false"
     logging:
       <<: *loki-logging
@@ -453,7 +456,7 @@ services:
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
-      <<: *mailjet-api-id-and-secret
+      <<: [*mailjet-api-id-and-secret, *proxy-env]
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -645,6 +648,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
 
     environment:
+      <<: *proxy-env
       JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
       GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
@@ -775,6 +779,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
+      <<: *proxy-env
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
