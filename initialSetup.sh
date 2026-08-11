@@ -8,9 +8,9 @@ set_java_version() {
 
 set_automatic_sourcing() {
   project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  echo set -a >> ~/.bashrc
-  source $project_root/environments/.env.dev  >> ~/.bashrc
-  set +a  >> ~/.bashrc
+  echo "set -a" >> ~/.bashrc
+  echo "source $project_root/environments/.env.dev"  >> ~/.bashrc
+  echo "set +a"  >> ~/.bashrc
 }
 
 install_node() {
