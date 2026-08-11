@@ -338,7 +338,7 @@ const columnPopover = ref<InstanceType<typeof Popover> | null>(null);
  * @param event - The click event from the button
  */
 function toggleColumnPopover(event: Event): void {
-  columnPopover.value.toggle(event);
+  columnPopover.value?.toggle(event);
 }
 
 /**
