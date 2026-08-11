@@ -576,6 +576,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Relative Share of Nuclear Activities in Percent - Eligible',
             dataset.revenue?.relativeShareOfNuclearActivitiesInPercentEligible
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Nuclear Activities in Percent - Eligible',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentEligible',
       },
@@ -590,6 +596,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.revenue?.relativeShareOfNuclearActivitiesInPercentAligned?.value),
             'Relative Share of Nuclear Activities in Percent - Aligned',
             dataset.revenue?.relativeShareOfNuclearActivitiesInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Nuclear Activities in Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentAligned',
@@ -606,6 +618,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Relative Share of Fossil Gas Activities in Percent - Eligible',
             dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentEligible
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Fossil Gas Activities in Percent - Eligible',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentEligible',
       },
@@ -620,6 +638,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentAligned?.value),
             'Relative Share of Fossil Gas Activities in Percent - Aligned',
             dataset.revenue?.relativeShareOfFossilGasActivitiesInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Fossil Gas Activities in Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentAligned',
@@ -964,6 +988,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Relative Share of Nuclear Activities in Percent - Eligible',
             dataset.capex?.relativeShareOfNuclearActivitiesInPercentEligible
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Nuclear Activities in Percent - Eligible',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentEligible',
       },
@@ -978,6 +1008,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.capex?.relativeShareOfNuclearActivitiesInPercentAligned?.value),
             'Relative Share of Nuclear Activities in Percent - Aligned',
             dataset.capex?.relativeShareOfNuclearActivitiesInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Nuclear Activities in Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentAligned',
@@ -994,6 +1030,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             'Relative Share of Fossil Gas Activities in Percent - Eligible',
             dataset.capex?.relativeShareOfFossilGasActivitiesInPercentEligible
           ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Fossil Gas Activities in Percent - Eligible',
+            dataPoint
+          ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentEligible',
       },
@@ -1008,6 +1050,12 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
             formatPercentageForDatatable(dataset.capex?.relativeShareOfFossilGasActivitiesInPercentAligned?.value),
             'Relative Share of Fossil Gas Activities in Percent - Aligned',
             dataset.capex?.relativeShareOfFossilGasActivitiesInPercentAligned
+          ),
+        valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformationByDataPoint(
+            formatPercentageForDatatable(extractDatapointValue(dataPoint) as number | null | undefined),
+            'Relative Share of Fossil Gas Activities in Percent - Aligned',
+            dataPoint
           ),
         uploadComponentName: 'PercentageExtendedDataPointFormField',
         dataPointTypeId: 'extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentAligned',
