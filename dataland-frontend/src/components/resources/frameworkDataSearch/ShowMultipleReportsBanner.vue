@@ -3,7 +3,7 @@
     <h4 class="m-0" data-test="frameworkNewDataTableTitle">
       Data extracted from the company report. Company Reports ({{ reportingPeriods[indexOfNewestReportingPeriod] }}):
     </h4>
-    <div id="reportList" style="display: flex">
+    <div id="reportList" class="report-list">
       <span v-for="(report, name, index) in reports[indexOfNewestReportingPeriod]" :key="index" class="link-in-list">
         <a @click="openReportDataTableModal(report, name as string)" class="link" :data-test="`report-link-${name}`">
           <span>{{ name ? name : 'Unnamed_File' }}</span>
@@ -110,7 +110,15 @@ export default defineComponent({
 <style scoped>
 .next-to-each-other {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 1rem;
+}
+
+.report-list {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
 }
 
 .link-in-list {

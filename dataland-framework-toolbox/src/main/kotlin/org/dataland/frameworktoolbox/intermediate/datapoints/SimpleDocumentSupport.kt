@@ -4,6 +4,7 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -42,6 +43,24 @@ data object SimpleDocumentSupport : DocumentSupport {
                 innerLambda.imports +
                     TypeScriptImport(
                         "wrapDisplayValueWithDatapointInformation",
+                        "@/components/resources/dataTable/conversion/DataPoints",
+                    ),
+        )
+    }
+
+    override fun getFrameworkDisplayValueByDataPointLambda(
+        innerLambda: FrameworkDisplayValueByDataPointLambda,
+        fieldLabel: String?,
+    ): FrameworkDisplayValueByDataPointLambda {
+        requireNotNull(fieldLabel)
+        return FrameworkDisplayValueByDataPointLambda(
+            "wrapDisplayValueWithDatapointInformationByDataPoint(${innerLambda.lambdaBody}," +
+                " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
+                " dataPoint)",
+            imports =
+                innerLambda.imports +
+                    TypeScriptImport(
+                        "wrapDisplayValueWithDatapointInformationByDataPoint",
                         "@/components/resources/dataTable/conversion/DataPoints",
                     ),
         )

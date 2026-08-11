@@ -1,19 +1,4 @@
-export interface DataPointSourceInfo {
-  fileName?: string | null;
-  fileReference?: string | null;
-  page?: string | number | null;
-  tagName?: string | null;
-  publicationDate?: string | null;
-  [key: string]: unknown;
-}
-
-export interface ParsedSingleDataPoint {
-  value?: unknown;
-  quality?: unknown;
-  comment?: unknown;
-  dataSource?: DataPointSourceInfo | null;
-  [key: string]: unknown;
-}
+import { type DataPointSourceInfo } from '@/utils/DataPoint.ts';
 
 export interface NextDataPointOption {
   label: string;

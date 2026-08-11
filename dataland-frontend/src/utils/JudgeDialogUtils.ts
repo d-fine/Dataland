@@ -1,5 +1,6 @@
-import type { CustomFormData, DocumentOption, ParsedSingleDataPoint } from '@/types/JudgeDialogTypes.ts';
+import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
+import { type ParsedSingleDataPoint, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
@@ -25,47 +26,6 @@ type JudgementErrorItem = {
 export type JudgementErrorResponse = {
   errors?: JudgementErrorItem[];
 };
-
-/**
- * Unwraps a data point JSON string for the backend.
- * If the original stored data point (`rawDataPoint`) was a plain primitive
- * (e.g. plainDate stored as `"2024-01-01"`), the custom value is unwrapped
- * to that same primitive format. Otherwise, the value is returned unchanged.
- *
- * @param dataPointJsonString - The custom JSON string to unwrap.
- * @param rawDataPoint - The original stored data point JSON, used to detect plain-primitive types.
- * @returns The unwrapped JSON string, or the original if no unwrapping is needed.
- */
-export function unwrapDataPointJson(dataPointJsonString: string, rawDataPoint: string): string {
-  try {
-    const original = JSON.parse(rawDataPoint);
-    if (typeof original !== 'object') {
-      const parsed: unknown = JSON.parse(dataPointJsonString);
-      const value =
-        parsed !== null && typeof parsed === 'object' ? ((parsed as ParsedSingleDataPoint).value ?? null) : parsed;
-      return JSON.stringify(value);
-    }
-  } catch {}
-  return dataPointJsonString;
-}
-
-/**
- * Wraps a data point JSON string into a {@link ParsedSingleDataPoint} object.
- * This is the inverse of {@link unwrapDataPointJson}: if the stored JSON is a plain
- * primitive (e.g. `"2024-01-01"` for a plainDate), it is wrapped into `{ value: primitive }`
- * so it can be handled uniformly as a {@link ParsedSingleDataPoint}.
- *
- * @param dataPointJsonString - JSON string to wrap.
- * @returns The wrapped {@link ParsedSingleDataPoint}, or `null` on parse failure.
- */
-export function wrapDataPointJson(dataPointJsonString: string): ParsedSingleDataPoint | null {
-  try {
-    const parsed: unknown = JSON.parse(dataPointJsonString);
-    return parsed !== null && typeof parsed === 'object' ? (parsed as ParsedSingleDataPoint) : { value: parsed };
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Converts {@link CustomFormData} into the pretty-printed JSON string expected by the backend.
