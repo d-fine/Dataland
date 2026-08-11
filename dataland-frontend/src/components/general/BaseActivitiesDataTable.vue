@@ -65,8 +65,8 @@
       headerClass="horizontal-headers-size"
       :class="groupColumnCssClasses(col)"
     >
-      <template #body="{ data }">
-        {{ findContentFromActivityGroupAndField(data.activity, col.group, col.field) }}
+      <template #body="{ index }">
+        {{ findContentFromActivityGroupAndField(index, col.group, col.field) }}
       </template>
     </Column>
   </DataTable>
@@ -114,8 +114,8 @@ const defaultActivitiesDataTableConfiguration = {
   getAdditionalGroupColspans(this: Self): { [groupName: string]: number } {
     return {};
   },
-  createMainColumnDataForRow(this: Self, activity: ActivityRow): ActivityFieldValueObject[] {
-    return this.createBaseMainColumnDataForRow(activity);
+  createMainColumnDataForRow(this: Self, activity: ActivityRow, rowIndex: number): ActivityFieldValueObject[] {
+    return this.createBaseMainColumnDataForRow(activity, rowIndex);
   },
 };
 
@@ -161,7 +161,9 @@ const BaseActivitiesDataTableComponent = defineComponent({
     this.frozenColumnDefinitions = this.createFrozenColumnDefinitions();
     this.mainColumnDefinitions = this.createMainColumnDefinitions();
     this.frozenColumnData = this.createFrozenColumnData();
-    this.mainColumnData = this.listOfRowContents.flatMap((activity) => this.createMainColumnDataForRow(activity));
+    this.mainColumnData = this.listOfRowContents.flatMap((activity, rowIndex) =>
+      this.createMainColumnDataForRow(activity, rowIndex)
+    );
     this.mainColumnGroups = this.createMainColumnGroups();
   },
   methods: {
@@ -209,18 +211,20 @@ const BaseActivitiesDataTableComponent = defineComponent({
     },
     /**
      * @param activity one activity row from the dialog payload
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @returns the main column data entries for that row according to the active configuration
      */
-    createMainColumnDataForRow(activity: ActivityRow) {
-      return this.activitiesDataTableConfiguration.createMainColumnDataForRow.call(this, activity);
+    createMainColumnDataForRow(activity: ActivityRow, rowIndex: number) {
+      return this.activitiesDataTableConfiguration.createMainColumnDataForRow.call(this, activity, rowIndex);
     },
     /**
      * @param activity one activity row from the dialog payload
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @returns the KPI-related data entries shared by all activity table variants
      */
     // eslint-disable-next-line vue/no-unused-properties
-    createBaseMainColumnDataForRow(activity: ActivityRow) {
-      return [...this.createKpiGroupData(activity, this.kpiKeyOfTable as KpiKey)];
+    createBaseMainColumnDataForRow(activity: ActivityRow, rowIndex: number) {
+      return [...this.createKpiGroupData(activity, this.kpiKeyOfTable as KpiKey, rowIndex)];
     },
     /**
      * @returns the grouped table header metadata including subclass-specific groups
@@ -251,14 +255,14 @@ const BaseActivitiesDataTableComponent = defineComponent({
     },
     /**
      * Search mainColumnData for specific item and return it's value
-     * @param activityName name of the targeted activity
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @param groupName name of the targeted group
      * @param fieldName name of the targeted field
      * @returns string value from main data
      */
-    findContentFromActivityGroupAndField(activityName: string, groupName: string, fieldName: string) {
+    findContentFromActivityGroupAndField(rowIndex: number, groupName: string, fieldName: string) {
       const value = this.mainColumnData.find(
-        (item) => item.activity === activityName && item.group === groupName && item.field === fieldName
+        (item) => item.rowIndex === rowIndex && item.group === groupName && item.field === fieldName
       );
       return value ? value.content : '';
     },
@@ -289,22 +293,22 @@ const BaseActivitiesDataTableComponent = defineComponent({
     /**
      * @param activity targeted activity object
      * @param kpiKey key of displayed kpi
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @returns list of kpi data items
      */
-    createKpiGroupData(activity: ActivityRow, kpiKey: KpiKey) {
+    createKpiGroupData(activity: ActivityRow, kpiKey: KpiKey, rowIndex: number) {
       const value = activity.share?.absoluteShare;
       const percent = activity.share?.relativeShareInPercent;
-      const activityName = (activity.activityName as string | undefined) ?? '';
 
       return [
         {
-          activity: activityName,
+          rowIndex,
           group: '_kpi',
           field: kpiKey,
           content: formatAmountWithCurrency(value),
         },
         {
-          activity: activityName,
+          rowIndex,
           group: '_kpi',
           field: `${kpiKey}Percent`,
           content: formatPercentageNumberAsString(percent),
@@ -312,7 +316,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
       ];
     },
     /**
-     * @param activityName name of the activity
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @param groupName the name of the group to which the fields will be assigned to
      * @param fields collection of fields and their values
      * @param valueFormatter function which formats the final look of the value
@@ -320,7 +324,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
      */
     // eslint-disable-next-line vue/no-unused-properties
     createActivityGroupData<T>(
-      activityName: string,
+      rowIndex: number,
       groupName: string,
       fields: { [key: string]: T } | undefined,
       valueFormatter: (value: T) => string
@@ -330,7 +334,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
         .filter(([, value]) => value != null)
         .map(([field, value]) => {
           return {
-            activity: activityName,
+            rowIndex,
             group: groupName,
             field,
             content: valueFormatter(value) ?? '',
@@ -341,13 +345,14 @@ const BaseActivitiesDataTableComponent = defineComponent({
      * @param activity targeted activity object
      * @param groupName the group name of the data item
      * @param fieldName the source field name on the activity object
+     * @param rowIndex the index of the row within listOfRowContents, used to uniquely identify the row
      * @returns list with a single data item
      */
     // eslint-disable-next-line vue/no-unused-properties
-    createSingleFieldGroupData(activity: ActivityRow, groupName: string, fieldName: string) {
+    createSingleFieldGroupData(activity: ActivityRow, groupName: string, fieldName: string, rowIndex: number) {
       return [
         {
-          activity: activity.activityName as string,
+          rowIndex,
           group: groupName,
           field: fieldName,
           content: activity[fieldName] ?? '',
@@ -388,7 +393,7 @@ const BaseActivitiesDataTableComponent = defineComponent({
 });
 
 type ActivityFieldValueObject = {
-  activity: string;
+  rowIndex: number;
   group: string;
   field: string;
   content: string;
@@ -403,7 +408,7 @@ type MainColumnDefinition = {
 };
 
 type Self = {
-  createBaseMainColumnDataForRow: (activity: ActivityRow) => ActivityFieldValueObject[];
+  createBaseMainColumnDataForRow: (activity: ActivityRow, rowIndex: number) => ActivityFieldValueObject[];
 };
 
 export default BaseActivitiesDataTableComponent;
