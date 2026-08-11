@@ -1,39 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Default shared model for this repository.
-  "model": "github-copilot/claude-sonnet-5",
   "enabled_providers": ["github-copilot"],
+  "model": "github-copilot/claude-sonnet-5",
 
   // Load only the root shared guidance globally; package-specific AGENTS.md files are referenced from there.
   "instructions": ["AGENTS.md"],
   "share": "disabled",
-
-  "permission": {
-    "*": "ask",
-    "bash": {
-      "*": "ask",
-      "git show *": "allow",
-      "git log *": "allow",
-      "git diff *": "allow",
-      "ssh *": "deny",
-      "git push*": "ask",
-      "git reset --hard*": "deny",
-      "git checkout --*": "deny"
-    },
-    "edit": "allow",
-    "read": "allow",
-    "grep": "allow",
-    "glob": "allow",
-    "list": "allow",
-    "lsp": "allow",
-    "skill": "allow",
-    "todowrite": "allow",
-    "todoread": "allow",
-    "webfetch": "ask",
-    "websearch": "ask",
-    "question": "allow"
-  },
 
   // Large monorepo: preserve more room for compaction and ignore noisy generated folders.
   "compaction": {

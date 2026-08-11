@@ -1,4 +1,4 @@
-schemaVersion: "1"
+schemaVersion: "2"
 kind: sandbox
 name: dataland
 sandbox:
@@ -27,5 +27,3 @@ commands:
        echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
        apt-get update && apt-get -y install temurin-21-jdk
       description: Install Java temurin 21 according to https://adoptium.net/installation/linux#deb-installation-on-debian-or-ubuntu
-
-

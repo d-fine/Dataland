@@ -7,8 +7,9 @@ set_java_version() {
 }
 
 set_automatic_sourcing() {
+  project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   echo set -a >> ~/.bashrc
-  source /srv/data/dataland/environments/.env.dev  >> ~/.bashrc
+  source $project_root/environments/.env.dev  >> ~/.bashrc
   set +a  >> ~/.bashrc
 }
 
