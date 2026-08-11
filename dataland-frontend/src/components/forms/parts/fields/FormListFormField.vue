@@ -45,6 +45,7 @@ import GrievanceMechanismAssessmentFormElement from '@/components/forms/parts/el
 
 export default defineComponent({
   name: 'FormListFormField',
+  emits: ['fieldSpecificDocumentsUpdated'],
   components: {
     BaseDataPointFormField,
     UploadFormHeader,

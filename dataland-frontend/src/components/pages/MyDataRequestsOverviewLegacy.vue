@@ -156,7 +156,7 @@ const numberOfFilteredRequests = ref(0);
 const sortField = ref<keyof ExtendedStoredDataRequest>('requestStatus');
 const sortOrder = ref(1);
 
-const frameworkFilter = ref();
+const frameworkFilter = ref<unknown>(null);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 

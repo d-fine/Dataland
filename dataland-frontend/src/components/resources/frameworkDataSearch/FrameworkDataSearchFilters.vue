@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue';
+import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
 import { type ApiClientProvider } from '@/services/ApiClients';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
@@ -68,9 +68,9 @@ export default defineComponent({
   emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
-      sectorFilter: ref(),
-      countryFilter: ref(),
-      frameworkFilter: ref(),
+      sectorFilter: ref<ComponentPublicInstance | null>(null),
+      countryFilter: ref<ComponentPublicInstance | null>(null),
+      frameworkFilter: ref<ComponentPublicInstance | null>(null),
       apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },

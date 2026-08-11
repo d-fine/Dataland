@@ -81,9 +81,9 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 export default defineComponent({
   setup() {
     return {
-      frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
-      searchResults: ref(),
+      frameworkDataSearchFilters: ref<unknown>(null),
+      frameworkDataSearchBar: ref<unknown>(null),
+      searchResults: ref<unknown>(null),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },

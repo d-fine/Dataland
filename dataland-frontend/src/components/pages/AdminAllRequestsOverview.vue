@@ -331,7 +331,7 @@ const allColumns: ColumnDefinition[] = [
 ];
 
 const selectedColumns = ref<ColumnDefinition[]>(loadColumnSelection());
-const columnPopover = ref();
+const columnPopover = ref<InstanceType<typeof Popover> | null>(null);
 
 /**
  * Toggles the column selection popover visibility.

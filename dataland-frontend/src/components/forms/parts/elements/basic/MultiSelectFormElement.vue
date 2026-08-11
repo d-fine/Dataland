@@ -41,7 +41,7 @@ export default defineComponent({
   inheritAttrs: false,
   setup() {
     return {
-      formkitMultiSelectFormElement: ref(),
+      formkitMultiSelectFormElement: ref<HTMLElement | null>(),
     };
   },
   data() {
