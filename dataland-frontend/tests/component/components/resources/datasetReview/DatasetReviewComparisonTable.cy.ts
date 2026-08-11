@@ -1,7 +1,14 @@
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
-import { type CompanyReport, type DataMetaInformation, DataTypeEnum, QaStatus, type SfdrData } from '@clients/backend';
+import {
+  type CompanyReport,
+  type DataMetaInformation,
+  DataTypeEnum,
+  QaStatus,
+  QualityOptions,
+  type SfdrData,
+} from '@clients/backend';
 import {
   AcceptedDataPointSource,
   DatasetJudgementState,
@@ -12,6 +19,7 @@ import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { computed } from 'vue';
+import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
 
 describe('DatasetReviewComparisonTable component tests', () => {
   const dataId = 'test-data-id';
@@ -116,7 +124,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
             dataPointType: 'type-id-2',
             qaReportId: 'qa-report-2',
             verdict: QaReportDataPointVerdict.QaRejected,
-            correctedData: JSON.stringify({ value: 'No Deviation' }),
+            correctedData: JSON.stringify({ value: 'NoDeviation', quality: QualityOptions.Reported }),
             reporterUserId: qaReporter2.reporterUserId,
             uploadTime: 9999,
             active: true,
@@ -153,7 +161,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
           },
         ],
         acceptedSource: AcceptedDataPointSource.Custom,
-        customValue: JSON.stringify({ value: '2023-12-15' }),
+        customValue: JSON.stringify({ value: '2023-12-15', quality: QualityOptions.Reported }),
       },
     },
   };
@@ -184,21 +192,25 @@ describe('DatasetReviewComparisonTable component tests', () => {
       },
     }).as('getFrameworkData');
 
-    const mount = getMountingFunction();
+    const mount = getMountingFunction({
+      dialogOptions: {
+        mountWithDialog: true,
+        propsToPassToTheMountedComponent: {
+          framework,
+          dataId,
+          searchQuery: options?.searchQuery ?? '',
+          datasetReview: options?.datasetReview ?? baseDatasetReview,
+          dataMetaInformation: mockMetaInformation,
+          hideEmptyFields: options?.hideEmptyFields ?? false,
+          rowClickable: options?.rowClickable ?? false,
+          ...(options?.onRowClick && { onRowClick: options.onRowClick }),
+        },
+      },
+    });
     const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
     const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
     mount(DatasetReviewComparisonTable, {
-      props: {
-        framework,
-        dataId,
-        searchQuery: options?.searchQuery ?? '',
-        datasetReview: options?.datasetReview ?? baseDatasetReview,
-        dataMetaInformation: mockMetaInformation,
-        hideEmptyFields: options?.hideEmptyFields ?? false,
-        rowClickable: options?.rowClickable ?? false,
-        ...(options?.onRowClick && { onRowClick: options.onRowClick }),
-      },
       global: {
         plugins: [[VueQueryPlugin, { queryClient }]],
         provide: {
@@ -315,5 +327,37 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('kpi name is not clickable when rowClickable is set to false', () => {
     mountComponent({ rowClickable: false });
     cy.contains('button', 'Data Date').should('have.class', 'cursor-default');
+  });
+
+  it('QA reviewer corrected data point is clickable and opens a popup with information', () => {
+    mountComponent();
+
+    cy.contains('button', 'Fiscal Year Deviation')
+      .closest('tr')
+      .within(() => {
+        cy.get('td').eq(3).find('a.link').should('contain.text', 'No Deviation').click();
+      });
+
+    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year Deviation');
+    runFunctionBlockWithinPrimeVueModal(() => {
+      cy.contains('td', 'No Deviation').should('exist');
+      cy.contains('td', 'Reported').should('exist');
+    });
+  });
+
+  it('custom data point is clickable and opens a popup with information', () => {
+    mountComponent();
+
+    cy.contains('button', 'Fiscal Year End')
+      .closest('tr')
+      .within(() => {
+        cy.get('td').eq(4).find('a.link').should('contain.text', '2023-12-15').click();
+      });
+
+    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year End');
+    runFunctionBlockWithinPrimeVueModal(() => {
+      cy.contains('td', '2023-12-15').should('exist');
+      cy.contains('td', 'Reported').should('exist');
+    });
   });
 });
