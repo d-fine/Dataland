@@ -163,8 +163,8 @@ describeIf(
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="big-decimal-input"] input').should('be.visible');
-            cy.get('[data-test="big-decimal-input"] input').clear();
-            cy.get('[data-test="big-decimal-input"] input').type('0');
+          cy.get('[data-test="big-decimal-input"] input').clear();
+          cy.get('[data-test="big-decimal-input"] input').type('0');
         });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
