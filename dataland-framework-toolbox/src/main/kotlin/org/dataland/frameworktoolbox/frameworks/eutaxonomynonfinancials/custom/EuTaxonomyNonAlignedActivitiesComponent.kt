@@ -16,6 +16,7 @@ import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBui
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueByDataPointLambda
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
@@ -82,6 +83,7 @@ class EuTaxonomyNonAlignedActivitiesComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        val kpiType = getTypescriptFieldAccessor().split(".")[1].dropLast(1)
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
@@ -90,7 +92,7 @@ class EuTaxonomyNonAlignedActivitiesComponent(
                     "\"${StringEscapeUtils.escapeEcmaScript(
                         label,
                     )
-                    }\", \"" + getTypescriptFieldAccessor().split(".")[1].dropLast(1) + "\")",
+                    }\", \"$kpiType\")",
                 setOf(
                     TypeScriptImport(
                         "formatNonAlignedActivitiesForDataTable",
@@ -98,6 +100,22 @@ class EuTaxonomyNonAlignedActivitiesComponent(
                     ),
                 ),
             ),
+            valueGetterByDataPoint =
+                FrameworkDisplayValueByDataPointLambda(
+                    "formatNonAlignedActivitiesForDataTable(" +
+                        "parseDataPoint(dataPoint) as Parameters<typeof formatNonAlignedActivitiesForDataTable>[0], " +
+                        "\"${StringEscapeUtils.escapeEcmaScript(label)}\", \"$kpiType\")",
+                    setOf(
+                        TypeScriptImport(
+                            "formatNonAlignedActivitiesForDataTable",
+                            "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "parseDataPoint",
+                            "@/components/resources/dataTable/conversion/DataPoints",
+                        ),
+                    ),
+                ),
         )
     }
 

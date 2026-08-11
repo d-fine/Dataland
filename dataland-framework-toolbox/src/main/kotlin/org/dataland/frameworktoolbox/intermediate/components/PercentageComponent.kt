@@ -13,9 +13,6 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 private const val MIN_PERCENTAGE: Long = 0
 private const val MAX_PERCENTAGE: Long = 100
@@ -51,23 +48,13 @@ class PercentageComponent(
         )
     }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatPercentageForDatatable",
-                            "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addSingleArgumentFormatterCell(
+            sectionConfigBuilder,
+            formatterFunction = "formatPercentageForDatatable",
+            formatterModule = "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
+            dataPointCastType = "number | null | undefined",
         )
-    }
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {

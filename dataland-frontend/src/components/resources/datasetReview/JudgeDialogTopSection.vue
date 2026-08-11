@@ -106,9 +106,9 @@
 
 <script setup lang="ts">
 import PrimeButton from 'primevue/button';
-import type { ParsedSingleDataPoint } from '@/types/JudgeDialogTypes.ts';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { computed } from 'vue';
+import { type ParsedSingleDataPoint } from '@/utils/DataPoint.ts';
 
 const props = defineProps<{
   title: string;
