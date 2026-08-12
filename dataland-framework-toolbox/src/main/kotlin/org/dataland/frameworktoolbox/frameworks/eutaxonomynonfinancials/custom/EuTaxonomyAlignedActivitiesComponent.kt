@@ -28,5 +28,6 @@ class EuTaxonomyAlignedActivitiesComponent(
         EuTaxonomyActivitiesGenerationConfig(
             fixtureGeneratorMethodName = "generateAlignedActivity",
             specificationType = "EuTaxonomyAlignedActivitiesComponent",
+            uploadComponentNameOverride = "AlignedActivitiesFormField",
         ),
     )

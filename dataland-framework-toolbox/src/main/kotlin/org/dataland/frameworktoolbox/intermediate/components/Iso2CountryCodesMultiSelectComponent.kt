@@ -11,8 +11,6 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -47,31 +45,50 @@ open class Iso2CountryCodesMultiSelectComponent(
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "{\n" +
-                        mappings +
-                        generateReturnStatement() +
-                        "}",
-                    setOf(
-                        TypeScriptImport(
-                            "formatListOfStringsForDatatable",
-                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
-                        ),
-                        TypeScriptImport(
-                            "getOriginalNameFromTechnicalName",
-                            "@/components/resources/dataTable/conversion/Utils",
-                        ),
-                        TypeScriptImport("DropdownDatasetIdentifier", filePathOfPremadeDropdownDatasets),
-                        TypeScriptImport("getDatasetAsMap", filePathOfPremadeDropdownDatasets),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports = displayValueImports(),
+                dataPointCastType = "string[] | null | undefined",
+            ) { valueExpression ->
+                createDisplayValueCode(generateReturnStatement(valueExpression))
+            },
         )
     }
+
+    private fun createDisplayValueCode(returnStatement: String): String =
+        "{\n" +
+            mappings +
+            returnStatement +
+            "}"
+
+    private fun displayValueImports(): Set<TypeScriptImport> =
+        setOf(
+            TypeScriptImport(
+                "formatListOfStringsForDatatable",
+                "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+            ),
+            TypeScriptImport(
+                "getOriginalNameFromTechnicalName",
+                "@/components/resources/dataTable/conversion/Utils",
+            ),
+            TypeScriptImport(
+                "DropdownDatasetIdentifier",
+                filePathOfPremadeDropdownDatasets,
+            ),
+            TypeScriptImport(
+                "getDatasetAsMap",
+                filePathOfPremadeDropdownDatasets,
+            ),
+        )
+
+    private fun generateReturnStatement(valueAccessor: String): String =
+        "return formatListOfStringsForDatatable(" +
+            "$valueAccessor?.map(it => \n" +
+            "   getOriginalNameFromTechnicalName(it, mappings)), " +
+            "'${escapeEcmaScript(label)}'" +
+            ")"
 
     override fun getUploadComponentName(): String = "MultiSelectFormField"
 
@@ -109,11 +126,4 @@ open class Iso2CountryCodesMultiSelectComponent(
                 ),
         )
     }
-
-    private fun generateReturnStatement(): String =
-        "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
-            "   getOriginalNameFromTechnicalName(it, mappings)), " +
-            "'${escapeEcmaScript(label)}'" +
-            ")"
 }
