@@ -14,9 +14,7 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
 class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     @Test
     fun `check that an empty filter does not throw and returns an empty list`() {
-        val result = assertDoesNotThrow {
-            dataAvailabilityChecker.filterViewableDimensions(emptyList())
-        }
+        val result = assertDoesNotThrow { dataAvailabilityChecker.filterViewableDimensions(emptyList()) }
         assertTrue(result.isEmpty())
     }
 
