@@ -4,19 +4,20 @@ name: dataland
 sandbox:
   image: "docker/sandbox-templates:opencode-docker"
   entrypoint:
-    run: [ bash ]
+    [ bash ]
 
-network:
-  allowedDomains:
-    - "packages.adoptium.net:443"
-    - "fnm.vercel.app:443"
-    - "opencode.ai:443"
-    - "registry.npmjs.org:443"
-    - "download.cypress.io:443"
-    - "cdn.cypress.io:443"
-    - "local-dev.dataland.com:443"
+permissions:
+  network:
+    allow:
+      - "packages.adoptium.net:443"
+      - "fnm.vercel.app:443"
+      - "opencode.ai:443"
+      - "registry.npmjs.org:443"
+      - "download.cypress.io:443"
+      - "cdn.cypress.io:443"
+      - "local-dev.dataland.com:443"
 
-commands:
+setup:
   install:
     - command: "apt-get update && apt-get -y install unzip curl wget apt-transport-https gpg vim"
       description: Install basic packages required for other installations
