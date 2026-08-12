@@ -73,7 +73,7 @@ class DataAvailabilityChecker
          * @param dataDimensions List of data point dimensions to search for.
          * @return List of DataPointMetaInformationEntity objects that match the provided data point dimensions.
          */
-        private fun getMetaDataOfActiveDataPoints(dataDimensions: List<DataPointDimensions>): List<DataPointMetaInformationEntity> =
+        private fun getMetaDataOfActiveDataPoints(dataDimensions: Collection<DataPointDimensions>): List<DataPointMetaInformationEntity> =
             dataPointMetaInformationManager.getActiveDataPointMetaInformationList(
                 dataCompositionService.filterOutInvalidDataPointDimensions(dataDimensions).distinct(),
             )
@@ -190,35 +190,32 @@ class DataAvailabilityChecker
                     .toSet()
 
             return assembledDimensions
-                .flatMap { dimension ->
-                    val relevantDataPointTypes =
-                        dataCompositionService
-                            .getRelevantDataPointTypes(dimension.framework)
+                .groupBy { it.framework }
+                .flatMap { (framework, frameWorkSpecificDimensions) ->
+
+                    val relevantDataPointTypes = dataCompositionService.getRelevantDataPointTypes(framework)
                     val relevantDataPointDimensions =
-                        relevantDataPointTypes
-                            .map { dataPointType ->
-                                BasicDataPointDimensions(
-                                    companyId = dimension.companyId,
-                                    dataPointType = dataPointType,
-                                    reportingPeriod = dimension.reportingPeriod,
-                                )
-                            }
+                        frameWorkSpecificDimensions
+                            .flatMap {
+                                it.toBasicDataPointDimensions(relevantDataPointTypes)
+                            }.toSet()
+                    val requestedBaseDimensions = frameWorkSpecificDimensions.map { it.toBaseDimensions() }.toSet()
+
                     val activeDataPointDimensions =
                         getMetaDataOfActiveDataPoints(
                             relevantDataPointDimensions,
                         ).map { it.toBasicDataPointDimensions() }.toSet()
-
                     val calculatableDataPointDimensions =
-                        dataPointCalculator.getCalculatableDataPointDimensions(
-                            dataPointTypes = relevantDataPointTypes,
-                            dataDimensionQuery =
-                                DataDimensionQuery(
-                                    companyIds = listOf(dimension.companyId),
-                                    reportingPeriods = listOf(dimension.reportingPeriod),
-                                ),
-                        )
-
-                    getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, dimension.framework)
+                        dataPointCalculator
+                            .getCalculatableDataPointDimensions(
+                                dataPointTypes = relevantDataPointTypes,
+                                dataDimensionQuery =
+                                    DataDimensionQuery(
+                                        companyIds = frameWorkSpecificDimensions.map { it.companyId },
+                                        reportingPeriods = frameWorkSpecificDimensions.map { it.reportingPeriod },
+                                    ),
+                            ).filter { requestedBaseDimensions.contains(it.toBaseDimensions()) }
+                    getViewableDatasetDimensions(activeDataPointDimensions + calculatableDataPointDimensions, framework)
                 }.toSet()
         }
 
