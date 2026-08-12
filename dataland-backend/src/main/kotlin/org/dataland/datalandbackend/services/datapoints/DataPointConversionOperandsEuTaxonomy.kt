@@ -169,12 +169,17 @@ internal inline fun <
     require(inputs.size == 2) { "Exactly two data points must be provided to extract." }
 
     val nonAlignedInput =
-        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE }
+        inputs.singleOrNull {
+            getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE
+        }
             ?: throw IllegalArgumentException(
-                "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract.",
+                "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} " +
+                    "must be provided to extract.",
             )
     val alignedInput =
-        inputs.singleOrNull { getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE }
+        inputs.singleOrNull {
+            getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE
+        }
             ?: throw IllegalArgumentException(
                 "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract.",
             )
