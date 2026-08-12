@@ -74,12 +74,12 @@ const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfigur
       _transitionalActivity: 1,
     };
   },
-  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>) {
+  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>, rowIndex: number) {
     const typedActivity = activity as AlignedActivityRow;
     return [
-      ...this.createBaseMainColumnDataForRow(activity),
+      ...this.createBaseMainColumnDataForRow(activity, rowIndex),
       ...this.createActivityGroupData<number | undefined>(
-        typedActivity.activityName as string,
+        rowIndex,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:
@@ -98,7 +98,7 @@ const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfigur
         formatPercentageNumberAsString
       ),
       ...this.createActivityGroupData<YesNo | undefined>(
-        typedActivity.activityName as string,
+        rowIndex,
         'dnshCriteria',
         {
           dnshToClimateChangeMitigation: typedActivity.dnshToClimateChangeMitigation,
@@ -112,9 +112,9 @@ const alignedActivitiesDataTableConfiguration: Self['activitiesDataTableConfigur
         },
         (value: YesNo | undefined) => (value ? `${value}` : '')
       ),
-      ...this.createSingleFieldGroupData(activity, '_minimumSafeguards', 'minimumSafeguards'),
-      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
-      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
+      ...this.createSingleFieldGroupData(activity, '_minimumSafeguards', 'minimumSafeguards', rowIndex),
+      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity', rowIndex),
+      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity', rowIndex),
     ] as ReturnType<Self['createBaseMainColumnDataForRow']>;
   },
 };
