@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+mode=${1:default}
+
 set_java_version() {
   echo PATH=/usr/lib/jvm/temurin-21-jdk-amd64/bin:$PATH >> ~/.bashrc
   source_bashrc
@@ -30,12 +32,19 @@ source_bashrc() {
   set -u
 }
 
-set_git_auth() {
+configure_git() {
   git config --global credential.helper '!f() { if [ "$1" = get ]; then echo username=placeholder-github-user; echo password=placeholder-github-token; fi; }; f'
+  read username
+  git config user.name "$username"
+  read email
+  git config user.email "$email"
 }
 
 set_java_version
 install_node
 update_opencode
 set_automatic_sourcing
-set_git_auth
+
+if [[ $mode == "developer" ]]; then
+  configure_git
+fi
