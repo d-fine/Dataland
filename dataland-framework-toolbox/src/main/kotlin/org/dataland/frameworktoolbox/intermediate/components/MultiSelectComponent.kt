@@ -12,8 +12,6 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
@@ -51,15 +49,11 @@ open class MultiSelectComponent(
         )
     }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "{\n" +
-                        generateTsCodeForSelectOptionsMappingObject(options) +
-                        generateReturnStatement() +
-                        "}",
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports =
                     setOf(
                         TypeScriptImport(
                             "formatListOfStringsForDatatable",
@@ -70,11 +64,14 @@ open class MultiSelectComponent(
                             "@/components/resources/dataTable/conversion/Utils",
                         ),
                     ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+                dataPointCastType = "string[] | null | undefined",
+            ) { valueExpression ->
+                "{\n" +
+                    generateTsCodeForSelectOptionsMappingObject(options) +
+                    generateReturnStatement(valueExpression) +
+                    "}"
+            },
         )
-    }
 
     override fun getUploadComponentName(): String = "MultiSelectFormField"
 
@@ -109,9 +106,9 @@ open class MultiSelectComponent(
         )
     }
 
-    private fun generateReturnStatement(): String =
+    private fun generateReturnStatement(valueAccessor: String): String =
         "return formatListOfStringsForDatatable(" +
-            "${getTypescriptFieldAccessor()}?.map(it => \n" +
+            "$valueAccessor?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"

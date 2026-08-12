@@ -64,6 +64,7 @@ dependencies {
     kapt(Spring.boot.configurationProcessor)
     implementation("org.apache.poi:poi:5.5.1")
     implementation("org.apache.poi:poi-ooxml:5.5.1")
+    implementation(libs.kotlin.reflect)
 }
 
 openApi {

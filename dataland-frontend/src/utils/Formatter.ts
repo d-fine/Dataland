@@ -17,6 +17,12 @@ export function formatPercentageNumberAsString(percentageNumber?: number | null,
 
 /**
  * Formats an AmountWithCurrency object by concatenating the amount and the currency.
+ *
+ * The amount is defensively coerced to a number before formatting: values coming from a
+ * single stored data point's JSON (e.g. a QA report's correctedData or a reviewer's
+ * customValue) may arrive as a numeric string at runtime even though they are typed as
+ * `number`, and `String.prototype.toLocaleString` silently ignores formatting options,
+ * which would otherwise cause the thousands-grouping to be dropped.
  * @param amountWithCurrency the object that holds the amount and currency
  * @returns the resulting string from the concatenation
  */
@@ -24,10 +30,14 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
   if (amountWithCurrency?.amount == undefined) {
     return '';
   }
-  if (amountWithCurrency?.amount === 0) {
+  const amount = Number(amountWithCurrency.amount);
+  if (Number.isNaN(amount)) {
+    return '';
+  }
+  if (amount === 0) {
     return `0 ${(amountWithCurrency?.currency ?? '').trim()}`;
   }
-  return `${amountWithCurrency.amount.toLocaleString('en-GB', {
+  return `${amount.toLocaleString('en-GB', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}${amountWithCurrency.currency ? ' ' + amountWithCurrency.currency : ''}`;
@@ -35,6 +45,12 @@ export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency 
 
 /**
  * Formats number to be more readable.
+ *
+ * The value is defensively coerced to a number before formatting: values coming from a
+ * single stored data point's JSON (e.g. a QA report's correctedData or a reviewer's
+ * customValue) may arrive as a numeric string at runtime even though they are typed as
+ * `number`, and `String.prototype.toLocaleString` silently ignores formatting options,
+ * which would otherwise cause the thousands-grouping to be dropped.
  * @param value number to format
  * @returns formatted number (e.g. 1500600.0123 --> 1,500,600.01)
  */
@@ -42,10 +58,14 @@ export function formatNumberToReadableFormat(value: number | undefined | null): 
   if (value == undefined) {
     return '';
   }
-  if (value == 0) {
+  const numericValue = Number(value);
+  if (Number.isNaN(numericValue)) {
+    return '';
+  }
+  if (numericValue == 0) {
     return '0';
   }
-  return value.toLocaleString('en-GB', {
+  return numericValue.toLocaleString('en-GB', {
     maximumFractionDigits: 2,
   });
 }
