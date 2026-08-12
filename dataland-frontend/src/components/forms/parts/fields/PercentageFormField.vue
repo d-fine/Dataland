@@ -27,6 +27,7 @@ import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldPro
 
 export default defineComponent({
   name: 'PercentageFormField',
+  emits: ['update:percentageFieldValueBind'],
   components: { FormKit, UploadFormHeader },
   computed: {
     percentageFieldValue: {

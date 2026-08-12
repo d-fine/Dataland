@@ -15,4 +15,6 @@ open class FrameworkLambda(
 ) {
     val usesDataset: Boolean
         get() = lambdaBody.contains("dataset")
+    val usesDataPoint: Boolean
+        get() = lambdaBody.contains("dataPoint")
 }

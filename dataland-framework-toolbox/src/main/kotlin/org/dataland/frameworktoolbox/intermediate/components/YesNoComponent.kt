@@ -11,8 +11,6 @@ import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureS
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -25,23 +23,14 @@ class YesNoComponent(
     override fun getAnnotations(): List<Annotation> =
         getSchemaAnnotationWithSuppressMaxLineLength(uploadPageExplanation, getExample(EXAMPLE_PLAIN_YES_NO_COMPONENT))
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatYesNoValueForDatatable",
-                            "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addSingleArgumentFormatterCell(
+            sectionConfigBuilder,
+            formatterFunction = "formatYesNoValueForDatatable",
+            formatterModule = "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
+            dataPointCastType = "YesNoNa",
+            additionalDataPointImports = setOf(TypeScriptImport("type YesNoNa", "@clients/backend")),
         )
-    }
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {

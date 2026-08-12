@@ -35,13 +35,21 @@ import { FormKit, FormKitMessages } from '@formkit/vue';
 import MultiSelect from 'primevue/multiselect';
 import { DropdownOptionFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 
+export interface FormKitElementRef {
+  node?: {
+    props?: {
+      id?: string;
+    };
+  };
+}
+
 export default defineComponent({
   name: 'MultiSelectFormElement',
   components: { FormKit, MultiSelect, FormKitMessages },
   inheritAttrs: false,
   setup() {
     return {
-      formkitMultiSelectFormElement: ref(),
+      formkitMultiSelectFormElement: ref<FormKitElementRef | null>(null),
     };
   },
   data() {
