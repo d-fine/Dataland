@@ -30,7 +30,12 @@ source_bashrc() {
   set -u
 }
 
+set_git_auth() {
+  git config --global credential.helper '!f() { if [ "$1" = get ]; then echo username=placeholder-github-user; echo password=placeholder-github-token; fi; }; f'
+}
+
 set_java_version
 install_node
 update_opencode
 set_automatic_sourcing
+set_git_auth
