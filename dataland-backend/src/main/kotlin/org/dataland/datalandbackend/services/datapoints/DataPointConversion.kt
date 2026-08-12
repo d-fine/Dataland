@@ -16,9 +16,7 @@ private val ONE_HUNDRED = BigDecimal("100")
 
 /**
  * Closed set of strategies for deriving a data point from a collection of other data points.
- *
  * Variants are dispatched by their [id] via [byId].
- *
  * @param id the textual identifier of the conversion strategy
  */
 enum class DataPointConversion(
@@ -132,7 +130,6 @@ enum class DataPointConversion(
 
     /**
      * Applies this conversion strategy to merge [inputs] into a single derived data point of [targetType].
-     *
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -148,7 +145,6 @@ enum class DataPointConversion(
 
     /**
      * Creates a comment for the resulting data point describing this conversion's formula.
-     *
      * @param inputs the uploaded data points used as calculation inputs
      * @param specs the data point type specifications used to resolve input display names
      * @param dataPoints the deserialized source data points used for the conversion
@@ -171,7 +167,6 @@ enum class DataPointConversion(
 
     /**
      * Returns the formula fragment used in the generated calculation comment.
-     *
      * @param inputs the uploaded data points used as calculation inputs
      * @return a formula using numbered source references such as `[1]`
      */
@@ -193,7 +188,6 @@ enum class DataPointConversion(
 
     /**
      * Sums the values of [inputs] into a single derived data point of [targetType].
-     *
      * @param inputs the source data points to be summed
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -235,7 +229,6 @@ enum class DataPointConversion(
 
     /**
      * Divides the first of [inputs] by the second, optionally scaling by [multiplier], into a data point of [targetType].
-     *
      * @param inputs the numerator and denominator source data points
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -291,7 +284,6 @@ enum class DataPointConversion(
 
     /**
      * Maps the single element of [inputs] into a derived data point of [targetType] without altering its value.
-     *
      * @param inputs the single source data point to be mapped
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -374,9 +366,7 @@ enum class DataPointConversion(
     }
 
     /**
-     * Derives the share of the eligible or aligned activities of a single activity group from the reported activity
-     * lists.
-     *
+     * Derives the share of the eligible or aligned activities of a single activity group from the reported activity lists.
      * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs
      * are read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
      *
@@ -411,7 +401,6 @@ enum class DataPointConversion(
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].
- *
  * @param inputs the source data points to be converted
  * @param targetType the data point type assigned to the resulting data point
  * @param method the textual identifier of the conversion strategy
