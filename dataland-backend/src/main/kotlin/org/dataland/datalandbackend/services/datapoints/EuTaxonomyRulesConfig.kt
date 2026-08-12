@@ -42,14 +42,14 @@ internal object EuTaxonomyRulesConfig {
 
     val ALIGNED_DATA_POINT_TYPES =
         listOf(
-            "relativeShareOfFossilGasActivitiesInPercentEligible",
-            "relativeShareOfNuclearActivitiesInPercentEligible",
+            "relativeShareOfFossilGasActivitiesInPercentAligned",
+            "relativeShareOfNuclearActivitiesInPercentAligned",
         )
 
     val ELIGIBLE_DATA_POINT_TYPES =
         listOf(
-            "relativeShareOfFossilGasActivitiesInPercentAligned",
-            "relativeShareOfNuclearActivitiesInPercentAligned",
+            "relativeShareOfFossilGasActivitiesInPercentEligible",
+            "relativeShareOfNuclearActivitiesInPercentEligible",
         )
 
     /**

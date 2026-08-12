@@ -135,7 +135,14 @@ internal fun createCommentEuTaxonomyShare(
     specs: Map<DataPointType, DataPointTypeSpecification>,
     dataPoints: Collection<ExtendedDataPointInterface<*>>,
     sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
-): String =
-    "This share was derived from the EU Taxonomy (2020/852) framework based on the activity lists " +
+): String {
+    val distinctFrameworkNames =
+        sourceFrameworksByType.values
+            .flatten()
+            .map { it.name }
+            .distinct()
+    val frameworkString = distinctFrameworkNames.singleOrNull() ?: "multiple"
+    return "This share was derived from the $frameworkString framework based on the activity lists " +
         getNumberedSourceReferences(inputs).joinToString(", ") + "\n\n***\n\n" +
         getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
+}
