@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+mode=${1:-default}
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 set_java_version() {
@@ -38,8 +39,10 @@ source_bashrc() {
 configure_git() {
   echo "Configure git"
   git config --global credential.helper '!f() { if [ "$1" = get ]; then echo username=placeholder-github-user; echo password=placeholder-github-token; fi; }; f'
+  echo "Enter user name for git (use your corresponding GitHub user name)"
   read username
   git config user.name "$username"
+  echo "Enter email for git (use your no-reply email from GitHub)"
   read email
   git config user.email "$email"
 }
@@ -54,5 +57,7 @@ set_java_version
 install_node
 update_opencode
 set_automatic_sourcing
-configure_git
+if [[ $mode == "developer" ]]; then
+  configure_git
+fi
 start_stack
