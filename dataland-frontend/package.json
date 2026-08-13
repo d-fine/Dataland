@@ -34,7 +34,7 @@
     "@primevue/core": "^4.5.5",
     "@tanstack/vue-query": "^5.101.4",
     "@vueuse/core": "^14.4.0",
-    "axios": "^1.16.1",
+    "axios": "1.16.1",
     "currency-codes": "^2.2.0",
     "cypress-recurse": "^1.37.2",
     "i18n-iso-countries": "^7.14.0",
