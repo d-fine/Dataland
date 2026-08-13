@@ -13,14 +13,14 @@ org-sonarqube = { id = "org.sonarqube", version = "7.4.0.8496" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.5.7" }
 org-openapi-generator = { id = "org.openapi.generator", version = "7.24.0" }
-com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.61.0" }
+com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.54.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 [versions]
 
-kotlin = "2.4.10"
+kotlin = "2.0.21"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.23.0"
