@@ -17,6 +17,7 @@ permissions:
       - "cdn.cypress.io:443"
       - "local-dev.dataland.com:443"
       - "deb.debian.org"
+      - "github.com"
 
 setup:
   install:

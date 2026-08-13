@@ -62,6 +62,9 @@ services:
       <<: *proxy-env
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - internal-storage:
+          condition: service_healthy
     logging:
       <<: *loki-logging
   admin-proxy:
