@@ -47,10 +47,15 @@ configure_git() {
   git config user.email "$email"
 }
 
-start_stack() {
+initialize_stack() {
   echo "Start stack using full reset and self-signed certificates"
   cd "$project_root"
-  ./manageLocalStack.sh --reset --self-signed-certs
+  ./manageLocalStack.sh --reset
+  echo "Waiting to avoid potential race conditions after start-up"
+  sleep 15
+  echo "Trigger prepopulation of the fake fixture data"
+  cd ./dataland-frontend
+  npm run prepopulate
 }
 
 set_java_version
@@ -60,4 +65,4 @@ set_automatic_sourcing
 if [[ $mode == "developer" ]]; then
   configure_git
 fi
-start_stack
+initialize_stack
