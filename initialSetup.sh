@@ -15,6 +15,7 @@ set_automatic_sourcing() {
   echo "set -a" >> ~/.bashrc
   echo "source $project_root/environments/.env.dev"  >> ~/.bashrc
   echo "set +a"  >> ~/.bashrc
+  source_bashrc
 }
 
 install_node() {
