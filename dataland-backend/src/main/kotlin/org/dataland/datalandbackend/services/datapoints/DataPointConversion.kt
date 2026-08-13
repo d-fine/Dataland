@@ -334,7 +334,7 @@ enum class DataPointConversion(
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
-        val sources = operands.sources
+        val sources = listOf(operands.alignedActivities, operands.nonAlignedActivities)
         val (mergedActivities, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares) =
             operands
                 .mergeLists()
@@ -382,11 +382,10 @@ enum class DataPointConversion(
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
-        val operands = extractEuTaxonomyActivitiesOperands(inputs, specs)
-        val sources = operands.sources
+        val (sources, share) = extractEuTaxonomyShare(inputs, specs, resolveEuTaxonomyShareRule(targetType))
         val calculatedDataPoint =
             ExtendedDecimalDataPoint(
-                value = operands.calculateShare(resolveEuTaxonomyShareRule(targetType)),
+                value = share,
                 quality = mergeQuality(sources.map { it?.quality }),
                 comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
                 dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
