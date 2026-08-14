@@ -107,14 +107,10 @@ internal data class PercentageMultiplicationOperands<V : ExtendedDataPointInterf
     val value: BigDecimal,
     val percent: BigDecimal,
 ) {
-    fun calculateShare(): BigDecimal = value.multiply(percent).divide(ONE_HUNDRED, CALCULATION_SCALE, CALCULATION_ROUNDING_MODE)
-
-    fun calculateComplementShare(): BigDecimal =
-        value.multiply(ONE_HUNDRED.subtract(percent)).divide(
-            ONE_HUNDRED,
-            CALCULATION_SCALE,
-            CALCULATION_ROUNDING_MODE,
-        )
+    fun calculateShare(useComplement: Boolean = false): BigDecimal {
+        val factor = if (useComplement) ONE_HUNDRED.subtract(percent) else percent
+        return value.multiply(factor).divide(ONE_HUNDRED, CALCULATION_SCALE, CALCULATION_ROUNDING_MODE)
+    }
 }
 
 internal inline fun <reified V : ExtendedDataPointInterface<BigDecimal>> extractPercentageMultiplicationOperands(

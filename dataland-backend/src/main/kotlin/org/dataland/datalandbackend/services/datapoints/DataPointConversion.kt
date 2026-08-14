@@ -463,7 +463,7 @@ enum class DataPointConversion(
                 val operands = extractPercentageMultiplicationOperands<ExtendedCurrencyDataPoint>(inputs, operationName)
                 val sources = listOf(operands.valueDataPoint, operands.percentDataPoint)
                 ExtendedCurrencyDataPoint(
-                    value = if (useComplement) operands.calculateComplementShare() else operands.calculateShare(),
+                    value = operands.calculateShare(useComplement),
                     currency = getCurrency(operands.valueDataPoint),
                     quality = mergeQuality(sources.map { it.quality }),
                     comment = createComment(inputs, specs, sources, sourceFrameworksByType),
@@ -474,7 +474,7 @@ enum class DataPointConversion(
                     extractPercentageMultiplicationOperands<ExtendedDataPoint<BigDecimal>>(inputs, operationName)
                 val sources = listOf(operands.valueDataPoint, operands.percentDataPoint)
                 ExtendedDataPoint(
-                    value = if (useComplement) operands.calculateComplementShare() else operands.calculateShare(),
+                    value = operands.calculateShare(useComplement),
                     quality = mergeQuality(sources.map { it.quality }),
                     comment = createComment(inputs, specs, sources, sourceFrameworksByType),
                     dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
