@@ -184,24 +184,22 @@ internal inline fun <
     require(inputs.size == 2) { "Exactly two data points must be provided to extract." }
 
     val nonAlignedInput =
-        inputs.singleOrNull {
-            getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE
-        }
-    if (nonAlignedInput == null) {
-        throw IllegalArgumentException(
+        requireNotNull(
+            inputs.singleOrNull {
+                getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE
+            },
+        ) {
             "Exactly one input of base type ${EuTaxonomyRulesConfig.NON_ALIGNED_ACTIVITIES_BASE_TYPE} " +
-                "must be provided to extract.",
-        )
-    }
-    val alignedInput =
-        inputs.singleOrNull {
-            getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE
+                "must be provided to extract."
         }
-    if (alignedInput == null) {
-        throw IllegalArgumentException(
-            "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract.",
-        )
-    }
+    val alignedInput =
+        requireNotNull(
+            inputs.singleOrNull {
+                getDataPointBaseTypeId(it.dataPointType, specs) == EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE
+            },
+        ) {
+            "Exactly one input of base type ${EuTaxonomyRulesConfig.ALIGNED_ACTIVITIES_BASE_TYPE} must be provided to extract."
+        }
 
     val nonAlignedActivities = defaultObjectMapper.readValue<N>(nonAlignedInput.dataPoint)
     val alignedActivities = defaultObjectMapper.readValue<A>(alignedInput.dataPoint)
@@ -229,16 +227,15 @@ internal inline fun <
     require(inputs.size == 1) { "Exactly one data point must be provided to extract." }
 
     val eligibleOrAlignedInput =
-        inputs.singleOrNull {
-            getDataPointBaseTypeId(it.dataPointType, specs) ==
-                EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE
-        }
-    if (eligibleOrAlignedInput == null) {
-        throw IllegalArgumentException(
+        requireNotNull(
+            inputs.singleOrNull {
+                getDataPointBaseTypeId(it.dataPointType, specs) ==
+                    EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE
+            },
+        ) {
             "Exactly one input of base type ${EuTaxonomyRulesConfig.ELIGIBLE_OR_ALIGNED_ACTIVITIES_BASE_TYPE} " +
-                "must be provided to extract.",
-        )
-    }
+                "must be provided to extract."
+        }
 
     return defaultObjectMapper.readValue<E>(eligibleOrAlignedInput.dataPoint)
 }

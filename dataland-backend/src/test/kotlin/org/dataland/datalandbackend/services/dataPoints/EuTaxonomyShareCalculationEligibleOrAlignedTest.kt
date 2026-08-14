@@ -100,6 +100,33 @@ class EuTaxonomyShareCalculationEligibleOrAlignedTest {
     }
 
     @Test
+    fun `check that two activities with the same activity name in the new framework are summed`() {
+        val result =
+            applyTransformation(
+                listOf(
+                    createEligibleOrAlignedInput(
+                        listOf(
+                            eligibleOrAlignedActivity(
+                                activityName = Activity.ElectricityGenerationFromNuclearEnergyInExistingInstallations,
+                                relativeEligibleShareInPercent = BigDecimal("4"),
+                            ),
+                            eligibleOrAlignedActivity(
+                                activityName = Activity.ElectricityGenerationFromNuclearEnergyInExistingInstallations,
+                                relativeEligibleShareInPercent = BigDecimal("3"),
+                            ),
+                        ),
+                    ),
+                ),
+                NUCLEAR_ELIGIBLE_TARGET_TYPE,
+                "EuTaxonomyShare",
+                shareSpecs,
+                sourceFrameworksByType,
+            )
+        val extendedDataPoint = defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal?>>(result.dataPoint)
+        assertBigDecimalEquals("7", extendedDataPoint.value)
+    }
+
+    @Test
     fun `check that a non-relevant activity in the new framework is ignored`() {
         val result =
             applyTransformation(

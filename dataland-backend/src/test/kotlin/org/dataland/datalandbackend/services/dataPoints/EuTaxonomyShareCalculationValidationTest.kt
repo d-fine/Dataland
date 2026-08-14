@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.services.dataPoints
 
 import org.dataland.datalandbackend.services.datapoints.applyTransformation
+import org.dataland.datalandbackend.services.datapoints.resolveEuTaxonomyShareRule
 import org.dataland.datalandbackend.utils.ACTIVITY_MERGE_RESULT_TYPE
+import org.dataland.datalandbackend.utils.NUCLEAR_ELIGIBLE_TARGET_TYPE
 import org.dataland.datalandbackend.utils.activityMergeSpecs
 import org.dataland.datalandbackend.utils.alignedActivity
 import org.dataland.datalandbackend.utils.createAlignedInput
@@ -13,16 +15,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class EuTaxonomyShareCalculationValidationTest {
-    /**
-     * The following test checks if there appears an exception if the wrong number of inputs is entered
-     */
     @Test
     fun `check that EuTaxonomyShare rejects an empty input`() {
         // Case 1: There are zero inputs
         assertThrows<IllegalArgumentException> {
             applyTransformation(
                 emptyList(),
-                ACTIVITY_MERGE_RESULT_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
+                NUCLEAR_ELIGIBLE_TARGET_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
             )
         }
     }
@@ -36,7 +35,7 @@ class EuTaxonomyShareCalculationValidationTest {
                     createAlignedInput(listOf(alignedActivity())),
                     createAlignedInput(listOf(alignedActivity())),
                 ),
-                ACTIVITY_MERGE_RESULT_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
+                NUCLEAR_ELIGIBLE_TARGET_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
             )
         }
     }
@@ -52,20 +51,20 @@ class EuTaxonomyShareCalculationValidationTest {
                     createNonAlignedInput(listOf(nonAlignedActivity())),
                     createNonAlignedInput(listOf(nonAlignedActivity())),
                 ),
-                ACTIVITY_MERGE_RESULT_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
+                NUCLEAR_ELIGIBLE_TARGET_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
             )
         }
     }
 
     @Test
-    fun `check that EuTaxonomyShare rejects duplicated inputs of aligned activities `() {
+    fun `check that EuTaxonomyShare rejects two aligned inputs without a non-aligned input`() {
         assertThrows<IllegalArgumentException> {
             applyTransformation(
                 listOf(
                     createAlignedInput(listOf(alignedActivity())),
                     createAlignedInput(listOf(alignedActivity())),
                 ),
-                ACTIVITY_MERGE_RESULT_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
+                NUCLEAR_ELIGIBLE_TARGET_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
             )
         }
     }
@@ -78,8 +77,15 @@ class EuTaxonomyShareCalculationValidationTest {
                     createUploadedDataPoint("{}"),
                     createAlignedInput(listOf(alignedActivity())),
                 ),
-                ACTIVITY_MERGE_RESULT_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
+                NUCLEAR_ELIGIBLE_TARGET_TYPE, "EuTaxonomyShare", activityMergeSpecs, sourceFrameworksByType,
             )
+        }
+    }
+
+    @Test
+    fun `check that resolveEuTaxonomyShareRule rejects an unknown target type`() {
+        assertThrows<IllegalArgumentException> {
+            resolveEuTaxonomyShareRule(ACTIVITY_MERGE_RESULT_TYPE)
         }
     }
 }
