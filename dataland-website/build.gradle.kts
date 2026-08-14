@@ -13,7 +13,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("24.9.0")
+    version.set("24.19.0")
 }
 
 tasks.withType<NpmTask> {
