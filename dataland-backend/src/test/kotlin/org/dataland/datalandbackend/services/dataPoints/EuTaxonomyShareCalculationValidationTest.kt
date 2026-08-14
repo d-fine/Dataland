@@ -17,7 +17,6 @@ import org.junit.jupiter.api.assertThrows
 class EuTaxonomyShareCalculationValidationTest {
     @Test
     fun `check that EuTaxonomyShare rejects an empty input`() {
-        // Case 1: There are zero inputs
         assertThrows<IllegalArgumentException> {
             applyTransformation(
                 emptyList(),
