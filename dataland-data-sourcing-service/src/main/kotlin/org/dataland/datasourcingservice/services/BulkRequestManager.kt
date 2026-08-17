@@ -111,6 +111,9 @@ class BulkRequestManager
             }
 
         private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
+            if (requests.isEmpty()) {
+                return emptySet()
+            }
             val newTaxonomyEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
 
             val activeDatasetDimensions =

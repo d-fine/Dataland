@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.junit.Assert.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.util.UUID
@@ -13,10 +13,9 @@ import org.dataland.datalandbackend.utils.DEFAULT_REPORTING_PERIOD as reportingP
 
 class DataAvailabilityCheckerFilterTest : DataAvailabilityCheckerTestBase() {
     @Test
-    fun `check that an empty throws an InvalidInputApiException`() {
-        assertThrows<InvalidInputApiException> {
-            dataAvailabilityChecker.filterViewableDimensions(emptyList())
-        }
+    fun `check that an empty filter does not throw and returns an empty list`() {
+        val result = assertDoesNotThrow { dataAvailabilityChecker.filterViewableDimensions(emptyList()) }
+        assertTrue(result.isEmpty())
     }
 
     @Test
