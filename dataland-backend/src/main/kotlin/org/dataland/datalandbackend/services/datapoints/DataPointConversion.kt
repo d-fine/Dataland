@@ -17,6 +17,24 @@ private val ONE_HUNDRED = BigDecimal("100")
 private const val REQUIRED_INPUT_COUNT = 3
 
 /**
+ * Ensures that [inputs] preserve a fixed order and returns them as a [List].
+ *
+ * @param inputs the source data points to check
+ * @param operationName the human-readable operation name used in the validation error message
+ * @return [inputs] as a [List]
+ * @throws IllegalArgumentException if [inputs] is not already a [List]
+ */
+private fun requireOrderedInputs(
+    inputs: Collection<UploadedDataPoint>,
+    operationName: String,
+): List<UploadedDataPoint> {
+    require(inputs is List<UploadedDataPoint>) {
+        "Inputs for $operationName must be provided as an ordered list, but were a ${inputs::class.simpleName}."
+    }
+    return inputs
+}
+
+/**
  * Closed set of strategies for deriving a data point from a collection of other data points.
  *
  * Variants are dispatched by their [id] via [byId].
@@ -50,7 +68,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertDivision(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "division"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
@@ -70,7 +88,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertDivision(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "division by percent"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
@@ -88,7 +106,7 @@ enum class DataPointConversion(
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
-        ): UploadedDataPoint = convertSubtraction(inputs, targetType, specs, sourceFrameworksByType)
+        ): UploadedDataPoint = convertSubtraction(requireOrderedInputs(inputs, "subtraction"), targetType, specs, sourceFrameworksByType)
     },
 
     COMPLEMENT_TO_PERCENT("ComplementToPercent") {
@@ -116,7 +134,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertMultiplicationByPercent(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "multiplication by percent"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
@@ -138,7 +156,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertMultiplicationByPercent(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "multiplication by complement percent"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
@@ -158,7 +176,13 @@ enum class DataPointConversion(
             targetType: DataPointType,
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
-        ): UploadedDataPoint = convertMultiplicationByPercentMinusCurrency(inputs, targetType, specs, sourceFrameworksByType)
+        ): UploadedDataPoint =
+            convertMultiplicationByPercentMinusCurrency(
+                requireOrderedInputs(inputs, "multiplication by percent minus currency"),
+                targetType,
+                specs,
+                sourceFrameworksByType,
+            )
     },
 
     IDENTITY("Identity") {
@@ -314,7 +338,7 @@ enum class DataPointConversion(
      * @return the derived data point produced by the division
      */
     protected fun convertDivision(
-        inputs: Collection<UploadedDataPoint>,
+        inputs: List<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
@@ -368,7 +392,7 @@ enum class DataPointConversion(
      * @return the derived data point produced by the subtraction
      */
     protected fun convertSubtraction(
-        inputs: Collection<UploadedDataPoint>,
+        inputs: List<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
@@ -451,7 +475,7 @@ enum class DataPointConversion(
      * @return the derived data point produced by the multiplication
      */
     protected fun convertMultiplicationByPercent(
-        inputs: Collection<UploadedDataPoint>,
+        inputs: List<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
@@ -499,7 +523,7 @@ enum class DataPointConversion(
      * @return the derived data point produced by the calculation
      */
     protected fun convertMultiplicationByPercentMinusCurrency(
-        inputs: Collection<UploadedDataPoint>,
+        inputs: List<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
@@ -507,8 +531,8 @@ enum class DataPointConversion(
         val operationName = "multiplication by percent minus currency"
         require(inputs.size == REQUIRED_INPUT_COUNT) { "Exactly three data points must be provided for $operationName." }
         val percentageOperands =
-            extractPercentageMultiplicationOperands<ExtendedCurrencyDataPoint>(inputs.take(2), operationName)
-        val amountToSubtract = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs.elementAt(2).dataPoint)
+            extractPercentageMultiplicationOperands<ExtendedCurrencyDataPoint>(inputs.subList(0, 2), operationName)
+        val amountToSubtract = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs[2].dataPoint)
         val amountToSubtractValue =
             requireNotNull(amountToSubtract.value) {
                 "Data points for $operationName must not have null value fields."

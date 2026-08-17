@@ -52,13 +52,13 @@ internal inline fun <
     reified N : ExtendedDataPointInterface<BigDecimal>,
     reified D : ExtendedDataPointInterface<BigDecimal>,
 > extractDivisionOperands(
-    inputs: Collection<UploadedDataPoint>,
+    inputs: List<UploadedDataPoint>,
     operationName: String,
 ): DivisionOperands<N, D> {
     val nullValueErrorMessage = "Data points for $operationName must not have null value fields."
     require(inputs.size == 2) { "Exactly two data points must be provided for $operationName." }
-    val numerator = defaultObjectMapper.readValue<N>(inputs.elementAt(0).dataPoint)
-    val denominator = defaultObjectMapper.readValue<D>(inputs.elementAt(1).dataPoint)
+    val numerator = defaultObjectMapper.readValue<N>(inputs[0].dataPoint)
+    val denominator = defaultObjectMapper.readValue<D>(inputs[1].dataPoint)
     val numeratorValue = requireNotNull(numerator.value) { nullValueErrorMessage }
     val denominatorValue = requireNotNull(denominator.value) { nullValueErrorMessage }
     require(denominatorValue.signum() != 0) { "The divisor in $operationName must not be zero." }
@@ -83,12 +83,12 @@ internal inline fun <
     reified M : ExtendedDataPointInterface<BigDecimal>,
     reified S : ExtendedDataPointInterface<BigDecimal>,
 > extractSubtractionOperands(
-    inputs: Collection<UploadedDataPoint>,
+    inputs: List<UploadedDataPoint>,
 ): SubtractionOperands<M, S> {
     val nullValueErrorMessage = "Data points for subtraction must not have null value fields."
     require(inputs.size == 2) { "Exactly two data points must be provided for subtraction." }
-    val minuend = defaultObjectMapper.readValue<M>(inputs.elementAt(0).dataPoint)
-    val subtrahend = defaultObjectMapper.readValue<S>(inputs.elementAt(1).dataPoint)
+    val minuend = defaultObjectMapper.readValue<M>(inputs[0].dataPoint)
+    val subtrahend = defaultObjectMapper.readValue<S>(inputs[1].dataPoint)
     val minuendValue = requireNotNull(minuend.value) { nullValueErrorMessage }
     val subtrahendValue = requireNotNull(subtrahend.value) { nullValueErrorMessage }
     return SubtractionOperands(
@@ -114,14 +114,14 @@ internal data class PercentageMultiplicationOperands<V : ExtendedDataPointInterf
 }
 
 internal inline fun <reified V : ExtendedDataPointInterface<BigDecimal>> extractPercentageMultiplicationOperands(
-    inputs: Collection<UploadedDataPoint>,
+    inputs: List<UploadedDataPoint>,
     operationName: String,
 ): PercentageMultiplicationOperands<V> {
     val nullValueErrorMessage = "Data points for $operationName must not have null value fields."
     require(inputs.size == 2) { "Exactly two data points must be provided for $operationName." }
-    val valueDataPoint = defaultObjectMapper.readValue<V>(inputs.elementAt(0).dataPoint)
+    val valueDataPoint = defaultObjectMapper.readValue<V>(inputs[0].dataPoint)
     val percentDataPoint =
-        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs.elementAt(1).dataPoint)
+        defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(inputs[1].dataPoint)
     val value = requireNotNull(valueDataPoint.value) { nullValueErrorMessage }
     val percent = requireNotNull(percentDataPoint.value) { nullValueErrorMessage }
     return PercentageMultiplicationOperands(
