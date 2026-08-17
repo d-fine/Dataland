@@ -48,8 +48,8 @@ export const PARTNER_STORY_SUMMARIES: PartnerStorySummary[] = [
   {
     slug: 'fact-first-cloud',
     name: 'Fact \u2013 First Cloud',
-    logo: '/static/logos/logo_fact_Salbei.svg',
-    logoClassName: 'scale-[1.9] lg:scale-[2.15]',
+    logo: '/static/logos/logo_fact_by_actico_tanne.png',
+    logoClassName: 'scale-[0.75] lg:scale-[1]',
     title: 'Fact \u2013 First Cloud',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG reporting', 'REST API'],
@@ -75,7 +75,7 @@ export const PARTNER_STORY_DETAILS: PartnerStoryDetail[] = [
   {
     slug: 'fact-first-cloud',
     name: 'Fact \u2013 First Cloud',
-    logo: '/static/logos/logo_fact_Salbei.svg',
+    logo: '/static/logos/logo_fact_by_actico_tanne.png',
     logoClassName: 'scale-[1.7] lg:scale-[1.95]',
     heroTitle: 'Fact \u2013 First Cloud',
     primaryTag: 'Integration partner',
