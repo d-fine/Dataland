@@ -22,7 +22,7 @@ x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
 x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
   MAILJET_API_SECRET: ${MAILJET_API_SECRET}
   MAILJET_API_ID: ${MAILJET_API_ID}
-x-postgres-healthcheck: &postgres-healthcheck
+x-healthcheck-settings: &healthcheck-settings
   interval: 30s
   timeout: 5s
   retries: 5
@@ -134,7 +134,7 @@ services:
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U api_key_manager" ]
     logging:
       <<: *loki-logging
@@ -175,7 +175,7 @@ services:
       POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       PGUSER: accounting_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U accounting_service" ]
     logging:
       <<: *loki-logging
@@ -215,7 +215,7 @@ services:
           POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           PGUSER: data_sourcing_service
         healthcheck:
-          <<: *postgres-healthcheck
+          <<: *healthcheck-settings
           test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
         logging:
           <<: *loki-logging
@@ -257,7 +257,7 @@ services:
       POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGUSER: document_manager
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U document_manager" ]
     logging:
       <<: *loki-logging
@@ -307,7 +307,7 @@ services:
       -c temp_buffers=512MB
       -c max_stack_depth=7680kB
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U backend" ]
     logging:
       <<: *loki-logging
@@ -410,7 +410,7 @@ services:
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGUSER: internal_storage
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U internal_storage" ]
     logging:
       <<: *loki-logging
@@ -428,7 +428,7 @@ services:
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       PGUSER: keycloak
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
     logging:
       <<: *loki-logging
@@ -576,9 +576,8 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
     healthcheck:
+      <<: *healthcheck-settings
       test: rabbitmq-diagnostics -q alarms
-      interval: 30s
-      timeout: 3s
     deploy:
       resources:
         limits:
@@ -626,7 +625,7 @@ services:
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U qa_service" ]
     logging:
       <<: *loki-logging
@@ -668,7 +667,7 @@ services:
       POSTGRES_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       PGUSER: user_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U user_service" ]
     logging:
       <<: *loki-logging
@@ -735,7 +734,7 @@ services:
     command:
       -c max_stack_depth=7680kB
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U community_manager" ]
     logging:
       <<: *loki-logging
@@ -796,7 +795,7 @@ services:
       POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGUSER: email_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U email_service" ]
     logging:
       <<: *loki-logging
