@@ -74,11 +74,11 @@ initialize_stack() {
 }
 
 install_base_packages
+install_cypress_prerequisites
 install_java
 update_opencode
 set_automatic_sourcing
 if [[ $mode == "developer" ]]; then
-  install_cypress_prerequisites
   configure_git
 fi
 initialize_stack
