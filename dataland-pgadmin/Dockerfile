@@ -14,4 +14,4 @@ RUN apk add --no-cache gettext
 USER pgadmin
 ENTRYPOINT ["/custom_entrypoint.sh"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD wget -nv -O- -t 1 http://localhost/pgadmin/misc/ping | tee /dev/stderr | grep -q PING || false
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD wget -nv -O- -t 1 http://localhost/pgadmin/misc/ping | tee /dev/stderr | grep -q PING || false

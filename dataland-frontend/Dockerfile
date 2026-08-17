@@ -35,4 +35,4 @@ COPY ./dataland-inbound-proxy/config/utils/security.conf /etc/nginx/utils/securi
 
 CMD ["nginx", "-g", "daemon off;"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD curl -f http://localhost/health/frontend | tee /dev/stderr | grep -q 'UP' || false
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD curl -f http://localhost/health/frontend | tee /dev/stderr | grep -q 'UP' || false

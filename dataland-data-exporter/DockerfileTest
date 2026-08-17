@@ -7,4 +7,4 @@ COPY ./build-utils/download_and_unpack_jacoco.sh ./
 RUN chmod +x ./download_and_unpack_jacoco.sh && ./download_and_unpack_jacoco.sh
 CMD ["java","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,","-jar","/jar/dataland-data-exporter.jar","--spring.profiles.active=ci"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD kill -0 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD kill -0 1

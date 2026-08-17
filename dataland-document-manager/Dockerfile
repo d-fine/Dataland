@@ -6,4 +6,4 @@ RUN apk add --no-cache libreoffice-writer libreoffice-impress
 COPY --from=builder /app/dataland-document-manager/build/libs/dataland-document-manager-0.0.1-SNAPSHOT.jar /jar/dataland-document-manager.jar
 CMD ["java","-jar","/jar/dataland-document-manager.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD wget -nv -O- -t 1 http://document-manager:8080/documents/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD wget -nv -O- -t 1 http://document-manager:8080/documents/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

@@ -5,4 +5,4 @@ FROM eclipse-temurin:21.0.11_10-jre-alpine@sha256:3f08b13888f595cc49edabea7250ba
 COPY --from=builder /app/dataland-data-exporter/build/libs/dataland-data-exporter-0.0.1-SNAPSHOT.jar /jar/dataland-data-exporter.jar
 CMD ["java","-jar","/jar/dataland-data-exporter.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD kill -0 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD kill -0 1
