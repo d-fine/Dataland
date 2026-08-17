@@ -67,6 +67,8 @@ services:
         condition: service_healthy
       specification-service:
         condition: service_healthy
+      document-manager:
+        condition: service_healthy
     logging:
       <<: *loki-logging
   admin-proxy:
