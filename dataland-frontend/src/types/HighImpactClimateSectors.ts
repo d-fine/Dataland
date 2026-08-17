@@ -10,8 +10,8 @@ export const HighImpactClimateSectorsKeys: { [key: string]: string } = {};
 
 export const optionsForHighImpactClimateSectors = naceCodeTreeFilteredByHighImpactClimateSectors.map((sector) => {
   const key = sector.key;
-  const keyDescription = sector.label?.split(' - ')[1]?.trim() ?? `NACE Code ${key}`;
-  HighImpactClimateSectorsKeys[`NaceCode${key}` as keyof typeof HighImpactClimateSectorsKeys] = keyDescription;
+  HighImpactClimateSectorsKeys[`NaceCode${key}` as keyof typeof HighImpactClimateSectorsKeys] =
+    sector.label?.split(' - ')[1]?.trim() ?? `NACE Code ${key}`;
   return {
     label: sector.label,
     value: sector.key,
@@ -19,13 +19,13 @@ export const optionsForHighImpactClimateSectors = naceCodeTreeFilteredByHighImpa
 });
 
 export enum HighImpactClimateSectorsNaceCodes {
-  'NaceCodeA' = 'A',
-  'NaceCodeB' = 'B',
-  'NaceCodeC' = 'C',
-  'NaceCodeD' = 'D',
-  'NaceCodeE' = 'E',
-  'NaceCodeF' = 'F',
-  'NaceCodeG' = 'G',
-  'NaceCodeH' = 'H',
-  'NaceCodeL' = 'L',
+  NaceCodeA = 'A',
+  NaceCodeB = 'B',
+  NaceCodeC = 'C',
+  NaceCodeD = 'D',
+  NaceCodeE = 'E',
+  NaceCodeF = 'F',
+  NaceCodeG = 'G',
+  NaceCodeH = 'H',
+  NaceCodeL = 'L',
 }

@@ -78,12 +78,20 @@ import PrimeButton from 'primevue/button';
 import { defineComponent, inject, ref } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
+interface FrameworkDataSearchBarRef {
+  closeOverlay?: () => void;
+}
+
+interface FrameworkDataSearchFiltersRef {
+  closeAllOpenDropDowns?: () => void;
+}
+
 export default defineComponent({
   setup() {
     return {
-      frameworkDataSearchFilters: ref<typeof FrameworkDataSearchFilters>(),
-      frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
-      searchResults: ref(),
+      frameworkDataSearchFilters: ref<FrameworkDataSearchFiltersRef | null>(null),
+      frameworkDataSearchBar: ref<FrameworkDataSearchBarRef | null>(null),
+      searchResults: ref<unknown>(null),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
@@ -200,10 +208,10 @@ export default defineComponent({
 
       if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
         this.isSearchBarContainerCollapsed = shouldCollapse;
-        this.frameworkDataSearchBar?.closeOverlay();
+        this.frameworkDataSearchBar?.closeOverlay?.();
       }
 
-      this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
+      this.frameworkDataSearchFilters?.closeAllOpenDropDowns?.();
     },
     /**
      * Parses the framework filter query parameters.

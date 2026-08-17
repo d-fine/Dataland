@@ -23,7 +23,7 @@ import { type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTy
 export default defineComponent({
   setup() {
     return {
-      multiselect: ref(),
+      multiselect: ref<InstanceType<typeof MultiSelect> | null>(null),
     };
   },
   name: 'FrameworkDataSearchDropdownFilter',

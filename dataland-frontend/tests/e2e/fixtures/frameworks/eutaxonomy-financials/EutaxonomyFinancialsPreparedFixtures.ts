@@ -82,7 +82,8 @@ function generateMinimalisticEuTaxoFinancialsFixtureForBlanketTest(): FixtureDat
 
   if (newFixture.t.creditInstitution?.turnoverBasedGreenAssetRatioStock) {
     newFixture.t.creditInstitution.turnoverBasedGreenAssetRatioStock.substantialContributionToClimateChangeAdaptationInPercentEligible =
-      fullDataset.creditInstitution?.turnoverBasedGreenAssetRatioStock?.substantialContributionToClimateChangeAdaptationInPercentEligible;
+      fullDataset.creditInstitution?.turnoverBasedGreenAssetRatioStock
+        ?.substantialContributionToClimateChangeAdaptationInPercentEligible;
   } else {
     throw new Error(
       'Could not set substantialContributionToClimateChangeAdaptationInPercentEligible due to missing parent-object.'
