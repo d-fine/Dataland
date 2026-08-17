@@ -642,7 +642,7 @@
 					"quality": null
 				},
 				"fiscalYearEnd": {
-					"value": "2024-05-25",
+					"value": "2024-05-26",
 					"dataSource": null,
 					"comment": null,
 					"quality": "NoDataFound"
@@ -1604,7 +1604,7 @@
 					"quality": "Incomplete"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-11-16",
+					"value": "2024-11-17",
 					"dataSource": {
 						"page": "1099-1197",
 						"fileName": "AnnualReport",
@@ -3599,7 +3599,7 @@
 					"quality": "Incomplete"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-05-26",
+					"value": "2024-05-27",
 					"dataSource": {
 						"page": "1110-1172",
 						"fileName": "SustainabilityReport",
@@ -4546,7 +4546,7 @@
 					"quality": "Audited"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-04-16",
+					"value": "2024-04-17",
 					"dataSource": {
 						"page": "207-533",
 						"fileName": "IntegratedReport",

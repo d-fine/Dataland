@@ -235,7 +235,7 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
-import { defineComponent, inject, ref } from 'vue';
+import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -255,7 +255,7 @@ export default defineComponent({
 
   setup() {
     return {
-      frameworkFilter: ref(),
+      frameworkFilter: ref<ComponentPublicInstance | null>(null),
       datasetsPerPage: 100,
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };

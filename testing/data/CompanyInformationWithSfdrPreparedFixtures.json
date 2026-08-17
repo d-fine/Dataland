@@ -42,7 +42,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-05",
+					"dataDate": "2024-12-06",
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
@@ -267,7 +267,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-03-25",
+					"dataDate": "2024-03-26",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -1898,7 +1898,7 @@
 						"quality": "Incomplete"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-11-29",
+						"value": "2024-11-30",
 						"dataSource": {
 							"page": "1032",
 							"fileName": "ESEFReport",
@@ -3409,7 +3409,7 @@
 						"quality": "Incomplete"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-11-27",
+						"value": "2024-11-28",
 						"dataSource": {
 							"page": "653-686",
 							"fileName": "IntegratedReport",
@@ -6503,7 +6503,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-08-19",
+					"dataDate": "2024-08-20",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -9522,7 +9522,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-26",
+					"dataDate": "2024-10-27",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -11004,7 +11004,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-11-03",
+					"dataDate": "2024-11-04",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -12506,7 +12506,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-06-21",
+					"dataDate": "2024-06-22",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -14142,7 +14142,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-06-21",
+					"dataDate": "2024-06-22",
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
@@ -15729,7 +15729,7 @@
 						"quality": "Audited"
 					},
 					"fiscalYearEnd": {
-						"value": "2025-01-19",
+						"value": "2025-01-20",
 						"dataSource": {
 							"page": "607",
 							"fileName": "SustainabilityReport",
@@ -20285,7 +20285,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-10-28",
+					"dataDate": "2024-10-29",
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {

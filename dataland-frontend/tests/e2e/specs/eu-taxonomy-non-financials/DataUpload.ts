@@ -48,10 +48,8 @@ function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestF
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
     (interceptionOfGetDataRequestForEditMode) => {
       const responseBody:
-        | DataAndMetaInformationEutaxonomyNonFinancialsData[]
-        | DataAndMetaInformationEutaxonomyNonFinancialsData = assertDefined(
-        assertDefined(interceptionOfGetDataRequestForEditMode).response
-      ).body;
+        DataAndMetaInformationEutaxonomyNonFinancialsData[] | DataAndMetaInformationEutaxonomyNonFinancialsData =
+        assertDefined(assertDefined(interceptionOfGetDataRequestForEditMode).response).body;
       const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
       const referencedReportsInDataset = firstEntry?.data?.general?.referencedReports;
       assert(referencedReportsInDataset);

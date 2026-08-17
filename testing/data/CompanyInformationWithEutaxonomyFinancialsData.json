@@ -4604,7 +4604,7 @@
 						"quality": null
 					},
 					"fiscalYearEnd": {
-						"value": "2024-06-24",
+						"value": "2024-06-25",
 						"dataSource": {
 							"page": "1046-1212",
 							"fileName": "IntegratedReport",
@@ -11252,7 +11252,7 @@
 						"quality": "Estimated"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-06-24",
+						"value": "2024-06-25",
 						"dataSource": {
 							"page": "14",
 							"fileName": "ESEFReport",
@@ -13514,7 +13514,7 @@
 						"quality": "NoDataFound"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-12-04",
+						"value": "2024-12-05",
 						"dataSource": null,
 						"comment": null,
 						"quality": "Incomplete"
@@ -20396,7 +20396,7 @@
 						"quality": "Reported"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-09-07",
+						"value": "2024-09-08",
 						"dataSource": {
 							"page": "921-966",
 							"fileName": "IntegratedReport",

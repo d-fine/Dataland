@@ -10,10 +10,11 @@
   >
     <template #header>
       <div class="tab-menu" data-test="updateRequestTabMenu">
-        <button :class="{ active: activeTab === 'update request' }" @click="activeTab = 'update request'">
+        <button type="button" :class="{ active: activeTab === 'update request' }" @click="activeTab = 'update request'">
           UPDATE REQUEST
         </button>
         <button
+          type="button"
           :class="{ active: activeTab === 'message history' }"
           @click="activeTab = 'message history'"
           v-show="messageHistory.length > 0"
