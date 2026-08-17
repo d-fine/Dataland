@@ -369,6 +369,100 @@ describe('DatasetReviewOverview page details', () => {
     });
   });
 
+  describe('Accept all remaining original data points', () => {
+    /**
+     * Builds a copy of the base dataset judgement's data points where every data point
+     * already has an accepted source (i.e. nothing remains to be reviewed).
+     * @returns {DatasetJudgementResponse['dataPoints']} The fully reviewed data points map.
+     */
+    function buildFullyReviewedDataPoints(): DatasetJudgementResponse['dataPoints'] {
+      return Object.fromEntries(
+        Object.entries(baseDatasetJudgement.dataPoints).map(([key, dataPoint]) => [
+          key,
+          { ...dataPoint, acceptedSource: dataPoint.acceptedSource ?? 'Qa' },
+        ])
+      ) as DatasetJudgementResponse['dataPoints'];
+    }
+
+    it('shows the button when assigned to the current user and data points remain', () => {
+      mountPageAssignedToCurrentUser();
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="qaReviewPageAcceptAllRemainingOriginalButton"]').should('be.visible');
+    });
+
+    it('does not show the button when not assigned to the current user', () => {
+      mountPage();
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="qaReviewPageAcceptAllRemainingOriginalButton"]').should('not.exist');
+    });
+
+    it('hides the button when there are no remaining data points to review', () => {
+      mountPage({
+        datasetJudgementResponse: {
+          ...baseDatasetJudgement,
+          qaJudgeUserId: keycloakMockWithJudge.idTokenParsed?.sub ?? 'current-judgement-id',
+          qaJudgeUserName: 'Current Judge',
+          dataPoints: buildFullyReviewedDataPoints(),
+        },
+      });
+      cy.wait('@getDatasetJudgement');
+
+      cy.get('[data-test="qaReviewPageAcceptAllRemainingOriginalButton"]').should('not.exist');
+    });
+
+    it('opens a confirmation modal and accepts only the remaining (unreviewed) data points as original', () => {
+      mountPageAssignedToCurrentUser();
+      cy.wait('@getDatasetJudgement');
+      cy.intercept(
+        { method: 'PATCH', url: '**/qa/dataset-judgements/**/data-points/**' },
+        { statusCode: 200, body: {} }
+      ).as('patchDataPoint');
+
+      cy.contains('ACCEPT ALL REMAINING ORIGINAL DATA POINTS').click();
+      cy.contains('Accept All Remaining Original Data Points').should('be.visible');
+      cy.contains('Are you sure you want to accept the original data point value for all 2').should('be.visible');
+      cy.contains('CONFIRM').click();
+
+      cy.wait('@patchDataPoint');
+      cy.wait('@patchDataPoint');
+
+      cy.get('@patchDataPoint.all')
+        .should('have.length', 2)
+        .then((interceptions) => {
+          const patchedInterceptions = interceptions as unknown as Array<{
+            request: { url: string; body: { acceptedSource: string } };
+          }>;
+          const urls = patchedInterceptions.map((interception) => interception.request.url);
+
+          expect(urls.some((url) => url.includes('/data-points/datapoint1'))).to.eq(true);
+          expect(urls.some((url) => url.includes('/data-points/datapoint3'))).to.eq(true);
+          expect(urls.some((url) => url.includes('/data-points/datapoint2'))).to.eq(false);
+
+          for (const interception of patchedInterceptions) {
+            expect(interception.request.body.acceptedSource).to.eq('Original');
+          }
+        });
+    });
+
+    it('closes the confirmation modal without sending any request when cancelled', () => {
+      mountPageAssignedToCurrentUser();
+      cy.wait('@getDatasetJudgement');
+      cy.intercept(
+        { method: 'PATCH', url: '**/qa/dataset-judgements/**/data-points/**' },
+        { statusCode: 200, body: {} }
+      ).as('patchDataPoint');
+
+      cy.contains('ACCEPT ALL REMAINING ORIGINAL DATA POINTS').click();
+      cy.contains('Accept All Remaining Original Data Points').should('be.visible');
+      cy.get('[aria-label="Close"]').click();
+
+      cy.contains('Accept All Remaining Original Data Points').should('not.exist');
+      cy.get('@patchDataPoint.all').should('have.length', 0);
+    });
+  });
+
   describe('QARG pre-check warnings', () => {
     const viewedDataEntry = { ...mockMetaInfo, uploadTime: 2000 };
     const olderDataEntry = { ...mockMetaInfo, dataId: 'older-data-id', uploadTime: 1000 };
