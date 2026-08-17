@@ -61,29 +61,29 @@ class CoveredCalculationRulesTest {
     }
 
     /**
-     * The number of inputs each calculation method expects, expressed as an (inclusive) range. Methods not listed
-     * here (e.g. those with input counts that legitimately depend on runtime data, or whose arity is not yet
-     * pinned down for all conversion paths) are not checked by the arity test below.
+     * The number of inputs each calculation method expects. Methods not listed here (e.g. those with input
+     * counts that legitimately depend on runtime data, or whose arity is not yet pinned down for all conversion
+     * paths) are not checked by the arity test below.
      */
-    private val expectedInputCountRanges: Map<String, IntRange> =
+    private val expectedInputCounts: Map<String, Int> =
         mapOf(
-            "Division" to 2..2,
-            "DivisionByPercent" to 2..2,
-            "Subtraction" to 2..2,
-            "ComplementToPercent" to 1..1,
-            "MultiplicationByPercent" to 2..2,
-            "MultiplicationByComplementPercent" to 2..2,
-            "MultiplicationByPercentMinusCurrency" to 3..3,
-            "Identity" to 1..1,
-            "EuTaxonomyActivityMerge" to 2..2,
+            "Division" to 2,
+            "DivisionByPercent" to 2,
+            "Subtraction" to 2,
+            "ComplementToPercent" to 1,
+            "MultiplicationByPercent" to 2,
+            "MultiplicationByComplementPercent" to 2,
+            "MultiplicationByPercentMinusCurrency" to 3,
+            "Identity" to 1,
+            "EuTaxonomyActivityMerge" to 2,
         )
 
     @Test
     fun `check that all configured calculation rules have the expected number of inputs`() {
         val rulesWithUnexpectedArity =
             getSpecifiedCalculationRules().filter { (_, rule) ->
-                val expectedRange = expectedInputCountRanges[rule.calculationMethod]
-                expectedRange != null && rule.inputs.size !in expectedRange
+                val expectedCount = expectedInputCounts[rule.calculationMethod]
+                expectedCount != null && rule.inputs.size != expectedCount
             }
 
         assertTrue(
@@ -91,7 +91,7 @@ class CoveredCalculationRulesTest {
             "The following calculation rules are configured with an unexpected number of inputs: " +
                 rulesWithUnexpectedArity.joinToString(", ") { (file, rule) ->
                     "${file.name} (${rule.calculationMethod}: ${rule.inputs.size} inputs, expected " +
-                        "${expectedInputCountRanges[rule.calculationMethod]})"
+                        "${expectedInputCounts[rule.calculationMethod]})"
                 },
         )
     }
