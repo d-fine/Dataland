@@ -40,7 +40,7 @@
     "i18n-iso-countries": "^7.14.0",
     "keycloak-js": "^26.2.3",
     "material-icons": "^1.13.14",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "pinia-shared-state": "^2.0.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
