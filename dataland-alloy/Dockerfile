@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install -y curl
 
 CMD ["run", "--server.http.listen-addr=alloy:8080", "--storage.path=/var/lib/alloy/data", "/etc/alloy/alloy-config.alloy"]
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --start-interval=10s --retries=10 CMD curl --fail http://alloy:8080 || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --start-interval=60s --retries=6 CMD curl --fail http://alloy:8080 || exit 1
