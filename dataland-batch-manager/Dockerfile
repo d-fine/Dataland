@@ -6,4 +6,4 @@ COPY ./dataland-batch-manager/src/main/resources/NorthdataTestData.zip ./Northda
 COPY --from=builder /app/dataland-batch-manager/build/libs/dataland-batch-manager-0.0.1-SNAPSHOT.jar /jar/dataland-batch-manager.jar
 CMD ["java","-jar","/jar/dataland-batch-manager.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD kill -0 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD kill -0 1

@@ -8,4 +8,4 @@ COPY ./dataland-specification-service/src/main/resources/specifications /specifi
 RUN chmod +x ./download_and_unpack_jacoco.sh && ./download_and_unpack_jacoco.sh
 CMD ["java","-javaagent:/jar/jacocoagent.jar=excludes=org.springframework.*,","-jar","/jar/dataland-specification-service.jar","--spring.profiles.active=ci"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8489/specifications/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD wget -nv -O- -t 1 http://localhost:8489/specifications/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

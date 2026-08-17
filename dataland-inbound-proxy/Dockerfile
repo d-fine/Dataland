@@ -25,4 +25,4 @@ RUN mkdir -p /certs /data/nginx/cache \
 
 VOLUME /etc/letsencrypt
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -fk --header "Host: ${PROXY_PRIMARY_URL}" https://localhost/health/proxy | tee /dev/stderr | grep -q 'UP' || false
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s CMD curl -fk --header "Host: ${PROXY_PRIMARY_URL}" https://localhost/health/proxy | tee /dev/stderr | grep -q 'UP' || false
