@@ -59,18 +59,18 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
       _kpi: 3,
     };
   },
-  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>) {
+  createMainColumnDataForRow(this: Self, activity: Record<string, unknown>, rowIndex: number) {
     const typedActivity = activity as EligibleOrAlignedActivityRow;
     return [
-      ...this.createBaseMainColumnDataForRow(activity),
+      ...this.createBaseMainColumnDataForRow(activity, rowIndex),
       {
-        activity: typedActivity.activityName ?? '',
+        rowIndex,
         group: '_kpi',
         field: `${this.kpiKeyOfTable}EligiblePercent`,
         content: formatPercentageNumberAsString(typedActivity.relativeEligibleShareInPercent ?? undefined),
       },
       ...this.createActivityGroupData<number | undefined>(
-        typedActivity.activityName as string,
+        rowIndex,
         'substantialContributionCriteria',
         {
           substantialContributionToClimateChangeMitigationInPercent:
@@ -88,8 +88,8 @@ const eligibleOrAlignedActivitiesDataTableConfiguration: Self['activitiesDataTab
         },
         formatPercentageNumberAsString
       ),
-      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity'),
-      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity'),
+      ...this.createSingleFieldGroupData(activity, '_enablingActivity', 'enablingActivity', rowIndex),
+      ...this.createSingleFieldGroupData(activity, '_transitionalActivity', 'transitionalActivity', rowIndex),
     ] as ReturnType<Self['createBaseMainColumnDataForRow']>;
   },
 };
