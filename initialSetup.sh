@@ -9,8 +9,6 @@ install_base_packages() {
   sudo apt-get update
   # Install general basic packages
   sudo apt-get -y install unzip curl wget apt-transport-https gpg vim
-  # Install basic packages for Cypress
-  sudo apt-get -y install libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
 }
 
 install_java() {
@@ -32,7 +30,9 @@ set_automatic_sourcing() {
   source_bashrc
 }
 
-install_node() {
+install_cypress_prerequisites() {
+  echo "Install basic packages for Cypress"
+  sudo apt-get -y install libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
   echo "Install node and npm"
   curl -o- https://fnm.vercel.app/install | bash
   source_bashrc
@@ -42,7 +42,7 @@ install_node() {
 
 update_opencode() {
   echo "Update OpenCode"
-   opencode upgrade
+  opencode upgrade
 }
 
 source_bashrc() {
@@ -75,10 +75,10 @@ initialize_stack() {
 
 install_base_packages
 install_java
-install_node
 update_opencode
 set_automatic_sourcing
 if [[ $mode == "developer" ]]; then
+  install_cypress_prerequisites
   configure_git
 fi
 initialize_stack
