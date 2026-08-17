@@ -32,7 +32,7 @@ set_automatic_sourcing() {
 
 install_cypress_prerequisites() {
   echo "Install basic packages for Cypress"
-  sudo apt-get -y install libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
+  sudo apt-get -y install libgtk-3-0t64 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
   echo "Install node and npm"
   curl -o- https://fnm.vercel.app/install | bash
   source_bashrc
