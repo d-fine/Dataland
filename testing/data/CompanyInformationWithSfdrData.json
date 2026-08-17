@@ -42,7 +42,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-05-06",
+					"dataDate": "2024-05-07",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -1169,7 +1169,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-03-14",
+					"dataDate": "2024-03-15",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -4585,10 +4585,10 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-25",
+					"dataDate": "2024-12-26",
 					"fiscalYearDeviation": null,
 					"fiscalYearEnd": {
-						"value": "2024-12-18",
+						"value": "2024-12-19",
 						"dataSource": null,
 						"comment": "input neural bus",
 						"quality": "Incomplete"
@@ -6942,7 +6942,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2025-01-06",
+					"dataDate": "2025-01-07",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
@@ -9292,7 +9292,7 @@
 		"t": {
 			"general": {
 				"general": {
-					"dataDate": "2024-12-03",
+					"dataDate": "2024-12-04",
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {

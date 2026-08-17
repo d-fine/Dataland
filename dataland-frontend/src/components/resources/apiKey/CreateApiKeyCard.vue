@@ -89,6 +89,7 @@ import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from '@/DatalandSe
 
 export default defineComponent({
   name: 'CreateApiKeyCard',
+  emits: ['cancelCreate', 'generateApiKey'],
   components: { PrimeButton, Dropdown, DatePicker, UserRolesBadges },
   props: {
     userRoles: {
