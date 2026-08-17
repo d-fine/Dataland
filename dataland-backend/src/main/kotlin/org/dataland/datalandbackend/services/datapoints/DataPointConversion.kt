@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.Eu
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.extended.ExtendedDecimalDataPoint
 import org.dataland.datalandbackendutils.model.DataPointType
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
@@ -36,9 +37,7 @@ private fun requireOrderedInputs(
 
 /**
  * Closed set of strategies for deriving a data point from a collection of other data points.
- *
  * Variants are dispatched by their [id] via [byId].
- *
  * @param id the textual identifier of the conversion strategy
  */
 @Suppress("TooManyFunctions")
@@ -221,11 +220,26 @@ enum class DataPointConversion(
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint = convertEuTaxonomyActivityMerge(inputs, targetType, specs, sourceFrameworksByType)
+    },
+
+    EU_TAXONOMY_SHARE("EuTaxonomyShare") {
+        override fun createComment(
+            inputs: Collection<UploadedDataPoint>,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            dataPoints: Collection<ExtendedDataPointInterface<*>>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): String = createCommentEuTaxonomyShare(inputs, specs, dataPoints, sourceFrameworksByType)
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertEuTaxonomyShare(inputs, targetType, specs, sourceFrameworksByType)
     }, ;
 
     /**
      * Applies this conversion strategy to merge [inputs] into a single derived data point of [targetType].
-     *
      * @param inputs the source data points to be combined
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -241,7 +255,6 @@ enum class DataPointConversion(
 
     /**
      * Creates a comment for the resulting data point describing this conversion's formula.
-     *
      * @param inputs the uploaded data points used as calculation inputs
      * @param specs the data point type specifications used to resolve input display names
      * @param dataPoints the deserialized source data points used for the conversion
@@ -264,7 +277,6 @@ enum class DataPointConversion(
 
     /**
      * Returns the formula fragment used in the generated calculation comment.
-     *
      * @param inputs the uploaded data points used as calculation inputs
      * @return a formula using numbered source references such as `[1]`
      */
@@ -286,7 +298,6 @@ enum class DataPointConversion(
 
     /**
      * Sums the values of [inputs] into a single derived data point of [targetType].
-     *
      * @param inputs the source data points to be summed
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -328,7 +339,6 @@ enum class DataPointConversion(
 
     /**
      * Divides the first of [inputs] by the second, optionally scaling by [multiplier], into a data point of [targetType].
-     *
      * @param inputs the numerator and denominator source data points
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -556,7 +566,6 @@ enum class DataPointConversion(
 
     /**
      * Maps the single element of [inputs] into a derived data point of [targetType] without altering its value.
-     *
      * @param inputs the single source data point to be mapped
      * @param targetType the data point type assigned to the resulting data point
      * @param specs the data point type specifications used to deserialize and label inputs
@@ -602,19 +611,20 @@ enum class DataPointConversion(
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
     ): UploadedDataPoint {
-        val activityLists =
+        val operands =
             extractEuTaxonomy2020ActivityLists<
                 ExtendedDataPoint<Iterable<EuTaxonomyActivity>?>?,
                 ExtendedDataPoint<Iterable<EuTaxonomyAlignedActivity>?>?,
             >(inputs, specs)
-        val sources = listOf(activityLists.alignedActivities, activityLists.nonAlignedActivities)
+        val sources = listOf(operands.alignedActivities, operands.nonAlignedActivities)
         val (mergedActivities, activitiesWithConflictingSubstantialContributions, activitiesWithoutAlignedShares) =
-            activityLists.mergeLists()
+            operands
+                .mergeLists()
         val baseComment =
             createComment(
                 inputs,
                 specs,
-                listOfNotNull(activityLists.alignedActivities, activityLists.nonAlignedActivities),
+                sources.filterNotNull(),
                 sourceFrameworksByType,
             )
         val comment =
@@ -636,11 +646,42 @@ enum class DataPointConversion(
             calculatedDataPoint = calculatedDataPoint,
         )
     }
+
+    /**
+     * Derives the share of the eligible or aligned activities of a single activity group from the reported activity lists.
+     * A single input is read as an eligible-or-aligned activity list of the EU taxonomy 2026/73 framework, two inputs
+     * are read as the non-aligned and aligned activity lists of the EU taxonomy 2020/852 framework.
+     *
+     * @param inputs the source data points holding the activity lists
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to resolve each input's role
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived share as an [ExtendedDecimalDataPoint]
+     */
+    protected fun convertEuTaxonomyShare(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val (sources, share) = extractEuTaxonomyShare(inputs, specs, resolveEuTaxonomyShareRule(targetType))
+        val calculatedDataPoint =
+            ExtendedDecimalDataPoint(
+                value = share,
+                quality = mergeQuality(sources.map { it?.quality }),
+                comment = createComment(inputs, specs, sources.filterNotNull(), sourceFrameworksByType),
+                dataSource = mergeDataSources(sources.mapNotNull { it?.let(::getDataSource) }),
+            )
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
 }
 
 /**
  * Resolves [method] to a [DataPointConversion] and applies it to [inputs] producing a data point of [targetType].
- *
  * @param inputs the source data points to be converted
  * @param targetType the data point type assigned to the resulting data point
  * @param method the textual identifier of the conversion strategy

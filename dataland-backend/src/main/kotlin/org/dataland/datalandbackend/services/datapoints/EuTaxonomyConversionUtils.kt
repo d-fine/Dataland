@@ -3,7 +3,21 @@ package org.dataland.datalandbackend.services.datapoints
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.model.generics.AmountWithCurrency
+import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import java.math.BigDecimal
+
+/**
+ * Resolves the dataPointBaseType id of [dataPointType] using [specs].
+ *
+ * @param dataPointType the data point type to inspect
+ * @param specs the data point type specifications keyed by type
+ * @return the id of the data point base type, or null if unknown
+ */
+internal fun getDataPointBaseTypeId(
+    dataPointType: DataPointType,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+): String? = specs[dataPointType]?.dataPointBaseType?.id
 
 /**
  * Computes the combined absolute share for aligned activities, or `null` if none report one.

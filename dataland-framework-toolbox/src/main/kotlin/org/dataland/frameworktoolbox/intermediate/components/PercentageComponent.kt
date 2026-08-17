@@ -24,6 +24,7 @@ class PercentageComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
+    var hasNoUpload: Boolean = false
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -34,7 +35,7 @@ class PercentageComponent(
             getSchemaAnnotationWithSuppressMaxLineLength(
                 uploadPageExplanation,
                 getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT),
-            ),
+            ) + getNoUploadAnnotation(hasNoUpload),
         )
     }
 
@@ -77,11 +78,15 @@ class PercentageComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         sectionBuilder.addAtomicExpression(
             identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
-                nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
-                nullable = isNullable,
-            ),
+            if (hasNoUpload) {
+                "null"
+            } else {
+                documentSupport.getFixtureExpression(
+                    fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
+                    nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
+                    nullable = isNullable,
+                )
+            },
         )
     }
 
