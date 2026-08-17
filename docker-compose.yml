@@ -539,6 +539,29 @@ services:
       SCRIPT_NAME: "/pgadmin"
     logging:
       <<: *loki-logging
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+      backend-db:
+        condition: service_healthy
+      api-key-manager-db:
+        condition: service_healthy
+      accounting-service-db:
+        condition: service_healthy
+      data-sourcing-service-db:
+        condition: service_healthy
+      internal-storage-db:
+        condition: service_healthy
+      document-manager-db:
+        condition: service_healthy
+      qa-service-db:
+        condition: service_healthy
+      community-manager-db:
+        condition: service_healthy
+      email-service-db:
+        condition: service_healthy
+      user-service-db:
+        condition: service_healthy
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
