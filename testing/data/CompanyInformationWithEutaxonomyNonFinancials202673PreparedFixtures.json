@@ -332,6 +332,10 @@
 					"comment": "calculate digital microchip",
 					"quality": "Reported"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 72.37,
@@ -622,6 +626,10 @@
 					"comment": "input online feed",
 					"quality": "Reported"
 				},
+				"relativeShareOfNuclearActivitiesInPercentEligible": null,
+				"relativeShareOfNuclearActivitiesInPercentAligned": null,
+				"relativeShareOfFossilGasActivitiesInPercentEligible": null,
+				"relativeShareOfFossilGasActivitiesInPercentAligned": null,
 				"nonAssessedShare": {
 					"relativeShareInPercent": {
 						"value": 90.17,

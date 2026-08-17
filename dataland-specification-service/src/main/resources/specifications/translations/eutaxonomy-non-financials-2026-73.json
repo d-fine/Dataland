@@ -32,6 +32,10 @@
       "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "REV_SC_TO_BIO_PCT_ALIGNED",
       "enablingShareInPercent" : "REV_ENABLING_PCT",
       "transitionalShareInPercent" : "REV_TRANSITIONAL_PCT",
+      "relativeShareOfNuclearActivitiesInPercentEligible" : "REV_NUCLEAR_ELIGIBLE_PCT",
+      "relativeShareOfNuclearActivitiesInPercentAligned" : "REV_NUCLEAR_ALIGNED_PCT",
+      "relativeShareOfFossilGasActivitiesInPercentEligible" : "REV_GAS_ELIGIBLE_PCT",
+      "relativeShareOfFossilGasActivitiesInPercentAligned" : "REV_GAS_ALIGNED_PCT",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "REV_NON_ASSESSED_PCT"
       },
@@ -54,6 +58,10 @@
       "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "CAPEX_SC_TO_BIO_PCT_ALIGNED",
       "enablingShareInPercent" : "CAPEX_ENABLING_PCT",
       "transitionalShareInPercent" : "CAPEX_TRANSITIONAL_PCT",
+      "relativeShareOfNuclearActivitiesInPercentEligible" : "CAPEX_NUCLEAR_ELIGIBLE_PCT",
+      "relativeShareOfNuclearActivitiesInPercentAligned" : "CAPEX_NUCLEAR_ALIGNED_PCT",
+      "relativeShareOfFossilGasActivitiesInPercentEligible" : "CAPEX_GAS_ELIGIBLE_PCT",
+      "relativeShareOfFossilGasActivitiesInPercentAligned" : "CAPEX_GAS_ALIGNED_PCT",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "CAPEX_NON_ASSESSED_PCT"
       },
