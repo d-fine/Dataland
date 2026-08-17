@@ -56,6 +56,7 @@ class DataPointConversionNewToOldArithmeticMethodsTest {
         val validInputs: List<UploadedDataPoint>,
         val targetType: DataPointType = "dummy",
         val specs: Map<DataPointType, DataPointTypeSpecification> = dummySpecs,
+        val requiresOrderedInputs: Boolean = true,
     )
 
     /**
@@ -65,7 +66,7 @@ class DataPointConversionNewToOldArithmeticMethodsTest {
     data class ArithmeticExceptionCase(
         val description: String,
         val fixture: PreInvalidInputFixture,
-        val inputs: List<UploadedDataPoint>,
+        val inputs: Collection<UploadedDataPoint>,
         val expectedException: KClass<out Throwable>,
     ) {
         override fun toString() = description
@@ -114,7 +115,11 @@ class DataPointConversionNewToOldArithmeticMethodsTest {
                     SUBTRACTION,
                     listOf(numericInput(NUMERIC_DATA_POINT_HALF), numericInput(NUMERIC_DATA_POINT_HALF)),
                 ),
-                PreInvalidInputFixture(COMPLEMENT_TO_PERCENT, listOf(numericInput(NUMERIC_DATA_POINT_HALF))),
+                PreInvalidInputFixture(
+                    COMPLEMENT_TO_PERCENT,
+                    listOf(numericInput(NUMERIC_DATA_POINT_HALF)),
+                    requiresOrderedInputs = false,
+                ),
                 PreInvalidInputFixture(
                     MULTIPLICATION_BY_PERCENT,
                     listOf(numericInput(NUMERIC_DATA_POINT_HALF), numericInput(NUMERIC_DATA_POINT_HALF)),
@@ -136,38 +141,53 @@ class DataPointConversionNewToOldArithmeticMethodsTest {
             )
 
         /**
-         * Derives the four invalid-input cases exercised for [fixture]: too few inputs, too many inputs, a
-         * non-numeric input, and a null-value input. See [CONCRETE_PRE_INVALID_INPUT_FIXTURES] for why this generic
-         * derivation is valid for every calculation method, including the currency-based one.
+         * Derives the invalid-input cases exercised for [fixture]: too few inputs, too many inputs, a
+         * non-numeric input, a null-value input, and inputs provided as an unordered [Collection]
+         * (for methods where input position matter).
          */
         fun deriveInvalidInputCases(fixture: PreInvalidInputFixture): List<ArithmeticExceptionCase> {
             val validInputs = fixture.validInputs
-            return listOf(
-                ArithmeticExceptionCase(
-                    description = "${fixture.calculationMethod}: too few inputs",
-                    fixture = fixture,
-                    inputs = validInputs.dropLast(1),
-                    expectedException = IllegalArgumentException::class,
-                ),
-                ArithmeticExceptionCase(
-                    description = "${fixture.calculationMethod}: too many inputs",
-                    fixture = fixture,
-                    inputs = validInputs + EXTRA_NUMERIC_INPUT,
-                    expectedException = IllegalArgumentException::class,
-                ),
-                ArithmeticExceptionCase(
-                    description = "${fixture.calculationMethod}: non-numeric input",
-                    fixture = fixture,
-                    inputs = listOf(NON_NUMERIC_INPUT) + validInputs.drop(1),
-                    expectedException = JsonProcessingException::class,
-                ),
-                ArithmeticExceptionCase(
-                    description = "${fixture.calculationMethod}: null-value input",
-                    fixture = fixture,
-                    inputs = validInputs.dropLast(1) + NULL_VALUE_INPUT,
-                    expectedException = IllegalArgumentException::class,
-                ),
-            )
+            val arityAndValueCases =
+                listOf(
+                    ArithmeticExceptionCase(
+                        description = "${fixture.calculationMethod}: too few inputs",
+                        fixture = fixture,
+                        inputs = validInputs.dropLast(1),
+                        expectedException = IllegalArgumentException::class,
+                    ),
+                    ArithmeticExceptionCase(
+                        description = "${fixture.calculationMethod}: too many inputs",
+                        fixture = fixture,
+                        inputs = validInputs + EXTRA_NUMERIC_INPUT,
+                        expectedException = IllegalArgumentException::class,
+                    ),
+                    ArithmeticExceptionCase(
+                        description = "${fixture.calculationMethod}: non-numeric input",
+                        fixture = fixture,
+                        inputs = listOf(NON_NUMERIC_INPUT) + validInputs.drop(1),
+                        expectedException = JsonProcessingException::class,
+                    ),
+                    ArithmeticExceptionCase(
+                        description = "${fixture.calculationMethod}: null-value input",
+                        fixture = fixture,
+                        inputs = validInputs.dropLast(1) + NULL_VALUE_INPUT,
+                        expectedException = IllegalArgumentException::class,
+                    ),
+                )
+            val orderedInputCases =
+                if (fixture.requiresOrderedInputs) {
+                    listOf(
+                        ArithmeticExceptionCase(
+                            description = "${fixture.calculationMethod}: inputs provided as an unordered collection",
+                            fixture = fixture,
+                            inputs = validInputs.toSet(),
+                            expectedException = IllegalArgumentException::class,
+                        ),
+                    )
+                } else {
+                    emptyList()
+                }
+            return arityAndValueCases + orderedInputCases
         }
 
         @JvmStatic
