@@ -27,7 +27,7 @@
     "@astrojs/vue": "^6.0.0",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
     "astro": "^6.0.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.0",
     "vue": "^3.5.32"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@typescript-eslint/parser": "8.59.0",
     "@vue/eslint-config-prettier": "10.2.0",
     "eslint": "10.2.1",
-    "eslint-plugin-astro": "1.7.0",
+    "eslint-plugin-astro": "3.1.0",
     "eslint-plugin-cypress": "6.3.1",
     "eslint-plugin-vue": "10.8.0",
     "npm-check-updates": "22.2.9",
