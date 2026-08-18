@@ -473,6 +473,20 @@ class DataPointConversionTest {
     }
 
     @Test
+    fun `check that division and division by percent reject inputs provided as an unordered collection`() {
+        val numerator = createUploadedDataPoint(TestResourceFileReader.getJsonString(NUMERIC_DATA_POINT_ONE))
+        val denominator = createUploadedDataPoint(TestResourceFileReader.getJsonString(NUMERIC_DATA_POINT_HALF))
+        val unorderedInputs = setOf(numerator, denominator)
+
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION.convert(unorderedInputs, "dummy", dummySpecs, sourceFrameworksByType)
+        }
+        assertThrows<IllegalArgumentException> {
+            DataPointConversion.DIVISION_BY_PERCENT.convert(unorderedInputs, "dummy", dummySpecs, sourceFrameworksByType)
+        }
+    }
+
+    @Test
     fun `check that identity conversion works as expected`() {
         val inputDataPoint =
             defaultObjectMapper
