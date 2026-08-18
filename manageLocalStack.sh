@@ -11,15 +11,16 @@ source "$project_root/localstack/env_functions.sh"
 source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--self-signed-certs] [--no-container-backend] [--verbose]" >&3
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--prune-docker] [--self-signed-certs] [--no-container-backend] [--verbose]" >&3
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
+  echo "  --prune-docker: Prune unused Docker images/containers/build cache to reclaim disk space (does not touch stack data)" >&3
   echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --verbose: Print subcommand output while also writing it to the local stack log" >&3
   echo "" >&3
-  echo "Multiple options can be combined in any order. Execution order is: stop, reset, start" >&3
+  echo "Multiple options can be combined in any order. Execution order is: stop, reset, prune-docker, start" >&3
 }
 
 rebuild_gradle_dockerfile() {
@@ -117,6 +118,7 @@ parse_arguments() {
   local do_stop=false
   local do_reset=false
   local do_start=false
+  local do_prune_docker=false
   
   local self_signed=true
   local container_backend=true
@@ -142,6 +144,10 @@ parse_arguments() {
         ;;
       --start)
         do_start=true
+        shift
+        ;;
+      --prune-docker)
+        do_prune_docker=true
         shift
         ;;
       --self-signed-certs)
@@ -171,6 +177,11 @@ parse_arguments() {
 
   if [[ "$do_reset" = true ]]; then
     reset_development_stack "$self_signed"
+  fi
+
+  if [[ "$do_prune_docker" = true ]]; then
+    log_step "Pruning Docker to reclaim disk space"
+    prune_docker_environment
   fi
 
   if [[ "$do_start" = true ]]; then

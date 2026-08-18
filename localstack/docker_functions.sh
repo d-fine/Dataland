@@ -74,6 +74,43 @@ clear_docker_completely() {
   run_docker_compose "${development_profiles[@]}" --profile init down
   run_docker_compose down --remove-orphans
   run_logged_command docker volume prune --force --all
+  run_logged_command docker image prune --all --force
+  run_logged_command docker builder prune --all --force
+  clear_loki_bind_mount
+}
+
+prune_docker_environment() {
+  log_step "Docker disk usage before pruning"
+  run_logged_command docker system df
+
+  log_step "Pruning unused Docker containers, images, and build cache"
+  run_logged_command docker container prune --force
+  run_logged_command docker image prune --all --force
+  run_logged_command docker builder prune --all --force
+
+  log_step "Docker disk usage after pruning"
+  run_logged_command docker system df
+
+  if command -v fstrim &>/dev/null; then
+    log_step "Trimming filesystem (lets the host reclaim freed blocks, relevant on WSL2)"
+    run_logged_command sudo fstrim -av
+  fi
+
+  log_info "On WSL2, Docker's freed space is not automatically returned to Windows."
+  log_info "To reclaim it on your C: drive, run 'wsl --shutdown' in PowerShell, then compact"
+  log_info "the distro's ext4.vhdx via diskpart. See the internal wiki for full instructions."
+}
+
+clear_loki_bind_mount() {
+  # LOKI_VOLUME is a bind mount (not a Docker volume), so docker volume prune never cleans it up.
+  # Left unchecked, Loki log data accumulates indefinitely on the host disk.
+  if [[ -z "${LOKI_VOLUME:-}" ]]; then
+    log_info "LOKI_VOLUME is not set, skipping Loki data cleanup"
+    return
+  fi
+
+  log_info "Clearing Loki bind-mounted log data at ${LOKI_VOLUME}"
+  rm -rf "${LOKI_VOLUME:?}"/*
 }
 
 rebuild_docker_images() {

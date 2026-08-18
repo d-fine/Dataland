@@ -60,7 +60,19 @@ schema_config:
 
 # Retention period configuration
 limits_config:
-  retention_period: 8760h  # 1 year in hours (365 days * 24 hours)
+  retention_period: 168h  # 7 days, enough history for local debugging without unbounded disk growth
+
+# The compactor is required for retention_period above to actually take effect: it periodically
+# scans the filesystem store and deletes chunks/index entries older than the retention period.
+# Without this block, retention_period is accepted but never enforced, and log data in the
+# bind-mounted LOKI_VOLUME directory grows without bound.
+compactor:
+  working_directory: /loki/compactor
+  delete_request_store: filesystem
+  retention_enabled: true
+  compaction_interval: 10m
+  retention_delete_delay: 2h
+  retention_delete_worker_count: 10
 
 # Enabling better organization and retrieval of log information. (depends on module ring)
 pattern_ingester:
