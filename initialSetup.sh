@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mode=${1:-default}
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 install_base_packages() {
@@ -37,9 +36,6 @@ install_cypress_prerequisites() {
   source_bashrc
   fnm install 24
   npm install -g npm
-  echo "Apply workaround to enable saving of sandbox as template file"
-  sudo apt-get purge -y shared-mime-info
-  sudo rm -rf /usr/share/mime/application
 }
 
 update_opencode() {
@@ -80,7 +76,5 @@ install_cypress_prerequisites
 install_java
 update_opencode
 set_automatic_sourcing
-if [[ $mode == "developer" ]]; then
-  configure_git
-fi
+configure_git
 initialize_stack
