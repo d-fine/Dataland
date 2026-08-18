@@ -7,7 +7,6 @@ project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 install_base_packages() {
   echo "Installing basic packages"
   sudo apt-get update
-  # Install general basic packages
   sudo apt-get -y install unzip curl wget apt-transport-https gpg vim
 }
 
