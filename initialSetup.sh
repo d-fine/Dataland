@@ -37,6 +37,9 @@ install_cypress_prerequisites() {
   source_bashrc
   fnm install 24
   npm install -g npm
+  echo "Apply workaround to enable saving of sandbox as template file"
+  sudo apt-get purge -y shared-mime-info
+  sudo rm -rf /usr/share/mime/application
 }
 
 update_opencode() {
