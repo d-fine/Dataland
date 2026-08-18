@@ -120,7 +120,7 @@ class NonSourceabilityTest {
         ctx = ctx.copy(dataSourcingId = initializeDataSourcing(ctx.companyId))
 
         postNonSourceableWithBypassQa(ctx)
-        assertNoQaReviewRowExists(ctx)
+        assertQaReviewIsAccepted(ctx)
         assertBackendEntryIsAcceptedAndActive(ctx)
         assertDsState(ctx, DataSourcingState.NonSourceable)
     }
@@ -347,20 +347,6 @@ class NonSourceabilityTest {
             "Entry must be immediately Accepted when bypassQa=true",
         )
         assertTrue(createdEntry.currentlyActive, "Entry must be immediately active when bypassQa=true")
-    }
-
-    private fun assertNoQaReviewRowExists(ctx: Ctx) {
-        awaitUntilAsserted {
-            val qaReviews =
-                asAdmin {
-                    apiAccessor.nonSourceabilityQaControllerApi.getNonSourceableReviews(
-                        companyId = ctx.companyId,
-                        dataType = ctx.dataType.value,
-                        reportingPeriod = ctx.reportingPeriod,
-                    )
-                }
-            assertTrue(qaReviews.isEmpty(), "QA service must have no review rows when bypassQa=true")
-        }
     }
 
     private fun uploadDatasetForTriple(ctx: Ctx): String =
