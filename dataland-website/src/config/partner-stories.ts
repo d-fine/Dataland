@@ -46,15 +46,15 @@ export interface PartnerStoryDetail {
 
 export const PARTNER_STORY_SUMMARIES: PartnerStorySummary[] = [
   {
-    slug: 'fact-first-cloud',
-    name: 'Fact \u2013 First Cloud',
+    slug: 'fact-by-actico-first-cloud',
+    name: 'Fact by ACTICO \u2013 First Cloud',
     logo: '/static/logos/logo_fact_by_actico_tanne.png',
     logoClassName: 'scale-[0.75] lg:scale-[1]',
-    title: 'Fact \u2013 First Cloud',
+    title: 'Fact by ACTICO \u2013 First Cloud',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG reporting', 'REST API'],
     text: 'First Cloud is a central platform for managing investments and processing financial and sustainability data.',
-    link: '/partner-stories#fact-first-cloud',
+    link: '/partner-stories#fact-by-actico-first-cloud',
     externalUrl: 'https://www.fact.de/unsere-loesungen/first-cloud/',
   },
   {
