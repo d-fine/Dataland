@@ -16,6 +16,15 @@ import org.springframework.stereotype.Component
 class PercentageComponentFactory(
     @Autowired val templateDiagnostic: TemplateDiagnostic,
 ) : TemplateComponentFactory {
+    companion object {
+        const val NO_UPLOAD_OPTION = "NoUpload"
+
+        /**
+         * Parses the options list and checks whether the NoUpload option is set. Returns true if it finds the option.
+         */
+        fun hasNoUploadOption(input: String): Boolean = input.contains(NO_UPLOAD_OPTION)
+    }
+
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Percentage"
 
     override fun generateComponent(
@@ -23,13 +32,13 @@ class PercentageComponentFactory(
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
         return componentGroup.create<PercentageComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
+            this.hasNoUpload = hasNoUploadOption(row.options)
         }
     }
 

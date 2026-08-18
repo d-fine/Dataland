@@ -41,6 +41,14 @@ data class EutaxonomyNonFinancials202673Revenue(
     @field:Valid()
     val transitionalShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
+    val relativeShareOfNuclearActivitiesInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val relativeShareOfNuclearActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val relativeShareOfFossilGasActivitiesInPercentEligible: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val relativeShareOfFossilGasActivitiesInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val nonAssessedShare: EutaxonomyNonFinancials202673RevenueNonAssessedShare? = null,
     val eligibleOrAlignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyEligibleOrAlignedActivity?>? = null,
 )

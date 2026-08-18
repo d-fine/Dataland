@@ -87,16 +87,6 @@ internal fun getSourceFrameworkLabel(sourceFrameworks: List<FrameworkSpecificati
         ?.joinToString(", ")
         ?: "Unknown"
 
-/**
- * Extends [baseComment] with notes about activities affected by the EU taxonomy activity merge.
- *
- * @param baseComment the comment generated for the merge conversion before these notes are appended
- * @param activitiesWithConflictingSubstantialContributions activities for which conflicting substantial
- *   contributions were detected and removed
- * @param activitiesWithoutAlignedShares activities for which the relative aligned share was null, so their
- *   substantial contributions were removed
- * @return [baseComment] extended with the applicable notes
- */
 internal fun extendCreateCommentEuTaxonomyActivitiesMerge(
     baseComment: String,
     activitiesWithConflictingSubstantialContributions: List<Activity>,
@@ -127,4 +117,32 @@ internal fun extendCreateCommentEuTaxonomyActivitiesMerge(
         }
 
     return comment
+}
+
+/**
+ * Creates the comment for the EU taxonomy share conversion.
+ *
+ * The comment names the source activity lists the share was derived from and lists them in a sources section.
+ *
+ * @param inputs the uploaded source data points the share was derived from
+ * @param specs the data point type specifications used to resolve source display names
+ * @param dataPoints the deserialized source data points used to inspect quality and source comments
+ * @param sourceFrameworksByType framework specifications associated with each source data point type
+ * @return the generated conversion comment
+ */
+internal fun createCommentEuTaxonomyShare(
+    inputs: Collection<UploadedDataPoint>,
+    specs: Map<DataPointType, DataPointTypeSpecification>,
+    dataPoints: Collection<ExtendedDataPointInterface<*>>,
+    sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+): String {
+    val distinctFrameworkNames =
+        sourceFrameworksByType.values
+            .flatten()
+            .map { it.name }
+            .distinct()
+    val frameworkString = distinctFrameworkNames.singleOrNull() ?: "multiple"
+    return "This share was derived from the $frameworkString framework based on the activity lists " +
+        getNumberedSourceReferences(inputs).joinToString(", ") + "\n\n***\n\n" +
+        getSourcesSection(inputs, specs, dataPoints, sourceFrameworksByType)
 }
