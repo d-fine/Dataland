@@ -113,12 +113,40 @@ class NonSourceabilityEventListener(
     }
 
     /**
-     * Auto-accepted events do not require a QA review.
+     * Creates an already-accepted QA review for an auto-accepted non-sourceability event
+     * (i.e. one that bypassed manual QA review), so that the QA service retains a
+     * consistent, queryable audit record for every non-sourceability claim.
      *
-     * Returning normally acknowledges the RabbitMQ message.
+     * No reviewer is set, since no human made this decision. No QA decision message is
+     * emitted, since the auto-accept was already communicated by the backend and handled
+     * directly by other downstream consumers.
      */
-    private fun processAutoAcceptedEvent(event: NonSourceabilityLifecycleEvent) {
-        logger.info("Ignoring auto-accepted non-sourceability event in QA service (nonSourceabilityId=${event.nonSourceabilityId})")
+    @Transactional
+    internal fun processAutoAcceptedEvent(event: NonSourceabilityLifecycleEvent) {
+        val existing = nonSourceableQaReviewRepository.findByNonSourceabilityId(event.nonSourceabilityId)
+
+        if (existing != null) {
+            logger.info("Idempotent skip: QA review record already exists for nonSourceabilityId=${event.nonSourceabilityId}")
+            return
+        }
+
+        val entity =
+            NonSourceableQaReviewInformationEntity(
+                nonSourceabilityId = event.nonSourceabilityId,
+                companyId = event.companyId,
+                dataType = event.dataType,
+                reportingPeriod = event.reportingPeriod,
+                qaStatus = QaStatus.Accepted,
+                reason = null,
+                uploaderUserId = event.uploaderUserId,
+                uploadTime = Instant.now().toEpochMilli(),
+                reviewerUserId = null,
+                qaComment = "Auto-accepted (QA bypass)",
+            )
+
+        nonSourceableQaReviewRepository.save(entity)
+
+        logger.info("Created auto-accepted QA review record for nonSourceabilityId=${event.nonSourceabilityId}")
     }
 
     /**
