@@ -46,15 +46,15 @@ export interface PartnerStoryDetail {
 
 export const PARTNER_STORY_SUMMARIES: PartnerStorySummary[] = [
   {
-    slug: 'fact-first-cloud',
-    name: 'Fact \u2013 First Cloud',
-    logo: '/static/logos/logo_fact_Salbei.svg',
-    logoClassName: 'scale-[1.9] lg:scale-[2.15]',
-    title: 'Fact \u2013 First Cloud',
+    slug: 'fact-by-actico-first-cloud',
+    name: 'Fact by ACTICO \u2013 First Cloud',
+    logo: '/static/logos/logo_fact_by_actico_tanne.png',
+    logoClassName: 'scale-[0.75] lg:scale-[1]',
+    title: 'Fact by ACTICO \u2013 First Cloud',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG reporting', 'REST API'],
     text: 'First Cloud is a central platform for managing investments and processing financial and sustainability data.',
-    link: '/partner-stories#fact-first-cloud',
+    link: '/partner-stories#fact-by-actico-first-cloud',
     externalUrl: 'https://www.fact.de/unsere-loesungen/first-cloud/',
   },
   {
@@ -73,16 +73,16 @@ export const PARTNER_STORY_SUMMARIES: PartnerStorySummary[] = [
 
 export const PARTNER_STORY_DETAILS: PartnerStoryDetail[] = [
   {
-    slug: 'fact-first-cloud',
-    name: 'Fact \u2013 First Cloud',
-    logo: '/static/logos/logo_fact_Salbei.svg',
-    logoClassName: 'scale-[1.7] lg:scale-[1.95]',
-    heroTitle: 'Fact \u2013 First Cloud',
+    slug: 'fact-by-actico-first-cloud',
+    name: 'Fact by ACTICO \u2013 First Cloud',
+    logo: '/static/logos/logo_fact_by_actico_tanne.png',
+    logoClassName: 'scale-[0.75] lg:scale-[1]',
+    heroTitle: 'Fact by ACTICO \u2013 First Cloud',
     primaryTag: 'Integration partner',
     secondaryTags: ['ESG reporting', 'REST API'],
     intro: [
       'First Cloud is a central platform for managing investments and processing financial and sustainability data.',
-      'Through the partnership with Fact, Dataland\u2019s ESG data is automatically integrated into First Cloud, where it serves as a consistent data foundation for all subsequent processes.',
+      'Through the partnership with Fact by ACTICO, Dataland\u2019s ESG data is automatically integrated into First Cloud, where it serves as a consistent data foundation for all subsequent processes.',
       'First Cloud enables the creation of regulatory ESG reports through a guided, interactive process. This is based on the portfolio data of the investments as well as the integrated ESG data from Dataland, which together form the data foundation for calculations, analyses, and reporting.',
     ],
     keyUseCases: [
