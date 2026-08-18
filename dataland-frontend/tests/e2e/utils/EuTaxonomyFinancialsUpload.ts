@@ -30,8 +30,8 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
       const responseBody:
-        | DataAndMetaInformationEutaxonomyFinancialsData[]
-        | DataAndMetaInformationEutaxonomyFinancialsData = assertDefined(interception).response?.body;
+        DataAndMetaInformationEutaxonomyFinancialsData[] | DataAndMetaInformationEutaxonomyFinancialsData =
+        assertDefined(interception).response?.body;
       const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
       const referencedReports = firstEntry?.data?.general?.general?.referencedReports;
       assert(referencedReports);

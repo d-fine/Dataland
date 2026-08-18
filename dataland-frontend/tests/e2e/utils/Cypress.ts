@@ -95,8 +95,8 @@ export function doThingsInChunks<T>(
   let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
-    promise = promise.then(
-      (): Promise<void> => Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
+    promise = promise.then((): Promise<void> =>
+      Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
     );
   }
   return cy.then((): Bluebird<void> => {

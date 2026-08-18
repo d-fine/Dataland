@@ -52,7 +52,7 @@ export default defineComponent({
   props: {
     ...BaseFormFieldProps,
   },
-  emits: ['reportsUpdated'],
+  emits: ['reportsUpdated', 'fieldSpecificDocumentsUpdated'],
   data() {
     return {
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
