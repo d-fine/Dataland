@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
@@ -7,18 +8,39 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedDecimalDataPoint
 import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import java.math.BigDecimal
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
 private val ONE_HUNDRED = BigDecimal("100")
+private const val REQUIRED_INPUT_COUNT = 3
+
+/**
+ * Ensures that [inputs] preserve a fixed order and returns them as a [List].
+ *
+ * @param inputs the source data points to check
+ * @param operationName the human-readable operation name used in the validation error message
+ * @return [inputs] as a [List]
+ * @throws IllegalArgumentException if [inputs] is not already a [List]
+ */
+private fun requireOrderedInputs(
+    inputs: Collection<UploadedDataPoint>,
+    operationName: String,
+): List<UploadedDataPoint> {
+    require(inputs is List<UploadedDataPoint>) {
+        "Inputs for $operationName must be provided as an ordered list, but were a ${inputs::class.simpleName}."
+    }
+    return inputs
+}
 
 /**
  * Closed set of strategies for deriving a data point from a collection of other data points.
  * Variants are dispatched by their [id] via [byId].
  * @param id the textual identifier of the conversion strategy
  */
+@Suppress("TooManyFunctions")
 enum class DataPointConversion(
     val id: String,
 ) {
@@ -45,7 +67,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertDivision(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "division"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
@@ -65,12 +87,100 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertDivision(
-                inputs = inputs,
+                inputs = requireOrderedInputs(inputs, "division by percent"),
                 targetType = targetType,
                 specs = specs,
                 sourceFrameworksByType = sourceFrameworksByType,
                 multiplier = ONE_HUNDRED,
                 operationName = "division by percent",
+            )
+    },
+
+    SUBTRACTION("Subtraction") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+            getNumberedSourceReferences(inputs).joinToString(" - ")
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertSubtraction(requireOrderedInputs(inputs, "subtraction"), targetType, specs, sourceFrameworksByType)
+    },
+
+    COMPLEMENT_TO_PERCENT("ComplementToPercent") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String =
+            "100 - ${getNumberedSourceReferences(inputs).single()}"
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint = convertComplementToPercent(inputs, targetType, specs, sourceFrameworksByType)
+    },
+
+    MULTIPLICATION_BY_PERCENT("MultiplicationByPercent") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "${references[0]} * ${references[1]} / 100"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertMultiplicationByPercent(
+                inputs = requireOrderedInputs(inputs, "multiplication by percent"),
+                targetType = targetType,
+                specs = specs,
+                sourceFrameworksByType = sourceFrameworksByType,
+                useComplement = false,
+                operationName = "multiplication by percent",
+            )
+    },
+
+    MULTIPLICATION_BY_COMPLEMENT_PERCENT("MultiplicationByComplementPercent") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "${references[0]} * (100 - ${references[1]}) / 100"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertMultiplicationByPercent(
+                inputs = requireOrderedInputs(inputs, "multiplication by complement percent"),
+                targetType = targetType,
+                specs = specs,
+                sourceFrameworksByType = sourceFrameworksByType,
+                useComplement = true,
+                operationName = "multiplication by complement percent",
+            )
+    },
+
+    MULTIPLICATION_BY_PERCENT_MINUS_CURRENCY("MultiplicationByPercentMinusCurrency") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "(${references[0]} * ${references[1]} / 100) - ${references[2]}"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertMultiplicationByPercentMinusCurrency(
+                requireOrderedInputs(inputs, "multiplication by percent minus currency"),
+                targetType,
+                specs,
+                sourceFrameworksByType,
             )
     },
 
@@ -238,7 +348,7 @@ enum class DataPointConversion(
      * @return the derived data point produced by the division
      */
     protected fun convertDivision(
-        inputs: Collection<UploadedDataPoint>,
+        inputs: List<UploadedDataPoint>,
         targetType: DataPointType,
         specs: Map<DataPointType, DataPointTypeSpecification>,
         sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
@@ -274,6 +384,178 @@ enum class DataPointConversion(
                     dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
                 )
             }
+
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
+
+    /**
+     * Subtracts the second of [inputs] from the first into a data point of [targetType].
+     *
+     * @param inputs the minuend and subtrahend source data points
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived data point produced by the subtraction
+     */
+    protected fun convertSubtraction(
+        inputs: List<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val calculatedDataPoint =
+            if (isCurrencyDataPoint(targetType, specs)) {
+                val operands = extractSubtractionOperands<ExtendedCurrencyDataPoint, ExtendedCurrencyDataPoint>(inputs)
+                val sources = listOf(operands.minuend, operands.subtrahend)
+                ExtendedCurrencyDataPoint(
+                    value = operands.calculateValue(),
+                    currency = getCommonCurrency(sources),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            } else {
+                val operands =
+                    extractSubtractionOperands<ExtendedDataPoint<BigDecimal>, ExtendedDataPoint<BigDecimal>>(inputs)
+                val sources = listOf(operands.minuend, operands.subtrahend)
+                ExtendedDataPoint(
+                    value = operands.calculateValue(),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            }
+
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
+
+    /**
+     * Subtracts the single element of [inputs] from 100 into a data point of [targetType].
+     *
+     * @param inputs the single source data point holding the percentage to complement
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived data point produced by the complement calculation
+     */
+    protected fun convertComplementToPercent(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val dataPoint = extractIdentityOperand<ExtendedDataPoint<BigDecimal>>(inputs)
+        val value =
+            requireNotNull(dataPoint.value) {
+                "Data point for complement to percent must not have a null value field."
+            }
+        val calculatedDataPoint =
+            ExtendedDataPoint(
+                value = ONE_HUNDRED.subtract(value),
+                quality = dataPoint.quality,
+                comment = createComment(inputs, specs, listOf(dataPoint), sourceFrameworksByType),
+                dataSource = dataPoint.dataSource,
+            )
+
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
+
+    /**
+     * Multiplies the first of [inputs] by the second, treated as a percentage, into a data point of [targetType].
+     *
+     * @param inputs the value and percentage source data points
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @param useComplement true to multiply by the complement of the percentage (100 - percentage) instead of the
+     * percentage itself
+     * @param operationName the human-readable operation name used in validation error messages
+     * @return the derived data point produced by the multiplication
+     */
+    protected fun convertMultiplicationByPercent(
+        inputs: List<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        useComplement: Boolean,
+        operationName: String,
+    ): UploadedDataPoint {
+        val calculatedDataPoint =
+            if (isCurrencyDataPoint(targetType, specs)) {
+                val operands = extractPercentageMultiplicationOperands<ExtendedCurrencyDataPoint>(inputs, operationName)
+                val sources = listOf(operands.valueDataPoint, operands.percentDataPoint)
+                ExtendedCurrencyDataPoint(
+                    value = operands.calculateShare(useComplement),
+                    currency = getCurrency(operands.valueDataPoint),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            } else {
+                val operands =
+                    extractPercentageMultiplicationOperands<ExtendedDataPoint<BigDecimal>>(inputs, operationName)
+                val sources = listOf(operands.valueDataPoint, operands.percentDataPoint)
+                ExtendedDataPoint(
+                    value = operands.calculateShare(useComplement),
+                    quality = mergeQuality(sources.map { it.quality }),
+                    comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                    dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+                )
+            }
+
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
+    }
+
+    /**
+     * Multiplies the first of [inputs] by the second, treated as a percentage, and subtracts the third from the
+     * result into a data point of [targetType].
+     *
+     * @param inputs the value, percentage and amount-to-subtract source data points, in that order
+     * @param targetType the data point type assigned to the resulting data point
+     * @param specs the data point type specifications used to deserialize and label inputs
+     * @param sourceFrameworksByType framework specifications associated with each source data point type
+     * @return the derived data point produced by the calculation
+     */
+    protected fun convertMultiplicationByPercentMinusCurrency(
+        inputs: List<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+    ): UploadedDataPoint {
+        val operationName = "multiplication by percent minus currency"
+        require(inputs.size == REQUIRED_INPUT_COUNT) { "Exactly three data points must be provided for $operationName." }
+        val percentageOperands =
+            extractPercentageMultiplicationOperands<ExtendedCurrencyDataPoint>(inputs.subList(0, 2), operationName)
+        val amountToSubtract = defaultObjectMapper.readValue<ExtendedCurrencyDataPoint>(inputs[2].dataPoint)
+        val amountToSubtractValue =
+            requireNotNull(amountToSubtract.value) {
+                "Data points for $operationName must not have null value fields."
+            }
+        val sources = listOf(percentageOperands.valueDataPoint, percentageOperands.percentDataPoint, amountToSubtract)
+        val calculatedDataPoint =
+            ExtendedCurrencyDataPoint(
+                value = percentageOperands.calculateShare().subtract(amountToSubtractValue),
+                currency = getCommonCurrency(listOf(percentageOperands.valueDataPoint, amountToSubtract)),
+                quality = mergeQuality(sources.map { it.quality }),
+                comment = createComment(inputs, specs, sources, sourceFrameworksByType),
+                dataSource = mergeDataSources(sources.mapNotNull(::getDataSource)),
+            )
 
         return createUploadedDataPoint(
             inputs = inputs,
