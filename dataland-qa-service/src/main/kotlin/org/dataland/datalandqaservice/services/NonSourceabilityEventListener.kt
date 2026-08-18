@@ -6,6 +6,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
@@ -22,27 +23,32 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.util.UUID
 
 /**
- * Listens to non-sourceability-created events from the backend and creates a corresponding
- * [NonSourceableQaReviewInformationEntity] in the QA service.
+ * Handles non-sourceability submission events from the backend.
+ *
+ * A single queue binds to [RoutingKeyNames.NON_SOURCEABILITY_SUBMISSION] and dispatches on
+ * messageType:
+ *   - [MessageType.NON_SOURCEABILITY_CREATED]       → [DataSourcingState.NonSourceableVerification]
+ *   - [MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED] → [DataSourcingState.NonSourceable]
+ *
+ * Fail-fast validation: events with malformed or blank nonSourceabilityId are
+ * discarded with an error log and a [MessageQueueRejectException].
  */
 @Service
 class NonSourceabilityEventListener(
-    @Autowired private val nonSourceableQaReviewRepository: NonSourceableQaReviewRepository,
+    @Autowired
+    private val nonSourceableQaReviewRepository: NonSourceableQaReviewRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     * Handles a non-sourceability-created event from the backend and creates a pending
-     * [NonSourceableQaReviewInformationEntity] for review.
-     */
     @RabbitListener(
         bindings = [
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.QA_SERVICE_NON_SOURCEABILITY_CREATED,
+                        QueueNames.QA_SERVICE_NON_SOURCEABILITY_SUBMISSION,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -54,24 +60,38 @@ class NonSourceabilityEventListener(
             ),
         ],
     )
-    fun onNonSourceabilityCreated(
+    fun onNonSourceabilitySubmission(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) messageType: String,
     ) {
         MessageQueueUtils.rejectMessageOnException {
-            MessageQueueUtils.validateMessageType(messageType, MessageType.NON_SOURCEABILITY_CREATED)
+            validateMessageType(messageType)
+
             val event = MessageQueueUtils.readMessagePayload<NonSourceabilityLifecycleEvent>(payload)
-            processCreatedEvent(event)
+
+            validateNonSourceabilityId(event.nonSourceabilityId)
+
+            when (messageType) {
+                MessageType.NON_SOURCEABILITY_CREATED -> {
+                    processCreatedEvent(event)
+                }
+
+                MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED -> {
+                    processAutoAcceptedEvent(event)
+                }
+            }
         }
     }
 
+    /**
+     * Creates a pending QA review for a normal non-sourceability event.
+     */
     @Transactional
     internal fun processCreatedEvent(event: NonSourceabilityLifecycleEvent) {
         val existing = nonSourceableQaReviewRepository.findByNonSourceabilityId(event.nonSourceabilityId)
+
         if (existing != null) {
-            logger.info(
-                "Idempotent skip: QA review record already exists for nonSourceabilityId=${event.nonSourceabilityId}",
-            )
+            logger.info("Idempotent skip: QA review record already exists for nonSourceabilityId=${event.nonSourceabilityId}")
             return
         }
 
@@ -86,9 +106,46 @@ class NonSourceabilityEventListener(
                 uploaderUserId = event.uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
             )
+
         nonSourceableQaReviewRepository.save(entity)
-        logger.info(
-            "Created QA review record for nonSourceabilityId=${event.nonSourceabilityId}",
-        )
+
+        logger.info("Created QA review record for nonSourceabilityId=${event.nonSourceabilityId}")
+    }
+
+    /**
+     * Auto-accepted events do not require a QA review.
+     *
+     * Returning normally acknowledges the RabbitMQ message.
+     */
+    private fun processAutoAcceptedEvent(event: NonSourceabilityLifecycleEvent) {
+        logger.info("Ignoring auto-accepted non-sourceability event in QA service (nonSourceabilityId=${event.nonSourceabilityId})")
+    }
+
+    /**
+     * Accepts only the two non-sourceability lifecycle events handled by this listener.
+     */
+    private fun validateMessageType(messageType: String) {
+        if (messageType != MessageType.NON_SOURCEABILITY_CREATED &&
+            messageType != MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
+        ) {
+            throw MessageQueueRejectException("Unexpected message type \"$messageType\" in NonSourceabilityEventListener")
+        }
+    }
+
+    /**
+     * Validates that the event contains a usable non-sourceability ID.
+     */
+    private fun validateNonSourceabilityId(nonSourceabilityId: String) {
+        if (nonSourceabilityId.isBlank()) {
+            throw MessageQueueRejectException("Received event with blank nonSourceabilityId. Discarding.")
+        }
+
+        try {
+            UUID.fromString(nonSourceabilityId)
+        } catch (exception: IllegalArgumentException) {
+            logger.error("Malformed nonSourceabilityId='$nonSourceabilityId'. Discarding.", exception)
+
+            throw MessageQueueRejectException("Malformed nonSourceabilityId='$nonSourceabilityId'", exception)
+        }
     }
 }
