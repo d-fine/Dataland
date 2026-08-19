@@ -45,8 +45,4 @@ export interface Field {
 }
 
 export type FrameworkData =
-  | EutaxonomyFinancialsData
-  | EutaxonomyNonFinancialsData
-  | LksgData
-  | SfdrData
-  | NuclearAndGasData;
+  EutaxonomyFinancialsData | EutaxonomyNonFinancialsData | LksgData | SfdrData | NuclearAndGasData;

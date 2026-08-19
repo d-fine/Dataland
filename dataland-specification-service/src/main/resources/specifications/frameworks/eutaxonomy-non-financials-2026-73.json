@@ -34,6 +34,10 @@
       "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "extendedDecimalRevenueSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
       "enablingShareInPercent" : "extendedDecimalRevenueEnablingShareInPercent",
       "transitionalShareInPercent" : "extendedDecimalRevenueTransitionalShareInPercent",
+      "relativeShareOfNuclearActivitiesInPercentEligible" : "extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentEligible",
+      "relativeShareOfNuclearActivitiesInPercentAligned" : "extendedDecimalRevenueRelativeShareOfNuclearActivitiesInPercentAligned",
+      "relativeShareOfFossilGasActivitiesInPercentEligible" : "extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentEligible",
+      "relativeShareOfFossilGasActivitiesInPercentAligned" : "extendedDecimalRevenueRelativeShareOfFossilGasActivitiesInPercentAligned",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalRevenueNonAssessedShareRelativeShareInPercent"
       },
@@ -56,6 +60,10 @@
       "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned" : "extendedDecimalCapexSubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned",
       "enablingShareInPercent" : "extendedDecimalCapexEnablingShareInPercent",
       "transitionalShareInPercent" : "extendedDecimalCapexTransitionalShareInPercent",
+      "relativeShareOfNuclearActivitiesInPercentEligible" : "extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentEligible",
+      "relativeShareOfNuclearActivitiesInPercentAligned" : "extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentAligned",
+      "relativeShareOfFossilGasActivitiesInPercentEligible" : "extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentEligible",
+      "relativeShareOfFossilGasActivitiesInPercentAligned" : "extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentAligned",
       "nonAssessedShare" : {
         "relativeShareInPercent" : "extendedDecimalCapexNonAssessedShareRelativeShareInPercent"
       },

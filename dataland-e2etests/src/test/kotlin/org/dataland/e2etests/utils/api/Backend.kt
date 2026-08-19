@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.AssembledDatasetMigrationC
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancials202673DataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancials202673DataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
@@ -20,6 +21,8 @@ object Backend {
         AssembledDatasetMigrationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val eutaxonomyFinancials202673DataControllerApi =
         EutaxonomyFinancials202673DataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val eutaxonomyNonFinancials202673DataControllerApi =
+        EutaxonomyNonFinancials202673DataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val sfdrDataControllerApi = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val lksgDataControllerApi = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 }

@@ -33,10 +33,11 @@ import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldPro
 
 export default defineComponent({
   name: 'NaceCodeFormField',
+  emits: ['update:selectedNaceCodesBind'],
   components: { NaceCodeSelector, FormKit, FormKitMessages, UploadFormHeader },
   setup() {
     return {
-      formKitNaceCodeInput: ref(),
+      formKitNaceCodeInput: ref<unknown>(null),
     };
   },
   data() {

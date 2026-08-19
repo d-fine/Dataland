@@ -34,12 +34,19 @@ class FrameworkViewConfigBuilder(
         )
 
     private fun buildViewConfig(viewConfigTsPath: Path) {
+        val frameworkDataType = "${getNameFromLabel(framework.identifier).capitalizeEn()}Data"
         val freeMarkerContext =
             mapOf(
                 "viewConfig" to rootSectionConfigBuilder.children,
-                "frameworkDataType" to "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
+                "frameworkDataType" to frameworkDataType,
                 "viewConfigConstName" to getNameFromLabel(framework.identifier),
-                "imports" to TypeScriptImport.mergeImports(rootSectionConfigBuilder.imports),
+                "imports" to
+                    TypeScriptImport.mergeImports(
+                        rootSectionConfigBuilder.imports +
+                            TypeScriptImport(
+                                "type $frameworkDataType", "@clients/backend",
+                            ),
+                    ),
             )
 
         val freemarkerTemplate =
@@ -78,7 +85,10 @@ class FrameworkViewConfigBuilder(
             )
         val outputJobs =
             listOf(
-                Pair("/specific/viewconfig/BasePublicFrameworkDefinition.ts.ftl", baseDirectoryPath / "BaseFrameworkDefinition.ts"),
+                Pair(
+                    "/specific/viewconfig/BasePublicFrameworkDefinition.ts.ftl",
+                    baseDirectoryPath / "BaseFrameworkDefinition.ts",
+                ),
                 Pair(
                     "/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
                     baseDirectoryPath / "FrontendFrameworkDefinition.ts",
@@ -126,8 +136,14 @@ class FrameworkViewConfigBuilder(
                     "'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises'",
                 ),
                 listOf("'Reported Child Labour Incidents'", "'Risk of Child Labour Incidents'"),
-                listOf("'Reported Forced Or Compulsory Labour Incidents'", "'Risk of Forced Or Compulsory Labour Incidents'"),
-                listOf("'Reported Convictions Of Bribery and Corruption'", "'Number of Reported Convictions Of Bribery and Corruption'"),
+                listOf(
+                    "'Reported Forced Or Compulsory Labour Incidents'",
+                    "'Risk of Forced Or Compulsory Labour Incidents'",
+                ),
+                listOf(
+                    "'Reported Convictions Of Bribery and Corruption'",
+                    "'Number of Reported Convictions Of Bribery and Corruption'",
+                ),
             )
 
         for (replacement in replacements) {

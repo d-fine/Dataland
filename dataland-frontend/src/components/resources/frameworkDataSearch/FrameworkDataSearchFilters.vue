@@ -62,15 +62,21 @@ import PrimeButton from 'primevue/button';
 import Divider from 'primevue/divider';
 import { type DataTypeEnum } from '@clients/backend';
 
+export interface FrameworkDataSearchDropdownFilterRef {
+  multiselect?: {
+    hide?: () => void;
+  } | null;
+}
+
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
   components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
   emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
   setup() {
     return {
-      sectorFilter: ref(),
-      countryFilter: ref(),
-      frameworkFilter: ref(),
+      sectorFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
+      countryFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
+      frameworkFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },
@@ -151,11 +157,11 @@ export default defineComponent({
     // The following method is used, the linter reports a false positive here
     // eslint-disable-next-line vue/no-unused-properties
     closeAllOpenDropDowns() {
-      this.countryFilter?.$refs.multiselect.hide();
+      this.countryFilter?.multiselect?.hide?.();
 
-      this.sectorFilter?.$refs.multiselect.hide();
+      this.sectorFilter?.multiselect?.hide?.();
 
-      this.frameworkFilter?.$refs.multiselect.hide();
+      this.frameworkFilter?.multiselect?.hide?.();
     },
     /**
      * Uses the Dataland API to obtain available company search filters and fills in the

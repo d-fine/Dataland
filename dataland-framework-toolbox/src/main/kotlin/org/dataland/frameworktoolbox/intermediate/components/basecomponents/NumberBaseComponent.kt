@@ -3,13 +3,13 @@ package org.dataland.frameworktoolbox.intermediate.components.basecomponents
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.ValueGetterSpec
+import org.dataland.frameworktoolbox.intermediate.components.addDocumentSupportedValueCell
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.MinimumValueAnnotation
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.NoUploadAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
@@ -81,6 +81,17 @@ open class NumberBaseComponent(
     }
 
     /**
+     * Returns a list of datamodel annotations to enforce the NoUpload rule
+     */
+    fun getNoUploadAnnotation(hasNoUpload: Boolean): List<Annotation> {
+        val annotations = mutableListOf<Annotation>()
+        if (hasNoUpload) {
+            annotations.add(NoUploadAnnotation())
+        }
+        return annotations
+    }
+
+    /**
      * Returns the parameter list for the fake fixture generation to respect minimum and maximum bounds
      */
     fun getFakeFixtureMinMaxRangeParameterSpec(
@@ -106,21 +117,22 @@ open class NumberBaseComponent(
         }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
-                        " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
+        val escapedUnitSuffix = StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")
+        addDocumentSupportedValueCell(
+            sectionConfigBuilder,
+            ValueGetterSpec(
+                formatterImports =
                     setOf(
                         TypeScriptImport(
                             "formatNumberForDatatable",
                             "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
                         ),
                     ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+                dataPointCastType = "number | null | undefined",
+            ) { valueExpression ->
+                "formatNumberForDatatable($valueExpression," +
+                    " \"$escapedUnitSuffix\")"
+            },
         )
     }
 }

@@ -13,9 +13,6 @@ import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentS
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
-import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 private const val MIN_PERCENTAGE: Long = 0
 private const val MAX_PERCENTAGE: Long = 100
@@ -27,6 +24,7 @@ class PercentageComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
+    var hasNoUpload: Boolean = false
     override var constantUnitSuffix: String? = "%"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -37,7 +35,7 @@ class PercentageComponent(
             getSchemaAnnotationWithSuppressMaxLineLength(
                 uploadPageExplanation,
                 getExample(EXAMPLE_PLAIN_PERCENTAGE_COMPONENT),
-            ),
+            ) + getNoUploadAnnotation(hasNoUpload),
         )
     }
 
@@ -50,23 +48,13 @@ class PercentageComponent(
         )
     }
 
-    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-            this,
-            documentSupport.getFrameworkDisplayValueLambda(
-                FrameworkDisplayValueLambda(
-                    "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
-                    setOf(
-                        TypeScriptImport(
-                            "formatPercentageForDatatable",
-                            "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
-                        ),
-                    ),
-                ),
-                label, getTypescriptFieldAccessor(),
-            ),
+    override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        addSingleArgumentFormatterCell(
+            sectionConfigBuilder,
+            formatterFunction = "formatPercentageForDatatable",
+            formatterModule = "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
+            dataPointCastType = "number | null | undefined",
         )
-    }
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {
@@ -90,11 +78,15 @@ class PercentageComponent(
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         sectionBuilder.addAtomicExpression(
             identifier,
-            documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
-                nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
-                nullable = isNullable,
-            ),
+            if (hasNoUpload) {
+                "null"
+            } else {
+                documentSupport.getFixtureExpression(
+                    fixtureExpression = "dataGenerator.guaranteedPercentageValue()",
+                    nullableFixtureExpression = "dataGenerator.randomPercentageValue()",
+                    nullable = isNullable,
+                )
+            },
         )
     }
 

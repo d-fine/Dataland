@@ -210,8 +210,7 @@ async function loadDataForDisplay(
   singleDataMetaInfoToDisplay?: DataMetaInformation
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
   const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
-    | PublicFrameworkDataApi<FrameworkDataType>
-    | undefined;
+    PublicFrameworkDataApi<FrameworkDataType> | undefined;
   if (!dataControllerApi) throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
   if (!singleDataMetaInfoToDisplay) return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
   let singleDataset;

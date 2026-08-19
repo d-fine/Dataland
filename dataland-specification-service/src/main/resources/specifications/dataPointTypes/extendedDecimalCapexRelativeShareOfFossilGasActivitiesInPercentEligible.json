@@ -1,0 +1,15 @@
+{
+  "id" : "extendedDecimalCapexRelativeShareOfFossilGasActivitiesInPercentEligible",
+  "name" : "Relative Share of Fossil Gas Activities in Percent - Eligible",
+  "businessDefinition" : "Relative share of the CapEx that is associated with taxonomy-eligible fossil gas activities (referred to in Sections 4.29, 4.30 and 4.31 of Annexes I and II to Delegated Regulation (EU) 2021/2139)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-non-financials-2026-73" ],
+  "constraints" : [ "between:0,100" ],
+  "calculationRules" : [ {
+    "inputs" : [ "extendedEuTaxonomyEligibleOrAlignedActivitiesComponentCapexEligibleOrAlignedActivities" ],
+    "calculationMethod" : "EuTaxonomyShare"
+  }, {
+    "inputs" : [ "extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities", "extendedEuTaxonomyNonAlignedActivitiesComponentCapexNonAlignedActivities" ],
+    "calculationMethod" : "EuTaxonomyShare"
+  } ]
+}

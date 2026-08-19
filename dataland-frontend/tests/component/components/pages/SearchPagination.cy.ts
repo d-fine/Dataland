@@ -9,25 +9,31 @@ import { type BasicCompanyInformation } from '@clients/backend';
  */
 function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): void {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
+
   cy.intercept('GET', '**/api/companies/numberOfCompanies?**', {
     statusCode: 200,
     body: 200,
   });
-  cy.intercept('GET', '**/api/companies?**', mockedResponse ?? mockDataSearchStoredCompanyArray);
+
+  cy.intercept('GET', '**/api/companies?**', mockedResponse ?? mockDataSearchStoredCompanyArray).as('companies');
+
   cy.intercept('**/api/companies/meta-information', {
     countryCodes: ['CV'],
     sectors: ['partnerships'],
   });
+
   const keycloakMock = minimalKeycloakMock({
     roles: ['ROLE_USER', 'ROLE_UPLOADER', 'ROLE_REVIEWER'],
   });
+
   cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
     keycloak: keycloakMock,
   }).then((mounted) => {
     void mounted.wrapper.setData({
       resultArray: mockDataSearchStoredCompanyArray,
     });
-    cy.wait(500);
+
+    cy.wait('@companies');
   });
 }
 

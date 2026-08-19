@@ -331,14 +331,14 @@ const allColumns: ColumnDefinition[] = [
 ];
 
 const selectedColumns = ref<ColumnDefinition[]>(loadColumnSelection());
-const columnPopover = ref();
+const columnPopover = ref<InstanceType<typeof Popover> | null>(null);
 
 /**
  * Toggles the column selection popover visibility.
  * @param event - The click event from the button
  */
 function toggleColumnPopover(event: Event): void {
-  columnPopover.value.toggle(event);
+  columnPopover.value?.toggle(event);
 }
 
 /**
