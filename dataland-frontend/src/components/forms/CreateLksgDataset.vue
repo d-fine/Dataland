@@ -105,7 +105,7 @@ import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
-import { computed, inject, onMounted, provide, ref } from 'vue';
+import { computed, inject, provide, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
@@ -118,6 +118,7 @@ import { checkCustomInputs } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 
+import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 
@@ -136,7 +137,7 @@ const props = defineProps<{
 }>();
 
 const formId = 'createLkSGForm';
-const waitingForData = ref(true);
+const waitingForData = ref(false);
 const dataDate = ref<Date | undefined>(undefined);
 const companyAssociatedLksgData = ref<CompanyAssociatedDataLksgData>({} as CompanyAssociatedDataLksgData);
 const message = ref('');
@@ -224,10 +225,6 @@ const postLkSGData = async (): Promise<void> => {
     postLkSGDataProcessed.value = true;
   }
 };
-
-onMounted(() => {
-  waitingForData.value = false;
-});
 
 provide(
   'selectedProcurementCategories',

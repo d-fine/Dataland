@@ -193,7 +193,7 @@ export default defineComponent({
   data() {
     return {
       formId: 'createNuclearAndGasForm',
-      waitingForData: true,
+      waitingForData: false,
       companyAssociatedNuclearAndGasData: {} as CompanyAssociatedDataNuclearAndGasData,
       nuclearAndGasDataModel,
       message: '',
@@ -230,7 +230,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }

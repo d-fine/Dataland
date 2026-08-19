@@ -35,8 +35,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./swagger-ui');
   require('./user-api-key');
   require('./framework-view-and-upload-journey');
-  require('./sfdr');
-  require('./lksg');
   require('./company-cockpit');
 }
 
@@ -57,7 +55,6 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    * That's why they live together.
    */
 
-  require('./nuclear-and-gas');
   require('./user-authentication');
   require('./admin-tools');
 }

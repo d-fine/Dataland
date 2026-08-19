@@ -201,7 +201,7 @@ export default defineComponent({
   data() {
     return {
       formId: 'createSFDRForm',
-      waitingForData: true,
+      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
       sfdrDataModel,
@@ -244,9 +244,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-  },
-  created() {
-    this.waitingForData = false;
   },
   methods: {
     /**

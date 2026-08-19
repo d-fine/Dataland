@@ -1,8 +1,8 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
-      ><span data-test="pageWrapperTitle"> Create EU Taxonomy Dataset for a Non-Financial Company/Service</span></template
-    >
+      ><span data-test="pageWrapperTitle"> Create EU Taxonomy Dataset for a Non-Financial Company/Service</span>
+    </template>
     <template #content>
       <div class="separator" />
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">

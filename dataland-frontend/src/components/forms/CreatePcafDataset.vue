@@ -147,7 +147,7 @@ import Tag from 'primevue/tag';
 import { computed, inject, onMounted, provide, ref } from 'vue';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const props = defineProps({
+defineProps({
   companyID: {
     type: String,
     required: true,

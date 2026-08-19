@@ -376,7 +376,7 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it('Open upload page prefilled and assure that new file needs unique name and has to be referenced ', () => {
+  it('Mount upload form prefilled with existing referenced reports and assure that a new file needs a unique name and has to be referenced', () => {
     cy.stub(DataPointFormWithToggle);
 
     getMountingFunction({
