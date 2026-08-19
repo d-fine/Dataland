@@ -5,5 +5,8 @@
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : [ "eutaxonomy-non-financials" ],
   "constraints" : null,
-  "calculationRules" : [ ]
+  "calculationRules" : [ {
+    "inputs" : [ "extendedCurrencyTotalAmount", "extendedDecimalRevenueEligibleShareRelativeShareInPercent" ],
+    "calculationMethod" : "MultiplicationByComplementPercent"
+  } ]
 }

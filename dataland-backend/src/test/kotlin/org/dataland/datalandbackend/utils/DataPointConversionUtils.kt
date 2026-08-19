@@ -1,7 +1,11 @@
 package org.dataland.datalandbackend.utils
 
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
+import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.dataland.datalandbackendutils.model.DataPointType
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
@@ -130,3 +134,57 @@ fun sourceBlock(
         (sourceComment?.let { "\n+ Comment: $it" } ?: "")
 
 fun sourcesSection(vararg sourceBlocks: String): String = sourceBlocks.joinToString(separator = "\n\n")
+
+/**
+ * Creates data point type specification fixtures consisting of the shared [dummySpecs] plus a single additional
+ * currency-typed target spec identified by [targetType]. Used by tests that need to assert currency-preserving
+ * behavior of calculations producing an [org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint].
+ */
+fun createCurrencySpecs(targetType: DataPointType): Map<DataPointType, DataPointTypeSpecification> =
+    dummySpecs +
+        (
+            targetType to
+                DataPointTypeSpecification(
+                    dataPointType = IdWithRef(id = targetType, ref = "dummy"),
+                    name = "currency target",
+                    businessDefinition = "dummy",
+                    dataPointBaseType = IdWithRef(id = "extendedCurrency", ref = "dummy"),
+                    usedBy = emptyList(),
+                    calculationRules = emptyList(),
+                )
+        )
+
+/**
+ * Serializes an [ExtendedCurrencyDataPoint] fixture with the given [value], [currency] and [comment] to JSON, for
+ * use as the raw payload of an [UploadedDataPoint] in calculation tests.
+ */
+fun createCurrencyDataPointJson(
+    value: String,
+    currency: String?,
+    comment: String? = null,
+): String =
+    defaultObjectMapper.writeValueAsString(
+        ExtendedCurrencyDataPoint(
+            value = BigDecimal(value),
+            currency = currency,
+            quality = QualityOptions.Reported,
+            comment = comment,
+        ),
+    )
+
+/**
+ * Serializes an [ExtendedDataPoint] fixture holding a plain decimal
+ * [value] to JSON, for use as the raw payload of an [UploadedDataPoint] in calculation tests.
+ */
+fun createDecimalDataPointJson(
+    value: String?,
+    comment: String? = null,
+    quality: QualityOptions? = QualityOptions.Reported,
+): String =
+    defaultObjectMapper.writeValueAsString(
+        ExtendedDataPoint(
+            value = value?.let { BigDecimal(it) },
+            quality = quality,
+            comment = comment,
+        ),
+    )
