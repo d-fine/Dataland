@@ -54,7 +54,7 @@
                   </div>
                   <PrimeButton
                     v-if="dataPointsLeftToReview > 0"
-                    label="ACCEPT ALL REMAINING"
+                    label="ACCEPT ALL UNREVIEWED"
                     icon="pi pi-check-double"
                     outlined
                     :loading="isAcceptAllRemainingOriginalMutationPending"
@@ -498,7 +498,7 @@ const acceptAllRemainingOriginalDataPoints = (): void => {
   const dataPoints = datasetReview.value?.dataPoints ?? {};
   const remainingCount = dataPointsLeftToReview.value;
   openConfirmationModal(
-    'Accept All Remaining Original Data Points',
+    'Accept All Unreviewed Original Data Points',
     `Are you sure you want to accept the original values for all ${remainingCount} ` +
       'remaining unreviewed data points? Reviewed data points will not be changed.',
     () => {

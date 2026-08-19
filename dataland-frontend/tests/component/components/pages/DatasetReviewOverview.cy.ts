@@ -420,8 +420,8 @@ describe('DatasetReviewOverview page details', () => {
         { statusCode: 200, body: {} }
       ).as('patchDataPoint');
 
-      cy.contains('ACCEPT ALL REMAINING').click();
-      cy.contains('Accept All Remaining Original Data Points').should('be.visible');
+      cy.contains('ACCEPT ALL UNREVIEWED').click();
+      cy.contains('Accept All Unreviewed Original Data Points').should('be.visible');
       cy.contains('Are you sure you want to accept the original values for all 2').should('be.visible');
       cy.contains('CONFIRM').click();
 
@@ -454,11 +454,11 @@ describe('DatasetReviewOverview page details', () => {
         { statusCode: 200, body: {} }
       ).as('patchDataPoint');
 
-      cy.contains('ACCEPT ALL REMAINING').click();
-      cy.contains('Accept All Remaining Original Data Points').should('be.visible');
+      cy.contains('ACCEPT ALL UNREVIEWED').click();
+      cy.contains('Accept All Unreviewed Original Data Points').should('be.visible');
       cy.get('[aria-label="Close"]').click();
 
-      cy.contains('Accept All Remaining Original Data Points').should('not.exist');
+      cy.contains('Accept All Unreviewed Original Data Points').should('not.exist');
       cy.get('@patchDataPoint.all').should('have.length', 0);
     });
   });
