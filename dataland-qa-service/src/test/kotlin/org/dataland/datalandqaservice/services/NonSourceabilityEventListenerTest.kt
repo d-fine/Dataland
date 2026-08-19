@@ -20,6 +20,12 @@ import org.mockito.kotlin.whenever
 import java.time.Instant
 
 class NonSourceabilityEventListenerTest {
+    companion object {
+        private const val NON_SOURCEABILITY_ID = "00000000-0000-0000-0000-000000000001"
+        private const val COMPANY_ID = "company-1"
+        private const val DATA_TYPE = "eutaxonomy-financials"
+    }
+
     private val repository: NonSourceableQaReviewRepository = mock()
     private lateinit var listener: NonSourceabilityEventListener
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
@@ -29,11 +35,11 @@ class NonSourceabilityEventListenerTest {
         listener = NonSourceabilityEventListener(repository)
     }
 
-    private fun event(nonSourceabilityId: String = "00000000-0000-0000-0000-000000000001") =
+    private fun event(nonSourceabilityId: String = NON_SOURCEABILITY_ID) =
         NonSourceabilityLifecycleEvent(
             nonSourceabilityId = nonSourceabilityId,
-            companyId = "company-1",
-            dataType = "eutaxonomy-financials",
+            companyId = COMPANY_ID,
+            dataType = DATA_TYPE,
             reportingPeriod = "2023",
         )
 
@@ -50,9 +56,9 @@ class NonSourceabilityEventListenerTest {
     fun `processCreatedEvent is idempotent skips when review already exists`() {
         val existing =
             NonSourceableQaReviewInformationEntity(
-                nonSourceabilityId = "00000000-0000-0000-0000-000000000001",
-                companyId = "company-1",
-                dataType = "eutaxonomy-financials",
+                nonSourceabilityId = NON_SOURCEABILITY_ID,
+                companyId = COMPANY_ID,
+                dataType = DATA_TYPE,
                 reportingPeriod = "2023",
                 qaStatus = QaStatus.Pending,
                 reason = null,
@@ -83,9 +89,9 @@ class NonSourceabilityEventListenerTest {
     fun `processAutoAcceptedEvent is idempotent skips when review already exists`() {
         val existing =
             NonSourceableQaReviewInformationEntity(
-                nonSourceabilityId = "00000000-0000-0000-0000-000000000001",
-                companyId = "company-1",
-                dataType = "eutaxonomy-financials",
+                nonSourceabilityId = NON_SOURCEABILITY_ID,
+                companyId = COMPANY_ID,
+                dataType = DATA_TYPE,
                 reportingPeriod = "2023",
                 qaStatus = QaStatus.Accepted,
                 reason = null,
