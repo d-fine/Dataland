@@ -210,7 +210,6 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
       templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
@@ -235,12 +234,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId ?? null;
     this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
+    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
       void this.loadNuclearAndGasData();
     } else {
       this.waitingForData = false;
@@ -272,9 +267,7 @@ export default defineComponent({
       const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
       if (nuclearAndGasDataControllerApi) {
         let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await nuclearAndGasDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
+        if (this.templateReportingPeriod) {
           dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(
             this.templateReportingPeriod.toString(),
             this.companyID

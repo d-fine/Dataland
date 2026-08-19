@@ -220,7 +220,6 @@ export default defineComponent({
       listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
       templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
@@ -252,12 +251,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId;
     this.templateReportingPeriod = this.route.query.reportingPeriod;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
+    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
       void this.loadSfdrData();
     } else {
       this.waitingForData = false;
@@ -285,9 +280,7 @@ export default defineComponent({
       const sfdrDataControllerApi = this.buildSfdrDataApi();
       if (sfdrDataControllerApi) {
         let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await sfdrDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
+        if (this.templateReportingPeriod) {
           dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(
             this.templateReportingPeriod.toString(),
             this.companyID

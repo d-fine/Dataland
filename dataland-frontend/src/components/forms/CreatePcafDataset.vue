@@ -165,7 +165,6 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
 const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 const waitingForData = ref(false);
 
@@ -185,10 +184,7 @@ const subcategoryVisibilityMap = computed((): Map<Subcategory, boolean> => {
 const namesAndReferencesOfAllCompanyReportsForTheDataset = ref<Record<string, string>>({});
 
 onMounted(() => {
-  if (
-    (templateDataId && typeof templateDataId === 'string') ||
-    (templateReportingPeriod && typeof templateReportingPeriod === 'string')
-  ) {
+  if (templateReportingPeriod && typeof templateReportingPeriod === 'string') {
     void loadPcafData();
   }
   void updateDocumentsList();
@@ -205,9 +201,7 @@ async function loadPcafData(): Promise<void> {
   waitingForData.value = true;
   let pcafData;
   try {
-    if (templateDataId) {
-      pcafData = (await pcafDataApi!.getFrameworkData(templateDataId.toString())).data;
-    } else if (templateReportingPeriod) {
+    if (templateReportingPeriod) {
       pcafData = (
         await pcafDataApi!.getCompanyAssociatedDataByDimensions(templateReportingPeriod.toString(), props.companyID)
       )?.data;

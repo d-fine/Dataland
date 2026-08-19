@@ -149,7 +149,6 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
 const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 
 const yearOfDataDate = computed<string | undefined>({
@@ -190,9 +189,7 @@ const loadLKSGData = async (): Promise<void> => {
   const lksgDataControllerApi = buildLksgDataApi();
   if (lksgDataControllerApi) {
     let dataResponse;
-    if (templateDataId) {
-      dataResponse = await lksgDataControllerApi.getFrameworkData(templateDataId.toString());
-    } else if (templateReportingPeriod) {
+    if (templateReportingPeriod) {
       dataResponse = await lksgDataControllerApi.getCompanyAssociatedDataByDimensions(
         templateReportingPeriod.toString(),
         props.companyID
@@ -260,10 +257,7 @@ const postLkSGData = async (): Promise<void> => {
 };
 
 onMounted(() => {
-  if (
-    (templateDataId && typeof templateDataId === 'string') ||
-    (templateReportingPeriod && typeof templateReportingPeriod === 'string')
-  ) {
+  if (templateReportingPeriod && typeof templateReportingPeriod === 'string') {
     void loadLKSGData();
   } else {
     waitingForData.value = false;

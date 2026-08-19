@@ -248,7 +248,6 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
       listOfFilledKpis: [] as Array<string>,
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
       templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
@@ -273,12 +272,8 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId ?? null;
     this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
+    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
       this.editMode = true;
       void this.loadEuTaxonomyFinancialsData();
     } else {
@@ -309,9 +304,7 @@ export default defineComponent({
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
       if (euTaxonomyFinancialsDataControllerApi) {
         let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await euTaxonomyFinancialsDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
+        if (this.templateReportingPeriod) {
           dataResponse = await euTaxonomyFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
             this.templateReportingPeriod.toString(),
             this.companyID
