@@ -11,6 +11,7 @@
   "share": "disabled",
   "permission": {
     "bash": {
+      "git push --force*": "deny",
       "git push*": "ask",
       "git reset*": "ask"
     }
