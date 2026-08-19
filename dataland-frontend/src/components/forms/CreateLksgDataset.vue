@@ -113,19 +113,16 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { lksgDataModel } from '@/frameworks/lksg/UploadConfig';
 import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 
-import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 
-import { getFilledKpis } from '@/utils/DataPoint';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -133,7 +130,6 @@ import { getComponentByName } from '@/components/forms/UploadPageComponentDictio
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const route = useRoute();
 const emit = defineEmits(['datasetCreated']);
 const props = defineProps<{
   companyID: string;
@@ -149,7 +145,6 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 
 const yearOfDataDate = computed<string | undefined>({
   get() {
@@ -178,32 +173,6 @@ const buildLksgDataApi = (): PublicFrameworkDataApi<LksgData> | undefined => {
   if (frameworkDataApi) {
     return frameworkDataApi;
   } else return undefined;
-};
-
-/**
- * Loads the LkSG-Dataset identified either by the provided reportingPeriod and companyId,
- * or the dataId, and pre-configures the form to contain the data from the dataset
- */
-const loadLKSGData = async (): Promise<void> => {
-  waitingForData.value = true;
-  const lksgDataControllerApi = buildLksgDataApi();
-  if (lksgDataControllerApi) {
-    let dataResponse;
-    if (templateReportingPeriod) {
-      dataResponse = await lksgDataControllerApi.getCompanyAssociatedDataByDimensions(
-        templateReportingPeriod.toString(),
-        props.companyID
-      );
-    }
-    if (!dataResponse) {
-      waitingForData.value = false;
-      throw ReferenceError('DataResponse from LksgDataController invalid.');
-    }
-    const lksgResponseData = dataResponse.data;
-    listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
-    companyAssociatedLksgData.value = objectDropNull(lksgResponseData);
-    waitingForData.value = false;
-  }
 };
 
 /**
@@ -257,11 +226,7 @@ const postLkSGData = async (): Promise<void> => {
 };
 
 onMounted(() => {
-  if (templateReportingPeriod && typeof templateReportingPeriod === 'string') {
-    void loadLKSGData();
-  } else {
-    waitingForData.value = false;
-  }
+  waitingForData.value = false;
 });
 
 provide(

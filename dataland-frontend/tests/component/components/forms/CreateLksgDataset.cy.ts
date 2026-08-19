@@ -3,7 +3,6 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import { createMemoryHistory, createRouter } from 'vue-router';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
@@ -16,9 +15,9 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
     });
   });
 
-  it('Edit and subsequent upload should work properly when removing or changing referenced documents', () => {
+  it('Prefilled form should work properly when removing or changing referenced documents', () => {
     const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
-    mountEditForm(dummyData).then(() => {
+    mountFormWithPrefilledData(dummyData).then(() => {
       cy.get('[data-test^="BaseDataPointFormField"] button[data-test="files-to-upload-remove"]', {
         timeout: mediumTimeoutInMs,
       })
@@ -33,9 +32,9 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
     });
   });
 
-  it('Edit and subsequent upload should work properly changing subcontracting companies', () => {
+  it('Prefilled form should work properly changing subcontracting companies', () => {
     const dummyData = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures).t;
-    mountEditForm(dummyData).then(() => {
+    mountFormWithPrefilledData(dummyData).then(() => {
       cy.get('[data-test="subcontractingCompaniesCountries"]', {
         timeout: mediumTimeoutInMs,
       }).within(() => {
@@ -75,33 +74,23 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
 });
 
 /**
- * Function to mount the lksg upload form in edit mode with the provided data
+ * Function to mount the lksg upload form pre-filled with the provided data
  * @param data the data to prefill the form with
  * @returns the mounted component
  */
-function mountEditForm(data: LksgData): Cypress.Chainable {
+function mountFormWithPrefilledData(data: LksgData): Cypress.Chainable {
   const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
     companyId: 'company-id',
     reportingPeriod: '2024',
     data: data,
   };
-  cy.intercept('**/api/data/lksg/**', dummyCompanyAssociatedData);
-  const router = createRouter({
-    routes: [{ path: '/companies', component: CreateLksgDataset }],
-    history: createMemoryHistory(),
-  });
-  void router.push({ path: '/companies', query: { reportingPeriod: '2024' } });
 
-  const mountingFunction = getMountingFunction({
-    router: router,
-    keycloak: minimalKeycloakMock(),
+  return getMountingFunction({ keycloak: minimalKeycloakMock() })(CreateLksgDataset, {
+    props: {
+      companyID: 'company-id',
+    },
+    data() {
+      return { companyAssociatedLksgData: dummyCompanyAssociatedData };
+    },
   });
-
-  return cy.wrap(router.isReady()).then(() =>
-    mountingFunction(CreateLksgDataset, {
-      props: {
-        companyID: 'company-id',
-      },
-    })
-  );
 }

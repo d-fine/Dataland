@@ -1,9 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
-      ><span data-test="pageWrapperTitle">
-        {{ editMode ? 'Edit' : 'Create' }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
-      ></template
+      ><span data-test="pageWrapperTitle"> Create EU Taxonomy Dataset for a Non-Financial Company/Service</span></template
     >
     <template #content>
       <div class="separator" />
@@ -145,7 +143,6 @@ import {
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -165,7 +162,7 @@ import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/Al
 import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
 import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
@@ -181,7 +178,6 @@ import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/Y
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -244,7 +240,6 @@ export default defineComponent({
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -255,9 +250,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
-      editMode: false,
       listOfFilledKpis: [] as Array<string>,
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -281,13 +274,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
-      this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData();
-    } else {
-      this.waitingForData = false;
-    }
+    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -303,36 +290,6 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       } else return undefined;
-    },
-    /**
-     * Loads the EutaxonomyNonFinancials-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadEutaxonomyNonFinancialsData(): Promise<void> {
-      this.waitingForData = true;
-      const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
-      if (euTaxonomyForNonFinancialsDataControllerApi) {
-        let dataResponse;
-        if (this.templateReportingPeriod) {
-          dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from EuTaxonomyNonFinancialsDataController invalid.');
-        }
-
-        const euTaxonomyNonFinancialsResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
-        if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
-          this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
-        }
-        this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
-        this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
-        this.waitingForData = false;
-      }
     },
 
     /**

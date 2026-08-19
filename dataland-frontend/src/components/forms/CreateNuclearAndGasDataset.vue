@@ -143,19 +143,17 @@ import {
   DataTypeEnum,
   type NuclearAndGasData,
 } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import type { Subcategory } from '@/utils/GenericFrameworkTypes';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -198,7 +196,6 @@ export default defineComponent({
       waitingForData: true,
       companyAssociatedNuclearAndGasData: {} as CompanyAssociatedDataNuclearAndGasData,
       nuclearAndGasDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -210,7 +207,6 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -234,12 +230,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
-      void this.loadNuclearAndGasData();
-    } else {
-      this.waitingForData = false;
-    }
+    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -258,34 +249,6 @@ export default defineComponent({
       return null;
     },
 
-    /**
-     * Loads the Nuclear-and-Gas-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadNuclearAndGasData(): Promise<void> {
-      this.waitingForData = true;
-      const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
-      if (nuclearAndGasDataControllerApi) {
-        let dataResponse;
-        if (this.templateReportingPeriod) {
-          dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from NuclearAndGasDataController invalid.');
-        }
-        const nuclearAndGasResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
-        this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};
-        this.companyAssociatedNuclearAndGasData = objectDropNull(
-          nuclearAndGasResponseData
-        ) as CompanyAssociatedDataNuclearAndGasData;
-        this.waitingForData = false;
-      }
-    },
     /**
      * Sends data to add NuclearAndGas data
      */

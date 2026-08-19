@@ -132,7 +132,6 @@ import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils.ts';
 import type { Subcategory } from '@/utils/GenericFrameworkTypes.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { objectDropNull } from '@/utils/UpdateObjectUtils.ts';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils.ts';
 import { checkCustomInputs } from '@/utils/ValidationUtils.ts';
 import { type CompanyAssociatedDataPcafData, DataTypeEnum, type PcafData } from '@clients/backend';
@@ -146,7 +145,6 @@ import Divider from 'primevue/divider';
 import Message from 'primevue/message';
 import Tag from 'primevue/tag';
 import { computed, inject, onMounted, provide, ref } from 'vue';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const props = defineProps({
@@ -156,7 +154,6 @@ const props = defineProps({
   },
 });
 const emits = defineEmits(['datasetCreated']);
-const route = useRoute();
 
 const companyAssociatedDataPcafData = ref<CompanyAssociatedDataPcafData>({} as CompanyAssociatedDataPcafData);
 const errorMessage = ref('');
@@ -165,7 +162,6 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 const waitingForData = ref(false);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -184,38 +180,11 @@ const subcategoryVisibilityMap = computed((): Map<Subcategory, boolean> => {
 const namesAndReferencesOfAllCompanyReportsForTheDataset = ref<Record<string, string>>({});
 
 onMounted(() => {
-  if (templateReportingPeriod && typeof templateReportingPeriod === 'string') {
-    void loadPcafData();
-  }
   void updateDocumentsList();
 });
 
 const providedReports = computed(() => namesAndReferencesOfAllCompanyReportsForTheDataset.value);
 provide('namesAndReferencesOfAllCompanyReportsForTheDataset', providedReports);
-
-/**
- * Loads the PCAF dataset identified either by the provided reportingPeriod and companyId,
- * or the dataId, and pre-configures the form to contain the data from the dataset
- */
-async function loadPcafData(): Promise<void> {
-  waitingForData.value = true;
-  let pcafData;
-  try {
-    if (templateReportingPeriod) {
-      pcafData = (
-        await pcafDataApi!.getCompanyAssociatedDataByDimensions(templateReportingPeriod.toString(), props.companyID)
-      )?.data;
-    }
-    if (!pcafData) {
-      throw ReferenceError('Response from PcafDataController invalid.');
-    }
-    companyAssociatedDataPcafData.value = objectDropNull(pcafData) as CompanyAssociatedDataPcafData;
-  } catch (e) {
-    console.error('Error while loading PCAF data', e);
-  } finally {
-    waitingForData.value = false;
-  }
-}
 
 /**
  * Send POST request to add PCAF data

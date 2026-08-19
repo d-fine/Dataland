@@ -1,7 +1,7 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
-      ><span data-test="pageWrapperTitle"> {{ editMode ? 'Edit ' : 'Create ' + frameworkTitle }} </span></template
+      ><span data-test="pageWrapperTitle"> Create {{ frameworkTitle }} </span></template
     >
     <template #content>
       <div class="separator" />
@@ -157,12 +157,11 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import {
@@ -179,7 +178,6 @@ import DatePicker from 'primevue/datepicker';
 import Tooltip from 'primevue/tooltip';
 import Tag from 'primevue/tag';
 import { computed, defineComponent, inject } from 'vue';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 
 export default defineComponent({
   setup() {
@@ -235,7 +233,6 @@ export default defineComponent({
       dataDate: undefined as Date | undefined,
       companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
       eutaxonomyFinancialsDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -246,9 +243,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
-      editMode: false,
       listOfFilledKpis: [] as Array<string>,
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -272,13 +267,7 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string') {
-      this.editMode = true;
-      void this.loadEuTaxonomyFinancialsData();
-    } else {
-      this.waitingForData = false;
-    }
+    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -294,36 +283,6 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       } else return undefined;
-    },
-    /**
-     * Loads the EuTaxonomyFinancials-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadEuTaxonomyFinancialsData(): Promise<void> {
-      this.waitingForData = true;
-      const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
-      if (euTaxonomyFinancialsDataControllerApi) {
-        let dataResponse;
-        if (this.templateReportingPeriod) {
-          dataResponse = await euTaxonomyFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from EuTaxonomyFinancialsDataController invalid.');
-        }
-        const euTaxonomyFinancialsResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
-        if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
-          this.reportingPeriod = new Date(euTaxonomyFinancialsResponseData.reportingPeriod);
-        }
-        this.referencedReportsForPrefill =
-          euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
-        this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
-        this.waitingForData = false;
-      }
     },
 
     /**
