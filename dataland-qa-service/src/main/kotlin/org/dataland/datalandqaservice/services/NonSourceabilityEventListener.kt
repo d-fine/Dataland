@@ -43,6 +43,14 @@ class NonSourceabilityEventListener(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    /**
+     * Entry point for the RabbitMQ listener that consumes non-sourceability lifecycle events
+     * and dispatches them to the appropriate handler based on [messageType].
+     *
+     * @param payload the serialized [NonSourceabilityLifecycleEvent]
+     * @param messageType the message type header, expected to be one of
+     *   [MessageType.NON_SOURCEABILITY_CREATED] or [MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED]
+     */
     @RabbitListener(
         bindings = [
             QueueBinding(
