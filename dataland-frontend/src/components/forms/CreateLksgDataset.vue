@@ -118,7 +118,6 @@ import { checkCustomInputs } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 
-import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 
