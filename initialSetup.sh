@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+mode=${1:-default}
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 install_base_packages() {
@@ -76,5 +77,7 @@ install_cypress_prerequisites
 install_java
 update_opencode
 set_automatic_sourcing
-configure_git
+if [[ $mode == "developer" ]]; then
+  configure_git
+fi
 initialize_stack
