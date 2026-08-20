@@ -5,11 +5,15 @@
 # development: The profile to be used for local development. Leaves out frontend and backend
 # init: The profile to be used if keycloak-db should be re-initialized
 
-
-
 # These are envs/settings which are required for several services and therefore maintained centrally here:
+x-common-proxy-env: &proxy-env
+  NO_PROXY: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
+  no_proxy: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service"
+# NOTE: JVM HTTP clients (Spring Boot's RestTemplate/WebClient, Keycloak's Quarkus HTTP stack, ...) do NOT
+# consult the NO_PROXY/no_proxy environment variables above - they only honor the JVM system property
+# -Dhttp.nonProxyHosts. The list below intentionally mirrors the NO_PROXY list above
 x-java-memory-limits:
-  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-}" # Forces Spring Boot to stay lean and not consume more memory than necessary, which is especially important for the testing profile where all services run together. Set JAVA_TOOL_OPTIONS="-Xms128m -Xmx384m" in CI to apply memory limits.
+  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-} -Dhttp.nonProxyHosts=localhost|127.*|[::1]|gateway.docker.internal|host.docker.internal|internal-storage|api-key-manager|accounting-service|data-sourcing-service|document-manager|backend|keycloak|rabbitmq|qa-service|user-service|community-manager|specification-service|email-service"
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
@@ -18,10 +22,12 @@ x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
 x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
   MAILJET_API_SECRET: ${MAILJET_API_SECRET}
   MAILJET_API_ID: ${MAILJET_API_ID}
-x-postgres-healthcheck: &postgres-healthcheck
-  interval: 10s
+x-healthcheck-settings: &healthcheck-settings
+  interval: 30s
   timeout: 5s
   retries: 5
+  start_interval: 5s
+  start_period: 30s
 x-logging: &loki-logging
   driver: json-file
   options:
@@ -55,8 +61,16 @@ services:
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
       DISABLE_HSTS: ${DISABLE_HSTS}
+      <<: *proxy-env
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      internal-storage:
+        condition: service_healthy
+      specification-service:
+        condition: service_healthy
+      document-manager:
+        condition: service_healthy
     logging:
       <<: *loki-logging
   admin-proxy:
@@ -103,6 +117,7 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -119,7 +134,7 @@ services:
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U api_key_manager" ]
     logging:
       <<: *loki-logging
@@ -138,7 +153,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -160,7 +175,7 @@ services:
       POSTGRES_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       PGUSER: accounting_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U accounting_service" ]
     logging:
       <<: *loki-logging
@@ -178,7 +193,7 @@ services:
             condition: service_healthy
         <<: *uncritical-constants-env
         environment:
-          <<: *rabbit-mq-user-and-pass
+          <<: [*rabbit-mq-user-and-pass, *proxy-env]
           JAVA_TOOL_OPTIONS: *java-tool-options
           DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -200,7 +215,7 @@ services:
           POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           PGUSER: data_sourcing_service
         healthcheck:
-          <<: *postgres-healthcheck
+          <<: *healthcheck-settings
           test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
         logging:
           <<: *loki-logging
@@ -215,7 +230,7 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
@@ -242,7 +257,7 @@ services:
       POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGUSER: document_manager
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U document_manager" ]
     logging:
       <<: *loki-logging
@@ -261,7 +276,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -292,7 +307,7 @@ services:
       -c temp_buffers=512MB
       -c max_stack_depth=7680kB
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U backend" ]
     logging:
       <<: *loki-logging
@@ -346,6 +361,7 @@ services:
     command: sh -c "cd /app/dataland-frontend && npm install && npm run dev"
     <<: *uncritical-constants-env
     environment:
+      <<: *proxy-env
       POLLING: "false"
     logging:
       <<: *loki-logging
@@ -366,7 +382,7 @@ services:
       - internal
       - internal-storage-db
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
@@ -394,7 +410,7 @@ services:
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGUSER: internal_storage
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U internal_storage" ]
     logging:
       <<: *loki-logging
@@ -412,7 +428,7 @@ services:
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       PGUSER: keycloak
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
     logging:
       <<: *loki-logging
@@ -429,6 +445,7 @@ services:
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
+      <<: *proxy-env
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -448,7 +465,7 @@ services:
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
-      <<: *mailjet-api-id-and-secret
+      <<: [*mailjet-api-id-and-secret, *proxy-env]
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -524,6 +541,29 @@ services:
       SCRIPT_NAME: "/pgadmin"
     logging:
       <<: *loki-logging
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+      backend-db:
+        condition: service_healthy
+      api-key-manager-db:
+        condition: service_healthy
+      accounting-service-db:
+        condition: service_healthy
+      data-sourcing-service-db:
+        condition: service_healthy
+      internal-storage-db:
+        condition: service_healthy
+      document-manager-db:
+        condition: service_healthy
+      qa-service-db:
+        condition: service_healthy
+      community-manager-db:
+        condition: service_healthy
+      email-service-db:
+        condition: service_healthy
+      user-service-db:
+        condition: service_healthy
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -536,9 +576,8 @@ services:
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS_HASH: ${RABBITMQ_PASS_HASH}
     healthcheck:
+      <<: *healthcheck-settings
       test: rabbitmq-diagnostics -q alarms
-      interval: 30s
-      timeout: 3s
     deploy:
       resources:
         limits:
@@ -556,7 +595,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -586,7 +625,7 @@ services:
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U qa_service" ]
     logging:
       <<: *loki-logging
@@ -601,7 +640,7 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -628,7 +667,7 @@ services:
       POSTGRES_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       PGUSER: user_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U user_service" ]
     logging:
       <<: *loki-logging
@@ -640,6 +679,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
 
     environment:
+      <<: *proxy-env
       JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
       GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
@@ -663,7 +703,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -694,7 +734,7 @@ services:
     command:
       -c max_stack_depth=7680kB
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U community_manager" ]
     logging:
       <<: *loki-logging
@@ -711,6 +751,7 @@ services:
     environment:
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      <<: *proxy-env
     logging:
       <<: *loki-logging
   email-service:
@@ -727,7 +768,7 @@ services:
         condition: service_healthy
 
     environment:
-      <<: *rabbit-mq-user-and-pass
+      <<: [*rabbit-mq-user-and-pass, *proxy-env]
       JAVA_TOOL_OPTIONS: *java-tool-options
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
@@ -754,7 +795,7 @@ services:
       POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGUSER: email_service
     healthcheck:
-      <<: *postgres-healthcheck
+      <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U email_service" ]
     logging:
       <<: *loki-logging
@@ -769,6 +810,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
+      <<: *proxy-env
       JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}

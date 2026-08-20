@@ -1,0 +1,17 @@
+schemaVersion: "2"
+kind: sandbox
+name: dataland
+sandbox:
+  image: "docker/sandbox-templates:opencode-docker"
+  entrypoint:
+    [ bash ]
+
+permissions:
+  network:
+    allow:
+      - "packages.adoptium.net:443"
+      - "fnm.vercel.app:443"
+      - "opencode.ai:443"
+      - "download.cypress.io:443"
+      - "cdn.cypress.io:443"
+      - "local-dev.dataland.com:443"
