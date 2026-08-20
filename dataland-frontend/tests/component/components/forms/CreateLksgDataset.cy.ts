@@ -45,7 +45,13 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
 
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('exist');
 
-      cy.get('[data-test="NaceCodeSelectorInput"]').should('be.visible').click().type('01.11');
+      cy.get('h5:contains("Subcontracting Companies Industries in Albania")')
+        .parents('.form-field')
+        .first()
+        .find('[data-test="NaceCodeSelectorInput"]')
+        .should('be.visible')
+        .click()
+        .type('01.11');
       cy.get('[data-test="NaceCodeSelectorTree"]')
         .find('li')
         .should('have.length', 4)
