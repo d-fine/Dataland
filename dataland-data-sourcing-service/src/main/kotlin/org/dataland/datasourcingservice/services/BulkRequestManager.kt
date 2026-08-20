@@ -3,12 +3,14 @@ package org.dataland.datasourcingservice.services
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datasourcingservice.entities.RequestEntity
 import org.dataland.datasourcingservice.model.enums.DataSourcingState
 import org.dataland.datasourcingservice.model.request.BulkDataRequest
 import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
+import org.dataland.datasourcingservice.utils.RequestLogger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,6 +31,8 @@ class BulkRequestManager
         private val dataAvailabilityController: DataAvailabilityControllerApi,
         @PersistenceContext private val entityManager: EntityManager,
     ) {
+        private val requestLogger = RequestLogger()
+
         /**
          * Processes a bulk data request from a user
          * @param bulkDataRequest info provided by a user in order to request a bulk of datasets on Dataland.
@@ -40,7 +44,15 @@ class BulkRequestManager
             userId: UUID?,
         ): BulkDataRequestResponse {
             assertNoEmptySetsInBulkRequest(bulkDataRequest)
+            val correlationId = UUID.randomUUID()
             val userIdToUse = userId ?: UUID.fromString(DatalandAuthentication.fromContext().userId)
+            requestLogger.logMessageForReceivingBulkDataRequest(
+                correlationId = correlationId,
+                userId = userIdToUse,
+                numCompanyIds = bulkDataRequest.companyIdentifiers.size,
+                numDataTypes = bulkDataRequest.dataTypes.size,
+                numReportingPeriods = bulkDataRequest.reportingPeriods.size,
+            )
             val validationResult =
                 dataSourcingValidator.validateBulkDataRequest(
                     bulkDataRequest,
@@ -49,7 +61,7 @@ class BulkRequestManager
 
             val existingRequests = getExistingRequests(validatedRequests, userIdToUse)
 
-            val existingDatasets = getExistingDatasets(validatedRequests - existingRequests)
+            val existingDatasets = getExistingDatasets(validatedRequests - existingRequests, correlationId)
 
             val nonSourceableRequests =
                 getExistingNonSourceableDataRequests(
@@ -63,13 +75,18 @@ class BulkRequestManager
                 requestCreationService.storeRequest(userIdToUse, dataDimension)
             }
 
-            return BulkDataRequestResponse(
-                acceptedDataRequests = acceptedDataRequests.toList(),
-                invalidDataRequests = invalidRequests.toList(),
-                existingDataRequests = existingRequests.toList(),
-                existingDataSets = existingDatasets.toList(),
-                nonSourceableDataRequests = nonSourceableRequests.toList(),
-            )
+            val response =
+                BulkDataRequestResponse(
+                    acceptedDataRequests = acceptedDataRequests.toList(),
+                    invalidDataRequests = invalidRequests.toList(),
+                    existingDataRequests = existingRequests.toList(),
+                    existingDataSets = existingDatasets.toList(),
+                    nonSourceableDataRequests = nonSourceableRequests.toList(),
+                )
+
+            requestLogger.logBulkDataRequestOverview(response, correlationId)
+
+            return response
         }
 
         private fun getValidatedAndInvalidRequests(
@@ -110,30 +127,40 @@ class BulkRequestManager
                 request.copy(dataType = newDataType)
             }
 
-        private fun getExistingDatasets(requests: Set<BasicDataDimensions>): Set<BasicDataDimensions> {
+        private fun getExistingDatasets(
+            requests: Set<BasicDataDimensions>,
+            correlationId: UUID,
+        ): Set<BasicDataDimensions> {
             if (requests.isEmpty()) {
                 return emptySet()
             }
             val newTaxonomyEquivalentRequests = requests.mapNotNull { req -> getNewEuTaxonomyEquivalent(req) }
 
+            val requestsToQuery = requests + newTaxonomyEquivalentRequests
+
             val activeDatasetDimensions =
-                dataAvailabilityController
-                    .filterViewableDimensions(
-                        basicDataDimensions =
-                            (requests + newTaxonomyEquivalentRequests).map {
-                                ClientBasicDataDimensions(
-                                    companyId = it.companyId,
-                                    dataType = it.dataType,
-                                    reportingPeriod = it.reportingPeriod,
-                                )
-                            },
-                    ).map {
-                        BasicDataDimensions(
-                            companyId = it.companyId,
-                            dataType = it.dataType,
-                            reportingPeriod = it.reportingPeriod,
-                        )
-                    }.toSet()
+                try {
+                    dataAvailabilityController
+                        .filterViewableDimensions(
+                            basicDataDimensions =
+                                requestsToQuery.map {
+                                    ClientBasicDataDimensions(
+                                        companyId = it.companyId,
+                                        dataType = it.dataType,
+                                        reportingPeriod = it.reportingPeriod,
+                                    )
+                                },
+                        ).map {
+                            BasicDataDimensions(
+                                companyId = it.companyId,
+                                dataType = it.dataType,
+                                reportingPeriod = it.reportingPeriod,
+                            )
+                        }.toSet()
+                } catch (ex: ClientException) {
+                    requestLogger.logErrorForFilterViewableDimensionsFailure(correlationId, requestsToQuery.size, ex)
+                    throw ex
+                }
 
             return requests
                 .filter { req ->
