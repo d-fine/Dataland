@@ -53,6 +53,16 @@
                     <p class="font-medium m-0">Assigned to you</p>
                   </div>
                   <PrimeButton
+                    v-if="dataPointsLeftToReview > 0"
+                    label="ACCEPT ALL UNREVIEWED"
+                    icon="pi pi-check-double"
+                    outlined
+                    :loading="isAcceptAllRemainingOriginalMutationPending"
+                    :disabled="isAcceptAllRemainingOriginalMutationPending"
+                    @click="acceptAllRemainingOriginalDataPoints"
+                    data-test="qaReviewPageAcceptAllRemainingOriginalButton"
+                  />
+                  <PrimeButton
                     label="REJECT DATASET"
                     severity="danger"
                     icon="pi pi-times"
@@ -159,6 +169,7 @@ import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judge
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
 import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
+import { useAcceptAllRemainingOriginalDataPointsMutation } from '@/api-queries/qa-service/dataset-judgement/useAcceptAllRemainingOriginalDataPointsMutation.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
@@ -396,8 +407,15 @@ const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending }
   DatasetJudgementState.FinishedWithDatasetAcceptance
 );
 
+const { mutate: acceptAllRemainingOriginalMutation, isPending: isAcceptAllRemainingOriginalMutationPending } =
+  useAcceptAllRemainingOriginalDataPointsMutation();
+
 const isModalActionPending = computed(
-  () => isAssigningToMe.value || isRejectReviewMutationPending.value || isFinishReviewMutationPending.value
+  () =>
+    isAssigningToMe.value ||
+    isRejectReviewMutationPending.value ||
+    isFinishReviewMutationPending.value ||
+    isAcceptAllRemainingOriginalMutationPending.value
 );
 const isActionSuccess = ref(false);
 
@@ -466,6 +484,38 @@ const finishReview = (): void => {
         },
       });
     } // Implement action here in seperate ticket
+  );
+};
+
+/**
+ * Opens a confirmation modal and, once confirmed, accepts the original data point value for
+ * every remaining (not yet reviewed) data point of the dataset judgement. Already reviewed
+ * data points are left untouched.
+ *
+ * @returns Nothing.
+ */
+const acceptAllRemainingOriginalDataPoints = (): void => {
+  const dataPoints = datasetReview.value?.dataPoints ?? {};
+  const remainingCount = dataPointsLeftToReview.value;
+  openConfirmationModal(
+    'Accept All Unreviewed Original Data Points',
+    `Are you sure you want to accept the original values for all ${remainingCount} ` +
+      'remaining unreviewed data points? Reviewed data points will not be changed.',
+    () => {
+      acceptAllRemainingOriginalMutation(
+        { judgementId: props.datasetJudgementId, dataPoints },
+        {
+          onSuccess: () => {
+            confirmationModal.value.visible = false;
+            confirmationModal.value.errorMessage = '';
+          },
+          onError: (error) => {
+            confirmationModal.value.errorMessage =
+              'Failed to accept all remaining original data points: ' + formatAxiosErrorMessage(error);
+          },
+        }
+      );
+    }
   );
 };
 
