@@ -12,7 +12,6 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 /**
  * Utilities for handling referenced reports in a specification schema.
@@ -114,7 +113,7 @@ class ReferencedReportsUtilities {
             contentNode
                 .fieldNames()
                 .asSequence()
-                .map { fieldName -> fieldName to contentNode.get(fieldName) }
+                .map { fieldName -> fieldName to contentNode[fieldName] }
                 .forEach { (_, value) ->
                     getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
                 }
@@ -127,7 +126,7 @@ class ReferencedReportsUtilities {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPoint).get(DATA_SOURCE_FIELD)
+        val dataSource = objectMapper.readTree(dataPoint)[DATA_SOURCE_FIELD]
 
         if (dataSource == null || dataSource.isNull) {
             return null
@@ -168,34 +167,28 @@ class ReferencedReportsUtilities {
             (jsonNode.has(FILE_REFERENCE_FIELD) || jsonNode.has(FILE_NAME_FIELD))
 
     /**
-     * Updates the publication date in a JSON node.
-     * @param jsonNode The JSON node to update
-     * @param fileReferenceToPublicationDate The mapping of file references to publication dates
-     * @param currentNodeName The name of the current JSON node
+     * Recursively nullifies the publication date and file name fields in all data source nodes
+     * within a JSON node tree.
+     *
+     * @param jsonNode The JSON node to process
+     * @param currentNodeName The name of the current JSON node, used to identify data source nodes
      */
-    fun updateJsonNodeWithDataFromReferencedReports(
+    fun stripDocumentMetadataFromDataSource(
         jsonNode: JsonNode,
-        fileReferenceToPublicationDate: Map<String, LocalDate>,
-        fileReferenceToFileName: Map<String, String>,
         currentNodeName: String,
     ) {
         if (currentNodeName == DATA_SOURCE_FIELD && nodeMayRequireUpdate(jsonNode)) {
-            val fileReference = jsonNode.get(FILE_REFERENCE_FIELD).asText()
-            if (fileReferenceToPublicationDate.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put(PUBLICATION_DATE_FIELD, fileReferenceToPublicationDate[fileReference].toString())
-            }
-            if (fileReferenceToFileName.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put(FILE_NAME_FIELD, fileReferenceToFileName[fileReference])
-            }
+            (jsonNode as ObjectNode).putNull(PUBLICATION_DATE_FIELD)
+            jsonNode.putNull(FILE_NAME_FIELD)
         } else {
             jsonNode
                 .fieldNames()
                 .asSequence()
                 .map { fieldName -> fieldName to jsonNode.get(fieldName) }
-                .forEach { (key, value) ->
-                    updateJsonNodeWithDataFromReferencedReports(
-                        value, fileReferenceToPublicationDate,
-                        fileReferenceToFileName, key,
+                .forEach { (fieldName, value) ->
+                    stripDocumentMetadataFromDataSource(
+                        value,
+                        currentNodeName = fieldName,
                     )
                 }
         }

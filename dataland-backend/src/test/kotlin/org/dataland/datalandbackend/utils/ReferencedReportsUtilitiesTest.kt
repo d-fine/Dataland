@@ -25,7 +25,7 @@ class ReferencedReportsUtilitiesTest {
     private val frameworkWithReferencedReports = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
-    private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
+    private val frameworkWithDataSourceStripped = "./json/frameworkTemplate/frameworkWithDataSourcesStripped.json"
     private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
     private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val dataPointWithMultipleSources = "./json/frameworkTemplate/dataPointWithMultipleSources.json"
@@ -143,32 +143,21 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that updating a single data point with new data works as expected`() {
+    fun `check that stripDocumentMetadataFromDataSource nullifies fileName and publicationDate but preserves other fields`() {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val newName = "NewFileName"
-
-        val dataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
+        val originalDataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
+        requireNotNull(originalDataSource) { "Data point does not contain a proper data source" }
         val contentNode = defaultObjectMapper.readTree(dataPoint)
 
-        requireNotNull(dataSource) { "Data point does not contain a proper data source" }
-
-        val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse(testDate))
-        val fileReferenceToFileNameMapping = mapOf(dataSource.fileReference to newName)
-
-        referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
-            contentNode,
-            fileReferenceToPublicationDateMapping,
-            fileReferenceToFileNameMapping,
-            "dataSource",
-        )
+        referencedReportsUtilities.stripDocumentMetadataFromDataSource(contentNode, "dataSource")
 
         val expected =
             ExtendedDocumentReference(
-                fileReference = dataSource.fileReference,
-                fileName = fileReferenceToFileNameMapping[dataSource.fileReference],
-                page = dataSource.page,
-                tagName = dataSource.tagName,
-                publicationDate = fileReferenceToPublicationDateMapping[dataSource.fileReference],
+                fileReference = originalDataSource.fileReference,
+                fileName = null,
+                page = originalDataSource.page,
+                tagName = originalDataSource.tagName,
+                publicationDate = null,
             )
         val actual =
             contentNode.get("dataSource").let {
@@ -178,26 +167,27 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that updating a framework with new data works as expected`() {
+    fun `check that stripDocumentMetadataFromDataSource nullifies document metadata across a whole framework document`() {
         val frameworkContent = TestResourceFileReader.getJsonNode(frameworkWithDataSource)
-        val expected = TestResourceFileReader.getJsonNode(expectedFrameworkWithDataSource)
+        val expected = TestResourceFileReader.getJsonNode(frameworkWithDataSourceStripped)
 
-        val fileReferenceToPublicationDateMapping =
-            mapOf(
-                "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2022-12-05"),
-                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
-            )
-
-        val fileReferenceToFileNameMapping = mapOf("50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to "NewAnnualReport")
-
-        referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
-            frameworkContent,
-            fileReferenceToPublicationDateMapping,
-            fileReferenceToFileNameMapping,
-            "",
-        )
+        referencedReportsUtilities.stripDocumentMetadataFromDataSource(frameworkContent, "")
 
         assertEquals(expected, frameworkContent)
+    }
+
+    @Test
+    fun `check that stripDocumentMetadataFromDataSource does not affect nodes not named dataSource`() {
+        val nodeNotNamedDataSource =
+            """
+            { "notADataSource": { "fileReference": "ref1", "fileName": "SomeFile", "publicationDate": "2023-11-04" } }
+            """.trimIndent()
+        val contentNode = defaultObjectMapper.readTree(nodeNotNamedDataSource)
+        val expected = defaultObjectMapper.readTree(nodeNotNamedDataSource)
+
+        referencedReportsUtilities.stripDocumentMetadataFromDataSource(contentNode, "notADataSource")
+
+        assertEquals(expected, contentNode)
     }
 
     @Test

@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
@@ -63,6 +64,7 @@ class DataPointSpecificationExampleValidationTest
         private val companyIdentifierManager: CompanyIdentifierManager,
         private val companyBaseManager: CompanyBaseManager,
         private val dataAvailabilityChecker: DataAvailabilityChecker,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         lateinit var companyController: CompanyDataController
         private lateinit var companyIdOfPostedCompany: String
@@ -242,9 +244,13 @@ class DataPointSpecificationExampleValidationTest
             val response = dataPointManager.processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
             val downloadedDataPoint = dataPointManager.retrieveDataPoint(response.dataPointId, "correlationId")
 
+            val normalizedUploadedDataPointNode = objectMapper.readTree(uploadedDataPoint.dataPoint)
+            referencedReportsUtilities.stripDocumentMetadataFromDataSource(normalizedUploadedDataPointNode, "dataSource")
+            val normalizedUploadedDataPoint = objectMapper.writeValueAsString(normalizedUploadedDataPointNode)
+
             Assertions.assertEquals(
                 emptyList<JsonComparator.JsonDiff>(),
-                compareJsonStrings(uploadedDataPoint.dataPoint, downloadedDataPoint.dataPoint),
+                compareJsonStrings(normalizedUploadedDataPoint, downloadedDataPoint.dataPoint),
             )
         }
 

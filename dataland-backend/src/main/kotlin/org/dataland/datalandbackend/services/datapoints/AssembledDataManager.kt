@@ -37,7 +37,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -77,12 +76,11 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping, fileReferenceToFileNameMapping) =
+            val (dataContent, referencedReports) =
                 splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
             dataPointValidator.validateDataset(dataContent, referencedReports, correlationId)
             return storeSplitDataset(
-                uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping,
-                fileReferenceToFileNameMapping,
+                uploadedDataset, correlationId, bypassQa, dataContent,
             )
         }
 
@@ -92,8 +90,6 @@ class AssembledDataManager
         data class SplitDataset(
             val dataContent: Map<String, JsonSpecificationLeaf>,
             val referencedReports: Map<String, CompanyReport>?,
-            val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            val fileReferenceToFileNameMapping: Map<String, String>,
         )
 
         /**
@@ -133,32 +129,16 @@ class AssembledDataManager
                 }
 
             dataContent.remove(REFERENCED_REPORTS_ID)
-            val fileReferenceToPublicationDateMapping =
-                referencedReports
-                    ?.values
-                    ?.filter { it.publicationDate != null }
-                    ?.associate { it.fileReference to it.publicationDate!! }
-                    ?: emptyMap()
-
-            val fileReferenceToFileNameMapping =
-                referencedReports
-                    ?.values
-                    ?.filter { it.fileName != null }
-                    ?.associate { it.fileReference to it.fileName!! }
-                    ?: emptyMap()
 
             return SplitDataset(
                 dataContent,
                 referencedReports,
-                fileReferenceToPublicationDateMapping,
-                fileReferenceToFileNameMapping,
             )
         }
 
         /**
          * Stores an individual data point in the internal storage
          * @param dataPointJsonLeaf the data point to store
-         * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
          * @param dataPointType the type of the data point
          * @param correlationId the correlation id for the operation
          * @param uploadedDataset the dataset the data point belongs to
@@ -166,8 +146,6 @@ class AssembledDataManager
          */
         private fun storeIndividualDataPoint(
             dataPointJsonLeaf: JsonSpecificationLeaf,
-            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            fileReferenceToFileNameMapping: Map<String, String>,
             dataPointType: String,
             correlationId: String,
             uploadedDataset: StorableDataset,
@@ -175,12 +153,8 @@ class AssembledDataManager
             val dataPoint = dataPointJsonLeaf.content
             if (JsonComparator.isFullyNullObject(dataPoint)) return null
 
-            referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
-                dataPoint,
-                fileReferenceToPublicationDateMapping,
-                fileReferenceToFileNameMapping,
-                "dataSource",
-            )
+            referencedReportsUtilities.stripDocumentMetadataFromDataSource(dataPoint, "dataSource")
+
             logger.info(
                 "Storing value found for $dataPointType " +
                     "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",
@@ -212,8 +186,6 @@ class AssembledDataManager
         fun storeDataPointsForDataset(
             datasetId: String,
             dataContent: Map<String, JsonSpecificationLeaf>,
-            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            fileReferenceToFileNameMapping: Map<String, String>,
             uploadedDataset: StorableDataset,
             correlationId: String,
             initialQa: InitialQaStatus,
@@ -225,8 +197,6 @@ class AssembledDataManager
             dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
                 storeIndividualDataPoint(
                     dataPointJsonLeaf = dataPointJsonLeaf,
-                    fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
-                    fileReferenceToFileNameMapping = fileReferenceToFileNameMapping,
                     dataPointType = dataPointType,
                     correlationId = correlationId,
                     uploadedDataset = uploadedDataset,
@@ -252,7 +222,6 @@ class AssembledDataManager
          * @param correlationId the correlation id for the operation
          * @param bypassQa whether to bypass the QA process
          * @param dataContent the content of the dataset
-         * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
          * @return the id of the dataset
          */
         private fun storeSplitDataset(
@@ -260,8 +229,6 @@ class AssembledDataManager
             correlationId: String,
             bypassQa: Boolean,
             dataContent: Map<String, JsonSpecificationLeaf>,
-            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            fileReferenceToFileNameMapping: Map<String, String>,
         ): String {
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
@@ -272,8 +239,6 @@ class AssembledDataManager
             storeDataPointsForDataset(
                 datasetId = datasetId,
                 dataContent = dataContent,
-                fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
-                fileReferenceToFileNameMapping = fileReferenceToFileNameMapping,
                 uploadedDataset = uploadedDataset,
                 correlationId = correlationId,
                 initialQa =

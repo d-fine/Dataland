@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -53,6 +55,7 @@ import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -90,6 +93,7 @@ class AssembledDataManagerTest {
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
 
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
     private val inputCalculatedFrameworkSpecification =
@@ -103,11 +107,10 @@ class AssembledDataManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
+            dataManager, metaDataManager, referencedReportsUtilities, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private lateinit var datasetAssembler: DatasetAssembler
     private lateinit var dataCompositionService: DataCompositionService
     private lateinit var dataDeliveryService: DataDeliveryService
@@ -241,6 +244,23 @@ class AssembledDataManagerTest {
                 dataPoints.keys.sorted() == expectedDataPointTypes.sorted()
             },
         )
+
+        val storedDataPointsCaptor = argumentCaptor<UploadedDataPoint>()
+        verify(spyDataPointManager, times(expectedDataPointTypes.size))
+            .storeDataPoint(storedDataPointsCaptor.capture(), any(), any(), any(), any())
+
+        val storedFiscalYearDeviationDataPoint =
+            storedDataPointsCaptor.allValues.first { it.dataPointType == "extendedEnumFiscalYearDeviationDummy" }
+        val storedDataSourceNode =
+            defaultObjectMapper.readTree(storedFiscalYearDeviationDataPoint.dataPoint).get("dataSource")
+        val storedDataSource =
+            defaultObjectMapper.readValue(storedDataSourceNode.toString(), ExtendedDocumentReference::class.java)
+
+        assertEquals(null, storedDataSource.fileName)
+        assertEquals(null, storedDataSource.publicationDate)
+        assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", storedDataSource.fileReference)
+        assertEquals("213", storedDataSource.page)
+        assertEquals("e-business", storedDataSource.tagName)
     }
 
     @Test
