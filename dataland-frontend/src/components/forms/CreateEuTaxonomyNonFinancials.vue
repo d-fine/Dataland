@@ -5,11 +5,7 @@
     </template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading Eu Taxonomy For Non Financials data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedEutaxonomyNonFinancialsData"
@@ -121,7 +117,6 @@
   </Card>
 </template>
 <script lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -190,7 +185,6 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyNonFinancials',
   components: {
-    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -236,7 +230,6 @@ export default defineComponent({
   data() {
     return {
       formId: 'createEuTaxonomyNonFinancialsForm',
-      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
@@ -363,14 +356,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

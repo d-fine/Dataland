@@ -5,11 +5,7 @@
     >
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading EU Taxonomy Financials data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedEuTaxonomyFinancialsData"
@@ -148,7 +144,6 @@ import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceF
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
@@ -187,7 +182,6 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyFinancials',
   components: {
-    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -229,7 +223,6 @@ export default defineComponent({
     return {
       frameworkTitle: 'EU Taxonomy Dataset for a Financial Company/Service',
       formId: 'createEuTaxonomyFinancialsForm',
-      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
       eutaxonomyFinancialsDataModel,
@@ -356,14 +349,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

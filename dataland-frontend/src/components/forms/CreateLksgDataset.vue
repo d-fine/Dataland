@@ -3,11 +3,7 @@
     <template #title>New Dataset - LkSG</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading LkSG data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedLksgData"
@@ -100,7 +96,6 @@
   </Card>
 </template>
 <script setup lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -136,7 +131,6 @@ const props = defineProps<{
 }>();
 
 const formId = 'createLkSGForm';
-const waitingForData = ref(false);
 const dataDate = ref<Date | undefined>(undefined);
 const companyAssociatedLksgData = ref<CompanyAssociatedDataLksgData>({} as CompanyAssociatedDataLksgData);
 const message = ref('');
@@ -235,14 +229,6 @@ provide(
 provide('listOfFilledKpis', listOfFilledKpis);
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

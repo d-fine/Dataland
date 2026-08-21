@@ -2,12 +2,7 @@
   <div class="container">
     <h2>New Dataset - PCAF</h2>
     <Divider />
-    <div v-if="waitingForData">
-      <h2>Loading PCAF data...</h2>
-      <DatalandProgressSpinner />
-    </div>
     <FormKit
-      v-else
       v-model="companyAssociatedDataPcafData"
       :actions="false"
       type="form"
@@ -123,7 +118,6 @@
 <script setup lang="ts">
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import { getComponentByName } from '@/components/forms/UploadPageComponentDictionary.ts';
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { pcafDataModel } from '@/frameworks/pcaf/UploadConfig.ts';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -162,7 +156,6 @@ const isJustClicked = ref(false);
 const isPostRequestProcessed = ref(false);
 const reportingPeriod = ref<Date | undefined>(undefined);
 const showReportingPeriodError = ref(false);
-const waitingForData = ref(false);
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf);

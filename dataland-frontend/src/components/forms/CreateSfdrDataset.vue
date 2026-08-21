@@ -3,11 +3,7 @@
     <template #title>New Dataset - SFDR</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading SFDR data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedSfdrData"
@@ -93,7 +89,6 @@
 </template>
 <script lang="ts">
 // @ts-nocheck
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -157,7 +152,6 @@ export default defineComponent({
   },
   name: 'CreateSfdrDataset',
   components: {
-    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -201,7 +195,6 @@ export default defineComponent({
   data() {
     return {
       formId: 'createSFDRForm',
-      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
       sfdrDataModel,
@@ -344,14 +337,6 @@ export default defineComponent({
 });
 </script>
 <style>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .jumpLinks {
   left: auto;
   right: 0;

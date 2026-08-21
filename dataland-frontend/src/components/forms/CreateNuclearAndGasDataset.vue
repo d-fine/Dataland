@@ -3,11 +3,7 @@
     <template #title>New Dataset - Nuclear & Gas</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading Nuclear & Gas data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedNuclearAndGasData"
@@ -122,7 +118,6 @@
   </Card>
 </template>
 <script lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -170,7 +165,6 @@ export default defineComponent({
   },
   name: 'CreateNuclearAndGasDataset',
   components: {
-    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -193,7 +187,6 @@ export default defineComponent({
   data() {
     return {
       formId: 'createNuclearAndGasForm',
-      waitingForData: false,
       companyAssociatedNuclearAndGasData: {} as CompanyAssociatedDataNuclearAndGasData,
       nuclearAndGasDataModel,
       message: '',
@@ -333,14 +326,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {
