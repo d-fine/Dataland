@@ -21,11 +21,15 @@
               <FormKit
                 type="group"
                 v-for="category in sfdrDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -33,7 +37,12 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                      <FormKit
+                        v-for="field in subcategory.fields"
+                        :key="field.name"
+                        type="group"
+                        :name="subcategory.name"
+                      >
                         <component
                           v-if="field.showIf(companyAssociatedSfdrData.data)"
                           :is="field.component"
@@ -70,9 +79,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in sfdrDataModel" :key="category">
+            <li v-for="category in sfdrDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -88,7 +97,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -243,12 +251,12 @@ export default defineComponent({
      * Builds an api to get and upload Sfdr data
      * @returns the api
      */
-    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> {
+    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sfdr);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+      } else return undefined;
     },
 
     /**
@@ -273,15 +281,15 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
+        await sfdrDataControllerApi!.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
-      } catch (error: Error) {
+      } catch (error) {
         console.error(error);
-        if (error?.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
