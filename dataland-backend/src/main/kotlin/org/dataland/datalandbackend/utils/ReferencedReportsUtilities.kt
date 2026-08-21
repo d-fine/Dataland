@@ -114,7 +114,7 @@ class ReferencedReportsUtilities {
             contentNode
                 .fieldNames()
                 .asSequence()
-                .map { fieldName -> fieldName to contentNode.get(fieldName) }
+                .map { fieldName -> fieldName to contentNode[fieldName] }
                 .forEach { (_, value) ->
                     getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
                 }
@@ -127,7 +127,7 @@ class ReferencedReportsUtilities {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPoint).get(DATA_SOURCE_FIELD)
+        val dataSource = objectMapper.readTree(dataPoint)[DATA_SOURCE_FIELD]
 
         if (dataSource == null || dataSource.isNull) {
             return null
@@ -196,6 +196,34 @@ class ReferencedReportsUtilities {
                     updateJsonNodeWithDataFromReferencedReports(
                         value, fileReferenceToPublicationDate,
                         fileReferenceToFileName, key,
+                    )
+                }
+        }
+    }
+
+    /**
+     * Recursively nullifies the publication date and file name fields in all data source nodes
+     * within a JSON node tree.
+     *
+     * @param jsonNode The JSON node to process
+     * @param currentNodeName The name of the current JSON node, used to identify data source nodes
+     */
+    fun stripDocumentMetadataFromDataSource(
+        jsonNode: JsonNode,
+        currentNodeName: String,
+    ) {
+        if (currentNodeName == DATA_SOURCE_FIELD && nodeMayRequireUpdate(jsonNode)) {
+            (jsonNode as ObjectNode).putNull(PUBLICATION_DATE_FIELD)
+            jsonNode.putNull(FILE_NAME_FIELD)
+        } else {
+            jsonNode
+                .fieldNames()
+                .asSequence()
+                .map { fieldName -> fieldName to jsonNode.get(fieldName) }
+                .forEach { (_, value) ->
+                    stripDocumentMetadataFromDataSource(
+                        value,
+                        currentNodeName = currentNodeName,
                     )
                 }
         }
