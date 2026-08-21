@@ -3,11 +3,7 @@
     <template #title>New Dataset - SFDR</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading SFDR data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedSfdrData"
@@ -25,11 +21,15 @@
               <FormKit
                 type="group"
                 v-for="category in sfdrDataModel"
-                :key="category"
+                :key="category.name"
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
+                >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
                       <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
@@ -37,7 +37,12 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                      <FormKit
+                        v-for="field in subcategory.fields"
+                        :key="field.name"
+                        type="group"
+                        :name="subcategory.name"
+                      >
                         <component
                           v-if="field.showIf(companyAssociatedSfdrData.data)"
                           :is="field.component"
@@ -74,9 +79,9 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in sfdrDataModel" :key="category">
+            <li v-for="category in sfdrDataModel" :key="category.name">
               <ul>
-                <li v-for="subcategory in category.subcategories" :key="subcategory">
+                <li v-for="subcategory in category.subcategories" :key="subcategory.name">
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
@@ -92,8 +97,6 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -109,7 +112,6 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
 import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -126,7 +128,7 @@ import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.v
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 import ProductionSitesFormField from '@/components/forms/parts/fields/ProductionSitesFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, getAvailableFileNames, uploadFiles } from '@/utils/FileUploadUtils';
 import MostImportantProductsFormField from '@/components/forms/parts/fields/MostImportantProductsFormField.vue';
@@ -135,7 +137,6 @@ import ProcurementCategoriesFormField from '@/components/forms/parts/fields/Proc
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
-import { HighImpactClimateSectorsNaceCodes } from '@/types/HighImpactClimateSectors';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
 import CurrencyExtendedDataPointFormField from '@/components/forms/parts/fields/CurrencyExtendedDataPointFormField.vue';
@@ -143,7 +144,6 @@ import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -160,7 +160,6 @@ export default defineComponent({
   },
   name: 'CreateSfdrDataset',
   components: {
-    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -204,11 +203,9 @@ export default defineComponent({
   data() {
     return {
       formId: 'createSFDRForm',
-      waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
       sfdrDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -220,8 +217,6 @@ export default defineComponent({
       listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -251,70 +246,19 @@ export default defineComponent({
       required: true,
     },
   },
-  created() {
-    this.templateDataId = this.route.query.templateDataId;
-    this.templateReportingPeriod = this.route.query.reportingPeriod;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
-      void this.loadSfdrData();
-    } else {
-      this.waitingForData = false;
-    }
-  },
   methods: {
     /**
      * Builds an api to get and upload Sfdr data
      * @returns the api
      */
-    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> {
+    buildSfdrDataApi(): PublicFrameworkDataApi<SfdrData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.Sfdr);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      }
+      } else return undefined;
     },
 
-    /**
-     * Loads the SFDR-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadSfdrData(): Promise<void> {
-      this.waitingForData = true;
-      const sfdrDataControllerApi = this.buildSfdrDataApi();
-      if (sfdrDataControllerApi) {
-        let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await sfdrDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
-          dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from SfdrDataController invalid.');
-        }
-        const sfdrResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
-        this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
-        this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
-          ?.applicableHighImpactClimateSectors
-          ? Object.keys(
-              sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors
-            ).map((it): string => {
-              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-            })
-          : [];
-        this.companyAssociatedSfdrData = objectDropNull(
-          sfdrResponseData as ObjectType
-        ) as CompanyAssociatedDataSfdrData;
-
-        this.waitingForData = false;
-      }
-    },
     /**
      * Sends data to add SFDR data
      */
@@ -337,15 +281,15 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
+        await sfdrDataControllerApi!.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
-      } catch (error: Error) {
+      } catch (error) {
         console.error(error);
-        if (error?.message) {
+        if ((error as Error).message) {
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
@@ -401,14 +345,6 @@ export default defineComponent({
 });
 </script>
 <style>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .jumpLinks {
   left: auto;
   right: 0;

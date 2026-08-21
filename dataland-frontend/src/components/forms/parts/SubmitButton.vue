@@ -3,7 +3,7 @@
     <PrimeButton
       data-test="submitButton"
       type="submit"
-      :label="updatingData ? 'UPDATE DATA' : 'ADD DATA'"
+      :label="'ADD DATA'"
       :class="formIsValid ? 'button-enabled col-12 m-0' : 'button-disabled col-12 m-0'"
       @click="submit"
     />
@@ -13,7 +13,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import PrimeButton from 'primevue/button';
-import { useRoute } from 'vue-router';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { submitForm, getNode } from '@formkit/core';
 
@@ -22,11 +21,6 @@ export default defineComponent({
   components: {
     PrimeButton,
   },
-  data() {
-    return {
-      route: useRoute(),
-    };
-  },
   props: {
     formId: {
       type: String,
@@ -34,9 +28,6 @@ export default defineComponent({
     },
   },
   computed: {
-    updatingData(): boolean {
-      return this.route.query.templateDataId !== undefined;
-    },
     formIsValid(): boolean {
       return assertDefined(getNode(this.formId)?.context?.state.valid);
     },
