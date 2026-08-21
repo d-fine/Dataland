@@ -229,7 +229,7 @@ export default defineComponent({
     return {
       frameworkTitle: 'EU Taxonomy Dataset for a Financial Company/Service',
       formId: 'createEuTaxonomyFinancialsForm',
-      waitingForData: true,
+      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
       eutaxonomyFinancialsDataModel,
@@ -267,7 +267,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }

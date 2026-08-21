@@ -236,7 +236,7 @@ export default defineComponent({
   data() {
     return {
       formId: 'createEuTaxonomyNonFinancialsForm',
-      waitingForData: true,
+      waitingForData: false,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
@@ -274,7 +274,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.waitingForData = false;
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
