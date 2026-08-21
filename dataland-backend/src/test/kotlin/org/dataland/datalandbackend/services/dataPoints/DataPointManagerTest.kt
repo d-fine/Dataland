@@ -12,6 +12,8 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -39,9 +41,10 @@ class DataPointManagerTest {
     private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
     private val logMessageBuilder = mock(LogMessageBuilder::class.java)
 
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
+            dataManager, metaDataManager, referencedReportsUtilities, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
@@ -60,14 +63,19 @@ class DataPointManagerTest {
 
     @Test
     fun `check that the storeDataPoint function executes the expected calls and returns the expected results`() {
+        val rawDataPointContent =
+            TestResourceFileReader.getJsonString("json/dataPoints/numericDataPointHalf.json")
         val uploadedDataPoint =
             UploadedDataPoint(
                 dataPointType = dataPointType,
-                dataPoint = "test-content",
+                dataPoint = rawDataPointContent,
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
-        val expectedString = defaultObjectMapper.writeValueAsString(uploadedDataPoint)
+        val strippedDataPointContent =
+            TestResourceFileReader.getJsonString("json/dataPoints/numericDataPointHalfDataSourceStripped.json")
+        val expectedString =
+            defaultObjectMapper.writeValueAsString(uploadedDataPoint.copy(dataPoint = strippedDataPointContent))
 
         `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)

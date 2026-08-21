@@ -90,6 +90,7 @@ class AssembledDataManagerTest {
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
 
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
     private val inputCalculatedFrameworkSpecification =
@@ -103,11 +104,10 @@ class AssembledDataManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
+            dataManager, metaDataManager, referencedReportsUtilities, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
-    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private lateinit var datasetAssembler: DatasetAssembler
     private lateinit var dataCompositionService: DataCompositionService
     private lateinit var dataDeliveryService: DataDeliveryService
