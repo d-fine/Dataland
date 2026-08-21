@@ -49,9 +49,9 @@ const LOGO_METADATA_BY_FILENAME: Record<string, LogoMetadata> = {
     scale: 0.92,
     url: 'https://iss.soprasteria.de/',
   },
-  'logo_fact_Salbei.svg': {
+  'logo_fact_by_actico_tanne.png': {
     name: 'FACT First Cloud',
-    scale: 1.62,
+    scale: 0.92,
     category: 'partner',
     url: 'https://www.fact.de/unsere-loesungen/first-cloud/',
   },
