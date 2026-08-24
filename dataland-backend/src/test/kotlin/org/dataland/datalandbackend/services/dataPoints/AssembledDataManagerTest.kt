@@ -26,6 +26,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataDeliveryServiceUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -195,10 +196,18 @@ class AssembledDataManagerTest {
                 specificationService,
                 metaDataManager,
             )
+        val dataDeliveryServiceUtils = mock<DataDeliveryServiceUtils>()
+        doAnswer { invocation ->
+            DataDeliveryServiceUtils.EnhancedDataPoints(
+                allStoredDataPoints = invocation.getArgument(0),
+                calculatedData = invocation.getArgument(1),
+            )
+        }.whenever(dataDeliveryServiceUtils).enhanceDataPoints(any(), any())
         dataDeliveryService =
             DataDeliveryService(
                 dataCompositionService, dataAvailabilityChecker,
                 internalStorageAdapter, datasetAssembler, dataPointCalculator,
+                dataDeliveryServiceUtils,
             )
         assembledDataManager =
             AssembledDataManager(

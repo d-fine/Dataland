@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataDeliveryServiceUtils
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointId
 import org.dataland.datalandbackendutils.model.DatasetType
@@ -22,6 +23,7 @@ class DataDeliveryService
         private val internalStorageAdapter: InternalStorageAdapter,
         private val datasetAssembler: DatasetAssembler,
         private val dataPointCalculator: DataPointCalculator,
+        private val dataDeliveryServiceUtils: DataDeliveryServiceUtils,
     ) {
         /**
          * Delivers the datasets for the data dimensions provided in [dataDimensions] and returns a map of data dimension to
@@ -91,11 +93,16 @@ class DataDeliveryService
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
-            // TODO : update allStoredDataPoints and calculatedData with document meta info (fileName, publicationDate) from document manager
-            return (dataPointIds.keys + calculatedData.keys)
+            val enhancedDataPoints = dataDeliveryServiceUtils.enhanceDataPoints(allStoredDataPoints, calculatedData)
+
+            return (dataPointIds.keys + enhancedDataPoints.calculatedData.keys)
                 .associateWith { dataDimensions ->
                     val dataIds = dataPointIds.getOrDefault(dataDimensions, emptyList())
-                    dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
+                    dataIds.mapNotNull { enhancedDataPoints.allStoredDataPoints[it] } +
+                        enhancedDataPoints.calculatedData.getOrDefault(
+                            dataDimensions,
+                            emptyList(),
+                        )
                 }.filterValues { datasetInputs ->
                     datasetInputs.isNotEmpty()
                 }.mapValues { (dataDimensions, datasetInput) ->
