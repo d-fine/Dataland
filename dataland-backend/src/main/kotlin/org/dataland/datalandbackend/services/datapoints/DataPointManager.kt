@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -34,7 +33,6 @@ class DataPointManager
     constructor(
         private val dataManager: DataManager,
         private val metaDataManager: DataPointMetaInformationManager,
-        private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val storageClient: StorageControllerApi,
         private val messageQueuePublications: MessageQueuePublications,
         private val dataPointValidator: DataPointValidator,
@@ -108,13 +106,10 @@ class DataPointManager
             uploadTime: Long,
             correlationId: String,
         ): DataPointMetaInformation {
-            val dataPointJsonNode = objectMapper.readTree(uploadedDataPoint.dataPoint)
-            referencedReportsUtilities.stripDocumentMetadataFromDataSource(dataPointJsonNode, "dataSource")
-            val strippedDataPoint = uploadedDataPoint.copy(dataPoint = objectMapper.writeValueAsString(dataPointJsonNode))
-
-            val dataPointMetaInformationEntity = strippedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
+            val dataPointMetaInformationEntity =
+                uploadedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
-            dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(strippedDataPoint), correlationId)
+            dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
             return dataPointMetaInformationEntity.toApiModel()
         }

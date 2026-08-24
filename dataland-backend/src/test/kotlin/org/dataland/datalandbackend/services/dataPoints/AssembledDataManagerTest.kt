@@ -107,7 +107,7 @@ class AssembledDataManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, referencedReportsUtilities, storageClient, messageQueuePublications, dataPointValidator,
+            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
         )
 
@@ -256,8 +256,7 @@ class AssembledDataManagerTest {
         val storedDataSource =
             defaultObjectMapper.readValue(storedDataSourceNode.toString(), ExtendedDocumentReference::class.java)
 
-        assertEquals(null, storedDataSource.fileName)
-        assertEquals(null, storedDataSource.publicationDate)
+        assertEquals("AnnualReport", storedDataSource.fileName)
         assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", storedDataSource.fileReference)
         assertEquals("213", storedDataSource.page)
         assertEquals("e-business", storedDataSource.tagName)

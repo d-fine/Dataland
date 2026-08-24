@@ -153,8 +153,6 @@ class AssembledDataManager
             val dataPoint = dataPointJsonLeaf.content
             if (JsonComparator.isFullyNullObject(dataPoint)) return null
 
-            referencedReportsUtilities.stripDocumentMetadataFromDataSource(dataPoint, "dataSource")
-
             logger.info(
                 "Storing value found for $dataPointType " +
                     "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",

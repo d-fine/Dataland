@@ -1,10 +1,8 @@
 package org.dataland.datalandbackend.utils
 
-import ch.qos.logback.classic.Level
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
-import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
@@ -25,7 +23,6 @@ class ReferencedReportsUtilitiesTest {
     private val frameworkWithReferencedReports = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
-    private val frameworkWithDataSourceStripped = "./json/frameworkTemplate/frameworkWithDataSourcesStripped.json"
     private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
     private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val dataPointWithMultipleSources = "./json/frameworkTemplate/dataPointWithMultipleSources.json"
@@ -122,8 +119,7 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that inconsistent publication Date references cause a warning`() {
-        val appender = InMemoryLogAppender().getAppender()
+    fun `check that validateReportConsistencyWithGlobalList no longer compares fileName or publicationDate`() {
         val referencedReports =
             mapOf(
                 "fileName" to CompanyReport(fileReference = "fileReference", publicationDate = LocalDate.parse(testDate)),
@@ -133,61 +129,107 @@ class ReferencedReportsUtilitiesTest {
                 fileReference = "fileReference",
                 publicationDate = LocalDate.parse(anotherTestDate),
             )
-        val expectedWarning =
-            "The publication date of the report 'null' is '$anotherTestDate' and inconsistent with the publication date" +
-                " listed in the referenced reports '$testDate'. The publication date of the report will be overwritten to '$testDate'."
         assertDoesNotThrow {
             referencedReportsUtilities.validateReportConsistencyWithGlobalList(reportFromDatapoint, referencedReports)
         }
-        assertTrue(appender.contains(expectedWarning, Level.WARN))
     }
 
     @Test
-    fun `check that stripDocumentMetadataFromDataSource nullifies fileName and publicationDate but preserves other fields`() {
-        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val originalDataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
-        requireNotNull(originalDataSource) { "Data point does not contain a proper data source" }
-        val contentNode = defaultObjectMapper.readTree(dataPoint)
-
-        referencedReportsUtilities.stripDocumentMetadataFromDataSource(contentNode, "dataSource")
-
-        val expected =
-            ExtendedDocumentReference(
-                fileReference = originalDataSource.fileReference,
-                fileName = null,
-                page = originalDataSource.page,
-                tagName = originalDataSource.tagName,
-                publicationDate = null,
+    fun `check that validateReferencedReportConsistency rejects a populated fileName`() {
+        val referencedReports =
+            mapOf(
+                "AnnualReport" to CompanyReport(fileReference = "ref1", fileName = "AnnualReport"),
             )
-        val actual =
-            contentNode.get("dataSource").let {
-                defaultObjectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
-            }
-        assertEquals(expected, actual)
+        assertThrows<InvalidInputApiException> {
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports)
+        }
     }
 
     @Test
-    fun `check that stripDocumentMetadataFromDataSource nullifies document metadata across a whole framework document`() {
+    fun `check that validateReferencedReportConsistency rejects a populated publicationDate`() {
+        val referencedReports =
+            mapOf(
+                "AnnualReport" to CompanyReport(fileReference = "ref1", publicationDate = LocalDate.parse(testDate)),
+            )
+        assertThrows<InvalidInputApiException> {
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports)
+        }
+    }
+
+    @Test
+    fun `check that validateDataSourcesDoNotContainInferableFields returns no violations for a clean data source`() {
+        val cleanDataPoint =
+            """
+            { "value": "100", "dataSource": { "page": "6", "tagName": "content", "fileReference": "ref1" } }
+            """.trimIndent()
+        val violations =
+            referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
+                defaultObjectMapper.readTree(cleanDataPoint),
+                "root",
+            )
+        assertTrue(violations.isEmpty())
+    }
+
+    @Test
+    fun `check that validateDataSourcesDoNotContainInferableFields detects fileName and publicationDate`() {
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val violations =
+            referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
+                defaultObjectMapper.readTree(dataPoint),
+                "root",
+            )
+        assertEquals(2, violations.size)
+        assertTrue(violations.any { it.contains("fileName") })
+        assertTrue(violations.any { it.contains("publicationDate") })
+    }
+
+    @Test
+    fun `check that validateDataSourcesDoNotContainInferableFields aggregates violations across a whole framework document`() {
         val frameworkContent = TestResourceFileReader.getJsonNode(frameworkWithDataSource)
-        val expected = TestResourceFileReader.getJsonNode(frameworkWithDataSourceStripped)
-
-        referencedReportsUtilities.stripDocumentMetadataFromDataSource(frameworkContent, "")
-
-        assertEquals(expected, frameworkContent)
+        val violations =
+            referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(frameworkContent, "root")
+        // The fixture contains two data sources, each with a populated fileName and no populated publicationDate.
+        assertEquals(2, violations.size)
+        assertTrue(violations.all { it.contains("fileName") })
     }
 
     @Test
-    fun `check that stripDocumentMetadataFromDataSource does not affect nodes not named dataSource`() {
+    fun `check that validateDataSourcesDoNotContainInferableFields does not affect nodes not named dataSource`() {
         val nodeNotNamedDataSource =
             """
             { "notADataSource": { "fileReference": "ref1", "fileName": "SomeFile", "publicationDate": "2023-11-04" } }
             """.trimIndent()
-        val contentNode = defaultObjectMapper.readTree(nodeNotNamedDataSource)
-        val expected = defaultObjectMapper.readTree(nodeNotNamedDataSource)
+        val violations =
+            referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
+                defaultObjectMapper.readTree(nodeNotNamedDataSource),
+                "notADataSource",
+            )
+        assertTrue(violations.isEmpty())
+    }
 
-        referencedReportsUtilities.stripDocumentMetadataFromDataSource(contentNode, "notADataSource")
-
-        assertEquals(expected, contentNode)
+    @Test
+    fun `check that validateDataSourcesDoNotContainInferableFields detects violations in nested compound data points`() {
+        val nestedContent =
+            """
+            {
+              "absoluteShare": {
+                "value": "100",
+                "dataSource": { "page": "6", "tagName": "content", "fileReference": "ref1", "fileName": "File1" }
+              },
+              "relativeShareInPercent": {
+                "value": "50",
+                "dataSource": {
+                  "page": "7", "tagName": "content", "fileReference": "ref2", "publicationDate": "2023-11-04"
+                }
+              }
+            }
+            """.trimIndent()
+        val violations =
+            referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
+                defaultObjectMapper.readTree(nestedContent),
+                "root",
+            )
+        assertEquals(2, violations.size)
     }
 
     @Test
