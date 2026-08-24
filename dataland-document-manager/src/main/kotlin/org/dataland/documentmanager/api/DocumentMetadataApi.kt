@@ -282,6 +282,7 @@ interface DocumentMetadataApi {
             example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
             required = true,
         )
+        @RequestParam("documentIds")
         documentIds: List<String>,
     ): ResponseEntity<Map<String, DocumentMetaInfoEntity>>
 

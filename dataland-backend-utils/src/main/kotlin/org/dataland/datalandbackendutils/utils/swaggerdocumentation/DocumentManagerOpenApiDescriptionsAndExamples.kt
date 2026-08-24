@@ -31,7 +31,7 @@ object DocumentManagerOpenApiDescriptionsAndExamples {
         "List of the unique identifiers of the documents on Dataland. It is contained in the HTTP response " +
             "after posting a new document and is a SHA-256 value."
     const val DOCUMENT_IDS_EXAMPLE =
-        "[\"afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4\"" +
+        "[\"afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b4\", " +
             "\"afa44f6138e4e3925f9da5ae355a9ee60f1630e52ddd755c4b2762cf61b4f7b5\"]"
 
     const val UPLOADER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the document."
