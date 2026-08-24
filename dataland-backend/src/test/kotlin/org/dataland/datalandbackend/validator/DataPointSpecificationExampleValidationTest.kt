@@ -16,7 +16,6 @@ import org.dataland.datalandbackend.services.DataAvailabilityChecker
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.DefaultMocks
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
@@ -64,7 +63,6 @@ class DataPointSpecificationExampleValidationTest
         private val companyIdentifierManager: CompanyIdentifierManager,
         private val companyBaseManager: CompanyBaseManager,
         private val dataAvailabilityChecker: DataAvailabilityChecker,
-        private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) {
         lateinit var companyController: CompanyDataController
         private lateinit var companyIdOfPostedCompany: String
@@ -183,18 +181,30 @@ class DataPointSpecificationExampleValidationTest
             diff.expected?.isNull ?: false && diff.path.matches(Regex(".+\\[[1-9][0-9]*\\]$"))
 
         /**
+         * The fileName and publicationDate fields of a dataSource must not be set on upload, as they are
+         * not allowed to be inferred/provided by the uploader. Examples therefore intentionally leave them
+         * null even though the schema declares a type for them.
+         */
+        private fun isDifferenceCausedByInferableDataSourceField(diff: JsonComparator.JsonDiff) =
+            diff.actual?.isNull == true &&
+                (diff.path.endsWith("dataSource.fileName") || diff.path.endsWith("dataSource.publicationDate"))
+
+        /**
          * Filters out expected differences related to lists and nulls in arrays.
          *
          * This functions removes differences if one of the following conditions is met:
          *  a) The expected value indicates a list type (e.g., "List<SomeType>") and the actual value is a non-empty array of value nodes.
          *  b) The expected value is a null JSON node (not Kotlin null) and the path indicates an array index > 0. This happens, when the
          *     schema defines an array and the example provides more than one element (i.e. multiple aligned activities).
+         *  c) The difference concerns the dataSource's fileName or publicationDate field, which must not be set in examples.
          *
          * @param differences The list of JSON differences to filter.
          */
         private fun filterExpectedListDifferences(differences: List<JsonComparator.JsonDiff>): List<JsonComparator.JsonDiff> =
             differences.filterNot { diff ->
-                isDifferenceCausedByArraySpecification(diff) || isDifferenceCausedByDifferingArrayLengths(diff)
+                isDifferenceCausedByArraySpecification(diff) ||
+                    isDifferenceCausedByDifferingArrayLengths(diff) ||
+                    isDifferenceCausedByInferableDataSourceField(diff)
             }
 
         @MockitoBean
@@ -244,13 +254,9 @@ class DataPointSpecificationExampleValidationTest
             val response = dataPointManager.processDataPoint(uploadedDataPoint, dummyUuid, bypassQa = true, dummyUuid)
             val downloadedDataPoint = dataPointManager.retrieveDataPoint(response.dataPointId, "correlationId")
 
-            val normalizedUploadedDataPointNode = objectMapper.readTree(uploadedDataPoint.dataPoint)
-            referencedReportsUtilities.stripDocumentMetadataFromDataSource(normalizedUploadedDataPointNode, "dataSource")
-            val normalizedUploadedDataPoint = objectMapper.writeValueAsString(normalizedUploadedDataPointNode)
-
             Assertions.assertEquals(
                 emptyList<JsonComparator.JsonDiff>(),
-                compareJsonStrings(normalizedUploadedDataPoint, downloadedDataPoint.dataPoint),
+                compareJsonStrings(uploadedDataPoint.dataPoint, downloadedDataPoint.dataPoint),
             )
         }
 
