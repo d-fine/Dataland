@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.controller
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.PreApprovalController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPatchRequest
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPutRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -54,5 +55,27 @@ class PreApprovalControllerTest {
         assertEquals(HttpStatus.OK, result.statusCode)
         assertEquals(updatedConfig, result.body)
         verify(preApprovalService).patchConfig(patch, dummySubmitUserId)
+    }
+
+    @Test
+    fun `putPreApprovalConfig delegates to service with the authenticated user id and returns expected body`() {
+        val newConfig =
+            PreApprovalConfigPutRequest(
+                exemptFields = emptyMap(),
+                samplingProbability = 0.5,
+                decimalRelativeThreshold = 0.5,
+                integerAbsoluteThreshold = 5L,
+                individualDecimalThresholds = emptyMap(),
+                individualIntegerThresholds = emptyMap(),
+                autoPreApprovalEnabled = true,
+            )
+        val replacedConfig = PreApprovalConfig(samplingProbability = 0.5, submitUserId = dummySubmitUserId)
+        whenever(preApprovalService.putConfig(eq(newConfig), any())).thenReturn(replacedConfig)
+
+        val result = controller.putPreApprovalConfig(newConfig)
+
+        assertEquals(HttpStatus.OK, result.statusCode)
+        assertEquals(replacedConfig, result.body)
+        verify(preApprovalService).putConfig(newConfig, dummySubmitUserId)
     }
 }
