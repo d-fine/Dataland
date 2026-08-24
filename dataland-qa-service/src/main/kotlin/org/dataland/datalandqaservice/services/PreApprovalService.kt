@@ -174,6 +174,13 @@ class PreApprovalService(
                 valueType = valueType,
                 dataPointType = dataPoint.dataPointType,
                 framework = dataType,
+                thresholds =
+                    SignificanceCheckService.SignificanceThresholds(
+                        decimalRelativeThreshold = _config.decimalRelativeThreshold,
+                        integerAbsoluteThreshold = _config.integerAbsoluteThreshold,
+                        individualDecimalThresholds = _config.individualDecimalThresholds,
+                        individualIntegerThresholds = _config.individualIntegerThresholds,
+                    ),
             )
 
         val passesSignificanceCheck = !hasSignificantChange
