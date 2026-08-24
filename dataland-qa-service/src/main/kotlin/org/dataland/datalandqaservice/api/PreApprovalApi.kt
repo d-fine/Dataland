@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPatchRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -41,18 +42,20 @@ interface PreApprovalApi {
     fun getPreApprovalConfig(): ResponseEntity<PreApprovalConfig>
 
     /**
-     * A method to update the pre-approval configuration.
-     * @param newConfig the new configuration to apply
+     * A method to partially update the pre-approval configuration.
+     * @param patch the partial update to apply; absent (null) fields are left unchanged
      */
     @Operation(
         summary = "Update the pre-approval configuration.",
-        description = "Updates the pre-approval configuration. The sampling probability must be between 0.0 and 1.0.",
+        description =
+            "Partially updates the pre-approval configuration. Only the provided fields are changed. " +
+                "The sampling probability must be between 0.0 and 1.0.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully updated pre-approval configuration."),
             ApiResponse(responseCode = "400", description = "Invalid configuration values."),
-            ApiResponse(responseCode = "403", description = "Only admins and judges can modify pre-approval configuration."),
+            ApiResponse(responseCode = "403", description = "Only admins can modify pre-approval configuration."),
         ],
     )
     @PatchMapping(
@@ -60,8 +63,8 @@ interface PreApprovalApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_JUDGE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchPreApprovalConfig(
-        @Valid @RequestBody newConfig: PreApprovalConfig,
+        @Valid @RequestBody patch: PreApprovalConfigPatchRequest,
     ): ResponseEntity<PreApprovalConfig>
 }
