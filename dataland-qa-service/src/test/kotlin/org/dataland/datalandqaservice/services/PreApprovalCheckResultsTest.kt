@@ -2,11 +2,10 @@ package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.node.DecimalNode
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalCheckResults
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPatchRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
@@ -84,7 +83,7 @@ class PreApprovalCheckResultsTest {
     @Test
     fun `pre-approval check results stores whether all QA reports are accepted`() {
         val service = buildServiceWithoutLiveDataset(autoPreApprovalEnabled = true)
-        service.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
 
         // Scenario 1: two QA-reports, one rejected, one accepted -> should lead to false
         var reports =
@@ -123,9 +122,9 @@ class PreApprovalCheckResultsTest {
         val service =
             buildServiceWithoutLiveDataset(
                 autoPreApprovalEnabled = true,
-                exemptFieldsConfig = PreApprovalExemptFieldsConfig(mapOf(DataTypeEnum.sfdr to setOf(exemptField))),
+                exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
             )
-        service.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
 
         // Scenario 1: data point type is on the exempt field list
         var checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList(), dataPointType = exemptField))
@@ -141,12 +140,12 @@ class PreApprovalCheckResultsTest {
         val service = buildServiceWithoutLiveDataset(autoPreApprovalEnabled = true)
 
         // Scenario 1: 100% probability of being sampled and therefore not preapproved
-        service.patchConfig(PreApprovalConfig(samplingProbability = 1.0))
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 1.0), "dummy-submit-user-id")
         var checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList()))
         assertEquals(false, checkResults.passesRandomSampling)
 
         // Scenario 2: 0% probability of being sampled and therefore preapproved
-        service.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
         checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList()))
         assertEquals(true, checkResults.passesRandomSampling)
     }
