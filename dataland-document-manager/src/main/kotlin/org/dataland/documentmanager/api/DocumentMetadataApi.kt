@@ -243,6 +243,48 @@ interface DocumentMetadataApi {
         documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
 
+    /**
+     * Retrieve document meta information for multiple document IDs
+     * @param documentId the ID for which to retrieve meta information
+     */
+    @Operation(
+        summary = "Receive metainformation for multiple documents.",
+        description = "Receive metainformation for a document by its IDs from internal storage.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully received document meta information.",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document meta information could not be retrieved.",
+                content = [
+                    Content(
+                        schema = Schema(),
+                    ),
+                ],
+            ),
+        ],
+    )
+    @GetMapping(
+        value = ["/metadata/get-batch"],
+        produces = [
+            "application/json",
+        ],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getDocumentMetaInformationBatch(
+        @Parameter(
+            name = "documentIds",
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_IDS_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
+            required = true,
+        )
+        documentIds: List<String>,
+    ): ResponseEntity<Map<String, DocumentMetaInfoEntity>>
+
     // Do not use PreAuthorize for the following endpoint, as it shall be called on the company cockpit page even for unauthenticated users.
 
     /**
