@@ -91,7 +91,7 @@ class DataDeliveryService
             val allStoredDataPoints =
                 internalStorageAdapter
                     .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
-
+            // TODO : update allStoredDataPoints and calculatedData with document meta info (fileName, publicationDate) from document manager
             return (dataPointIds.keys + calculatedData.keys)
                 .associateWith { dataDimensions ->
                     val dataIds = dataPointIds.getOrDefault(dataDimensions, emptyList())
