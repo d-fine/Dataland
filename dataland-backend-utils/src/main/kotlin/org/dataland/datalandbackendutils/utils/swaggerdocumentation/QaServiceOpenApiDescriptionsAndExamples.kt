@@ -154,7 +154,7 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val PRE_APPROVAL_AUTO_PRE_APPROVAL_ENABLED_EXAMPLE = "true"
 
     const val PRE_APPROVAL_SUBMIT_USER_ID_DESCRIPTION =
-        "The unique user ID of the reviewer or admin who last submitted (created or updated) this pre-approval " +
+        "The unique user ID of the admin who last submitted (created or updated) this pre-approval " +
             "configuration. Null if the configuration has never been updated since being seeded. This field is " +
             "read-only and can only be set server-side; it cannot be set via the PATCH or PUT request bodies."
     const val PRE_APPROVAL_SUBMIT_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
