@@ -1,17 +1,11 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import {
-  type CompanyAssociatedDataEutaxonomyNonFinancialsData,
-  type DataAndMetaInformationEutaxonomyNonFinancialsData,
-  type DataMetaInformation,
-  DataTypeEnum,
-} from '@clients/backend';
+import { type CompanyAssociatedDataEutaxonomyNonFinancialsData, DataTypeEnum } from '@clients/backend';
 import { describeIf } from '@e2e/support/TestUtility';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { getBaseUrl } from '@e2e/utils/Cypress';
 import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
-import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from '@e2e/utils/GeneralUtils';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils';
 import { UploadReports } from '@sharedUtils/components/UploadReports';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
@@ -33,30 +27,6 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
   cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
   selectItemFromDropdownByIndex(cy.get('[data-test="assurance-form-field"]'), 1);
   cy.get('input[name="provider"]').type('Some Assurance Provider Company');
-}
-
-/**
- * Validates the existence of the reports.
- *
- * Visits the edit page for the eu taxonomy dataset for non financial companies via navigation and then checks
- * if already uploaded reports do exist in the form.
- *
- * @param companyId the id of the company for which to edit a dataset
- * @param isPdfTestFileExpected specifies if the test file is expected to be in the server response
- */
-function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
-  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
-    (interceptionOfGetDataRequestForEditMode) => {
-      const responseBody:
-        DataAndMetaInformationEutaxonomyNonFinancialsData[] | DataAndMetaInformationEutaxonomyNonFinancialsData =
-        assertDefined(assertDefined(interceptionOfGetDataRequestForEditMode).response).body;
-      const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
-      const referencedReportsInDataset = firstEntry?.data?.general?.referencedReports;
-      assert(referencedReportsInDataset);
-      expect(TEST_PDF_FILE_NAME in referencedReportsInDataset!).to.equal(isPdfTestFileExpected);
-      expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset!).to.equal(true);
-    }
-  );
 }
 
 /**
@@ -89,7 +59,7 @@ function createOwnedCompany(token: string): Promise<{ token: string; companyId: 
 }
 
 describeIf(
-  'As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company',
+  'As a user, I expect that the upload form works correctly when uploading a new eu-taxonomy dataset for a non-financial company',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
@@ -160,60 +130,37 @@ describeIf(
     }
 
     /**
-     * Submits the edited dataset and returns metadata of the reuploaded dataset.
+     * This method verifies that a file is not uploaded a second time if its content hash already exists on the
+     * backend, even when the duplicate content is submitted as part of an entirely independent dataset creation.
      *
-     * @param companyId id of the company to edit data for
-     * @returns metadata of the newly reuploaded dataset
+     * @param companyId the ID of the company for which a new dataset is created
      */
-    function submitEditedDatasetAndGetMeta(companyId: string): Cypress.Chainable<DataMetaInformation> {
-      goToEditFormAndValidateExistenceOfReports(companyId, true);
-      uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
-      cy.intercept({ method: 'POST', url: `**/api/data/**`, times: 1 }, (request) => {
-        const submittedEutaxonomyNonFinancialsData = assertDefined(
-          request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-        ).data;
-        const submittedReports = assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports);
-        expect(TEST_PDF_FILE_NAME in submittedReports).to.equal(false);
-        expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
-      }).as('submitEditData');
-      cy.get('button[data-test="submitButton"]').click();
-      return cy.wait(`@submitEditData`, { timeout: longTimeoutInMs }).then((interception) => {
-        expect(interception.response?.statusCode).to.eq(200);
-        cy.url().should('eq', getBaseUrl() + '/datasets');
-        cy.get('[data-test="datasets-table"]').should('be.visible');
-
-        goToEditFormAndValidateExistenceOfReports(companyId, false);
-        const dataMetaInformation = assertDefined(interception.response?.body) as DataMetaInformation;
-        return cy.then(() => dataMetaInformation);
-      });
-    }
-
-    /**
-     * This method verifies that there are no files with the same content uploaded twice
-     * @param companyId the ID of the company whose data is to be edited
-     * @param templateDataId the ID of the dataset to edit
-     */
-    function checkThatFilesWithSameContentDontGetReuploaded(companyId: string, templateDataId: string): void {
+    function checkThatFilesWithSameContentDontGetReuploaded(companyId: string): void {
       const differentFileNameForSameFile = `${TEST_PDF_FILE_NAME}FileCopy`;
-      cy.intercept('GET', '**/api/data/eutaxonomy-non-financials/*').as('getDataToPrefillForm');
-      cy.visitAndCheckAppMount(
-        `/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload?templateDataId=${templateDataId}`
-      );
-      cy.wait('@getDataToPrefillForm', { timeout: shortTimeoutInMs });
-      cy.get('[data-test="pageWrapperTitle"]').should('contain', 'Edit');
-      cy.get('input[type=file]').selectFile(
-        { contents: `../${TEST_PDF_FILE_PATH}`, fileName: differentFileNameForSameFile + '.pdf' },
-        { force: true }
-      );
+      cy.ensureLoggedInAsAdmin();
+      cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
+      cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
+      cy.get(`div[data-test='upload-documents-referencedReports']`)
+        .find('input[type=file]')
+        .selectFile(
+          { contents: `../${TEST_PDF_FILE_PATH}`, fileName: differentFileNameForSameFile + '.pdf' },
+          { force: true }
+        );
       uploadReports.fillAllFormsOfReportsSelectedForUpload();
+      fillRequiredEutaxonomyNonFinancialsFields();
+
+      const revenueSelectorPrefix = 'div[name="revenue"] div[data-test="totalAmount"]';
+      cy.get(`${revenueSelectorPrefix} [data-test="dataPointToggleButton"]`).within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
+      cy.get(`${revenueSelectorPrefix} input[name="value"]`).type('250700');
+      selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="currency"]`), 1);
+      selectItemFromDropdownByIndex(cy.get(`${revenueSelectorPrefix} div[data-test="dataQuality"]`), 1);
       selectItemFromDropdownByValue(
-        cy.get('div[name="capex"] div[data-test="dataReport"]').eq(0),
+        cy.get(`${revenueSelectorPrefix} div[data-test="dataReport"]`).eq(0),
         differentFileNameForSameFile
       );
-      selectItemFromDropdownByValue(
-        cy.get('div[name="opex"] div[data-test="dataReport"]').eq(0),
-        `${TEST_PDF_FILE_NAME}2`
-      );
+
       cy.intercept({ url: `**/documents/*`, method: 'HEAD', times: 1 }).as('documentExists');
       cy.intercept(`**/documents/`, cy.spy().as('postDocument'));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}*`).as('postCompanyAssociatedData');
@@ -227,21 +174,18 @@ describeIf(
     }
 
     it(
-      'Check if the file upload info remove button works as expected, make sure the file content hashes ' +
-        'generated by frontend and backend are the same and that the exact document does not get reuploaded a second time',
+      'Check that the file content hashes generated by frontend and backend are the same and that a file is not ' +
+        'reuploaded when the exact same document content is later submitted as part of an independent dataset',
       () => {
         getAdminToken()
           .then((token: string) => {
-            return createOwnedCompany(token);
-          })
-          .then(({ token, companyId }) => {
-            submitInitialDatasetAndValidateHash(token, companyId);
-            return submitEditedDatasetAndGetMeta(companyId).then((metaDataOfReuploadedDataset) => {
-              return { companyId, metaDataOfReuploadedDataset };
+            return createOwnedCompany(token).then(({ companyId }) => {
+              submitInitialDatasetAndValidateHash(token, companyId);
+              return createOwnedCompany(token);
             });
           })
-          .then(({ companyId, metaDataOfReuploadedDataset }) => {
-            checkThatFilesWithSameContentDontGetReuploaded(companyId, metaDataOfReuploadedDataset.dataId);
+          .then(({ companyId }) => {
+            checkThatFilesWithSameContentDontGetReuploaded(companyId);
           });
       }
     );

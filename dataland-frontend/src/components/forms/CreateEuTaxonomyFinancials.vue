@@ -1,15 +1,11 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
-      ><span data-test="pageWrapperTitle"> {{ editMode ? 'Edit ' : 'Create ' + frameworkTitle }} </span></template
+      ><span data-test="pageWrapperTitle"> Create {{ frameworkTitle }} </span></template
     >
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading EU Taxonomy Financials data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedEuTaxonomyFinancialsData"
@@ -148,7 +144,6 @@ import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceF
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
@@ -157,12 +152,11 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import {
@@ -179,7 +173,6 @@ import DatePicker from 'primevue/datepicker';
 import Tooltip from 'primevue/tooltip';
 import Tag from 'primevue/tag';
 import { computed, defineComponent, inject } from 'vue';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 
 export default defineComponent({
   setup() {
@@ -189,7 +182,6 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyFinancials',
   components: {
-    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -231,11 +223,9 @@ export default defineComponent({
     return {
       frameworkTitle: 'EU Taxonomy Dataset for a Financial Company/Service',
       formId: 'createEuTaxonomyFinancialsForm',
-      waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
       eutaxonomyFinancialsDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -246,10 +236,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
-      editMode: false,
       listOfFilledKpis: [] as Array<string>,
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -273,17 +260,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId ?? null;
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
-      this.editMode = true;
-      void this.loadEuTaxonomyFinancialsData();
-    } else {
-      this.waitingForData = false;
-    }
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -299,38 +275,6 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       } else return undefined;
-    },
-    /**
-     * Loads the EuTaxonomyFinancials-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadEuTaxonomyFinancialsData(): Promise<void> {
-      this.waitingForData = true;
-      const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
-      if (euTaxonomyFinancialsDataControllerApi) {
-        let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await euTaxonomyFinancialsDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
-          dataResponse = await euTaxonomyFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from EuTaxonomyFinancialsDataController invalid.');
-        }
-        const euTaxonomyFinancialsResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
-        if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
-          this.reportingPeriod = new Date(euTaxonomyFinancialsResponseData.reportingPeriod);
-        }
-        this.referencedReportsForPrefill =
-          euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
-        this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
-        this.waitingForData = false;
-      }
     },
 
     /**
@@ -405,14 +349,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {
