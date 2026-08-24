@@ -40,7 +40,7 @@ interface PreApprovalApi {
         value = ["/config"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_JUDGE', 'ROLE_ADMIN')")
     fun getPreApprovalConfig(): ResponseEntity<PreApprovalConfig>
 
     /**
