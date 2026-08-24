@@ -168,6 +168,7 @@ class PreApprovalCheckResultsTest {
                     anyOrNull(),
                     any(),
                     any(),
+                    any(),
                 )
             } doReturn (hasSignificantChange)
 

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.databind.node.TextNode
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.Companion.DECIMAL_RELATIVE_THRESHOLD
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.Companion.INTEGER_ABSOLUTE_THRESHOLD
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService.ValueType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -24,6 +22,18 @@ class SignificanceCheckServiceTest {
 
     private val baseDecimalValue = BigDecimal.valueOf(100.0)
     private val baseIntegerValue = 10
+
+    private val decimalRelativeThreshold = 0.5
+    private val integerAbsoluteThreshold = 5L
+    private val emptyDecimalOverrides: Map<DataTypeEnum, Map<String, Double>> = emptyMap()
+    private val emptyIntegerOverrides: Map<DataTypeEnum, Map<String, Long>> = emptyMap()
+    private val defaultThresholds =
+        SignificanceCheckService.SignificanceThresholds(
+            decimalRelativeThreshold = decimalRelativeThreshold,
+            integerAbsoluteThreshold = integerAbsoluteThreshold,
+            individualDecimalThresholds = emptyDecimalOverrides,
+            individualIntegerThresholds = emptyIntegerOverrides,
+        )
 
     private fun createDecimalNodeWithRelativeMultiplier(
         baseValue: BigDecimal,
@@ -72,6 +82,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -85,6 +96,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -98,6 +110,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -111,6 +124,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -124,6 +138,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -140,6 +155,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -153,6 +169,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -166,6 +183,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -179,6 +197,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.BOOLEAN,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -190,11 +209,12 @@ class SignificanceCheckServiceTest {
         fun `decimal increase above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD * 1.05),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + decimalRelativeThreshold * 1.05),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -203,11 +223,12 @@ class SignificanceCheckServiceTest {
         fun `decimal increase at threshold is not significant `() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + decimalRelativeThreshold),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -216,11 +237,12 @@ class SignificanceCheckServiceTest {
         fun `decimal increase below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + DECIMAL_RELATIVE_THRESHOLD * 0.95),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + decimalRelativeThreshold * 0.95),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -229,11 +251,12 @@ class SignificanceCheckServiceTest {
         fun `decimal decrease above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD * 1.05),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - decimalRelativeThreshold * 1.05),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -242,11 +265,12 @@ class SignificanceCheckServiceTest {
         fun `decimal decrease at threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - decimalRelativeThreshold),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -255,11 +279,12 @@ class SignificanceCheckServiceTest {
         fun `decimal decrease below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - DECIMAL_RELATIVE_THRESHOLD * 0.95),
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 - decimalRelativeThreshold * 0.95),
                     liveValue = DecimalNode(baseDecimalValue),
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -273,6 +298,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -286,6 +312,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -299,6 +326,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.DECIMAL,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -310,11 +338,12 @@ class SignificanceCheckServiceTest {
         fun `integer increase above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt() + 1),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, integerAbsoluteThreshold.toInt() + 1),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -323,11 +352,12 @@ class SignificanceCheckServiceTest {
         fun `integer increase at threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt()),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, integerAbsoluteThreshold.toInt()),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -336,11 +366,12 @@ class SignificanceCheckServiceTest {
         fun `integer increase below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, INTEGER_ABSOLUTE_THRESHOLD.toInt() - 1),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, integerAbsoluteThreshold.toInt() - 1),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -349,11 +380,12 @@ class SignificanceCheckServiceTest {
         fun `integer decrease above threshold is significant`() {
             assertTrue(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(INTEGER_ABSOLUTE_THRESHOLD.toInt() + 1)),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(integerAbsoluteThreshold.toInt() + 1)),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -362,11 +394,12 @@ class SignificanceCheckServiceTest {
         fun `integer decrease at threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -INTEGER_ABSOLUTE_THRESHOLD.toInt()),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -integerAbsoluteThreshold.toInt()),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -375,11 +408,12 @@ class SignificanceCheckServiceTest {
         fun `integer decrease below threshold is not significant`() {
             assertFalse(
                 service.hasSignificantChange(
-                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(INTEGER_ABSOLUTE_THRESHOLD.toInt() - 1)),
+                    newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, -(integerAbsoluteThreshold.toInt() - 1)),
                     liveValue = IntNode(baseIntegerValue),
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -393,6 +427,7 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.INTEGER,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
             )
         }
@@ -409,7 +444,157 @@ class SignificanceCheckServiceTest {
                     valueType = ValueType.UNSUPPORTED,
                     dataPointType = dummyDataPointType,
                     framework = dummyFramework,
+                    thresholds = defaultThresholds,
                 ),
+            )
+        }
+    }
+
+    @Nested
+    inner class IndividualThresholdOverrideTests {
+        @Test
+        fun `decimal change significant against lower individual threshold but not against global`() {
+            val lowerIndividualThreshold = 0.1
+            val overrides: Map<DataTypeEnum, Map<String, Double>> =
+                mapOf(dummyFramework to mapOf(dummyDataPointType to lowerIndividualThreshold))
+            val newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.2)
+            val liveValue = DecimalNode(baseDecimalValue)
+
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds,
+                ),
+                "expected not significant against the global threshold",
+            )
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds.copy(individualDecimalThresholds = overrides),
+                ),
+                "expected significant against the lower individual threshold",
+            )
+        }
+
+        @Test
+        fun `decimal change not significant against higher individual threshold but significant against global`() {
+            val higherIndividualThreshold = 0.9
+            val overrides: Map<DataTypeEnum, Map<String, Double>> =
+                mapOf(dummyFramework to mapOf(dummyDataPointType to higherIndividualThreshold))
+            val newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.6)
+            val liveValue = DecimalNode(baseDecimalValue)
+
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds,
+                ),
+                "expected significant against the global threshold",
+            )
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds.copy(individualDecimalThresholds = overrides),
+                ),
+                "expected not significant against the higher individual threshold",
+            )
+        }
+
+        @Test
+        fun `integer change significant against lower individual threshold but not against global`() {
+            val lowerIndividualThreshold = 2L
+            val overrides: Map<DataTypeEnum, Map<String, Long>> =
+                mapOf(dummyFramework to mapOf(dummyDataPointType to lowerIndividualThreshold))
+            val newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, 3)
+            val liveValue = IntNode(baseIntegerValue)
+
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds,
+                ),
+                "expected not significant against the global threshold",
+            )
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds.copy(individualIntegerThresholds = overrides),
+                ),
+                "expected significant against the lower individual threshold",
+            )
+        }
+
+        @Test
+        fun `integer change not significant against higher individual threshold but significant against global`() {
+            val higherIndividualThreshold = 10L
+            val overrides: Map<DataTypeEnum, Map<String, Long>> =
+                mapOf(dummyFramework to mapOf(dummyDataPointType to higherIndividualThreshold))
+            val newValue = createIntegerNodeWithAbsoluteOffset(baseIntegerValue, 8)
+            val liveValue = IntNode(baseIntegerValue)
+
+            assertTrue(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds,
+                ),
+                "expected significant against the global threshold",
+            )
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = newValue,
+                    liveValue = liveValue,
+                    valueType = ValueType.INTEGER,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds.copy(individualIntegerThresholds = overrides),
+                ),
+                "expected not significant against the higher individual threshold",
+            )
+        }
+
+        @Test
+        fun `individual threshold falls back to global when no override exists for framework or field`() {
+            val overrides: Map<DataTypeEnum, Map<String, Double>> =
+                mapOf(DataTypeEnum.eutaxonomyMinusFinancials to mapOf("other-datapoint-type" to 0.1))
+
+            assertFalse(
+                service.hasSignificantChange(
+                    newValue = createDecimalNodeWithRelativeMultiplier(baseDecimalValue, 1.0 + decimalRelativeThreshold * 0.95),
+                    liveValue = DecimalNode(baseDecimalValue),
+                    valueType = ValueType.DECIMAL,
+                    dataPointType = dummyDataPointType,
+                    framework = dummyFramework,
+                    thresholds = defaultThresholds.copy(individualDecimalThresholds = overrides),
+                ),
+                "expected to fall back to the global threshold when no matching override exists",
             )
         }
     }
