@@ -4628,7 +4628,7 @@
           },
           "submitUserId": {
             "type": "string",
-            "description": "The unique user ID of the reviewer or admin who last submitted (created or updated) this pre-approval configuration. Null if the configuration has never been updated since being seeded. This field is read-only and can only be set server-side; it cannot be set via the PATCH or PUT request bodies.",
+            "description": "The unique user ID of the admin who last submitted (created or updated) this pre-approval configuration. Null if the configuration has never been updated since being seeded. This field is read-only and can only be set server-side; it cannot be set via the PATCH or PUT request bodies.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
