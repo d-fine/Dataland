@@ -25,17 +25,21 @@ export function checkCustomInputs(node: FormKitNode): void {
 /**
  * checks if all reports that shall be uploaded are used as a data source at least once
  * @param [dataModel] the data model that has a field for referenced reports, named 'report'
- * @param [uploadedReports] the list of reports that were uploaded via form
+ * @param [uploadedReports] the names of the reports that were uploaded via form
+ * @param [namesAndReferencesOfAllCompanyReports] a map from report name to the report's file reference,
+ * needed because data points only store the "fileReference" of the report they reference (not its name)
  * returns nothing but throws an error if not all reports are referenced
  */
 export function checkIfAllUploadedReportsAreReferencedInDataModel(
   dataModel: ObjectType,
-  uploadedReports: string[]
+  uploadedReports: string[],
+  namesAndReferencesOfAllCompanyReports: ObjectType
 ): void {
-  const referencedReports = findAllValuesForKey(dataModel, 'fileName');
+  const referencedReportFileReferences = findAllValuesForKey(dataModel, 'fileReference');
   const unusedReports: string[] = [];
   for (const report of uploadedReports) {
-    if (!referencedReports.includes(report)) {
+    const fileReference = namesAndReferencesOfAllCompanyReports[report];
+    if (typeof fileReference !== 'string' || !referencedReportFileReferences.includes(fileReference)) {
       unusedReports.push(report);
     }
   }

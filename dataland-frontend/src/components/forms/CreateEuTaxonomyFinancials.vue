@@ -353,7 +353,8 @@ export default defineComponent({
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyFinancialsData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+            this.namesAndReferencesOfAllCompanyReportsForTheDataset as ObjectType
           );
 
           const referencedReports =

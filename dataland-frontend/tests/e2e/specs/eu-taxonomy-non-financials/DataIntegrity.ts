@@ -165,7 +165,9 @@ describeIf(
           .then(({ datasetFromPrefillRequest, reuploadedDatasetFromBackend }) => {
             compareObjectKeysAndValuesDeep(
               datasetFromPrefillRequest as Record<string, object>,
-              reuploadedDatasetFromBackend as Record<string, object>
+              reuploadedDatasetFromBackend as Record<string, object>,
+              undefined,
+              ['fileName']
             );
             cy.url().should('eq', getBaseUrl() + '/datasets');
             cy.get('[data-test="datasets-table"]').should('be.visible');

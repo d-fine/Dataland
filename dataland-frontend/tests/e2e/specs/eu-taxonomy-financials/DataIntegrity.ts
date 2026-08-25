@@ -142,7 +142,7 @@ describeIf(
               euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
               frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
               undefined,
-              ['publicationDate']
+              ['publicationDate', 'fileName']
             );
           });
       }

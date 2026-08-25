@@ -302,7 +302,8 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedNuclearAndGasData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
+            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesAndReferencesOfAllCompanyReportsForTheDataset as ObjectType
           );
         }
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();

@@ -76,7 +76,9 @@ function validateReuploadedDataset(token: string, dataId: string, initiallyUploa
       const reuploadedDatasetFromBackend = response.data.data;
       compareObjectKeysAndValuesDeep(
         initiallyUploadedData as Record<string, object>,
-        reuploadedDatasetFromBackend as Record<string, object>
+        reuploadedDatasetFromBackend as Record<string, object>,
+        undefined,
+        ['fileName']
       );
     });
 }
