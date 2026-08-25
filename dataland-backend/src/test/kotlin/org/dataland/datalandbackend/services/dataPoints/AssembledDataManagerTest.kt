@@ -90,7 +90,6 @@ class AssembledDataManagerTest {
     private val companyQueryManager = mock<CompanyQueryManager>()
     private val companyRoleChecker = mock<CompanyRoleChecker>()
     private val logMessageBuilder = mock<LogMessageBuilder>()
-    private val dataDeliveryServiceForDataPointManager = mock<DataDeliveryService>()
     private val specificationClient = mock<SpecificationControllerApi>()
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
@@ -107,13 +106,6 @@ class AssembledDataManagerTest {
         "../dataland-specification-service/src/main/resources/specifications/dataPointTypes/" +
             "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities.json"
 
-    private val dataPointManager =
-        DataPointManager(
-            dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
-                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
-                dataDeliveryServiceForDataPointManager,
-        )
-
     private lateinit var datasetAssembler: DatasetAssembler
     private lateinit var dataCompositionService: DataCompositionService
     private lateinit var dataDeliveryService: DataDeliveryService
@@ -121,8 +113,9 @@ class AssembledDataManagerTest {
     private lateinit var specificationService: SpecificationService
     private lateinit var internalStorageAdapter: InternalStorageAdapter
     private lateinit var dataPointCalculator: DataPointCalculator
+    private lateinit var dataPointManager: DataPointManager
+    private lateinit var spyDataPointManager: DataPointManager
 
-    private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
 
     private val correlationId = "test-correlation-id"
@@ -211,6 +204,13 @@ class AssembledDataManagerTest {
                 internalStorageAdapter, datasetAssembler, dataPointCalculator,
                 dataDeliveryServiceUtils,
             )
+        dataPointManager =
+            DataPointManager(
+                dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
+                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+                dataDeliveryService,
+            )
+        spyDataPointManager = spy(dataPointManager)
         assembledDataManager =
             AssembledDataManager(
                 dataManager, messageQueuePublications, dataPointValidator,
