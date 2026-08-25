@@ -233,7 +233,7 @@ describeIf(
               normalizedOriginallyUploadedLksgDataset as unknown as Record<string, object>,
               normalizedFrontendSubmittedLksgDataset as unknown as Record<string, object>,
               '',
-              ['publicationDate']
+              ['publicationDate', 'fileName']
             );
           });
       }

@@ -164,21 +164,29 @@ describeIf(
               '?templateDataId=' +
               uploadIds.dataId
           );
-          cy.wait('@fetchDataForPrefill', { timeout: mediumTimeoutInMs });
-          cy.get('h1').should('contain', companyName);
-          setQualityInSfdrUploadForm();
-          setReferenceToAllUploadedReports(
-            Object.keys(testSfdrCompany.t.general?.general?.referencedReports as ObjectType)
-          );
-          testYesNoExtendedDataPointFormField(
-            testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>
-          );
-          testRemovingOfHighImpactClimateSector();
-          submitButton.clickButton();
-          cy.get('div.p-message-success:not(.p-message-error)').should('not.contain', 'An unexpected error occurred.');
-          cy.url().should('eq', getBaseUrl() + '/datasets');
-          cy.get('[data-test="datasets-table"]').should('be.visible');
-          validateFormUploadedData(uploadIds.companyId);
+          cy.wait('@fetchDataForPrefill', { timeout: mediumTimeoutInMs }).then((interception) => {
+            // The backend re-keys the "referencedReports" map by the report's file name (or file
+            // reference, if no file name is available) instead of preserving the originally uploaded
+            // report name. Therefore, the report names to select in the form must be derived from the
+            // pre-fill response instead of from the originally uploaded fixture.
+            const prefillData = interception.response?.body as SfdrData;
+            const referencedReportNames = Object.keys(prefillData.general?.general?.referencedReports as ObjectType);
+            cy.get('h1').should('contain', companyName);
+            setQualityInSfdrUploadForm();
+            setReferenceToAllUploadedReports(referencedReportNames);
+            testYesNoExtendedDataPointFormField(
+              testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>
+            );
+            testRemovingOfHighImpactClimateSector();
+            submitButton.clickButton();
+            cy.get('div.p-message-success:not(.p-message-error)').should(
+              'not.contain',
+              'An unexpected error occurred.'
+            );
+            cy.url().should('eq', getBaseUrl() + '/datasets');
+            cy.get('[data-test="datasets-table"]').should('be.visible');
+            validateFormUploadedData(uploadIds.companyId);
+          });
         });
       });
     });
