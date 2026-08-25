@@ -90,6 +90,7 @@ class AssembledDataManagerTest {
     private val companyQueryManager = mock<CompanyQueryManager>()
     private val companyRoleChecker = mock<CompanyRoleChecker>()
     private val logMessageBuilder = mock<LogMessageBuilder>()
+    private val dataDeliveryServiceForDataPointManager = mock<DataDeliveryService>()
     private val specificationClient = mock<SpecificationControllerApi>()
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
@@ -108,8 +109,9 @@ class AssembledDataManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+            dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
+                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+                dataDeliveryServiceForDataPointManager,
         )
 
     private lateinit var datasetAssembler: DatasetAssembler
