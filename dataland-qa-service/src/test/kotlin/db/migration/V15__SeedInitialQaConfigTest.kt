@@ -1,6 +1,7 @@
 package db.migration
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaConfigEntity
 import org.flywaydb.core.api.migration.Context
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -61,6 +62,10 @@ class V15__SeedInitialQaConfigTest {
         migration.migrate(mockContext)
 
         verify(mockPreparedStatement).setObject(1, QaConfigEntity.QA_CONFIG_SINGLETON_ID)
+        verify(mockPreparedStatement).setString(
+            2,
+            JsonUtils.defaultObjectMapper.writeValueAsString(V15__SeedInitialQaConfig.initialConfig),
+        )
         verify(mockPreparedStatement).executeUpdate()
     }
 
