@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services.dataPoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataDeliveryService
@@ -25,10 +24,10 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.math.BigDecimal
 
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -98,7 +97,7 @@ class DataPointManagerTest {
     }
 
     @Test
-    fun `test that a datapoint is cast to the correct class on retrieval`() {
+    fun `test that a datapoint is returned without validation on retrieval`() {
         val dummyDataPoint = "{\"value\": \"0.5\", \"currency\": \"USD\"}"
         val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
         val dummyDataPointId = IdUtils.generateUUID()
@@ -132,18 +131,9 @@ class DataPointManagerTest {
             eq(dummyCorrelationId),
         )
 
-        doReturn(
-            ExtendedCurrencyDataPoint(
-                value = BigDecimal("0.5"),
-                currency = "USD",
-            ),
-        ).whenever(dataPointValidator).validateDataPoint(dummyDataPointType, dummyDataPoint, dummyCorrelationId)
-
         val result = dataPointManager.retrieveDataPoint(dummyDataPointId, dummyCorrelationId)
-        val expectation =
-            defaultObjectMapper.writeValueAsString(
-                defaultObjectMapper.readValue(dummyDataPoint, ExtendedCurrencyDataPoint::class.java),
-            )
-        Assertions.assertEquals(expectation, result.dataPoint)
+
+        Assertions.assertEquals(dummyDataPoint, result.dataPoint)
+        verify(dataPointValidator, never()).validateDataPoint(any(), any(), any())
     }
 }
