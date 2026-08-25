@@ -5,8 +5,8 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataDeliveryService
+import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -150,7 +150,5 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint {
-            return retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
-        }
+        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
     }

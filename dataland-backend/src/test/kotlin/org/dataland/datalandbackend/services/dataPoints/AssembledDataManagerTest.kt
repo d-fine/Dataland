@@ -110,8 +110,8 @@ class AssembledDataManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
-                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
-                dataDeliveryServiceForDataPointManager,
+            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+            dataDeliveryServiceForDataPointManager,
         )
 
     private lateinit var datasetAssembler: DatasetAssembler
