@@ -20,11 +20,24 @@ class DataDeliveryServiceUtils(
     private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val objectMapper = JsonUtils.defaultObjectMapper
 
+    /**
+     * Stored and calculated data points after their referenced document metadata has been added to their JSON content.
+     */
     data class EnhancedDataPoints(
         val allStoredDataPoints: Map<DataPointId, UploadedDataPoint>,
         val calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
     )
 
+    /**
+     * Enhances every referenced document in stored and calculated data points with its file name and publication date.
+     *
+     * All file references are collected before making one batch request to the document manager. The input maps remain
+     * unchanged; this method returns copies of their data points with enriched JSON content.
+     *
+     * @param allStoredDataPoints stored data points indexed by their IDs
+     * @param calculatedData calculated data points grouped by dataset dimensions
+     * @return stored and calculated data points with referenced document metadata added to their JSON content
+     */
     fun enhanceDataPoints(
         allStoredDataPoints: Map<DataPointId, UploadedDataPoint>,
         calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
@@ -43,6 +56,13 @@ class DataDeliveryServiceUtils(
         )
     }
 
+    /**
+     * Collects distinct file references from the data sources in both stored and calculated data points.
+     *
+     * @param allStoredDataPoints stored data points indexed by their IDs
+     * @param calculatedData calculated data points grouped by dataset dimensions
+     * @return distinct referenced document IDs
+     */
     private fun getRequiredReferencedIds(
         allStoredDataPoints: Map<DataPointId, UploadedDataPoint>,
         calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
@@ -60,6 +80,12 @@ class DataDeliveryServiceUtils(
             }.distinct()
     }
 
+    /**
+     * Retrieves metadata for the supplied document IDs from the document manager in a single batch request.
+     *
+     * @param referenceIds referenced document IDs to retrieve
+     * @return document metadata indexed by document ID
+     */
     private fun resolveReferenceIds(referenceIds: List<String>): Map<String, DocumentMetaInfoEntity> {
         if (referenceIds.isEmpty()) {
             return emptyMap()
@@ -68,6 +94,13 @@ class DataDeliveryServiceUtils(
         return documentControllerApi.getDocumentMetaInformationBatch(referenceIds)
     }
 
+    /**
+     * Returns a copy of [dataPoint] whose matching data sources contain the document name and publication date.
+     *
+     * @param dataPoint the data point to enrich
+     * @param documentMetaInfo document metadata indexed by document ID
+     * @return a copy of [dataPoint] with matching data sources enriched
+     */
     private fun enhanceDataPoint(
         dataPoint: UploadedDataPoint,
         documentMetaInfo: Map<String, DocumentMetaInfoEntity>,
@@ -79,6 +112,13 @@ class DataDeliveryServiceUtils(
         return dataPoint.copy(dataPoint = objectMapper.writeValueAsString(dataPointJson))
     }
 
+    /**
+     * Recursively traverses a JSON tree and enriches each `dataSource` object whose `fileReference` occurs in
+     * [documentMetaInfo].
+     *
+     * @param jsonNode the current JSON node to inspect and update in place
+     * @param documentMetaInfo document metadata indexed by document ID
+     */
     private fun enhanceDataSources(
         jsonNode: JsonNode,
         documentMetaInfo: Map<String, DocumentMetaInfoEntity>,
