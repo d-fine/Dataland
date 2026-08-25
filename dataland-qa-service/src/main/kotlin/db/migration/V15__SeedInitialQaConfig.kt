@@ -6,6 +6,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Qa
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import java.sql.Connection
+import java.sql.DatabaseMetaData
 
 /**
  * Creates the singleton qa_config table (plus its Hibernate Envers audit table) and seeds it with the initial
@@ -85,6 +87,21 @@ class V15__SeedInitialQaConfig : BaseJavaMigration() {
         val connection = context.connection
         val metaData = connection.metaData
 
+        createRevInfoTableIfMissing(connection, metaData)
+        createQaConfigTableIfMissing(connection, metaData)
+        createQaConfigAudTableIfMissing(connection, metaData)
+
+        if (hasExistingQaConfigRow(connection)) {
+            return
+        }
+
+        insertInitialQaConfig(connection)
+    }
+
+    private fun createRevInfoTableIfMissing(
+        connection: Connection,
+        metaData: DatabaseMetaData,
+    ) {
         if (!metaData.getTables(null, null, REVINFO_TABLE, null).next()) {
             connection.createStatement().execute(
                 """
@@ -95,7 +112,12 @@ class V15__SeedInitialQaConfig : BaseJavaMigration() {
                 """.trimIndent(),
             )
         }
+    }
 
+    private fun createQaConfigTableIfMissing(
+        connection: Connection,
+        metaData: DatabaseMetaData,
+    ) {
         if (!metaData.getTables(null, null, QA_CONFIG_TABLE, null).next()) {
             connection.createStatement().execute(
                 """
@@ -106,7 +128,12 @@ class V15__SeedInitialQaConfig : BaseJavaMigration() {
                 """.trimIndent(),
             )
         }
+    }
 
+    private fun createQaConfigAudTableIfMissing(
+        connection: Connection,
+        metaData: DatabaseMetaData,
+    ) {
         if (!metaData.getTables(null, null, QA_CONFIG_AUD_TABLE, null).next()) {
             connection.createStatement().execute(
                 """
@@ -121,19 +148,18 @@ class V15__SeedInitialQaConfig : BaseJavaMigration() {
                 """.trimIndent(),
             )
         }
+    }
 
-        val hasRow =
-            connection
-                .createStatement()
-                .executeQuery("SELECT COUNT(*) FROM $QA_CONFIG_TABLE")
-                .let {
-                    it.next()
-                    it.getInt(1) > 0
-                }
-        if (hasRow) {
-            return
-        }
+    private fun hasExistingQaConfigRow(connection: Connection): Boolean =
+        connection
+            .createStatement()
+            .executeQuery("SELECT COUNT(*) FROM $QA_CONFIG_TABLE")
+            .let {
+                it.next()
+                it.getInt(1) > 0
+            }
 
+    private fun insertInitialQaConfig(connection: Connection) {
         val configJson = JsonUtils.defaultObjectMapper.writeValueAsString(initialConfig)
         val statement =
             connection.prepareStatement(

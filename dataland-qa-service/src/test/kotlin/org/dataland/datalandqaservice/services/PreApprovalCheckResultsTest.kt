@@ -27,6 +27,8 @@ import org.mockito.kotlin.whenever
 import java.math.BigDecimal
 import java.util.UUID
 
+private const val DUMMY_SUBMIT_USER_ID = "dummy-submit-user-id"
+
 /**
  * Tests that [PreApprovalService.preApproveDataPoints] populates the diagnostic [PreApprovalCheckResults]
  * fields correctly for every pre-approval rule (report consensus, exempt fields, sampling, and significance
@@ -83,7 +85,7 @@ class PreApprovalCheckResultsTest {
     @Test
     fun `pre-approval check results stores whether all QA reports are accepted`() {
         val service = buildServiceWithoutLiveDataset(autoPreApprovalEnabled = true)
-        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), DUMMY_SUBMIT_USER_ID)
 
         // Scenario 1: two QA-reports, one rejected, one accepted -> should lead to false
         var reports =
@@ -124,7 +126,7 @@ class PreApprovalCheckResultsTest {
                 autoPreApprovalEnabled = true,
                 exemptFields = mapOf(DataTypeEnum.sfdr to setOf(exemptField)),
             )
-        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), DUMMY_SUBMIT_USER_ID)
 
         // Scenario 1: data point type is on the exempt field list
         var checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList(), dataPointType = exemptField))
@@ -140,12 +142,12 @@ class PreApprovalCheckResultsTest {
         val service = buildServiceWithoutLiveDataset(autoPreApprovalEnabled = true)
 
         // Scenario 1: 100% probability of being sampled and therefore not preapproved
-        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 1.0), "dummy-submit-user-id")
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 1.0), DUMMY_SUBMIT_USER_ID)
         var checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList()))
         assertEquals(false, checkResults.passesRandomSampling)
 
         // Scenario 2: 0% probability of being sampled and therefore preapproved
-        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), "dummy-submit-user-id")
+        service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.0), DUMMY_SUBMIT_USER_ID)
         checkResults = requireNotNull(runWorkflowAndReturnCheckResults(service, emptyList()))
         assertEquals(true, checkResults.passesRandomSampling)
     }
