@@ -128,6 +128,17 @@ class DataDeliveryService
             getEnhancedStoredDataPoints(dataPointIds, calculatedData, correlationId)
                 .allStoredDataPoints
 
+        /**
+         * Enriches an already-retrieved map of data points with referenced document metadata. Used for data points
+         * obtained from sources other than internal storage (e.g. the temporary in-memory cache), which therefore did
+         * not go through [assembleDatasetsFromDataPointIds].
+         *
+         * @param dataPoints the data points to enrich, indexed by ID
+         * @return the same data points with referenced document metadata added to their JSON content
+         */
+        fun enhanceDataPoints(dataPoints: Map<DataPointId, UploadedDataPoint>): Map<DataPointId, UploadedDataPoint> =
+            dataDeliveryServiceUtils.enhanceDataPoints(dataPoints, emptyMap()).allStoredDataPoints
+
         private fun getEnhancedStoredDataPoints(
             dataPointIds: Collection<DataPointId>,
             calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,

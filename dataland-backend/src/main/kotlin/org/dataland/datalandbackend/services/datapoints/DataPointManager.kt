@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -133,11 +134,37 @@ class DataPointManager
             correlationId: String,
         ): Map<String, UploadedDataPoint> {
             logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
-            return dataDeliveryService.assembleDatasetsFromDataPointIds(
-                dataPointIds = dataPointIds,
-                calculatedData = emptyMap<BasicDatasetDimensions, List<UploadedDataPoint>>(),
-                correlationId = correlationId,
-            )
+
+            val cachedDataPoints = mutableMapOf<String, UploadedDataPoint>()
+            val remainingDataPointIds = mutableListOf<String>()
+            for (dataPointId in dataPointIds) {
+                val cachedDataPoint = dataManager.getDataFromCache(dataPointId)
+                if (cachedDataPoint != null) {
+                    cachedDataPoints[dataPointId] = objectMapper.readValue(cachedDataPoint)
+                } else {
+                    remainingDataPointIds.add(dataPointId)
+                }
+            }
+
+            val storedDataPoints =
+                if (remainingDataPointIds.isNotEmpty()) {
+                    dataDeliveryService.assembleDatasetsFromDataPointIds(
+                        dataPointIds = remainingDataPointIds,
+                        calculatedData = emptyMap<BasicDatasetDimensions, List<UploadedDataPoint>>(),
+                        correlationId = correlationId,
+                    )
+                } else {
+                    emptyMap()
+                }
+
+            val enrichedCachedDataPoints =
+                if (cachedDataPoints.isNotEmpty()) {
+                    dataDeliveryService.enhanceDataPoints(cachedDataPoints)
+                } else {
+                    emptyMap()
+                }
+
+            return storedDataPoints + enrichedCachedDataPoints
         }
 
         /**

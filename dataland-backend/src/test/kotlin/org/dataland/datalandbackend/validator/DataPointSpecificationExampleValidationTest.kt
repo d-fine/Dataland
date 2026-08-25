@@ -294,6 +294,7 @@ class DataPointSpecificationExampleValidationTest
                     }
                     objectNode
                 }
+
                 schema.isArray -> {
                     val array = objectMapper.createArrayNode()
                     val schemaElement = schema.firstOrNull()
@@ -304,9 +305,13 @@ class DataPointSpecificationExampleValidationTest
                     }
                     array
                 }
+
                 schema.isTextual -> {
                     example
                 }
-                else -> objectMapper.nullNode()
+
+                else -> {
+                    objectMapper.nullNode()
+                }
             }
     }
