@@ -29,6 +29,82 @@ export interface DataPointSourceInfo {
   [key: string]: unknown;
 }
 
+/**
+ * Creates an upload-safe copy by removing fields inferred from document-manager metadata.
+ *
+ * @param data the dataset model to prepare for upload
+ * @returns a copy of the dataset without inferred fields on document references
+ */
+export function removeInferableDocumentFields<T>(data: T): T {
+  const uploadData = JSON.parse(JSON.stringify(data)) as unknown;
+  removeInferableDocumentFieldsFromValue(uploadData);
+  return uploadData as T;
+}
+
+function removeInferableDocumentFieldsFromValue(value: unknown): void {
+  if (Array.isArray(value)) {
+    value.forEach(removeInferableDocumentFieldsFromValue);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+
+  const objectValue = value as Record<string, unknown>;
+  if (typeof objectValue.fileReference === 'string') {
+    delete objectValue.fileName;
+    delete objectValue.publicationDate;
+  }
+  Object.values(objectValue).forEach(removeInferableDocumentFieldsFromValue);
+}
+
+/**
+ * Backfills the inferable document fields (fileName, publicationDate) on every document reference contained in
+ * the given dataset, based on the provided fileReference -> report lookup. The backend no longer persists these
+ * fields on individual data points, as they are considered "inferable" from the referenced document itself.
+ * Without backfilling them for display purposes, upload-form fields would repeatedly try (and fail) to resolve
+ * the currently referenced report on every mount, which can cause excessive/recursive re-renders when a dataset
+ * has many populated data points.
+ *
+ * @param data the dataset model as loaded from the backend
+ * @param fileReferenceToReport a map from fileReference to the corresponding report name and publication date
+ * @returns a copy of the dataset with fileName/publicationDate restored on document references where possible
+ */
+export function restoreInferableDocumentFields<T>(
+  data: T,
+  fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
+): T {
+  const restoredData = JSON.parse(JSON.stringify(data)) as unknown;
+  restoreInferableDocumentFieldsFromValue(restoredData, fileReferenceToReport);
+  return restoredData as T;
+}
+
+function restoreInferableDocumentFieldsFromValue(
+  value: unknown,
+  fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
+): void {
+  if (Array.isArray(value)) {
+    value.forEach((entry) => restoreInferableDocumentFieldsFromValue(entry, fileReferenceToReport));
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+
+  const objectValue = value as Record<string, unknown>;
+  if (typeof objectValue.fileReference === 'string') {
+    const report = fileReferenceToReport.get(objectValue.fileReference);
+    if (report) {
+      if (!objectValue.fileName) {
+        objectValue.fileName = report.fileName;
+      }
+      if (!objectValue.publicationDate && report.publicationDate) {
+        objectValue.publicationDate = report.publicationDate;
+      }
+    }
+  }
+  Object.values(objectValue).forEach((nestedValue) =>
+    restoreInferableDocumentFieldsFromValue(nestedValue, fileReferenceToReport)
+  );
+}
+
+
 export interface ParsedSingleDataPoint {
   value?: unknown;
   quality?: unknown;

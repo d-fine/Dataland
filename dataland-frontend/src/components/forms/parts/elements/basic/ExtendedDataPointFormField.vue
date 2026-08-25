@@ -129,7 +129,12 @@ import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
+import {
+  getAvailableFileNames,
+  getFileNameByFileReference,
+  getFileReferenceByFileName,
+  PAGE_NUMBER_DESCRIPTION,
+} from '@/utils/FileUploadUtils';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
@@ -172,6 +177,15 @@ export default defineComponent({
     };
   },
   mounted() {
+    if (!this.currentReportValue) {
+      const existingFileReference = this.dataPoint?.dataSource?.fileReference;
+      if (existingFileReference) {
+        this.currentReportValue = getFileNameByFileReference(
+          existingFileReference,
+          this.injectReportsNameAndReferences as ObjectType
+        );
+      }
+    }
     void nextTick(() => (this.isMounted = true));
   },
   computed: {

@@ -1,7 +1,7 @@
 <template>
   <!-- Level of assurance -->
 
-  <FormKit name="assurance" type="group">
+  <FormKit name="assurance" type="group" v-model="assuranceDataPoint">
     <!-- Level of assurance -->
     <div class="form-field" data-test="assurance-form-field">
       <div class="lg:col-4 md:col-6 col-12 p-0 formkit-outer normal-line-height">
@@ -91,7 +91,7 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
+import { getAvailableFileNames, getFileNameByFileReference, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
@@ -123,9 +123,18 @@ export default defineComponent({
       pageForFileReference: undefined as string | undefined,
       noReportLabel: noReportLabel,
       isValidFileName: isValidFileName,
+      assuranceDataPoint: {} as { dataSource?: { fileReference?: string | null } | null },
     };
   },
   mounted() {
+    if (!this.currentReportValue) {
+      const existingFileReference = this.assuranceDataPoint?.dataSource?.fileReference;
+      if (existingFileReference) {
+        this.currentReportValue =
+          getFileNameByFileReference(existingFileReference, this.injectReportsNameAndReferences as ObjectType) ??
+          null;
+      }
+    }
     void nextTick(() => (this.isMounted = true));
   },
   computed: {

@@ -109,14 +109,46 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
 
   /**
    * Compares uploaded and retrieved data while allowing backend-managed publication date differences.
+   * The "referencedReports" maps are compared separately because the backend re-keys those maps by the
+   * report's file name (or file reference, if no file name is available) instead of preserving the
+   * originally uploaded report name (e.g. "SustainabilityReport").
    */
   protected compareUploadedData(initiallyUploadedData: TFrameworkData, datasetFromBackend: TFrameworkData): void {
     compareObjectKeysAndValuesDeep(
       initiallyUploadedData as Record<string, object>,
       datasetFromBackend as Record<string, object>,
       undefined,
-      ['publicationDate']
+      ['publicationDate', 'referencedReports']
     );
+    expect(BaseDataIntegrityTest.collectReferencedReportFileReferences(initiallyUploadedData)).to.deep.equal(
+      BaseDataIntegrityTest.collectReferencedReportFileReferences(datasetFromBackend)
+    );
+  }
+
+  /**
+   * Recursively collects the file references of all "referencedReports" maps contained in the given dataset.
+   * @param data the dataset to search for referenced reports
+   * @returns a sorted list of all found file references
+   */
+  private static collectReferencedReportFileReferences(data: object): string[] {
+    const fileReferences: string[] = [];
+    const visit = (node: unknown): void => {
+      if (!node || typeof node !== 'object') {
+        return;
+      }
+      const nodeAsRecord = node as Record<string, unknown>;
+      const referencedReports = nodeAsRecord.referencedReports as Record<string, { fileReference: string }> | null;
+      if (referencedReports && typeof referencedReports === 'object') {
+        for (const report of Object.values(referencedReports)) {
+          fileReferences.push(report.fileReference);
+        }
+      }
+      for (const value of Object.values(nodeAsRecord)) {
+        visit(value);
+      }
+    };
+    visit(data);
+    return fileReferences.sort();
   }
 
   /**
