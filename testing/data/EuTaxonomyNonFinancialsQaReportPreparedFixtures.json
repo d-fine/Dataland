@@ -2,38 +2,32 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "West Erika",
-			"headquartersPostalCode": "19266-6117",
-			"sector": "convergence",
+			"headquarters": "La Habra",
+			"headquartersPostalCode": "16983-8401",
+			"sector": "content",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"xzWVziJdopbL"
+					"l6sw1npxfoWU"
 				],
 				"PermId": [
-					"bP7LHz5drE"
+					"QrOx0dSE6i"
 				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"DZD6tWtyq"
+				"Duns": [
+					"qd3qKbVKP"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"VoVHjztNKzogd4B"
+				]
 			},
-			"countryCode": "SE",
-			"companyContactDetails": [
-				"Benny_Hodkiewicz25@example.com",
-				"Roy.Wilderman-Wolf@example.com",
-				"Chester_Medhurst88@example.com",
-				"Kenton.Wintheiser48@example.com"
-			],
-			"companyAlternativeNames": [
-				"Graham, White and Buckridge",
-				"Little - Schuster"
-			],
+			"countryCode": "TJ",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [],
 			"companyLegalForm": "AG",
-			"website": "https://ashamed-hydrocarbon.com/",
-			"fiscalYearEnd": "04-Jun",
+			"website": null,
+			"fiscalYearEnd": "12-May",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -110,6 +104,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]

@@ -10,9 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 /**
  * Utilities for handling referenced reports in a specification schema.
@@ -30,7 +28,6 @@ class ReferencedReportsUtilities {
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
 
-    private val logger = LoggerFactory.getLogger(javaClass)
     private val objectMapper = JsonUtils.defaultObjectMapper
 
     /**
@@ -45,10 +42,12 @@ class ReferencedReportsUtilities {
 
     /**
      * Validates the consistency of the referenced reports field.
-     * This includes checking for duplicate file references.
+     * This includes checking for duplicate file references and ensuring that inferable
+     * fields (file name, publication date) are not set.
      */
     fun validateReferencedReportConsistency(referencedReports: Map<String, CompanyReport>) {
         val observedFileReferences = mutableSetOf<String>()
+        val violations = mutableListOf<String>()
         for ((nameAccordingToKey, companyReport) in referencedReports.entries) {
             if (companyReport.fileReference in observedFileReferences) {
                 throw InvalidInputApiException(
@@ -56,13 +55,26 @@ class ReferencedReportsUtilities {
                     "The file reference ${companyReport.fileReference} is used multiple times.",
                 )
             }
-            if (companyReport.fileName != null && companyReport.fileName != nameAccordingToKey) {
-                throw InvalidInputApiException(
-                    "Inconsistent reference reports field.",
-                    "The file name ${companyReport.fileName} does not match the dictionary key $nameAccordingToKey.",
+            if (companyReport.fileName != null) {
+                violations.add(
+                    "The referenced report '$nameAccordingToKey' must not set the field '$FILE_NAME_FIELD' " +
+                        "(found '${companyReport.fileName}').",
+                )
+            }
+            if (companyReport.publicationDate != null) {
+                violations.add(
+                    "The referenced report '$nameAccordingToKey' must not set the field '$PUBLICATION_DATE_FIELD' " +
+                        "(found '${companyReport.publicationDate}').",
                 )
             }
             observedFileReferences.add(companyReport.fileReference)
+        }
+        if (violations.isNotEmpty()) {
+            throw InvalidInputApiException(
+                "Referenced reports contain inferable fields.",
+                "The referenced reports field contains fields that are not allowed to be set: " +
+                    violations.joinToString(" "),
+            )
         }
     }
 
@@ -73,26 +85,10 @@ class ReferencedReportsUtilities {
         report: CompanyReport,
         referencedReports: Map<String, CompanyReport>,
     ) {
-        val matchingReport =
-            referencedReports.values.firstOrNull { it.fileReference == report.fileReference } ?: throw InvalidInputApiException(
-                "Data point report not listed in referenced reports",
-                "The report '${report.fileReference}' is not contained in the referenced reports field.",
-            )
-
-        if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
-            logger.warn(
-                "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
-                    "and inconsistent with the publication date listed in the referenced reports '${matchingReport.publicationDate}'. " +
-                    "The publication date of the report will be overwritten to '${matchingReport.publicationDate}'.",
-            )
-        }
-        if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
-            throw InvalidInputApiException(
-                "Inconsistent file name",
-                "The file name of the report '${report.fileName}' is not consistent " +
-                    "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
-            )
-        }
+        referencedReports.values.firstOrNull { it.fileReference == report.fileReference } ?: throw InvalidInputApiException(
+            "Data point report not listed in referenced reports",
+            "The report '${report.fileReference}' is not contained in the referenced reports field.",
+        )
     }
 
     /**
@@ -114,7 +110,7 @@ class ReferencedReportsUtilities {
             contentNode
                 .fieldNames()
                 .asSequence()
-                .map { fieldName -> fieldName to contentNode.get(fieldName) }
+                .map { fieldName -> fieldName to contentNode[fieldName] }
                 .forEach { (_, value) ->
                     getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
                 }
@@ -127,7 +123,7 @@ class ReferencedReportsUtilities {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPoint).get(DATA_SOURCE_FIELD)
+        val dataSource = objectMapper.readTree(dataPoint)[DATA_SOURCE_FIELD]
 
         if (dataSource == null || dataSource.isNull) {
             return null
@@ -163,42 +159,55 @@ class ReferencedReportsUtilities {
         return currentNode
     }
 
-    private fun nodeMayRequireUpdate(jsonNode: JsonNode): Boolean =
+    private fun isDataSourceNode(jsonNode: JsonNode): Boolean =
         jsonNode.isObject &&
             (jsonNode.has(FILE_REFERENCE_FIELD) || jsonNode.has(FILE_NAME_FIELD))
 
     /**
-     * Updates the publication date in a JSON node.
-     * @param jsonNode The JSON node to update
-     * @param fileReferenceToPublicationDate The mapping of file references to publication dates
-     * @param currentNodeName The name of the current JSON node
+     * Recursively validates that no data source node within a JSON node tree sets the
+     * file name or publication date fields, as these fields must be inferred rather than
+     * set explicitly on upload.
+     *
+     * @param jsonNode The JSON node to process
+     * @param currentNodeName The name of the current JSON node, used to identify data source nodes
+     * @param currentPath The JSON path to the current node, used for error messages
+     * @param violations The list that collects all violation messages found in the tree
+     * @return the list of violation messages found in the tree
      */
-    fun updateJsonNodeWithDataFromReferencedReports(
+    fun validateDataSourcesDoNotContainInferableFields(
         jsonNode: JsonNode,
-        fileReferenceToPublicationDate: Map<String, LocalDate>,
-        fileReferenceToFileName: Map<String, String>,
         currentNodeName: String,
-    ) {
-        if (currentNodeName == DATA_SOURCE_FIELD && nodeMayRequireUpdate(jsonNode)) {
-            val fileReference = jsonNode.get(FILE_REFERENCE_FIELD).asText()
-            if (fileReferenceToPublicationDate.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put(PUBLICATION_DATE_FIELD, fileReferenceToPublicationDate[fileReference].toString())
+        currentPath: String = currentNodeName,
+        violations: MutableList<String> = mutableListOf(),
+    ): List<String> {
+        if (currentNodeName == DATA_SOURCE_FIELD && isDataSourceNode(jsonNode)) {
+            if (jsonNode.hasNonNull(FILE_NAME_FIELD)) {
+                violations.add(
+                    "The data source at '$currentPath' must not set the field '$FILE_NAME_FIELD' " +
+                        "(found '${jsonNode.get(FILE_NAME_FIELD).asText()}').",
+                )
             }
-            if (fileReferenceToFileName.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put(FILE_NAME_FIELD, fileReferenceToFileName[fileReference])
+            if (jsonNode.hasNonNull(PUBLICATION_DATE_FIELD)) {
+                violations.add(
+                    "The data source at '$currentPath' must not set the field '$PUBLICATION_DATE_FIELD' " +
+                        "(found '${jsonNode.get(PUBLICATION_DATE_FIELD).asText()}').",
+                )
             }
-        } else {
+        } else if (jsonNode.isObject) {
             jsonNode
                 .fieldNames()
                 .asSequence()
                 .map { fieldName -> fieldName to jsonNode.get(fieldName) }
-                .forEach { (key, value) ->
-                    updateJsonNodeWithDataFromReferencedReports(
-                        value, fileReferenceToPublicationDate,
-                        fileReferenceToFileName, key,
+                .forEach { (fieldName, value) ->
+                    validateDataSourcesDoNotContainInferableFields(
+                        value,
+                        currentNodeName = fieldName,
+                        currentPath = "$currentPath.$fieldName",
+                        violations = violations,
                     )
                 }
         }
+        return violations
     }
 
     /**

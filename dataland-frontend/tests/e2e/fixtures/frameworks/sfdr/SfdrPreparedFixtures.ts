@@ -225,7 +225,7 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
 function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
   input.t.general!.general!.referencedReports = {
-    notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
+    notReferencedFile: { fileReference: 'invalidFileReference', fileName: null },
   };
   return input;
 }

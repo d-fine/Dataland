@@ -79,7 +79,6 @@
             </div>
 
             <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
-              <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               <FormKit
                 type="hidden"

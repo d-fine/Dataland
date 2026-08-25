@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataDeliveryServiceUtils
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointId
 import org.dataland.datalandbackendutils.model.DatasetType
@@ -22,6 +23,7 @@ class DataDeliveryService
         private val internalStorageAdapter: InternalStorageAdapter,
         private val datasetAssembler: DatasetAssembler,
         private val dataPointCalculator: DataPointCalculator,
+        private val dataDeliveryServiceUtils: DataDeliveryServiceUtils,
     ) {
         /**
          * Delivers the datasets for the data dimensions provided in [dataDimensions] and returns a map of data dimension to
@@ -82,25 +84,73 @@ class DataDeliveryService
          * @param correlationId the correlation ID for the operation
          * @return a map of data dimensions to the dataset in the form of a JSON string
          */
-        private fun assembleDatasetsFromDataPointIds(
+        fun assembleDatasetsFromDataPointIds(
             dataPointIds: Map<BasicDatasetDimensions, List<DataPointId>>,
             calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
             correlationId: String,
         ): Map<BasicDatasetDimensions, String> {
-            val allRequiredIds = dataPointIds.values.flatten().distinct()
-            val allStoredDataPoints =
-                internalStorageAdapter
-                    .getDataPoints(dataPointIds = allRequiredIds, correlationId = correlationId)
+            val enhancedDataPoints =
+                getEnhancedStoredDataPoints(
+                    dataPointIds = dataPointIds.values.flatten(),
+                    calculatedData = calculatedData,
+                    correlationId = correlationId,
+                )
 
-            return (dataPointIds.keys + calculatedData.keys)
+            return (dataPointIds.keys + enhancedDataPoints.calculatedData.keys)
                 .associateWith { dataDimensions ->
                     val dataIds = dataPointIds.getOrDefault(dataDimensions, emptyList())
-                    dataIds.mapNotNull { allStoredDataPoints[it] } + calculatedData.getOrDefault(dataDimensions, emptyList())
+                    dataIds.mapNotNull { enhancedDataPoints.allStoredDataPoints[it] } +
+                        enhancedDataPoints.calculatedData.getOrDefault(
+                            dataDimensions,
+                            emptyList(),
+                        )
                 }.filterValues { datasetInputs ->
                     datasetInputs.isNotEmpty()
                 }.mapValues { (dataDimensions, datasetInput) ->
                     datasetAssembler.assembleSingleDataset(datasetInput, dataDimensions.framework)
                 }
+        }
+
+        /**
+         * Retrieves data points by ID and enriches their referenced documents. No calculated data points are added unless
+         * supplied through [calculatedData].
+         *
+         * @param dataPointIds IDs of the stored data points to retrieve
+         * @param calculatedData calculated data points used to resolve referenced document metadata
+         * @param correlationId the correlation ID for the operation
+         * @return stored data points indexed by ID with referenced document metadata added to their JSON content
+         */
+        fun assembleDatasetsFromDataPointIds(
+            dataPointIds: Collection<DataPointId>,
+            calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
+            correlationId: String,
+        ): Map<DataPointId, UploadedDataPoint> =
+            getEnhancedStoredDataPoints(dataPointIds, calculatedData, correlationId)
+                .allStoredDataPoints
+
+        /**
+         * Enriches an already-retrieved map of data points with referenced document metadata. Used for data points
+         * obtained from sources other than internal storage (e.g. the temporary in-memory cache), which therefore did
+         * not go through [assembleDatasetsFromDataPointIds].
+         *
+         * @param dataPoints the data points to enrich, indexed by ID
+         * @return the same data points with referenced document metadata added to their JSON content
+         */
+        fun enhanceDataPoints(dataPoints: Map<DataPointId, UploadedDataPoint>): Map<DataPointId, UploadedDataPoint> =
+            dataDeliveryServiceUtils.enhanceDataPoints(dataPoints, emptyMap()).allStoredDataPoints
+
+        private fun getEnhancedStoredDataPoints(
+            dataPointIds: Collection<DataPointId>,
+            calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
+            correlationId: String,
+        ): DataDeliveryServiceUtils.EnhancedDataPoints {
+            val allStoredDataPoints =
+                internalStorageAdapter.getDataPoints(
+                    dataPointIds = dataPointIds.distinct(),
+                    correlationId = correlationId,
+                )
+
+            return dataDeliveryServiceUtils.enhanceDataPoints(allStoredDataPoints, calculatedData)
         }
 
         /**
