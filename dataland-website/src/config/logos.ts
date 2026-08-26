@@ -37,6 +37,7 @@ const LOGO_METADATA_BY_FILENAME: Record<string, LogoMetadata> = {
   'logo_meag_big.svg': { name: 'MEAG', category: 'member' },
   'logo_nordlb.svg': { name: 'NORD/LB', category: 'member' },
   'logo_ovb.png': { name: 'OVB', scale: 1.04, category: 'member' },
+  'logo_signal_iduna.svg': { name: 'Signal Iduna', scale: 1.15, category: 'member' },
   'logo_sustaind.svg': { name: 'Sustaind', scale: 1.4, category: 'partner', url: 'https://www.sustaind.de/' },
   'logo_tsystems.svg': { name: 'T-Systems', category: 'partner', url: 'https://www.t-systems.com/' },
   'logo_vgh.svg': { name: 'VGH', scale: 1.04, category: 'member' },
