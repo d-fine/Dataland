@@ -6,7 +6,7 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :validation-messages="validationMessages"
-      :options="HumanizedYesNo"
+      :options="YesNoFormOptions"
       @update-checkbox-value="(newValue) => $emit('updateYesNoValue', newValue)"
     />
   </div>
@@ -17,13 +17,13 @@ import { defineComponent } from 'vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
 import CheckboxesListFormElement from '@/components/forms/parts/elements/basic/CheckboxesListFormElement.vue';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import { HumanizedYesNo } from '@/utils/YesNoNa';
+import { YesNoFormOptions } from '@/utils/YesNoNa';
 
 export default defineComponent({
   name: 'YesNoFormField',
   computed: {
-    HumanizedYesNo() {
-      return HumanizedYesNo;
+    YesNoFormOptions() {
+      return YesNoFormOptions;
     },
   },
   components: { CheckboxesListFormElement, UploadFormHeader },

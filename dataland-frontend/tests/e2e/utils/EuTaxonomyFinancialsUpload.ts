@@ -1,12 +1,6 @@
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import {
-  type DataAndMetaInformationEutaxonomyFinancialsData,
-  DataTypeEnum,
-  type EutaxonomyFinancialsData,
-} from '@clients/backend';
+import { DataTypeEnum, type EutaxonomyFinancialsData } from '@clients/backend';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './GeneralUtils';
 
 /**
  * Extracts the first eutaxonomy-financials dataset from the fake fixtures
@@ -19,26 +13,6 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.C
     const companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
     return companiesWithEuTaxonomyFinancialsData[0];
   });
-}
-
-/**
- * Visits the edit page for the eu taxonomy dataset for financial companies via navigation.
- * @param companyId the id of the company for which to edit a dataset
- * @param expectIncludedFile specifies if the test file is expected to be in the server response
- */
-export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
-  goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
-    (interception) => {
-      const responseBody:
-        DataAndMetaInformationEutaxonomyFinancialsData[] | DataAndMetaInformationEutaxonomyFinancialsData =
-        assertDefined(interception).response?.body;
-      const firstEntry = Array.isArray(responseBody) ? responseBody[0] : responseBody;
-      const referencedReports = firstEntry?.data?.general?.general?.referencedReports;
-      assert(referencedReports);
-      expect(TEST_PDF_FILE_NAME in referencedReports!).to.equal(expectIncludedFile);
-      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports!).to.equal(true);
-    }
-  );
 }
 
 /**
