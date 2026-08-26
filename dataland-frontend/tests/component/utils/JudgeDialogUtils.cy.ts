@@ -1,11 +1,40 @@
 import {
   DEFAULT_CUSTOM_JSON,
+  hasValueContent,
   parseFormDataToDataPointJson,
   parseDataPointJsonToFormData,
   transformDataPointDetailToFormData,
 } from '@/utils/JudgeDialogUtils';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { type ParsedSingleDataPoint, unwrapDataPointJson, wrapDataPointJson } from '@/utils/DataPoint.ts';
+
+describe('hasValueContent', () => {
+  it('returns false for null, undefined, and empty/whitespace-only strings', () => {
+    expect(hasValueContent(null)).to.equal(false);
+    expect(hasValueContent(undefined)).to.equal(false);
+    expect(hasValueContent('')).to.equal(false);
+    expect(hasValueContent('   ')).to.equal(false);
+  });
+
+  it('returns true for non-empty strings', () => {
+    expect(hasValueContent('123.45')).to.equal(true);
+    expect(hasValueContent('  some value  ')).to.equal(true);
+  });
+
+  it('returns true for numbers and booleans, including falsy ones like 0 and false', () => {
+    expect(hasValueContent(0)).to.equal(true);
+    expect(hasValueContent(123)).to.equal(true);
+    expect(hasValueContent(false)).to.equal(true);
+    expect(hasValueContent(true)).to.equal(true);
+  });
+
+  it('returns true for objects and arrays, including empty ones', () => {
+    expect(hasValueContent({ activityName: 'Afforestation' })).to.equal(true);
+    expect(hasValueContent([{ activityName: 'Afforestation' }])).to.equal(true);
+    expect(hasValueContent({})).to.equal(true);
+    expect(hasValueContent([])).to.equal(true);
+  });
+});
 
 describe('parseFormDataToDataPointJson', () => {
   const emptyForm: CustomFormData = {
@@ -182,6 +211,51 @@ describe('transformDataPointDetailToFormData', () => {
       pages: '',
       comment: '',
     });
+  });
+
+  it('preserves an object/array value as an actual object instead of collapsing it to a display string', () => {
+    const activities = [
+      { activityName: 'Afforestation', naceCodes: ['A2.10'], share: { relativeShareInPercent: 42 } },
+      { activityName: 'Manufacture of low carbon technologies', naceCodes: ['C28'], share: null },
+    ];
+
+    const detail: ParsedSingleDataPoint = {
+      value: activities,
+      quality: 'Reported',
+      comment: 'Copied from original.',
+      dataSource: { fileName: 'ActivitiesReport.pdf', page: '4' },
+    };
+
+    const form = transformDataPointDetailToFormData(detail);
+
+    expect(form.value).to.deep.equal(activities);
+    expect(form.value).to.not.be.a('string');
+  });
+});
+
+describe('object/array value round-trip through transformDataPointDetailToFormData -> parseFormDataToDataPointJson', () => {
+  it('does not double-encode an object/array value when converting a data point detail into the submit payload', () => {
+    const activities = [
+      { activityName: 'Afforestation', naceCodes: ['A2.10'], share: { relativeShareInPercent: 42 } },
+      { activityName: 'Manufacture of low carbon technologies', naceCodes: ['C28'], share: null },
+    ];
+
+    const detail: ParsedSingleDataPoint = {
+      value: activities,
+      quality: 'Reported',
+      comment: 'Copied from original.',
+      dataSource: { fileName: 'ActivitiesReport.pdf', page: '4' },
+    };
+
+    const form = transformDataPointDetailToFormData(detail);
+    const json = parseFormDataToDataPointJson(form, null);
+    const parsed = JSON.parse(json) as ParsedSingleDataPoint;
+
+    expect(parsed.value).to.deep.equal(activities);
+    expect(parsed.value).to.not.be.a('string');
+    expect(parsed.quality).to.equal('Reported');
+    expect(parsed.comment).to.equal('Copied from original.');
+    expect(parsed.dataSource).to.deep.equal({ page: '4' });
   });
 });
 

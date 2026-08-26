@@ -55,7 +55,7 @@
                 <Textarea
                   ref="customValueTextarea"
                   id="custom-value-field"
-                  v-model="formData.value"
+                  v-model="customValueText"
                   rows="1"
                   autoResize
                   size="small"
@@ -210,9 +210,11 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import {
   DEFAULT_CUSTOM_FORM_DATA,
   DEFAULT_CUSTOM_JSON,
+  hasValueContent,
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
 } from '@/utils/JudgeDialogUtils.ts';
@@ -252,9 +254,22 @@ const selectedDocumentOption = computed<DocumentOption | null>(
   () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null
 );
 
+/**
+ * A string-typed proxy for the value textarea.
+ * Object/array values are only stringified for display and converted to a string on edit.
+ */
+const customValueText = computed<string>({
+  get: () => toSafeDisplayString(formData.value.value),
+  set: (newValue: string) => {
+    formData.value = { ...formData.value, value: newValue };
+  },
+});
+
 const isFormValid = computed<boolean>(() => {
   const f = formData.value;
-  const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const valueHasContent = hasValueContent(f.value);
+  const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const hasAnyContent = valueHasContent || otherFieldsHaveContent;
   const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
 
   return hasAnyContent && pagesPatternOk;
