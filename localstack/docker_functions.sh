@@ -17,6 +17,64 @@ run_docker_compose() {
   run_logged_command docker compose "$@"
 }
 
+# Named volumes that must survive Docker pruning regardless of whether they are currently
+# attached to a running container. In particular, the devcontainer persists opencode's
+# session/state data in these volumes across devcontainer rebuilds
+# (see .devcontainer/devcontainer.json), so `docker volume prune --all` must never remove them.
+protected_volume_names=(
+  "dataland-opencode-local-share"
+  "dataland-opencode-local-state"
+)
+
+# Removes unused volumes, but never the volumes listed in `protected_volume_names`.
+#
+# We can't just run `docker volume prune --all` with a `name!=` filter: Docker's volume
+# prune/ls filters don't support negated name matching, only `dangling`/`label`. So instead
+# we compute the set of unused volumes ourselves (all volumes minus those referenced by any
+# container, running or stopped, minus the protected ones) and remove exactly those.
+prune_unused_docker_volumes() {
+  local all_volumes referenced_volumes unused_volumes
+  mapfile -t all_volumes < <(docker volume ls -q)
+
+  mapfile -t referenced_volumes < <(
+    docker ps -aq | xargs -r docker inspect \
+      --format '{{range .Mounts}}{{if eq .Type "volume"}}{{.Name}}{{"\n"}}{{end}}{{end}}' 2>/dev/null |
+      sort -u
+  )
+
+  unused_volumes=()
+  local volume is_protected is_referenced protected referenced
+  for volume in "${all_volumes[@]}"; do
+    is_protected=false
+    for protected in "${protected_volume_names[@]}"; do
+      if [[ "$volume" == "$protected" ]]; then
+        is_protected=true
+        break
+      fi
+    done
+    [[ "$is_protected" == true ]] && continue
+
+    is_referenced=false
+    for referenced in "${referenced_volumes[@]}"; do
+      if [[ "$volume" == "$referenced" ]]; then
+        is_referenced=true
+        break
+      fi
+    done
+    [[ "$is_referenced" == true ]] && continue
+
+    unused_volumes+=("$volume")
+  done
+
+  if [[ ${#unused_volumes[@]} -eq 0 ]]; then
+    log_info "No unused Docker volumes to remove"
+    return
+  fi
+
+  log_info "Removing unused Docker volumes: ${unused_volumes[*]}"
+  run_logged_command docker volume rm "${unused_volumes[@]}"
+}
+
 determine_compose_profiles() {
   local container_backend="$1"
   local compose_profiles=(--profile development)
@@ -73,9 +131,10 @@ start_docker_services() {
 clear_docker_completely() {
   run_docker_compose "${development_profiles[@]}" --profile init down
   run_docker_compose down --remove-orphans
-  run_logged_command docker volume prune --force --all
+  prune_unused_docker_volumes
   run_logged_command docker image prune --all --force
   run_logged_command docker builder prune --all --force
+  run_logged_command docker container prune --force
   clear_loki_bind_mount
 }
 
@@ -83,8 +142,9 @@ prune_docker_environment() {
   log_step "Docker disk usage before pruning"
   run_logged_command docker system df
 
-  log_step "Pruning unused Docker containers, images, and build cache"
+  log_step "Pruning unused Docker containers, images, volumes, and build cache"
   run_logged_command docker container prune --force
+  prune_unused_docker_volumes
   run_logged_command docker image prune --all --force
   run_logged_command docker builder prune --all --force
 

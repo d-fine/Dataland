@@ -15,7 +15,7 @@ print_usage() {
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
-  echo "  --prune-docker: Prune unused Docker images/containers/build cache to reclaim disk space (does not touch stack data)" >&3
+  echo "  --prune-docker: Prune unused Docker images/containers/volumes/build cache to reclaim disk space (never removes volumes still referenced by a container, e.g. persisted devcontainer/opencode data)" >&3
   echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --verbose: Print subcommand output while also writing it to the local stack log" >&3
