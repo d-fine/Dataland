@@ -78,7 +78,7 @@
               />
             </div>
 
-            <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
+            <FormKit v-if="isValidFileName(isMounted, currentReportValue) || (isMounted && !!dataSourceFileReference)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               <FormKit
                 type="hidden"
@@ -171,18 +171,25 @@ export default defineComponent({
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
       pageForFileReference: undefined as string | undefined,
+      dataSourceFileReference: '' as string,
       isValidFileName: isValidFileName,
       yesNoValue: undefined as string | undefined,
     };
   },
   mounted() {
-    if (!this.currentReportValue) {
-      const existingFileReference = this.dataPoint?.dataSource?.fileReference;
-      if (existingFileReference) {
-        this.currentReportValue = getFileNameByFileReference(
-          existingFileReference,
-          this.injectReportsNameAndReferences as ObjectType
-        );
+    const existingFileReference = (this.dataPoint?.dataSource as Record<string, string>)?.fileReference;
+    if (existingFileReference) {
+      // Cache the prefill fileReference so the dataSource FormKit group stays rendered
+      // even when currentReportValue cannot yet be resolved (injectReportsNameAndReferences
+      // is populated asynchronously by UploadReports after this component mounts).
+      this.dataSourceFileReference = existingFileReference;
+      if (!this.currentReportValue) {
+        // Try reverse-lookup by fileReference first, then fall back to the fileName
+        // already restored on the dataSource by restoreInferableDocumentFields.
+        this.currentReportValue =
+          getFileNameByFileReference(existingFileReference, this.injectReportsNameAndReferences as ObjectType) ??
+          (this.dataPoint?.dataSource as Record<string, string>)?.fileName ??
+          undefined;
       }
     }
     void nextTick(() => (this.isMounted = true));
@@ -199,7 +206,10 @@ export default defineComponent({
       return plainOptions.map((it) => ({ value: it, label: it }));
     },
     fileReferenceAccordingToName(): string {
-      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences as ObjectType);
+      return (
+        getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences as ObjectType) ||
+        this.dataSourceFileReference
+      );
     },
     isYesNoVariant() {
       return Object.keys(this.options).length;
@@ -236,6 +246,23 @@ export default defineComponent({
       } else {
         this.setCheckboxValue(newVal);
         this.firstAssignmentWhileEditModeWasDone = true;
+      }
+    },
+
+    /**
+     * When the report map is populated (asynchronously, e.g. from UploadReports), retry
+     * resolving the prefill fileReference to a report name so that the dropdown shows the
+     * correct selection.
+     */
+    injectReportsNameAndReferences() {
+      if (!this.currentReportValue && this.dataSourceFileReference) {
+        const name = getFileNameByFileReference(
+          this.dataSourceFileReference,
+          this.injectReportsNameAndReferences as ObjectType
+        );
+        if (name) {
+          this.currentReportValue = name;
+        }
       }
     },
 
