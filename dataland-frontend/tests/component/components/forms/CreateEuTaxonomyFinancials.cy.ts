@@ -131,6 +131,6 @@ describe('Component test for the Eu Taxonomy Financials edit-mode prefill', () =
     });
 
     cy.get('[data-test="pageWrapperTitle"]').should('exist');
-    cy.get('div[label="General"]').should('exist');
+    cy.get('#general').should('exist');
   });
 });
