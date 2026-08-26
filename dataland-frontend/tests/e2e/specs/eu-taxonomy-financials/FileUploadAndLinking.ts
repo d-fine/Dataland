@@ -99,6 +99,13 @@ describeIf(
           areBothDocumentsStillUploaded = false;
         });
 
+        // After removing a report from referencedReports, every datapoint that used it
+        // must be re-linked, otherwise backend validation rejects the dataset.
+        selectItemFromDropdownByValue(
+          cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
+          `${TEST_PDF_FILE_NAME}2`
+        );
+
         cy.intercept(
           {
             method: 'POST',
