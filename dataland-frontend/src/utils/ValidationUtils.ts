@@ -35,7 +35,11 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
   uploadedReports: string[],
   namesAndReferencesOfAllCompanyReports: ObjectType
 ): void {
-  const referencedReportFileReferences = findAllValuesForKey(dataModel, 'fileReference');
+  // "referencedReports" itself is excluded from the search: it is a registry listing every report that was
+  // selected/uploaded (each carrying its own fileReference), not evidence that a report is actually used as a
+  // data source. Without this exclusion, every uploaded report would trivially "reference" itself and this check
+  // would never flag genuinely unused reports.
+  const referencedReportFileReferences = findAllValuesForKey(dataModel, 'fileReference', ['referencedReports']);
   const unusedReports: string[] = [];
   for (const report of uploadedReports) {
     const fileReference = namesAndReferencesOfAllCompanyReports[report];
