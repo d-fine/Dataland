@@ -48,20 +48,12 @@ function validateFormUploadedData(companyId: string): void {
 }
 
 /**
- * Selects a high impact climate sector from the dropdown and assigns a reference to it
- * @param sectorCardIndex The index of the sector card to which the reference should be assigned
+ * Assigns a report reference to an already rendered high impact climate sector card.
+ * @param sectorCardIndex The index of the rendered sector card
  * @param reportToReference The name of the report to reference
  */
-function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
-  cy.get('div[data-test="applicableHighImpactClimateSectors"]').find('div.p-multiselect-dropdown').click();
-  cy.get('.p-multiselect-option')
-    .eq(sectorCardIndex)
-    .invoke('attr', 'aria-selected')
-    .then((ariaSelected) => {
-      if (ariaSelected === 'false') {
-        cy.get('.p-multiselect-option').eq(sectorCardIndex).click();
-      }
-    });
+function assignReportToHighImpactClimateSectorCard(sectorCardIndex: number, reportToReference: string): void {
+  cy.get('div[data-test="applicableHighImpactClimateSector"]').its('length').should('be.greaterThan', sectorCardIndex);
   selectItemFromDropdownByValue(
     cy.get('div[data-test="applicableHighImpactClimateSector"]').find('[data-test="dataReport"]').eq(sectorCardIndex),
     reportToReference
@@ -124,13 +116,16 @@ function setQualityInSfdrUploadForm(): void {
 }
 
 /**
- * Set reference to all uploaded reports while pushing a new one as well
+ * Set reference for all currently rendered high impact climate sector cards.
  * @param referencedReports all reports already uploaded
  */
 function setReferenceToAllUploadedReports(referencedReports: string[]): void {
-  for (const [index, it] of referencedReports.entries()) {
-    selectHighImpactClimateSectorAndReport(index, it);
-  }
+  cy.get('div[data-test="applicableHighImpactClimateSector"]').then((renderedSectorCards) => {
+    const assignments = Math.min(renderedSectorCards.length, referencedReports.length);
+    for (let index = 0; index < assignments; index++) {
+      assignReportToHighImpactClimateSectorCard(index, referencedReports[index]);
+    }
+  });
 }
 
 describeIf(
