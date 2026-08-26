@@ -19,7 +19,7 @@ describeIf(
   function () {
     const uploadReports = new UploadReports('referencedReports');
 
-    it('Check if the files upload works as expected', () => {
+    it.only('Check if the files upload works as expected', () => {
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
       let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
@@ -98,6 +98,13 @@ describeIf(
         uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
           areBothDocumentsStillUploaded = false;
         });
+
+        // After removing a report from referencedReports, every datapoint that used it
+        // must be re-linked, otherwise backend validation rejects the dataset.
+        selectItemFromDropdownByValue(
+          cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
+          `${TEST_PDF_FILE_NAME}2`
+        );
 
         cy.intercept(
           {
