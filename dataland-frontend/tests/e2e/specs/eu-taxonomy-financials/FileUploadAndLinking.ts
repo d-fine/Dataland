@@ -19,7 +19,7 @@ describeIf(
   function () {
     const uploadReports = new UploadReports('referencedReports');
 
-    it.only('Check if the files upload works as expected', () => {
+    it('Check if the files upload works as expected', () => {
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
       let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
