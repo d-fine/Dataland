@@ -27,7 +27,7 @@
       "version": "latest",
     },
     "ghcr.io/devcontainers/features/java": {
-      "version": "21",
+      "version": "21.0.7-tem",
       "installGradle": "false",
       "jdkDistro": "tem"
     },
