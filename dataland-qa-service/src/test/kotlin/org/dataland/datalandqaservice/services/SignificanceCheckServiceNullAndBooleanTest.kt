@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class SignificanceCheckServiceNullAndBooleanTest : SignificanceCheckServiceTestFixtures() {
     @Test
-    fun `original value null returns false`() {
+    fun `new value null returns false`() {
         assertFalse(
             service.hasSignificantChange(
                 newValue = null,
@@ -37,7 +37,7 @@ class SignificanceCheckServiceNullAndBooleanTest : SignificanceCheckServiceTestF
     }
 
     @Test
-    fun `original value JSON null returns false`() {
+    fun `new value JSON null returns false`() {
         assertFalse(
             service.hasSignificantChange(
                 newValue = NullNode.instance,
