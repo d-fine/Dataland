@@ -98,6 +98,11 @@ class PreApprovalExemptFieldsTest {
     @Test
     fun `Exempt field in one framework does not block preapproval for the same field in another framework`() {
         val fieldName = "shared-field-type"
+
+        // This test's dataset defaults to DataTypeEnum.sfdr (not lksg), so the lksg-scoped
+        // exempt-fields config below should not apply here — verifying exemptions are
+        // correctly scoped per framework.
+
         val service =
             buildServiceWithoutLiveDataset(
                 autoPreApprovalEnabled = true,
