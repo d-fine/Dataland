@@ -255,13 +255,32 @@ const selectedDocumentOption = computed<DocumentOption | null>(
 );
 
 /**
+ * Parses text edited in the value textarea back into an object/array whenever it forms valid
+ * JSON that represents one, so the underlying form data keeps its structured type and
+ * "Accept Custom" does not send a double-encoded string to the backend.
+ *
+ * @param value - The raw text entered into the value textarea.
+ * @returns The parsed object/array, or the original raw string if it isn't one.
+ */
+function parseEditedValue(value: string): unknown {
+  try {
+    const parsedValue: unknown = JSON.parse(value);
+    return parsedValue !== null && typeof parsedValue === 'object' ? parsedValue : value;
+  } catch {
+    return value;
+  }
+}
+
+/**
  * A string-typed proxy for the value textarea.
- * Object/array values are only stringified for display and converted to a string on edit.
  */
 const customValueText = computed<string>({
   get: () => toSafeDisplayString(formData.value.value),
   set: (newValue: string) => {
-    formData.value = { ...formData.value, value: newValue };
+    formData.value = {
+      ...formData.value,
+      value: parseEditedValue(newValue),
+    };
   },
 });
 
