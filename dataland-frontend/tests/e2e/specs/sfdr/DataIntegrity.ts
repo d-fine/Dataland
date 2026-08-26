@@ -1,6 +1,6 @@
 import { describeIf } from '@e2e/support/TestUtility';
 import { getBaseUrl } from '@e2e/utils/Cypress';
-import { DataTypeEnum, type SfdrData } from '@clients/backend';
+import { type CompanyAssociatedDataSfdrData, DataTypeEnum, type SfdrData } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation } from '@e2e/utils/CompanyUpload';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -169,8 +169,10 @@ describeIf(
             // reference, if no file name is available) instead of preserving the originally uploaded
             // report name. Therefore, the report names to select in the form must be derived from the
             // pre-fill response instead of from the originally uploaded fixture.
-            const prefillData = interception.response?.body as SfdrData;
-            const referencedReportNames = Object.keys(prefillData.general?.general?.referencedReports as ObjectType);
+            const prefillData = (interception.response?.body as CompanyAssociatedDataSfdrData).data;
+            const referencedReportNames = Object.keys(
+              (prefillData?.general?.general?.referencedReports ?? {}) as ObjectType
+            );
             cy.get('h1').should('contain', companyName);
             setQualityInSfdrUploadForm();
             setReferenceToAllUploadedReports(referencedReportNames);
