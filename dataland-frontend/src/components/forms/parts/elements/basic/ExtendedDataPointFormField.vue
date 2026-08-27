@@ -252,7 +252,9 @@ export default defineComponent({
     /**
      * When the report map is populated (asynchronously, e.g. from UploadReports), retry
      * resolving the prefill fileReference to a report name so that the dropdown shows the
-     * correct selection.
+     * correct selection. Also invalidates the cached prefill fileReference once the report it
+     * points to is no longer available (e.g. because the user removed it from the upload form),
+     * so that a dangling fileReference pointing to a no-longer-referenced report is never submitted.
      */
     injectReportsNameAndReferences() {
       if (!this.currentReportValue && this.dataSourceFileReference) {
@@ -263,6 +265,14 @@ export default defineComponent({
         if (name) {
           this.currentReportValue = name;
         }
+        return;
+      }
+      if (
+        this.dataSourceFileReference &&
+        !Object.values(this.injectReportsNameAndReferences as ObjectType).includes(this.dataSourceFileReference)
+      ) {
+        this.dataSourceFileReference = '';
+        this.currentReportValue = undefined;
       }
     },
 
