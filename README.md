@@ -60,6 +60,42 @@ located [here](https://test.dataland.com/api/swagger-ui/index.html). Requests ca
 * Or use cypress without visible browser (more robust):
   * run `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` 
 
+## Reclaiming WSL2 Disk Space
+If you develop inside WSL2 (Windows), disk usage on your `C:` drive can keep growing over time even after you
+delete files or Docker data inside WSL. This is because WSL2's virtual disks (`.vhdx` files) grow automatically but
+do not always shrink automatically.
+
+* Run `./manageLocalStack.sh --prune-docker` to free up Docker's disk usage (containers, images, unused volumes,
+  and build cache) inside WSL. This does not touch persisted devcontainer data (e.g. opencode session/state
+  volumes). On modern WSL versions, distro `.vhdx` files are often created as sparse NTFS files, meaning Windows
+  automatically reclaims the freed space without any further action from you (you can check this yourself: right
+  click the `.vhdx` file in Explorer and compare "Size" vs "Size on disk" - if "Size on disk" is meaningfully
+  smaller, your disk is already sparse and self-managing).
+* If your `.vhdx` is *not* sparse, `--prune-docker` alone will not shrink it on your `C:` drive. To reclaim that
+  space, shut down WSL (`wsl --shutdown` in PowerShell) and compact the relevant `.vhdx` files via `diskpart` (see
+  [Microsoft's guide on managing WSL disk space](https://learn.microsoft.com/en-us/windows/wsl/disk-space)). If you
+  attempt to compact a vhdx that turns out to already be sparse, `diskpart` will refuse with an error stating the
+  file "must not be sparse" - that's expected and simply means compaction isn't needed for that disk.
+* If you use (or used to use) Docker Desktop with the WSL2 backend, note that it stores all images/containers/
+  volumes/build cache in its own separate virtual disk (typically `%LOCALAPPDATA%\Docker\wsl\disk\docker_data.vhdx`),
+  not in your regular WSL distro's disk. Compacting this disk is often ineffective unless you also trim the
+  filesystem inside Docker Desktop's own WSL distro first (e.g. `wsl -d docker-desktop -u root fstrim -av`). If you
+  have since uninstalled Docker Desktop but still find a `docker-desktop`/`docker-desktop-data` entry in
+  `wsl --list --all -v` along with a leftover `docker_data.vhdx`, this is usually just an orphaned leftover that
+  Docker Desktop's uninstaller failed to clean up - in that case, just unregister it
+  (`wsl --unregister docker-desktop`) and delete the leftover `.vhdx` file manually to reclaim the space instantly,
+  rather than trying to compact it.
+* We deliberately do not recommend WSL's experimental `sparseVhd` setting (`.wslconfig`, `[experimental]` section)
+  as a way to convert an *existing* distro: as of WSL 2.7.12.0, doing so requires
+  `wsl --manage <Distro> --set-sparse true --allow-unsafe`, and WSL itself warns that sparse VHD support is
+  disabled by default "due to potential data corruption". Given the risk to real development data, prefer the
+  manual `diskpart` compaction approach above instead, or rely on newer distros being sparse by default.
+* Also check `%TEMP%\wsl-crashes` (`$env:LOCALAPPDATA\Temp\wsl-crashes` in PowerShell) if your disk fills up
+  unexpectedly. This folder holds crash dump files whenever a process inside WSL/a devcontainer crashes, and a
+  single crash (e.g. a runaway Electron/Cypress process) can silently produce a dump file that is well over 100GB,
+  unrelated to Docker or WSL disk growth entirely. It is safe to delete old dump files here once you no longer need
+  them for debugging the crash that produced them.
+
 ## Licenses
 This project makes use of open source dependencies. To see a list of gradle dependencies along with their 
 licenses, run `./gradlew generateLicenseReport` 
