@@ -114,8 +114,10 @@ function normalizeReferencedReportsKeying(dataset: EutaxonomyFinancialsData): Eu
     return clone;
   }
 
-  const normalized: Record<string, { fileReference: string; fileName?: string | null; publicationDate?: string | null }> =
-    {};
+  const normalized: Record<
+    string,
+    { fileReference: string; fileName?: string | null; publicationDate?: string | null }
+  > = {};
   for (const [reportKey, report] of Object.entries(referencedReports)) {
     normalized[report.fileReference || reportKey] = report;
   }
@@ -144,7 +146,7 @@ describeIf(
       Cypress.expose('excludeBypassQaIntercept', true);
     });
 
-    it.only(
+    it(
       'Create a company and a Eu Taxonomy Financials dataset via api, then re-upload it with the upload form in Edit mode and ' +
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
@@ -158,8 +160,12 @@ describeIf(
             return submitInEditModeAndFetchReuploadedDataset(token, companyId, dataId, testCompanyName);
           })
           .then((frontendSubmittedEuTaxonomyFinancialsDataset) => {
-            const normalizedOriginallyUploadedDataset = normalizeReferencedReportsKeying(euTaxonomyFinancialsFixtureForTest.t);
-            const normalizedReuploadedDataset = normalizeReferencedReportsKeying(frontendSubmittedEuTaxonomyFinancialsDataset);
+            const normalizedOriginallyUploadedDataset = normalizeReferencedReportsKeying(
+              euTaxonomyFinancialsFixtureForTest.t
+            );
+            const normalizedReuploadedDataset = normalizeReferencedReportsKeying(
+              frontendSubmittedEuTaxonomyFinancialsDataset
+            );
             compareObjectKeysAndValuesDeep(
               normalizedOriginallyUploadedDataset as unknown as Record<string, object>,
               normalizedReuploadedDataset as Record<string, object>,
