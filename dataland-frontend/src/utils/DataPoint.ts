@@ -41,6 +41,16 @@ export function removeInferableDocumentFields<T>(data: T): T {
   return uploadData as T;
 }
 
+/**
+ * Removes inferable fields such as `fileName` and `publicationDate` from the provided value
+ * if the value contains a `fileReference` property of type string. This operation
+ * is performed recursively for nested objects and arrays.
+ *
+ * @param {unknown} value - The value from which inferable fields need to be removed.
+ *                          Can be an object, array, or any other type.
+ *
+ * @return {void} Doesn't return a value; modifies the provided object in place.
+ */
 function removeInferableDocumentFieldsFromValue(value: unknown): void {
   if (Array.isArray(value)) {
     value.forEach(removeInferableDocumentFieldsFromValue);
@@ -77,6 +87,19 @@ export function restoreInferableDocumentFields<T>(
   return restoredData as T;
 }
 
+/**
+ * Restores inferable document fields, such as fileName and publicationDate, from a given value object
+ * based on the provided fileReferenceToReport map. If the value is an array, it applies the restoration
+ * recursively for each element. If the value is an object and contains a fileReference field that has a
+ * corresponding entry in the map, it updates the object with any missing inferable fields.
+ *
+ * @param {unknown} value The object or array to process and restore inferable fields for. Nested structures
+ *                        are handled recursively.
+ * @param {Map<string, { fileName: string, publicationDate?: string | null }>} fileReferenceToReport A map
+ *                        that associates fileReference strings with report objects containing fileName and
+ *                        optional publicationDate to be applied to matching objects.
+ * @return {void} The function does not return a value. It modifies the input object or array in place.
+ */
 function restoreInferableDocumentFieldsFromValue(
   value: unknown,
   fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
@@ -103,7 +126,6 @@ function restoreInferableDocumentFieldsFromValue(
     restoreInferableDocumentFieldsFromValue(nestedValue, fileReferenceToReport)
   );
 }
-
 
 export interface ParsedSingleDataPoint {
   value?: unknown;
