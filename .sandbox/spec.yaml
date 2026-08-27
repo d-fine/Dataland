@@ -15,3 +15,6 @@ permissions:
       - "download.cypress.io:443"
       - "cdn.cypress.io:443"
       - "local-dev.dataland.com:443"
+
+agentInstructions:
+  filename: AGENTS.md
