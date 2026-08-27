@@ -75,7 +75,9 @@ class DataControllerTest {
                 mapOfIds.getValue("dataId"),
             )
 
-        val ignoredKeys = setOf("publicationDate")
+        // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
+        // rather than being persisted/round-tripped as-is from the upload payload.
+        val ignoredKeys = setOf("publicationDate", "fileName")
         assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds.getValue("companyId"),
@@ -106,7 +108,9 @@ class DataControllerTest {
                 testDataEuTaxonomyNonFinancials,
             )
 
-        val ignoredKeys = setOf("publicationDate")
+        // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
+        // rather than being persisted/round-tripped as-is from the upload payload.
+        val ignoredKeys = setOf("publicationDate", "fileName")
         assertEqualsByJsonComparator(
             expectedCompanyAssociatedData, getDataByIdResponse,
             JsonComparator.JsonComparisonOptions(ignoredKeys),

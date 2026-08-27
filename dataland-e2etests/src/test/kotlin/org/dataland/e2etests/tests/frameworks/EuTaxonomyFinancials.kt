@@ -41,7 +41,9 @@ class EuTaxonomyFinancials {
                 .getCompanyAssociatedEutaxonomyFinancialsData(dataId)
                 .data
 
-        val ignoredKeys = setOf("publicationDate")
+        // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
+        // rather than being persisted/round-tripped as-is from the upload payload.
+        val ignoredKeys = setOf("publicationDate", "fileName")
         assertEqualsByJsonComparator(
             euTaxoFinancialsDataset, downloadedData,
             JsonComparator
