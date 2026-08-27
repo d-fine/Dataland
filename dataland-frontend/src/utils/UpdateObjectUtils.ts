@@ -6,14 +6,18 @@ export type ObjectType = { [key: string]: string | object };
  * a list of all references in one dataset.
  * @param [obj] object in which it is looking for the value to change
  * @param [keyToFind] the key which is to be found
+ * @param [excludeKeys] keys whose subtrees should not be searched, e.g. because they are a registry of all reports
+ * (referenced or not) rather than evidence of actual usage as a data source
  * @returns all the values corresponding to the key
  */
-export function findAllValuesForKey(obj: ObjectType, keyToFind: string): Array<string> {
+export function findAllValuesForKey(obj: ObjectType, keyToFind: string, excludeKeys: string[] = []): Array<string> {
   return Object.entries(obj).reduce((acc: Array<string>, [key, value]) => {
-    if (key === keyToFind) {
+    if (excludeKeys.includes(key)) {
+      return acc;
+    } else if (key === keyToFind) {
       return acc.concat(value as string);
     } else if (typeof value === 'object' && value != null) {
-      return acc.concat(findAllValuesForKey(value as ObjectType, keyToFind));
+      return acc.concat(findAllValuesForKey(value as ObjectType, keyToFind, excludeKeys));
     } else {
       return acc;
     }

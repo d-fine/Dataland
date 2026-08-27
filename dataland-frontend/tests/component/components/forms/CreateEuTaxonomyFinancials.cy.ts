@@ -120,17 +120,25 @@ describe('Component test for the Eu Taxonomy Financials edit-mode prefill', () =
         companyID: 'company-id-does-not-matter-in-this-test',
       },
       data() {
+        // The mock data is deep-cloned here so that `referencedReportsForPrefill` and
+        // `companyAssociatedEuTaxonomyFinancialsData` do not alias the same nested object (which they would in
+        // production too, since `CreateEuTaxonomyFinancials.vue` builds its live form model via `objectDropNull`,
+        // a deep clone of the loaded data). Without this clone, FormKit writing a newly selected report's
+        // fileReference/publicationDate into the shared `referencedReports` object would also mutate
+        // `referencedReportsForPrefill`, causing the new report to non-deterministically be reclassified as
+        // "already uploaded" by `UploadReports.vue`'s `prefillAlreadyUploadedReports`.
+        const clonedData = structuredClone(companyAssociatedData);
         return {
           waitingForData: false,
           editMode: true,
-          referencedReportsForPrefill: companyAssociatedData.data.general?.general?.referencedReports,
-          companyAssociatedEuTaxonomyFinancialsData: companyAssociatedData,
-          listOfFilledKpis: getFilledKpis(companyAssociatedData.data),
+          referencedReportsForPrefill: clonedData.data.general?.general?.referencedReports,
+          companyAssociatedEuTaxonomyFinancialsData: clonedData,
+          listOfFilledKpis: getFilledKpis(clonedData.data),
         };
       },
     });
 
     cy.get('[data-test="pageWrapperTitle"]').should('exist');
-    cy.get('div[label="General"]').should('exist');
+    cy.get('#general').should('exist');
   });
 });
