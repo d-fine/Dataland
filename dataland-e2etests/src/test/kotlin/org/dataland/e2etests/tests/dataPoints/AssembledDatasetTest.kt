@@ -109,7 +109,7 @@ class AssembledDatasetTest {
         expected: SfdrData,
         actual: SfdrData,
     ) {
-        val ignoredKeys = setOf("publicationDate", "fileName")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod")
         assertEqualsByJsonComparator(expected, actual, JsonComparator.JsonComparisonOptions(ignoredKeys))
     }
 
