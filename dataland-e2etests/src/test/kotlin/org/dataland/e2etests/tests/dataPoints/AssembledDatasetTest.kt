@@ -18,6 +18,8 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
+import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -107,22 +109,8 @@ class AssembledDatasetTest {
         expected: SfdrData,
         actual: SfdrData,
     ) {
-        assertEquals(
-            expected.general?.general?.referencedReports,
-            actual.general
-                ?.general
-                ?.referencedReports,
-        )
-        assertEquals(
-            expected.environmental
-                ?.greenhouseGasEmissions
-                ?.scope1GhgEmissionsInTonnes,
-            actual.environmental
-                ?.greenhouseGasEmissions
-                ?.scope1GhgEmissionsInTonnes
-                // Ignore publication date as it is modified during referenced report processing
-                ?.let { it.copy(dataSource = it.dataSource?.copy(publicationDate = null)) },
-        )
+        val ignoredKeys = setOf("publicationDate", "fileName")
+        assertEqualsByJsonComparator(expected, actual, JsonComparator.JsonComparisonOptions(ignoredKeys))
     }
 
     @ParameterizedTest

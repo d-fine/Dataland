@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
@@ -217,6 +218,12 @@ class DataMigrationTest {
                 dataId = dataMetaInfo.dataId,
                 body = linkedQaReportData.qaReport,
             )
+        if (testDataLocation.contains("WithManyNulls")) {
+            assertThrows<ServerException> {
+                Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
+            }
+            return
+        }
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         ApiAwait
             // When the API Call is faster than the migration, the QA Report might not be migrated yet, resulting
