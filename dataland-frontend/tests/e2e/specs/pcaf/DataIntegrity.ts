@@ -78,7 +78,7 @@ function validateReuploadedDataset(token: string, dataId: string, initiallyUploa
         initiallyUploadedData as Record<string, object>,
         reuploadedDatasetFromBackend as Record<string, object>,
         undefined,
-        ['fileName']
+        ['fileName', 'dataSource']
       );
     });
 }
