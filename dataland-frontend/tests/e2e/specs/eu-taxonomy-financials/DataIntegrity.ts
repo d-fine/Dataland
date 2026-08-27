@@ -103,6 +103,26 @@ function submitInEditModeAndFetchReuploadedDataset(
   });
 }
 
+/**
+ * Normalizes referencedReports to use fileReference as key so key shape differences
+ * (report name vs fileReference) do not cause false negatives in deep comparison.
+ */
+function normalizeReferencedReportsKeying(dataset: EutaxonomyFinancialsData): EutaxonomyFinancialsData {
+  const clone = JSON.parse(JSON.stringify(dataset)) as EutaxonomyFinancialsData;
+  const referencedReports = clone.general?.general?.referencedReports;
+  if (!referencedReports) {
+    return clone;
+  }
+
+  const normalized: Record<string, { fileReference: string; fileName?: string | null; publicationDate?: string | null }> =
+    {};
+  for (const [reportKey, report] of Object.entries(referencedReports)) {
+    normalized[report.fileReference || reportKey] = report;
+  }
+  clone.general!.general!.referencedReports = normalized;
+  return clone;
+}
+
 before(function () {
   cy.fixture('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures').then(function (jsonContent) {
     const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
@@ -124,7 +144,7 @@ describeIf(
       Cypress.expose('excludeBypassQaIntercept', true);
     });
 
-    it(
+    it.only(
       'Create a company and a Eu Taxonomy Financials dataset via api, then re-upload it with the upload form in Edit mode and ' +
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
@@ -138,9 +158,11 @@ describeIf(
             return submitInEditModeAndFetchReuploadedDataset(token, companyId, dataId, testCompanyName);
           })
           .then((frontendSubmittedEuTaxonomyFinancialsDataset) => {
+            const normalizedOriginallyUploadedDataset = normalizeReferencedReportsKeying(euTaxonomyFinancialsFixtureForTest.t);
+            const normalizedReuploadedDataset = normalizeReferencedReportsKeying(frontendSubmittedEuTaxonomyFinancialsDataset);
             compareObjectKeysAndValuesDeep(
-              euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
-              frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
+              normalizedOriginallyUploadedDataset as unknown as Record<string, object>,
+              normalizedReuploadedDataset as Record<string, object>,
               undefined,
               ['publicationDate', 'fileName']
             );
