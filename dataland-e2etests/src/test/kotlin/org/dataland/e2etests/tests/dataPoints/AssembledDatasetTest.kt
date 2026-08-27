@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSf
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
+import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReport
 import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandqaservice.openApiClient.model.ExtendedDataPointYesNo
@@ -18,7 +19,6 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
-import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals

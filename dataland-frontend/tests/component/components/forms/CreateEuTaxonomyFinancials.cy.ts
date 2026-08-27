@@ -39,7 +39,6 @@ function buildValueForField(field: any): unknown {
     case 'DateExtendedDataPointFormField':
       return { ...base, value: '2023-09-11' };
     case 'RadioButtonsExtendedDataPointFormField':
-       
       return { ...base, value: field.options?.[0]?.value ?? 'Yes' };
     case 'YesNoExtendedDataPointFormField':
       return { ...base, value: 'Yes' };

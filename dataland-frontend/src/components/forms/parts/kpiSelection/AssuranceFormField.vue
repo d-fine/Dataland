@@ -91,7 +91,12 @@ import {
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AssuranceDataPointValueEnum } from '@clients/backend';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileNameByFileReference, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
+import {
+  getAvailableFileNames,
+  getFileNameByFileReference,
+  getFileReferenceByFileName,
+  PAGE_NUMBER_DESCRIPTION,
+} from '@/utils/FileUploadUtils';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
 
@@ -131,8 +136,7 @@ export default defineComponent({
       const existingFileReference = this.assuranceDataPoint?.dataSource?.fileReference;
       if (existingFileReference) {
         this.currentReportValue =
-          getFileNameByFileReference(existingFileReference, this.injectReportsNameAndReferences as ObjectType) ??
-          null;
+          getFileNameByFileReference(existingFileReference, this.injectReportsNameAndReferences as ObjectType) ?? null;
       }
     }
     void nextTick(() => (this.isMounted = true));

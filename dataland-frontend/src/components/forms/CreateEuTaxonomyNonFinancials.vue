@@ -382,7 +382,11 @@ export default defineComponent({
               },
             ])
           );
-          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise), documentMetaInfoByReference);
+          await uploadFiles(
+            this.documentsToUpload,
+            assertDefined(this.getKeycloakPromise),
+            documentMetaInfoByReference
+          );
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
