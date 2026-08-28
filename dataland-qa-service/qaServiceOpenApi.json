@@ -20,6 +20,222 @@
     }
   ],
   "paths": {
+    "/pre-approval/config": {
+      "get": {
+        "tags": [
+          "pre-approval-controller"
+        ],
+        "summary": "Get the current pre-approval configuration.",
+        "description": "Get the current pre-approval configuration.",
+        "operationId": "getPreApprovalConfig",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can access pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "pre-approval-controller"
+        ],
+        "summary": "Replace the pre-approval configuration.",
+        "description": "Fully replaces the pre-approval configuration with the provided one. All fields are required. The sampling probability must be between 0.0 and 1.0.",
+        "operationId": "putPreApprovalConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreApprovalConfigPutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully replaced pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid configuration values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can modify pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "pre-approval-controller"
+        ],
+        "summary": "Update the pre-approval configuration.",
+        "description": "Partially updates the pre-approval configuration. Only the provided fields are changed. The sampling probability must be between 0.0 and 1.0.",
+        "operationId": "patchPreApprovalConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreApprovalConfigPatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid configuration values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can modify pre-approval configuration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreApprovalConfig"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/nonSourceable/{nonSourceabilityId}": {
       "post": {
         "tags": [
@@ -1662,144 +1878,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/pre-approval/config": {
-      "get": {
-        "tags": [
-          "pre-approval-controller"
-        ],
-        "summary": "Get the current pre-approval configuration.",
-        "description": "Get the current pre-approval configuration.",
-        "operationId": "getPreApprovalConfig",
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins and judges can access pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "pre-approval-controller"
-        ],
-        "summary": "Update the pre-approval configuration.",
-        "description": "Updates the pre-approval configuration. The sampling probability must be between 0.0 and 1.0.",
-        "operationId": "patchPreApprovalConfig",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PreApprovalConfig"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully updated pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid configuration values.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Only admins and judges can modify pre-approval configuration.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreApprovalConfig"
                 }
               }
             }
@@ -4328,6 +4406,233 @@
   },
   "components": {
     "schemas": {
+      "PreApprovalConfigPutRequest": {
+        "required": [
+          "autoPreApprovalEnabled",
+          "decimalRelativeThreshold",
+          "exemptFields",
+          "individualDecimalThresholds",
+          "individualIntegerThresholds",
+          "integerAbsoluteThreshold",
+          "samplingProbability"
+        ],
+        "type": "object",
+        "properties": {
+          "exemptFields": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+              "example": {
+                "sfdr": [
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+                "example": "{\"sfdr\":[\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"]}"
+              }
+            },
+            "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+            "example": {
+              "sfdr": [
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+              ]
+            }
+          },
+          "samplingProbability": {
+            "maximum": 1.0,
+            "exclusiveMaximum": false,
+            "minimum": 0.0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The probability (between 0.0 and 1.0) with which an eligible data point is randomly selected for automatic pre-approval.",
+            "format": "double",
+            "example": 0.25
+          },
+          "decimalRelativeThreshold": {
+            "type": "number",
+            "description": "The global relative change threshold for decimal data points. If the relative change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualDecimalThresholds).",
+            "format": "double",
+            "example": 0.5
+          },
+          "integerAbsoluteThreshold": {
+            "type": "integer",
+            "description": "The global absolute change threshold for integer data points. If the absolute change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualIntegerThresholds).",
+            "format": "int64",
+            "example": 5
+          },
+          "individualDecimalThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+                "format": "double"
+              },
+              "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                }
+              }
+            },
+            "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+              }
+            }
+          },
+          "individualIntegerThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+                "format": "int64"
+              },
+              "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+                }
+              }
+            },
+            "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+              }
+            }
+          },
+          "autoPreApprovalEnabled": {
+            "type": "boolean",
+            "description": "Boolean flag. If true, automatic pre-approval of QA-accepted data points is enabled. If false, all data points require manual review regardless of the other pre-approval checks.",
+            "example": true
+          }
+        }
+      },
+      "PreApprovalConfig": {
+        "required": [
+          "autoPreApprovalEnabled",
+          "decimalRelativeThreshold",
+          "exemptFields",
+          "individualDecimalThresholds",
+          "individualIntegerThresholds",
+          "integerAbsoluteThreshold",
+          "samplingProbability"
+        ],
+        "type": "object",
+        "properties": {
+          "exemptFields": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+              "example": {
+                "sfdr": [
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+                "example": "{\"sfdr\":[\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"]}"
+              }
+            },
+            "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+            "example": {
+              "sfdr": [
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+              ]
+            }
+          },
+          "samplingProbability": {
+            "maximum": 1.0,
+            "exclusiveMaximum": false,
+            "minimum": 0.0,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The probability (between 0.0 and 1.0) with which an eligible data point is randomly selected for automatic pre-approval.",
+            "format": "double",
+            "example": 0.25
+          },
+          "decimalRelativeThreshold": {
+            "type": "number",
+            "description": "The global relative change threshold for decimal data points. If the relative change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualDecimalThresholds).",
+            "format": "double",
+            "example": 0.5
+          },
+          "integerAbsoluteThreshold": {
+            "type": "integer",
+            "description": "The global absolute change threshold for integer data points. If the absolute change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualIntegerThresholds).",
+            "format": "int64",
+            "example": 5
+          },
+          "individualDecimalThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+                "format": "double"
+              },
+              "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                }
+              }
+            },
+            "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+              }
+            }
+          },
+          "individualIntegerThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+                "format": "int64"
+              },
+              "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+                }
+              }
+            },
+            "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+              }
+            }
+          },
+          "autoPreApprovalEnabled": {
+            "type": "boolean",
+            "description": "Boolean flag. If true, automatic pre-approval of QA-accepted data points is enabled. If false, all data points require manual review regardless of the other pre-approval checks.",
+            "example": true
+          },
+          "submitUserId": {
+            "type": "string",
+            "description": "The unique user ID of the admin who last submitted (created or updated) this pre-approval configuration. Null if the configuration has never been updated since being seeded. This field is read-only and can only be set server-side; it cannot be set via the PATCH or PUT request bodies.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          }
+        }
+      },
       "NonSourceabilityDecisionRequest": {
         "required": [
           "qaStatus"
@@ -10189,19 +10494,105 @@
       "JsonNode": {
         "type": "object"
       },
-      "PreApprovalConfig": {
-        "required": [
-          "samplingProbability"
-        ],
+      "PreApprovalConfigPatchRequest": {
         "type": "object",
         "properties": {
+          "exemptFields": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+              "example": {
+                "sfdr": [
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+                ]
+              },
+              "items": {
+                "type": "string",
+                "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+                "example": "{\"sfdr\":[\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"]}"
+              }
+            },
+            "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+            "example": {
+              "sfdr": [
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
+              ]
+            }
+          },
           "samplingProbability": {
             "maximum": 1.0,
             "exclusiveMaximum": false,
             "minimum": 0.0,
             "exclusiveMinimum": false,
             "type": "number",
-            "format": "double"
+            "description": "The probability (between 0.0 and 1.0) with which an eligible data point is randomly selected for automatic pre-approval.",
+            "format": "double",
+            "example": 0.25
+          },
+          "decimalRelativeThreshold": {
+            "type": "number",
+            "description": "The global relative change threshold for decimal data points. If the relative change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualDecimalThresholds).",
+            "format": "double",
+            "example": 0.5
+          },
+          "integerAbsoluteThreshold": {
+            "type": "integer",
+            "description": "The global absolute change threshold for integer data points. If the absolute change between the reviewed value and the currently live value exceeds this threshold, the change is considered significant and automatic pre-approval is suppressed, unless an individual override applies (see individualIntegerThresholds).",
+            "format": "int64",
+            "example": 5
+          },
+          "individualDecimalThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+                "format": "double"
+              },
+              "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                }
+              }
+            },
+            "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+              }
+            }
+          },
+          "individualIntegerThresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+                "format": "int64"
+              },
+              "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+              "example": {
+                "sfdr": {
+                  "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+                }
+              }
+            },
+            "description": "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, integerAbsoluteThreshold is used instead.",
+            "example": {
+              "sfdr": {
+                "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption": 2
+              }
+            }
+          },
+          "autoPreApprovalEnabled": {
+            "type": "boolean",
+            "description": "Boolean flag. If true, automatic pre-approval of QA-accepted data points is enabled. If false, all data points require manual review regardless of the other pre-approval checks.",
+            "example": true
           }
         }
       },

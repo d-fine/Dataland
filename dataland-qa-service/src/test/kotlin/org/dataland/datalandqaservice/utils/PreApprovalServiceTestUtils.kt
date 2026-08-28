@@ -1,18 +1,21 @@
 package org.dataland.datalandqaservice.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaConfigEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaConfigRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import java.util.Optional
 import java.util.UUID
 
 /**
@@ -23,6 +26,7 @@ object PreApprovalServiceTestUtils {
     val dummyReporter1: String = UUID.randomUUID().toString()
     val dummyReporter2: String = UUID.randomUUID().toString()
     val significanceCheckService = SignificanceCheckService()
+    const val DUMMY_SUBMIT_USER_ID = "dummy-submit-user-id"
 
     fun buildQaReport(
         reporterUserId: String,
@@ -66,19 +70,35 @@ object PreApprovalServiceTestUtils {
         }
 
     /**
+     * Creates a mock [QaConfigRepository] whose singleton row starts out holding [initialConfig].
+     *
+     * `findById` always returns the same (mutable) [QaConfigEntity] instance, so that
+     * [PreApprovalService.patchConfig]/[PreApprovalService.putConfig] writes are reflected on
+     * subsequent reads, mirroring the "exactly one row" behaviour of the real repository.
+     */
+    fun buildQaConfigRepositoryMock(initialConfig: PreApprovalConfig): QaConfigRepository {
+        val entity = QaConfigEntity(config = initialConfig)
+        return mock<QaConfigRepository>().also {
+            whenever(it.findById(QaConfigEntity.QA_CONFIG_SINGLETON_ID)).thenReturn(Optional.of(entity))
+        }
+    }
+
+    /**
      * Builds a [PreApprovalService] pre-configured to skip the significance check
      * (no live dataset). Use this for all tests that verify pre-existing behaviour.
      */
     fun buildServiceWithoutLiveDataset(
         autoPreApprovalEnabled: Boolean,
-        exemptFieldsConfig: PreApprovalExemptFieldsConfig = PreApprovalExemptFieldsConfig(),
+        exemptFields: Map<DataTypeEnum, Set<String>> = emptyMap(),
     ): PreApprovalService =
         PreApprovalService(
-            autoPreApprovalEnabled = autoPreApprovalEnabled,
-            exemptFieldsConfig = exemptFieldsConfig,
+            qaConfigRepository =
+                buildQaConfigRepositoryMock(
+                    PreApprovalConfig(exemptFields = exemptFields, autoPreApprovalEnabled = autoPreApprovalEnabled),
+                ),
             significanceCheckService = significanceCheckService,
             datasetJudgementSupportService = mockSupportServiceWithNoLiveDataset(),
-        )
+        ).also { it.initializeConfig() }
 
     @Suppress("LongParameterList", "kotlin:S107")
     fun buildServiceWithLiveDatasetForSignificanceCheck(
@@ -97,13 +117,13 @@ object PreApprovalServiceTestUtils {
         whenever(supportServiceMock.getDataPointValueNode(liveDataPointId)).thenReturn(liveValueNode)
         whenever(supportServiceMock.resolveBaseTypeId(dpType)).thenReturn(baseTypeId)
         return PreApprovalService(
-            autoPreApprovalEnabled = true,
-            exemptFieldsConfig = PreApprovalExemptFieldsConfig(),
+            qaConfigRepository =
+                buildQaConfigRepositoryMock(
+                    PreApprovalConfig(samplingProbability = 0.0, autoPreApprovalEnabled = true),
+                ),
             significanceCheckService = significanceCheckService,
             datasetJudgementSupportService = supportServiceMock,
-        ).also {
-            it.patchConfig(PreApprovalConfig(samplingProbability = 0.0))
-        }
+        ).also { it.initializeConfig() }
     }
 
     fun runWorkflow(

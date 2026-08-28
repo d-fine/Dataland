@@ -3,8 +3,8 @@ package org.dataland.datalandqaservice.services
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandqaservice.configurations.PreApprovalExemptFieldsConfig
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DatasetJudgementRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementCreationService
@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Pr
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
 import org.dataland.datalandqaservice.utils.MockDatasetJudgementEntityForTest
+import org.dataland.datalandqaservice.utils.PreApprovalServiceTestUtils
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
@@ -42,11 +43,13 @@ open class DatasetJudgementServiceTestBase {
             datasetJudgementSupportService,
             keycloakUserService,
             PreApprovalService(
-                autoPreApprovalEnabled = false,
-                exemptFieldsConfig = PreApprovalExemptFieldsConfig(),
+                qaConfigRepository =
+                    PreApprovalServiceTestUtils.buildQaConfigRepositoryMock(
+                        PreApprovalConfig(autoPreApprovalEnabled = false),
+                    ),
                 significanceCheckService = SignificanceCheckService(),
                 datasetJudgementSupportService = datasetJudgementSupportService,
-            ),
+            ).also { it.initializeConfig() },
         )
 
     protected val service =

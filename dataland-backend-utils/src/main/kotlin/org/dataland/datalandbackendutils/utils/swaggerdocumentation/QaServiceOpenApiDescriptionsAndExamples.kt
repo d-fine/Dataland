@@ -108,4 +108,54 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val PRE_APPROVAL_CHECK_RESULTS_EXAMPLE =
         "{ \"areAllQaReportsAccepted\": true, \"dataPointEligible\": true, " +
             "\"passesRandomSampling\": true, \"passesSignificanceCheck\": true }"
+
+    const val PRE_APPROVAL_EXEMPT_FIELDS_DESCRIPTION =
+        "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval " +
+            "for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts."
+    const val PRE_APPROVAL_EXEMPT_FIELDS_EXAMPLE =
+        "{ \"sfdr\": [\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"] }"
+
+    const val PRE_APPROVAL_SAMPLING_PROBABILITY_DESCRIPTION =
+        "The probability (between 0.0 and 1.0) with which an eligible data point is randomly selected for " +
+            "automatic pre-approval."
+    const val PRE_APPROVAL_SAMPLING_PROBABILITY_EXAMPLE = "0.25"
+
+    const val PRE_APPROVAL_DECIMAL_RELATIVE_THRESHOLD_DESCRIPTION =
+        "The global relative change threshold for decimal data points. If the relative change between the " +
+            "reviewed value and the currently live value exceeds this threshold, the change is considered significant " +
+            "and automatic pre-approval is suppressed, unless an individual override applies (see " +
+            "individualDecimalThresholds)."
+    const val PRE_APPROVAL_DECIMAL_RELATIVE_THRESHOLD_EXAMPLE = "0.5"
+
+    const val PRE_APPROVAL_INTEGER_ABSOLUTE_THRESHOLD_DESCRIPTION =
+        "The global absolute change threshold for integer data points. If the absolute change between the " +
+            "reviewed value and the currently live value exceeds this threshold, the change is considered significant " +
+            "and automatic pre-approval is suppressed, unless an individual override applies (see " +
+            "individualIntegerThresholds)."
+    const val PRE_APPROVAL_INTEGER_ABSOLUTE_THRESHOLD_EXAMPLE = "5"
+
+    const val PRE_APPROVAL_INDIVIDUAL_DECIMAL_THRESHOLDS_DESCRIPTION =
+        "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data " +
+            "point type identifier. If no override is present for a given framework/data point type, " +
+            "decimalRelativeThreshold is used instead."
+    const val PRE_APPROVAL_INDIVIDUAL_DECIMAL_THRESHOLDS_EXAMPLE =
+        "{ \"sfdr\": { \"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\": 0.3 } }"
+
+    const val PRE_APPROVAL_INDIVIDUAL_INTEGER_THRESHOLDS_DESCRIPTION =
+        "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data " +
+            "point type identifier. If no override is present for a given framework/data point type, " +
+            "integerAbsoluteThreshold is used instead."
+    const val PRE_APPROVAL_INDIVIDUAL_INTEGER_THRESHOLDS_EXAMPLE =
+        "{ \"sfdr\": { \"extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption\": 2 } }"
+
+    const val PRE_APPROVAL_AUTO_PRE_APPROVAL_ENABLED_DESCRIPTION =
+        "Boolean flag. If true, automatic pre-approval of QA-accepted data points is enabled. If false, all data " +
+            "points require manual review regardless of the other pre-approval checks."
+    const val PRE_APPROVAL_AUTO_PRE_APPROVAL_ENABLED_EXAMPLE = "true"
+
+    const val PRE_APPROVAL_SUBMIT_USER_ID_DESCRIPTION =
+        "The unique user ID of the admin who last submitted (created or updated) this pre-approval " +
+            "configuration. Null if the configuration has never been updated since being seeded. This field is " +
+            "read-only and can only be set server-side; it cannot be set via the PATCH or PUT request bodies."
+    const val PRE_APPROVAL_SUBMIT_USER_ID_EXAMPLE = UPLOADER_USER_ID_EXAMPLE
 }
