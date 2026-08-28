@@ -159,7 +159,8 @@ class DataRetrievalViaApiKeyTest {
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
         // reportingPeriod is ignored here because backend normalization may rewrite the empty upload value.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
+        // referencedReports is ignored because the backend may reorganize the structure by file hash instead of report type.
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
