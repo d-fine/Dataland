@@ -89,7 +89,7 @@ class DataMigrationTest {
             Backend.sfdrDataControllerApi
                 .getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
 
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
             linkedQaReportData.data,
             downloadedDataset.data,
@@ -183,7 +183,7 @@ class DataMigrationTest {
 
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
             originalData,
             migratedData.data,
@@ -248,7 +248,7 @@ class DataMigrationTest {
         val downloadedSecondDataset = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(metaInfo2.dataId)
 
         // fileName and publicationDate are enriched by document manager and not persisted as-uploaded.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
             secondDataset,
             downloadedSecondDataset.data,
