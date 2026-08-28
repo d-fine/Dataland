@@ -118,7 +118,7 @@ parse_arguments() {
   local do_reset=false
   local do_start=false
   
-  local self_signed=true
+  local self_signed=false
   local container_backend=true
 
   load_dev_environment
