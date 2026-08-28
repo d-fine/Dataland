@@ -12,6 +12,15 @@ import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoEntity
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
+/**
+ * Utility class for enhancing data points by enriching them with metadata from referenced documents.
+ *
+ * This service interacts with the `DocumentControllerApi` to fetch metadata for document references
+ * and updates the JSON content of data points with additional information like document name and publication date.
+ *
+ * This class is designed to process both stored and calculated data points, allowing for batch processing of
+ * document metadata to optimize interactions with the document manager.
+ */
 @Service
 class DataDeliveryServiceUtils(
     @Qualifier("getDocumentControllerApi")
@@ -126,20 +135,56 @@ class DataDeliveryServiceUtils(
         when {
             jsonNode.isObject -> {
                 val objectNode = jsonNode as ObjectNode
-                objectNode.properties().forEach { (fieldName, childNode) ->
-                    if (fieldName == "dataSource" && childNode.isObject) {
-                        val dataSource = childNode as ObjectNode
-                        dataSource.path("fileReference").takeIf { it.isTextual }?.asText()?.let { documentId ->
-                            documentMetaInfo[documentId]?.let { metadata ->
-                                metadata.documentName?.let { dataSource.put("fileName", it) }
-                                metadata.publicationDate?.let { dataSource.put("publicationDate", it.toString()) }
-                            }
-                        }
-                    }
-                    enhanceDataSources(childNode, documentMetaInfo)
-                }
+                enhanceObjectNode(objectNode, documentMetaInfo)
             }
-            jsonNode.isArray -> jsonNode.forEach { childNode -> enhanceDataSources(childNode, documentMetaInfo) }
+
+            jsonNode.isArray -> {
+                jsonNode.forEach { childNode -> enhanceDataSources(childNode, documentMetaInfo) }
+            }
+        }
+    }
+
+    /**
+     * Enhances an `ObjectNode`'s properties by enriching `dataSource` objects with additional metadata
+     * found in the provided `documentMetaInfo` map. This method operates recursively on the node's properties
+     * and any nested structures.
+     *
+     * @param objectNode the `ObjectNode` to enhance, containing JSON data to inspect and update in place
+     * @param documentMetaInfo a map of document metadata indexed by document IDs, used to enrich matching `dataSource` objects
+     */
+    private fun enhanceObjectNode(
+        objectNode: ObjectNode,
+        documentMetaInfo: Map<String, DocumentMetaInfoEntity>,
+    ) {
+        objectNode.properties().forEach { (fieldName, childNode) ->
+            if (fieldName == "dataSource" && childNode.isObject) {
+                enhanceDataSource(childNode, documentMetaInfo)
+            }
+            enhanceDataSources(childNode, documentMetaInfo)
+        }
+    }
+
+    /**
+     * Enhances the given JSON data source with metadata from the provided document meta-information map.
+     * It updates the JSON object with the corresponding document name and publication date if applicable.
+     *
+     * @param jsonNode The JSON node to be enhanced. This must be an object node to be processed.
+     * @param documentMetaInfo A map containing metadata information, where the key is the file reference
+     * and the value is a `DocumentMetaInfoEntity` containing metadata associated with the file.
+     */
+    private fun enhanceDataSource(
+        jsonNode: JsonNode,
+        documentMetaInfo: Map<String, DocumentMetaInfoEntity>,
+    ) {
+        val dataSource = jsonNode as? ObjectNode
+
+        val documentId = dataSource?.path("fileReference")?.takeIf { it.isTextual }?.asText()
+
+        val metadata = documentId?.let { documentMetaInfo[it] }
+
+        if (dataSource != null && metadata != null) {
+            metadata.documentName?.let { dataSource.put("fileName", it) }
+            metadata.publicationDate?.let { dataSource.put("publicationDate", it.toString()) }
         }
     }
 }
