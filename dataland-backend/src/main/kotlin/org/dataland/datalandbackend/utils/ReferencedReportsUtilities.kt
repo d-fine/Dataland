@@ -180,43 +180,48 @@ class ReferencedReportsUtilities {
         currentPath: String = currentNodeName,
         violations: MutableList<String> = mutableListOf(),
     ): List<String> {
-        if (currentNodeName == DATA_SOURCE_FIELD && isDataSourceNode(jsonNode)) {
-            if (jsonNode.hasNonNull(FILE_NAME_FIELD)) {
-                violations.add(
-                    "The data source at '$currentPath' must not set the field '$FILE_NAME_FIELD' " +
-                        "(found '${jsonNode.get(FILE_NAME_FIELD).asText()}').",
-                )
+        when {
+            currentNodeName == DATA_SOURCE_FIELD && isDataSourceNode(jsonNode) -> {
+                if (jsonNode.hasNonNull(FILE_NAME_FIELD)) {
+                    violations.add(
+                        "The data source at '$currentPath' must not set the field '$FILE_NAME_FIELD' " +
+                            "(found '${jsonNode.get(FILE_NAME_FIELD).asText()}').",
+                    )
+                }
+                if (jsonNode.hasNonNull(PUBLICATION_DATE_FIELD)) {
+                    violations.add(
+                        "The data source at '$currentPath' must not set the field '$PUBLICATION_DATE_FIELD' " +
+                            "(found '${jsonNode.get(PUBLICATION_DATE_FIELD).asText()}').",
+                    )
+                }
             }
-            if (jsonNode.hasNonNull(PUBLICATION_DATE_FIELD)) {
-                violations.add(
-                    "The data source at '$currentPath' must not set the field '$PUBLICATION_DATE_FIELD' " +
-                        "(found '${jsonNode.get(PUBLICATION_DATE_FIELD).asText()}').",
-                )
+            jsonNode.isObject -> {
+                jsonNode
+                    .fieldNames()
+                    .asSequence()
+                    .map { fieldName -> fieldName to jsonNode.get(fieldName) }
+                    .forEach { (fieldName, value) ->
+                        validateDataSourcesDoNotContainInferableFields(
+                            value,
+                            currentNodeName = fieldName,
+                            currentPath = "$currentPath.$fieldName",
+                            violations = violations,
+                        )
+                    }
             }
-        } else if (jsonNode.isObject) {
-            jsonNode
-                .fieldNames()
-                .asSequence()
-                .map { fieldName -> fieldName to jsonNode.get(fieldName) }
-                .forEach { (fieldName, value) ->
+            jsonNode.isArray -> {
+                jsonNode.forEachIndexed { index, arrayEntry ->
                     validateDataSourcesDoNotContainInferableFields(
-                        value,
-                        currentNodeName = fieldName,
-                        currentPath = "$currentPath.$fieldName",
+                        arrayEntry,
+                        currentNodeName = currentNodeName,
+                        currentPath = "$currentPath[$index]",
                         violations = violations,
                     )
                 }
-        } else if (jsonNode.isArray) {
-            jsonNode.forEachIndexed { index, arrayEntry ->
-                validateDataSourcesDoNotContainInferableFields(
-                    arrayEntry,
-                    currentNodeName = currentNodeName,
-                    currentPath = "$currentPath[$index]",
-                    violations = violations,
-                )
             }
-        } else {
-            // Primitive values cannot contain nested data source nodes.
+            else -> {
+                // Primitive values cannot contain nested data source nodes.
+            }
         }
         return violations
     }
