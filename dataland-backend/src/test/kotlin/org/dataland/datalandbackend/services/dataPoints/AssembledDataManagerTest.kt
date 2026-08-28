@@ -117,7 +117,16 @@ class AssembledDataManagerTest {
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
     private val mockSupport by lazy {
-        AssembledDataManagerTestHelpers(datasetDatapointRepository, metaDataManager, dataAvailabilityChecker, storageClient, datasetId, companyId, reportingPeriod, uploaderUserId)
+        AssembledDataManagerTestHelpers(
+            datasetDatapointRepository,
+            metaDataManager,
+            dataAvailabilityChecker,
+            storageClient,
+            datasetId,
+            companyId,
+            reportingPeriod,
+            uploaderUserId,
+        )
     }
 
     private fun makeDataPointTypeSpecification(
