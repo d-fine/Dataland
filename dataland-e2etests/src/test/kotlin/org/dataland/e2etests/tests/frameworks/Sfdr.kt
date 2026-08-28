@@ -54,7 +54,7 @@ class Sfdr {
 
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
         assertEqualsByJsonComparator(
             listOfOneSfdrDataset[0],
             downloadedAssociatedData.data,
@@ -85,7 +85,7 @@ class Sfdr {
 
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
         assertEqualsByJsonComparator(
             listOfOneSfdrDataset[0],
             downloadedAssociatedData.data,

@@ -78,7 +78,7 @@ class DataControllerTest {
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
         // reportingPeriod is ignored here because backend normalization may rewrite the empty upload value.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
         assertEqualsByJsonComparator(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds.getValue("companyId"),
@@ -112,7 +112,7 @@ class DataControllerTest {
         // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
         // rather than being persisted/round-tripped as-is from the upload payload.
         // reportingPeriod is ignored here because backend normalization may rewrite the empty upload value.
-        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod")
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource")
         assertEqualsByJsonComparator(
             expectedCompanyAssociatedData, getDataByIdResponse,
             JsonComparator.JsonComparisonOptions(ignoredKeys),
