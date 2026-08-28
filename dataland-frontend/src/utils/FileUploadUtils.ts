@@ -47,10 +47,16 @@ export async function uploadFiles(
   }
 }
 
+/**
+ * Type guard for Axios errors representing HTTP 404 responses.
+ */
 function isNotFoundAxiosError(error: unknown): boolean {
   return error instanceof AxiosError && assertDefined(error.response).status === 404;
 }
 
+/**
+ * Checks whether a document with the given reference already exists in storage.
+ */
 async function isDocumentAlreadyInStorage(
   documentControllerApi: ApiClientProvider['apiClients']['documentController'],
   fileReference: string
@@ -66,6 +72,9 @@ async function isDocumentAlreadyInStorage(
   }
 }
 
+/**
+ * Updates document metadata when metadata is provided for an already uploaded document.
+ */
 async function patchDocumentMetaInfoIfProvided(
   documentControllerApi: ApiClientProvider['apiClients']['documentController'],
   fileReference: string,
@@ -83,6 +92,9 @@ async function patchDocumentMetaInfoIfProvided(
   await documentControllerApi.patchDocumentMetaInfo(fileReference, documentMetaInfoPatch);
 }
 
+/**
+ * Uploads a document and verifies that the backend-computed hash matches the local reference.
+ */
 async function uploadDocumentAndValidateHash(
   documentControllerApi: ApiClientProvider['apiClients']['documentController'],
   fileToUpload: DocumentToUpload,

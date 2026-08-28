@@ -30,15 +30,18 @@ internal data class RawDataPointTypeSpecification(
     val calculationRules: List<CalculationRule> = emptyList(),
 )
 
+internal data class AssembledDataManagerTestContext(
+    val datasetId: String,
+    val dataDimensions: BasicDatasetDimensions,
+    val uploaderUserId: String,
+)
+
 internal class AssembledDataManagerTestHelpers(
     private val datasetDatapointRepository: DatasetDatapointRepository,
     private val metaDataManager: DataPointMetaInformationManager,
     private val dataAvailabilityChecker: DataAvailabilityChecker,
     private val storageClient: StorageControllerApi,
-    private val datasetId: String,
-    private val companyId: String,
-    private val reportingPeriod: String,
-    private val uploaderUserId: String,
+    private val context: AssembledDataManagerTestContext,
 ) {
     fun setMockData(
         dataPoints: Map<String, String>,
@@ -47,11 +50,11 @@ internal class AssembledDataManagerTestHelpers(
         doReturn(
             Optional.of(
                 DatasetDatapointEntity(
-                    datasetId = datasetId,
+                    datasetId = context.datasetId,
                     dataPoints = dataPoints,
                 ),
             ),
-        ).whenever(datasetDatapointRepository).findById(datasetId)
+        ).whenever(datasetDatapointRepository).findById(context.datasetId)
 
         doAnswer { invocation ->
             invocation.getArgument<Collection<String>>(0).map { dataPointId ->
@@ -82,8 +85,8 @@ internal class AssembledDataManagerTestHelpers(
                 StorableDataPoint(
                     dataPoint = dataContent[id] ?: "",
                     dataPointType = dataPoints.filterValues { it == id }.keys.first(),
-                    companyId = companyId,
-                    reportingPeriod = reportingPeriod,
+                    companyId = context.dataDimensions.companyId,
+                    reportingPeriod = context.dataDimensions.reportingPeriod,
                 )
             }
         }.whenever(storageClient).selectBatchDataPointsByIds(any(), any())
@@ -92,14 +95,14 @@ internal class AssembledDataManagerTestHelpers(
     private fun makeDataPointMetaInfo(
         dataPointId: String,
         dataPointType: String,
-        companyId: String = this.companyId,
-        reportingPeriod: String = this.reportingPeriod,
+        companyId: String = context.dataDimensions.companyId,
+        reportingPeriod: String = context.dataDimensions.reportingPeriod,
     ) = DataPointMetaInformationEntity(
         dataPointId = dataPointId,
         companyId = companyId,
         dataPointType = dataPointType,
         reportingPeriod = reportingPeriod,
-        uploaderUserId = uploaderUserId,
+        uploaderUserId = context.uploaderUserId,
         uploadTime = Instant.now().toEpochMilli(),
         currentlyActive = true,
         qaStatus = QaStatus.Accepted,

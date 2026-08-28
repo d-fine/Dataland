@@ -122,10 +122,11 @@ class AssembledDataManagerTest {
             metaDataManager,
             dataAvailabilityChecker,
             storageClient,
-            datasetId,
-            companyId,
-            reportingPeriod,
-            uploaderUserId,
+            AssembledDataManagerTestContext(
+                datasetId = datasetId,
+                dataDimensions = dataDimensions,
+                uploaderUserId = uploaderUserId,
+            ),
         )
     }
 

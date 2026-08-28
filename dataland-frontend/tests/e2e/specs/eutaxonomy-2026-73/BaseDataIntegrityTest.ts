@@ -154,7 +154,7 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
   /**
    * Sort comparator with locale-aware, deterministic alphabetic ordering.
    */
-  private static compareAlphabetically(left: string, right: string): number {
+  private static compareAlphabetically(this: void, left: string, right: string): number {
     return left.localeCompare(right);
   }
 
