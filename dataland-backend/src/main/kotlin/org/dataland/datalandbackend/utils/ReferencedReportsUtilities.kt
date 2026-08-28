@@ -206,6 +206,17 @@ class ReferencedReportsUtilities {
                         violations = violations,
                     )
                 }
+        } else if (jsonNode.isArray) {
+            jsonNode.forEachIndexed { index, arrayEntry ->
+                validateDataSourcesDoNotContainInferableFields(
+                    arrayEntry,
+                    currentNodeName = currentNodeName,
+                    currentPath = "$currentPath[$index]",
+                    violations = violations,
+                )
+            }
+        } else {
+            // Primitive values cannot contain nested data source nodes.
         }
         return violations
     }

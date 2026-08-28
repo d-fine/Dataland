@@ -28,39 +28,70 @@ export async function uploadFiles(
 ): Promise<void> {
   const documentControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.documentController;
   const alreadyUploadedFileReferences = new Set<string>();
+
   for (const fileToUpload of files) {
     if (alreadyUploadedFileReferences.has(fileToUpload.fileReference)) {
       continue;
     }
-    let fileIsAlreadyInStorage: boolean;
-    try {
-      await documentControllerApi.checkDocument(fileToUpload.fileReference);
-      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
-      fileIsAlreadyInStorage = true;
-    } catch (error) {
-      if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
-        fileIsAlreadyInStorage = false;
-      } else {
-        throw error;
-      }
-    }
+
+    const fileIsAlreadyInStorage = await isDocumentAlreadyInStorage(documentControllerApi, fileToUpload.fileReference);
     const documentMetaInfo = documentMetaInfoByReference.get(fileToUpload.fileReference);
-    if (fileIsAlreadyInStorage && documentMetaInfo) {
-      const documentMetaInfoPatch: DocumentMetaInfoPatch = {
-        documentName: documentMetaInfo.documentName,
-        publicationDate: documentMetaInfo.publicationDate,
-        reportingPeriod: documentMetaInfo.reportingPeriod,
-      };
-      await documentControllerApi.patchDocumentMetaInfo(fileToUpload.fileReference, documentMetaInfoPatch);
+
+    if (fileIsAlreadyInStorage) {
+      await patchDocumentMetaInfoIfProvided(documentControllerApi, fileToUpload.fileReference, documentMetaInfo);
+    } else {
+      await uploadDocumentAndValidateHash(documentControllerApi, fileToUpload, documentMetaInfo);
     }
-    if (!fileIsAlreadyInStorage) {
-      const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file, documentMetaInfo)).data
-        .documentId;
-      if (fileToUpload.fileReference !== backendComputedHash) {
-        throw new Error('Locally computed document hash does not concede with the one received by the upload request!');
-      }
-      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
+
+    alreadyUploadedFileReferences.add(fileToUpload.fileReference);
+  }
+}
+
+function isNotFoundAxiosError(error: unknown): boolean {
+  return error instanceof AxiosError && assertDefined(error.response).status === 404;
+}
+
+async function isDocumentAlreadyInStorage(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileReference: string
+): Promise<boolean> {
+  try {
+    await documentControllerApi.checkDocument(fileReference);
+    return true;
+  } catch (error) {
+    if (isNotFoundAxiosError(error)) {
+      return false;
     }
+    throw error;
+  }
+}
+
+async function patchDocumentMetaInfoIfProvided(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileReference: string,
+  documentMetaInfo: DocumentMetaInfo | undefined
+): Promise<void> {
+  if (!documentMetaInfo) {
+    return;
+  }
+
+  const documentMetaInfoPatch: DocumentMetaInfoPatch = {
+    documentName: documentMetaInfo.documentName,
+    publicationDate: documentMetaInfo.publicationDate,
+    reportingPeriod: documentMetaInfo.reportingPeriod,
+  };
+  await documentControllerApi.patchDocumentMetaInfo(fileReference, documentMetaInfoPatch);
+}
+
+async function uploadDocumentAndValidateHash(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileToUpload: DocumentToUpload,
+  documentMetaInfo: DocumentMetaInfo | undefined
+): Promise<void> {
+  const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file, documentMetaInfo)).data
+    .documentId;
+  if (fileToUpload.fileReference !== backendComputedHash) {
+    throw new Error('Locally computed document hash does not concede with the one received by the upload request!');
   }
 }
 

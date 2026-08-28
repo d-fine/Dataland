@@ -148,7 +148,14 @@ export abstract class BaseDataIntegrityTest<TFrameworkData extends object> {
       }
     };
     visit(data);
-    return fileReferences.sort();
+    return fileReferences.sort(BaseDataIntegrityTest.compareAlphabetically);
+  }
+
+  /**
+   * Sort comparator with locale-aware, deterministic alphabetic ordering.
+   */
+  private static compareAlphabetically(left: string, right: string): number {
+    return left.localeCompare(right);
   }
 
   /**

@@ -36,7 +36,7 @@ export interface DataPointSourceInfo {
  * @returns a copy of the dataset without inferred fields on document references
  */
 export function removeInferableDocumentFields<T>(data: T): T {
-  const uploadData = JSON.parse(JSON.stringify(data)) as unknown;
+  const uploadData = structuredClone(data) as unknown;
   removeInferableDocumentFieldsFromValue(uploadData);
   return uploadData as T;
 }
@@ -82,7 +82,7 @@ export function restoreInferableDocumentFields<T>(
   data: T,
   fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
 ): T {
-  const restoredData = JSON.parse(JSON.stringify(data)) as unknown;
+  const restoredData = structuredClone(data) as unknown;
   restoreInferableDocumentFieldsFromValue(restoredData, fileReferenceToReport);
   return restoredData as T;
 }
