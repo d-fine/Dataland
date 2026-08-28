@@ -267,7 +267,7 @@ class AssembledDataManagerTest {
         val storedDataSource =
             defaultObjectMapper.readValue(storedDataSourceNode.toString(), ExtendedDocumentReference::class.java)
 
-        assertEquals("AnnualReport", storedDataSource.fileName)
+        assertEquals(null, storedDataSource.fileName)
         assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", storedDataSource.fileReference)
         assertEquals("213", storedDataSource.page)
         assertEquals("e-business", storedDataSource.tagName)
@@ -295,7 +295,11 @@ class AssembledDataManagerTest {
         dataPoints.forEach {
             assert(assembledDataset.contains(it))
         }
-        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(
+            assembledDataset.contains(
+                "\"referencedReports\":{\"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\":",
+            ),
+        )
     }
 
     @Test
@@ -309,9 +313,15 @@ class AssembledDataManagerTest {
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
+
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
-        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assertTrue(
+            dynamicDataset.contains(
+                "\"referencedReports\":{\"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\":",
+            ),
+            "Expected referencedReports to be present.\nActual dataset:\n$dynamicDataset",
+        )
     }
 
     @Test

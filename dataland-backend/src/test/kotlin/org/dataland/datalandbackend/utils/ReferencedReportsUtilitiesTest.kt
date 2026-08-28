@@ -17,8 +17,8 @@ import java.time.LocalDate
 
 class ReferencedReportsUtilitiesTest {
     private val currencyDataPoint = "./json/validation/currencyDataPoint.json"
-    private val currencyDataPointWithExtendedDocumentReference =
-        "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
+    private val currencyDataPointWithExtendedDocumentReferenceAndInferableFields =
+        "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReferenceAndInferableFields.json"
     private val frameworkTemplate = "./json/frameworkTemplate/template.json"
     private val frameworkWithReferencedReports = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
@@ -45,7 +45,7 @@ class ReferencedReportsUtilitiesTest {
 
     @Test
     fun `check that extraction of the referenced report works as expected`() {
-        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReferenceAndInferableFields)
         val dataSource = defaultObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
@@ -172,7 +172,7 @@ class ReferencedReportsUtilitiesTest {
 
     @Test
     fun `check that validateDataSourcesDoNotContainInferableFields detects fileName and publicationDate`() {
-        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReferenceAndInferableFields)
         val violations =
             referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
                 defaultObjectMapper.readTree(dataPoint),
