@@ -274,8 +274,11 @@ class NonSourceabilityInformationManager(
     fun searchActiveNonSourceableDimensions(query: DataDimensionQuery): Set<BasicDataDimensions> {
         val dataTypes = query.dataTypes.map { DataType.valueOf(it) }
         return nonSourceabilityDataRepository
-            .findActiveTriples(query.companyIds, dataTypes, query.reportingPeriods)
-            .map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
+            .findActiveTriples(
+                query.companyIds.ifEmpty { null },
+                dataTypes.ifEmpty { null },
+                query.reportingPeriods.ifEmpty { null },
+            ).map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
             .toSet()
     }
 
