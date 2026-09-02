@@ -13,7 +13,7 @@ x-common-proxy-env: &proxy-env
 # consult the NO_PROXY/no_proxy environment variables above - they only honor the JVM system property
 # -Dhttp.nonProxyHosts. The list below intentionally mirrors the NO_PROXY list above
 x-java-memory-limits:
-  JAVA_TOOL_OPTIONS: &java-tool-options "${JAVA_TOOL_OPTIONS:-} -Dhttp.nonProxyHosts=localhost|127.*|[::1]|gateway.docker.internal|host.docker.internal|internal-storage|api-key-manager|accounting-service|data-sourcing-service|document-manager|backend|keycloak|rabbitmq|qa-service|user-service|community-manager|specification-service|email-service"
+  JAVA_TOOL_OPTIONS: &java-tool-options "${DATALAND_JAVA_TOOL_OPTIONS:-} -Dhttp.nonProxyHosts=localhost|127.*|[::1]|gateway.docker.internal|host.docker.internal|internal-storage|api-key-manager|accounting-service|data-sourcing-service|document-manager|backend|keycloak|rabbitmq|qa-service|user-service|community-manager|specification-service|email-service"
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
