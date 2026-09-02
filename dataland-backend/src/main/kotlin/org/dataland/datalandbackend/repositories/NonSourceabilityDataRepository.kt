@@ -75,4 +75,24 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
     ): NonSourceabilityInformationEntity?
+
+    /**
+     * Returns all currently-active non-sourceability entries matching the given filters.
+     * An empty list for any parameter is treated as a wildcard (no restriction on that dimension).
+     * Used for bulk triple search (e.g. POST /non-sourceable/search).
+     */
+    @Query(
+        """
+        SELECT e FROM NonSourceabilityInformationEntity e
+        WHERE (:companyIds IS EMPTY OR e.companyId IN :companyIds)
+          AND (:dataTypes IS EMPTY OR e.dataType IN :dataTypes)
+          AND (:reportingPeriods IS EMPTY OR e.reportingPeriod IN :reportingPeriods)
+          AND e.currentlyActive = true
+        """,
+    )
+    fun findActiveTriples(
+        @Param("companyIds") companyIds: List<String>,
+        @Param("dataTypes") dataTypes: List<DataType>,
+        @Param("reportingPeriods") reportingPeriods: List<String>,
+    ): List<NonSourceabilityInformationEntity>
 }

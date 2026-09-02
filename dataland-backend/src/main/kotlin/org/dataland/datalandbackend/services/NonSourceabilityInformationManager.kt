@@ -2,12 +2,14 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceabilityInformationEntity
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -262,6 +264,19 @@ class NonSourceabilityInformationManager(
                     "companyId=$companyId, dataType=$dataType, reportingPeriod=$reportingPeriod",
             )
         }
+    }
+
+    /**
+     * Returns the set of (companyId, dataType, reportingPeriod) triples for which an active
+     * non-sourceability entry exists, matching the given filter query. An empty list for any
+     * field of the query is treated as a wildcard (used by POST /non-sourceable/search).
+     */
+    fun searchActiveNonSourceableDimensions(query: DataDimensionQuery): Set<BasicDataDimensions> {
+        val dataTypes = query.dataTypes.map { DataType.valueOf(it) }
+        return nonSourceabilityDataRepository
+            .findActiveTriples(query.companyIds, dataTypes, query.reportingPeriods)
+            .map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
+            .toSet()
     }
 
     private fun emitLifecycleEvent(
