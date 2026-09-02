@@ -49,6 +49,8 @@
           :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
+          :number-of-non-sourceable-reporting-periods="nonSourceablePeriodsByFramework[framework]?.length ?? 0"
+          :non-sourceable-reporting-periods="nonSourceablePeriodsByFramework[framework]"
           :data-test="`${framework}-summary-panel`"
         />
       </div>
@@ -112,6 +114,63 @@ const router = useRouter();
 /** local state (self-contained) */
 type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
+
+// TODO: remove this mock data once the backend endpoint / NonSourceabilityInfo.ts util is available
+const ReportingPeriodMock = {
+  Year2019: '2019',
+  Year2020: '2020',
+  Year2021: '2021',
+  Year2022: '2022',
+  Year2023: '2023',
+} as const;
+type ReportingPeriodMock = (typeof ReportingPeriodMock)[keyof typeof ReportingPeriodMock];
+
+// TODO: remove this mock interface once the backend endpoint / NonSourceabilityInfo.ts util is available
+interface NonSourceabilityTriple {
+  companyId: string;
+  dataType: DataTypeEnum;
+  reportingPeriod: ReportingPeriodMock;
+}
+
+// TODO: remove this mocked array once the backend endpoint / NonSourceabilityInfo.ts util is available
+const mockNonSourceableTriples: NonSourceabilityTriple[] = [
+  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2021 },
+  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2022 },
+  {
+    companyId: 'TestCompany',
+    dataType: 'eutaxonomy-financials' as DataTypeEnum,
+    reportingPeriod: ReportingPeriodMock.Year2019,
+  },
+  {
+    companyId: 'TestCompany',
+    dataType: 'eutaxonomy-financials' as DataTypeEnum,
+    reportingPeriod: ReportingPeriodMock.Year2020,
+  },
+  {
+    companyId: 'TestCompany',
+    dataType: 'eutaxonomy-financials' as DataTypeEnum,
+    reportingPeriod: ReportingPeriodMock.Year2021,
+  },
+  {
+    companyId: 'TestCompany',
+    dataType: 'eutaxonomy-financials' as DataTypeEnum,
+    reportingPeriod: ReportingPeriodMock.Year2022,
+  },
+  {
+    companyId: 'TestCompany',
+    dataType: 'eutaxonomy-financials' as DataTypeEnum,
+    reportingPeriod: ReportingPeriodMock.Year2023,
+  },
+];
+
+// TODO: remove this computed helper once the backend field / util is available
+const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
+  const grouped: Partial<Record<DataTypeEnum, string[]>> = {};
+  for (const triple of mockNonSourceableTriples) {
+    (grouped[triple.dataType] ??= []).push(triple.reportingPeriod);
+  }
+  return grouped;
+});
 
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
 const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
