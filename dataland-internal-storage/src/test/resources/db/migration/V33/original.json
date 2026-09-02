@@ -1,0 +1,30 @@
+{
+  "value": "Energy",
+  "quality": "Estimated",
+  "comment": "Test comment",
+  "dataSource": {
+    "page": "14",
+    "tagName": "someTag",
+    "fileName": "LVV_Annual_Report_2024",
+    "fileReference": "378b5971a4583bc5028fc7d67b03d82d07272e5c3db650a5316442d0cdeaf883",
+    "publicationDate": "2025-08-19"
+  },
+  "nested": {
+    "dataSource": {
+      "page": null,
+      "fileReference": "abcd1234",
+      "fileName": "Nested_Report",
+      "publicationDate": "2024-01-01"
+    }
+  },
+  "listOfSources": [
+    {
+      "dataSource": {
+        "fileReference": "listRef1",
+        "fileName": "List_Report",
+        "publicationDate": "2023-05-05",
+        "page": "3"
+      }
+    }
+  ]
+}
