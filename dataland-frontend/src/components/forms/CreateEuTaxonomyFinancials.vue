@@ -157,7 +157,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-import { getFilledKpis, removeInferableDocumentFields, restoreInferableDocumentFields } from '@/utils/DataPoint';
+import { getFilledKpis, removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { smoothScroll } from '@/utils/SmoothScroll';
@@ -329,16 +329,6 @@ export default defineComponent({
         }
         this.referencedReportsForPrefill =
           euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
-        const fileReferenceToReport = new Map<string, { fileName: string; publicationDate?: string | null }>(
-          Object.entries(this.referencedReportsForPrefill).map(([fileName, report]) => [
-            report.fileReference,
-            { fileName, publicationDate: report.publicationDate },
-          ])
-        );
-        euTaxonomyFinancialsResponseData.data = restoreInferableDocumentFields(
-          euTaxonomyFinancialsResponseData.data,
-          fileReferenceToReport
-        );
         this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
         this.waitingForData = false;
       }

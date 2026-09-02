@@ -1,9 +1,9 @@
 import CreateEuTaxonomyFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { getFilledKpis, restoreInferableDocumentFields } from '@/utils/DataPoint';
+import { getFilledKpis } from '@/utils/DataPoint';
 import { eutaxonomyFinancialsDataModel } from '@/frameworks/eutaxonomy-financials/UploadConfig';
-import { type CompanyAssociatedDataEutaxonomyFinancialsData, type CompanyReport } from '@clients/backend';
+import { type CompanyAssociatedDataEutaxonomyFinancialsData } from '@clients/backend';
 
 const testFileReference = 'bbebf6077b4ab868fd3e5f83ac70c864fc301c9ab9b3e1a53f52ac8a31b97ff7';
 const testFileName = 'TestReport';
@@ -101,15 +101,6 @@ function createFullyPopulatedEuTaxonomyFinancialsData(): CompanyAssociatedDataEu
 describe('Component test for the Eu Taxonomy Financials edit-mode prefill', () => {
   it('Mounts the edit form with a fully populated dataset without throwing a "Maximum recursive updates" error', () => {
     const companyAssociatedData = createFullyPopulatedEuTaxonomyFinancialsData();
-    const referencedReports = companyAssociatedData.data.general?.general?.referencedReports ?? {};
-    const fileReferenceToReport = new Map<string, { fileName: string; publicationDate?: string | null }>(
-      Object.entries(referencedReports as Record<string, CompanyReport>).map(([fileName, report]) => [
-        report.fileReference,
-        { fileName, publicationDate: report.publicationDate },
-      ])
-    );
-    // This mirrors the backfilling of inferable document fields performed in loadEuTaxonomyFinancialsData().
-    companyAssociatedData.data = restoreInferableDocumentFields(companyAssociatedData.data, fileReferenceToReport);
 
     getMountingFunction({
       keycloak: minimalKeycloakMock(),
