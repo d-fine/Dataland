@@ -182,7 +182,7 @@ import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/Y
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
-import { getFilledKpis, removeInferableDocumentFields, restoreInferableDocumentFields } from '@/utils/DataPoint';
+import { getFilledKpis, removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -340,16 +340,6 @@ export default defineComponent({
           this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
         }
         this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
-        const fileReferenceToReport = new Map<string, { fileName: string; publicationDate?: string | null }>(
-          Object.entries(this.referencedReportsForPrefill).map(([fileName, report]) => [
-            report.fileReference,
-            { fileName, publicationDate: report.publicationDate },
-          ])
-        );
-        euTaxonomyNonFinancialsResponseData.data = restoreInferableDocumentFields(
-          euTaxonomyNonFinancialsResponseData.data,
-          fileReferenceToReport
-        );
         this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
         this.waitingForData = false;
       }

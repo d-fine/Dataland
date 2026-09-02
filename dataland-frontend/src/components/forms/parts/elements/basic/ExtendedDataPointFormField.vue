@@ -189,7 +189,7 @@ export default defineComponent({
       this.dataSourceFileReference = existingFileReference;
       if (!this.currentReportValue) {
         // Try reverse-lookup by fileReference first, then fall back to the fileName
-        // already restored on the dataSource by restoreInferableDocumentFields.
+        // already present on the dataSource (enriched by the backend from document-manager metadata).
         this.currentReportValue =
           getFileNameByFileReference(existingFileReference, this.injectReportsNameAndReferences as ObjectType) ??
           (this.dataPoint?.dataSource as Record<string, string>)?.fileName ??
