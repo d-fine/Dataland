@@ -77,11 +77,13 @@ class V33__RemoveInferableDocumentFieldsFromDataPointsTest : BaseFlywayMigration
         assertFalse(secondSectorDataSource.has("publicationDate"))
         assertEquals("abcd1234", secondSectorDataSource["fileReference"].asText())
 
-        // A data source missing both fileReference and fileName (e.g. legacy/malformed data) must still be
-        // recognized and cleaned up based on the presence of publicationDate alone.
         val malformedDataSource =
             migratedDataPoint["NaceCodeC"]["highImpactClimateSectorEnergyConsumptionInGWh"]["dataSource"]
         assertFalse(malformedDataSource.has("fileName"))
         assertFalse(malformedDataSource.has("publicationDate"))
+
+        val fieldsWithValueNull = migratedDataPoint["NaceCodeD"]["highImpactClimateSectorEnergyConsumptionInGWh"]["dataSource"]
+        assertFalse(fieldsWithValueNull.has("fileName"))
+        assertFalse(fieldsWithValueNull.has("publicationDate"))
     }
 }
