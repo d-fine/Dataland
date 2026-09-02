@@ -1,7 +1,6 @@
 package db.migration
 
-import db.migration.utils.DataPointTableEntity
-import db.migration.utils.migrateAllDataPointTableEntities
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONArray
@@ -15,14 +14,6 @@ import org.slf4j.LoggerFactory
  * stale compared to the document manager, which is the single source of truth for document metadata. The
  * "fileReference" and "page" fields are the only non-inferable fields of a data source and are therefore
  * left untouched. The "tagName" field is also left untouched, as it has no counterpart in the document manager.
- *
- * Most stored data points are simple leaf objects with a single top-level "dataSource" (e.g. an
- * ExtendedDataPoint), but some data point types (e.g. "plainSfdrHighImpactClimateSectors", whose value is a
- * Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>) are stored as a single data point
- * that embeds several independent "dataSource" objects nested within object keys. The traversal below therefore
- * recurses into nested objects to cover this case. Recursing into arrays is additionally handled defensively for
- * forward-compatibility, even though no data point type is currently known to place a "dataSource" inside a
- * JSON array.
  */
 @Suppress("ClassName")
 class V33__RemoveInferableDocumentFieldsFromDataPoints : BaseJavaMigration() {
@@ -30,70 +21,198 @@ class V33__RemoveInferableDocumentFieldsFromDataPoints : BaseJavaMigration() {
         private const val DATA_SOURCE_FIELD = "dataSource"
         private const val FILE_NAME_FIELD = "fileName"
         private const val PUBLICATION_DATE_FIELD = "publicationDate"
+
+        private const val BATCH_SIZE = 1_000
+        private const val PROGRESS_LOG_INTERVAL = 10_000L
     }
 
     private val logger = LoggerFactory.getLogger("Migration V33")
+    private val objectMapper = ObjectMapper()
 
     override fun migrate(context: Context?) {
-        if (!tableExists(context)) return
-        migrateAllDataPointTableEntities(context) { dataPointTableEntity -> migrateDataPointTableEntity(dataPointTableEntity) }
+        if (context == null || !tableExists(context)) {
+            logger.info("Table data_point_items does not exist. Skipping migration V33.")
+            return
+        }
+
+        var lastDataPointId = ""
+        var scannedRows = 0L
+        var changedRows = 0L
+        var removedFields = 0L
+
+        while (true) {
+            val batch = loadNextBatch(context, lastDataPointId)
+            if (batch.isEmpty()) {
+                break
+            }
+
+            lastDataPointId = batch.last().dataPointId
+            scannedRows += batch.size
+
+            val batchResult = migrateBatch(context, batch)
+            changedRows += batchResult.changedRows
+            removedFields += batchResult.removedFields
+
+            if (scannedRows % PROGRESS_LOG_INTERVAL == 0L) {
+                logger.info(
+                    "Migration V33 progress: scanned {} candidate rows and changed {} rows.",
+                    scannedRows,
+                    changedRows,
+                )
+            }
+        }
+
+        logger.info(
+            "Migration V33 completed: scanned {} candidate rows, changed {} rows, and removed {} fields.",
+            scannedRows,
+            changedRows,
+            removedFields,
+        )
     }
 
-    private fun tableExists(context: Context?): Boolean =
-        context!!
-            .connection.metaData
-            .getTables(null, null, "data_point_items", null)
-            .next()
-
     /**
-     * Removes the inferable document fields from every "dataSource" object found within the data point.
+     * Applies the field removal to a batch of rows and writes back the ones that changed via a JDBC batch update.
+     * @return the number of rows and fields that were changed within this batch
      */
-    fun migrateDataPointTableEntity(dataPointTableEntity: DataPointTableEntity) {
-        removeInferableDocumentFields(dataPointTableEntity.dataPoint, dataPointTableEntity.dataPointId)
+    private fun migrateBatch(
+        context: Context,
+        batch: List<DataPointRow>,
+    ): BatchResult {
+        var changedRows = 0L
+        var removedFields = 0L
+
+        context.connection
+            .prepareStatement(
+                """
+                UPDATE public.data_point_items
+                SET data = ?
+                WHERE data_point_id = ?
+                """.trimIndent(),
+            ).use { updateStatement ->
+                var updatesInBatch = 0
+
+                batch.forEach { row ->
+                    val innerJson = objectMapper.readValue(row.rawData, String::class.java)
+                    val dataPoint = JSONObject(innerJson)
+
+                    val removedFromDataPoint = removeInferableDocumentFields(dataPoint)
+
+                    if (removedFromDataPoint > 0) {
+                        val storedData = objectMapper.writeValueAsString(dataPoint.toString())
+
+                        updateStatement.setString(1, storedData)
+                        updateStatement.setString(2, row.dataPointId)
+                        updateStatement.addBatch()
+
+                        changedRows++
+                        removedFields += removedFromDataPoint
+                        updatesInBatch++
+                    }
+                }
+
+                if (updatesInBatch > 0) {
+                    updateStatement.executeBatch()
+                }
+            }
+
+        return BatchResult(changedRows, removedFields)
     }
 
     /**
-     * Recursively traverses the given JSON value and removes the inferable document fields from every
-     * "dataSource" object".
+     * Loads the next batch of candidate rows using keyset pagination on the primary key. Only rows that could
+     * possibly contain "fileName" or "publicationDate" are returned.
      */
-    private fun removeInferableDocumentFields(
-        jsonValue: Any?,
-        dataPointId: String,
-    ) {
-        when (jsonValue) {
-            is JSONObject -> {
-                jsonValue.keys().asSequence().toList().forEach { key ->
-                    val value = jsonValue.opt(key)
-                    if (key == DATA_SOURCE_FIELD &&
-                        value is JSONObject &&
-                        (value.has(FILE_NAME_FIELD) || value.has(PUBLICATION_DATE_FIELD))
-                    ) {
-                        removeFieldIfPresent(value, FILE_NAME_FIELD)
-                        removeFieldIfPresent(value, PUBLICATION_DATE_FIELD)
-                    } else {
-                        removeInferableDocumentFields(value, dataPointId)
+    private fun loadNextBatch(
+        context: Context,
+        lastDataPointId: String,
+    ): List<DataPointRow> =
+        context.connection
+            .prepareStatement(
+                """
+                SELECT data_point_id, data
+                FROM public.data_point_items
+                WHERE data_point_id > ?
+                  AND (
+                        data LIKE '%fileName%'
+                     OR data LIKE '%publicationDate%'
+                  )
+                ORDER BY data_point_id
+                LIMIT ?
+                """.trimIndent(),
+            ).use { statement ->
+                statement.setString(1, lastDataPointId)
+                statement.setInt(2, BATCH_SIZE)
+
+                statement.executeQuery().use { resultSet ->
+                    buildList {
+                        while (resultSet.next()) {
+                            add(
+                                DataPointRow(
+                                    dataPointId = resultSet.getString("data_point_id"),
+                                    rawData = resultSet.getString("data"),
+                                ),
+                            )
+                        }
                     }
                 }
             }
 
-            is JSONArray -> {
-                for (index in 0 until jsonValue.length()) {
-                    removeInferableDocumentFields(jsonValue.opt(index), dataPointId)
+    /**
+     * Recursively traverses the given JSON value and removes the inferable document fields from every
+     * "dataSource" object found within it.
+     * @return the number of fields removed
+     */
+    private fun removeInferableDocumentFields(jsonValue: Any?): Int =
+        when (jsonValue) {
+            is JSONObject -> {
+                var removedFields = 0
+                jsonValue.keys().asSequence().toList().forEach { key ->
+                    val value = jsonValue.opt(key)
+                    if (key == DATA_SOURCE_FIELD && value is JSONObject) {
+                        removedFields += removeFieldIfPresent(value, FILE_NAME_FIELD)
+                        removedFields += removeFieldIfPresent(value, PUBLICATION_DATE_FIELD)
+                    }
+                    removedFields += removeInferableDocumentFields(value)
                 }
+                removedFields
+            }
+
+            is JSONArray -> {
+                var removedFields = 0
+                for (index in 0 until jsonValue.length()) {
+                    removedFields += removeInferableDocumentFields(jsonValue.opt(index))
+                }
+                removedFields
             }
 
             else -> {
-                // Do nothing for primitive values (String, Number, Boolean, null)
+                0
             }
         }
-    }
 
     private fun removeFieldIfPresent(
         dataSource: JSONObject,
         field: String,
-    ) {
-        if (dataSource.has(field)) {
-            dataSource.remove(field)
+    ): Int {
+        if (!dataSource.has(field)) {
+            return 0
         }
+        dataSource.remove(field)
+        return 1
     }
+
+    private fun tableExists(context: Context): Boolean =
+        context.connection.metaData
+            .getTables(null, null, "data_point_items", null)
+            .use { resultSet -> resultSet.next() }
+
+    private data class DataPointRow(
+        val dataPointId: String,
+        val rawData: String,
+    )
+
+    private data class BatchResult(
+        val changedRows: Long,
+        val removedFields: Long,
+    )
 }
