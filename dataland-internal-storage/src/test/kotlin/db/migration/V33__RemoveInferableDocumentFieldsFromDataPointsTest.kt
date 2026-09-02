@@ -7,7 +7,6 @@ import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +38,7 @@ class V33__RemoveInferableDocumentFieldsFromDataPointsTest : BaseFlywayMigration
             DataPointItem(
                 dataPointId = dataPointId,
                 companyId = UUID.randomUUID().toString(),
-                dataPointType = "someDataPointType",
+                dataPointType = "plainSfdrHighImpactClimateSectors",
                 reportingPeriod = "2023",
                 dataPoint =
                     defaultObjectMapper.writeValueAsString(
@@ -55,25 +54,34 @@ class V33__RemoveInferableDocumentFieldsFromDataPointsTest : BaseFlywayMigration
         val unwrappedJson = defaultObjectMapper.readValue(storedDataPoint, String::class.java)
         val migratedDataPoint = defaultObjectMapper.readTree(unwrappedJson)
 
-        val topLevelDataSource = migratedDataPoint["dataSource"]
-        assertFalse(topLevelDataSource.has("fileName"))
-        assertFalse(topLevelDataSource.has("publicationDate"))
-        assertEquals("14", topLevelDataSource["page"].asText())
-        assertEquals("someTag", topLevelDataSource["tagName"].asText())
+        val energyConsumption = migratedDataPoint["NaceCodeA"]["highImpactClimateSectorEnergyConsumptionInGWh"]["dataSource"]
+        assertFalse(energyConsumption.has("fileName"))
+        assertFalse(energyConsumption.has("publicationDate"))
+        assertEquals("14", energyConsumption["page"].asText())
+        assertEquals("someTag", energyConsumption["tagName"].asText())
         assertEquals(
             "378b5971a4583bc5028fc7d67b03d82d07272e5c3db650a5316442d0cdeaf883",
-            topLevelDataSource["fileReference"].asText(),
+            energyConsumption["fileReference"].asText(),
         )
 
-        val nestedDataSource = migratedDataPoint["nested"]["dataSource"]
-        assertFalse(nestedDataSource.has("fileName"))
-        assertFalse(nestedDataSource.has("publicationDate"))
-        assertEquals("abcd1234", nestedDataSource["fileReference"].asText())
+        val energyConsumptionPerRevenue =
+            migratedDataPoint["NaceCodeA"]["highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"]["dataSource"]
+        assertFalse(energyConsumptionPerRevenue.has("fileName"))
+        assertFalse(energyConsumptionPerRevenue.has("publicationDate"))
+        assertEquals("revenueRef1", energyConsumptionPerRevenue["fileReference"].asText())
+        assertEquals("3", energyConsumptionPerRevenue["page"].asText())
 
-        val listDataSource = migratedDataPoint["listOfSources"][0]["dataSource"]
-        assertFalse(listDataSource.has("fileName"))
-        assertFalse(listDataSource.has("publicationDate"))
-        assertTrue(listDataSource.has("fileReference"))
-        assertEquals("3", listDataSource["page"].asText())
+        val secondSectorDataSource =
+            migratedDataPoint["NaceCodeB"]["highImpactClimateSectorEnergyConsumptionInGWh"]["dataSource"]
+        assertFalse(secondSectorDataSource.has("fileName"))
+        assertFalse(secondSectorDataSource.has("publicationDate"))
+        assertEquals("abcd1234", secondSectorDataSource["fileReference"].asText())
+
+        // A data source missing both fileReference and fileName (e.g. legacy/malformed data) must still be
+        // recognized and cleaned up based on the presence of publicationDate alone.
+        val malformedDataSource =
+            migratedDataPoint["NaceCodeC"]["highImpactClimateSectorEnergyConsumptionInGWh"]["dataSource"]
+        assertFalse(malformedDataSource.has("fileName"))
+        assertFalse(malformedDataSource.has("publicationDate"))
     }
 }
