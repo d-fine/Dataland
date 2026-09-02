@@ -36,8 +36,7 @@ export interface DataPointSourceInfo {
  * @returns a copy of the dataset without inferred fields on document references
  */
 export function removeInferableDocumentFields<T>(data: T): T {
-	// NOSONAR: needed for tests to work
-  const uploadData = JSON.parse(JSON.stringify(data)) as unknown;
+  const uploadData = JSON.parse(JSON.stringify(data)) as unknown; // NOSONAR: needed for tests to work
   removeInferableDocumentFieldsFromValue(uploadData);
   return uploadData as T;
 }
@@ -83,8 +82,7 @@ export function restoreInferableDocumentFields<T>(
   data: T,
   fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
 ): T {
-	// NOSONAR: needed for tests to work
-  const restoredData = JSON.parse(JSON.stringify(data)) as unknown;
+  const restoredData = JSON.parse(JSON.stringify(data)) as unknown; // NOSONAR: needed for tests to work
   restoreInferableDocumentFieldsFromValue(restoredData, fileReferenceToReport);
   return restoredData as T;
 }

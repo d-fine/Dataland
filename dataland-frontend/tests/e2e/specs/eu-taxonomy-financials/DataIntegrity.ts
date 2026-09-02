@@ -108,8 +108,7 @@ function submitInEditModeAndFetchReuploadedDataset(
  * (report name vs fileReference) do not cause false negatives in deep comparison.
  */
 function normalizeReferencedReportsKeying(dataset: EutaxonomyFinancialsData): EutaxonomyFinancialsData {
-  // NOSONAR: needed for tests to work
-	const clone = JSON.parse(JSON.stringify(dataset)) as EutaxonomyFinancialsData;
+  const clone = JSON.parse(JSON.stringify(dataset)) as EutaxonomyFinancialsData; // NOSONAR: needed for tests to work
   const referencedReports = clone.general?.general?.referencedReports;
   if (!referencedReports) {
     return clone;
