@@ -30,13 +30,31 @@ export interface DataPointSourceInfo {
 }
 
 /**
+ * Creates a deep copy of plain JSON-like data structures (objects/arrays/primitives).
+ *
+ * @param value value to clone
+ * @returns deep copy of the provided value
+ */
+function cloneDeep<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((entry) => cloneDeep(entry)) as T;
+  }
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, nestedValue]) => [key, cloneDeep(nestedValue)])
+    ) as T;
+  }
+  return value;
+}
+
+/**
  * Creates an upload-safe copy by removing fields inferred from document-manager metadata.
  *
  * @param data the dataset model to prepare for upload
  * @returns a copy of the dataset without inferred fields on document references
  */
 export function removeInferableDocumentFields<T>(data: T): T {
-  const uploadData = JSON.parse(JSON.stringify(data)) as unknown; // NOSONAR: needed for tests to work
+  const uploadData = cloneDeep(data) as unknown; // NOSONAR: needed for tests to work
   removeInferableDocumentFieldsFromValue(uploadData);
   return uploadData as T;
 }
@@ -82,7 +100,7 @@ export function restoreInferableDocumentFields<T>(
   data: T,
   fileReferenceToReport: Map<string, { fileName: string; publicationDate?: string | null }>
 ): T {
-  const restoredData = JSON.parse(JSON.stringify(data)) as unknown; // NOSONAR: needed for tests to work
+  const restoredData = cloneDeep(data) as unknown; //// NOSONAR: needed for tests to work
   restoreInferableDocumentFieldsFromValue(restoredData, fileReferenceToReport);
   return restoredData as T;
 }
