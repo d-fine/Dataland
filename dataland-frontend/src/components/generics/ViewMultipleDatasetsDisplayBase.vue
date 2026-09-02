@@ -19,6 +19,10 @@
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
+          <!-- TODO: this box currently relies on mocked non-sourceability data (see script section); replace with real data once backend is ready -->
+          <div v-if="nonSourceabilityInfoText" class="col-12 non-sourceability-reporting-year-info my-3">
+            <span data-test="nonSourceabilityReportingYearInfo">{{ nonSourceabilityInfoText }}</span>
+          </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
@@ -75,6 +79,64 @@ import {
   type FrontendFrameworkDefinition,
 } from '@/frameworks/BaseFrameworkDefinition';
 
+// TODO: remove this mock data once the backend endpoint / NonSourceabilityInfo.ts util is available
+const ReportingPeriodMock = {
+  Year2021: '2021',
+  Year2022: '2022',
+} as const;
+type ReportingPeriodMock = (typeof ReportingPeriodMock)[keyof typeof ReportingPeriodMock];
+
+// TODO: remove this mock interface once the backend endpoint / NonSourceabilityInfo.ts util is available
+interface NonSourceabilityTriple {
+  companyId: string;
+  dataType: DataTypeEnum;
+  reportingPeriod: ReportingPeriodMock;
+}
+
+// TODO: remove this mocked array once the backend endpoint / NonSourceabilityInfo.ts util is available
+const mockNonSourceableTriples: NonSourceabilityTriple[] = [
+  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2021 },
+  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2022 },
+];
+
+/**
+ * Simulates fetching the non-sourceability triples from the backend for the given company and data type.
+ * Currently ignores companyId/dataType and just returns the hardcoded mock data.
+ * TODO: replace this mock function with a real async call to NonSourceabilityInfo.ts once the backend endpoint is
+ * available. Once replaced, companyId/dataType will actually be used to fetch/filter the real data.
+ * @param companyId the company id (currently unused, will be used once the real backend call is wired in)
+ * @param dataType the data type / framework (currently unused, will be used once the real backend call is wired in)
+ * @returns an iterable of non-sourceability triples
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getNonSourceabilityTriplesFromBackend(companyId: string, dataType: DataTypeEnum): NonSourceabilityTriple[] {
+  return mockNonSourceableTriples;
+}
+
+/**
+ * Builds the display text for the non-sourceable-periods info box, e.g.
+ * "For the following periods the data is non-sourceable: 2021, 2022".
+ * Extracts the reporting periods from the triples returned for the given company and data type.
+ * TODO: once getNonSourceabilityTriplesFromBackend is replaced with a real async call, this can no longer be a
+ * simple synchronous computed property. Instead, the fetched reporting periods need to be loaded asynchronously
+ * (e.g. in a watcher on companyId/dataType) into a reactive data() field, and only the text-building logic below
+ * should remain as a (still synchronous) computed property based on that reactive field.
+ * @param companyId the company id to fetch/filter by
+ * @param dataType the data type / framework to fetch/filter by
+ * @returns the display string, or an empty string if no non-sourceable periods exist
+ */
+function getNonSourceableReportingPeriodsText(companyId: string, dataType: DataTypeEnum): string {
+  const matchingPeriods = getNonSourceabilityTriplesFromBackend(companyId, dataType).map(
+    (triple) => triple.reportingPeriod
+  );
+
+  if (matchingPeriods.length === 0) {
+    return '';
+  }
+
+  return `For the following periods the data is non-sourceable: ${matchingPeriods.join(', ')}`;
+}
+
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
   computed: {
@@ -83,6 +145,10 @@ export default defineComponent({
     },
     frameworkViewConfiguration(): FrameworkViewConfiguration<object> | undefined {
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
+    },
+    // TODO: remove this computed property's dependency on mock data once the real backend call is wired in
+    nonSourceabilityInfoText(): string {
+      return getNonSourceableReportingPeriodsText(this.companyId, this.dataType);
     },
   },
   components: {
@@ -276,3 +342,10 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.non-sourceability-reporting-year-info {
+  background-color: var(--grey-tones-100);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+</style>
