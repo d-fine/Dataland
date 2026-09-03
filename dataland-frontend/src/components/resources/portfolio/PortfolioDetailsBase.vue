@@ -119,21 +119,11 @@
           :showFilterMatchModes="false"
         >
           <template #body="portfolioEntry">
-            <Button
-              v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-              :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-              variant="link"
-              @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
-              :pt="{
-                label: {
-                  style: 'font-weight: normal; text-align: left;',
-                },
-                root: {
-                  style: 'padding-left: 0;',
-                },
-              }"
+            <PortfolioReportingPeriodsCell
+              :periods="getReportingPeriodEntries(portfolioEntry.data, framework)"
+              :clickable="hasClickableLink(portfolioEntry.data, framework)"
+              @navigate="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)!)"
             />
-            <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
           </template>
           <template #filter="{ filterModel, filterCallback }">
             <div :data-test="getFrameworkFieldKey(framework) + 'AvailableReportingPeriodsFilterOverlay'">
@@ -188,6 +178,36 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
 import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
+import PortfolioReportingPeriodsCell, {
+  type ReportingPeriodEntry,
+} from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
+
+// TODO: remove this mock data once EnrichedPortfolioEntry provides non-sourceable reporting periods per
+// framework from the backend (computed in PortfolioEnrichmentService via a batched findActiveForCompanies lookup)
+const MOCKED_NON_SOURCEABLE_PERIODS_BY_FRAMEWORK: Partial<Record<string, string[]>> = {
+  [DataTypeEnum.Sfdr]: ['2019', '2027'],
+  [DataTypeEnum.EutaxonomyFinancials]: ['2025'],
+};
+
+/**
+ * Merges the (comma-separated) string of real, available reporting periods for a framework with the mocked
+ * non-sourceable reporting periods for that same framework, and returns a single, ascendingly sorted list where
+ * each entry is marked whether it is non-sourceable.
+ * TODO: replace the non-sourceable-periods argument with real data once the backend provides it.
+ * @param availableReportingPeriodsCsv the comma-separated string of real, available reporting periods
+ * @param framework the hyphenated framework name the reporting periods belong to
+ */
+function mergeReportingPeriods(
+  availableReportingPeriodsCsv: string | undefined,
+  framework: string
+): ReportingPeriodEntry[] {
+  const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
+  const nonSourceableYears = MOCKED_NON_SOURCEABLE_PERIODS_BY_FRAMEWORK[framework] ?? [];
+  const allYears = new Set([...realYears, ...nonSourceableYears]);
+  return Array.from(allYears)
+    .sort()
+    .map((year) => ({ year, nonSourceable: !realYears.includes(year) }));
+}
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -206,6 +226,11 @@ class PortfolioEntryPrepared {
   readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancials202673AvailableReportingPeriods: string | undefined;
   readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
+  readonly sfdrReportingPeriodEntries: ReportingPeriodEntry[];
+  readonly eutaxonomyFinancialsReportingPeriodEntries: ReportingPeriodEntry[];
+  readonly eutaxonomyNonFinancialsReportingPeriodEntries: ReportingPeriodEntry[];
+  readonly eutaxonomyNonFinancials202673ReportingPeriodEntries: ReportingPeriodEntry[];
+  readonly nuclearAndGasReportingPeriodEntries: ReportingPeriodEntry[];
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = portfolioEntry.companyId;
@@ -235,6 +260,27 @@ class PortfolioEntryPrepared {
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
+
+    this.sfdrReportingPeriodEntries = mergeReportingPeriods(
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr],
+      DataTypeEnum.Sfdr
+    );
+    this.eutaxonomyFinancialsReportingPeriodEntries = mergeReportingPeriods(
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials],
+      DataTypeEnum.EutaxonomyFinancials
+    );
+    this.eutaxonomyNonFinancialsReportingPeriodEntries = mergeReportingPeriods(
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials],
+      DataTypeEnum.EutaxonomyNonFinancials
+    );
+    this.eutaxonomyNonFinancials202673ReportingPeriodEntries = mergeReportingPeriods(
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673],
+      DataTypeEnum.EutaxonomyNonFinancials202673
+    );
+    this.nuclearAndGasReportingPeriodEntries = mergeReportingPeriods(
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas],
+      DataTypeEnum.NuclearAndGas
+    );
   }
 }
 
@@ -367,6 +413,42 @@ function getAvailableReportingPeriods(
     default:
       return undefined;
   }
+}
+
+/**
+ * For a given prepared portfolio entry and (hyphenated) framework name, return the merged list of
+ * available and non-sourceable reporting periods.
+ * @param portfolioEntryPrepared
+ * @param frameworkName
+ */
+function getReportingPeriodEntries(
+  portfolioEntryPrepared: PortfolioEntryPrepared,
+  frameworkName: string
+): ReportingPeriodEntry[] {
+  switch (frameworkName) {
+    case DataTypeEnum.Sfdr:
+      return portfolioEntryPrepared.sfdrReportingPeriodEntries;
+    case DataTypeEnum.EutaxonomyFinancials:
+      return portfolioEntryPrepared.eutaxonomyFinancialsReportingPeriodEntries;
+    case DataTypeEnum.EutaxonomyNonFinancials:
+      return portfolioEntryPrepared.eutaxonomyNonFinancialsReportingPeriodEntries;
+    case DataTypeEnum.EutaxonomyNonFinancials202673:
+      return portfolioEntryPrepared.eutaxonomyNonFinancials202673ReportingPeriodEntries;
+    case DataTypeEnum.NuclearAndGas:
+      return portfolioEntryPrepared.nuclearAndGasReportingPeriodEntries;
+    default:
+      return [];
+  }
+}
+
+/**
+ * Determines whether the reporting-periods cell for the given framework should be rendered as a clickable
+ * link, i.e. whether at least one real (non-strikethrough) reporting period exists.
+ * @param portfolioEntryPrepared
+ * @param frameworkName
+ */
+function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, frameworkName: string): boolean {
+  return Boolean(portfolioEntryPrepared.frameworkHyphenatedNamesToDataRef.get(frameworkName));
 }
 
 /**
