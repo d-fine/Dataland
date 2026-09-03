@@ -89,7 +89,9 @@ export default defineComponent({
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
     },
     nonSourceabilityInfoText(): string {
-      const periods = Array.from(this.nonSourceableDimensions ?? []).map((dim) => dim.reportingPeriod);
+      const periods = Array.from(this.nonSourceableDimensions ?? [])
+        .map((dim) => dim.reportingPeriod)
+        .sort();
       if (periods.length === 0) {
         return '';
       }
