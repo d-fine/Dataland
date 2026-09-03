@@ -18,3 +18,21 @@ permissions:
 
 agentInstructions:
   filename: AGENTS.md
+
+credentials:
+  - service: github
+    apiKey:
+      name: GH_TOKEN
+      proxyManaged: true
+      inject:
+        - domain: api.githubcopilot.com
+          header: Authorization
+          format: "Bearer %s"
+        - domain: api.github.com
+          header: Authorization
+          format: "Bearer %s"
+
+
+environment:
+  variables:
+    OPENCODE_AUTH_CONTENT: '{"github-copilot":{"type":"oauth","access":"gho_proxy-managed","refresh":"gho_proxy-managed","expires":0}}' 
