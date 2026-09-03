@@ -85,6 +85,14 @@ export default defineConfig({
       }
       require('@cypress/code-coverage/task')(on, config);
 
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'chromium') {
+          launchOptions.args.push('--ignore-certificate-errors');
+          launchOptions.args.push('--allow-insecure-localhost');
+        }
+        return launchOptions;
+      });
+
       on('task', {
         setToken(keySet: Record<string, unknown>) {
           Object.entries(keySet).forEach(([key, value]) => {
