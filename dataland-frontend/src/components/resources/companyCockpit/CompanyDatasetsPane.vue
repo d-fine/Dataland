@@ -99,6 +99,7 @@ import {
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
+import { useSearchNonSourceableDimensionsQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsQuery';
 
 const props = defineProps<{ companyId: string }>();
 
@@ -115,59 +116,16 @@ const router = useRouter();
 type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
 
-// TODO: remove this mock data once the backend endpoint / NonSourceabilityInfo.ts util is available
-const ReportingPeriodMock = {
-  Year2019: '2019',
-  Year2020: '2020',
-  Year2021: '2021',
-  Year2022: '2022',
-  Year2023: '2023',
-} as const;
-type ReportingPeriodMock = (typeof ReportingPeriodMock)[keyof typeof ReportingPeriodMock];
+const nonSourceabilityRequest = computed(() => ({ companyIds: [props.companyId] }));
+const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
 
-// TODO: remove this mock interface once the backend endpoint / NonSourceabilityInfo.ts util is available
-interface NonSourceabilityTriple {
-  companyId: string;
-  dataType: DataTypeEnum;
-  reportingPeriod: ReportingPeriodMock;
-}
-
-// TODO: remove this mocked array once the backend endpoint / NonSourceabilityInfo.ts util is available
-const mockNonSourceableTriples: NonSourceabilityTriple[] = [
-  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2021 },
-  { companyId: 'TestCompany', dataType: 'sfdr' as DataTypeEnum, reportingPeriod: ReportingPeriodMock.Year2022 },
-  {
-    companyId: 'TestCompany',
-    dataType: 'eutaxonomy-financials' as DataTypeEnum,
-    reportingPeriod: ReportingPeriodMock.Year2019,
-  },
-  {
-    companyId: 'TestCompany',
-    dataType: 'eutaxonomy-financials' as DataTypeEnum,
-    reportingPeriod: ReportingPeriodMock.Year2020,
-  },
-  {
-    companyId: 'TestCompany',
-    dataType: 'eutaxonomy-financials' as DataTypeEnum,
-    reportingPeriod: ReportingPeriodMock.Year2021,
-  },
-  {
-    companyId: 'TestCompany',
-    dataType: 'eutaxonomy-financials' as DataTypeEnum,
-    reportingPeriod: ReportingPeriodMock.Year2022,
-  },
-  {
-    companyId: 'TestCompany',
-    dataType: 'eutaxonomy-financials' as DataTypeEnum,
-    reportingPeriod: ReportingPeriodMock.Year2023,
-  },
-];
-
-// TODO: remove this computed helper once the backend field / util is available
 const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
   const grouped: Partial<Record<DataTypeEnum, string[]>> = {};
-  for (const triple of mockNonSourceableTriples) {
-    (grouped[triple.dataType] ??= []).push(triple.reportingPeriod);
+  for (const dim of nonSourceableDimensions.value ?? []) {
+    (grouped[dim.dataType as DataTypeEnum] ??= []).push(dim.reportingPeriod);
+  }
+  for (const key of Object.keys(grouped) as DataTypeEnum[]) {
+    grouped[key]?.sort();
   }
   return grouped;
 });
