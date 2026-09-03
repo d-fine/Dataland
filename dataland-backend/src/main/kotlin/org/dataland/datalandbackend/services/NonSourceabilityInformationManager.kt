@@ -275,9 +275,12 @@ class NonSourceabilityInformationManager(
         val dataTypes = query.dataTypes.map { DataType.valueOf(it) }
         return nonSourceabilityDataRepository
             .findActiveTriples(
-                query.companyIds.ifEmpty { null },
-                dataTypes.ifEmpty { null },
-                query.reportingPeriods.ifEmpty { null },
+                companyIds = query.companyIds,
+                isCompanyIdsEmpty = query.companyIds.isEmpty(),
+                dataTypes = dataTypes,
+                isDataTypesEmpty = dataTypes.isEmpty(),
+                reportingPeriods = query.reportingPeriods,
+                isReportingPeriodsEmpty = query.reportingPeriods.isEmpty(),
             ).map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
             .toSet()
     }
