@@ -582,6 +582,76 @@
         ]
       }
     },
+    "/non-sourceable/search/grouped": {
+      "post": {
+        "tags": [
+          "non-sourceability-controller"
+        ],
+        "summary": "Returns all currently-active non-sourceability data dimensions matching the given filters, grouped by company ID and framework.",
+        "description": "Accepts lists of company IDs, frameworks, and reporting periods. Returns the set of (companyId, dataType, reportingPeriod) triples for which an active non-sourceability entry exists and that match any combination of the provided filters, pre-grouped into a map of maps: companyId -\u003e framework -\u003e set of matching data dimensions. An empty list for any field is treated as a wildcard and matches all values for that dimension.",
+        "operationId": "searchNonSourceableDimensionsGroupedByCompanyAndFramework",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataDimensionSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved non-sourceable data dimensions grouped by company and framework.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BasicDataDimensions"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable": {
       "get": {
         "tags": [

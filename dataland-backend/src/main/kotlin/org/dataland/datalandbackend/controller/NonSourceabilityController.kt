@@ -26,4 +26,17 @@ class NonSourceabilityController
             val query = request.toDataDimensionQuery()
             return ResponseEntity.ok(nonSourceabilityInformationManager.searchActiveNonSourceableDimensions(query))
         }
+
+        override fun searchNonSourceableDimensionsGroupedByCompanyAndFramework(
+            request: DataDimensionSearchRequest,
+        ): ResponseEntity<Map<String, Map<String, Set<BasicDataDimensions>>>> {
+            logger.info(
+                "Received a request to search non-sourceable dimensions grouped by company and framework " +
+                    "with the search request being $request",
+            )
+            val query = request.toDataDimensionQuery()
+            return ResponseEntity.ok(
+                nonSourceabilityInformationManager.searchActiveNonSourceableDimensionsGroupedByCompanyAndFramework(query),
+            )
+        }
     }

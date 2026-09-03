@@ -285,6 +285,22 @@ class NonSourceabilityInformationManager(
             .toSet()
     }
 
+    /**
+     * Returns the currently-active non-sourceability data dimensions matching the given filter query,
+     * pre-grouped into a map of maps: companyId -> framework (dataType) -> set of matching data dimensions.
+     * An empty list for any field of the query is treated as a wildcard (used by POST /non-sourceable/search/grouped).
+     */
+    fun searchActiveNonSourceableDimensionsGroupedByCompanyAndFramework(
+        query: DataDimensionQuery,
+    ): Map<String, Map<String, Set<BasicDataDimensions>>> =
+        searchActiveNonSourceableDimensions(query)
+            .groupBy { it.companyId }
+            .mapValues { (_, dimensionsForCompany) ->
+                dimensionsForCompany
+                    .groupBy { it.dataType }
+                    .mapValues { (_, dimensionsForFramework) -> dimensionsForFramework.toSet() }
+            }
+
     private fun emitLifecycleEvent(
         entity: NonSourceabilityInformationEntity,
         bypassQa: Boolean,
