@@ -1,0 +1,40 @@
+schemaVersion: "2"
+kind: sandbox
+name: dataland
+sandbox:
+  image: "docker/sandbox-templates:opencode-docker"
+  entrypoint:
+    [ bash ]
+
+permissions:
+  network:
+    allow:
+      - "packages.adoptium.net:443"
+      - "fnm.vercel.app:443"
+      - "opencode.ai:443"
+      - "download.cypress.io:443"
+      - "cdn.cypress.io:443"
+      - "local-dev.dataland.com:443"
+      - "raw.githubusercontent.com:443"
+      - "download-cdn.jetbrains.com:443"
+
+agentInstructions:
+  filename: AGENTS.md
+
+credentials:
+  - service: github
+    apiKey:
+      name: GH_TOKEN
+      proxyManaged: true
+      inject:
+        - domain: api.githubcopilot.com
+          header: Authorization
+          format: "Bearer %s"
+        - domain: api.github.com
+          header: Authorization
+          format: "Bearer %s"
+
+
+environment:
+  variables:
+    OPENCODE_AUTH_CONTENT: '{"github-copilot":{"type":"oauth","access":"gho_proxy-managed","refresh":"gho_proxy-managed","expires":0}}' 

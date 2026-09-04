@@ -14,4 +14,4 @@ USER grafana
 
 ENTRYPOINT ["/grafana-entrypoint.sh"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s CMD curl --fail http://localhost:3000/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --start-interval=60s --retries=6 CMD curl --fail http://localhost:3000/api/health || exit 1
