@@ -23,7 +23,6 @@ Follow these steps to set up the dataland development stack on your computer.
 5. Clone this repository to your computer.
 6. Start the development stack by running `manageLocalStack.sh --reset --start`. You may omit the `--reset` on subsequent starts. Especially the first start can take a long time, make sure that Docker is running in the background. Note: on Windows run this command in bash terminal e.g. GitBash.
 7. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
-   - The stack uses a self-signed certificate, so your browser will show a certificate warning (Edge/Chrome may refuse to offer a click-through). On Windows, you can trust it once per machine by running `localstack/install-cert-windows.ps1` in an elevated PowerShell (see the script's header comment for details, including how to clear a cached HSTS policy if the site is still blocked afterward).
 8. You can stop the development stack by running `manageLocalStack.sh --stop`.
 
 # Developer Remarks
