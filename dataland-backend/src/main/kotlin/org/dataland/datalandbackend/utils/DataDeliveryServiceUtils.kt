@@ -9,8 +9,10 @@ import org.dataland.datalandbackendutils.model.DataPointId
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoEntity
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import kotlin.system.measureTimeMillis
 
 /**
  * Utility class for enhancing data points by enriching them with metadata from referenced documents.
@@ -28,6 +30,9 @@ class DataDeliveryServiceUtils(
 ) {
     private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val objectMapper = JsonUtils.defaultObjectMapper
+
+    // Temporary timing logs for investigating enhanceDataPoints performance - remove once done.
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Stored and calculated data points after their referenced document metadata has been added to their JSON content.
@@ -51,18 +56,64 @@ class DataDeliveryServiceUtils(
         allStoredDataPoints: Map<DataPointId, UploadedDataPoint>,
         calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
     ): EnhancedDataPoints {
-        val documentMetaInfo = resolveReferenceIds(getRequiredReferencedIds(allStoredDataPoints, calculatedData))
+        logStartSummary(allStoredDataPoints, calculatedData)
 
-        return EnhancedDataPoints(
-            allStoredDataPoints =
-                allStoredDataPoints.mapValues { (_, dataPoint) ->
-                    enhanceDataPoint(dataPoint, documentMetaInfo)
-                },
-            calculatedData =
-                calculatedData.mapValues { (_, dataPoints) ->
-                    dataPoints.map { dataPoint -> enhanceDataPoint(dataPoint, documentMetaInfo) }
-                },
+        val (referenceIds, getIdsMs) = withTiming { getRequiredReferencedIds(allStoredDataPoints, calculatedData) }
+        logger.info(
+            "[TIMING] getRequiredReferencedIds took ${getIdsMs}ms, found ${referenceIds.size} distinct referenced ids: $referenceIds",
         )
+
+        val (documentMetaInfo, resolveIdsMs) = withTiming { resolveReferenceIds(referenceIds) }
+        logger.info(
+            "[TIMING] resolveReferenceIds (document manager batch call) took ${resolveIdsMs}ms for " +
+                "${referenceIds.size} requested ids, resolved ${documentMetaInfo.size} entries (ids=${documentMetaInfo.keys})",
+        )
+
+        val (enhancedStored, enhanceStoredMs) =
+            withTiming { allStoredDataPoints.mapValues { (_, dataPoint) -> enhanceDataPoint(dataPoint, documentMetaInfo) } }
+        logger.info("[TIMING] enhancing ${allStoredDataPoints.size} stored data points took ${enhanceStoredMs}ms")
+
+        val (enhancedCalculated, enhanceCalculatedMs) =
+            withTiming {
+                calculatedData.mapValues { (_, dataPoints) -> dataPoints.map { enhanceDataPoint(it, documentMetaInfo) } }
+            }
+        logger.info("[TIMING] enhancing calculated data (${calculatedData.size} dimensions) took ${enhanceCalculatedMs}ms")
+
+        val totalMs = getIdsMs + resolveIdsMs + enhanceStoredMs + enhanceCalculatedMs
+        logger.info("[TIMING] enhanceDataPoints finished, total measured duration ${totalMs}ms")
+
+        return EnhancedDataPoints(allStoredDataPoints = enhancedStored, calculatedData = enhancedCalculated)
+    }
+
+    /**
+     * Logs a summary of the data points about to be enhanced (temporary timing/debug logging).
+     *
+     * @param allStoredDataPoints stored data points indexed by their IDs
+     * @param calculatedData calculated data points grouped by dataset dimensions
+     */
+    private fun logStartSummary(
+        allStoredDataPoints: Map<DataPointId, UploadedDataPoint>,
+        calculatedData: Map<BasicDatasetDimensions, List<UploadedDataPoint>>,
+    ) {
+        val totalCalculatedDataPoints = calculatedData.values.sumOf { it.size }
+        logger.info(
+            "[TIMING] enhanceDataPoints started. allStoredDataPoints=${allStoredDataPoints.size} " +
+                "(ids=${allStoredDataPoints.keys}), calculatedData=${calculatedData.size} dimensions " +
+                "($totalCalculatedDataPoints data points total)",
+        )
+    }
+
+    /**
+     * Runs [block] and returns its result together with the measured wall-clock duration in milliseconds
+     * (temporary timing/debug helper).
+     *
+     * @param block the block to run and time
+     * @return the block's result and its duration in milliseconds
+     */
+    private fun <T : Any> withTiming(block: () -> T): Pair<T, Long> {
+        lateinit var result: T
+        val durationMs = measureTimeMillis { result = block() }
+        return result to durationMs
     }
 
     /**
@@ -116,9 +167,18 @@ class DataDeliveryServiceUtils(
     ): UploadedDataPoint {
         if (documentMetaInfo.isEmpty()) return dataPoint
 
-        val dataPointJson = objectMapper.readTree(dataPoint.dataPoint)
-        enhanceDataSources(dataPointJson, documentMetaInfo)
-        return dataPoint.copy(dataPoint = objectMapper.writeValueAsString(dataPointJson))
+        val (result, durationMs) =
+            withTiming {
+                val dataPointJson = objectMapper.readTree(dataPoint.dataPoint)
+                enhanceDataSources(dataPointJson, documentMetaInfo)
+                dataPoint.copy(dataPoint = objectMapper.writeValueAsString(dataPointJson))
+            }
+        logger.info(
+            "[TIMING] enhanceDataPoint (companyId=${dataPoint.companyId}, " +
+                "dataPointType=${dataPoint.dataPointType}, reportingPeriod=${dataPoint.reportingPeriod}) " +
+                "took ${durationMs}ms",
+        )
+        return result
     }
 
     /**
