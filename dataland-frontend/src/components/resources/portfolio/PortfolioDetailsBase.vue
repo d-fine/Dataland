@@ -181,28 +181,22 @@ import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts
 import PortfolioReportingPeriodsCell, {
   type ReportingPeriodEntry,
 } from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
-
-// TODO: remove this mock data once EnrichedPortfolioEntry provides non-sourceable reporting periods per
-// framework from the backend (computed in PortfolioEnrichmentService via a batched findActiveForCompanies lookup)
-const MOCKED_NON_SOURCEABLE_PERIODS_BY_FRAMEWORK: Partial<Record<string, string[]>> = {
-  [DataTypeEnum.Sfdr]: ['2019', '2027'],
-  [DataTypeEnum.EutaxonomyFinancials]: ['2025'],
-};
+import type { BasicDataDimensions } from '@clients/backend';
+import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
 
 /**
- * Merges the (comma-separated) string of real, available reporting periods for a framework with the mocked
- * non-sourceable reporting periods for that same framework, and returns a single, ascendingly sorted list where
- * each entry is marked whether it is non-sourceable.
- * TODO: replace the non-sourceable-periods argument with real data once the backend provides it.
+ * Merges the (comma-separated) string of real, available reporting periods for a framework with the real
+ * non-sourceable reporting periods for that same framework (from the backend), and returns a single,
+ * ascendingly sorted list where each entry is marked whether it is non-sourceable.
  * @param availableReportingPeriodsCsv the comma-separated string of real, available reporting periods
- * @param framework the hyphenated framework name the reporting periods belong to
+ * @param nonSourceableDimensionsForFramework the set of non-sourceable data dimensions for this company/framework
  */
 function mergeReportingPeriods(
   availableReportingPeriodsCsv: string | undefined,
-  framework: string
+  nonSourceableDimensionsForFramework: Set<BasicDataDimensions> | undefined
 ): ReportingPeriodEntry[] {
   const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
-  const nonSourceableYears = MOCKED_NON_SOURCEABLE_PERIODS_BY_FRAMEWORK[framework] ?? [];
+  const nonSourceableYears = Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod);
   const allYears = new Set([...realYears, ...nonSourceableYears]);
   return Array.from(allYears)
     .sort()
@@ -226,11 +220,6 @@ class PortfolioEntryPrepared {
   readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancials202673AvailableReportingPeriods: string | undefined;
   readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
-  readonly sfdrReportingPeriodEntries: ReportingPeriodEntry[];
-  readonly eutaxonomyFinancialsReportingPeriodEntries: ReportingPeriodEntry[];
-  readonly eutaxonomyNonFinancialsReportingPeriodEntries: ReportingPeriodEntry[];
-  readonly eutaxonomyNonFinancials202673ReportingPeriodEntries: ReportingPeriodEntry[];
-  readonly nuclearAndGasReportingPeriodEntries: ReportingPeriodEntry[];
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = portfolioEntry.companyId;
@@ -260,27 +249,6 @@ class PortfolioEntryPrepared {
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673] || 'No data available';
     this.nuclearAndGasAvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
-
-    this.sfdrReportingPeriodEntries = mergeReportingPeriods(
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.Sfdr],
-      DataTypeEnum.Sfdr
-    );
-    this.eutaxonomyFinancialsReportingPeriodEntries = mergeReportingPeriods(
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyFinancials],
-      DataTypeEnum.EutaxonomyFinancials
-    );
-    this.eutaxonomyNonFinancialsReportingPeriodEntries = mergeReportingPeriods(
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials],
-      DataTypeEnum.EutaxonomyNonFinancials
-    );
-    this.eutaxonomyNonFinancials202673ReportingPeriodEntries = mergeReportingPeriods(
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673],
-      DataTypeEnum.EutaxonomyNonFinancials202673
-    );
-    this.nuclearAndGasReportingPeriodEntries = mergeReportingPeriods(
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas],
-      DataTypeEnum.NuclearAndGas
-    );
   }
 }
 
@@ -323,7 +291,29 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
-
+const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
+const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
+const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery(
+  nonSourceabilityRequest,
+  { enabled: computed(() => portfolioCompanyIds.value.length > 0) }
+);
+const reportingPeriodEntriesByCompanyAndFramework = computed<
+  Record<string, Partial<Record<string, ReportingPeriodEntry[]>>>
+>(() => {
+  const result: Record<string, Partial<Record<string, ReportingPeriodEntry[]>>> = {};
+  for (const entry of enrichedPortfolio.value?.entries ?? []) {
+    const perFramework: Partial<Record<string, ReportingPeriodEntry[]>> = {};
+    for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
+      const nonSourceableForFramework = nonSourceableDimensionsGrouped.value?.[entry.companyId]?.[framework];
+      perFramework[framework] = mergeReportingPeriods(
+        entry.availableReportingPeriods[framework],
+        nonSourceableForFramework
+      );
+    }
+    result[entry.companyId] = perFramework;
+  }
+  return result;
+});
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
@@ -417,7 +407,7 @@ function getAvailableReportingPeriods(
 
 /**
  * For a given prepared portfolio entry and (hyphenated) framework name, return the merged list of
- * available and non-sourceable reporting periods.
+ * available and non-sourceable reporting periods, looked up from the pre-computed, cached map.
  * @param portfolioEntryPrepared
  * @param frameworkName
  */
@@ -425,20 +415,7 @@ function getReportingPeriodEntries(
   portfolioEntryPrepared: PortfolioEntryPrepared,
   frameworkName: string
 ): ReportingPeriodEntry[] {
-  switch (frameworkName) {
-    case DataTypeEnum.Sfdr:
-      return portfolioEntryPrepared.sfdrReportingPeriodEntries;
-    case DataTypeEnum.EutaxonomyFinancials:
-      return portfolioEntryPrepared.eutaxonomyFinancialsReportingPeriodEntries;
-    case DataTypeEnum.EutaxonomyNonFinancials:
-      return portfolioEntryPrepared.eutaxonomyNonFinancialsReportingPeriodEntries;
-    case DataTypeEnum.EutaxonomyNonFinancials202673:
-      return portfolioEntryPrepared.eutaxonomyNonFinancials202673ReportingPeriodEntries;
-    case DataTypeEnum.NuclearAndGas:
-      return portfolioEntryPrepared.nuclearAndGasReportingPeriodEntries;
-    default:
-      return [];
-  }
+  return reportingPeriodEntriesByCompanyAndFramework.value[portfolioEntryPrepared.companyId]?.[frameworkName] ?? [];
 }
 
 /**
