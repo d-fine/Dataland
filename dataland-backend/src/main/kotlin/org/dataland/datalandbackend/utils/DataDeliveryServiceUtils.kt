@@ -143,6 +143,9 @@ class DataDeliveryServiceUtils(
     /**
      * Retrieves metadata for the supplied document IDs from the document manager in a single batch request.
      *
+     * `getDocumentMetaInformationBatch` is a POST request with the ids sent as a JSON body, so a single request can
+     * carry an arbitrary number of ids without hitting URL-length limits.
+     *
      * @param referenceIds referenced document IDs to retrieve
      * @return document metadata indexed by document ID
      */

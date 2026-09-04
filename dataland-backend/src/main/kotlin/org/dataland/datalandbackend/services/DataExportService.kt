@@ -18,6 +18,7 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
 import java.io.ByteArrayInputStream
@@ -49,6 +50,7 @@ open class DataExportService<T>(
     }
 
     private val objectMapper = defaultObjectMapper
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     internal fun <T> buildStreamFromPortfolioExportData(
         portfolioData: Collection<SingleCompanyExportData<T>>,
@@ -106,6 +108,29 @@ open class DataExportService<T>(
     }
 
     /**
+     * Runs [block] and, if it throws, marks [newExportJob] as failed instead of letting the exception propagate.
+     *
+     * [startExportJob] and [startLatestExportJob] run on an `@Async` thread, so an uncaught exception would only be
+     * logged by Spring's default `AsyncUncaughtExceptionHandler` and never reach the caller - the export job would
+     * otherwise be left stuck in [ExportJobProgressState.Pending] forever from the user's perspective.
+     *
+     * @param newExportJob the export job to mark as failed if [block] throws
+     * @param block the export job logic to run, including any data retrieval that may fail
+     */
+    private fun runExportJob(
+        newExportJob: ExportJob,
+        block: () -> Unit,
+    ) {
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            block()
+        } catch (exception: Exception) {
+            logger.error("Export job with id ${newExportJob.id} failed.", exception)
+            newExportJob.progressState = ExportJobProgressState.Failure
+        }
+    }
+
+    /**
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
      *
      * Note that swagger only supports InputStreamResources and not OutputStreams
@@ -121,12 +146,14 @@ open class DataExportService<T>(
         newExportJob: ExportJob,
         clazz: Class<out T>,
         exportOptions: ExportOptions,
-    ) = buildStream(
-        getPlainData(listDataDimensions, newExportJob.id.toString()),
-        newExportJob,
-        clazz,
-        exportOptions,
-    )
+    ) = runExportJob(newExportJob) {
+        buildStream(
+            getPlainData(listDataDimensions, newExportJob.id.toString()),
+            newExportJob,
+            clazz,
+            exportOptions,
+        )
+    }
 
     /**
      * Create a ByteStream of the latest available data per company to be used for export from a list of SingleCompanyExportData.
@@ -142,12 +169,14 @@ open class DataExportService<T>(
         newExportJob: ExportJob,
         clazz: Class<out T>,
         exportOptions: ExportOptions,
-    ) = buildStream(
-        getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
-        newExportJob,
-        clazz,
-        exportOptions,
-    )
+    ) = runExportJob(newExportJob) {
+        buildStream(
+            getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
+            newExportJob,
+            clazz,
+            exportOptions,
+        )
+    }
 
     /**
      * Transform the data to an Excel file with human-readable headers.
