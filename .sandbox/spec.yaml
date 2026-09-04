@@ -16,6 +16,8 @@ permissions:
       - "cdn.cypress.io:443"
       - "local-dev.dataland.com:443"
       - "letsencrypt.dataland.com:22"
+      - "raw.githubusercontent.com:443"
+      - "download-cdn.jetbrains.com:443"
 
 agentInstructions:
   filename: AGENTS.md
