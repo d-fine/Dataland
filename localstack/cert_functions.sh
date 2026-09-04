@@ -3,18 +3,7 @@
 retrieve_ssl_certificates() {
   mkdir -p ./local/certs
 
-  # When running inside the opencode sandbox, no local SSH agent/key is available.
-  # Instead, an SSH private key is provided via the SSL_PRIVATE_KEY secret
-  # (see .sandbox/spec.yaml) and used to authenticate against letsencrypt.dataland.com.
-  if [ -n "$SSL_PRIVATE_KEY" ]; then
-    mkdir -p ~/.ssh
-    printf '%s\n' "$SSL_PRIVATE_KEY" > ~/.ssh/letsencrypt_id_rsa
-    chmod 600 ~/.ssh/letsencrypt_id_rsa
-    scp -i ~/.ssh/letsencrypt_id_rsa -o StrictHostKeyChecking=accept-new \
-      ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
-  else
-    scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
-  fi
+  scp ubuntu@letsencrypt.dataland.com:/etc/letsencrypt/live/local-dev.dataland.com/* ./local/certs
 }
 
 generate_self_signed_certificates() {

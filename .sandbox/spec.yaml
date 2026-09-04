@@ -15,7 +15,6 @@ permissions:
       - "download.cypress.io:443"
       - "cdn.cypress.io:443"
       - "local-dev.dataland.com:443"
-      - "letsencrypt.dataland.com:22"
       - "raw.githubusercontent.com:443"
       - "download-cdn.jetbrains.com:443"
 
@@ -34,12 +33,6 @@ credentials:
         - domain: api.github.com
           header: Authorization
           format: "Bearer %s"
-  - service: letsencrypt
-    apiKey:
-      name: SSL_PRIVATE_KEY
-      proxyManaged: false
-      inject:
-        - env: SSL_PRIVATE_KEY
 
 
 environment:
