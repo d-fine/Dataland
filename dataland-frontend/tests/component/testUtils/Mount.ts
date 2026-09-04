@@ -10,7 +10,7 @@ import { routes } from '@/router';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { defaultConfig, plugin } from '@formkit/vue';
-import { defineComponent, h } from 'vue';
+import { computed, defineComponent, h } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
 
 interface DatalandMountOptions {
@@ -89,7 +89,9 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     }
 
     if (additionalOptions.keycloak) {
-      options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
+      options.global.provide.apiClientProvider = computed(
+        () => new ApiClientProvider(Promise.resolve(options.keycloak))
+      );
       options.global.provide.getKeycloakPromise = (): Promise<Keycloak | undefined> => {
         return Promise.resolve(additionalOptions.keycloak);
       };

@@ -7,7 +7,7 @@ import { plugin, defaultConfig } from '@formkit/vue';
 import { createMemoryHistory, createRouter, type Router } from 'vue-router';
 import { mount } from 'cypress/vue';
 import { type VueWrapper } from '@vue/test-utils';
-import { type DefineComponent, defineComponent, h } from 'vue';
+import { computed, type DefineComponent, defineComponent, h } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import DynamicDialog from 'primevue/dynamicdialog';
@@ -102,7 +102,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   });
 
   if (options.keycloak) {
-    options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
+    options.global.provide.apiClientProvider = computed(() => new ApiClientProvider(Promise.resolve(options.keycloak)));
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };
