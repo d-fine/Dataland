@@ -30,6 +30,7 @@ interface ApiBackendClients {
   dataAvailabilityController: backendApis.DataAvailabilityControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
   userUploadsController: backendApis.UserUploadsControllerApiInterface;
+  nonSourceabilityController: backendApis.NonSourceabilityControllerApiInterface;
 }
 
 interface ApiClients {
@@ -99,6 +100,7 @@ export class ApiClientProvider {
       dataAvailabilityController: backendClientFactory(backendApis.DataAvailabilityControllerApi),
       metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
       userUploadsController: backendClientFactory(backendApis.UserUploadsControllerApi),
+      nonSourceabilityController: backendClientFactory(backendApis.NonSourceabilityControllerApi),
     };
   }
 

@@ -119,21 +119,11 @@
           :showFilterMatchModes="false"
         >
           <template #body="portfolioEntry">
-            <Button
-              v-if="portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)"
-              :label="getAvailableReportingPeriods(portfolioEntry.data, framework)"
-              variant="link"
-              @click="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework))"
-              :pt="{
-                label: {
-                  style: 'font-weight: normal; text-align: left;',
-                },
-                root: {
-                  style: 'padding-left: 0;',
-                },
-              }"
+            <PortfolioReportingPeriodsCell
+              :periods="getReportingPeriodEntries(portfolioEntry.data, framework)"
+              :clickable="hasClickableLink(portfolioEntry.data, framework)"
+              @navigate="router.push(portfolioEntry.data.frameworkHyphenatedNamesToDataRef.get(framework)!)"
             />
-            <span v-else>{{ getAvailableReportingPeriods(portfolioEntry.data, framework) }}</span>
           </template>
           <template #filter="{ filterModel, filterCallback }">
             <div :data-test="getFrameworkFieldKey(framework) + 'AvailableReportingPeriodsFilterOverlay'">
@@ -188,6 +178,30 @@ import type { AxiosError, AxiosRequestConfig } from 'axios';
 import { forceFileDownload, groupAllReportingPeriodsByFrameworkForPortfolio } from '@/utils/FileDownloadUtils.ts';
 import router from '@/router';
 import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts';
+import PortfolioReportingPeriodsCell, {
+  type ReportingPeriodEntry,
+} from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
+import type { BasicDataDimensions } from '@clients/backend';
+import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
+
+/**
+ * Merges the (comma-separated) string of real, available reporting periods for a framework with the real
+ * non-sourceable reporting periods for that same framework (from the backend), and returns a single,
+ * ascendingly sorted list where each entry is marked whether it is non-sourceable.
+ * @param availableReportingPeriodsCsv the comma-separated string of real, available reporting periods
+ * @param nonSourceableDimensionsForFramework the set of non-sourceable data dimensions for this company/framework
+ */
+function mergeReportingPeriods(
+  availableReportingPeriodsCsv: string | undefined,
+  nonSourceableDimensionsForFramework: Set<BasicDataDimensions> | undefined
+): ReportingPeriodEntry[] {
+  const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
+  const nonSourceableYears = Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod);
+  const allYears = new Set([...realYears, ...nonSourceableYears]);
+  return Array.from(allYears)
+    .sort()
+    .map((year) => ({ year, nonSourceable: !realYears.includes(year) }));
+}
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -277,7 +291,29 @@ const portfolioCompanies = ref<CompanyIdAndName[]>([]);
 const isLoading = ref(true);
 const isError = ref(false);
 const isMonitored = ref<boolean>(false);
-
+const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
+const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
+const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery(
+  nonSourceabilityRequest,
+  { enabled: computed(() => portfolioCompanyIds.value.length > 0) }
+);
+const reportingPeriodEntriesByCompanyAndFramework = computed<
+  Record<string, Partial<Record<string, ReportingPeriodEntry[]>>>
+>(() => {
+  const result: Record<string, Partial<Record<string, ReportingPeriodEntry[]>>> = {};
+  for (const entry of enrichedPortfolio.value?.entries ?? []) {
+    const perFramework: Partial<Record<string, ReportingPeriodEntry[]>> = {};
+    for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
+      const nonSourceableForFramework = nonSourceableDimensionsGrouped.value?.[entry.companyId]?.[framework];
+      perFramework[framework] = mergeReportingPeriods(
+        entry.availableReportingPeriods[framework],
+        nonSourceableForFramework
+      );
+    }
+    result[entry.companyId] = perFramework;
+  }
+  return result;
+});
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
@@ -367,6 +403,29 @@ function getAvailableReportingPeriods(
     default:
       return undefined;
   }
+}
+
+/**
+ * For a given prepared portfolio entry and (hyphenated) framework name, return the merged list of
+ * available and non-sourceable reporting periods, looked up from the pre-computed, cached map.
+ * @param portfolioEntryPrepared
+ * @param frameworkName
+ */
+function getReportingPeriodEntries(
+  portfolioEntryPrepared: PortfolioEntryPrepared,
+  frameworkName: string
+): ReportingPeriodEntry[] {
+  return reportingPeriodEntriesByCompanyAndFramework.value[portfolioEntryPrepared.companyId]?.[frameworkName] ?? [];
+}
+
+/**
+ * Determines whether the reporting-periods cell for the given framework should be rendered as a clickable
+ * link, i.e. whether at least one real (non-strikethrough) reporting period exists.
+ * @param portfolioEntryPrepared
+ * @param frameworkName
+ */
+function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, frameworkName: string): boolean {
+  return Boolean(portfolioEntryPrepared.frameworkHyphenatedNamesToDataRef.get(frameworkName));
 }
 
 /**

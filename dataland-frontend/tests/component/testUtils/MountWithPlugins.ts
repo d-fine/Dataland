@@ -7,11 +7,12 @@ import { plugin, defaultConfig } from '@formkit/vue';
 import { createMemoryHistory, createRouter, type Router } from 'vue-router';
 import { mount } from 'cypress/vue';
 import { type VueWrapper } from '@vue/test-utils';
-import { type DefineComponent, defineComponent, h } from 'vue';
+import { computed, type DefineComponent, defineComponent, h } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import DynamicDialog from 'primevue/dynamicdialog';
 import { ApiClientProvider } from '@/services/ApiClients';
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -92,7 +93,8 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
         },
       },
     ],
-    DialogService
+    DialogService,
+    [VueQueryPlugin, { queryClient: new QueryClient() }]
   );
   options.global.provide = options.global.provide ?? {};
 
@@ -102,11 +104,12 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   });
 
   if (options.keycloak) {
-    options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
+    const keycloak = options.keycloak;
+    options.global.provide.apiClientProvider = computed(() => new ApiClientProvider(Promise.resolve(keycloak)));
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
-      return Promise.resolve(options.keycloak as Keycloak);
+      return Promise.resolve(keycloak);
     };
-    options.global.provide.authenticated = options.keycloak.authenticated;
+    options.global.provide.authenticated = keycloak.authenticated;
   }
 
   options.global.plugins.push(

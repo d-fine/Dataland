@@ -518,6 +518,140 @@
         ]
       }
     },
+    "/non-sourceable/search": {
+      "post": {
+        "tags": [
+          "non-sourceability-controller"
+        ],
+        "summary": "Returns all currently-active non-sourceability data dimensions matching the given filters.",
+        "description": "Accepts lists of company IDs, frameworks, and reporting periods. Returns the set of (companyId, dataType, reportingPeriod) triples for which an active non-sourceability entry exists and that match any combination of the provided filters. An empty list for any field is treated as a wildcard and matches all values for that dimension.",
+        "operationId": "searchNonSourceableDimensions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataDimensionSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved non-sourceable data dimensions.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicDataDimensions"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/non-sourceable/search/grouped": {
+      "post": {
+        "tags": [
+          "non-sourceability-controller"
+        ],
+        "summary": "Returns all currently-active non-sourceability data dimensions matching the given filters, grouped by company ID and framework.",
+        "description": "Accepts lists of company IDs, frameworks, and reporting periods. Returns the set of (companyId, dataType, reportingPeriod) triples for which an active non-sourceability entry exists and that match any combination of the provided filters, pre-grouped into a map of maps: companyId -\u003e framework -\u003e set of matching data dimensions. An empty list for any field is treated as a wildcard and matches all values for that dimension.",
+        "operationId": "searchNonSourceableDimensionsGroupedByCompanyAndFramework",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataDimensionSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved non-sourceable data dimensions grouped by company and framework.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "uniqueItems": true,
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BasicDataDimensions"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable": {
       "get": {
         "tags": [
@@ -8140,6 +8274,72 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "DataDimensionSearchRequest": {
+        "type": "object",
+        "properties": {
+          "companyIds": {
+            "type": "array",
+            "description": "A list of Dataland company ids for which the data export is requested.",
+            "nullable": true,
+            "example": [
+              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
+              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataTypes": {
+            "type": "array",
+            "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
+            "nullable": true,
+            "example": [
+              "sfdr",
+              "extendedDateFiscalYearEnd"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriods": {
+            "type": "array",
+            "description": "The reporting periods for which the data export is requested.",
+            "nullable": true,
+            "example": [
+              "2023",
+              "2024"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BasicDataDimensions": {
+        "required": [
+          "companyId",
+          "dataType",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "dataType": {
+            "type": "string",
+            "description": "The associated reporting framework or data point type (as applicable).",
+            "example": "sfdr"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "description": "The relevant reporting period (e.g. a fiscal year).",
+            "example": "2023"
           }
         }
       },
@@ -20899,72 +21099,6 @@
             "type": "string",
             "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoIsNfrdMandatory"
-          }
-        }
-      },
-      "DataDimensionSearchRequest": {
-        "type": "object",
-        "properties": {
-          "companyIds": {
-            "type": "array",
-            "description": "A list of Dataland company ids for which the data export is requested.",
-            "nullable": true,
-            "example": [
-              "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
-              "1e63a842-1e65-43ed-b78a-5e7cec155c28"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "dataTypes": {
-            "type": "array",
-            "description": "A list of the frameworks of the wanted datasets and of the dataPointTypes of the wanted data points.",
-            "nullable": true,
-            "example": [
-              "sfdr",
-              "extendedDateFiscalYearEnd"
-            ],
-            "items": {
-              "type": "string"
-            }
-          },
-          "reportingPeriods": {
-            "type": "array",
-            "description": "The reporting periods for which the data export is requested.",
-            "nullable": true,
-            "example": [
-              "2023",
-              "2024"
-            ],
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "BasicDataDimensions": {
-        "required": [
-          "companyId",
-          "dataType",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string",
-            "description": "The unique identifier under which a company can be found on Dataland.",
-            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          "dataType": {
-            "type": "string",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "The relevant reporting period (e.g. a fiscal year).",
-            "example": "2023"
           }
         }
       },

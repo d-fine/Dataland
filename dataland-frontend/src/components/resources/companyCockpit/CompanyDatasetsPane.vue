@@ -49,6 +49,8 @@
           :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
+          :number-of-non-sourceable-reporting-periods="nonSourceablePeriodsByFramework[framework]?.length ?? 0"
+          :non-sourceable-reporting-periods="nonSourceablePeriodsByFramework[framework]"
           :data-test="`${framework}-summary-panel`"
         />
       </div>
@@ -97,6 +99,7 @@ import {
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
+import { useSearchNonSourceableDimensionsQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsQuery';
 
 const props = defineProps<{ companyId: string }>();
 
@@ -112,6 +115,20 @@ const router = useRouter();
 /** local state (self-contained) */
 type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
+
+const nonSourceabilityRequest = computed(() => ({ companyIds: [props.companyId] }));
+const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
+
+const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
+  const grouped: Partial<Record<DataTypeEnum, string[]>> = {};
+  for (const dim of nonSourceableDimensions.value ?? []) {
+    (grouped[dim.dataType as DataTypeEnum] ??= []).push(dim.reportingPeriod);
+  }
+  for (const key of Object.keys(grouped) as DataTypeEnum[]) {
+    grouped[key]?.sort();
+  }
+  return grouped;
+});
 
 const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
 const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
