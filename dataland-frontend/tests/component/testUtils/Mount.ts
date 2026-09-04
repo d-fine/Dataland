@@ -12,6 +12,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { defaultConfig, plugin } from '@formkit/vue';
 import { computed, defineComponent, h } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
 
 interface DatalandMountOptions {
   /**
@@ -62,7 +63,8 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
           },
         },
       ],
-      DialogService
+      DialogService,
+      [VueQueryPlugin, { queryClient: new QueryClient() }]
     );
     options.global.provide = options.global.provide ?? {};
 
@@ -89,13 +91,12 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     }
 
     if (additionalOptions.keycloak) {
-      options.global.provide.apiClientProvider = computed(
-        () => new ApiClientProvider(Promise.resolve(options.keycloak))
-      );
+      const keycloak = additionalOptions.keycloak;
+      options.global.provide.apiClientProvider = computed(() => new ApiClientProvider(Promise.resolve(keycloak)));
       options.global.provide.getKeycloakPromise = (): Promise<Keycloak | undefined> => {
-        return Promise.resolve(additionalOptions.keycloak);
+        return Promise.resolve(keycloak);
       };
-      options.global.provide.authenticated = additionalOptions.keycloak.authenticated;
+      options.global.provide.authenticated = keycloak.authenticated;
     }
 
     options.global.plugins.push(
