@@ -298,18 +298,21 @@ class DocumentManager
         fun retrieveDocumentMetaInfoBatch(documentIds: List<String>): Map<String, DocumentMetaInfoEntity> {
             val correlationId = randomUUID().toString()
             logger.info(
-                "Retrieve meta data batch for documentIds $documentIds. Correlation ID: $correlationId.",
+                "Retrieve meta data batch for ${documentIds.size} documentIds. Correlation ID: $correlationId.",
             )
-            return documentIds.associateWith { documentId ->
-                documentMetaInfoRepository.getByDocumentId(documentId)
-                    ?: run {
-                        logger.warn(
-                            "Could not find document meta info for documentId $documentId in batch request. " +
-                                "Correlation ID: $correlationId.",
-                        )
-                        throw DocumentNotFoundException(documentId, correlationId)
-                    }
+            val foundEntitiesByDocumentId =
+                documentMetaInfoRepository
+                    .findAllById(documentIds)
+                    .associateBy { it.documentId }
+            val missingDocumentIds = documentIds.filterNot { it in foundEntitiesByDocumentId }
+            if (missingDocumentIds.isNotEmpty()) {
+                logger.warn(
+                    "Could not find document meta info for documentIds $missingDocumentIds in batch request. " +
+                        "Correlation ID: $correlationId.",
+                )
+                throw DocumentNotFoundException(missingDocumentIds.first(), correlationId)
             }
+            return foundEntitiesByDocumentId
         }
 
         /**
