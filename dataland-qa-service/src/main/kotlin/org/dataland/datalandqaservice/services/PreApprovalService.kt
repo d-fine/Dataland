@@ -2,6 +2,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.DataPointUtils
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
@@ -12,6 +14,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreAp
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPatchRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPutRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaConfigRepository
+import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
@@ -26,6 +29,7 @@ class PreApprovalService(
     private val qaConfigRepository: QaConfigRepository,
     private val significanceCheckService: SignificanceCheckService,
     private val datasetJudgementSupportService: DatasetJudgementSupportService,
+    private val specificationService: SpecificationControllerApi,
 ) {
     companion object {
         private val logger = LoggerFactory.getLogger(PreApprovalService::class.java)
@@ -118,6 +122,7 @@ class PreApprovalService(
                 autoPreApprovalEnabled = patch.autoPreApprovalEnabled ?: current.autoPreApprovalEnabled,
                 submitUserId = submitUserId,
             )
+        validateInput(merged)
         return persistIfChanged(current, merged)
     }
 
@@ -147,7 +152,111 @@ class PreApprovalService(
                 autoPreApprovalEnabled = newConfig.autoPreApprovalEnabled,
                 submitUserId = submitUserId,
             )
+        validateInput(replaced)
         return persistIfChanged(current, replaced)
+    }
+
+    /**
+     * Validates the given pre-approval configuration by running a series of checks and aggregating any
+     * issues found into a single, concise exception, rather than failing on the first problem encountered.
+     *
+     * @param preApprovalConfig the pre-approval configuration object to be validated
+     * @throws InvalidInputApiException if one or more issues (duplicate or unknown data point type IDs) are found
+     */
+    private fun validateInput(preApprovalConfig: PreApprovalConfig) {
+        val issues =
+            findDuplicateDataPointTypeIdIssues(preApprovalConfig) +
+                findUnknownDataPointTypeIdIssues(preApprovalConfig)
+
+        if (issues.isNotEmpty()) {
+            throw InvalidInputApiException(
+                summary = "Invalid pre-approval config",
+                message = issues.joinToString(separator = "; "),
+            )
+        }
+    }
+
+    /**
+     * Retrieves a mapping of configured data type enums to their associated list of data point type IDs.
+     *
+     * This method consolidates the configuration details from the provided `PreApprovalConfig` to produce
+     * a unified map, where keys represent `DataTypeEnum` values and each key's value is a list of associated
+     * data point type IDs retrieved from the exempt fields, individual decimal thresholds, and individual
+     * integer thresholds present in the configuration.
+     *
+     * @param preApprovalConfig The configuration object containing mappings of data types to related details,
+     * such as exempt fields, decimal thresholds, and integer thresholds.
+     * @return A map where the keys are `DataTypeEnum` instances and the values are lists of associated
+     * data point type IDs.
+     */
+    private fun getConfiguredDataPointTypeIds(preApprovalConfig: PreApprovalConfig): Map<DataTypeEnum, List<String>> {
+        val dataTypeEnums =
+            buildSet {
+                addAll(preApprovalConfig.exemptFields.keys)
+                addAll(preApprovalConfig.individualDecimalThresholds.keys)
+                addAll(preApprovalConfig.individualIntegerThresholds.keys)
+            }
+
+        val allDataPointTypeIds =
+            dataTypeEnums.associateWith { dataType ->
+                buildList {
+                    addAll(preApprovalConfig.exemptFields[dataType].orEmpty())
+                    addAll(preApprovalConfig.individualDecimalThresholds[dataType].orEmpty().keys)
+                    addAll(preApprovalConfig.individualIntegerThresholds[dataType].orEmpty().keys)
+                }
+            }
+
+        return allDataPointTypeIds
+    }
+
+    /**
+     * Checks whether all data point type IDs configured in the pre-approval configuration exist in their
+     * respective framework's specification.
+     *
+     * @param preApprovalConfig The pre-approval configuration containing the data point type IDs to be validated against the framework.
+     * @return a list of human-readable issue descriptions, one per framework with unknown data point type IDs;
+     *         empty if all configured data point type IDs are known to their framework's specification.
+     */
+    private fun findUnknownDataPointTypeIdIssues(preApprovalConfig: PreApprovalConfig): List<String> {
+        val allDataPointTypeIds = getConfiguredDataPointTypeIds(preApprovalConfig)
+
+        return allDataPointTypeIds.mapNotNull { (dataType, dataPointTypeIds) ->
+            val frameworkSpecificationSchema = specificationService.getFrameworkSpecification(dataType.value).schema
+            val actualDataPointTypes = DataPointUtils.getDataPointTypes(frameworkSpecificationSchema)
+
+            val unknownDataPointTypeIds = dataPointTypeIds.filter { it !in actualDataPointTypes }
+            if (unknownDataPointTypeIds.isEmpty()) {
+                null
+            } else {
+                "Unknown data point type IDs $unknownDataPointTypeIds configured for framework $dataType"
+            }
+        }
+    }
+
+    /**
+     * Checks whether there are duplicate data point type IDs in the given pre-approval configuration.
+     *
+     * @param preApprovalConfig The pre-approval configuration that contains the data point type IDs to be validated.
+     * @return a list of human-readable issue descriptions, one per framework with duplicate data point type IDs;
+     *         empty if no duplicates are found.
+     */
+    private fun findDuplicateDataPointTypeIdIssues(preApprovalConfig: PreApprovalConfig): List<String> {
+        val allDataPointTypeIds = getConfiguredDataPointTypeIds(preApprovalConfig)
+
+        return allDataPointTypeIds.mapNotNull { (dataType, dataPointTypeIds) ->
+            val duplicateDataPointTypeIds =
+                dataPointTypeIds
+                    .groupingBy { it }
+                    .eachCount()
+                    .filter { it.value > 1 }
+                    .keys
+
+            if (duplicateDataPointTypeIds.isEmpty()) {
+                null
+            } else {
+                "Duplicate data point type IDs $duplicateDataPointTypeIds found for framework $dataType"
+            }
+        }
     }
 
     /**
