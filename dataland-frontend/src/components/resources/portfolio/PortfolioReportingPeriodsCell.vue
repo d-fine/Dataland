@@ -33,7 +33,7 @@ export interface ReportingPeriodEntry {
   nonSourceable: boolean;
 }
 
-const NON_SOURCEABLE_TOOLTIP_TEXT = 'If a year number is strikethrough, the report of this year is non-sourceable';
+const NON_SOURCEABLE_TOOLTIP_TEXT = 'A struck-through year indicates that the report for this year is non-sourceable';
 
 const props = defineProps<{
   periods: ReportingPeriodEntry[];
