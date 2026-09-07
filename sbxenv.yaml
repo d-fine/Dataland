@@ -1,0 +1,22 @@
+schemaVersion: "1"
+name: dataland
+workspace:
+  path: ./app
+  clone: true
+
+kits:
+  - ./.sandbox
+
+env:
+  NODE_ENV: test
+
+ports:
+  - sandbox: 443
+    host: 443
+  - sandbox: 80
+    host: 80
+
+
+sandboxOptions:
+  cpus: 16
+  memory: 32g

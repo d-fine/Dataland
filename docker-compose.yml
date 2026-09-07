@@ -6,18 +6,6 @@
 # init: The profile to be used if keycloak-db should be re-initialized
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
-# PROXY CONFIGURATION - READ ME BEFORE EDITING:
-# If the host machine/CI runner is configured with a system-wide HTTP(S) proxy (e.g. via Docker's
-# ~/.docker/config.json "proxies" section or a systemd docker.service.d proxy drop-in), the Docker daemon
-# automatically injects HTTP_PROXY/HTTPS_PROXY/NO_PROXY into every container it creates. Without the
-# overrides below, calls between containers on the internal docker-compose network (e.g. backend ->
-# keycloak) would incorrectly be routed out through that external proxy instead of going directly over the
-# internal Docker network, which can break or slow down service-to-service communication.
-# The NO_PROXY/no_proxy env vars below list every internal service hostname that should be reached
-# directly (bypassing any external proxy). Any service that (a) includes *proxy-env in its `environment:`
-# block, or (b) is called internally by such a service, must have its hostname listed here.
-# Services that don't make outbound HTTP calls and aren't called by proxy-aware services (e.g. the *-db
-# containers, pgadmin, grafana, loki, alloy, frontend/frontend-dev) do NOT need to be added.
 x-common-proxy-env: &proxy-env
   NO_PROXY: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service,batch-manager,data-exporter"
   no_proxy: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service,batch-manager,data-exporter"
