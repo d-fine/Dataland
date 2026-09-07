@@ -51,7 +51,7 @@ describe('Component test for the portfolio reporting periods cell (non-sourceabi
     cy.get('span').first().trigger('mouseenter', 'center');
     cy.get('.p-tooltip')
       .should('be.visible')
-      .and('contain.text', 'If a year number is strikethrough, the report of this year is non-sourceable');
+      .and('contain.text', 'A struck-through year indicates that the report for this year is non-sourceable');
   });
 
   it('Renders as a clickable button, still shows strikethrough/tooltip, and emits navigate on click', () => {
