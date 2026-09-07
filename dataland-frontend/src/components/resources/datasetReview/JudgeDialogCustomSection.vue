@@ -55,7 +55,7 @@
                 <Textarea
                   ref="customValueTextarea"
                   id="custom-value-field"
-                  v-model="formData.value"
+                  v-model="customValueText"
                   rows="1"
                   autoResize
                   size="small"
@@ -210,9 +210,11 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
+import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import {
   DEFAULT_CUSTOM_FORM_DATA,
   DEFAULT_CUSTOM_JSON,
+  hasValueContent,
   parseDataPointJsonToFormData,
   parseFormDataToDataPointJson,
 } from '@/utils/JudgeDialogUtils.ts';
@@ -252,9 +254,41 @@ const selectedDocumentOption = computed<DocumentOption | null>(
   () => props.availableDocuments?.find((doc) => doc.value === formData.value.document) ?? null
 );
 
+/**
+ * Parses text edited in the value textarea back into an object/array whenever it forms valid
+ * JSON that represents one, so the underlying form data keeps its structured type and
+ * "Accept Custom" does not send a double-encoded string to the backend.
+ *
+ * @param value - The raw text entered into the value textarea.
+ * @returns The parsed object/array, or the original raw string if it isn't one.
+ */
+function parseEditedValue(value: string): unknown {
+  try {
+    const parsedValue: unknown = JSON.parse(value);
+    return parsedValue !== null && typeof parsedValue === 'object' ? parsedValue : value;
+  } catch {
+    return value;
+  }
+}
+
+/**
+ * A string-typed proxy for the value textarea.
+ */
+const customValueText = computed<string>({
+  get: () => toSafeDisplayString(formData.value.value),
+  set: (newValue: string) => {
+    formData.value = {
+      ...formData.value,
+      value: parseEditedValue(newValue),
+    };
+  },
+});
+
 const isFormValid = computed<boolean>(() => {
   const f = formData.value;
-  const hasAnyContent = [f.value, f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const valueHasContent = hasValueContent(f.value);
+  const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const hasAnyContent = valueHasContent || otherFieldsHaveContent;
   const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
 
   return hasAnyContent && pagesPatternOk;
