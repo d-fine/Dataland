@@ -165,7 +165,8 @@ class PreApprovalService(
      */
     private fun validateInput(preApprovalConfig: PreApprovalConfig) {
         val issues =
-            findDuplicateDataPointTypeIdIssues(preApprovalConfig) +
+            findExemptFieldsOverlappingIndividualThresholdsIssues(preApprovalConfig) +
+                findDecimalAndIntegerThresholdOverlapIssues(preApprovalConfig) +
                 findUnknownDataPointTypeIdIssues(preApprovalConfig)
 
         if (issues.isNotEmpty()) {
@@ -234,27 +235,62 @@ class PreApprovalService(
     }
 
     /**
-     * Checks whether there are duplicate data point type IDs in the given pre-approval configuration.
+     * Checks whether any data point type ID that is exempt for a framework is also individually thresholded
+     * (as a decimal or integer) for that same framework.
      *
-     * @param preApprovalConfig The pre-approval configuration that contains the data point type IDs to be validated.
-     * @return a list of human-readable issue descriptions, one per framework with duplicate data point type IDs;
-     *         empty if no duplicates are found.
+     * @param preApprovalConfig The pre-approval configuration that contains the exempt fields and individual
+     * threshold configurations to be validated.
+     * @return a list of human-readable issue descriptions, one per framework with such an overlap;
+     *         empty if no overlaps are found.
      */
-    private fun findDuplicateDataPointTypeIdIssues(preApprovalConfig: PreApprovalConfig): List<String> {
-        val allDataPointTypeIds = getConfiguredDataPointTypeIds(preApprovalConfig)
+    private fun findExemptFieldsOverlappingIndividualThresholdsIssues(preApprovalConfig: PreApprovalConfig): List<String> {
+        val dataTypes =
+            buildSet {
+                addAll(preApprovalConfig.exemptFields.keys)
+                addAll(preApprovalConfig.individualDecimalThresholds.keys)
+                addAll(preApprovalConfig.individualIntegerThresholds.keys)
+            }
 
-        return allDataPointTypeIds.mapNotNull { (dataType, dataPointTypeIds) ->
-            val duplicateDataPointTypeIds =
-                dataPointTypeIds
-                    .groupingBy { it }
-                    .eachCount()
-                    .filter { it.value > 1 }
-                    .keys
+        return dataTypes.mapNotNull { dataType ->
+            val exemptDataPointTypeIds = preApprovalConfig.exemptFields[dataType].orEmpty()
+            val individuallyThresholdedDataPointTypeIds =
+                preApprovalConfig.individualDecimalThresholds[dataType].orEmpty().keys +
+                    preApprovalConfig.individualIntegerThresholds[dataType].orEmpty().keys
 
-            if (duplicateDataPointTypeIds.isEmpty()) {
+            val overlappingDataPointTypeIds = exemptDataPointTypeIds intersect individuallyThresholdedDataPointTypeIds
+            if (overlappingDataPointTypeIds.isEmpty()) {
                 null
             } else {
-                "Duplicate data point type IDs $duplicateDataPointTypeIds found for framework $dataType"
+                "Data point type IDs $overlappingDataPointTypeIds are both exempt and individually thresholded " +
+                    "for framework $dataType"
+            }
+        }
+    }
+
+    /**
+     * Checks whether any data point type ID has both an individual decimal threshold and an individual integer
+     * threshold configured for the same framework.
+     *
+     * @param preApprovalConfig The pre-approval configuration that contains the individual threshold
+     * configurations to be validated.
+     * @return a list of human-readable issue descriptions, one per framework with such an overlap;
+     *         empty if no overlaps are found.
+     */
+    private fun findDecimalAndIntegerThresholdOverlapIssues(preApprovalConfig: PreApprovalConfig): List<String> {
+        val dataTypes =
+            preApprovalConfig.individualDecimalThresholds.keys +
+                preApprovalConfig.individualIntegerThresholds.keys
+
+        return dataTypes.mapNotNull { dataType ->
+            val decimalDataPointTypeIds = preApprovalConfig.individualDecimalThresholds[dataType].orEmpty().keys
+            val integerDataPointTypeIds = preApprovalConfig.individualIntegerThresholds[dataType].orEmpty().keys
+
+            val overlappingDataPointTypeIds = decimalDataPointTypeIds intersect integerDataPointTypeIds
+            if (overlappingDataPointTypeIds.isEmpty()) {
+                null
+            } else {
+                "Data point type IDs $overlappingDataPointTypeIds have both an individual decimal and integer " +
+                    "threshold for framework $dataType"
             }
         }
     }
