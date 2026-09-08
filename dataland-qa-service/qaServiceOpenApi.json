@@ -4475,14 +4475,14 @@
               "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
               "example": {
                 "sfdr": {
-                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                  "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
                 }
               }
             },
             "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
             "example": {
               "sfdr": {
-                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
               }
             }
           },
@@ -4586,14 +4586,14 @@
               "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
               "example": {
                 "sfdr": {
-                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                  "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
                 }
               }
             },
             "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
             "example": {
               "sfdr": {
-                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
               }
             }
           },
@@ -10553,14 +10553,14 @@
               "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
               "example": {
                 "sfdr": {
-                  "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                  "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
                 }
               }
             },
             "description": "Per-data-point relative threshold overrides for decimal fields, keyed by framework and then by data point type identifier. If no override is present for a given framework/data point type, decimalRelativeThreshold is used instead.",
             "example": {
               "sfdr": {
-                "extendedDecimalScope3UpstreamGhgEmissionsInTonnes": 0.3
+                "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes": 0.3
               }
             }
           },
