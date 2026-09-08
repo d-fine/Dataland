@@ -122,7 +122,9 @@ const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(
 const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
   const grouped: Partial<Record<DataTypeEnum, string[]>> = {};
   for (const dim of nonSourceableDimensions.value ?? []) {
-    (grouped[dim.dataType as DataTypeEnum] ??= []).push(dim.reportingPeriod);
+    const dataType = dim.dataType as DataTypeEnum;
+    grouped[dataType] ??= [];
+    grouped[dataType]!.push(dim.reportingPeriod);
   }
   for (const key of Object.keys(grouped) as DataTypeEnum[]) {
     grouped[key]?.sort();

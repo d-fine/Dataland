@@ -159,7 +159,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
+import { type BasicDataDimensions, type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -181,7 +181,6 @@ import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts
 import PortfolioReportingPeriodsCell, {
   type ReportingPeriodEntry,
 } from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
-import type { BasicDataDimensions } from '@clients/backend';
 import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
 
 /**
