@@ -146,7 +146,7 @@ object QaServiceOpenApiDescriptionsAndExamples {
             "point type identifier. If no override is present for a given framework/data point type, " +
             "decimalRelativeThreshold is used instead."
     const val PRE_APPROVAL_INDIVIDUAL_DECIMAL_THRESHOLDS_EXAMPLE =
-        "{ \"sfdr\": { \"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\": 0.3 } }"
+        "{ \"sfdr\": { \"extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes\": 0.3 } }"
 
     const val PRE_APPROVAL_INDIVIDUAL_INTEGER_THRESHOLDS_DESCRIPTION =
         "Per-data-point absolute threshold overrides for integer fields, keyed by framework and then by data " +
