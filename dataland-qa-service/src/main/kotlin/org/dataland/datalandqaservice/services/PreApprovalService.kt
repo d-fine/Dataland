@@ -166,6 +166,7 @@ class PreApprovalService(
     private fun validateInput(preApprovalConfig: PreApprovalConfig) {
         val issues =
             findExemptFieldsOverlappingIndividualThresholdsIssues(preApprovalConfig) +
+                findDuplicateEntriesInListsPerFramework(preApprovalConfig) +
                 findDecimalAndIntegerThresholdOverlapIssues(preApprovalConfig) +
                 findUnknownDataPointTypeIdIssues(preApprovalConfig)
 
@@ -291,6 +292,29 @@ class PreApprovalService(
             } else {
                 "Data point type IDs $overlappingDataPointTypeIds have both an individual decimal and integer " +
                     "threshold for framework $dataType"
+            }
+        }
+    }
+
+    /**
+     * Identifies and reports duplicate data point type IDs in the provided pre-approval configuration, grouped by framework.
+     *
+     * @param preApprovalConfig The pre-approval configuration containing data point type IDs grouped by framework.
+     * @return A list of strings describing the duplicate entries for each framework. Returns an empty list if no duplicates are found.
+     */
+    private fun findDuplicateEntriesInListsPerFramework(preApprovalConfig: PreApprovalConfig): List<String> {
+        val allDataPointIds = getConfiguredDataPointTypeIds(preApprovalConfig)
+        return allDataPointIds.mapNotNull { (dataType, dataPointTypeIds) ->
+            val duplicates =
+                dataPointTypeIds
+                    .groupingBy { it }
+                    .eachCount()
+                    .filter { it.value > 1 }
+                    .keys
+            if (duplicates.isEmpty()) {
+                null
+            } else {
+                "Duplicate data point type IDs $duplicates found in configuration for framework $dataType"
             }
         }
     }
