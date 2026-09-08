@@ -41,6 +41,7 @@ class PreApprovalConfigLoadingTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             )
 
         service.initializeConfig()
@@ -57,6 +58,7 @@ class PreApprovalConfigLoadingTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             )
 
         service.initializeConfig()
@@ -74,6 +76,7 @@ class PreApprovalConfigLoadingTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             )
         service.initializeConfig()
 

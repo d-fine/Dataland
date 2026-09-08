@@ -115,6 +115,13 @@ object QaServiceOpenApiDescriptionsAndExamples {
     const val PRE_APPROVAL_EXEMPT_FIELDS_EXAMPLE =
         "{ \"sfdr\": [\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"] }"
 
+    const val PRE_APPROVAL_EXEMPT_FIELDS_REQUEST_DESCRIPTION =
+        "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval " +
+            "for that framework. Exempt fields must always be reviewed manually, regardless of their QA report " +
+            "verdicts. Each list must not contain the same data point type identifier more than once."
+    const val PRE_APPROVAL_EXEMPT_FIELDS_REQUEST_EXAMPLE =
+        "{ \"sfdr\": [\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"] }"
+
     const val PRE_APPROVAL_SAMPLING_PROBABILITY_DESCRIPTION =
         "The probability (between 0.0 and 1.0) with which an eligible data point is randomly selected for " +
             "automatic pre-approval."

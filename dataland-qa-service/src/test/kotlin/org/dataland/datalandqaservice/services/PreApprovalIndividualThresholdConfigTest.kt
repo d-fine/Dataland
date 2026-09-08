@@ -81,6 +81,7 @@ class PreApprovalIndividualThresholdConfigTest {
                 liveValueNode = IntNode(5),
                 baseTypeId = "extendedInteger",
                 dpType = dataPointType,
+                additionalKnownDataPointTypeIds = setOf("some-other-field"),
             )
         // No individual override is configured for this data point type, so the (default) global
         // integer threshold of 5 applies, under which a change of 2 is not significant.

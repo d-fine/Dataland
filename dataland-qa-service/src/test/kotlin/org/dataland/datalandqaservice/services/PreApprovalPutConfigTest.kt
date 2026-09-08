@@ -60,6 +60,7 @@ class PreApprovalPutConfigTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             ).also { it.initializeConfig() }
 
         val replacement =
@@ -103,11 +104,12 @@ class PreApprovalPutConfigTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             ).also { it.initializeConfig() }
 
         val identicalReplacement =
             PreApprovalConfigPutRequest(
-                exemptFields = initialConfig.exemptFields,
+                exemptFields = initialConfig.exemptFields.mapValues { (_, ids) -> ids.toList() },
                 samplingProbability = initialConfig.samplingProbability,
                 decimalRelativeThreshold = initialConfig.decimalRelativeThreshold,
                 integerAbsoluteThreshold = initialConfig.integerAbsoluteThreshold,

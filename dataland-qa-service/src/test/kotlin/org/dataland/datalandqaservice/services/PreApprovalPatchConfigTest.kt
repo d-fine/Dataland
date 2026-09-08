@@ -60,6 +60,7 @@ class PreApprovalPatchConfigTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             ).also { it.initializeConfig() }
 
         service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.9), DUMMY_SUBMIT_USER_ID)
@@ -81,6 +82,7 @@ class PreApprovalPatchConfigTest {
                 qaConfigRepository = repository,
                 significanceCheckService = PreApprovalServiceTestUtils.significanceCheckService,
                 datasetJudgementSupportService = PreApprovalServiceTestUtils.mockSupportServiceWithNoLiveDataset(),
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             ).also { it.initializeConfig() }
 
         service.patchConfig(PreApprovalConfigPatchRequest(samplingProbability = 0.5), DUMMY_SUBMIT_USER_ID)

@@ -15,10 +15,10 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.QaServiceOpe
  */
 data class PreApprovalConfigPatchRequest(
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_EXEMPT_FIELDS_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_EXEMPT_FIELDS_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_EXEMPT_FIELDS_REQUEST_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_EXEMPT_FIELDS_REQUEST_EXAMPLE,
     )
-    val exemptFields: Map<DataTypeEnum, Set<String>>? = null,
+    val exemptFields: Map<DataTypeEnum, List<String>>? = null,
     @field:DecimalMin(value = "0.0", message = "samplingProbability must be >= 0.0")
     @field:DecimalMax(value = "1.0", message = "samplingProbability must be <= 1.0")
     @field:Schema(

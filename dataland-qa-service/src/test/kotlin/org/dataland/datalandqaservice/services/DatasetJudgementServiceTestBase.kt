@@ -49,6 +49,7 @@ open class DatasetJudgementServiceTestBase {
                     ),
                 significanceCheckService = SignificanceCheckService(),
                 datasetJudgementSupportService = datasetJudgementSupportService,
+                specificationService = PreApprovalServiceTestUtils.mockSpecificationService(),
             ).also { it.initializeConfig() },
         )
 

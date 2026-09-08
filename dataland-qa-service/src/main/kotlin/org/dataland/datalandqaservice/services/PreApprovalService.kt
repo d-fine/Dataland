@@ -110,10 +110,11 @@ class PreApprovalService(
         patch: PreApprovalConfigPatchRequest,
         submitUserId: String,
     ): PreApprovalConfig {
+        validateNoDuplicateExemptFields(patch.exemptFields)
         val current = config
         val merged =
             current.copy(
-                exemptFields = patch.exemptFields ?: current.exemptFields,
+                exemptFields = patch.exemptFields?.mapValues { (_, ids) -> ids.toSet() } ?: current.exemptFields,
                 samplingProbability = patch.samplingProbability ?: current.samplingProbability,
                 decimalRelativeThreshold = patch.decimalRelativeThreshold ?: current.decimalRelativeThreshold,
                 integerAbsoluteThreshold = patch.integerAbsoluteThreshold ?: current.integerAbsoluteThreshold,
@@ -140,10 +141,11 @@ class PreApprovalService(
         newConfig: PreApprovalConfigPutRequest,
         submitUserId: String,
     ): PreApprovalConfig {
+        validateNoDuplicateExemptFields(newConfig.exemptFields)
         val current = config
         val replaced =
             PreApprovalConfig(
-                exemptFields = newConfig.exemptFields,
+                exemptFields = newConfig.exemptFields.mapValues { (_, ids) -> ids.toSet() },
                 samplingProbability = newConfig.samplingProbability,
                 decimalRelativeThreshold = newConfig.decimalRelativeThreshold,
                 integerAbsoluteThreshold = newConfig.integerAbsoluteThreshold,
@@ -161,14 +163,52 @@ class PreApprovalService(
      * issues found into a single, concise exception, rather than failing on the first problem encountered.
      *
      * @param preApprovalConfig the pre-approval configuration object to be validated
-     * @throws InvalidInputApiException if one or more issues (duplicate or unknown data point type IDs) are found
+     * @throws InvalidInputApiException if one or more issues (overlapping or unknown data point type IDs) are found
      */
     private fun validateInput(preApprovalConfig: PreApprovalConfig) {
         val issues =
             findExemptFieldsOverlappingIndividualThresholdsIssues(preApprovalConfig) +
-                findDuplicateEntriesInListsPerFramework(preApprovalConfig) +
                 findDecimalAndIntegerThresholdOverlapIssues(preApprovalConfig) +
                 findUnknownDataPointTypeIdIssues(preApprovalConfig)
+
+        if (issues.isNotEmpty()) {
+            throw InvalidInputApiException(
+                summary = "Invalid pre-approval config",
+                message = issues.joinToString(separator = "; "),
+            )
+        }
+    }
+
+    /**
+     * Validates that the given per-framework exempt fields lists (as submitted via a PATCH or PUT request) do
+     * not contain the same data point type identifier more than once.
+     *
+     * This is checked at the request stage, before the incoming lists are converted to sets and merged into the
+     * persisted [PreApprovalConfig]: converting a `List` to a `Set` silently drops duplicates, so a duplicate
+     * submitted by a client would otherwise never be reported back to them.
+     *
+     * @param exemptFields the per-framework exempt fields lists to check, or `null` if not submitted (e.g. an
+     * absent field in a PATCH request, which is left unchanged and therefore not re-validated here)
+     * @throws InvalidInputApiException if any framework's list contains a duplicate data point type identifier
+     */
+    private fun validateNoDuplicateExemptFields(exemptFields: Map<DataTypeEnum, List<String>>?) {
+        if (exemptFields == null) return
+
+        val issues =
+            exemptFields.mapNotNull { (dataType, dataPointTypeIds) ->
+                val duplicates =
+                    dataPointTypeIds
+                        .groupingBy { it }
+                        .eachCount()
+                        .filterValues { count -> count > 1 }
+                        .keys
+
+                if (duplicates.isNotEmpty()) {
+                    "Duplicate data point type IDs $duplicates configured in exemptFields for framework $dataType"
+                } else {
+                    null
+                }
+            }
 
         if (issues.isNotEmpty()) {
             throw InvalidInputApiException(
@@ -292,29 +332,6 @@ class PreApprovalService(
             } else {
                 "Data point type IDs $overlappingDataPointTypeIds have both an individual decimal and integer " +
                     "threshold for framework $dataType"
-            }
-        }
-    }
-
-    /**
-     * Identifies and reports duplicate data point type IDs in the provided pre-approval configuration, grouped by framework.
-     *
-     * @param preApprovalConfig The pre-approval configuration containing data point type IDs grouped by framework.
-     * @return A list of strings describing the duplicate entries for each framework. Returns an empty list if no duplicates are found.
-     */
-    private fun findDuplicateEntriesInListsPerFramework(preApprovalConfig: PreApprovalConfig): List<String> {
-        val allDataPointIds = getConfiguredDataPointTypeIds(preApprovalConfig)
-        return allDataPointIds.mapNotNull { (dataType, dataPointTypeIds) ->
-            val duplicates =
-                dataPointTypeIds
-                    .groupingBy { it }
-                    .eachCount()
-                    .filter { it.value > 1 }
-                    .keys
-            if (duplicates.isEmpty()) {
-                null
-            } else {
-                "Duplicate data point type IDs $duplicates found in configuration for framework $dataType"
             }
         }
     }

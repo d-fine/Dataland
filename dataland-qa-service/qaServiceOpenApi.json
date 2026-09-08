@@ -4421,9 +4421,8 @@
           "exemptFields": {
             "type": "object",
             "additionalProperties": {
-              "uniqueItems": true,
               "type": "array",
-              "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+              "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
               "example": {
                 "sfdr": [
                   "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
@@ -4431,11 +4430,11 @@
               },
               "items": {
                 "type": "string",
-                "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+                "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
                 "example": "{\"sfdr\":[\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"]}"
               }
             },
-            "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+            "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
             "example": {
               "sfdr": [
                 "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
@@ -10500,9 +10499,8 @@
           "exemptFields": {
             "type": "object",
             "additionalProperties": {
-              "uniqueItems": true,
               "type": "array",
-              "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+              "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
               "example": {
                 "sfdr": [
                   "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"
@@ -10510,11 +10508,11 @@
               },
               "items": {
                 "type": "string",
-                "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+                "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
                 "example": "{\"sfdr\":[\"extendedDecimalScope3UpstreamGhgEmissionsInTonnes\"]}"
               }
             },
-            "description": "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts.",
+            "description": "Map of framework to the list of data point type identifiers that are exempt from automatic pre-approval for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts. Each list must not contain the same data point type identifier more than once.",
             "example": {
               "sfdr": [
                 "extendedDecimalScope3UpstreamGhgEmissionsInTonnes"

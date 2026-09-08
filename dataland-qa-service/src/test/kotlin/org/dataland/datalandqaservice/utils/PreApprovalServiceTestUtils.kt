@@ -12,6 +12,9 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DatasetJudgementSupportService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.SignificanceCheckService
+import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.datalandspecificationservice.openApiClient.model.FrameworkSpecification
+import org.dataland.datalandspecificationservice.openApiClient.model.IdWithRef
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -27,6 +30,30 @@ object PreApprovalServiceTestUtils {
     val dummyReporter2: String = UUID.randomUUID().toString()
     val significanceCheckService = SignificanceCheckService()
     const val DUMMY_SUBMIT_USER_ID = "dummy-submit-user-id"
+
+    /**
+     * A [SpecificationControllerApi] mock whose framework specification schema declares exactly
+     * [knownDataPointTypeIds] as known data point types, for any requested framework. Used by
+     * [PreApprovalService]'s unknown-data-point-type-ID check, so that tests configuring exempt fields or
+     * individual thresholds with made-up (but self-consistent) field names don't get rejected as "unknown".
+     */
+    fun mockSpecificationService(knownDataPointTypeIds: Set<String> = emptySet()): SpecificationControllerApi {
+        val schema =
+            knownDataPointTypeIds
+                .mapIndexed { index, id -> "\"key$index\": { \"id\": \"$id\", \"ref\": \"ref$index\" }" }
+                .joinToString(separator = ",", prefix = "{ \"general\": { ", postfix = " } }")
+        val frameworkSpecification =
+            FrameworkSpecification(
+                framework = IdWithRef(id = "testID", ref = "testRef"),
+                name = "Test Framework",
+                businessDefinition = "Test framework specification used by PreApprovalService tests.",
+                schema = schema,
+                referencedReportJsonPath = "/reports/testReport.json",
+            )
+        return mock<SpecificationControllerApi>().also {
+            whenever(it.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
+        }
+    }
 
     fun buildQaReport(
         reporterUserId: String,
@@ -98,6 +125,7 @@ object PreApprovalServiceTestUtils {
                 ),
             significanceCheckService = significanceCheckService,
             datasetJudgementSupportService = mockSupportServiceWithNoLiveDataset(),
+            specificationService = mockSpecificationService(exemptFields.values.flatten().toSet()),
         ).also { it.initializeConfig() }
 
     @Suppress("LongParameterList", "kotlin:S107")
@@ -110,6 +138,7 @@ object PreApprovalServiceTestUtils {
         dpType: String,
         liveDataPointMap: Map<String, String> = mapOf(dpType to liveDataPointId),
         significanceCheckService: SignificanceCheckService = this.significanceCheckService,
+        additionalKnownDataPointTypeIds: Set<String> = emptySet(),
     ): PreApprovalService {
         val supportServiceMock = mock<DatasetJudgementSupportService>()
         whenever(supportServiceMock.getDataPointsOfLatestActiveDataset(any(), any())).thenReturn(liveDataPointMap)
@@ -123,6 +152,7 @@ object PreApprovalServiceTestUtils {
                 ),
             significanceCheckService = significanceCheckService,
             datasetJudgementSupportService = supportServiceMock,
+            specificationService = mockSpecificationService(setOf(dpType) + additionalKnownDataPointTypeIds),
         ).also { it.initializeConfig() }
     }
 
