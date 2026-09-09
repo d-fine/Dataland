@@ -19,6 +19,9 @@
           <div class="col-12 text-left">
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
+          <div v-if="nonSourceabilityInfoText" class="col-12 non-sourceability-reporting-year-info my-3">
+            <span data-test="nonSourceabilityReportingYearInfo">{{ nonSourceabilityInfoText }}</span>
+          </div>
           <div class="col-12">
             <MultiLayerDataTableFrameworkPanel
               v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
@@ -60,7 +63,7 @@
 
 <script lang="ts">
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
-import { defineComponent, inject, type PropType } from 'vue';
+import { computed, defineComponent, inject, type PropType } from 'vue';
 import { type BasicDataDimensions, type DataMetaInformation, type DataTypeEnum, QaStatus } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -74,6 +77,7 @@ import {
   type FrameworkViewConfiguration,
   type FrontendFrameworkDefinition,
 } from '@/frameworks/BaseFrameworkDefinition';
+import { useSearchNonSourceableDimensionsQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsQuery';
 
 export default defineComponent({
   name: 'ViewMultipleDatasetsDisplayBase',
@@ -83,6 +87,15 @@ export default defineComponent({
     },
     frameworkViewConfiguration(): FrameworkViewConfiguration<object> | undefined {
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
+    },
+    nonSourceabilityInfoText(): string {
+      const periods = Array.from(this.nonSourceableDimensions ?? [])
+        .map((dim) => dim.reportingPeriod)
+        .sort();
+      if (periods.length === 0) {
+        return '';
+      }
+      return `For the following periods the data is non-sourceable: ${periods.join(', ')}`;
     },
   },
   components: {
@@ -118,9 +131,16 @@ export default defineComponent({
       humanizedDataDescription: humanizeStringOrNumber(this.dataType),
     };
   },
-  setup() {
+  setup(props) {
+    const nonSourceabilityRequest = computed(() => ({
+      companyIds: [props.companyId],
+      dataTypes: [props.dataType],
+    }));
+    const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
+
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
+      nonSourceableDimensions,
     };
   },
   watch: {
@@ -276,3 +296,10 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.non-sourceability-reporting-year-info {
+  background-color: var(--grey-tones-100);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+</style>

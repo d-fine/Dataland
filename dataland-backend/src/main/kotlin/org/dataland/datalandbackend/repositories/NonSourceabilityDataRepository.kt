@@ -75,4 +75,40 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
         @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
     ): NonSourceabilityInformationEntity?
+
+    /**
+     * Returns all currently-active non-sourceability entries matching the given filters.
+     * An empty list for any parameter is treated as a wildcard (no restriction on that dimension),
+     * indicated by the corresponding "isXEmpty" flag being true (in which case the list itself is ignored).
+     * Note on the query structure: for each filter, we pass a separate boolean flag
+     * (e.g. "isDataTypesEmpty") instead of writing "(:dataTypes IS NULL OR e.dataType IN :dataTypes)".
+     *
+     * Reason: the "dataType" column is not a plain String column - it's mapped via
+     * DataTypeConverter, which converts between the DataType Kotlin class and its
+     * String representation in the database. When the same query parameter
+     * (":dataTypes") is used both for an "IS NULL" check and for an "IN" list check,
+     * Hibernate gets confused about which conversion to apply to the list elements.
+     * Instead of using DataTypeConverter as expected, it tries to serialize the
+     * DataType objects directly via plain Java serialization - which fails at runtime
+     * with a NotSerializableException, because DataType does not implement Serializable.
+     *
+     * Used for bulk triple search (e.g. POST /non-sourceable/search).
+     */
+    @Query(
+        """
+        SELECT e FROM NonSourceabilityInformationEntity e
+        WHERE (:isCompanyIdsEmpty = true OR e.companyId IN :companyIds)
+          AND (:isDataTypesEmpty = true OR e.dataType IN :dataTypes)
+          AND (:isReportingPeriodsEmpty = true OR e.reportingPeriod IN :reportingPeriods)
+          AND e.currentlyActive = true
+        """,
+    )
+    fun findActiveTriples(
+        @Param("companyIds") companyIds: List<String>,
+        @Param("isCompanyIdsEmpty") isCompanyIdsEmpty: Boolean,
+        @Param("dataTypes") dataTypes: List<DataType>,
+        @Param("isDataTypesEmpty") isDataTypesEmpty: Boolean,
+        @Param("reportingPeriods") reportingPeriods: List<String>,
+        @Param("isReportingPeriodsEmpty") isReportingPeriodsEmpty: Boolean,
+    ): List<NonSourceabilityInformationEntity>
 }
