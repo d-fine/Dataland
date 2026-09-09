@@ -8,6 +8,7 @@ describe('Component test for FrameworkDataSearchFilters', () => {
     const mockDistinctValues = {
       countryCodes: ['DE', 'CH'],
       sectors: ['DummySector', 'NotSelectedSector'],
+      reportingPeriods: ['2023', '2024', '2025'],
     };
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
     //@ts-ignore
@@ -37,6 +38,71 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       expect(emittedSectors).to.have.length.greaterThan(0);
       const emittedSectorsDefined = assertDefined(emittedSectors);
       expect(emittedSectorsDefined[emittedSectors!.length - 1][0]).to.deep.equal(['DummySector']);
+    });
+  });
+
+  it('Tests that the reporting period filter defaults to the two most recent periods', () => {
+    const mockDistinctValues = {
+      countryCodes: ['DE', 'CH'],
+      sectors: ['DummySector', 'NotSelectedSector'],
+      reportingPeriods: ['2023', '2024', '2025'],
+    };
+    cy.intercept('**/api/companies/meta-information', mockDistinctValues);
+    //@ts-ignore
+    cy.mountWithPlugins(FrameworkDataSearchFilters, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      return cy.wrap(mounted.wrapper).as('vue');
+    });
+
+    cy.get('#reporting-period-filter').should('contain.text', '2 reporting periods');
+
+    // @ts-ignore
+    cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
+      const emittedReportingPeriods = wrapper.emitted('update:selectedReportingPeriods');
+      expect(emittedReportingPeriods).to.have.length.greaterThan(0);
+      const emittedReportingPeriodsDefined = assertDefined(emittedReportingPeriods);
+      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal(['2025', '2024']);
+    });
+  });
+
+  it('Tests that selecting and clearing the reporting period filter emits the correct events', () => {
+    const mockDistinctValues = {
+      countryCodes: ['DE', 'CH'],
+      sectors: ['DummySector', 'NotSelectedSector'],
+      reportingPeriods: ['2023', '2024', '2025'],
+    };
+    cy.intercept('**/api/companies/meta-information', mockDistinctValues);
+    //@ts-ignore
+    cy.mountWithPlugins(FrameworkDataSearchFilters, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      return cy.wrap(mounted.wrapper).as('vue');
+    });
+
+    cy.get('#reporting-period-filter').click();
+    cy.get('span').contains('2023').click();
+    cy.get('.p-multiselect-overlay').invoke('hide');
+
+    // @ts-ignore
+    cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
+      const emittedReportingPeriods = wrapper.emitted('update:selectedReportingPeriods');
+      expect(emittedReportingPeriods).to.have.length.greaterThan(0);
+      const emittedReportingPeriodsDefined = assertDefined(emittedReportingPeriods);
+      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal([
+        '2025',
+        '2024',
+        '2023',
+      ]);
+    });
+
+    cy.get('[data-test="reset-filter"]').click();
+
+    // @ts-ignore
+    cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
+      const emittedReportingPeriods = wrapper.emitted('update:selectedReportingPeriods');
+      const emittedReportingPeriodsDefined = assertDefined(emittedReportingPeriods);
+      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal([]);
     });
   });
 });

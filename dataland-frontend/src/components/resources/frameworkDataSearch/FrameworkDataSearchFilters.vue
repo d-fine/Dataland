@@ -37,6 +37,18 @@
         :max-selected-labels="1"
         class="search-filter framework-filter"
       />
+      <FrameworkDataSearchDropdownFilter
+        v-model="localSelectedReportingPeriods"
+        ref="reportingPeriodFilter"
+        :available-items="availableReportingPeriods"
+        filter-name="Reporting Period"
+        id="reporting-period-filter"
+        filter-placeholder="Search reporting periods"
+        selected-items-label="{0} reporting periods"
+        :max-selected-labels="1"
+        class="search-filter"
+        data-test="frameworkDataSearchDropdownFilterReportingPeriod"
+      />
       <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
       <Divider layout="vertical" />
     </div>
@@ -71,12 +83,18 @@ export interface FrameworkDataSearchDropdownFilterRef {
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
   components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
-  emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
+  emits: [
+    'update:selectedCountryCodes',
+    'update:selectedFrameworks',
+    'update:selectedSectors',
+    'update:selectedReportingPeriods',
+  ],
   setup() {
     return {
       sectorFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       countryFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       frameworkFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
+      reportingPeriodFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },
@@ -93,6 +111,10 @@ export default defineComponent({
       type: Array as () => Array<string>,
       default: () => [],
     },
+    selectedReportingPeriods: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
     showHeading: {
       type: Boolean,
       default: true,
@@ -103,10 +125,12 @@ export default defineComponent({
       localSelectedCountries: [] as Array<CountryCodeSelectableItem>,
       localSelectedFrameworks: [] as Array<FrameworkSelectableItem>,
       localSelectedSectors: [] as Array<SelectableItem>,
+      localSelectedReportingPeriods: [] as Array<SelectableItem>,
 
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableSectors: [] as Array<SelectableItem>,
+      availableReportingPeriods: [] as Array<SelectableItem>,
     };
   },
   watch: {
@@ -137,6 +161,15 @@ export default defineComponent({
         );
       },
     },
+    localSelectedReportingPeriods: {
+      deep: true,
+      handler(newValue: Array<SelectableItem>) {
+        this.$emit(
+          'update:selectedReportingPeriods',
+          newValue.map((item) => item.displayName)
+        );
+      },
+    },
   },
   methods: {
     /**
@@ -146,10 +179,12 @@ export default defineComponent({
       this.localSelectedFrameworks = [];
       this.localSelectedCountries = [];
       this.localSelectedSectors = [];
+      this.localSelectedReportingPeriods = [];
 
       this.$emit('update:selectedCountryCodes', []);
       this.$emit('update:selectedSectors', []);
       this.$emit('update:selectedFrameworks', []);
+      this.$emit('update:selectedReportingPeriods', []);
     },
     /**
      * A helper function that closes all the dropdown filters
@@ -162,10 +197,13 @@ export default defineComponent({
       this.sectorFilter?.multiselect?.hide?.();
 
       this.frameworkFilter?.multiselect?.hide?.();
+
+      this.reportingPeriodFilter?.multiselect?.hide?.();
     },
     /**
      * Uses the Dataland API to obtain available company search filters and fills in the
-     * availableCountries and availableSectors elements in the format expected by the dropdown filters
+     * availableCountries, availableSectors and availableReportingPeriods elements in the format
+     * expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
@@ -186,6 +224,12 @@ export default defineComponent({
           return { displayName: sector, disabled: false };
         })
         .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+      this.availableReportingPeriods = [...(availableSearchFilters.data.reportingPeriods ?? [])]
+        .map((reportingPeriod) => {
+          return { displayName: reportingPeriod, disabled: false };
+        })
+        .sort((a, b) => b.displayName.localeCompare(a.displayName));
     },
     /**
      * Populates the availableFrameworks property in the format expected by the dropdown filter
@@ -206,7 +250,8 @@ export default defineComponent({
       });
     },
     /**
-     * Initializes the availableCountries, availableSectors and available Frameworks properties for the dropdown filters
+     * Initializes the availableCountries, availableSectors, availableReportingPeriods and available Frameworks
+     * properties for the dropdown filters
      * @returns a promise as this function needs to request the Dataland api
      */
     async retrieveAvailableFilterOptions() {
@@ -225,6 +270,10 @@ export default defineComponent({
       this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
         this.selectedFrameworks.includes(item.frameworkDataType)
       );
+      this.localSelectedReportingPeriods =
+        this.selectedReportingPeriods.length > 0
+          ? this.availableReportingPeriods.filter((item) => this.selectedReportingPeriods.includes(item.displayName))
+          : this.availableReportingPeriods.slice(0, 2);
     });
   },
 });

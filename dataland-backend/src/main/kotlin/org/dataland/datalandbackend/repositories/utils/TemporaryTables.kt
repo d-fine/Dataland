@@ -117,6 +117,12 @@ class TemporaryTables private constructor() {
                 " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
                 " AND (:#{#searchFilter.countryCodeFilterSize} = 0 " +
                 "       OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+                " AND (:#{#searchFilter.reportingPeriodFilterSize} = 0 OR company_id IN " +
+                "   (SELECT DISTINCT company_id " +
+                "       FROM data_meta_information " +
+                "       WHERE currently_active='true'" +
+                "       AND :#{#searchFilter.reportingPeriodFilterSize} > 0" +
+                "       AND reporting_period IN :#{#searchFilter.reportingPeriodFilter})) " +
                 " ) AS filtered_dropdown_results "
     }
 }

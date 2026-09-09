@@ -111,6 +111,7 @@ export default defineComponent({
           frameworkFilter: FRAMEWORKS_WITH_VIEW_PAGE,
           sectorFilter: [],
           countryCodeFilter: [],
+          reportingPeriodFilter: [],
         };
       },
     },
@@ -265,6 +266,7 @@ export default defineComponent({
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
+        new Set(this.filter?.reportingPeriodFilter),
         assertDefined(this.getKeycloakPromise)(),
         this.chunkSize,
         chunkIndex
@@ -280,6 +282,7 @@ export default defineComponent({
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),
+        new Set(this.filter?.reportingPeriodFilter),
         assertDefined(this.getKeycloakPromise)()
       );
     },
@@ -294,7 +297,8 @@ export default defineComponent({
         areAllFiltersDeactivated(
           this.filter?.frameworkFilter,
           this.filter?.countryCodeFilter,
-          this.filter?.sectorFilter
+          this.filter?.sectorFilter,
+          this.filter?.reportingPeriodFilter
         )
       ) {
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPageWithoutFilters(
@@ -308,6 +312,7 @@ export default defineComponent({
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
+          new Set(this.filter?.reportingPeriodFilter),
           assertDefined(this.getKeycloakPromise)(),
           this.maxNumOfDisplayedAutocompleteEntries,
           0
@@ -348,14 +353,16 @@ export default defineComponent({
  * @param frameworkFilter selection options of framework filter
  * @param countryCodeFilter selection options of country code filter
  * @param sectorFilter selection options of sector filter
+ * @param reportingPeriodFilter selection options of reporting period filter
  * @returns boolean value representing check result
  */
 function areAllFiltersDeactivated(
   frameworkFilter: Array<DataTypeEnum>,
   countryCodeFilter: Array<string>,
-  sectorFilter: Array<string>
+  sectorFilter: Array<string>,
+  reportingPeriodFilter: Array<string>
 ): boolean {
-  return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length);
+  return !(frameworkFilter.length + countryCodeFilter.length + sectorFilter.length + reportingPeriodFilter.length);
 }
 </script>
 <style scoped>

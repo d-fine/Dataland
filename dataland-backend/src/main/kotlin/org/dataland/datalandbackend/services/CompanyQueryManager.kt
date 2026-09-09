@@ -118,7 +118,10 @@ class CompanyQueryManager
          */
         private fun areAllDropdownFiltersDeactivated(filter: StoredCompanySearchFilter): Boolean =
             (
-                filter.dataTypeFilterSize + filter.sectorFilterSize + filter.countryCodeFilterSize == 0
+                filter.dataTypeFilterSize +
+                    filter.sectorFilterSize +
+                    filter.countryCodeFilterSize +
+                    filter.reportingPeriodFilterSize == 0
             )
 
         /**

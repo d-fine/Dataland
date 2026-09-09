@@ -67,4 +67,15 @@ interface StoredCompanyBaseRepository : JpaRepository<StoredCompanyEntity, Strin
             "WHERE company.sector IS NOT NULL ",
     )
     fun fetchDistinctSectors(): Set<String>
+
+    /**
+     * Returns all available distinct reporting periods of currently active datasets, ordered descending
+     */
+    @Query(
+        "SELECT DISTINCT data.reportingPeriod FROM StoredCompanyEntity company " +
+            "INNER JOIN company.dataRegisteredByDataland data " +
+            "WHERE data.currentlyActive = true " +
+            "ORDER BY data.reportingPeriod DESC",
+    )
+    fun fetchDistinctReportingPeriods(): List<String>
 }

@@ -63,12 +63,14 @@ class CompanyDataController
             dataTypes: Set<DataType>?,
             countryCodes: Set<String>?,
             sectors: Set<String>?,
+            reportingPeriods: Set<String>?,
             chunkSize: Int?,
             chunkIndex: Int?,
         ): ResponseEntity<List<BasicCompanyInformation>> {
             logger.info(
                 "Received a request to get basic company information with searchString='$searchString'" +
-                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'" +
+                    ", reportingPeriods='$reportingPeriods'",
             )
             return ResponseEntity.ok(
                 companyQueryManager.getCompaniesInChunks(
@@ -77,6 +79,7 @@ class CompanyDataController
                         dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                         countryCodeFilter = countryCodes?.toList() ?: listOf(),
                         sectorFilter = sectors?.toList() ?: listOf(),
+                        reportingPeriodFilter = reportingPeriods?.toList() ?: listOf(),
                     ),
                     chunkIndex ?: 0,
                     chunkSize,
@@ -89,10 +92,12 @@ class CompanyDataController
             dataTypes: Set<DataType>?,
             countryCodes: Set<String>?,
             sectors: Set<String>?,
+            reportingPeriods: Set<String>?,
         ): ResponseEntity<Int> {
             logger.info(
                 "Received a request to get number of companies with searchString='$searchString'" +
-                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
+                    ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'" +
+                    ", reportingPeriods='$reportingPeriods'",
             )
             return ResponseEntity.ok(
                 companyBaseManager.countNumberOfCompanies(
@@ -101,6 +106,7 @@ class CompanyDataController
                         dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                         countryCodeFilter = countryCodes?.toList() ?: listOf(),
                         sectorFilter = sectors?.toList() ?: listOf(),
+                        reportingPeriodFilter = reportingPeriods?.toList() ?: listOf(),
                     ),
                 ),
             )
@@ -157,6 +163,7 @@ class CompanyDataController
                 CompanyAvailableDistinctValues(
                     countryCodes = companyBaseManager.getDistinctCountryCodes(),
                     sectors = companyBaseManager.getDistinctSectors(),
+                    reportingPeriods = companyBaseManager.getDistinctReportingPeriods(),
                 ),
             )
 

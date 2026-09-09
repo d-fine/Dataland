@@ -9,6 +9,7 @@ data class StoredCompanySearchFilter(
     val countryCodeFilter: List<String>,
     val sectorFilter: List<String>,
     val searchString: String,
+    val reportingPeriodFilter: List<String> = emptyList(),
 ) {
     val dataTypeFilterSize: Int
         get() = dataTypeFilter.size
@@ -21,4 +22,7 @@ data class StoredCompanySearchFilter(
 
     val searchStringLength: Int
         get() = searchString.length
+
+    val reportingPeriodFilterSize: Int
+        get() = reportingPeriodFilter.size
 }

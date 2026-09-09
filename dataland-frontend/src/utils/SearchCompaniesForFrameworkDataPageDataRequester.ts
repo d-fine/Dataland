@@ -12,6 +12,7 @@ export interface FrameworkDataSearchFilterInterface {
   frameworkFilter: Array<DataTypeEnum>;
   countryCodeFilter: Array<string>;
   sectorFilter: Array<string>;
+  reportingPeriodFilter: Array<string>;
 }
 
 /**
@@ -25,6 +26,8 @@ export interface FrameworkDataSearchFilterInterface {
  * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
+ * @param reportingPeriodFilter            If not empty only companies with an active dataset for one of the
+ *                                         given reporting periods are returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  * @param chunkSize                        size of requested chunk
  * @param chunkIndex                       index of requested chunk
@@ -35,6 +38,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   frameworkFilter: Set<DataTypeEnum>,
   countryCodeFilter: Set<string>,
   sectorFilter: Set<string>,
+  reportingPeriodFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>,
   chunkSize?: number,
   chunkIndex?: number
@@ -47,6 +51,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
         frameworkFilter,
         countryCodeFilter,
         sectorFilter,
+        reportingPeriodFilter,
         chunkSize,
         chunkIndex
       )
@@ -89,6 +94,8 @@ export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
  * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
  *                                         countries specified by the country codes are returned
  * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
+ * @param reportingPeriodFilter            If not empty only companies with an active dataset for one of the
+ *                                         given reporting periods are returned
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  * @returns the number of result companies
  */
@@ -97,10 +104,18 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
   frameworkFilter: Set<DataTypeEnum>,
   countryCodeFilter: Set<string>,
   sectorFilter: Set<string>,
+  reportingPeriodFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>
 ): Promise<number> {
   try {
-    if (searchString.length + frameworkFilter.size + countryCodeFilter.size + sectorFilter.size == 0) {
+    if (
+      searchString.length +
+        frameworkFilter.size +
+        countryCodeFilter.size +
+        sectorFilter.size +
+        reportingPeriodFilter.size ==
+      0
+    ) {
       frameworkFilter = new Set<DataTypeEnum>(Object.values(DataTypeEnum));
     }
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
@@ -108,7 +123,8 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
       searchString,
       frameworkFilter,
       countryCodeFilter,
-      sectorFilter
+      sectorFilter,
+      reportingPeriodFilter
     );
     return response.data;
   } catch (error) {

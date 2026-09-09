@@ -26,6 +26,7 @@
             v-model:selected-country-codes="currentFilteredCountryCodes"
             v-model:selected-frameworks="currentFilteredFrameworks"
             v-model:selected-sectors="currentFilteredSectors"
+            v-model:selected-reporting-periods="currentFilteredReportingPeriods"
           />
         </div>
 
@@ -122,11 +123,13 @@ export default defineComponent({
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
+      currentFilteredReportingPeriods: [] as Array<string>,
       currentCombinedFilter: {
         companyNameFilter: '',
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
+        reportingPeriodFilter: [],
       } as FrameworkDataSearchFilterInterface,
       isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
@@ -154,6 +157,12 @@ export default defineComponent({
       deep: true,
     },
     currentFilteredSectors: {
+      handler() {
+        this.updateCombinedFilterIfRequired();
+      },
+      deep: true,
+    },
+    currentFilteredReportingPeriods: {
       handler() {
         this.updateCombinedFilterIfRequired();
       },
@@ -265,6 +274,7 @@ export default defineComponent({
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
+        !arraySetEquals(this.currentFilteredReportingPeriods, this.currentCombinedFilter.reportingPeriodFilter) ||
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
         this.waitingForDataToDisplay = true;
@@ -273,6 +283,7 @@ export default defineComponent({
           frameworkFilter: this.currentFilteredFrameworks,
           companyNameFilter: this.currentSearchBarInput,
           countryCodeFilter: this.currentFilteredCountryCodes,
+          reportingPeriodFilter: this.currentFilteredReportingPeriods,
         };
       }
     },
