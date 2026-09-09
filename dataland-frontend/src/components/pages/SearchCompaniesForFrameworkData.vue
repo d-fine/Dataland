@@ -364,8 +364,16 @@ export default defineComponent({
 .search-filters-panel {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  row-gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.search-filters-panel > div:first-child {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .d-center-div {
@@ -409,5 +417,16 @@ export default defineComponent({
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
+}
+
+@media (max-width: 992px) {
+  .search-bar-and-filters-container #frameworkDataSearchBar {
+    width: 100%;
+  }
+
+  #frameworkDataSearchFilters {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 </style>
