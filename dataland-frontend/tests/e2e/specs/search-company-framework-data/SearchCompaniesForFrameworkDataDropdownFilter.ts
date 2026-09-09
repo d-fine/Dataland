@@ -219,16 +219,24 @@ describe('As a user, I expect the search functionality on the /companies page to
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.wait(shortTimeoutInMs);
+
+      cy.get('[data-test="filtersToggleButton"]').click();
+      cy.get('[data-test="filtersPopover"]').should('exist');
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 600, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
+      cy.get('[data-test="filtersPopover"]').should('not.exist');
       cy.wait(shortTimeoutInMs);
+
+      cy.get('[data-test="filtersToggleButton"]').click();
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay').should('exist');
       cy.scrollTo(0, 500, { duration: 300 });
       cy.get('div.p-multiselect-overlay').should('not.exist');
       cy.wait(shortTimeoutInMs);
+
+      cy.get('[data-test="filtersToggleButton"]').click();
       cy.get('[id="framework-filter"]').click();
       cy.get('div.p-multiselect-overlay')
         .should('be.visible')
