@@ -54,6 +54,7 @@ import SearchResultHighlighter from '@/components/resources/frameworkDataSearch/
 import router from '@/router';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import {
+  type FrameworkDataSearchDropdownFilters,
   type FrameworkDataSearchFilterInterface,
   getCompanyDataForFrameworkDataSearchPage,
   getCompanyDataForFrameworkDataSearchPageWithoutFilters,
@@ -256,6 +257,18 @@ export default defineComponent({
       }
     },
     /**
+     * Builds the combination of dropdown filters (as Sets) currently selected on this component's filter prop.
+     * @returns the current dropdown filters
+     */
+    getCurrentDropdownFilters(): FrameworkDataSearchDropdownFilters {
+      return {
+        frameworkFilter: new Set(this.filter?.frameworkFilter),
+        countryCodeFilter: new Set(this.filter?.countryCodeFilter),
+        sectorFilter: new Set(this.filter?.sectorFilter),
+        reportingPeriodFilter: new Set(this.filter?.reportingPeriodFilter),
+      };
+    },
+    /**
      * Performs the company search if the parent component indicated it wants to receive the complete search results
      * @param chunkIndex the index of the requested chunk
      * @returns chunk of companies
@@ -263,10 +276,7 @@ export default defineComponent({
     async getCompanies(chunkIndex: number) {
       return await getCompanyDataForFrameworkDataSearchPage(
         this.searchBarInput,
-        new Set(this.filter?.frameworkFilter),
-        new Set(this.filter?.countryCodeFilter),
-        new Set(this.filter?.sectorFilter),
-        new Set(this.filter?.reportingPeriodFilter),
+        this.getCurrentDropdownFilters(),
         assertDefined(this.getKeycloakPromise)(),
         this.chunkSize,
         chunkIndex
@@ -279,10 +289,7 @@ export default defineComponent({
     async getTotalNumberOfCompanies() {
       return await getNumberOfCompaniesForFrameworkDataSearchPage(
         this.searchBarInput,
-        new Set(this.filter?.frameworkFilter),
-        new Set(this.filter?.countryCodeFilter),
-        new Set(this.filter?.sectorFilter),
-        new Set(this.filter?.reportingPeriodFilter),
+        this.getCurrentDropdownFilters(),
         assertDefined(this.getKeycloakPromise)()
       );
     },
@@ -309,10 +316,7 @@ export default defineComponent({
       } else {
         this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
           companyName.query,
-          new Set(this.filter?.frameworkFilter),
-          new Set(this.filter?.countryCodeFilter),
-          new Set(this.filter?.sectorFilter),
-          new Set(this.filter?.reportingPeriodFilter),
+          this.getCurrentDropdownFilters(),
           assertDefined(this.getKeycloakPromise)(),
           this.maxNumOfDisplayedAutocompleteEntries,
           0

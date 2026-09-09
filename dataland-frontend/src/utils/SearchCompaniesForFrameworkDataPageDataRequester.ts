@@ -16,18 +16,22 @@ export interface FrameworkDataSearchFilterInterface {
 }
 
 /**
+ * The set of dropdown filters that can be applied when searching for companies on the search page.
+ */
+export interface FrameworkDataSearchDropdownFilters {
+  frameworkFilter: Set<DataTypeEnum>;
+  countryCodeFilter: Set<string>;
+  sectorFilter: Set<string>;
+  reportingPeriodFilter: Set<string>;
+}
+
+/**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  * @param  {string} searchString           the string that is used to search companies
  *                                         by name, or additionally by identifier values
- * @param {Array<string>} frameworkFilter
- *                                         search for companies that hold at least one data set for at least one of
- *                                         the frameworks mentioned in frameworksToFilter and don't filter if
- *                                         frameworksToFilter is empty
- * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
- *                                         countries specified by the country codes are returned
- * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
- * @param reportingPeriodFilter            If not empty only companies with an active dataset for one of the
- *                                         given reporting periods are returned
+ * @param dropdownFilters                  the combination of framework-, country-code-, sector- and
+ *                                         reporting-period-filters to apply. Filters are only applied if
+ *                                         non-empty.
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  * @param chunkSize                        size of requested chunk
  * @param chunkIndex                       index of requested chunk
@@ -35,10 +39,7 @@ export interface FrameworkDataSearchFilterInterface {
  */
 export async function getCompanyDataForFrameworkDataSearchPage(
   searchString: string,
-  frameworkFilter: Set<DataTypeEnum>,
-  countryCodeFilter: Set<string>,
-  sectorFilter: Set<string>,
-  reportingPeriodFilter: Set<string>,
+  dropdownFilters: FrameworkDataSearchDropdownFilters,
   keycloakPromise: Promise<Keycloak>,
   chunkSize?: number,
   chunkIndex?: number
@@ -48,10 +49,10 @@ export async function getCompanyDataForFrameworkDataSearchPage(
     return (
       await companyDataControllerApi.getCompanies(
         searchString,
-        frameworkFilter,
-        countryCodeFilter,
-        sectorFilter,
-        reportingPeriodFilter,
+        dropdownFilters.frameworkFilter,
+        dropdownFilters.countryCodeFilter,
+        dropdownFilters.sectorFilter,
+        dropdownFilters.reportingPeriodFilter,
         chunkSize,
         chunkIndex
       )
@@ -87,33 +88,25 @@ export async function getCompanyDataForFrameworkDataSearchPageWithoutFilters(
  * send out an API-call to count stored companies that satisfy the filters
  * @param  {string} searchString           the string that is used to search companies
  *                                         by name, or additionally by identifier values
- * @param {Array<string>} frameworkFilter
- *                                         search for companies that hold at least one data set for at least one of
- *                                         the frameworks mentioned in frameworksToFilter and don't filter if
- *                                         frameworksToFilter is empty
- * @param countryCodeFilter                If not empty only companies whose headquarter is in one of the
- *                                         countries specified by the country codes are returned
- * @param sectorFilter                     If not empty only companies whose sector is in the set is returned
- * @param reportingPeriodFilter            If not empty only companies with an active dataset for one of the
- *                                         given reporting periods are returned
+ * @param dropdownFilters                  the combination of framework-, country-code-, sector- and
+ *                                         reporting-period-filters to apply. Filters are only applied if
+ *                                         non-empty.
  * @param {any} keycloakPromise            a promise to the Keycloak Object for the Frontend
  * @returns the number of result companies
  */
 export async function getNumberOfCompaniesForFrameworkDataSearchPage(
   searchString: string,
-  frameworkFilter: Set<DataTypeEnum>,
-  countryCodeFilter: Set<string>,
-  sectorFilter: Set<string>,
-  reportingPeriodFilter: Set<string>,
+  dropdownFilters: FrameworkDataSearchDropdownFilters,
   keycloakPromise: Promise<Keycloak>
 ): Promise<number> {
   try {
+    let frameworkFilter = dropdownFilters.frameworkFilter;
     if (
       searchString.length +
         frameworkFilter.size +
-        countryCodeFilter.size +
-        sectorFilter.size +
-        reportingPeriodFilter.size ==
+        dropdownFilters.countryCodeFilter.size +
+        dropdownFilters.sectorFilter.size +
+        dropdownFilters.reportingPeriodFilter.size ==
       0
     ) {
       frameworkFilter = new Set<DataTypeEnum>(Object.values(DataTypeEnum));
@@ -122,9 +115,9 @@ export async function getNumberOfCompaniesForFrameworkDataSearchPage(
     const response = await companyDataControllerApi.getNumberOfCompanies(
       searchString,
       frameworkFilter,
-      countryCodeFilter,
-      sectorFilter,
-      reportingPeriodFilter
+      dropdownFilters.countryCodeFilter,
+      dropdownFilters.sectorFilter,
+      dropdownFilters.reportingPeriodFilter
     );
     return response.data;
   } catch (error) {
