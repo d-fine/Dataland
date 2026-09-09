@@ -177,7 +177,9 @@ describe('As a user, I expect the search functionality on the /companies page to
             '@companies-meta-information'
           );
           const urlBeforeFilterChange =
-            getBaseUrl() + `/companies?input=${demoCompanyToTestFor.companyInformation.companyName}`;
+            getBaseUrl() +
+            '/companies?' +
+            `input=${convertStringToQueryParamFormat(demoCompanyToTestFor.companyInformation.companyName)}`;
           cy.url().should('eq', urlBeforeFilterChange);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyInformation.companyName)

@@ -277,10 +277,9 @@ export default defineComponent({
       this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
         this.selectedFrameworks.includes(item.frameworkDataType)
       );
-      this.localSelectedReportingPeriods =
-        this.selectedReportingPeriods.length > 0
-          ? this.availableReportingPeriods.filter((item) => this.selectedReportingPeriods.includes(item.displayName))
-          : this.availableReportingPeriods.slice(0, 2);
+      this.localSelectedReportingPeriods = this.availableReportingPeriods.filter((item) =>
+        this.selectedReportingPeriods.includes(item.displayName)
+      );
     });
   },
 });

@@ -41,7 +41,7 @@ describe('Component test for FrameworkDataSearchFilters', () => {
     });
   });
 
-  it('Tests that the reporting period filter defaults to the two most recent periods', () => {
+  it('Tests that the reporting period filter starts unselected and lists available periods', () => {
     const mockDistinctValues = {
       countryCodes: ['DE', 'CH'],
       sectors: ['DummySector', 'NotSelectedSector'],
@@ -55,15 +55,12 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       return cy.wrap(mounted.wrapper).as('vue');
     });
 
-    cy.get('#reporting-period-filter').should('contain.text', '2 reporting periods');
+    cy.get('#reporting-period-filter').should('contain.text', 'Reporting Period');
 
-    // @ts-ignore
-    cy.get('@vue').should((wrapper: VueWrapper<InstanceType<typeof FrameworkDataSearchFilters>>) => {
-      const emittedReportingPeriods = wrapper.emitted('update:selectedReportingPeriods');
-      expect(emittedReportingPeriods).to.have.length.greaterThan(0);
-      const emittedReportingPeriodsDefined = assertDefined(emittedReportingPeriods);
-      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal(['2025', '2024']);
-    });
+    cy.get('#reporting-period-filter').click();
+    cy.get('li').contains('2025').should('exist');
+    cy.get('li').contains('2024').should('exist');
+    cy.get('li').contains('2023').should('exist');
   });
 
   it('Tests that selecting and clearing the reporting period filter emits the correct events', () => {
@@ -89,11 +86,7 @@ describe('Component test for FrameworkDataSearchFilters', () => {
       const emittedReportingPeriods = wrapper.emitted('update:selectedReportingPeriods');
       expect(emittedReportingPeriods).to.have.length.greaterThan(0);
       const emittedReportingPeriodsDefined = assertDefined(emittedReportingPeriods);
-      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal([
-        '2025',
-        '2024',
-        '2023',
-      ]);
+      expect(emittedReportingPeriodsDefined[emittedReportingPeriods!.length - 1][0]).to.deep.equal(['2023']);
     });
 
     cy.get('[data-test="reset-filter"]').click();
