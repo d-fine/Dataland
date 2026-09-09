@@ -18,7 +18,7 @@
       />
 
       <div class="search-filters-panel">
-        <div v-if="!isSearchBarContainerCollapsed">
+        <div>
           <FrameworkDataSearchFilters
             id="frameworkDataSearchFilters"
             class="col-8"
@@ -28,29 +28,6 @@
             v-model:selected-sectors="currentFilteredSectors"
             v-model:selected-reporting-periods="currentFilteredReportingPeriods"
           />
-        </div>
-
-        <div v-else class="filters-toggle-container">
-          <PrimeButton
-            severity="secondary"
-            outlined
-            icon="pi pi-filter"
-            label="Filters"
-            :badge="activeFilterCount > 0 ? String(activeFilterCount) : undefined"
-            data-test="filtersToggleButton"
-            @click="toggleFiltersPopover"
-          />
-          <Popover ref="filtersPopover" data-test="filtersPopover">
-            <FrameworkDataSearchFilters
-              id="frameworkDataSearchFiltersPopover"
-              ref="frameworkDataSearchFiltersInPopover"
-              :show-heading="false"
-              v-model:selected-country-codes="currentFilteredCountryCodes"
-              v-model:selected-frameworks="currentFilteredFrameworks"
-              v-model:selected-sectors="currentFilteredSectors"
-              v-model:selected-reporting-periods="currentFilteredReportingPeriods"
-            />
-          </Popover>
         </div>
 
         <div v-if="!isSearchBarContainerCollapsed" class="button-container">
@@ -99,7 +76,6 @@ import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompanies
 import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Popover from 'primevue/popover';
 import { defineComponent, inject, ref } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 
@@ -111,17 +87,10 @@ interface FrameworkDataSearchFiltersRef {
   closeAllOpenDropDowns?: () => void;
 }
 
-interface PopoverRef {
-  toggle?: (event: Event) => void;
-  hide?: () => void;
-}
-
 export default defineComponent({
   setup() {
     return {
       frameworkDataSearchFilters: ref<FrameworkDataSearchFiltersRef | null>(null),
-      frameworkDataSearchFiltersInPopover: ref<FrameworkDataSearchFiltersRef | null>(null),
-      filtersPopover: ref<PopoverRef | null>(null),
       frameworkDataSearchBar: ref<FrameworkDataSearchBarRef | null>(null),
       searchResults: ref<unknown>(null),
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -135,7 +104,6 @@ export default defineComponent({
     FrameworkDataSearchBar,
     FrameworkDataSearchResults,
     PrimeButton,
-    Popover,
   },
   created() {
     globalThis.addEventListener('scroll', () => this.handleScroll());
@@ -217,18 +185,6 @@ export default defineComponent({
         return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
       }
     },
-    /**
-     * The total number of currently active filter selections across all dropdown filters.
-     * Used to display a badge on the compact "Filters" toggle button when the search bar is collapsed.
-     */
-    activeFilterCount(): number {
-      return (
-        this.currentFilteredCountryCodes.length +
-        this.currentFilteredSectors.length +
-        this.currentFilteredFrameworks.length +
-        this.currentFilteredReportingPeriods.length
-      );
-    },
   },
   methods: {
     /**
@@ -265,16 +221,6 @@ export default defineComponent({
       }
 
       this.frameworkDataSearchFilters?.closeAllOpenDropDowns?.();
-      this.frameworkDataSearchFiltersInPopover?.closeAllOpenDropDowns?.();
-      this.filtersPopover?.hide?.();
-    },
-    /**
-     * Toggles the visibility of the compact "Filters" popover that replaces the inline filter dropdowns
-     * once the search bar has collapsed into its sticky, scrolled state.
-     * @param event the click event that triggered the toggle, required by the PrimeVue Popover API
-     */
-    toggleFiltersPopover(event: Event) {
-      this.filtersPopover?.toggle?.(event);
     },
     /**
      * Parses the framework filter query parameters.
@@ -463,6 +409,37 @@ export default defineComponent({
   align-items: end;
   padding-top: 0;
   border-bottom: 1px solid var(--p-surface-200);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.collapsed-search-container #frameworkDataSearchBar {
+  width: 18rem;
+  flex-shrink: 0;
+}
+
+.collapsed-search-container .search-filters-panel {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  width: auto;
+}
+
+.collapsed-search-container .search-filters-panel > div:first-child {
+  flex-shrink: 0;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.filter) {
+  flex-wrap: nowrap;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.filter-group-items) {
+  flex-wrap: nowrap;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.search-filter),
+.collapsed-search-container #frameworkDataSearchFilters :deep(.framework-filter) {
+  flex-shrink: 0;
 }
 
 .button-container {
@@ -471,16 +448,6 @@ export default defineComponent({
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
-}
-
-.filters-toggle-container {
-  display: flex;
-  align-items: center;
-}
-
-.filters-toggle-container :deep(.p-popover-content) {
-  padding: var(--spacing-md);
-  max-width: min(90vw, 40rem);
 }
 
 @media (max-width: 992px) {
