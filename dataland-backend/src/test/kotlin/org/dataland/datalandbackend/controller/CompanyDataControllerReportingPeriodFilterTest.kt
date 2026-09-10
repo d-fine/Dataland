@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
@@ -45,6 +46,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
     private lateinit var companyReportingPeriod2023: StoredCompanyEntity
     private lateinit var companyReportingPeriod2024: StoredCompanyEntity
     private lateinit var companyReportingPeriodBoth: StoredCompanyEntity
+    private lateinit var companyWithMismatchedFrameworkAndPeriod: StoredCompanyEntity
     private lateinit var companyController: CompanyDataController
 
     @BeforeEach
@@ -58,20 +60,24 @@ class CompanyDataControllerReportingPeriodFilterTest(
                 dataAvailabilityChecker,
             )
 
-        val companies = testDataProvider.getCompanyInformationWithoutIdentifiers(3)
+        val companies = testDataProvider.getCompanyInformationWithoutIdentifiers(4)
         companyReportingPeriod2023 = companyAlterationManager.addCompany(companies[0])
         companyReportingPeriod2024 = companyAlterationManager.addCompany(companies[1])
         companyReportingPeriodBoth = companyAlterationManager.addCompany(companies[2])
+        companyWithMismatchedFrameworkAndPeriod = companyAlterationManager.addCompany(companies[3])
 
         storeActiveDataset(companyReportingPeriod2023.companyId, "2023")
         storeActiveDataset(companyReportingPeriod2024.companyId, "2024")
         storeActiveDataset(companyReportingPeriodBoth.companyId, "2023")
         storeActiveDataset(companyReportingPeriodBoth.companyId, "2024")
+        storeActiveDataset(companyWithMismatchedFrameworkAndPeriod.companyId, "2023", dataType = "sfdr")
+        storeActiveDataset(companyWithMismatchedFrameworkAndPeriod.companyId, "2024", dataType = "lksg")
     }
 
     private fun storeActiveDataset(
         companyId: String,
         reportingPeriod: String,
+        dataType: String = "sfdr",
     ) {
         dataMetaInformationRepository.saveAndFlush(
             DataMetaInformationEntity(
@@ -79,7 +85,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
                 company =
                     companyQueryManager
                         .getCompanyById(companyId),
-                dataType = "sfdr",
+                dataType = dataType,
                 uploaderUserId = UUID.randomUUID().toString(),
                 uploadTime = System.currentTimeMillis(),
                 reportingPeriod = reportingPeriod,
@@ -142,7 +148,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
     fun `getNumberOfCompanies respects the reportingPeriod filter`() {
         val countBefore = companyController.getNumberOfCompanies(reportingPeriods = emptySet()).body!!
         val countFor2024 = companyController.getNumberOfCompanies(reportingPeriods = setOf("2024")).body!!
-        assertEquals(2, countFor2024)
+        assertEquals(3, countFor2024)
         assertTrue(countBefore >= countFor2024)
     }
 
@@ -150,5 +156,49 @@ class CompanyDataControllerReportingPeriodFilterTest(
     fun `getAvailableCompanySearchFilters returns the distinct reporting periods in descending order`() {
         val availableFilters = companyController.getAvailableCompanySearchFilters().body!!
         assertTrue(availableFilters.reportingPeriods.containsAll(setOf("2023", "2024")))
+    }
+
+    @Test
+    fun `getCompanies requires the dataType and reportingPeriod filter to match the same dataset`() {
+        // The company has an "sfdr" dataset for 2023 and a "lksg" dataset for 2024, but no dataset that is
+        // both "sfdr" and 2024 (or "lksg" and 2023). The filter combination must not match on two different,
+        // uncorrelated datasets.
+        val matchingResult =
+            companyController
+                .getCompanies(
+                    dataTypes = setOf(DataType.valueOf("sfdr")),
+                    reportingPeriods = setOf("2023"),
+                ).body!!
+        assertTrue(matchingResult.map { it.companyId }.contains(companyWithMismatchedFrameworkAndPeriod.companyId))
+
+        val nonMatchingResult =
+            companyController
+                .getCompanies(
+                    dataTypes = setOf(DataType.valueOf("sfdr")),
+                    reportingPeriods = setOf("2024"),
+                ).body!!
+        assertTrue(
+            !nonMatchingResult.map { it.companyId }.contains(companyWithMismatchedFrameworkAndPeriod.companyId),
+        )
+
+        val otherNonMatchingResult =
+            companyController
+                .getCompanies(
+                    dataTypes = setOf(DataType.valueOf("lksg")),
+                    reportingPeriods = setOf("2023"),
+                ).body!!
+        assertTrue(
+            !otherNonMatchingResult.map { it.companyId }.contains(companyWithMismatchedFrameworkAndPeriod.companyId),
+        )
+
+        val otherMatchingResult =
+            companyController
+                .getCompanies(
+                    dataTypes = setOf(DataType.valueOf("lksg")),
+                    reportingPeriods = setOf("2024"),
+                ).body!!
+        assertTrue(
+            otherMatchingResult.map { it.companyId }.contains(companyWithMismatchedFrameworkAndPeriod.companyId),
+        )
     }
 }

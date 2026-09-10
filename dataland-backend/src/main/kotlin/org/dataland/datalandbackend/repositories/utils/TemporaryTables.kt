@@ -103,26 +103,24 @@ class TemporaryTables private constructor() {
 
                 " ) AS filtered_text_results "
 
-        // Select company_id if company satisfies data_type, sector and country filter
+        // Select company_id if company satisfies data_type, sector, country and reporting period filter
         // Requires the parameter searchFilter : StoredCompanySearchFilter
         const val TABLE_FILTERED_DROPDOWN_RESULTS =
             " (" +
                 " SELECT company_id FROM stored_companies " +
-                " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0 OR company_id IN " +
+                " WHERE (" +
+                "   (:#{#searchFilter.dataTypeFilterSize} = 0 AND :#{#searchFilter.reportingPeriodFilterSize} = 0) " +
+                "   OR company_id IN " +
                 "   (SELECT DISTINCT company_id " +
                 "       FROM data_meta_information " +
                 "       WHERE currently_active='true'" +
-                "       AND :#{#searchFilter.dataTypeFilterSize} > 0" +
-                "       AND data_type IN :#{#searchFilter.dataTypeFilter})) " +
+                "       AND (:#{#searchFilter.dataTypeFilterSize} = 0 " +
+                "           OR data_type IN :#{#searchFilter.dataTypeFilter})" +
+                "       AND (:#{#searchFilter.reportingPeriodFilterSize} = 0 " +
+                "           OR reporting_period IN :#{#searchFilter.reportingPeriodFilter}))) " +
                 " AND (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
                 " AND (:#{#searchFilter.countryCodeFilterSize} = 0 " +
                 "       OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
-                " AND (:#{#searchFilter.reportingPeriodFilterSize} = 0 OR company_id IN " +
-                "   (SELECT DISTINCT company_id " +
-                "       FROM data_meta_information " +
-                "       WHERE currently_active='true'" +
-                "       AND :#{#searchFilter.reportingPeriodFilterSize} > 0" +
-                "       AND reporting_period IN :#{#searchFilter.reportingPeriodFilter})) " +
                 " ) AS filtered_dropdown_results "
     }
 }
