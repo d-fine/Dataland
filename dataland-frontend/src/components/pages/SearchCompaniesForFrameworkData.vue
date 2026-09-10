@@ -26,6 +26,7 @@
             v-model:selected-country-codes="currentFilteredCountryCodes"
             v-model:selected-frameworks="currentFilteredFrameworks"
             v-model:selected-sectors="currentFilteredSectors"
+            v-model:selected-reporting-periods="currentFilteredReportingPeriods"
           />
         </div>
 
@@ -122,11 +123,13 @@ export default defineComponent({
       currentFilteredFrameworks: [] as Array<DataTypeEnum>,
       currentFilteredCountryCodes: [] as Array<string>,
       currentFilteredSectors: [] as Array<string>,
+      currentFilteredReportingPeriods: [] as Array<string>,
       currentCombinedFilter: {
         companyNameFilter: '',
         frameworkFilter: [],
         sectorFilter: [],
         countryCodeFilter: [],
+        reportingPeriodFilter: [],
       } as FrameworkDataSearchFilterInterface,
       isSearchBarContainerCollapsed: false,
       rowsPerPage: 100,
@@ -154,6 +157,12 @@ export default defineComponent({
       deep: true,
     },
     currentFilteredSectors: {
+      handler() {
+        this.updateCombinedFilterIfRequired();
+      },
+      deep: true,
+    },
+    currentFilteredReportingPeriods: {
       handler() {
         this.updateCombinedFilterIfRequired();
       },
@@ -265,6 +274,7 @@ export default defineComponent({
         !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
         !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
         !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
+        !arraySetEquals(this.currentFilteredReportingPeriods, this.currentCombinedFilter.reportingPeriodFilter) ||
         this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
       ) {
         this.waitingForDataToDisplay = true;
@@ -273,6 +283,7 @@ export default defineComponent({
           frameworkFilter: this.currentFilteredFrameworks,
           companyNameFilter: this.currentSearchBarInput,
           countryCodeFilter: this.currentFilteredCountryCodes,
+          reportingPeriodFilter: this.currentFilteredReportingPeriods,
         };
       }
     },
@@ -353,8 +364,16 @@ export default defineComponent({
 .search-filters-panel {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  row-gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.search-filters-panel > div:first-child {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .d-center-div {
@@ -390,6 +409,37 @@ export default defineComponent({
   align-items: end;
   padding-top: 0;
   border-bottom: 1px solid var(--p-surface-200);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.collapsed-search-container #frameworkDataSearchBar {
+  width: 18rem;
+  flex-shrink: 0;
+}
+
+.collapsed-search-container .search-filters-panel {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  width: auto;
+}
+
+.collapsed-search-container .search-filters-panel > div:first-child {
+  flex-shrink: 0;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.filter) {
+  flex-wrap: nowrap;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.filter-group-items) {
+  flex-wrap: nowrap;
+}
+
+.collapsed-search-container #frameworkDataSearchFilters :deep(.search-filter),
+.collapsed-search-container #frameworkDataSearchFilters :deep(.framework-filter) {
+  flex-shrink: 0;
 }
 
 .button-container {
@@ -398,5 +448,16 @@ export default defineComponent({
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
+}
+
+@media (max-width: 992px) {
+  .search-bar-and-filters-container #frameworkDataSearchBar {
+    width: 100%;
+  }
+
+  #frameworkDataSearchFilters {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 </style>
