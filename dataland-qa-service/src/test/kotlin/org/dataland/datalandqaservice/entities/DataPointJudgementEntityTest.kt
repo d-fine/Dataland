@@ -7,7 +7,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.Da
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
-class   DataPointJudgementEntityTest {
+class DataPointJudgementEntityTest {
     private val dataPointType = "dummy-datapoint-type"
     private val dataPointId = "dummy-datapoint-id"
     private val reporterA = UUID.randomUUID().toString()
