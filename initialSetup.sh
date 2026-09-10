@@ -2,8 +2,7 @@
 set -euo pipefail
 
 mode=${1:-default}
-mode=${mode#--}
-project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(pwd)"
 
 install_base_packages() {
 	echo "Installing basic packages"
@@ -63,7 +62,8 @@ configure_git() {
 }
 
 initialize_stack() {
-	echo "Start stack using full reset and self-signed certificates"
+	echo "Start stack using full reset"
+	echo "(uses SSL certs already present in ./local/certs, e.g. copied via fetch_ssl_certs_for_sandbox.sh; falls back to self-signed certs otherwise)"
 	cd "$project_root"
 	./manageLocalStack.sh --reset
 	echo "Waiting to avoid potential race conditions after start-up"

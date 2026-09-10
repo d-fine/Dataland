@@ -16,6 +16,7 @@ permissions:
       - "cdn.cypress.io:443"
       - "local-dev.dataland.com:443"
       - "raw.githubusercontent.com:443"
+      - "github.com:443"
       - "download-cdn.jetbrains.com:443"
       - "resources.jetbrains.com:443"
 
@@ -32,6 +33,9 @@ credentials:
           header: Authorization
           format: "Bearer %s"
         - domain: api.github.com
+          header: Authorization
+          format: "Bearer %s"
+        - domain: github.com
           header: Authorization
           format: "Bearer %s"
 

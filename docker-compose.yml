@@ -6,15 +6,6 @@
 # init: The profile to be used if keycloak-db should be re-initialized
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
-x-common-proxy-env: &proxy-env
-  NO_PROXY: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service,batch-manager,data-exporter"
-  no_proxy: "internal-storage,api-key-manager,accounting-service,data-sourcing-service,document-manager,backend,keycloak,rabbitmq,qa-service,user-service,community-manager,specification-service,email-service,batch-manager,data-exporter"
-# NOTE: JVM HTTP clients (Spring Boot's RestTemplate/WebClient, Keycloak's Quarkus HTTP stack, ...) do NOT
-# consult the NO_PROXY/no_proxy environment variables above - they only honor the JVM system property
-# -Dhttp.nonProxyHosts. The list below intentionally mirrors the NO_PROXY list above - keep both lists in
-# sync whenever a service is added to, or removed from, either list.
-x-java-memory-limits:
-  JAVA_TOOL_OPTIONS: &java-tool-options "${DATALAND_JAVA_TOOL_OPTIONS:-} -Dhttp.nonProxyHosts=localhost|127.*|[::1]|gateway.docker.internal|host.docker.internal|internal-storage|api-key-manager|accounting-service|data-sourcing-service|document-manager|backend|keycloak|rabbitmq|qa-service|user-service|community-manager|specification-service|email-service|batch-manager|data-exporter"
 x-uncritical-constants-env: &uncritical-constants-env
   env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
@@ -62,7 +53,6 @@ services:
       BACKEND_LOCATION_CONFIG: ${BACKEND_LOCATION_CONFIG}
       BACKEND_URL: ${BACKEND_URL}
       DISABLE_HSTS: ${DISABLE_HSTS}
-      <<: *proxy-env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -114,11 +104,9 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      JAVA_TOOL_OPTIONS: *java-tool-options
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
-      <<: *proxy-env
     logging:
       <<: *loki-logging
   api-key-manager-db:
@@ -154,8 +142,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -194,8 +181,7 @@ services:
             condition: service_healthy
         <<: *uncritical-constants-env
         environment:
-          <<: [*rabbit-mq-user-and-pass, *proxy-env]
-          JAVA_TOOL_OPTIONS: *java-tool-options
+          <<: *rabbit-mq-user-and-pass
           DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -231,8 +217,7 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
@@ -277,8 +262,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
@@ -362,7 +346,6 @@ services:
     command: sh -c "cd /app/dataland-frontend && npm install && npm run dev"
     <<: *uncritical-constants-env
     environment:
-      <<: *proxy-env
       POLLING: "false"
     logging:
       <<: *loki-logging
@@ -383,8 +366,7 @@ services:
       - internal
       - internal-storage-db
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -446,7 +428,6 @@ services:
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
-      <<: *proxy-env
     depends_on:
       keycloak-db:
         condition: service_healthy
@@ -466,7 +447,7 @@ services:
       - ./dataland-keycloak/users:/keycloak_users
     command: initialize
     environment:
-      <<: [*mailjet-api-id-and-secret, *proxy-env]
+      <<: *mailjet-api-id-and-secret
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -596,8 +577,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -641,8 +621,7 @@ services:
       - "8080"
     <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
@@ -680,8 +659,6 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
 
     environment:
-      <<: *proxy-env
-      JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
       GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
       GET_ALL_NORTHDATA_COMPANIES_FLAG_FILE: /config/perform_northdata_full_golden_copy_download_flag
@@ -704,8 +681,7 @@ services:
     expose:
       - "8080"
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
@@ -750,9 +726,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      <<: *proxy-env
     logging:
       <<: *loki-logging
   email-service:
@@ -769,8 +743,7 @@ services:
         condition: service_healthy
 
     environment:
-      <<: [*rabbit-mq-user-and-pass, *proxy-env]
-      JAVA_TOOL_OPTIONS: *java-tool-options
+      <<: *rabbit-mq-user-and-pass
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -811,8 +784,6 @@ services:
 
     <<: *uncritical-constants-env
     environment:
-      <<: *proxy-env
-      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
