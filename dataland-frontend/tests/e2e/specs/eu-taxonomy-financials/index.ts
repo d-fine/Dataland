@@ -3,5 +3,4 @@
  */
 describe('EU Taxonomy for financials upload page tests', () => {
   require('./FileUploadAndLinking');
-  require('./DataIntegrity');
 });

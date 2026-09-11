@@ -3,11 +3,7 @@
     <template #title>New Dataset - LkSG</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading LkSG data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedLksgData"
@@ -100,12 +96,11 @@
   </Card>
 </template>
 <script setup lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
-import { computed, inject, onMounted, provide, ref } from 'vue';
+import { computed, inject, provide, ref } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 
@@ -113,19 +108,16 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { lksgDataModel } from '@/frameworks/lksg/UploadConfig';
 import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 
-import { objectDropNull } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 
-import { getFilledKpis } from '@/utils/DataPoint';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -133,14 +125,12 @@ import { getComponentByName } from '@/components/forms/UploadPageComponentDictio
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const route = useRoute();
 const emit = defineEmits(['datasetCreated']);
 const props = defineProps<{
   companyID: string;
 }>();
 
 const formId = 'createLkSGForm';
-const waitingForData = ref(true);
 const dataDate = ref<Date | undefined>(undefined);
 const companyAssociatedLksgData = ref<CompanyAssociatedDataLksgData>({} as CompanyAssociatedDataLksgData);
 const message = ref('');
@@ -149,8 +139,6 @@ const postLkSGDataProcessed = ref(false);
 const messageCounter = ref(0);
 const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload>());
 const listOfFilledKpis = ref([] as Array<string>);
-const templateDataId: LocationQueryValue | LocationQueryValue[] = route.query.templateDataId ?? null;
-const templateReportingPeriod: LocationQueryValue | LocationQueryValue[] = route.query.reportingPeriod ?? null;
 
 const yearOfDataDate = computed<string | undefined>({
   get() {
@@ -179,34 +167,6 @@ const buildLksgDataApi = (): PublicFrameworkDataApi<LksgData> | undefined => {
   if (frameworkDataApi) {
     return frameworkDataApi;
   } else return undefined;
-};
-
-/**
- * Loads the LkSG-Dataset identified either by the provided reportingPeriod and companyId,
- * or the dataId, and pre-configures the form to contain the data from the dataset
- */
-const loadLKSGData = async (): Promise<void> => {
-  waitingForData.value = true;
-  const lksgDataControllerApi = buildLksgDataApi();
-  if (lksgDataControllerApi) {
-    let dataResponse;
-    if (templateDataId) {
-      dataResponse = await lksgDataControllerApi.getFrameworkData(templateDataId.toString());
-    } else if (templateReportingPeriod) {
-      dataResponse = await lksgDataControllerApi.getCompanyAssociatedDataByDimensions(
-        templateReportingPeriod.toString(),
-        props.companyID
-      );
-    }
-    if (!dataResponse) {
-      waitingForData.value = false;
-      throw ReferenceError('DataResponse from LksgDataController invalid.');
-    }
-    const lksgResponseData = dataResponse.data;
-    listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
-    companyAssociatedLksgData.value = objectDropNull(lksgResponseData);
-    waitingForData.value = false;
-  }
 };
 
 /**
@@ -259,17 +219,6 @@ const postLkSGData = async (): Promise<void> => {
   }
 };
 
-onMounted(() => {
-  if (
-    (templateDataId && typeof templateDataId === 'string') ||
-    (templateReportingPeriod && typeof templateReportingPeriod === 'string')
-  ) {
-    void loadLKSGData();
-  } else {
-    waitingForData.value = false;
-  }
-});
-
 provide(
   'selectedProcurementCategories',
   computed(() => {
@@ -280,14 +229,6 @@ provide(
 provide('listOfFilledKpis', listOfFilledKpis);
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

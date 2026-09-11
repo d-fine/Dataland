@@ -43,6 +43,25 @@
           <template v-else> Reporting Periods</template>
         </span>
       </div>
+      <div
+        v-if="(numberOfNonSourceableReportingPeriods ?? 0) > 0"
+        class="summary-panel__data summary-panel__non-sourceable"
+      >
+        <span class="summary-panel__value" :data-test="`${framework}-panel-non-sourceable-value`">
+          {{ numberOfNonSourceableReportingPeriods }}
+        </span>
+        <template v-if="numberOfNonSourceableReportingPeriods === 1"> non-sourceable Period</template>
+        <template v-else> non-sourceable Periods</template>
+        <em
+          class="material-icons info-icon"
+          aria-hidden="true"
+          :data-test="`${framework}-non-sourceable-info-icon`"
+          v-tooltip.top="{ value: nonSourceableInfoTooltipText }"
+          @click.stop
+        >
+          info
+        </em>
+      </div>
     </template>
     <template #footer>
       <div class="stacked-buttons">
@@ -75,11 +94,16 @@ import { getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter
 import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import Tooltip from 'primevue/tooltip';
+
+const vTooltip = Tooltip;
 
 const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
+  numberOfNonSourceableReportingPeriods?: number | null;
+  nonSourceableReportingPeriods?: string[] | null;
   isUserAllowedToUpload?: boolean;
 }>();
 
@@ -100,6 +124,12 @@ const showProvideDataButton = computed(
 );
 
 const showViewDataButton = computed(() => hasAccessibleViewPage.value);
+
+const nonSourceableInfoTooltipText = computed(() => {
+  const years = props.nonSourceableReportingPeriods ?? [];
+  if (years.length === 0) return '';
+  return `The following years are non-sourceable:\n${years.join(', ')}`;
+});
 
 /**
  * Handles the panel click event. Navigates to the framework page if
@@ -216,5 +246,13 @@ function onCursorLeaveProvideButton(): void {
   &__value {
     font-weight: 600;
   }
+}
+
+.info-icon {
+  cursor: help;
+  font-size: 16px;
+  margin-left: 4px;
+  vertical-align: middle;
+  color: var(--text-color-secondary);
 }
 </style>

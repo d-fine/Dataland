@@ -1,17 +1,11 @@
 <template>
   <Card class="col-12 page-wrapper-card p-3" style="background: var(--p-surface-50)">
     <template #title
-      ><span data-test="pageWrapperTitle">
-        {{ editMode ? 'Edit' : 'Create' }} EU Taxonomy Dataset for a Non-Financial Company/Service</span
-      ></template
-    >
+      ><span data-test="pageWrapperTitle"> Create EU Taxonomy Dataset for a Non-Financial Company/Service</span>
+    </template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading Eu Taxonomy For Non Financials data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedEutaxonomyNonFinancialsData"
@@ -123,7 +117,6 @@
   </Card>
 </template>
 <script lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -166,7 +159,7 @@ import AlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/Al
 import NonAlignedActivitiesFormField from '@/components/forms/parts/kpiSelection/NonAlignedActivitiesFormField.vue';
 import AssuranceFormField from '@/components/forms/parts/kpiSelection/AssuranceFormField.vue';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
@@ -195,7 +188,6 @@ export default defineComponent({
   },
   name: 'CreateEuTaxonomyNonFinancials',
   components: {
-    DatalandProgressSpinner,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -241,11 +233,9 @@ export default defineComponent({
   data() {
     return {
       formId: 'createEuTaxonomyNonFinancialsForm',
-      waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -256,10 +246,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
-      editMode: false,
       listOfFilledKpis: [] as Array<string>,
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -283,17 +270,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId ?? null;
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
-      this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData();
-    } else {
-      this.waitingForData = false;
-    }
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -309,40 +285,6 @@ export default defineComponent({
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       } else return undefined;
-    },
-    /**
-     * Loads the EutaxonomyNonFinancials-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadEutaxonomyNonFinancialsData(): Promise<void> {
-      this.waitingForData = true;
-      const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
-      if (euTaxonomyForNonFinancialsDataControllerApi) {
-        let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(
-            this.templateDataId.toString()
-          );
-        } else if (this.templateReportingPeriod) {
-          dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from EuTaxonomyNonFinancialsDataController invalid.');
-        }
-
-        const euTaxonomyNonFinancialsResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
-        if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
-          this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
-        }
-        this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
-        this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
-        this.waitingForData = false;
-      }
     },
 
     /**
@@ -436,14 +378,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

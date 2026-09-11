@@ -1,73 +1,81 @@
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
-import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';
+import { type CompanyAssociatedDataLksgData } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import { createMemoryHistory, createRouter } from 'vue-router';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { UploadDocuments } from '@sharedUtils/components/UploadDocuments';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
 describe('Test YesNoBaseDataPointFormField for entries', () => {
-  let preparedFixtures: Array<FixtureData<LksgData>>;
-  before(() => {
-    cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
-      preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+  it('Filling out the form should work properly when adding and then removing a referenced document', () => {
+    mountLksgCreateForm().then(() => {
+      cy.get('[data-test="BaseDataPointFormFieldriskManagementSystem"] input[type="checkbox"][value="Yes"]').check();
+
+      new UploadDocuments('riskManagementSystem').selectDummyFile('riskManagementSystemDocument', 1);
+
+      cy.get('[data-test="BaseDataPointFormFieldriskManagementSystem"] button[data-test="files-to-upload-remove"]', {
+        timeout: mediumTimeoutInMs,
+      }).should('exist');
+
+      cy.get('[data-test="BaseDataPointFormFieldriskManagementSystem"] input[type="checkbox"][value="No"]').check();
+
+      cy.get(
+        '[data-test="BaseDataPointFormFieldriskManagementSystem"] button[data-test="files-to-upload-remove"]'
+      ).should('not.exist');
     });
   });
 
-  it('Edit and subsequent upload should work properly when removing or changing referenced documents', () => {
-    const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
-    mountEditForm(dummyData).then(() => {
-      cy.get('[data-test^="BaseDataPointFormField"] button[data-test="files-to-upload-remove"]', {
-        timeout: mediumTimeoutInMs,
-      })
-        .first()
-        .parents('[data-test^="BaseDataPointFormField"]')
-        .first()
-        .find('input[type="checkbox"]')
-        .eq(1)
-        .click()
-        .find('button[data-test="files-to-upload-remove"]')
-        .should('not.exist');
-    });
-  });
+  it('Filling out the form should work properly when selecting a subcontracting company country and industry', () => {
+    mountLksgCreateForm().then(() => {
+      fillDataDate();
+      cy.get('[data-test="manufacturingCompany"] input[type="checkbox"][value="Yes"]').check();
+      cy.get('[data-test="productionViaSubcontracting"] input[type="checkbox"][value="Yes"]').check();
 
-  it('Edit and subsequent upload should work properly changing subcontracting companies', () => {
-    const dummyData = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures).t;
-    mountEditForm(dummyData).then(() => {
-      cy.get('[data-test="subcontractingCompaniesCountries"]', {
-        timeout: mediumTimeoutInMs,
-      }).within(() => {
-        cy.get('.p-multiselect').first().should('contains.text', 'Germany');
-        cy.get('.p-multiselect').first().should('contains.text', 'United Kingdom');
-        cy.get('.p-multiselect').first().click();
-        cy.get('h5:contains("Subcontracting Companies Industries in Germany")')
-          .parents('.form-field')
-          .first()
-          .find('.d-nace-chipview')
-          .children()
-          .should('have.length', 2);
-        cy.get('h5:contains("Subcontracting Companies Industries in United Kingdom")')
-          .parents('.form-field')
-          .first()
-          .find('.d-nace-chipview')
-          .children()
-          .should('have.length', 1);
+      cy.get('[data-test="subcontractingCompaniesCountries"]', { timeout: mediumTimeoutInMs }).within(() => {
+        cy.get('[data-pc-name="multiselect"]').should('be.visible').click();
       });
-      cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('not.exist');
-      cy.get('[data-pc-name="multiselect"]').get('[data-pc-section="list"]').contains('Albania').click();
+      cy.get('[data-pc-name="multiselect"]')
+        .get('[data-pc-section="list"]')
+        .find('li')
+        .get('[aria-label="Albania (AL)"]')
+        .should('contain', 'Albania (AL)')
+        .click();
+      cy.get('body').type('{esc}');
+
       cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('exist');
+
+      cy.get('h5:contains("Subcontracting Companies Industries in Albania")')
+        .parents('.form-field')
+        .first()
+        .find('[data-test="NaceCodeSelectorInput"]')
+        .should('be.visible')
+        .click()
+        .type('01.11');
+      cy.get('[data-test="NaceCodeSelectorTree"]')
+        .find('li')
+        .should('have.length', 4)
+        .eq(3)
+        .should('contain', 'Growing of cereals (except rice), leguminous crops and oil seeds')
+        .get('[data-pc-section="label"]')
+        .get('[data-test="NaceCodeSelectorCheckbox"]')
+        .last()
+        .click();
+
+      cy.get('h5:contains("Subcontracting Companies Industries in Albania")')
+        .parents('.form-field')
+        .first()
+        .find('.d-nace-chipview')
+        .children()
+        .should('have.length', 1);
+
       cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
-        expect(body.data.general.productionSpecific?.subcontractingCompaniesCountries).to.deep.equal({
-          DE: ['A', 'G'],
-          GB: ['B'],
-          AL: [],
+        expect(body.data.general?.productionSpecific?.subcontractingCompaniesCountries).to.deep.equal({
+          AL: ['01.11'],
         });
         request.reply(200);
       }).as('send');
-      cy.get('.p-multiselect-overlay').invoke('hide');
       submitButton.clickButton();
       cy.wait('@send');
     });
@@ -75,33 +83,22 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
 });
 
 /**
- * Function to mount the lksg upload form in edit mode with the provided data
- * @param data the data to prefill the form with
+ * Fills the required "Data Date" field with a date in the future so that the form can be submitted
+ */
+function fillDataDate(): void {
+  cy.get('[data-test="dataDate"] button').should('have.class', 'p-datepicker-dropdown').click();
+  cy.get('.p-datepicker-header').find('button[aria-label="Next Month"]').click();
+  cy.get('.p-datepicker-day-view').find('span:contains("11")').click();
+}
+
+/**
+ * Function to mount an empty lksg upload form that is ready to be filled out interactively
  * @returns the mounted component
  */
-function mountEditForm(data: LksgData): Cypress.Chainable {
-  const dummyCompanyAssociatedData: CompanyAssociatedDataLksgData = {
-    companyId: 'company-id',
-    reportingPeriod: '2024',
-    data: data,
-  };
-  cy.intercept('**/api/data/lksg/**', dummyCompanyAssociatedData);
-  const router = createRouter({
-    routes: [{ path: '/companies', component: CreateLksgDataset }],
-    history: createMemoryHistory(),
+function mountLksgCreateForm(): Cypress.Chainable {
+  return getMountingFunction({ keycloak: minimalKeycloakMock() })(CreateLksgDataset, {
+    props: {
+      companyID: 'company-id',
+    },
   });
-  void router.push({ path: '/companies', query: { reportingPeriod: '2024' } });
-
-  const mountingFunction = getMountingFunction({
-    router: router,
-    keycloak: minimalKeycloakMock(),
-  });
-
-  return cy.wrap(router.isReady()).then(() =>
-    mountingFunction(CreateLksgDataset, {
-      props: {
-        companyID: 'company-id',
-      },
-    })
-  );
 }

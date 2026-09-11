@@ -2,12 +2,14 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceabilityInformationEntity
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityInformationResponse
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
 import org.dataland.datalandbackend.repositories.NonSourceabilityDataRepository
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -263,6 +265,41 @@ class NonSourceabilityInformationManager(
             )
         }
     }
+
+    /**
+     * Returns the set of (companyId, dataType, reportingPeriod) triples for which an active
+     * non-sourceability entry exists, matching the given filter query. An empty list for any
+     * field of the query is treated as a wildcard (used by POST /non-sourceable/search).
+     */
+    fun searchActiveNonSourceableDimensions(query: DataDimensionQuery): Set<BasicDataDimensions> {
+        val dataTypes = query.dataTypes.map { DataType.valueOf(it) }
+        return nonSourceabilityDataRepository
+            .findActiveTriples(
+                companyIds = query.companyIds,
+                isCompanyIdsEmpty = query.companyIds.isEmpty(),
+                dataTypes = dataTypes,
+                isDataTypesEmpty = dataTypes.isEmpty(),
+                reportingPeriods = query.reportingPeriods,
+                isReportingPeriodsEmpty = query.reportingPeriods.isEmpty(),
+            ).map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
+            .toSet()
+    }
+
+    /**
+     * Returns the currently-active non-sourceability data dimensions matching the given filter query,
+     * pre-grouped into a map of maps: companyId -> framework (dataType) -> set of matching data dimensions.
+     * An empty list for any field of the query is treated as a wildcard (used by POST /non-sourceable/search/grouped).
+     */
+    fun searchActiveNonSourceableDimensionsGroupedByCompanyAndFramework(
+        query: DataDimensionQuery,
+    ): Map<String, Map<String, Set<BasicDataDimensions>>> =
+        searchActiveNonSourceableDimensions(query)
+            .groupBy { it.companyId }
+            .mapValues { (_, dimensionsForCompany) ->
+                dimensionsForCompany
+                    .groupBy { it.dataType }
+                    .mapValues { (_, dimensionsForFramework) -> dimensionsForFramework.toSet() }
+            }
 
     private fun emitLifecycleEvent(
         entity: NonSourceabilityInformationEntity,

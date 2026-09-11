@@ -97,7 +97,7 @@ class DataCompositionService
          * @param dataDimensions the list of data point dimensions to filter
          * @return the list of all valid data point dimensions from the original input
          */
-        fun filterOutInvalidDataPointDimensions(dataDimensions: List<DataPointDimensions>) =
+        fun filterOutInvalidDataPointDimensions(dataDimensions: Collection<DataPointDimensions>) =
             dataDimensions.filter { dimensions ->
                 ValidationUtils.isBaseDimensions(dimensions) &&
                     specificationService.isDataPointType(dimensions.dataPointType)

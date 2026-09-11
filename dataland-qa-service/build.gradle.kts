@@ -44,6 +44,7 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(libs.springdoc.openapi.ui)
     implementation(Spring.boot.data.jpa)
+    implementation("org.springframework.data:spring-data-envers")
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
     implementation(libs.flyway)

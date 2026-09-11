@@ -710,6 +710,82 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-json-textarea"]').should('contain.value', correctedCommentEntry);
     });
 
+    it(
+      'copies an Activity-typed (object/array valued) original data point in normal mode and accepts it as custom ' +
+        'without double-encoding the value',
+      () => {
+        const activities = [
+          { activityName: 'Afforestation', naceCodes: ['A2.10'], share: { relativeShareInPercent: 42 } },
+          { activityName: 'Manufacture of low carbon technologies', naceCodes: ['C28'], share: null },
+        ];
+
+        mountJudgeDialog({
+          originalDataPointBody: {
+            value: activities,
+            quality: 'Audited',
+            comment: 'Activity list from original data point.',
+            dataSource: { fileName: 'original-doc.pdf', page: '3' },
+          },
+        });
+        cy.wait('@getOriginalDataPoint');
+
+        cy.get('[data-test="edit-mode-toggle"]').should('not.be.checked');
+        cy.get('[data-test="copy-original-to-custom"]').click();
+
+        cy.get('[data-test="accept-custom-button"]').click();
+
+        cy.wait('@patchJudgementDetail').then((interception) => {
+          expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
+          expect(interception.request.body.customDataPoint).to.be.a('string');
+
+          const parsed = JSON.parse(interception.request.body.customDataPoint);
+          expect(parsed.value).to.deep.equal(activities);
+          expect(parsed.value).to.not.be.a('string');
+          expect(parsed.quality).to.eq('Audited');
+        });
+      }
+    );
+
+    it(
+      'keeps an edited Activity-typed (object/array valued) value as an object after copying the original data ' +
+        'point in normal mode, editing the value field, and accepting it as custom',
+      () => {
+        const activities = [
+          { activityName: 'Afforestation', naceCodes: ['A2.10'], share: { relativeShareInPercent: 42 } },
+        ];
+        const editedActivities = [
+          { activityName: 'Afforestation', naceCodes: ['A2.10'], share: { relativeShareInPercent: 99 } },
+        ];
+
+        mountJudgeDialog({
+          originalDataPointBody: {
+            value: activities,
+            quality: 'Audited',
+            comment: 'Activity list from original data point.',
+            dataSource: { fileName: 'original-doc.pdf', page: '3' },
+          },
+        });
+        cy.wait('@getOriginalDataPoint');
+
+        cy.get('[data-test="edit-mode-toggle"]').should('not.be.checked');
+        cy.get('[data-test="copy-original-to-custom"]').click();
+
+        cy.get('[data-test="custom-value-field"]').clear();
+        cy.get('[data-test="custom-value-field"]').invoke('val', JSON.stringify(editedActivities)).trigger('input');
+
+        cy.get('[data-test="accept-custom-button"]').click();
+
+        cy.wait('@patchJudgementDetail').then((interception) => {
+          expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
+          expect(interception.request.body.customDataPoint).to.be.a('string');
+
+          const parsed = JSON.parse(interception.request.body.customDataPoint);
+          expect(parsed.value).to.deep.equal(editedActivities);
+          expect(parsed.value).to.not.be.a('string');
+        });
+      }
+    );
+
     it('disables the copy-original button when there is no original data point loaded yet', () => {
       const judgement: DatasetJudgementResponse = {
         ...baseDatasetJudgement,

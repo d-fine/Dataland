@@ -122,7 +122,7 @@ function validateThatViewPageIsInReviewMode(): void {
 }
 
 /**
- * Tests that the dataset is visible on the QA list and reject it and if the edit button is present on the view page
+ * Tests that the dataset is visible on the QA list and reject it
  * @param storedCompany the stored company owning the dataset
  * @param dataMetaInfo the data meta information of the dataset that that was uploaded before
  */
@@ -148,9 +148,6 @@ function testSubmittedDatasetIsInReviewListAndRejectIt(
   cy.visitAndCheckAppMount(`/companies/${storedCompany.companyId}/frameworks/lksg/${dataMetaInfo.dataId}`);
   cy.wait('@getUploadedDataset');
   cy.get('[data-test="datasetDisplayStatusContainer"]').should('exist');
-  cy.visit(
-    `/companies/${storedCompany.companyId}/frameworks/${dataMetaInfo.dataType}/upload?templateDataId=${dataMetaInfo.dataId}`
-  );
 }
 
 /**

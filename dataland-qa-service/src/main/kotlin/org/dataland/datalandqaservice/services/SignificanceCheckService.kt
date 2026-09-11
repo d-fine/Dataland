@@ -9,18 +9,20 @@ import java.math.RoundingMode
 
 /**
  * Pure service for checking whether the change between two data point values is considered
- * significant according to hardcoded thresholds per value type.
+ * significant according to configurable thresholds per value type.
  *
  * A significant change suppresses automatic pre-approval for that data point, requiring manual
  * review by a QA judge instead.
  *
- * Thresholds are hardcoded per value type and can only be changed via redeployment:
+ * Thresholds are passed in per call, backed by the persisted
+ * [org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig]:
  * - Boolean: any change is significant.
- * - Decimal: a relative change of more than the defined [DECIMAL_RELATIVE_THRESHOLD] is significant.
- * - Integer: an absolute change of more than the defined [INTEGER_ABSOLUTE_THRESHOLD] is significant.
+ * - Decimal: a relative change of more than the given decimal threshold is significant.
+ * - Integer: an absolute change of more than the given integer threshold is significant.
  *
- * Individual per-data-point threshold overrides per framework can be registered via
- * [individualDecimalThresholds] and [individualIntegerThresholds] if needed.
+ * Individual per-data-point threshold overrides per framework can be supplied via
+ * [SignificanceThresholds.individualDecimalThresholds] and [SignificanceThresholds.individualIntegerThresholds]
+ * if needed.
  */
 @Service
 class SignificanceCheckService {
@@ -28,35 +30,38 @@ class SignificanceCheckService {
      * Categorizes data point value types for significance threshold evaluation.
      *
      * - BOOLEAN: Any change is considered significant.
-     * - DECIMAL: Relative change is evaluated against [DECIMAL_RELATIVE_THRESHOLD].
-     * - INTEGER: Absolute change is evaluated against [INTEGER_ABSOLUTE_THRESHOLD].
+     * - DECIMAL: Relative change is evaluated against the configured decimal threshold.
+     * - INTEGER: Absolute change is evaluated against the configured integer threshold.
      * - UNSUPPORTED: Unknown types that are never considered significant.
      */
     enum class ValueType { BOOLEAN, DECIMAL, INTEGER, UNSUPPORTED }
 
+    /**
+     * Bundles the significance thresholds needed to evaluate whether a change in a data point's
+     * value is significant. Grouped into a single type because these values are always sourced
+     * and passed together (from [org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig]).
+     *
+     * @property decimalRelativeThreshold the global relative change threshold for decimal data points
+     * @property integerAbsoluteThreshold the global absolute change threshold for integer data points
+     * @property individualDecimalThresholds per-data-point relative threshold overrides for decimal fields,
+     * keyed by framework and data point type. If absent for a given field, [decimalRelativeThreshold] is used.
+     * @property individualIntegerThresholds per-data-point absolute threshold overrides for integer fields,
+     * keyed by framework and data point type. If absent for a given field, [integerAbsoluteThreshold] is used.
+     */
+    data class SignificanceThresholds(
+        val decimalRelativeThreshold: Double,
+        val integerAbsoluteThreshold: Long,
+        val individualDecimalThresholds: Map<DataTypeEnum, Map<String, Double>>,
+        val individualIntegerThresholds: Map<DataTypeEnum, Map<String, Long>>,
+    )
+
     companion object {
-        const val DECIMAL_RELATIVE_THRESHOLD = 0.5
-
-        val INTEGER_ABSOLUTE_THRESHOLD: BigInteger = BigInteger.valueOf(5)
-
         private val DECIMAL_BASE_TYPE_IDS = setOf("extendedDecimal")
         private val INTEGER_BASE_TYPE_IDS = setOf("extendedInteger")
         private val BOOLEAN_BASE_TYPE_IDS = setOf("extendedEnumYesNo")
 
         private const val DECIMAL_DIVISION_SCALE = 10
     }
-
-    /**
-     * Per-data-point relative threshold overrides for Decimal fields, keyed by framework and
-     * data point type. If absent, [DECIMAL_RELATIVE_THRESHOLD] is used.
-     */
-    private val individualDecimalThresholds: Map<DataTypeEnum, Map<String, Double>> = emptyMap()
-
-    /**
-     * Per-data-point absolute threshold overrides for Integer fields, keyed by framework and
-     * data point type. If absent, [INTEGER_ABSOLUTE_THRESHOLD] is used.
-     */
-    private val individualIntegerThresholds: Map<DataTypeEnum, Map<String, BigInteger>> = emptyMap()
 
     /**
      * Resolves a data point base type id (from the specification service) to a [ValueType] category.
@@ -84,6 +89,7 @@ class SignificanceCheckService {
      * @param valueType The value type category of the data point.
      * @param dataPointType The data point type identifier (used for per-data-point threshold lookups).
      * @param framework The framework of the dataset (used for per-data-point threshold lookups).
+     * @param thresholds The significance thresholds to evaluate the change against.
      * @return true if the change is significant and auto pre-approval should be suppressed; false otherwise.
      */
     fun hasSignificantChange(
@@ -92,6 +98,7 @@ class SignificanceCheckService {
         valueType: ValueType,
         dataPointType: String,
         framework: DataTypeEnum,
+        thresholds: SignificanceThresholds,
     ): Boolean {
         val newVal = newValue?.takeUnless { it.isNull }
         val live = liveValue?.takeUnless { it.isNull }
@@ -99,8 +106,8 @@ class SignificanceCheckService {
 
         return when (valueType) {
             ValueType.BOOLEAN -> newVal.asText() != live.asText()
-            ValueType.DECIMAL -> isDecimalChangeSignificant(newVal, live, dataPointType, framework)
-            ValueType.INTEGER -> isIntegerChangeSignificant(newVal, live, dataPointType, framework)
+            ValueType.DECIMAL -> isDecimalChangeSignificant(newVal, live, dataPointType, framework, thresholds)
+            ValueType.INTEGER -> isIntegerChangeSignificant(newVal, live, dataPointType, framework, thresholds)
             ValueType.UNSUPPORTED -> false
         }
     }
@@ -110,13 +117,14 @@ class SignificanceCheckService {
         liveValue: JsonNode,
         dataPointType: String,
         framework: DataTypeEnum,
+        thresholds: SignificanceThresholds,
     ): Boolean {
         val original = newValue.decimalValueOrNull()
         val live = liveValue.decimalValueOrNull()
         if (original == null || live == null) {
             return false
         }
-        val threshold = getDecimalThreshold(dataPointType, framework)
+        val threshold = getDecimalThreshold(dataPointType, framework, thresholds)
 
         return if (live.compareTo(BigDecimal.ZERO) == 0) {
             original.compareTo(BigDecimal.ZERO) != 0
@@ -135,11 +143,12 @@ class SignificanceCheckService {
         liveValue: JsonNode,
         dataPointType: String,
         framework: DataTypeEnum,
+        thresholds: SignificanceThresholds,
     ): Boolean {
         val original = newValue.bigIntegerValueOrNull()
         val live = liveValue.bigIntegerValueOrNull()
         if (original == null || live == null) return false
-        val threshold = getIntegerThreshold(dataPointType, framework)
+        val threshold = getIntegerThreshold(dataPointType, framework, thresholds)
 
         return original.subtract(live).abs() > threshold
     }
@@ -151,13 +160,20 @@ class SignificanceCheckService {
     private fun getDecimalThreshold(
         dataPointType: String,
         framework: DataTypeEnum,
+        thresholds: SignificanceThresholds,
     ): BigDecimal =
         BigDecimal.valueOf(
-            individualDecimalThresholds[framework]?.get(dataPointType) ?: DECIMAL_RELATIVE_THRESHOLD,
+            thresholds.individualDecimalThresholds[framework]?.get(dataPointType)
+                ?: thresholds.decimalRelativeThreshold,
         )
 
     private fun getIntegerThreshold(
         dataPointType: String,
         framework: DataTypeEnum,
-    ): BigInteger = individualIntegerThresholds[framework]?.get(dataPointType) ?: INTEGER_ABSOLUTE_THRESHOLD
+        thresholds: SignificanceThresholds,
+    ): BigInteger =
+        BigInteger.valueOf(
+            thresholds.individualIntegerThresholds[framework]?.get(dataPointType)
+                ?: thresholds.integerAbsoluteThreshold,
+        )
 }

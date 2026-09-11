@@ -147,8 +147,9 @@
     <p>
       <strong>"Nonsignificant deviation"</strong> is true if either there is no data for the previous year (previous
       year data not on Dataland or null), or the data from the previous year does not significantly deviate from this
-      year's reported data. Significant means more than 50 % deviation for numerical fields, more than 5 for integer
-      fields or "Yes" -> "No"/ "No" -> "Yes" for Yes/No fields.
+      year's reported data. Significant means more than {{ displayDecimalThresholdPercentage }} deviation for numerical
+      fields, more than {{ displayIntegerThreshold }} for integer fields or "Yes" -> "No"/ "No" -> "Yes" for Yes/No
+      fields.
     </p>
   </PrimeDialog>
 </template>
@@ -170,6 +171,8 @@ const props = defineProps<{
   onlyShowUnreviewed: boolean;
   selectedNextDataPointTypeId: string | null;
   preApprovalCheckResults: PreApprovalCheckResults | null;
+  dataPointTypeId: string;
+  dataType: string;
 }>();
 
 // ===== Pre-Approval table data =====
@@ -202,6 +205,26 @@ const { data: preApprovalConfig } = usePreApprovalConfigQuery();
 const samplingProbability = computed(() => preApprovalConfig.value?.samplingProbability ?? undefined);
 const displaySamplingProbability = computed(() =>
   samplingProbability.value === undefined ? 'unknown' : (1 - samplingProbability.value) * 100
+);
+
+const individualDecimalThreshold = computed(
+  () => preApprovalConfig.value?.individualDecimalThresholds?.[props.dataType]?.[props.dataPointTypeId]
+);
+const effectiveDecimalThreshold = computed(
+  () => individualDecimalThreshold.value ?? preApprovalConfig.value?.decimalRelativeThreshold
+);
+const displayDecimalThresholdPercentage = computed(() =>
+  effectiveDecimalThreshold.value === undefined ? 'unknown' : `${effectiveDecimalThreshold.value * 100} %`
+);
+
+const individualIntegerThreshold = computed(
+  () => preApprovalConfig.value?.individualIntegerThresholds?.[props.dataType]?.[props.dataPointTypeId]
+);
+const effectiveIntegerThreshold = computed(
+  () => individualIntegerThreshold.value ?? preApprovalConfig.value?.integerAbsoluteThreshold
+);
+const displayIntegerThreshold = computed(() =>
+  effectiveIntegerThreshold.value === undefined ? 'unknown' : effectiveIntegerThreshold.value
 );
 
 // ===== Next data point data =====
