@@ -52,7 +52,7 @@ source_bashrc() {
 
 configure_git() {
 	echo "Configure git"
-	git config --global credential.helper '!f() { if [ "$1" = get ]; then echo username=placeholder-github-user; echo password='"${GH_TOKEN:-placeholder-github-token}"'; fi; }; f'
+	git config --global credential.helper '!f() { if [ "$1" = get ]; then echo username=placeholder-github-user; echo password=$GH_TOKEN; fi; }; f'
 	echo "Enter user name for git (use your corresponding GitHub user name)"
 	read username
 	git config user.name "$username"
