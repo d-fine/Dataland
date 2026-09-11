@@ -21,7 +21,7 @@ const queues = [
   'data-sourcing-service.datasetQaStatusUpdate',
   'user-service.processMessageForDataReportedAsNonSourceable',
   'user-service.processMessageForAvailableDataAndUpdates',
-  'qa-service.processNonSourceabilityCreated',
+  'qa-service.processNonSourceabilitySubmission',
   'data-sourcing-service.processNonSourceabilitySubmission',
   'community-manager.processNonSourceabilitySubmission',
   'backend.processNonSourceabilityQaDecision',

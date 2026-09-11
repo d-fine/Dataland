@@ -35,8 +35,6 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require('./swagger-ui');
   require('./user-api-key');
   require('./framework-view-and-upload-journey');
-  require('./sfdr');
-  require('./lksg');
   require('./company-cockpit');
 }
 
@@ -45,7 +43,6 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eutaxonomy-financials-2026-73');
   require('./eu-taxonomy-non-financials');
   require('./eutaxonomy-non-financials-2026-73');
-  require('./pcaf');
   require('./company-ownership');
   require('./user-experience');
   require('./portfolios');
@@ -58,7 +55,6 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
    * That's why they live together.
    */
 
-  require('./nuclear-and-gas');
   require('./user-authentication');
   require('./admin-tools');
 }

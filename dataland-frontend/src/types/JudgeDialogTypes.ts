@@ -13,7 +13,7 @@ export interface DocumentOption {
 }
 
 export interface CustomFormData {
-  value: string;
+  value: unknown;
   quality: string;
   document: string;
   pages: string;

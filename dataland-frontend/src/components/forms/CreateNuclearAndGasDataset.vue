@@ -3,11 +3,7 @@
     <template #title>New Dataset - Nuclear & Gas</template>
     <template #content>
       <div class="separator" />
-      <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading Nuclear & Gas data...</p>
-        <DatalandProgressSpinner />
-      </div>
-      <div v-else class="grid uploadFormWrapper">
+      <div class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
             v-model="companyAssociatedNuclearAndGasData"
@@ -122,7 +118,6 @@
   </Card>
 </template>
 <script lang="ts">
-import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { FormKit } from '@formkit/vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
@@ -143,19 +138,17 @@ import {
   DataTypeEnum,
   type NuclearAndGasData,
 } from '@clients/backend';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
 import type { Subcategory } from '@/utils/GenericFrameworkTypes';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
-import { getFilledKpis } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -172,7 +165,6 @@ export default defineComponent({
   },
   name: 'CreateNuclearAndGasDataset',
   components: {
-    DatalandProgressSpinner,
     BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
@@ -195,10 +187,8 @@ export default defineComponent({
   data() {
     return {
       formId: 'createNuclearAndGasForm',
-      waitingForData: true,
       companyAssociatedNuclearAndGasData: {} as CompanyAssociatedDataNuclearAndGasData,
       nuclearAndGasDataModel,
-      route: useRoute(),
       message: '',
       smoothScroll: smoothScroll,
       uploadSucceded: false,
@@ -210,8 +200,6 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-      templateDataId: null as LocationQueryValue | LocationQueryValue[],
-      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -235,16 +223,6 @@ export default defineComponent({
     },
   },
   created() {
-    this.templateDataId = this.route.query.templateDataId ?? null;
-    this.templateReportingPeriod = this.route.query.reportingPeriod ?? null;
-    if (
-      (this.templateDataId && typeof this.templateDataId === 'string') ||
-      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
-    ) {
-      void this.loadNuclearAndGasData();
-    } else {
-      this.waitingForData = false;
-    }
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
@@ -263,36 +241,6 @@ export default defineComponent({
       return null;
     },
 
-    /**
-     * Loads the Nuclear-and-Gas-Dataset identified either by the provided reportingPeriod and companyId,
-     * or the dataId, and pre-configures the form to contain the data from the dataset
-     */
-    async loadNuclearAndGasData(): Promise<void> {
-      this.waitingForData = true;
-      const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
-      if (nuclearAndGasDataControllerApi) {
-        let dataResponse;
-        if (this.templateDataId) {
-          dataResponse = await nuclearAndGasDataControllerApi.getFrameworkData(this.templateDataId.toString());
-        } else if (this.templateReportingPeriod) {
-          dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(
-            this.templateReportingPeriod.toString(),
-            this.companyID
-          );
-        }
-        if (!dataResponse) {
-          this.waitingForData = false;
-          throw ReferenceError('DataResponse from NuclearAndGasDataController invalid.');
-        }
-        const nuclearAndGasResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
-        this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};
-        this.companyAssociatedNuclearAndGasData = objectDropNull(
-          nuclearAndGasResponseData
-        ) as CompanyAssociatedDataNuclearAndGasData;
-        this.waitingForData = false;
-      }
-    },
     /**
      * Sends data to add NuclearAndGas data
      */
@@ -378,14 +326,6 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.d-center-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-
 .uploadFormWrapper {
   input[type='checkbox'],
   input[type='radio'] {

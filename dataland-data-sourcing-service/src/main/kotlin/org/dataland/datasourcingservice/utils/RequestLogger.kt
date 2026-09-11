@@ -2,6 +2,7 @@ package org.dataland.datasourcingservice.utils
 
 import org.dataland.datasourcingservice.model.enums.RequestPriority
 import org.dataland.datasourcingservice.model.enums.RequestState
+import org.dataland.datasourcingservice.model.request.BulkDataRequestResponse
 import org.slf4j.LoggerFactory
 import java.util.UUID
 
@@ -23,6 +24,55 @@ class RequestLogger {
             "Received a single data request with Identifier $companyId" +
                 " for user $userId. -> Processing it. " +
                 "(correlationId: $correlationId)",
+        )
+    }
+
+    /**
+     * Logs an appropriate message when a bulk data request is received.
+     */
+    fun logMessageForReceivingBulkDataRequest(
+        correlationId: UUID,
+        userId: UUID,
+        numCompanyIds: Int,
+        numDataTypes: Int,
+        numReportingPeriods: Int,
+    ) {
+        logger.info(
+            "Received a bulk data request for user $userId with $numCompanyIds company identifier(s), " +
+                "$numDataTypes data type(s) and $numReportingPeriods reporting period(s). " +
+                "-> Processing it. (correlationId: $correlationId)",
+        )
+    }
+
+    /**
+     * Logs an overview of the outcome of a processed bulk data request.
+     */
+    fun logBulkDataRequestOverview(
+        response: BulkDataRequestResponse,
+        correlationId: UUID,
+    ) {
+        logger.info(
+            "Processed bulk data request with correlationId: $correlationId. " +
+                "Accepted: ${response.acceptedDataRequests.size}, " +
+                "invalid: ${response.invalidDataRequests.size}, " +
+                "already existing requests: ${response.existingDataRequests.size}, " +
+                "already existing datasets: ${response.existingDataSets.size}, " +
+                "non-sourceable: ${response.nonSourceableDataRequests.size}.",
+        )
+    }
+
+    /**
+     * Logs an error message when the retrieval of viewable data dimensions fails during a bulk data request.
+     */
+    fun logErrorForFilterViewableDimensionsFailure(
+        correlationId: UUID,
+        numRequestsQueried: Int,
+        ex: Exception,
+    ) {
+        logger.error(
+            "Failed to filter viewable dimensions with correlationId: $correlationId " +
+                "while querying $numRequestsQueried data dimension(s). Error: ${ex.message}",
+            ex,
         )
     }
 

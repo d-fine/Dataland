@@ -36,7 +36,12 @@ describe('Component test for the view multiple dataset display base component', 
     });
   });
 
-  it('Check if the toggle of hidden fields works for empty and conditional fields', () => {
+  /**
+   * Mounts the component with the standard set of intercepts (company info, LkSG data, viewable dimensions),
+   * plus a configurable mocked response for the non-sourceable dimensions search.
+   * @param nonSourceableSearchResponse the mocked response for POST /api/non-sourceable/search
+   */
+  function mountComponentWithMocks(nonSourceableSearchResponse: object[]): void {
     const mockDataAndMetaInfo: DataAndMetaInformation<LksgData> = buildDataAndMetaInformationMock(
       lksgMetaInfo,
       preparedFixtureLksgData
@@ -60,6 +65,8 @@ describe('Component test for the view multiple dataset display base component', 
         data: mockDataAndMetaInfo.data,
       }
     ).as('getLkSGData');
+    cy.intercept('POST', '/api/non-sourceable/search', nonSourceableSearchResponse).as('postNonSourceableSearch');
+
     //@ts-ignore
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
@@ -72,11 +79,34 @@ describe('Component test for the view multiple dataset display base component', 
 
     cy.wait('@postViewableDimensionsSearch');
     cy.wait('@getLkSGData');
+    cy.wait('@postNonSourceableSearch');
+  }
+
+  it('Check if the toggle of hidden fields works for empty and conditional fields', () => {
+    mountComponentWithMocks([]);
 
     checkToggleEmptyFieldsSwitch('Number of Employees');
     cy.get('tr[data-section-label="Social"]');
     cy.get('tr[data-section-label="Child labor"]');
     cy.get('td[data-cell-label="Employee(s) Under 15"]').should('not.exist');
+  });
+
+  it('Shows the non-sourceability info text when non-sourceable periods are returned', () => {
+    mountComponentWithMocks([
+      { companyId: 'mock-company-id', dataType: DataTypeEnum.Lksg, reportingPeriod: '2023' },
+      { companyId: 'mock-company-id', dataType: DataTypeEnum.Lksg, reportingPeriod: '2022' },
+    ]);
+
+    cy.get('[data-test="nonSourceabilityReportingYearInfo"]').should(
+      'have.text',
+      'For the following periods the data is non-sourceable: 2022, 2023'
+    );
+  });
+
+  it('Does not show a non-sourceability info text when no periods are non-sourceable', () => {
+    mountComponentWithMocks([]);
+
+    cy.get('[data-test="nonSourceabilityReportingYearInfo"]').should('not.exist');
   });
 });
 

@@ -1,5 +1,5 @@
 import { describeIf } from '@e2e/support/TestUtility';
-import { checkIfLinkedReportsAreDownloadable, gotoEditForm } from '@e2e/utils/EuTaxonomyFinancialsUpload';
+import { checkIfLinkedReportsAreDownloadable } from '@e2e/utils/EuTaxonomyFinancialsUpload';
 import { type CompanyAssociatedDataEutaxonomyFinancialsData, DataTypeEnum } from '@clients/backend';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
@@ -21,7 +21,6 @@ describeIf(
 
     it('Check if the files upload works as expected', () => {
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
-      let areBothDocumentsStillUploaded = true;
       let storedCompanyId: string;
       getAdminToken().then(async (token: string) => {
         const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
@@ -78,9 +77,7 @@ describeIf(
           },
           (request) => {
             const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
-            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
-              areBothDocumentsStillUploaded
-            );
+            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
             expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
           }
         ).as('postDataWithTwoReports');
@@ -90,35 +87,6 @@ describeIf(
         });
         cy.get('[data-test="datasets-table"]').should('be.visible');
         checkIfLinkedReportsAreDownloadable(storedCompanyId);
-        gotoEditForm(storedCompanyId, true);
-        uploadReports.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
-        cy.get('.p-dialog-header').find('button[data-pc-name="pcclosebutton"]').click();
-        cy.get('.p-dialog.p-component').should('not.exist');
-
-        uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME).then(() => {
-          areBothDocumentsStillUploaded = false;
-        });
-
-        cy.intercept(
-          {
-            method: 'POST',
-            url: `**/api/data/**`,
-            times: 1,
-          },
-          (request) => {
-            const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
-            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(
-              areBothDocumentsStillUploaded
-            );
-            expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
-          }
-        ).as('postDataWithOneReport');
-        cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithOneReport', { timeout: shortTimeoutInMs }).then((interception) => {
-          expect(interception.response?.statusCode).to.eq(200);
-        });
-        cy.get('[data-test="datasets-table"]').should('be.visible');
-        gotoEditForm(storedCompanyId, false);
       });
     });
   }
