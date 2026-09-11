@@ -6,4 +6,4 @@ COPY --from=builder /app/dataland-specification-service/build/libs/dataland-spec
 COPY ./dataland-specification-service/src/main/resources/specifications /specifications
 CMD ["java","-jar","/jar/dataland-specification-service.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8489/specifications/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --start-interval=60s --retries=6 CMD wget -nv -O- -t 1 http://localhost:8489/specifications/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
