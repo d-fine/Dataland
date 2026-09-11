@@ -2,12 +2,12 @@ package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.utils.DataPointUtils.objectMapper
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoEntity
 import org.dataland.documentmanager.openApiClient.model.DocumentType
 import org.dataland.documentmanager.openApiClient.model.QaStatus
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -186,11 +186,9 @@ class DataDeliveryServiceUtilsTest {
 
         val result = dataDeliveryServiceUtils.enhanceDataPoints(mapOf("id" to dataPoint), emptyMap())
 
-        assertFalse(
-            result.allStoredDataPoints
-                .getValue("id")
-                .dataPoint
-                .contains("\"fileName\":\"$documentName\""),
-        )
+        val resultJson = objectMapper.readTree(result.allStoredDataPoints.getValue("id").dataPoint)
+        val dataSource = resultJson.path("dataSource")
+        assertTrue(dataSource.has("fileName"))
+        assertTrue(dataSource.path("fileName").isNull)
     }
 }
