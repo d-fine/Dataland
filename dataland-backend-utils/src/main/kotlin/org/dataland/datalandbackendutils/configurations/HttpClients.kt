@@ -4,6 +4,7 @@ import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import org.dataland.datalandbackendutils.services.KeycloakTokenManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,8 +16,6 @@ import java.util.concurrent.TimeUnit
 @Configuration
 class HttpClients {
     private companion object {
-        const val LONG_TIMEOUT = 10L // Timeout in minutes
-
         // The default OkHttp ConnectionPool only keeps 5 idle HTTP/1.1 connections, which is too small once many
         // concurrent requests (e.g. multiple parallel data/document manager batch calls) share this client. Under
         // that load, connections get evicted/reused rapidly, which can otherwise contribute to corrupted HTTP/1.1
@@ -63,11 +62,12 @@ class HttpClients {
     @ConditionalOnBean(KeycloakTokenManager::class)
     fun getPatientAuthenticatedOkHttpClient(
         @Autowired keycloakTokenManager: KeycloakTokenManager,
+        @Value("\${dataland.patient-http-client.read-timeout-seconds:600}") readTimeoutSeconds: Long,
     ): OkHttpClient =
         OkHttpClient()
             .newBuilder()
             .connectionPool(sharedConnectionPool)
-            .readTimeout(LONG_TIMEOUT, TimeUnit.MINUTES)
+            .readTimeout(readTimeoutSeconds, TimeUnit.SECONDS)
             .addInterceptor {
                 val originalRequest = it.request()
                 val accessToken = keycloakTokenManager.getAccessToken()
