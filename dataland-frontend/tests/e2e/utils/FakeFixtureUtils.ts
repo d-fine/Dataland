@@ -19,7 +19,7 @@ import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@
 import { generateReferencedDocuments, getAllFakeFixtureDocumentIds } from '@e2e/utils/DocumentReference';
 import { generateCurrencyCode } from '@e2e/fixtures/common/CurrencyFixtures';
 import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
-import { generateFutureDate, generatePastDate } from '@e2e/fixtures/common/DateFixtures';
+import { generateFutureDate } from '@e2e/fixtures/common/DateFixtures';
 import { faker } from '@faker-js/faker';
 import { generateDataSource } from '@e2e/fixtures/common/DataSourceFixtures';
 
@@ -171,8 +171,8 @@ export class Generator {
     for (const reportName of availableReportNames) {
       referencedReports[reportName] = {
         fileReference: fixtureDocumentIds[documentIndex++],
-        fileName: reportName,
-        publicationDate: this.valueOrNull(generatePastDate()),
+        fileName: null,
+        publicationDate: null,
       };
     }
     return referencedReports;

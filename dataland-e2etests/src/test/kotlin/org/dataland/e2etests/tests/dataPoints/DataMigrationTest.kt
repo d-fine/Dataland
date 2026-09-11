@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
 import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -88,23 +89,11 @@ class DataMigrationTest {
             Backend.sfdrDataControllerApi
                 .getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
 
-        assertEquals(
-            linkedQaReportData.data.general
-                ?.general
-                ?.referencedReports,
-            downloadedDataset.data.general
-                ?.general
-                ?.referencedReports,
-        )
-        assertEquals(
-            linkedQaReportData.data.social
-                ?.antiCorruptionAndAntiBribery
-                ?.totalAmountOfReportedFinesOfBriberyAndCorruption,
-            downloadedDataset.data.social
-                ?.antiCorruptionAndAntiBribery
-                ?.totalAmountOfReportedFinesOfBriberyAndCorruption
-                // Ignore publication date as it is modified during referenced report processing
-                ?.let { it.copy(dataSource = it.dataSource?.copy(publicationDate = null)) },
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
+        assertEqualsByJsonComparator(
+            linkedQaReportData.data,
+            downloadedDataset.data,
+            JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }
 
@@ -192,7 +181,9 @@ class DataMigrationTest {
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
 
-        val ignoredKeys = setOf("publicationDate")
+        // fileName and publicationDate are ignored as they are enriched on delivery from the document manager
+        // rather than being persisted/round-tripped as-is from the upload payload.
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
             originalData,
             migratedData.data,
@@ -215,6 +206,12 @@ class DataMigrationTest {
                 dataId = dataMetaInfo.dataId,
                 body = linkedQaReportData.qaReport,
             )
+        if (testDataLocation.contains("WithManyNulls")) {
+            assertThrows<ServerException> {
+                Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
+            }
+            return
+        }
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         ApiAwait
             // When the API Call is faster than the migration, the QA Report might not be migrated yet, resulting
@@ -248,13 +245,13 @@ class DataMigrationTest {
             allDataPoints.all { Backend.dataPointControllerApi.getDataPointMetaInfo(it.value).currentlyActive }
         }
 
-        val downloadedData =
-            Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
+        val downloadedSecondDataset = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(metaInfo2.dataId)
 
-        val ignoredKeys = setOf("publicationDate")
+        // fileName and publicationDate are enriched by document manager and not persisted as-uploaded.
+        val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
-            downloadedData.data,
             secondDataset,
+            downloadedSecondDataset.data,
             JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
     }

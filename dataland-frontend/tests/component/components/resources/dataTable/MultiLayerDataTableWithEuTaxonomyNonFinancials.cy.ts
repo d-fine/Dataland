@@ -122,7 +122,7 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
         cy.contains('td', gammaCapexTotalAmountFormattedString).should('exist');
         cy.contains('td', assertDefined(humanizeStringOrNumber(gammaCapexTotalAmount.quality))).should('exist');
         cy.contains('td', assertDefined(gammaCapexTotalAmount.comment).toString()).should('exist');
-        cy.get(`[data-test="download-link-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
+        cy.get(`[data-test="download-link-${assertDefined(gammaCapexTotalAmount.dataSource).fileReference}"]`).should(
           'exist'
         );
       });

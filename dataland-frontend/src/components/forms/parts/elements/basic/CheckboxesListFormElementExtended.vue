@@ -78,7 +78,11 @@
               />
             </div>
 
-            <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
+            <FormKit
+              v-if="isValidFileName(isMounted, currentReportValue) || (isMounted && !!dataSourceFileReference)"
+              type="group"
+              name="dataSource"
+            >
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               <FormKit
@@ -129,7 +133,12 @@ import { FormKit } from '@formkit/vue';
 import { QualityOptions } from '@clients/backend';
 import { FormFieldPropsWithPlaceholder } from '@/components/forms/parts/fields/FormFieldProps';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
-import { getAvailableFileNames, getFileReferenceByFileName, PAGE_NUMBER_DESCRIPTION } from '@/utils/FileUploadUtils';
+import {
+  getAvailableFileNames,
+  getFileNameByFileReference,
+  getFileReferenceByFileName,
+  PAGE_NUMBER_DESCRIPTION,
+} from '@/utils/FileUploadUtils';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { isValidFileName, noReportLabel } from '@/utils/DataSource';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
@@ -169,9 +178,23 @@ export default defineComponent({
       pageForFileReference: undefined as string | undefined,
       isValidFileName: isValidFileName,
       yesNoValue: undefined as string | undefined,
+      dataSourceFileReference: '' as string,
     };
   },
   mounted() {
+    const existingFileReference = this.dataPoint?.dataSource?.fileReference;
+    if (existingFileReference) {
+      // Cache the prefill fileReference so the dataSource FormKit group stays rendered
+      // even when currentReportValue cannot yet be resolved (injectReportsNameAndReferences
+      // is populated asynchronously by UploadReports after this component mounts).
+      this.dataSourceFileReference = existingFileReference;
+      if (!this.currentReportValue) {
+        this.currentReportValue = getFileNameByFileReference(
+          existingFileReference,
+          this.injectReportsNameAndReferences as ObjectType
+        );
+      }
+    }
     void nextTick(() => (this.isMounted = true));
   },
   computed: {
@@ -186,7 +209,10 @@ export default defineComponent({
       return plainOptions.map((it) => ({ value: it, label: it }));
     },
     fileReferenceAccordingToName(): string {
-      return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences as ObjectType);
+      return (
+        getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences as ObjectType) ||
+        this.dataSourceFileReference
+      );
     },
     isYesNoVariant() {
       return Object.keys(this.options).length;
@@ -243,6 +269,33 @@ export default defineComponent({
         return;
       }
       this.yesNoValue = undefined;
+    },
+
+    /**
+     * When the report map is populated (asynchronously, e.g. from UploadReports), retry
+     * resolving the prefill fileReference to a report name so that the dropdown shows the
+     * correct selection. Also invalidates the cached prefill fileReference once the report it
+     * points to is no longer available (e.g. because the user removed it from the upload form),
+     * so that a dangling fileReference pointing to a no-longer-referenced report is never submitted.
+     */
+    injectReportsNameAndReferences() {
+      if (!this.currentReportValue && this.dataSourceFileReference) {
+        const name = getFileNameByFileReference(
+          this.dataSourceFileReference,
+          this.injectReportsNameAndReferences as ObjectType
+        );
+        if (name) {
+          this.currentReportValue = name;
+        }
+        return;
+      }
+      if (
+        this.dataSourceFileReference &&
+        !Object.values(this.injectReportsNameAndReferences as ObjectType).includes(this.dataSourceFileReference)
+      ) {
+        this.dataSourceFileReference = '';
+        this.currentReportValue = undefined;
+      }
     },
   },
   methods: {

@@ -291,6 +291,31 @@ class DocumentManager
         }
 
         /**
+         * Retrieve Document meta information for a batch of documentIds
+         * @param documentIds identifiers of documents to resolve
+         * @return a map from documentId to the corresponding document meta information
+         */
+        fun retrieveDocumentMetaInfoBatch(documentIds: List<String>): Map<String, DocumentMetaInfoEntity> {
+            val correlationId = randomUUID().toString()
+            logger.info(
+                "Retrieve meta data batch for ${documentIds.size} documentIds. Correlation ID: $correlationId.",
+            )
+            val foundEntitiesByDocumentId =
+                documentMetaInfoRepository
+                    .findAllById(documentIds)
+                    .associateBy { it.documentId }
+            val missingDocumentIds = documentIds.filterNot { it in foundEntitiesByDocumentId }
+            if (missingDocumentIds.isNotEmpty()) {
+                logger.warn(
+                    "Could not find document meta info for documentIds $missingDocumentIds in batch request. " +
+                        "Correlation ID: $correlationId.",
+                )
+                throw DocumentNotFoundException(missingDocumentIds.first(), correlationId)
+            }
+            return foundEntitiesByDocumentId
+        }
+
+        /**
          * Search for document meta information by companyId, documentCategory and reportingPeriod. There is the
          * option to only return a chunk of the search results, controlled by the parameters chunkSize and chunkIndex.
          */

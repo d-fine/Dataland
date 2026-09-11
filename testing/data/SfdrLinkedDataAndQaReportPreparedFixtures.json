@@ -2,18 +2,23 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-05-13",
+				"dataDate": "2024-12-11",
 				"fiscalYearDeviation": {
-					"value": "Deviation"
+					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-03-27"
+					"value": "2024-10-04"
 				},
 				"referencedReports": {
-					"AnnualReport": {
+					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"fileName": "AnnualReport",
-						"publicationDate": "2023-07-11"
+						"fileName": null,
+						"publicationDate": null
+					},
+					"IntegratedReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": null,
+						"publicationDate": null
 					}
 				}
 			}
@@ -21,15 +26,15 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 4774,
+					"value": 5437,
 					"dataSource": {
-						"page": "976-1187",
-						"fileName": "AnnualReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "synergies",
+						"page": "129",
+						"fileName": null,
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "e-commerce",
 						"publicationDate": null
 					},
-					"comment": "back up online pixel",
+					"comment": "connect solid state interface",
 					"quality": "NoDataFound"
 				}
 			}
@@ -39,26 +44,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "39",
-						"fileName": "AnnualReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "synergies",
+						"page": "324",
+						"fileName": null,
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "models",
 						"publicationDate": null
 					},
-					"comment": "reboot back-end bus",
-					"quality": "Incomplete"
+					"comment": "program digital microchip",
+					"quality": "NoDataFound"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "No",
 					"dataSource": {
-						"page": "430-1035",
-						"fileName": "AnnualReport",
+						"page": "1041-1126",
+						"fileName": null,
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "applications",
+						"tagName": "partnerships",
 						"publicationDate": null
 					},
-					"comment": "override open-source transmitter",
-					"quality": "NoDataFound"
+					"comment": "connect haptic port",
+					"quality": "Incomplete"
 				}
 			}
 		}

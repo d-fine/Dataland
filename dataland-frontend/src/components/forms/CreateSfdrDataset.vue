@@ -144,6 +144,7 @@ import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
+import { removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -268,7 +269,8 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
+            this.namesOfAllCompanyReportsForTheDataset,
+            this.namesAndReferencesOfAllCompanyReportsForTheDataset as ObjectType
           );
         }
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
@@ -281,7 +283,10 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi!.postFrameworkData(this.companyAssociatedSfdrData, isCompanyOwnerOrDataUploader);
+        await sfdrDataControllerApi!.postFrameworkData(
+          removeInferableDocumentFields(this.companyAssociatedSfdrData),
+          isCompanyOwnerOrDataUploader
+        );
 
         this.$emit('datasetCreated');
         this.dataDate = undefined;

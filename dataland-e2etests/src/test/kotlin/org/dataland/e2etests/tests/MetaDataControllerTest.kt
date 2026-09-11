@@ -13,6 +13,7 @@ import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -278,9 +279,18 @@ class MetaDataControllerTest {
     private fun uploadTwoDatasetsForACompany(): Triple<String, String, BigDecimal> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val frameworkDataAlpha =
+        val frameworkDataAlphaBase =
             apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
                 .getTData(1)[0]
+        val frameworkDataAlphaGeneral =
+            requireNotNull(frameworkDataAlphaBase.general) {
+                "The fixture for this test must contain a non-null general section."
+            }
+        assumeTrue(
+            frameworkDataAlphaGeneral.numberOfEmployees != null,
+            "The fixture for this test must contain numberOfEmployees.",
+        )
+        val frameworkDataAlpha = frameworkDataAlphaBase
         val reportingPeriod = "2022"
         apiAccessor.uploadWithWait(
             companyId = companyId,
@@ -289,14 +299,14 @@ class MetaDataControllerTest {
             uploadFunction = apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
         )
         val newNumberOfEmployees =
-            (frameworkDataAlpha.general!!.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
+            (frameworkDataAlphaGeneral.numberOfEmployees!!.value ?: BigDecimal.ZERO) +
                 BigDecimal.ONE
         val frameworkDataBeta =
             frameworkDataAlpha.copy(
                 general =
-                    frameworkDataAlpha.general.copy(
+                    frameworkDataAlphaGeneral.copy(
                         numberOfEmployees =
-                            frameworkDataAlpha.general.numberOfEmployees.copy(
+                            frameworkDataAlphaGeneral.numberOfEmployees!!.copy(
                                 value = newNumberOfEmployees,
                             ),
                     ),

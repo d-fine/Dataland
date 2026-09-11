@@ -138,6 +138,7 @@ import {
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
+import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -173,6 +174,7 @@ import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/Y
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
+import { removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
@@ -293,10 +295,29 @@ export default defineComponent({
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEutaxonomyNonFinancialsData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+            this.namesAndReferencesOfAllCompanyReportsForTheDataset as ObjectType
           );
 
-          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
+          const referencedReports = this.companyAssociatedEutaxonomyNonFinancialsData.data.general?.referencedReports;
+          const documentMetaInfoByReference = new Map<string, DocumentMetaInfo>(
+            this.documentsToUpload.map((documentToUpload) => [
+              documentToUpload.fileReference,
+              {
+                documentName: documentToUpload.fileNameWithoutSuffix,
+                documentCategory: DocumentMetaInfoDocumentCategoryEnum.Other,
+                companyIds: [this.companyID] as unknown as Set<string>,
+                publicationDate:
+                  referencedReports?.[documentToUpload.fileNameWithoutSuffix]?.publicationDate ?? undefined,
+                reportingPeriod: this.reportingPeriodYear.toString(),
+              },
+            ])
+          );
+          await uploadFiles(
+            this.documentsToUpload,
+            assertDefined(this.getKeycloakPromise),
+            documentMetaInfoByReference
+          );
         }
 
         const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
@@ -307,7 +328,7 @@ export default defineComponent({
         );
 
         await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEutaxonomyNonFinancialsData,
+          removeInferableDocumentFields(this.companyAssociatedEutaxonomyNonFinancialsData),
           isCompanyOwnerOrDataUploader
         );
 

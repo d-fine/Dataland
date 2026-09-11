@@ -38,12 +38,14 @@ class ApiClients(
     ): RequestControllerApi = RequestControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the DocumentControllerApi of the document manager
+     * Creates an auto-authenticated version of the DocumentControllerApi of the document manager.
+     * Uses the patient (long-timeout) OkHttp client because batch metadata requests for large
+     * portfolios can take longer than the default timeout to complete.
      */
     @Bean
     fun getDocumentControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): DocumentControllerApi = DocumentControllerApi(documentManagerBaseUrl, authenticatedOkHttpClient)
+        @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
+    ): DocumentControllerApi = DocumentControllerApi(documentManagerBaseUrl, patientAuthenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the SpecificationServiceControllerApi of the specification service

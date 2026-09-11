@@ -77,6 +77,9 @@ class DocumentController(
     override fun getDocumentMetaInformation(documentId: String): ResponseEntity<DocumentMetaInfoEntity> =
         ResponseEntity.ok(documentManager.retrieveDocumentMetaInfo(documentId))
 
+    override fun getDocumentMetaInformationBatch(documentIds: List<String>): ResponseEntity<Map<String, DocumentMetaInfoEntity>> =
+        ResponseEntity.ok(documentManager.retrieveDocumentMetaInfoBatch(documentIds))
+
     override fun patchDocumentMetaInfo(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,

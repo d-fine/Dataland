@@ -6,14 +6,13 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
@@ -33,13 +32,13 @@ class DataPointManager
     constructor(
         private val dataManager: DataManager,
         private val metaDataManager: DataPointMetaInformationManager,
-        private val storageClient: StorageControllerApi,
         private val messageQueuePublications: MessageQueuePublications,
         private val dataPointValidator: DataPointValidator,
         private val companyQueryManager: CompanyQueryManager,
         private val companyRoleChecker: CompanyRoleChecker,
         private val objectMapper: ObjectMapper,
         private val logMessageBuilder: LogMessageBuilder,
+        private val dataDeliveryService: DataDeliveryService,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -106,7 +105,8 @@ class DataPointManager
             uploadTime: Long,
             correlationId: String,
         ): DataPointMetaInformation {
-            val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
+            val dataPointMetaInformationEntity =
+                uploadedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
             dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
@@ -134,49 +134,37 @@ class DataPointManager
             correlationId: String,
         ): Map<String, UploadedDataPoint> {
             logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
-            val dataPointMap = mutableMapOf<String, UploadedDataPoint>()
-            val dataIdsToRequestFromInternalStorage = mutableListOf<String>()
-            val allMetaInfo =
-                metaDataManager
-                    .getDataPointMetaInformationByIds(dataPointIds)
-                    .associateBy { it.dataPointId }
 
+            val cachedDataPoints = mutableMapOf<String, UploadedDataPoint>()
+            val remainingDataPointIds = mutableListOf<String>()
             for (dataPointId in dataPointIds) {
-                val metaInfo =
-                    allMetaInfo[dataPointId] ?: throw ResourceNotFoundApiException(
-                        "Data point not found",
-                        "No data point with the id: $dataPointId could be found in the data store.",
-                    )
-                if (!metaInfo.isDataPointViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-                    throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
-                }
-                val dataPointType = metaInfo.dataPointType
-                dataPointValidator.validateDataPointTypeExists(dataPointType)
-
-                val dataFromCache = dataManager.getDataFromCache(dataPointId)
-                if (dataFromCache != null) {
-                    dataPointMap[dataPointId] = objectMapper.readValue(dataFromCache)
+                val cachedDataPoint = dataManager.getDataFromCache(dataPointId)
+                if (cachedDataPoint != null) {
+                    cachedDataPoints[dataPointId] = objectMapper.readValue(cachedDataPoint)
                 } else {
-                    dataIdsToRequestFromInternalStorage.add(dataPointId)
+                    remainingDataPointIds.add(dataPointId)
                 }
             }
 
-            if (dataIdsToRequestFromInternalStorage.isNotEmpty()) {
-                val dataPointsFromInternalStorage =
-                    storageClient
-                        .selectBatchDataPointsByIds(correlationId, dataIdsToRequestFromInternalStorage)
-                dataPointsFromInternalStorage.forEach { (dataPointId, storedDataPoint) ->
-                    dataPointMap[dataPointId] =
-                        UploadedDataPoint(
-                            dataPoint = storedDataPoint.dataPoint,
-                            dataPointType = storedDataPoint.dataPointType,
-                            companyId = storedDataPoint.companyId,
-                            reportingPeriod = storedDataPoint.reportingPeriod,
-                        )
+            val storedDataPoints =
+                if (remainingDataPointIds.isNotEmpty()) {
+                    dataDeliveryService.assembleDatasetsFromDataPointIds(
+                        dataPointIds = remainingDataPointIds,
+                        calculatedData = emptyMap<BasicDatasetDimensions, List<UploadedDataPoint>>(),
+                        correlationId = correlationId,
+                    )
+                } else {
+                    emptyMap()
                 }
-            }
 
-            return dataPointMap
+            val enrichedCachedDataPoints =
+                if (cachedDataPoints.isNotEmpty()) {
+                    dataDeliveryService.enhanceDataPoints(cachedDataPoints)
+                } else {
+                    emptyMap()
+                }
+
+            return storedDataPoints + enrichedCachedDataPoints
         }
 
         /**
@@ -189,17 +177,5 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint {
-            val uploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
-            return uploadedDataPoint.copy(
-                dataPoint =
-                    objectMapper.writeValueAsString(
-                        dataPointValidator.validateDataPoint(
-                            uploadedDataPoint.dataPointType,
-                            uploadedDataPoint.dataPoint,
-                            correlationId,
-                        ),
-                    ),
-            )
-        }
+        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
     }

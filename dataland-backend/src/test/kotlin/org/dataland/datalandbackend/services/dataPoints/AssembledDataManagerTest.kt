@@ -1,11 +1,10 @@
 package org.dataland.datalandbackend.services.dataPoints
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -24,18 +23,15 @@ import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataDeliveryServiceUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.CalculationRule
@@ -53,6 +49,7 @@ import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
@@ -65,17 +62,6 @@ import org.mockito.kotlin.whenever
 import java.io.File
 import java.math.BigDecimal
 import java.time.Instant
-import java.util.Optional
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-private data class RawDataPointTypeSpecification(
-    val id: String,
-    val name: String,
-    val businessDefinition: String,
-    val dataPointBaseTypeId: String,
-    val frameworkOwnership: List<String>,
-    val calculationRules: List<CalculationRule> = emptyList(),
-)
 
 class AssembledDataManagerTest {
     private val dataManager = mock<DataManager>()
@@ -90,6 +76,7 @@ class AssembledDataManagerTest {
     private val datasetDatapointRepository = mock<DatasetDatapointRepository>()
     private val dataAvailabilityChecker = mock<DataAvailabilityChecker>()
 
+    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputSimpleFrameworkSpecification = "./json/frameworkTemplate/simpleFrameworkSpecification.json"
     private val inputCalculatedFrameworkSpecification =
@@ -101,13 +88,6 @@ class AssembledDataManagerTest {
         "../dataland-specification-service/src/main/resources/specifications/dataPointTypes/" +
             "extendedDecimalInsuranceReinsuranceProportionOfAbsolutePremiumsOfTaxonomyEligibleActivities.json"
 
-    private val dataPointManager =
-        DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
-        )
-
-    private val referencedReportsUtilities = ReferencedReportsUtilities()
     private lateinit var datasetAssembler: DatasetAssembler
     private lateinit var dataCompositionService: DataCompositionService
     private lateinit var dataDeliveryService: DataDeliveryService
@@ -115,8 +95,9 @@ class AssembledDataManagerTest {
     private lateinit var specificationService: SpecificationService
     private lateinit var internalStorageAdapter: InternalStorageAdapter
     private lateinit var dataPointCalculator: DataPointCalculator
+    private lateinit var dataPointManager: DataPointManager
+    private lateinit var spyDataPointManager: DataPointManager
 
-    private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(defaultObjectMapper)
 
     private val correlationId = "test-correlation-id"
@@ -135,6 +116,19 @@ class AssembledDataManagerTest {
             .getKotlinObject<FrameworkSpecification>(inputCalculatedFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDatasetDimensions(companyId, framework, reportingPeriod)
+    private val mockSupport by lazy {
+        AssembledDataManagerTestHelpers(
+            datasetDatapointRepository,
+            metaDataManager,
+            dataAvailabilityChecker,
+            storageClient,
+            AssembledDataManagerTestContext(
+                datasetId = datasetId,
+                dataDimensions = dataDimensions,
+                uploaderUserId = uploaderUserId,
+            ),
+        )
+    }
 
     private fun makeDataPointTypeSpecification(
         dataPointType: String,
@@ -180,8 +174,7 @@ class AssembledDataManagerTest {
             makeDataPointTypeSpecification(dataPointType)
         }.whenever(specificationClient).getDataPointTypeSpecification(any())
         doReturn(listOf(simpleFrameworkSpecification)).whenever(specificationClient).listFrameworkSpecifications()
-        specificationService = SpecificationService(specificationClient)
-        specificationService.initiateSpecifications(null)
+        specificationService = SpecificationService(specificationClient).also { it.initiateSpecifications(null) }
         dataCompositionService = DataCompositionService(specificationService)
         datasetAssembler = DatasetAssembler(specificationService, referencedReportsUtilities)
         internalStorageAdapter = InternalStorageAdapter(storageClient)
@@ -192,11 +185,26 @@ class AssembledDataManagerTest {
                 specificationService,
                 metaDataManager,
             )
+        val dataDeliveryServiceUtils = mock<DataDeliveryServiceUtils>()
+        doAnswer { invocation ->
+            DataDeliveryServiceUtils.EnhancedDataPoints(
+                allStoredDataPoints = invocation.getArgument(0),
+                calculatedData = invocation.getArgument(1),
+            )
+        }.whenever(dataDeliveryServiceUtils).enhanceDataPoints(any(), any())
         dataDeliveryService =
             DataDeliveryService(
                 dataCompositionService, dataAvailabilityChecker,
                 internalStorageAdapter, datasetAssembler, dataPointCalculator,
+                dataDeliveryServiceUtils,
             )
+        dataPointManager =
+            DataPointManager(
+                dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
+                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+                dataDeliveryService,
+            )
+        spyDataPointManager = spy(dataPointManager)
         assembledDataManager =
             AssembledDataManager(
                 dataManager, messageQueuePublications, dataPointValidator,
@@ -241,6 +249,22 @@ class AssembledDataManagerTest {
                 dataPoints.keys.sorted() == expectedDataPointTypes.sorted()
             },
         )
+
+        val storedDataPointsCaptor = argumentCaptor<UploadedDataPoint>()
+        verify(spyDataPointManager, times(expectedDataPointTypes.size))
+            .storeDataPoint(storedDataPointsCaptor.capture(), any(), any(), any(), any())
+
+        val storedFiscalYearDeviationDataPoint =
+            storedDataPointsCaptor.allValues.first { it.dataPointType == "extendedEnumFiscalYearDeviationDummy" }
+        val storedDataSourceNode =
+            defaultObjectMapper.readTree(storedFiscalYearDeviationDataPoint.dataPoint).get("dataSource")
+        val storedDataSource =
+            defaultObjectMapper.readValue(storedDataSourceNode.toString(), ExtendedDocumentReference::class.java)
+
+        assertEquals(null, storedDataSource.fileName)
+        assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", storedDataSource.fileReference)
+        assertEquals("213", storedDataSource.page)
+        assertEquals("e-business", storedDataSource.tagName)
     }
 
     @Test
@@ -259,13 +283,17 @@ class AssembledDataManagerTest {
                 "test-data-point-2" to dataPoints[1],
             )
 
-        setMockData(dataPointMap, dataContentMap)
+        mockSupport.setMockData(dataPointMap, dataContentMap)
 
         val assembledDataset = assembledDataManager.getDatasetData(datasetId, framework, correlationId)
         dataPoints.forEach {
             assert(assembledDataset.contains(it))
         }
-        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(
+            assembledDataset.contains(
+                "\"referencedReports\":{\"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\":",
+            ),
+        )
     }
 
     @Test
@@ -273,15 +301,21 @@ class AssembledDataManagerTest {
         val dataPointMap = mapOf(dataPointType to dataPointId)
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)
-        setMockData(dataPointMap, dataContentMap)
+        mockSupport.setMockData(dataPointMap, dataContentMap)
 
         val dynamicDataset =
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
             }
+
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
-        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assertTrue(
+            dynamicDataset.contains(
+                "\"referencedReports\":{\"50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63\":",
+            ),
+            "Expected referencedReports to be present.\nActual dataset:\n$dynamicDataset",
+        )
     }
 
     @Test
@@ -341,7 +375,7 @@ class AssembledDataManagerTest {
         val dataPoint = TestResourceFileReader.getJsonString(numericDataPoint)
         val dataContentMap = mapOf(sourceOneId to dataPoint, sourceTwoId to dataPoint)
         doReturn(dataPointSpec).whenever(specificationClient).getDataPointTypeSpecification(resultType)
-        setMockData(dataPointMap, dataContentMap)
+        mockSupport.setMockData(dataPointMap, dataContentMap)
         val dynamicDataset =
             assertDoesNotThrow {
                 assembledDataManager.getDatasetData(setOf(dataDimensions), correlationId)[dataDimensions]
@@ -363,69 +397,4 @@ class AssembledDataManagerTest {
         }
         assertEquals(0, BigDecimal("1.0").compareTo(calculatedDataPointNode.path("value").decimalValue()))
     }
-
-    private fun setMockData(
-        dataPoints: Map<String, String>,
-        dataContent: Map<String, String>,
-    ) {
-        doReturn(
-            Optional.of(
-                DatasetDatapointEntity(
-                    datasetId = datasetId,
-                    dataPoints = dataPoints,
-                ),
-            ),
-        ).whenever(datasetDatapointRepository).findById(datasetId)
-
-        doAnswer { invocation ->
-            invocation.getArgument<Collection<String>>(0).map { dataPointId ->
-                makeDataPointMetaInfo(dataPointId, dataPoints.filterValues { it == dataPointId }.keys.first())
-            }
-        }.whenever(metaDataManager).getDataPointMetaInformationByIds(any())
-
-        doReturn(
-            dataPoints.map { (dataPointType, dataPointId) -> makeDataPointMetaInfo(dataPointId, dataPointType) },
-        ).whenever(metaDataManager).getActiveDataPointMetaInformationList(any<List<DataPointDimensions>>())
-
-        doAnswer { invocation ->
-            val dimensionsByDataset =
-                invocation.getArgument<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>>(0)
-            dimensionsByDataset.mapValues { (_, dimensions) ->
-                dimensions.mapNotNull { dimension ->
-                    dataPoints[dimension.dataPointType]?.let { dataPointId ->
-                        makeDataPointMetaInfo(dataPointId, dimension.dataPointType, dimension.companyId, dimension.reportingPeriod)
-                    }
-                }
-            }
-        }.whenever(dataAvailabilityChecker)
-            .getViewableDataPointMetaData(any<Map<BasicDatasetDimensions, Collection<BasicDataPointDimensions>>>())
-
-        doAnswer { invocation ->
-            val dataPointId = invocation.getArgument<List<String>>(1)
-            dataPointId.associateWith { dataPointId ->
-                StorableDataPoint(
-                    dataPoint = dataContent[dataPointId] ?: "",
-                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                    companyId = companyId,
-                    reportingPeriod = reportingPeriod,
-                )
-            }
-        }.whenever(storageClient).selectBatchDataPointsByIds(any(), any())
-    }
-
-    private fun makeDataPointMetaInfo(
-        dataPointId: String,
-        dataPointType: String,
-        companyId: String = this.companyId,
-        reportingPeriod: String = this.reportingPeriod,
-    ) = DataPointMetaInformationEntity(
-        dataPointId = dataPointId,
-        companyId = companyId,
-        dataPointType = dataPointType,
-        reportingPeriod = reportingPeriod,
-        uploaderUserId = uploaderUserId,
-        uploadTime = Instant.now().toEpochMilli(),
-        currentlyActive = true,
-        qaStatus = QaStatus.Accepted,
-    )
 }

@@ -28,7 +28,6 @@
           />
         </div>
         <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
-          <FormKit type="hidden" name="fileName" v-model="documentName" />
           <FormKit type="hidden" name="fileReference" v-model="documentReference" />
         </FormKit>
       </FormKit>
@@ -92,6 +91,20 @@ export default defineComponent({
     });
   },
   watch: {
+    baseDataPoint: {
+      immediate: true,
+      handler(newVal: BaseDataPoint<unknown>) {
+        // When the form is pre-filled for editing, initialise documentName and
+        // documentReference from the existing dataSource so that the dataSource
+        // FormKit group (controlled by isValidFileName) stays rendered and the
+        // fileReference is preserved on re-upload.
+        const dataSource = (newVal as Record<string, Record<string, string>>)?.dataSource;
+        if (dataSource?.fileName && !this.referencedDocument) {
+          this.documentName = dataSource.fileName;
+          this.documentReference = dataSource.fileReference ?? '';
+        }
+      },
+    },
     documentName() {
       if (this.isMounted) {
         this.updateFileUploadFiles();

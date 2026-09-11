@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.services.dataPoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataDeliveryService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
@@ -12,10 +12,10 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
-import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,25 +24,25 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.math.BigDecimal
 
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
     private val metaDataManager = mock(DataPointMetaInformationManager::class.java)
-    private val storageClient = mock(StorageControllerApi::class.java)
     private val messageQueuePublications = mock(MessageQueuePublications::class.java)
     private val dataPointValidator = mock(DataPointValidator::class.java)
     private val companyQueryManager = mock(CompanyQueryManager::class.java)
     private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
     private val logMessageBuilder = mock(LogMessageBuilder::class.java)
+    private val dataDeliveryService = mock(DataDeliveryService::class.java)
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+            dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
+            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder, dataDeliveryService,
         )
 
     private val correlationId = "test-correlation-id"
@@ -53,17 +53,19 @@ class DataPointManagerTest {
     @BeforeEach
     fun resetMocks() {
         reset(
-            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, logMessageBuilder,
+            dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
+            companyQueryManager, companyRoleChecker, logMessageBuilder, dataDeliveryService,
         )
     }
 
     @Test
     fun `check that the storeDataPoint function executes the expected calls and returns the expected results`() {
+        val rawDataPointContent =
+            TestResourceFileReader.getJsonString("json/dataPoints/numericDataPointHalf.json")
         val uploadedDataPoint =
             UploadedDataPoint(
                 dataPointType = dataPointType,
-                dataPoint = "test-content",
+                dataPoint = rawDataPointContent,
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
@@ -95,7 +97,7 @@ class DataPointManagerTest {
     }
 
     @Test
-    fun `test that a datapoint is cast to the correct class on retrieval`() {
+    fun `test that a datapoint is returned without validation on retrieval`() {
         val dummyDataPoint = "{\"value\": \"0.5\", \"currency\": \"USD\"}"
         val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
         val dummyDataPointId = IdUtils.generateUUID()
@@ -120,22 +122,18 @@ class DataPointManagerTest {
 
         doReturn(
             mapOf(
-                dummyDataPointId to StorableDataPoint(dummyDataPoint, dummyDataPointType, dummyCompanyId, dummyReportingPeriod),
+                dummyDataPointId to
+                    UploadedDataPoint(dummyDataPoint, dummyDataPointType, dummyCompanyId, dummyReportingPeriod),
             ),
-        ).whenever(storageClient).selectBatchDataPointsByIds(dummyCorrelationId, listOf(dummyDataPointId))
-
-        doReturn(
-            ExtendedCurrencyDataPoint(
-                value = BigDecimal("0.5"),
-                currency = "USD",
-            ),
-        ).whenever(dataPointValidator).validateDataPoint(dummyDataPointType, dummyDataPoint, dummyCorrelationId)
+        ).whenever(dataDeliveryService).assembleDatasetsFromDataPointIds(
+            eq(listOf(dummyDataPointId)),
+            any<Map<BasicDatasetDimensions, List<UploadedDataPoint>>>(),
+            eq(dummyCorrelationId),
+        )
 
         val result = dataPointManager.retrieveDataPoint(dummyDataPointId, dummyCorrelationId)
-        val expectation =
-            defaultObjectMapper.writeValueAsString(
-                defaultObjectMapper.readValue(dummyDataPoint, ExtendedCurrencyDataPoint::class.java),
-            )
-        Assertions.assertEquals(expectation, result.dataPoint)
+
+        Assertions.assertEquals(dummyDataPoint, result.dataPoint)
+        verify(dataPointValidator, never()).validateDataPoint(any(), any(), any())
     }
 }

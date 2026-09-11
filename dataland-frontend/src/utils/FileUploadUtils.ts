@@ -1,3 +1,4 @@
+import { type DocumentMetaInfo, type DocumentMetaInfoPatch } from '@clients/documentmanager';
 import { type CompanyReport } from '@clients/backend';
 import { ApiClientProvider } from '@/services/ApiClients';
 import type Keycloak from 'keycloak-js';
@@ -18,36 +19,91 @@ export interface StoredReport extends CompanyReport {
  * uploads Files through the frontend
  * @param files the list of files to upload
  * @param getKeycloakPromise getter for a keycloak promise
+ * @param documentMetaInfoByReference document metadata to store with each newly uploaded document
  */
 export async function uploadFiles(
   files: DocumentToUpload[],
-  getKeycloakPromise: () => Promise<Keycloak>
+  getKeycloakPromise: () => Promise<Keycloak>,
+  documentMetaInfoByReference: Map<string, DocumentMetaInfo> = new Map()
 ): Promise<void> {
   const documentControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.documentController;
   const alreadyUploadedFileReferences = new Set<string>();
+
   for (const fileToUpload of files) {
     if (alreadyUploadedFileReferences.has(fileToUpload.fileReference)) {
       continue;
     }
-    let fileIsAlreadyInStorage: boolean;
-    try {
-      await documentControllerApi.checkDocument(fileToUpload.fileReference);
-      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
-      fileIsAlreadyInStorage = true;
-    } catch (error) {
-      if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
-        fileIsAlreadyInStorage = false;
-      } else {
-        throw error;
-      }
+
+    const fileIsAlreadyInStorage = await isDocumentAlreadyInStorage(documentControllerApi, fileToUpload.fileReference);
+    const documentMetaInfo = documentMetaInfoByReference.get(fileToUpload.fileReference);
+
+    if (fileIsAlreadyInStorage) {
+      await patchDocumentMetaInfoIfProvided(documentControllerApi, fileToUpload.fileReference, documentMetaInfo);
+    } else {
+      await uploadDocumentAndValidateHash(documentControllerApi, fileToUpload, documentMetaInfo);
     }
-    if (!fileIsAlreadyInStorage) {
-      const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
-      if (fileToUpload.fileReference !== backendComputedHash) {
-        throw new Error('Locally computed document hash does not concede with the one received by the upload request!');
-      }
-      alreadyUploadedFileReferences.add(fileToUpload.fileReference);
+
+    alreadyUploadedFileReferences.add(fileToUpload.fileReference);
+  }
+}
+
+/**
+ * Type guard for Axios errors representing HTTP 404 responses.
+ */
+function isNotFoundAxiosError(error: unknown): boolean {
+  return error instanceof AxiosError && assertDefined(error.response).status === 404;
+}
+
+/**
+ * Checks whether a document with the given reference already exists in storage.
+ */
+async function isDocumentAlreadyInStorage(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileReference: string
+): Promise<boolean> {
+  try {
+    await documentControllerApi.checkDocument(fileReference);
+    return true;
+  } catch (error) {
+    if (isNotFoundAxiosError(error)) {
+      return false;
     }
+    throw error;
+  }
+}
+
+/**
+ * Updates document metadata when metadata is provided for an already uploaded document.
+ */
+async function patchDocumentMetaInfoIfProvided(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileReference: string,
+  documentMetaInfo: DocumentMetaInfo | undefined
+): Promise<void> {
+  if (!documentMetaInfo) {
+    return;
+  }
+
+  const documentMetaInfoPatch: DocumentMetaInfoPatch = {
+    documentName: documentMetaInfo.documentName,
+    publicationDate: documentMetaInfo.publicationDate,
+    reportingPeriod: documentMetaInfo.reportingPeriod,
+  };
+  await documentControllerApi.patchDocumentMetaInfo(fileReference, documentMetaInfoPatch);
+}
+
+/**
+ * Uploads a document and verifies that the backend-computed hash matches the local reference.
+ */
+async function uploadDocumentAndValidateHash(
+  documentControllerApi: ApiClientProvider['apiClients']['documentController'],
+  fileToUpload: DocumentToUpload,
+  documentMetaInfo: DocumentMetaInfo | undefined
+): Promise<void> {
+  const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file, documentMetaInfo)).data
+    .documentId;
+  if (fileToUpload.fileReference !== backendComputedHash) {
+    throw new Error('Locally computed document hash does not concede with the one received by the upload request!');
   }
 }
 
@@ -131,6 +187,27 @@ export function getFileReferenceByFileName(
     }
   }
   return '';
+}
+
+/**
+ * The method returns the fileName for a given fileReference. This is used to resolve the currently referenced
+ * report of a data point even if the backend does not (or no longer) provide the fileName directly (e.g. because
+ * it is considered an inferable field that is derived from the document metadata behind the fileReference).
+ * @param fileReference the fileReference for which the corresponding fileName should be retrieved
+ * @param injectReportsNameAndReferences map containing fileNames and corresponding FileReferences
+ * @returns fileName of the given fileReference, or undefined if it could not be resolved
+ */
+export function getFileNameByFileReference(
+  fileReference: string | null | undefined,
+  injectReportsNameAndReferences: ObjectType
+): string | undefined {
+  if (!fileReference || !injectReportsNameAndReferences) {
+    return undefined;
+  }
+  const matchingEntry = Object.entries(injectReportsNameAndReferences).find(
+    ([, reference]) => reference === fileReference
+  );
+  return matchingEntry?.[0];
 }
 
 /**

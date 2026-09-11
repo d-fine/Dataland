@@ -2,41 +2,37 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "North Johnathan",
-			"headquartersPostalCode": "12777",
-			"sector": "paradigms",
+			"headquarters": "Mertieboro",
+			"headquartersPostalCode": null,
+			"sector": "platforms",
 			"identifiers": {
 				"Lei": [
-					"fMYboJnMdT8mJ8TZBqNC"
+					"bRuAtENXnD9CDs4b7egj"
 				],
 				"Isin": [
-					"0s9jlESjuRPo"
+					"yiP6eUmWfQYZ",
+					"QBDYbnCrZuZp"
 				],
-				"PermId": [
-					"YFBfWqyAWW"
-				],
+				"PermId": [],
 				"Ticker": [
-					"wvNRyvD"
+					"4xde8Zr"
 				],
 				"Duns": [
-					"y7tjmLcXE"
+					"aU69fkdH8"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"ohQh6oilRlMfBs0"
+				]
 			},
-			"countryCode": "PE",
-			"companyContactDetails": [
-				"Lizzie51@example.com"
-			],
+			"countryCode": "FO",
+			"companyContactDetails": null,
 			"companyAlternativeNames": [
-				"Beer, Parker and Smitham",
-				"Bosco, Blick and Abernathy",
-				"Jerde-Boyle - Kozey",
-				"Weissnat, Erdman and Lueilwitz"
+				"Klein-West and Sons"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://angelic-widow.info",
-			"fiscalYearEnd": "15-Mar",
+			"companyLegalForm": null,
+			"website": "https://fuzzy-stool.info",
+			"fiscalYearEnd": "24-Jul",
 			"isTeaserCompany": false
 		},
 		"t": {

@@ -388,9 +388,17 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
         companyID: 'company-id-does-not-matter-in-this-test',
       },
       data() {
+        // The mock data is deep-cloned here so that `referencedReportsForPrefill` and
+        // `companyAssociatedEutaxonomyNonFinancialsData` do not alias the same nested object (which they would in
+        // production too, since `CreateEuTaxonomyNonFinancials.vue` builds its live form model via `objectDropNull`,
+        // a deep clone of the loaded data). Without this clone, FormKit writing a newly selected report's
+        // fileReference/publicationDate into the shared `referencedReports` object would also mutate
+        // `referencedReportsForPrefill`, causing the new report to non-deterministically be reclassified as
+        // "already uploaded" by `UploadReports.vue`'s `prefillAlreadyUploadedReports`.
+        const clonedData = structuredClone(companyAssociatedDataEutaxoNonFinancials);
         return {
-          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
-          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
+          referencedReportsForPrefill: clonedData.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: clonedData,
         };
       },
     }).then(() => {
@@ -407,10 +415,12 @@ describe('Component tests for the Eu Taxonomy for non financials that test depen
       // @ts-ignore
     })(CreateEuTaxonomyNonFinancials, {
       data() {
+        // See the comment in the previous test for why the mock data is cloned here.
+        const clonedData = structuredClone(companyAssociatedDataEutaxoNonFinancials);
         return {
-          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
-          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
-          listOfFilledKpis: getFilledKpis(companyAssociatedDataEutaxoNonFinancials),
+          referencedReportsForPrefill: clonedData.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: clonedData,
+          listOfFilledKpis: getFilledKpis(clonedData),
         };
       },
     }).then(() => {

@@ -104,9 +104,9 @@
     "dataSource" : {
       "page" : "125",
       "tagName" : "date",
-      "fileName" : "CompanyXYZ_Nuclear_And_Gas_Report_2024",
+      "fileName" : null,
       "fileReference" : "9898576a8a4a989796a645e24104ba2fab21168456f5bce80325f40342420492",
-      "publicationDate" : "2025-03-02"
+      "publicationDate" : null
     }
   }
 }
