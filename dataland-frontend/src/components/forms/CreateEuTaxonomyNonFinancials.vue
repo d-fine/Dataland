@@ -139,7 +139,6 @@ import {
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
 import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
-import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -175,7 +174,7 @@ import YesNoNaExtendedDataPointFormField from '@/components/forms/parts/fields/Y
 import DateExtendedDataPointFormField from '@/components/forms/parts/fields/DateExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/forms/parts/fields/PercentageExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/forms/parts/fields/RadioButtonsExtendedDataPointFormField.vue';
-import { getFilledKpis, removeInferableDocumentFields } from '@/utils/DataPoint';
+import { removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';

@@ -152,7 +152,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
-import { getFilledKpis, removeInferableDocumentFields } from '@/utils/DataPoint';
+import { removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { smoothScroll } from '@/utils/SmoothScroll';
