@@ -57,11 +57,37 @@ class DataPointValidator
         ): Any {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
+            validateDataPointDoesNotContainInferableFields(dataPointType, dataPoint)
             val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
             val dataPointBaseTypeId = dataPointTypeSpecification.dataPointBaseType.id
             val constraints = dataPointTypeSpecification.constraints
             val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
             return validateConsistency(dataPoint, validationClass, correlationId, constraints)
+        }
+
+        /**
+         * Validates that no data source contained in the provided data point sets the file name
+         * or publication date fields, as these fields must not be uploaded explicitly.
+         * @param dataPointType the identifier of the data point type, used to identify the data point
+         * in the resulting violation messages
+         * @param dataPoint the string representation of the data point to validate
+         */
+        private fun validateDataPointDoesNotContainInferableFields(
+            dataPointType: String,
+            dataPoint: String,
+        ) {
+            if (dataPoint.isBlank()) return
+            val violations =
+                referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
+                    objectMapper.readTree(dataPoint),
+                    dataPointType,
+                )
+            if (violations.isNotEmpty()) {
+                throw InvalidInputApiException(
+                    "Data point contains inferable fields.",
+                    "The data point contains fields that are not allowed to be set: " + violations.joinToString(" "),
+                )
+            }
         }
 
         /**
@@ -200,14 +226,15 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ): Any {
+            val errorMsgContext = "Validation failed for data point."
             try {
                 val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
                 return objectMapper.readValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(
-                    summary = "Validation failed for data point.",
-                    message = ex.message ?: "Validation failed for data point.",
+                    summary = errorMsgContext,
+                    message = ex.message ?: errorMsgContext,
                     cause = ex,
                 )
             } catch (ex: JsonParseException) {

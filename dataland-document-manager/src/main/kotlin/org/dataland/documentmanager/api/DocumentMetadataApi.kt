@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -242,6 +243,49 @@ interface DocumentMetadataApi {
         @PathVariable("documentId")
         documentId: String,
     ): ResponseEntity<DocumentMetaInfoEntity>
+
+    /**
+     * Retrieve document meta information for multiple document IDs
+     * @param documentId the ID for which to retrieve meta information
+     */
+    @Operation(
+        summary = "Receive metainformation for multiple documents.",
+        description = "Receive metainformation for a document by its IDs from internal storage.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully received document meta information.",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document meta information could not be retrieved.",
+                content = [
+                    Content(
+                        schema = Schema(),
+                    ),
+                ],
+            ),
+        ],
+    )
+    @PostMapping(
+        value = ["/metadata/get-batch"],
+        produces = [
+            "application/json",
+        ],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getDocumentMetaInformationBatch(
+        @Parameter(
+            name = "documentIds",
+            description = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_IDS_DESCRIPTION,
+            example = DocumentManagerOpenApiDescriptionsAndExamples.DOCUMENT_IDS_EXAMPLE,
+            required = true,
+        )
+        @RequestBody
+        documentIds: List<String>,
+    ): ResponseEntity<Map<String, DocumentMetaInfoEntity>>
 
     // Do not use PreAuthorize for the following endpoint, as it shall be called on the company cockpit page even for unauthenticated users.
 

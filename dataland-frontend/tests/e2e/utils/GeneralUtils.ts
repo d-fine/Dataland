@@ -43,6 +43,9 @@ function isNullOrNestedNull(object: null | undefined | Record<string, object> | 
   if (object === null || object === undefined) {
     return true;
   }
+  if (typeof object !== 'object') {
+    return false;
+  }
   return Object.values(object).every((value) => isNullOrNestedNull(value));
 }
 
@@ -62,6 +65,9 @@ function checkIfContentIsIdentical(
   const throwErrorBecauseOfFieldValue = (fieldPath: string): void => {
     throw new Error(`Field ${fieldPath} is not equal.`);
   };
+  if (ignoredValue(newPath, ignoreFields)) {
+    return;
+  }
   if (typeof valueA === 'object' && typeof valueB === 'object') {
     if (valueA === null || valueB === null) {
       if (isNullOrNestedNull(valueA) !== isNullOrNestedNull(valueB) && !ignoredValue(newPath, ignoreFields)) {
