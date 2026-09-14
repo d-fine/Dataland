@@ -65,7 +65,7 @@ initialize_stack() {
 	echo "Start stack using full reset"
 	echo "(uses SSL certs already present in ./local/certs, e.g. copied via fetch_ssl_certs_for_sandbox.sh; falls back to self-signed certs otherwise)"
 	cd "$project_root"
-	./manageLocalStack.sh --reset
+	./manageLocalStack.sh --reset --self-signed-certs
 	echo "Waiting to avoid potential race conditions after start-up"
 	sleep 15
 	echo "Trigger prepopulation of the fake fixture data"
