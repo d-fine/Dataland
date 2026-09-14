@@ -206,6 +206,10 @@ class DataMigrationTest {
                 dataId = dataMetaInfo.dataId,
                 body = linkedQaReportData.qaReport,
             )
+        // Since fileName/publicationDate are now stripped from data-point dataSources during migration, more
+        // "fully null" objects appear on the data side than on the qaReport side for this fixture, causing the
+        // QA-service migration to fail with a 500. This is a known regression (not intended behavior); tracked
+        // here instead of fixed so that this fixture's migration is asserted to fail rather than silently ignored.
         if (testDataLocation.contains("WithManyNulls")) {
             assertThrows<ServerException> {
                 Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
