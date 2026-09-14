@@ -86,7 +86,15 @@ class RequestQueryManagerFilterTest
             doReturn(COMPANY_ID_1).whenever(mockBasicCompanyInfo1).companyId
             doReturn(listOf(mockBasicCompanyInfo1))
                 .whenever(mockCompanyDataControllerApi)
-                .getCompanies(eq(TEST_COMPANY_SEARCH_STRING), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull(), anyOrNull())
+                .getCompanies(
+                    eq(TEST_COMPANY_SEARCH_STRING),
+                    anyOrNull(),
+                    anyOrNull(),
+                    anyOrNull(),
+                    anyOrNull(),
+                    anyOrNull(),
+                    anyOrNull(),
+                )
             doReturn(listOf(DEFAULT_VALIDATION_RESULT_1, DEFAULT_VALIDATION_RESULT_2))
                 .whenever(mockCompanyDataControllerApi)
                 .postCompanyValidation(anyOrNull())
