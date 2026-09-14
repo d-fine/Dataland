@@ -2,7 +2,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.PreApprovalApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfig
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPatchRequest
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.PreApprovalConfigPutRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.PreApprovalService
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -16,6 +19,13 @@ class PreApprovalController(
 ) : PreApprovalApi {
     override fun getPreApprovalConfig(): ResponseEntity<PreApprovalConfig> = ResponseEntity.ok(preApprovalService.config)
 
-    override fun patchPreApprovalConfig(newConfig: PreApprovalConfig): ResponseEntity<PreApprovalConfig> =
-        ResponseEntity.ok(preApprovalService.patchConfig(newConfig))
+    override fun patchPreApprovalConfig(patch: PreApprovalConfigPatchRequest): ResponseEntity<PreApprovalConfig> {
+        val submitUserId = DatalandAuthentication.fromContext().userId
+        return ResponseEntity.ok(preApprovalService.patchConfig(patch, submitUserId))
+    }
+
+    override fun putPreApprovalConfig(newConfig: PreApprovalConfigPutRequest): ResponseEntity<PreApprovalConfig> {
+        val submitUserId = DatalandAuthentication.fromContext().userId
+        return ResponseEntity.ok(preApprovalService.putConfig(newConfig, submitUserId))
+    }
 }

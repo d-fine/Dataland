@@ -130,6 +130,8 @@
       <JudgeDialogNextSection
         style="grid-column: 3; grid-row: 3"
         :pre-approval-check-results="preApprovalCheckResults"
+        :data-point-type-id="currentDataPointTypeId"
+        :data-type="currentDataType"
         v-model:only-show-unreviewed="onlyShowUnreviewed"
         v-model:selected-next-data-point-type-id="selectedNextDataPointTypeId"
         :options="nextDataPointOptions"
@@ -313,6 +315,10 @@ const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
 });
 
 const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');
+
+// ===== Pre-Approval config lookup (data type of the reviewed dataset) =====
+
+const currentDataType = computed(() => datasetJudgement.value?.dataType ?? '');
 
 // ===== Original data point =====
 
