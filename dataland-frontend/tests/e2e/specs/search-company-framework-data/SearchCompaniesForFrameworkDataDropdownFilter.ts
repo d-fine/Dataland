@@ -161,6 +161,42 @@ describe('As a user, I expect the search functionality on the /companies page to
           cy.url().should('contain', convertStringToQueryParamFormat(`sector=${demoCompanyToTestFor.sector!}`));
         }
       );
+
+      it(
+        'Checks that the reporting-period filter narrows down the search results without changing the URL',
+        { scrollBehavior: false },
+        () => {
+          const demoCompanyToTestFor = companiesWithSfdrData[0];
+          const demoCompanyWithDifferentReportingPeriod = assertDefined(
+            companiesWithSfdrData.find((it) => it.reportingPeriod !== demoCompanyToTestFor.reportingPeriod)
+          );
+
+          cy.ensureLoggedInAsReader();
+          cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
+          cy.visit(`/companies?input=${demoCompanyToTestFor.companyInformation.companyName}`).wait(
+            '@companies-meta-information'
+          );
+          const urlBeforeFilterChange =
+            getBaseUrl() +
+            '/companies?' +
+            `input=${encodeURIComponent(demoCompanyToTestFor.companyInformation.companyName)}`;
+          cy.url().should('eq', urlBeforeFilterChange);
+          cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
+            .contains(demoCompanyToTestFor.companyInformation.companyName)
+            .should('exist');
+
+          cy.get('#reporting-period-filter').click();
+          cy.get('input[placeholder="Search reporting periods"]').type(
+            `${demoCompanyWithDifferentReportingPeriod.reportingPeriod}`
+          );
+          cy.get('li')
+            .contains(new RegExp(`^${demoCompanyWithDifferentReportingPeriod.reportingPeriod}$`))
+            .click();
+          cy.get("div[class='col-12 text-left']").should('contain.text', failureMessageOnAvailableDatasetsPage);
+
+          cy.url().should('eq', urlBeforeFilterChange);
+        }
+      );
     }
   );
   it('Checks that the reset button works as expected', { scrollBehavior: false }, () => {

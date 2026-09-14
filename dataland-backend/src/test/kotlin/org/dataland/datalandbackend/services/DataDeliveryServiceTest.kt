@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointCalculator
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataDeliveryServiceUtils
 import org.dataland.datalandbackendutils.model.BasicBaseDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
@@ -25,6 +27,7 @@ class DataDeliveryServiceTest {
     private val internalStorageAdapter = mock<InternalStorageAdapter>()
     private val datasetAssembler = mock<DatasetAssembler>()
     private val dataPointCalculator = mock<DataPointCalculator>()
+    private val dataDeliveryServiceUtils = mock<DataDeliveryServiceUtils>()
 
     private lateinit var dataDeliveryService: DataDeliveryService
 
@@ -62,6 +65,7 @@ class DataDeliveryServiceTest {
                 internalStorageAdapter = internalStorageAdapter,
                 datasetAssembler = datasetAssembler,
                 dataPointCalculator = dataPointCalculator,
+                dataDeliveryServiceUtils = dataDeliveryServiceUtils,
             )
         doReturn(listOf(directDataPointType, calculatedDataPointType))
             .whenever(dataCompositionService)
@@ -72,6 +76,12 @@ class DataDeliveryServiceTest {
         doReturn(emptyMap<BasicDatasetDimensions, List<UploadedDataPoint>>())
             .whenever(dataPointCalculator)
             .getCalculatedData(any(), any(), any())
+        doAnswer { invocation ->
+            DataDeliveryServiceUtils.EnhancedDataPoints(
+                allStoredDataPoints = invocation.getArgument(0),
+                calculatedData = invocation.getArgument(1),
+            )
+        }.whenever(dataDeliveryServiceUtils).enhanceDataPoints(any(), any())
     }
 
     @Test
@@ -103,6 +113,31 @@ class DataDeliveryServiceTest {
 
         assertEquals(mapOf(datasetDimensions to "assembled-mixed"), result)
         verify(datasetAssembler).assembleSingleDataset(listOf(directDataPoint, calculatedDataPoint), framework)
+    }
+
+    @Test
+    fun `check that enhanced stored and calculated data points are assembled`() {
+        mockViewableDataPointMetaData(listOf(makeMetaData()))
+        doReturn(mapOf(directDataPointId to directDataPoint))
+            .whenever(internalStorageAdapter)
+            .getDataPoints(listOf(directDataPointId), correlationId)
+        doReturn(mapOf(datasetDimensions to listOf(calculatedDataPoint)))
+            .whenever(dataPointCalculator)
+            .getCalculatedData(any(), any(), any())
+        val enhancedDirectDataPoint = directDataPoint.copy(dataPoint = "{\"value\":\"enhanced-direct\"}")
+        val enhancedCalculatedDataPoint = calculatedDataPoint.copy(dataPoint = "{\"value\":\"enhanced-calculated\"}")
+        doReturn(
+            DataDeliveryServiceUtils.EnhancedDataPoints(
+                allStoredDataPoints = mapOf(directDataPointId to enhancedDirectDataPoint),
+                calculatedData = mapOf(datasetDimensions to listOf(enhancedCalculatedDataPoint)),
+            ),
+        ).whenever(dataDeliveryServiceUtils).enhanceDataPoints(any(), any())
+        doReturn("assembled-enhanced").whenever(datasetAssembler).assembleSingleDataset(any(), any())
+
+        val result = dataDeliveryService.getAssembledDatasets(listOf(datasetDimensions), correlationId)
+
+        assertEquals(mapOf(datasetDimensions to "assembled-enhanced"), result)
+        verify(datasetAssembler).assembleSingleDataset(listOf(enhancedDirectDataPoint, enhancedCalculatedDataPoint), framework)
     }
 
     @Test

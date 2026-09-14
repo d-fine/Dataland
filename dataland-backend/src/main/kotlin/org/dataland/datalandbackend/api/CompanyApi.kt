@@ -28,6 +28,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataTypePara
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.IdentifierTypeParameterRequired
+import org.dataland.datalandbackendutils.utils.swaggerdocumentation.ReportingPeriodsParameterNonRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.SectorsParameterNonRequired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -96,13 +97,15 @@ interface CompanyApi {
      * this function only returns companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
      * uploaded by the current user
+     * @param reportingPeriods If set & non-empty, this function only returns companies that have a currently
+     * active dataset for a reporting period contained in the set
      * @return basic information about all companies with approved framework data matching the search criteria
      */
     @Operation(
         summary = "Retrieve just the basic information about specific companies.",
         description =
             "The basic information about companies via the provided company name/identifier are retrieved and filtered " +
-                "by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+                "by countryCode, sector, reportingPeriod and available framework data. Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -131,6 +134,9 @@ interface CompanyApi {
         @RequestParam
         @SectorsParameterNonRequired
         sectors: Set<String>? = null,
+        @RequestParam
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>? = null,
         @RequestParam(defaultValue = "100")
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
@@ -154,13 +160,15 @@ interface CompanyApi {
      * this function only counts companies that have a country code contained in the set
      * @param sectors If set & non-empty, this function only counts companies that belong to a sector in the set
      * uploaded by the current user
+     * @param reportingPeriods If set & non-empty, this function only counts companies that have a currently
+     * active dataset for a reporting period contained in the set
      * @return the number of companies matching the search criteria
      */
     @Operation(
         summary = "Retrieve the number of companies satisfying different filters.",
         description =
             "The number of companies via the provided company name/identifier are retrieved and filtered by countryCode, " +
-                "sector and available framework data. Empty/Unspecified filters are ignored.",
+                "sector, reportingPeriod and available framework data. Empty/Unspecified filters are ignored.",
     )
     @ApiResponses(
         value = [
@@ -190,6 +198,9 @@ interface CompanyApi {
         @RequestParam
         @SectorsParameterNonRequired
         sectors: Set<String>? = null,
+        @RequestParam
+        @ReportingPeriodsParameterNonRequired
+        reportingPeriods: Set<String>? = null,
     ): ResponseEntity<Int>
 
     /**
@@ -283,7 +294,7 @@ interface CompanyApi {
      */
     @Operation(
         summary = "Retrieve available distinct values for company search filters",
-        description = "Distinct values for the parameter countryCode and sector are returned",
+        description = "Distinct values for the parameter countryCode, sector and reportingPeriod are returned",
     )
     @ApiResponses(
         value = [

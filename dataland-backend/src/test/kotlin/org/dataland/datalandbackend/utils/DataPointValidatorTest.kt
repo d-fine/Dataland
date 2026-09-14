@@ -12,12 +12,16 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
 
@@ -94,6 +98,63 @@ class DataPointValidatorTest {
     fun `check that parsing a data point with a broken enum results in the expected exception`() {
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that a data point containing inferable fields in its data source is rejected`() {
+        val dataPointId = "someCurrencyDataPoint"
+        val dataPointBaseTypeId = "extendedCurrencyDataPoint"
+
+        doReturn(
+            mock<DataPointTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
+            },
+        ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
+
+        doReturn(
+            listOf("The data source at '$dataPointId.dataSource' must not set the field 'fileName' (found 'AnnualReport')."),
+        ).whenever(referencedReportsUtilities).validateDataSourcesDoNotContainInferableFields(any(), any(), any(), any())
+
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                dataPointValidator.validateDataPoint(dataPointId, getJsonString(currencyDataPoint), correlationId)
+            }
+        assertTrue(exception.message!!.contains(dataPointId))
+
+        verify(referencedReportsUtilities).validateDataSourcesDoNotContainInferableFields(
+            any(),
+            eq(dataPointId),
+            any(),
+            any(),
+        )
+    }
+
+    @Test
+    fun `check that a data point without inferable fields in its data source passes the validation`() {
+        val dataPointId = "someCurrencyDataPoint"
+        val dataPointBaseTypeId = "extendedCurrencyDataPoint"
+
+        doReturn(
+            mock<DataPointTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
+            },
+        ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
+
+        doReturn(
+            mock<DataPointBaseTypeSpecification> {
+                on { validatedBy } doReturn validationClass
+            },
+        ).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
+
+        doReturn(emptyList<String>())
+            .whenever(referencedReportsUtilities)
+            .validateDataSourcesDoNotContainInferableFields(any(), any(), any(), any())
+
+        assertDoesNotThrow {
+            dataPointValidator.validateDataPoint(dataPointId, getJsonString(currencyDataPoint), correlationId)
         }
     }
 
