@@ -77,6 +77,9 @@ object BackendOpenApiDescriptionsAndExamples {
     const val LIST_OF_SECTORS_DESCRIPTION = "The list of sectors."
     const val LIST_OF_SECTORS_EXAMPLE = "[\"$SECTOR_EXAMPLE\"]"
 
+    const val LIST_OF_REPORTING_PERIODS_DESCRIPTION = "The list of reporting periods."
+    const val LIST_OF_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
+
     const val UPLOADER_USER_ID_DESCRIPTION = "The Dataland user ID of the user who uploaded the dataset."
     const val UPLOADER_USER_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
 

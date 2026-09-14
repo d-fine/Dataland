@@ -38,4 +38,9 @@ class CompanyBaseManager(
      * Returns a list of available sectors across all stored companies
      */
     fun getDistinctSectors(): Set<String> = companyBaseRepository.fetchDistinctSectors()
+
+    /**
+     * Returns a set of available reporting periods across all stored companies, ordered descending
+     */
+    fun getDistinctReportingPeriods(): Set<String> = companyBaseRepository.fetchDistinctReportingPeriods().toSet()
 }

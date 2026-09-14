@@ -3388,7 +3388,7 @@
           "company-data-controller"
         ],
         "summary": "Retrieve just the basic information about specific companies.",
-        "description": "The basic information about companies via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "description": "The basic information about companies via the provided company name/identifier are retrieved and filtered by countryCode, sector, reportingPeriod and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -3444,6 +3444,23 @@
             },
             "example": [
               "Information Technology"
+            ]
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
             ]
           },
           {
@@ -7526,7 +7543,7 @@
           "company-data-controller"
         ],
         "summary": "Retrieve the number of companies satisfying different filters.",
-        "description": "The number of companies via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "description": "The number of companies via the provided company name/identifier are retrieved and filtered by countryCode, sector, reportingPeriod and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getNumberOfCompanies",
         "parameters": [
           {
@@ -7582,6 +7599,23 @@
             },
             "example": [
               "Information Technology"
+            ]
+          },
+          {
+            "name": "reportingPeriods",
+            "in": "query",
+            "description": "The relevant reporting periods (e.g. fiscal years).",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "2023",
+              "2024"
             ]
           }
         ],
@@ -7709,7 +7743,7 @@
           "company-data-controller"
         ],
         "summary": "Retrieve available distinct values for company search filters",
-        "description": "Distinct values for the parameter countryCode and sector are returned",
+        "description": "Distinct values for the parameter countryCode, sector and reportingPeriod are returned",
         "operationId": "getAvailableCompanySearchFilters",
         "responses": {
           "200": {
@@ -21561,6 +21595,7 @@
       "CompanyAvailableDistinctValues": {
         "required": [
           "countryCodes",
+          "reportingPeriods",
           "sectors"
         ],
         "type": "object",
@@ -21582,6 +21617,18 @@
             "description": "The list of sectors.",
             "example": [
               "Information Technology"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "reportingPeriods": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The list of reporting periods.",
+            "example": [
+              "2023",
+              "2024"
             ],
             "items": {
               "type": "string"
