@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -110,7 +111,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
         val companyIds = result.map { it.companyId }
         assertTrue(companyIds.contains(companyReportingPeriod2023.companyId))
         assertTrue(companyIds.contains(companyReportingPeriodBoth.companyId))
-        assertTrue(!companyIds.contains(companyReportingPeriod2024.companyId))
+        assertFalse(companyIds.contains(companyReportingPeriod2024.companyId))
     }
 
     @Test
@@ -126,9 +127,9 @@ class CompanyDataControllerReportingPeriodFilterTest(
     fun `getCompanies returns no companies for a non-existent reportingPeriod`() {
         val result = companyController.getCompanies(reportingPeriods = setOf("1999")).body!!
         val companyIds = result.map { it.companyId }
-        assertTrue(!companyIds.contains(companyReportingPeriod2023.companyId))
-        assertTrue(!companyIds.contains(companyReportingPeriod2024.companyId))
-        assertTrue(!companyIds.contains(companyReportingPeriodBoth.companyId))
+        assertFalse(companyIds.contains(companyReportingPeriod2023.companyId))
+        assertFalse(companyIds.contains(companyReportingPeriod2024.companyId))
+        assertFalse(companyIds.contains(companyReportingPeriodBoth.companyId))
     }
 
     @Test
