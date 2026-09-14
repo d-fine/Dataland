@@ -57,7 +57,7 @@ class DataPointValidator
         ): Any {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
-            validateDataPointDoesNotContainInferableFields(dataPoint)
+            validateDataPointDoesNotContainInferableFields(dataPointType, dataPoint)
             val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
             val dataPointBaseTypeId = dataPointTypeSpecification.dataPointBaseType.id
             val constraints = dataPointTypeSpecification.constraints
@@ -68,14 +68,19 @@ class DataPointValidator
         /**
          * Validates that no data source contained in the provided data point sets the file name
          * or publication date fields, as these fields must not be uploaded explicitly.
+         * @param dataPointType the identifier of the data point type, used to identify the data point
+         * in the resulting violation messages
          * @param dataPoint the string representation of the data point to validate
          */
-        private fun validateDataPointDoesNotContainInferableFields(dataPoint: String) {
+        private fun validateDataPointDoesNotContainInferableFields(
+            dataPointType: String,
+            dataPoint: String,
+        ) {
             if (dataPoint.isBlank()) return
             val violations =
                 referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
                     objectMapper.readTree(dataPoint),
-                    "root",
+                    dataPointType,
                 )
             if (violations.isNotEmpty()) {
                 throw InvalidInputApiException(

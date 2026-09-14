@@ -12,13 +12,16 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDate
 
@@ -111,12 +114,21 @@ class DataPointValidatorTest {
         ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
 
         doReturn(
-            listOf("The data source at 'root.dataSource' must not set the field 'fileName' (found 'AnnualReport')."),
+            listOf("The data source at '$dataPointId.dataSource' must not set the field 'fileName' (found 'AnnualReport')."),
         ).whenever(referencedReportsUtilities).validateDataSourcesDoNotContainInferableFields(any(), any(), any(), any())
 
-        assertThrows<InvalidInputApiException> {
-            dataPointValidator.validateDataPoint(dataPointId, getJsonString(currencyDataPoint), correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                dataPointValidator.validateDataPoint(dataPointId, getJsonString(currencyDataPoint), correlationId)
+            }
+        assertTrue(exception.message!!.contains(dataPointId))
+
+        verify(referencedReportsUtilities).validateDataSourcesDoNotContainInferableFields(
+            any(),
+            eq(dataPointId),
+            any(),
+            any(),
+        )
     }
 
     @Test
