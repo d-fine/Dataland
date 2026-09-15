@@ -5,14 +5,18 @@ import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
+import org.dataland.datalandbackend.model.export.ExportAvailability
 import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataExportUtils
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
@@ -34,12 +38,14 @@ open class DataExportService<T>(
     private val specificationService: SpecificationService,
     private val companyQueryManager: CompanyQueryManager,
     private val datasetStorageService: DatasetStorageService,
+    private val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
 ) {
     companion object {
         private const val HEADER_ROW_INDEX = 0
-        private const val COMPANY_NAME_POSITION = -3
-        private const val COMPANY_LEI_POSITION = -2
-        private const val REPORTING_PERIOD_POSITION = -1
+        private const val COMPANY_NAME_POSITION = -4
+        private const val COMPANY_LEI_POSITION = -3
+        private const val REPORTING_PERIOD_POSITION = -2
+        private const val AVAILABILITY_POSITION = -1
         private const val FIXED_COLUMN_WIDTH = 30
         private const val BUFFER = 15
         private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
@@ -89,17 +95,20 @@ open class DataExportService<T>(
      * Note that swagger only supports InputStreamResources and not OutputStreams
      *
      * @param dataDimensionsWithDataStrings the plain data to be exported
+     * @param nonSourceableGapDimensions data dimensions for which no dataset was found but which are confirmed
+     *   non-sourceable and should therefore still produce a synthetic row in the export
      * @param newExportJob export job in which the stream will be stored
      * @param clazz the class type of the data to be exported
      * @param exportOptions the export options specifying the export format
      */
     private fun buildStream(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
+        nonSourceableGapDimensions: Set<BasicDataDimensions>,
         newExportJob: ExportJob,
         clazz: Class<out T>,
         exportOptions: ExportOptions,
     ) {
-        val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, clazz)
+        val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, nonSourceableGapDimensions, clazz)
 
         newExportJob.fileToExport = buildStreamFromPortfolioExportData(portfolioData, exportOptions)
         newExportJob.progressState = ExportJobProgressState.Success
@@ -121,15 +130,26 @@ open class DataExportService<T>(
         newExportJob: ExportJob,
         clazz: Class<out T>,
         exportOptions: ExportOptions,
-    ) = buildStream(
-        getPlainData(listDataDimensions, newExportJob.id.toString()),
-        newExportJob,
-        clazz,
-        exportOptions,
-    )
+    ) {
+        val correlationId = newExportJob.id.toString()
+        val requestedDimensions = buildRequestedDimensions(listDataDimensions)
+        val dataDimensionsWithDataStrings = datasetStorageService.getDatasetData(requestedDimensions, correlationId)
+
+        val missingDimensions =
+            (requestedDimensions - dataDimensionsWithDataStrings.keys)
+                .map { it.toBasicDataDimensions() }
+                .toSet()
+        val nonSourceableGapDimensions = resolveNonSourceableGaps(missingDimensions, exportOptions.dataType)
+
+        buildStream(dataDimensionsWithDataStrings, nonSourceableGapDimensions, newExportJob, clazz, exportOptions)
+    }
 
     /**
      * Create a ByteStream of the latest available data per company to be used for export from a list of SingleCompanyExportData.
+     *
+     * For companies without a latest dataset, any currently-active non-sourceability entry for the requested framework
+     * (across any reporting period) is used to produce a synthetic non-sourceable row instead of silently omitting
+     * the company from the export.
      *
      * @param companyIds the companies for which the latest data is to be exported
      * @param newExportJob correlationId for unique identification
@@ -142,12 +162,25 @@ open class DataExportService<T>(
         newExportJob: ExportJob,
         clazz: Class<out T>,
         exportOptions: ExportOptions,
-    ) = buildStream(
-        getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
-        newExportJob,
-        clazz,
-        exportOptions,
-    )
+    ) {
+        val correlationId = newExportJob.id.toString()
+        val dataDimensionsWithDataStrings = getLatestPlainData(companyIds, exportOptions.dataType.toString(), correlationId)
+
+        val missingCompanyIds = companyIds.toSet() - dataDimensionsWithDataStrings.keys.map { it.companyId }.toSet()
+        val nonSourceableGapDimensions =
+            if (missingCompanyIds.isEmpty()) {
+                emptySet()
+            } else {
+                nonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
+                    DataDimensionQuery(
+                        companyIds = missingCompanyIds.toList(),
+                        dataTypes = listOf(exportOptions.dataType.toString()),
+                    ),
+                )
+            }
+
+        buildStream(dataDimensionsWithDataStrings, nonSourceableGapDimensions, newExportJob, clazz, exportOptions)
+    }
 
     /**
      * Transform the data to an Excel file with human-readable headers.
@@ -216,10 +249,7 @@ open class DataExportService<T>(
         workbook.close()
     }
 
-    private fun getPlainData(
-        listDataDimensions: ListDataDimensions,
-        correlationId: String,
-    ) = datasetStorageService.getDatasetData(
+    private fun buildRequestedDimensions(listDataDimensions: ListDataDimensions): Set<BasicDatasetDimensions> =
         listDataDimensions.companyIds
             .flatMap { companyId ->
                 listDataDimensions.reportingPeriods.flatMap { reportingPeriod ->
@@ -227,9 +257,34 @@ open class DataExportService<T>(
                         BasicDatasetDimensions(companyId, dataType, reportingPeriod)
                     }
                 }
-            }.toSet(),
-        correlationId,
-    )
+            }.toSet()
+
+    /**
+     * For the given set of data dimensions that have no dataset available, determines which of them are
+     * currently confirmed as non-sourceable via a single bulk lookup.
+     *
+     * @param missingDimensions the data dimensions for which no dataset was found
+     * @param dataType the framework/data type being exported
+     * @return the subset of [missingDimensions] that are currently confirmed as non-sourceable
+     */
+    private fun resolveNonSourceableGaps(
+        missingDimensions: Set<BasicDataDimensions>,
+        dataType: DataType,
+    ): Set<BasicDataDimensions> {
+        if (missingDimensions.isEmpty()) return emptySet()
+
+        val query =
+            DataDimensionQuery(
+                companyIds = missingDimensions.map { it.companyId }.distinct(),
+                dataTypes = listOf(dataType.toString()),
+                reportingPeriods = missingDimensions.map { it.reportingPeriod }.distinct(),
+            )
+
+        return nonSourceabilityInformationManager
+            .searchActiveNonSourceableDimensions(query)
+            .filter { it in missingDimensions }
+            .toSet()
+    }
 
     private fun getLatestPlainData(
         companyIds: Collection<String>,
@@ -244,25 +299,57 @@ open class DataExportService<T>(
 
     private fun buildCompanyExportData(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
+        nonSourceableGapDimensions: Set<BasicDataDimensions>,
         clazz: Class<out T>,
     ): List<SingleCompanyExportData<T>> {
-        val basicCompanyInformation =
-            companyQueryManager.getBasicCompanyInformationByIds(
-                dataDimensionsWithDataStrings.map { it.key.companyId },
-            )
+        val allCompanyIds =
+            (
+                dataDimensionsWithDataStrings.keys.map { it.companyId } +
+                    nonSourceableGapDimensions.map { it.companyId }
+            ).distinct()
+        val basicCompanyInformation = companyQueryManager.getBasicCompanyInformationByIds(allCompanyIds)
 
-        return dataDimensionsWithDataStrings
-            .asSequence()
-            .map {
-                SingleCompanyExportData(
-                    companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
-                    companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
-                    reportingPeriod = it.key.reportingPeriod,
-                    data = defaultObjectMapper.readValue(it.value, clazz),
-                )
-            }.sortedBy { it.companyName }
-            .toList()
+        val availableRows = buildRowsForAvailableData(dataDimensionsWithDataStrings, clazz, basicCompanyInformation)
+        val nonSourceableRows = buildRowsForNonSourceableGaps(nonSourceableGapDimensions, basicCompanyInformation)
+
+        return (availableRows + nonSourceableRows).sortedBy { it.companyName }
     }
+
+    /**
+     * Builds one export row per data dimension for which an actual dataset was found.
+     */
+    private fun buildRowsForAvailableData(
+        dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
+        clazz: Class<out T>,
+        basicCompanyInformation: Map<String, BasicCompanyInformation?>,
+    ): List<SingleCompanyExportData<T>> =
+        dataDimensionsWithDataStrings.map {
+            SingleCompanyExportData(
+                companyName = basicCompanyInformation[it.key.companyId]?.companyName ?: "",
+                companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
+                reportingPeriod = it.key.reportingPeriod,
+                availability = ExportAvailability.AVAILABLE,
+                data = defaultObjectMapper.readValue(it.value, clazz),
+            )
+        }
+
+    /**
+     * Builds one synthetic export row per data dimension that has no dataset but is confirmed non-sourceable.
+     * The framework-specific data is intentionally left absent (null).
+     */
+    private fun buildRowsForNonSourceableGaps(
+        nonSourceableGapDimensions: Set<BasicDataDimensions>,
+        basicCompanyInformation: Map<String, BasicCompanyInformation?>,
+    ): List<SingleCompanyExportData<T>> =
+        nonSourceableGapDimensions.map {
+            SingleCompanyExportData(
+                companyName = basicCompanyInformation[it.companyId]?.companyName ?: "",
+                companyLei = basicCompanyInformation[it.companyId]?.lei ?: "",
+                reportingPeriod = it.reportingPeriod,
+                availability = ExportAvailability.NON_SOURCEABLE,
+                data = null,
+            )
+        }
 
     /**
      * Create a ByteStream to be used for CSV export from a list of JSON objects.
@@ -436,6 +523,7 @@ open class DataExportService<T>(
                         it.startsWith("companyName") -> COMPANY_NAME_POSITION
                         it.startsWith("companyLei") -> COMPANY_LEI_POSITION
                         it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
+                        it.startsWith("availability") -> AVAILABILITY_POSITION
                         else -> 0
                     }
                 }.then(naturalOrder()),
