@@ -5,7 +5,6 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
-import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
@@ -27,7 +26,6 @@ import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeRe
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
@@ -537,18 +535,19 @@ class DataExportServiceTest {
 
         val exportJob = newExportJob()
 
-        assertThrows<DownloadDataNotFoundApiException> {
-            dataExportService.startExportJob(
-                ListDataDimensions(
-                    companyIds = listOf(nonSourceableTestCompanyId),
-                    reportingPeriods = listOf(TEST_REPORTING_PERIOD),
-                    dataTypes = listOf("lksg"),
-                ),
-                exportJob,
-                LksgData::class.java,
-                ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-            )
-        }
+        dataExportService.startExportJob(
+            ListDataDimensions(
+                companyIds = listOf(nonSourceableTestCompanyId),
+                reportingPeriods = listOf(TEST_REPORTING_PERIOD),
+                dataTypes = listOf("lksg"),
+            ),
+            exportJob,
+            LksgData::class.java,
+            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+        )
+
+        Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
+        Assertions.assertNull(exportJob.fileToExport)
     }
 
     @Test
@@ -703,14 +702,15 @@ class DataExportServiceTest {
 
         val exportJob = newExportJob()
 
-        assertThrows<DownloadDataNotFoundApiException> {
-            dataExportService.startLatestExportJob(
-                listOf(nonSourceableTestCompanyId),
-                exportJob,
-                LksgData::class.java,
-                ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-            )
-        }
+        dataExportService.startLatestExportJob(
+            listOf(nonSourceableTestCompanyId),
+            exportJob,
+            LksgData::class.java,
+            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+        )
+
+        Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
+        Assertions.assertNull(exportJob.fileToExport)
     }
 
     // endregion
