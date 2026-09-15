@@ -1,8 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.NullNode
-import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
@@ -18,17 +15,13 @@ import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DataExportUtils
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
-import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.InputStreamResource
 import org.springframework.scheduling.annotation.Async
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import kotlin.collections.associate
-import kotlin.jvm.java
 
 /**
  * Base class for export service used for managing the logic behind the dataset export controller
@@ -53,41 +46,34 @@ open class DataExportService<T>(
         private const val MAX_CHARACTER_LENGTH = 255
         private const val MAX_EXCEL_CELL_LENGTH = 32767
     }
+    private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val objectMapper = defaultObjectMapper
+    private val exportStreamBuilder = ExportStreamBuilder(datasetAssembler, specificationService)
 
+    /**
+     * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
+     *
+     * Note that swagger only supports InputStreamResources and not OutputStreams
+     */
     internal fun <T> buildStreamFromPortfolioExportData(
         portfolioData: Collection<SingleCompanyExportData<T>>,
         exportOptions: ExportOptions,
-    ): InputStreamResource {
-        val jsonData = portfolioData.map { convertDataToJson(it) }
-        if (jsonData.isEmpty()) {
-            throw DownloadDataNotFoundApiException()
-        }
-        return when (exportOptions.exportFileType) {
-            ExportFileType.CSV -> {
-                buildCsvStreamFromPortfolioAsJsonData(
-                    jsonData,
-                    exportOptions.dataType,
-                    exportOptions.keepValueFieldsOnly,
-                    exportOptions.includeAliases,
-                )
-            }
+    ): InputStreamResource = exportStreamBuilder.buildStreamFromPortfolioExportData(portfolioData, exportOptions)
 
-            ExportFileType.EXCEL -> {
-                buildExcelStreamFromPortfolioAsJsonData(
-                    jsonData,
-                    exportOptions.dataType,
-                    exportOptions.keepValueFieldsOnly,
-                    exportOptions.includeAliases,
-                )
-            }
-
-            ExportFileType.JSON -> {
-                buildJsonStreamFromPortfolioAsJsonData(jsonData)
-            }
-        }
-    }
+    /**
+     * Transform the data to an Excel file with human-readable headers. See [ExportStreamBuilder.transformDataToExcelWithReadableHeaders].
+     */
+    fun transformDataToExcelWithReadableHeaders(
+        csvDataWithReadableHeaders: List<Map<String, String?>>,
+        csvSchema: CsvSchema,
+        outputStream: OutputStream,
+        shortHeaderNamesAndColumns: Boolean = false,
+    ) = exportStreamBuilder.transformDataToExcelWithReadableHeaders(
+        csvDataWithReadableHeaders,
+        csvSchema,
+        outputStream,
+        shortHeaderNamesAndColumns,
+    )
 
     /**
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
@@ -112,6 +98,29 @@ open class DataExportService<T>(
 
         newExportJob.fileToExport = buildStreamFromPortfolioExportData(portfolioData, exportOptions)
         newExportJob.progressState = ExportJobProgressState.Success
+    }
+
+    /**
+     * Runs [block] and, if it throws, marks [newExportJob] as failed instead of letting the exception propagate.
+     *
+     * [startExportJob] and [startLatestExportJob] run on an `@Async` thread, so an uncaught exception would only be
+     * logged by Spring's default `AsyncUncaughtExceptionHandler` and never reach the caller - the export job would
+     * otherwise be left stuck in [ExportJobProgressState.Pending] forever from the user's perspective.
+     *
+     * @param newExportJob the export job to mark as failed if [block] throws
+     * @param block the export job logic to run, including any data retrieval that may fail
+     */
+    private fun runExportJob(
+        newExportJob: ExportJob,
+        block: () -> Unit,
+    ) {
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            block()
+        } catch (exception: Exception) {
+            logger.error("Export job with id ${newExportJob.id} failed.", exception)
+            newExportJob.progressState = ExportJobProgressState.Failure
+        }
     }
 
     /**
@@ -142,6 +151,13 @@ open class DataExportService<T>(
         val nonSourceableGapDimensions = resolveNonSourceableGaps(missingDimensions, exportOptions.dataType)
 
         buildStream(dataDimensionsWithDataStrings, nonSourceableGapDimensions, newExportJob, clazz, exportOptions)
+    ) = runExportJob(newExportJob) {
+        buildStream(
+            getPlainData(listDataDimensions, newExportJob.id.toString()),
+            newExportJob,
+            clazz,
+            exportOptions,
+        )
     }
 
     /**
@@ -247,6 +263,13 @@ open class DataExportService<T>(
 
         workbook.write(outputStream)
         workbook.close()
+    ) = runExportJob(newExportJob) {
+        buildStream(
+            getLatestPlainData(companyIds, exportOptions.dataType.toString(), newExportJob.id.toString()),
+            newExportJob,
+            clazz,
+            exportOptions,
+        )
     }
 
     private fun buildRequestedDimensions(listDataDimensions: ListDataDimensions): Set<BasicDatasetDimensions> =

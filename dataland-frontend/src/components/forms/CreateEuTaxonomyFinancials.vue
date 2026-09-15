@@ -152,6 +152,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import { removeInferableDocumentFields } from '@/utils/DataPoint';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { smoothScroll } from '@/utils/SmoothScroll';
@@ -165,6 +166,7 @@ import {
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
+import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 import { FormKit } from '@formkit/vue';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
@@ -286,10 +288,30 @@ export default defineComponent({
         if (this.documentsToUpload.length > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedEuTaxonomyFinancialsData.data as ObjectType,
-            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset)
+            Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
+            this.namesAndReferencesOfAllCompanyReportsForTheDataset as ObjectType
           );
 
-          await uploadFiles(this.documentsToUpload, assertDefined(this.getKeycloakPromise));
+          const referencedReports =
+            this.companyAssociatedEuTaxonomyFinancialsData.data.general?.general?.referencedReports;
+          const documentMetaInfoByReference = new Map<string, DocumentMetaInfo>(
+            this.documentsToUpload.map((documentToUpload) => [
+              documentToUpload.fileReference,
+              {
+                documentName: documentToUpload.fileNameWithoutSuffix,
+                documentCategory: DocumentMetaInfoDocumentCategoryEnum.Other,
+                companyIds: [this.companyID] as unknown as Set<string>,
+                publicationDate:
+                  referencedReports?.[documentToUpload.fileNameWithoutSuffix]?.publicationDate ?? undefined,
+                reportingPeriod: this.reportingPeriodYear.toString(),
+              },
+            ])
+          );
+          await uploadFiles(
+            this.documentsToUpload,
+            assertDefined(this.getKeycloakPromise),
+            documentMetaInfoByReference
+          );
         }
 
         const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
@@ -300,7 +322,7 @@ export default defineComponent({
         );
 
         await euTaxonomyFinancialsDataControllerApi!.postFrameworkData(
-          this.companyAssociatedEuTaxonomyFinancialsData,
+          removeInferableDocumentFields(this.companyAssociatedEuTaxonomyFinancialsData),
           isCompanyOwnerOrDataUploader
         );
 

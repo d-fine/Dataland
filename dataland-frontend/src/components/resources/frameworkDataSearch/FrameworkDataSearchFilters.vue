@@ -1,44 +1,63 @@
 <template>
   <div class="filter-container">
     <div class="filter">
-      <label for="sector-filter" v-if="showHeading">Filter by company</label>
-      <FrameworkDataSearchDropdownFilter
-        v-model="localSelectedSectors"
-        ref="sectorFilter"
-        :available-items="availableSectors"
-        filter-name="Sector"
-        id="sector-filter"
-        filter-placeholder="Search sectors"
-        :max-selected-labels="1"
-        selected-items-label="{0} sectors"
-        class="search-filter"
-        data-test="frameworkDataSearchDropdownFilterSector"
-      />
-      <FrameworkDataSearchDropdownFilter
-        v-model="localSelectedCountries"
-        ref="countryFilter"
-        :available-items="availableCountries"
-        filter-name="Country"
-        id="country-filter"
-        filter-placeholder="Search countries"
-        :max-selected-labels="1"
-        selected-items-label="{0} countries"
-        class="search-filter"
-      />
-      <Divider layout="vertical" />
-      <FrameworkDataSearchDropdownFilter
-        v-model="localSelectedFrameworks"
-        ref="frameworkFilter"
-        :available-items="availableFrameworks"
-        filter-name="Framework"
-        id="framework-filter"
-        filter-placeholder="Search frameworks"
-        selected-items-label="{0} frameworks"
-        :max-selected-labels="1"
-        class="search-filter framework-filter"
-      />
-      <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
-      <Divider layout="vertical" />
+      <div class="filter-group">
+        <label for="sector-filter" v-if="showHeading">Filter by company</label>
+        <div class="filter-group-items">
+          <FrameworkDataSearchDropdownFilter
+            v-model="localSelectedSectors"
+            ref="sectorFilter"
+            :available-items="availableSectors"
+            filter-name="Sector"
+            id="sector-filter"
+            filter-placeholder="Search sectors"
+            :max-selected-labels="1"
+            selected-items-label="{0} sectors"
+            class="search-filter"
+            data-test="frameworkDataSearchDropdownFilterSector"
+          />
+          <FrameworkDataSearchDropdownFilter
+            v-model="localSelectedCountries"
+            ref="countryFilter"
+            :available-items="availableCountries"
+            filter-name="Country"
+            id="country-filter"
+            filter-placeholder="Search countries"
+            :max-selected-labels="1"
+            selected-items-label="{0} countries"
+            class="search-filter"
+          />
+        </div>
+      </div>
+      <Divider layout="vertical" class="filter-divider" />
+      <div class="filter-group">
+        <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
+        <div class="filter-group-items">
+          <FrameworkDataSearchDropdownFilter
+            v-model="localSelectedFrameworks"
+            ref="frameworkFilter"
+            :available-items="availableFrameworks"
+            filter-name="Framework"
+            id="framework-filter"
+            filter-placeholder="Search frameworks"
+            selected-items-label="{0} frameworks"
+            :max-selected-labels="1"
+            class="search-filter framework-filter"
+          />
+          <FrameworkDataSearchDropdownFilter
+            v-model="localSelectedReportingPeriods"
+            ref="reportingPeriodFilter"
+            :available-items="availableReportingPeriods"
+            filter-name="Reporting Period"
+            id="reporting-period-filter"
+            filter-placeholder="Search reporting periods"
+            selected-items-label="{0} reporting periods"
+            :max-selected-labels="1"
+            class="search-filter"
+            data-test="frameworkDataSearchDropdownFilterReportingPeriod"
+          />
+        </div>
+      </div>
     </div>
     <PrimeButton variant="link" @click="resetFilters" label="RESET" data-test="reset-filter" />
   </div>
@@ -71,12 +90,18 @@ export interface FrameworkDataSearchDropdownFilterRef {
 export default defineComponent({
   name: 'FrameworkDataSearchFilters',
   components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
-  emits: ['update:selectedCountryCodes', 'update:selectedFrameworks', 'update:selectedSectors'],
+  emits: [
+    'update:selectedCountryCodes',
+    'update:selectedFrameworks',
+    'update:selectedSectors',
+    'update:selectedReportingPeriods',
+  ],
   setup() {
     return {
       sectorFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       countryFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       frameworkFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
+      reportingPeriodFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
       apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
     };
   },
@@ -93,6 +118,10 @@ export default defineComponent({
       type: Array as () => Array<string>,
       default: () => [],
     },
+    selectedReportingPeriods: {
+      type: Array as () => Array<string>,
+      default: () => [],
+    },
     showHeading: {
       type: Boolean,
       default: true,
@@ -103,10 +132,12 @@ export default defineComponent({
       localSelectedCountries: [] as Array<CountryCodeSelectableItem>,
       localSelectedFrameworks: [] as Array<FrameworkSelectableItem>,
       localSelectedSectors: [] as Array<SelectableItem>,
+      localSelectedReportingPeriods: [] as Array<SelectableItem>,
 
       availableCountries: [] as Array<CountryCodeSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableSectors: [] as Array<SelectableItem>,
+      availableReportingPeriods: [] as Array<SelectableItem>,
     };
   },
   watch: {
@@ -137,6 +168,15 @@ export default defineComponent({
         );
       },
     },
+    localSelectedReportingPeriods: {
+      deep: true,
+      handler(newValue: Array<SelectableItem>) {
+        this.$emit(
+          'update:selectedReportingPeriods',
+          newValue.map((item) => item.displayName)
+        );
+      },
+    },
   },
   methods: {
     /**
@@ -146,10 +186,12 @@ export default defineComponent({
       this.localSelectedFrameworks = [];
       this.localSelectedCountries = [];
       this.localSelectedSectors = [];
+      this.localSelectedReportingPeriods = [];
 
       this.$emit('update:selectedCountryCodes', []);
       this.$emit('update:selectedSectors', []);
       this.$emit('update:selectedFrameworks', []);
+      this.$emit('update:selectedReportingPeriods', []);
     },
     /**
      * A helper function that closes all the dropdown filters
@@ -162,10 +204,13 @@ export default defineComponent({
       this.sectorFilter?.multiselect?.hide?.();
 
       this.frameworkFilter?.multiselect?.hide?.();
+
+      this.reportingPeriodFilter?.multiselect?.hide?.();
     },
     /**
      * Uses the Dataland API to obtain available company search filters and fills in the
-     * availableCountries and availableSectors elements in the format expected by the dropdown filters
+     * availableCountries, availableSectors and availableReportingPeriods elements in the format
+     * expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
       const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
@@ -186,6 +231,12 @@ export default defineComponent({
           return { displayName: sector, disabled: false };
         })
         .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+      this.availableReportingPeriods = [...(availableSearchFilters.data.reportingPeriods ?? [])]
+        .map((reportingPeriod) => {
+          return { displayName: reportingPeriod, disabled: false };
+        })
+        .sort((a, b) => b.displayName.localeCompare(a.displayName));
     },
     /**
      * Populates the availableFrameworks property in the format expected by the dropdown filter
@@ -206,7 +257,8 @@ export default defineComponent({
       });
     },
     /**
-     * Initializes the availableCountries, availableSectors and available Frameworks properties for the dropdown filters
+     * Initializes the availableCountries, availableSectors, availableReportingPeriods and available Frameworks
+     * properties for the dropdown filters
      * @returns a promise as this function needs to request the Dataland api
      */
     async retrieveAvailableFilterOptions() {
@@ -225,6 +277,9 @@ export default defineComponent({
       this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
         this.selectedFrameworks.includes(item.frameworkDataType)
       );
+      this.localSelectedReportingPeriods = this.availableReportingPeriods.filter((item) =>
+        this.selectedReportingPeriods.includes(item.displayName)
+      );
     });
   },
 });
@@ -233,36 +288,88 @@ export default defineComponent({
 <style scoped>
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--spacing-sm);
   min-height: 5rem;
   align-items: end;
   width: 100%;
 
   .filter {
-    display: grid;
-    gap: 0 var(--spacing-sm);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--spacing-sm) var(--spacing-md);
+    flex: 1 1 auto;
+    min-width: 0;
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      min-width: 0;
+
+      label {
+        text-align: left;
+        font-size: var(--font-size-xs);
+      }
+    }
+
+    .filter-group-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
 
     .search-filter {
       width: 11rem;
+      max-width: 100%;
       text-align: left;
     }
 
     .framework-filter {
       width: 20rem;
+      max-width: 100%;
     }
 
-    label {
-      grid-row: 1;
-      margin-bottom: var(--spacing-xs);
-      text-align: left;
-      font-size: var(--font-size-xs);
+    .filter-divider {
+      align-self: stretch;
+    }
+  }
+}
 
-      &:last-of-type {
-        grid-column-start: 4;
+@media (max-width: 992px) {
+  .filter-container {
+    .filter {
+      .filter-divider {
+        display: none;
+      }
+
+      .search-filter,
+      .framework-filter {
+        width: 100%;
+        flex: 1 1 9rem;
+        min-width: 9rem;
       }
     }
+  }
+}
 
-    :not(label) {
-      grid-row: 2;
+@media (max-width: 576px) {
+  .filter-container {
+    .filter {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+
+      .filter-group-items {
+        flex-direction: column;
+      }
+
+      .search-filter,
+      .framework-filter {
+        flex: 1 1 auto;
+        width: 100%;
+      }
     }
   }
 }

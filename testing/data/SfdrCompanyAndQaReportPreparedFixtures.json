@@ -2,34 +2,41 @@
 	{
 		"preparedFixture": {
 			"companyInformation": {
-				"companyName": "Howell - Schroeder",
-				"headquarters": "Titofort",
-				"headquartersPostalCode": "83078-6644",
-				"sector": null,
+				"companyName": "Sipes, Kirlin and Bosco",
+				"headquarters": "Schuppefort",
+				"headquartersPostalCode": "18426",
+				"sector": "lifetime value",
 				"identifiers": {
-					"Lei": [
-						"TVCWMaQOH2GOMklVDKhS"
-					],
+					"Lei": [],
 					"Isin": [
-						"WlJlreDWcIrL",
-						"67V42TIhCqf4"
+						"L0zn10XfubHL"
 					],
 					"PermId": [
-						"t6Ttci1sEF"
+						"lcT2icAR8a"
 					],
-					"Ticker": [],
+					"Ticker": [
+						"ejwdcli"
+					],
 					"Duns": [
-						"M3lhPAYfX"
+						"XDUUKKAjT"
 					],
-					"VatNumber": [],
-					"CompanyRegistrationNumber": []
+					"VatNumber": [
+						"nVnRGVG3J"
+					],
+					"CompanyRegistrationNumber": [
+						"HvsivysQiJCdQ80"
+					]
 				},
-				"countryCode": "GI",
-				"companyContactDetails": null,
-				"companyAlternativeNames": [],
-				"companyLegalForm": null,
-				"website": null,
-				"fiscalYearEnd": "21-Oct",
+				"countryCode": "LA",
+				"companyContactDetails": [
+					"Wendy4@example.com"
+				],
+				"companyAlternativeNames": [
+					"Schowalter, Mertz and Treutel"
+				],
+				"companyLegalForm": "AG",
+				"website": "https://crazy-case.biz",
+				"fiscalYearEnd": "10-Jun",
 				"isTeaserCompany": false
 			},
 			"t": {
@@ -43,10 +50,10 @@
 							"value": "2024-12-31"
 						},
 						"referencedReports": {
-							"SustainabilityReport": {
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"fileName": "SustainabilityReport",
-								"publicationDate": "2024-01-10"
+							"IntegratedReport": {
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+								"fileName": null,
+								"publicationDate": null
 							}
 						}
 					}
@@ -54,16 +61,16 @@
 				"social": {
 					"humanRights": {
 						"numberOfReportedIncidentsOfHumanRightsViolations": {
-							"value": 6747,
+							"value": 5155,
 							"dataSource": {
-								"page": "470-774",
-								"fileName": "SustainabilityReport",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"tagName": "e-commerce",
+								"page": "485-518",
+								"fileName": null,
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+								"tagName": "lifetime value",
 								"publicationDate": null
 							},
-							"comment": "synthesize online application",
-							"quality": "Incomplete"
+							"comment": "back up multi-byte driver",
+							"quality": "NoDataFound"
 						}
 					}
 				},
@@ -75,15 +82,15 @@
 							"comment": "Data was extracted."
 						},
 						"biodiversityProtectionPolicy": {
-							"value": "No",
+							"value": "Yes",
 							"dataSource": {
-								"page": "16-116",
-								"fileName": "SustainabilityReport",
-								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-								"tagName": "initiatives",
+								"page": "510",
+								"fileName": null,
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+								"tagName": "niches",
 								"publicationDate": null
 							},
-							"comment": "transmit online matrix",
+							"comment": "copy digital card",
 							"quality": "Estimated"
 						}
 					}

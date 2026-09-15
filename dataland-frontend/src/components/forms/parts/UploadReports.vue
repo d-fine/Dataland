@@ -243,18 +243,22 @@ export default defineComponent({
       const sourceOfReferencedReportsForPrefill = (this.referencedReportsForPrefill ??
         this.injectReferencedReportsForPrefill) as ObjectType;
 
-      if (sourceOfReferencedReportsForPrefill) {
-        for (const key in sourceOfReferencedReportsForPrefill) {
-          const referencedReport = (sourceOfReferencedReportsForPrefill as { [key: string]: CompanyReport })[key];
+      if (!sourceOfReferencedReportsForPrefill) return;
 
-          if (referencedReport) {
-            this.alreadyStoredReports.push({
-              fileName: key,
-              fileReference: referencedReport.fileReference,
-              publicationDate: referencedReport.publicationDate,
-            });
-          }
-        }
+      const prefilledReports = Object.entries(sourceOfReferencedReportsForPrefill)
+        .filter(([, report]) => report != null)
+        .map(([fileName, report]) => {
+          const referencedReport = report as CompanyReport;
+          return {
+            fileName,
+            fileReference: referencedReport.fileReference,
+            publicationDate: referencedReport.publicationDate,
+          };
+        });
+      const prefilledReportsUnchanged = JSON.stringify(this.alreadyStoredReports) === JSON.stringify(prefilledReports);
+
+      if (!prefilledReportsUnchanged) {
+        this.alreadyStoredReports = prefilledReports;
         this.emitReportsUpdatedEvent();
       }
     },

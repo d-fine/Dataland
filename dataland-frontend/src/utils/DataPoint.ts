@@ -29,6 +29,61 @@ export interface DataPointSourceInfo {
   [key: string]: unknown;
 }
 
+/**
+ * Creates a deep copy of plain JSON-like data structures (objects/arrays/primitives).
+ *
+ * @param value value to clone
+ * @returns deep copy of the provided value
+ */
+function cloneDeep<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((entry) => cloneDeep(entry)) as T;
+  }
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, nestedValue]) => [key, cloneDeep(nestedValue)])
+    ) as T;
+  }
+  return value;
+}
+
+/**
+ * Creates an upload-safe copy by removing fields inferred from document-manager metadata.
+ *
+ * @param data the dataset model to prepare for upload
+ * @returns a copy of the dataset without inferred fields on document references
+ */
+export function removeInferableDocumentFields<T>(data: T): T {
+  const uploadData = cloneDeep(data) as unknown; // NOSONAR: needed for tests to work
+  removeInferableDocumentFieldsFromValue(uploadData);
+  return uploadData as T;
+}
+
+/**
+ * Removes inferable fields such as `fileName` and `publicationDate` from the provided value
+ * if the value contains a `fileReference` property of type string. This operation
+ * is performed recursively for nested objects and arrays.
+ *
+ * @param {unknown} value - The value from which inferable fields need to be removed.
+ *                          Can be an object, array, or any other type.
+ *
+ * @return {void} Doesn't return a value; modifies the provided object in place.
+ */
+function removeInferableDocumentFieldsFromValue(value: unknown): void {
+  if (Array.isArray(value)) {
+    value.forEach(removeInferableDocumentFieldsFromValue);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+
+  const objectValue = value as Record<string, unknown>;
+  if (typeof objectValue.fileReference === 'string') {
+    delete objectValue.fileName;
+    delete objectValue.publicationDate;
+  }
+  Object.values(objectValue).forEach(removeInferableDocumentFieldsFromValue);
+}
+
 export interface ParsedSingleDataPoint {
   value?: unknown;
   quality?: unknown;
