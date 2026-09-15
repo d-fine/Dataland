@@ -1,38 +1,22 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
-import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
-import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportAvailability
-import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
-import org.dataland.datalandbackendutils.model.ListDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonUtils
-import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -51,6 +35,11 @@ const val TEST_DATA_POINT_NAME = "testDataPoint"
 const val VALUE_STRING = "value"
 const val QUALITY_STRING = "quality"
 
+/**
+ * Tests for the basic export format building (JSON, CSV, Excel) of [DataExportService], including
+ * how value/quality fields are mapped into CSV rows. See [DataExportServiceColumnOrderingTest] for
+ * tests covering schema-driven column ordering and alias renaming.
+ */
 class DataExportServiceTest {
     private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDatasetAssembler = mock<DatasetAssembler>()
@@ -80,32 +69,6 @@ class DataExportServiceTest {
 
     private val companyExportDataLksgTestData =
         objectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
-
-    private val portfolioDataTwoCompanies =
-        listOf(
-            SingleCompanyExportData(
-                companyName = "Test Company 1",
-                companyLei = TEST_COMPANY_LEI,
-                reportingPeriod = TEST_REPORTING_PERIOD,
-                availability = ExportAvailability.AVAILABLE,
-                data =
-                    objectMapper.treeToValue(
-                        testDataProvider.createTestJsonWithBothValueAndQuality(),
-                        Any::class.java,
-                    ),
-            ),
-            SingleCompanyExportData(
-                companyName = "Test Company 2",
-                companyLei = TEST_COMPANY_LEI,
-                reportingPeriod = TEST_REPORTING_PERIOD,
-                availability = ExportAvailability.AVAILABLE,
-                data =
-                    objectMapper.treeToValue(
-                        testDataProvider.createTestJsonWithTwoDataPoints(),
-                        Any::class.java,
-                    ),
-            ),
-        )
 
     @Test
     fun `minimal test for writing excel file`() {
@@ -279,161 +242,6 @@ class DataExportServiceTest {
         )
     }
 
-    /**
-     * Sets up a mock schema for testing purposes.
-     */
-    private fun setupTestSchema() {
-        val resolvedSchemaJson: JsonNode =
-            objectMapper.readTree(
-                """
-                {
-                  "$TEST_CATEGORY": {
-                    "$TEST_DATA_POINT_NAME": { "value": "number" },
-                    "$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET": { "value": "number" }
-                  }
-                }
-                """.trimIndent(),
-            )
-        val baseTypeSchema =
-            mock<DataPointBaseTypeResolvedSchema> {
-                on { resolvedSchema } doReturn resolvedSchemaJson
-            }
-        doReturn(baseTypeSchema)
-            .whenever(mockSpecificationService)
-            .getResolvedFrameworkSpecification("sfdr")
-        doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
-            .whenever(mockDatasetAssembler)
-            .getFrameworkTemplate("sfdr")
-        doReturn(true).whenever(mockSpecificationService).isAssembledFramework("sfdr")
-    }
-
-    @Test
-    fun `check that the exported columns are ordered according to the specification`() {
-        setupTestSchema()
-        val csvStream =
-            dataExportService.buildStreamFromPortfolioExportData(
-                portfolioDataTwoCompanies,
-                ExportOptions(
-                    DataType.valueOf("sfdr"),
-                    ExportFileType.CSV,
-                    keepValueFieldsOnly = true,
-                    includeAliases = false,
-                ),
-            )
-
-        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-
-        val headerLine = csvString.lineSequence().first()
-        val actualHeaders = headerLine.split(",")
-
-        val expectedHeaders =
-            listOf(
-                "companyName",
-                "companyLei",
-                "reportingPeriod",
-                "availability",
-                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"",
-                "\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"",
-            )
-
-        expectedHeaders.forEach {
-            Assertions.assertTrue(actualHeaders.contains(it), "Expected column '$it' not found in CSV header")
-        }
-
-        val availabilityIndex = actualHeaders.indexOf("availability")
-        val index1 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME.value\"")
-        val index2 = actualHeaders.indexOf("\"data.$TEST_CATEGORY.$TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET.value\"")
-
-        Assertions.assertTrue(
-            index1 < index2,
-            "Expected '${expectedHeaders[4]}' to appear before '${expectedHeaders[5]}'",
-        )
-        Assertions.assertTrue(
-            availabilityIndex < index1,
-            "Expected 'availability' to appear before the framework data columns",
-        )
-    }
-
-    @Test
-    fun `check that the specified aliases are exported`() {
-        setupTestSchema()
-        val csvStream =
-            dataExportService.buildStreamFromPortfolioExportData(
-                listOf(
-                    SingleCompanyExportData(
-                        companyName = "Test Company 1",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        availability = ExportAvailability.AVAILABLE,
-                        data =
-                            objectMapper.treeToValue(
-                                testDataProvider.createTestJsonWithBothValueAndQuality(),
-                                Any::class.java,
-                            ),
-                    ),
-                    SingleCompanyExportData(
-                        companyName = "Test Company 2",
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        availability = ExportAvailability.AVAILABLE,
-                        data =
-                            objectMapper.treeToValue(
-                                testDataProvider.createTestJsonWithTwoDataPoints(),
-                                Any::class.java,
-                            ),
-                    ),
-                ),
-                ExportOptions(
-                    DataType.valueOf("sfdr"),
-                    ExportFileType.CSV,
-                    keepValueFieldsOnly = true,
-                    includeAliases = true,
-                ),
-            )
-
-        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-
-        Assertions.assertTrue(
-            csvString.contains(TEST_ALIAS_1),
-            "CSV does not contain the export alias $TEST_ALIAS_1",
-        )
-        Assertions.assertTrue(
-            csvString.contains(TEST_ALIAS_2),
-            "CSV does not contain the export alias $TEST_ALIAS_2",
-        )
-    }
-
-    @Test
-    fun `check that large decimals are exported properly and not in scientific notation`() {
-        val testJson = testDataProvider.createTestJsonWithLargeDecimal()
-
-        val csvStream =
-            dataExportService.buildStreamFromPortfolioExportData(
-                listOf(
-                    SingleCompanyExportData(
-                        companyName = TEST_COMPANY_NAME,
-                        companyLei = TEST_COMPANY_LEI,
-                        reportingPeriod = TEST_REPORTING_PERIOD,
-                        availability = ExportAvailability.AVAILABLE,
-                        data = objectMapper.treeToValue(testJson, Any::class.java),
-                    ),
-                ),
-                ExportOptions(
-                    DataType.valueOf("sfdr"),
-                    ExportFileType.CSV,
-                    keepValueFieldsOnly = true,
-                    includeAliases = true,
-                ),
-            )
-
-        val csvString = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8)
-
-        Assertions.assertTrue(
-            csvString.contains(LARGE_DECIMAL_AS_STRING),
-            "CSV does not contain the large decimal as string $LARGE_DECIMAL_AS_STRING",
-        )
-    }
-
     @Test
     fun `test custom components do not automatically export the data quality when values are available`() {
         val testJson = testDataProvider.createTestJsonNonPrimitiveValue()
@@ -464,254 +272,4 @@ class DataExportServiceTest {
             "CSV should not contain the data quality",
         )
     }
-
-    // region availability / non-sourceability tests
-
-    private val nonSourceableTestCompanyId = UUID.randomUUID().toString()
-    private val nonSourceableTestCompanyInfo =
-        BasicCompanyInformation(
-            companyId = nonSourceableTestCompanyId,
-            companyName = TEST_COMPANY_NAME,
-            headquarters = "Test City",
-            countryCode = "DE",
-            sector = null,
-            lei = TEST_COMPANY_LEI,
-        )
-
-    private fun newExportJob(): ExportJob =
-        ExportJob(
-            id = UUID.randomUUID(),
-            fileToExport = null,
-            fileType = ExportFileType.JSON,
-            frameworkName = "lksg",
-            progressState = ExportJobProgressState.Pending,
-            creationTime = 0L,
-        )
-
-    private fun readExportedRows(exportJob: ExportJob): List<SingleCompanyExportData<LksgData>> =
-        objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(exportJob.fileToExport!!.inputStream)
-
-    private fun mockCompanyInformationLookup() {
-        whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))
-            .doReturn(mapOf(nonSourceableTestCompanyId to nonSourceableTestCompanyInfo))
-    }
-
-    @Test
-    fun `check that a missing dimension with an active non-sourceability entry produces a synthetic row`() {
-        mockCompanyInformationLookup()
-        whenever(mockDatasetStorageService.getDatasetData(any(), any())).doReturn(emptyMap())
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(setOf(BasicDataDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)))
-
-        val exportJob = newExportJob()
-        dataExportService.startExportJob(
-            ListDataDimensions(
-                companyIds = listOf(nonSourceableTestCompanyId),
-                reportingPeriods = listOf(TEST_REPORTING_PERIOD),
-                dataTypes = listOf("lksg"),
-            ),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
-
-        Assertions.assertEquals(1, exportedRows.size)
-        val row = exportedRows.first()
-        Assertions.assertEquals(ExportAvailability.NON_SOURCEABLE, row.availability)
-        Assertions.assertNull(row.data)
-        Assertions.assertEquals(TEST_COMPANY_NAME, row.companyName)
-        Assertions.assertEquals(TEST_COMPANY_LEI, row.companyLei)
-        Assertions.assertEquals(TEST_REPORTING_PERIOD, row.reportingPeriod)
-    }
-
-    @Test
-    fun `check that a missing dimension without a non-sourceability entry is still omitted`() {
-        mockCompanyInformationLookup()
-        whenever(mockDatasetStorageService.getDatasetData(any(), any())).doReturn(emptyMap())
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(emptySet())
-
-        val exportJob = newExportJob()
-
-        dataExportService.startExportJob(
-            ListDataDimensions(
-                companyIds = listOf(nonSourceableTestCompanyId),
-                reportingPeriods = listOf(TEST_REPORTING_PERIOD),
-                dataTypes = listOf("lksg"),
-            ),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
-        Assertions.assertNull(exportJob.fileToExport)
-    }
-
-    @Test
-    fun `check that availability is available for present dimensions even with zero non-sourceability entries`() {
-        mockCompanyInformationLookup()
-        val dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
-        whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(dimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(emptySet())
-
-        val exportJob = newExportJob()
-        dataExportService.startExportJob(
-            ListDataDimensions(
-                companyIds = listOf(nonSourceableTestCompanyId),
-                reportingPeriods = listOf(TEST_REPORTING_PERIOD),
-                dataTypes = listOf("lksg"),
-            ),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
-
-        Assertions.assertEquals(1, exportedRows.size)
-        Assertions.assertEquals(ExportAvailability.AVAILABLE, exportedRows.first().availability)
-        Assertions.assertNotNull(exportedRows.first().data)
-    }
-
-    @Test
-    fun `check that non-sourceability lookup is never invoked when no dimensions are missing`() {
-        mockCompanyInformationLookup()
-        val dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
-        whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(dimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
-
-        val exportJob = newExportJob()
-        dataExportService.startExportJob(
-            ListDataDimensions(
-                companyIds = listOf(nonSourceableTestCompanyId),
-                reportingPeriods = listOf(TEST_REPORTING_PERIOD),
-                dataTypes = listOf("lksg"),
-            ),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        verify(mockNonSourceabilityInformationManager, never()).searchActiveNonSourceableDimensions(any())
-    }
-
-    @Test
-    fun `check mixed available and non-sourceable periods for the same company are exported correctly`() {
-        mockCompanyInformationLookup()
-        val availablePeriod = "2024"
-        val nonSourceablePeriod = "2023"
-        val availableDimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", availablePeriod)
-
-        whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(availableDimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(setOf(BasicDataDimensions(nonSourceableTestCompanyId, "lksg", nonSourceablePeriod)))
-
-        val exportJob = newExportJob()
-        dataExportService.startExportJob(
-            ListDataDimensions(
-                companyIds = listOf(nonSourceableTestCompanyId),
-                reportingPeriods = listOf(availablePeriod, nonSourceablePeriod),
-                dataTypes = listOf("lksg"),
-            ),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
-
-        Assertions.assertEquals(2, exportedRows.size)
-        val availableRow = exportedRows.first { it.reportingPeriod == availablePeriod }
-        val nonSourceableRow = exportedRows.first { it.reportingPeriod == nonSourceablePeriod }
-
-        Assertions.assertEquals(ExportAvailability.AVAILABLE, availableRow.availability)
-        Assertions.assertNotNull(availableRow.data)
-        Assertions.assertEquals(ExportAvailability.NON_SOURCEABLE, nonSourceableRow.availability)
-        Assertions.assertNull(nonSourceableRow.data)
-    }
-
-    @Test
-    fun `check that latest export marks a company with a latest dataset as available`() {
-        mockCompanyInformationLookup()
-        val dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
-        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
-            .doReturn(
-                listOf(
-                    PlainDataAndDimensions(
-                        dimensions = dimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
-                    ),
-                ),
-            )
-
-        val exportJob = newExportJob()
-        dataExportService.startLatestExportJob(
-            listOf(nonSourceableTestCompanyId),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
-
-        Assertions.assertEquals(1, exportedRows.size)
-        Assertions.assertEquals(ExportAvailability.AVAILABLE, exportedRows.first().availability)
-    }
-
-    @Test
-    fun `check that latest export marks a company with no dataset but an active non-sourceability entry as non-sourceable`() {
-        mockCompanyInformationLookup()
-        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
-            .doReturn(emptyList())
-        whenever(
-            mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
-                eq(DataDimensionQuery(companyIds = listOf(nonSourceableTestCompanyId), dataTypes = listOf("lksg"))),
-            ),
-        ).doReturn(setOf(BasicDataDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)))
-
-        val exportJob = newExportJob()
-        dataExportService.startLatestExportJob(
-            listOf(nonSourceableTestCompanyId),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
-
-        Assertions.assertEquals(1, exportedRows.size)
-        val row = exportedRows.first()
-        Assertions.assertEquals(ExportAvailability.NON_SOURCEABLE, row.availability)
-        Assertions.assertNull(row.data)
-        Assertions.assertEquals(TEST_REPORTING_PERIOD, row.reportingPeriod)
-    }
-
-    @Test
-    fun `check that latest export omits a company with neither a dataset nor a non-sourceability entry`() {
-        mockCompanyInformationLookup()
-        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
-            .doReturn(emptyList())
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(emptySet())
-
-        val exportJob = newExportJob()
-
-        dataExportService.startLatestExportJob(
-            listOf(nonSourceableTestCompanyId),
-            exportJob,
-            LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
-        )
-
-        Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
-        Assertions.assertNull(exportJob.fileToExport)
-    }
-
-    // endregion
 }
