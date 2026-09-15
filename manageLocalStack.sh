@@ -8,7 +8,6 @@ VERBOSE=false
 export VERBOSE
 source "$project_root/localstack/docker_functions.sh"
 source "$project_root/localstack/env_functions.sh"
-source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
   echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--no-container-backend] [--verbose]" >&3
