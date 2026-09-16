@@ -164,16 +164,33 @@ open class DataExportService<T>(
             if (missingCompanyIds.isEmpty()) {
                 emptySet()
             } else {
-                nonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
-                    DataDimensionQuery(
-                        companyIds = missingCompanyIds.toList(),
-                        dataTypes = listOf(exportOptions.dataType.toString()),
+                selectLatestNonSourceableDimensionPerCompany(
+                    nonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
+                        DataDimensionQuery(
+                            companyIds = missingCompanyIds.toList(),
+                            dataTypes = listOf(exportOptions.dataType.toString()),
+                        ),
                     ),
                 )
             }
 
         buildStream(dataDimensionsWithDataStrings, nonSourceableGapDimensions, newExportJob, clazz, exportOptions)
     }
+
+    /**
+     * Reduces a set of non-sourceable data dimensions to at most one entry per company - the one with the
+     * lexicographically latest reporting period - mirroring the "latest" semantics used for datasets.
+     * This ensures the "latest" export never produces more than one synthetic
+     * non-sourceable row per company, even if multiple reporting periods are currently marked non-sourceable.
+     *
+     * @param nonSourceableDimensions the non-sourceable data dimensions to reduce
+     * @return at most one data dimension per company, namely the one with the latest reporting period
+     */
+    private fun selectLatestNonSourceableDimensionPerCompany(nonSourceableDimensions: Set<BasicDataDimensions>): Set<BasicDataDimensions> =
+        nonSourceableDimensions
+            .groupBy { it.companyId }
+            .mapNotNull { (_, dimensionsForCompany) -> dimensionsForCompany.maxByOrNull { it.reportingPeriod } }
+            .toSet()
 
     private fun buildRequestedDimensions(listDataDimensions: ListDataDimensions): Set<BasicDatasetDimensions> =
         listDataDimensions.companyIds

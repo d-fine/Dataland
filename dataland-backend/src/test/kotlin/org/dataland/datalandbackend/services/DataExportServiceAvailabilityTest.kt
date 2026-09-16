@@ -296,4 +296,38 @@ class DataExportServiceAvailabilityTest {
         Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
         Assertions.assertNull(exportJob.fileToExport)
     }
+
+    @Test
+    fun `check that latest export selects only the latest non-sourceable period when multiple exist for the same company`() {
+        mockCompanyInformationLookup()
+        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
+            .doReturn(emptyList())
+        whenever(
+            mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
+                eq(DataDimensionQuery(companyIds = listOf(nonSourceableTestCompanyId), dataTypes = listOf("lksg"))),
+            ),
+        ).doReturn(
+            setOf(
+                BasicDataDimensions(nonSourceableTestCompanyId, "lksg", "2021"),
+                BasicDataDimensions(nonSourceableTestCompanyId, "lksg", "2023"),
+                BasicDataDimensions(nonSourceableTestCompanyId, "lksg", "2022"),
+            ),
+        )
+
+        val exportJob = newExportJob()
+        dataExportService.startLatestExportJob(
+            listOf(nonSourceableTestCompanyId),
+            exportJob,
+            LksgData::class.java,
+            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+        )
+
+        val exportedRows = readExportedRows(exportJob)
+
+        Assertions.assertEquals(1, exportedRows.size)
+        val row = exportedRows.first()
+        Assertions.assertEquals("2023", row.reportingPeriod)
+        Assertions.assertEquals(ExportAvailability.NON_SOURCEABLE, row.availability)
+        Assertions.assertNull(row.data)
+    }
 }
