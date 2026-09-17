@@ -2,7 +2,6 @@ import CompanyInformationComponent from '@/components/pages/CompanyInformation.v
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type CompanyInformation, type LksgData } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type StoredDataRequest } from '@clients/communitymanager';
 import router from '@/router';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
@@ -14,7 +13,7 @@ describe('Component tests for the company info sheet', function (): void {
   const dummyCompanyLei = 'dummyCompanyLei';
 
   let companyInformationForTest: CompanyInformation;
-  let mockedStoredDataRequests: StoredDataRequest[];
+
 
   before(function () {
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
@@ -23,9 +22,6 @@ describe('Component tests for the company info sheet', function (): void {
       companyInformationForTest.identifiers = {
         Lei: [dummyCompanyLei],
       };
-    });
-    cy.fixture('DataRequestsMock').then(function (jsonContent) {
-      mockedStoredDataRequests = jsonContent as Array<StoredDataRequest>;
     });
   });
   /**
@@ -36,10 +32,6 @@ describe('Component tests for the company info sheet', function (): void {
       body: companyInformationForTest,
       times: 1,
     });
-    cy.intercept(`**/community/requests/user`, {
-      body: mockedStoredDataRequests,
-    });
-
     cy.intercept(`**/api/companies/names?searchString=${dummyParentCompanyLei}**`, {
       body: [
         {
