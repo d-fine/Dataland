@@ -1,6 +1,6 @@
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
-import { type ParsedSingleDataPoint, wrapDataPointJson } from '@/utils/DataPoint.ts';
+import { type ParsedSingleDataPoint, removeInferableDocumentFields, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
@@ -79,7 +79,9 @@ export function parseFormDataToDataPointJson(
     ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
   };
 
-  return Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : DEFAULT_CUSTOM_JSON;
+  const sanitizedData = removeInferableDocumentFields(data);
+
+  return Object.keys(sanitizedData).length > 0 ? JSON.stringify(sanitizedData, null, 2) : DEFAULT_CUSTOM_JSON;
 }
 
 /**
