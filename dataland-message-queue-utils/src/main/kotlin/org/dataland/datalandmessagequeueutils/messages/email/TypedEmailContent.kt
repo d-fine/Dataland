@@ -176,7 +176,6 @@ data class DataRequestSummaryEmailContent(
 data class CompanyOwnershipClaimApprovedEmailContent(
     val companyId: String,
     val companyName: String,
-    val numberOfOpenDataRequestsForCompany: Int,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Your company ownership claim for ${this.companyName} is confirmed!"

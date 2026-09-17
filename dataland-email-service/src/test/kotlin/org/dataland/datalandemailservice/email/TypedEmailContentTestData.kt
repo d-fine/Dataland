@@ -99,7 +99,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     private val companyOwnershipClaimApprovedEmailContent =
         CompanyOwnershipClaimApprovedEmailContent(
-            companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY,
+            companyId, COMPANY_NAME,
         ).also {
             it.baseUrl = BASE_URL
         }
