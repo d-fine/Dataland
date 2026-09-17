@@ -969,7 +969,9 @@ describe('JudgeDialog component tests', () => {
 
         cy.wait('@patchJudgementDetail').then((interception) => {
           const parsed = JSON.parse(interception.request.body.customDataPoint);
-          expect(parsed.dataSource.fileName).to.eq('Annual Report 2023');
+          expect(parsed.dataSource.fileReference).to.eq('ref-123');
+          expect(parsed.dataSource.fileName).to.be.undefined;
+          expect(parsed.dataSource.publicationDate).to.be.undefined;
         });
       });
 
