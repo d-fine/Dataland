@@ -26,6 +26,17 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
     tagName: faker.company.buzzNoun(),
     publicationDate: null,
   });
-  const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme]);
+  const pageListScheme = (): ExtendedDocumentReference => {
+    const secondEntryStart = endPage + faker.number.int({ min: 1, max: 50 });
+    const secondEntryEnd = faker.number.int({ min: secondEntryStart + 1, max: secondEntryStart + 50 });
+    return {
+      page: `${startPage}, ${secondEntryStart}-${secondEntryEnd}`,
+      fileName: null,
+      fileReference: chosenReportReference.fileReference,
+      tagName: faker.company.buzzNoun(),
+      publicationDate: null,
+    };
+  };
+  const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme, pageListScheme]);
   return chosenPageNumberScheme();
 }

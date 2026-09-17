@@ -4,6 +4,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { getMimeTypeFromHeaders } from '@/utils/Axios.ts';
 import type Keycloak from 'keycloak-js';
 import { type BaseDocumentReference, type ExtendedDocumentReference } from '@clients/backend';
+import { parsePageEntry, type PageEntry } from '@/utils/ValidationUtils';
 
 export interface DocumentDownloadInfo {
   downloadName: string;
@@ -90,9 +91,19 @@ export function downloadIsInProgress(percentCompleted: number | undefined): bool
 }
 
 /**
+ * Formats a single parsed page entry back into its display form, e.g. { start: 4, end: 4 } becomes "4"
+ * and { start: 4, end: 7 } becomes "4-7".
+ * @param entry the parsed page entry to format
+ */
+function formatPageEntry(entry: PageEntry): string {
+  return entry.start === entry.end ? `${entry.start}` : `${entry.start}-${entry.end}`;
+}
+
+/**
  * Based on the given data source, returns the triple of info what the first document page for this
- * source is, what the entire page range is (can also be just a single page), and whether the source
- * corresponds to multiple pages.
+ * source is (used as the PDF deep-link anchor), what the entire, normalized page reference looks like
+ * (a single page, a range, or a comma-separated list of these), and whether the source corresponds to
+ * more than one page in total.
  * @param dataSource the data source in question
  */
 export function getPageInfo(dataSource: ExtendedDocumentReference | BaseDocumentReference | undefined): {
@@ -102,11 +113,23 @@ export function getPageInfo(dataSource: ExtendedDocumentReference | BaseDocument
 } {
   const pageInfo = { firstPageInRange: undefined as number | undefined, pageRange: '', hasMultiplePages: false };
 
-  if (dataSource && 'page' in dataSource && dataSource.page != null) {
-    const pageRange = dataSource.page;
-    pageInfo.firstPageInRange = Number(pageRange.split('-')[0]) || undefined;
-    pageInfo.pageRange = pageRange;
-    pageInfo.hasMultiplePages = pageRange.includes('-');
+  if (!dataSource || !('page' in dataSource) || dataSource.page == null) {
+    return pageInfo;
+  }
+
+  const rawPageValue = dataSource.page;
+  const parsedEntries = rawPageValue.split(',').map((entry) => parsePageEntry(entry.trim()));
+
+  if (parsedEntries.every((entry): entry is PageEntry => entry !== undefined)) {
+    pageInfo.firstPageInRange = parsedEntries[0]?.start;
+    pageInfo.pageRange = parsedEntries.map(formatPageEntry).join(', ');
+    pageInfo.hasMultiplePages = parsedEntries.length > 1 || parsedEntries[0].start !== parsedEntries[0].end;
+  } else {
+    // Fallback for legacy or malformed values that do not conform to the expected grammar: display the
+    // raw string as-is and derive the first page on a best-effort basis.
+    pageInfo.firstPageInRange = Number(rawPageValue.split(/[,-]/)[0]) || undefined;
+    pageInfo.pageRange = rawPageValue;
+    pageInfo.hasMultiplePages = rawPageValue.includes('-') || rawPageValue.includes(',');
   }
 
   return pageInfo;
