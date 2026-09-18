@@ -101,7 +101,7 @@ while IFS="$US" read -r document_id fields_filled suggested_file_name suggested_
 
   json_args=(-n)
   set_fields=()
-0
+
   if [[ "$fields_filled" == *"fileName"* ]]; then
     json_args+=(--arg documentName "$suggested_file_name")
     set_fields+=('documentName: $documentName')
