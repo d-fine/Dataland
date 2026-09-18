@@ -1,12 +1,7 @@
 package org.dataland.datalandemailservice.email
 
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApprovedEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DataAvailableEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DataNonSourceableEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DataUpdatedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetAvailableClaimCompanyOwnershipEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimCompanyOwnershipEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.PortfolioMonitoringUpdateSummaryEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
@@ -18,7 +13,6 @@ import java.util.stream.Stream
 
 class TypedEmailContentTestData : ArgumentsProvider {
     companion object {
-        const val REQUESTER_EMAIL = "requester@example.com"
         const val DATA_TYPE_A = "eutaxonomy-non-financials"
         const val DATA_TYPE_LABEL_A = "EU Taxonomy for non-financial companies"
         const val DATA_TYPE_LABEL_B = "PCAF"
@@ -26,76 +20,13 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val REPORTING_PERIOD_B = "2023"
         const val REPORTING_PERIOD_C = "2024"
         const val COMPANY_NAME = "Banana Inc."
-        const val NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY = 10
-        const val MESSAGE = "Some message"
-        const val FIRST_NAME = "John"
-        const val LAST_NAME = "Doe"
         const val BASE_URL = "https://test.dataland.com"
-        const val CREATION_DATE = "October 5th"
         const val NUMBER_OF_DAYS = 23
         const val EMAIL_TITLE = "Email-Title"
-        const val NON_SOURCEABLE_COMMENT = "No bananas means no data available. Donkey Kong ate all the bananas..."
     }
 
     private val companyId = UUID.randomUUID().toString()
     val subscriptionUuid = UUID.randomUUID().toString()
-    private val dataRequestId = UUID.randomUUID().toString()
-
-    private val datasetRequestedClaimCompanyOwnershipEmailContent =
-        DatasetRequestedClaimCompanyOwnershipEmailContent(
-            companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
-            MESSAGE, FIRST_NAME, LAST_NAME,
-        ).also {
-            it.subscriptionUuid = subscriptionUuid
-            it.baseUrl = BASE_URL
-        }
-
-    private val datasetRequestedClaimOwnershipKeywords =
-        listOf(
-            companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
-            REPORTING_PERIOD_B, MESSAGE, FIRST_NAME, LAST_NAME, subscriptionUuid, BASE_URL,
-            "REGISTER AND CLAIM OWNERSHIP",
-        )
-
-    private val dataAvailableEmailContent =
-        DataAvailableEmailContent(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
-        ).also {
-            it.baseUrl = BASE_URL
-        }
-
-    private val dataAvailableKeywords =
-        listOf(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
-            "Your data request has been answered.",
-        )
-
-    private val dataUpdatedEmailContent =
-        DataUpdatedEmailContent(COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId).also {
-            it.baseUrl = BASE_URL
-        }
-
-    private val dataUpdatedKeywords =
-        listOf(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, BASE_URL,
-            "Your data request has been updated with new data.",
-        )
-
-    val dataNonSourceableEmailContent =
-        DataNonSourceableEmailContent(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
-        ).also {
-            it.baseUrl = BASE_URL
-        }
-
-    val dataNonSourceableKeywords =
-        listOf(
-            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, dataRequestId, BASE_URL, NON_SOURCEABLE_COMMENT,
-            "Unfortunately, no public sources could be found for your requested dataset by a data provider.",
-            "We will continue to check the status of your request regularly",
-            "inform you in case the dataset will be uploaded in the future.",
-            "If you are certain the requested data should exist, you may reopen your request ",
-        )
 
     private val companyOwnershipClaimApprovedEmailContent =
         CompanyOwnershipClaimApprovedEmailContent(
@@ -106,25 +37,8 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     private val companyOwnershipClaimApprovedKeywords =
         listOf(
-            companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY.toString(), BASE_URL,
+            companyId, COMPANY_NAME, BASE_URL,
             "You've successfully claimed company ownership for",
-        )
-
-    val dataRequestSummaryEmailContent =
-        DataRequestSummaryEmailContent(
-            listOf(DataRequestSummaryEmailContent.FrameworkData(DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, listOf(COMPANY_NAME))),
-            listOf(),
-            listOf(),
-            "Weekly",
-            "SFDR portfolio",
-        )
-
-    val dataRequestSummaryKeywords =
-        listOf(
-            "Data for your request(s) has been updated on Dataland",
-            "New Data", "Framework", DATA_TYPE_LABEL_A,
-            "Reporting", REPORTING_PERIOD_A, // html has "Reporting Period", text has "Reporting period"
-            "Company", COMPANY_NAME,
         )
 
     val portfolioChangesSummaryEmailContent =
@@ -200,11 +114,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments> =
         Stream.of(
-            Arguments.of(dataAvailableEmailContent, dataAvailableKeywords),
-            Arguments.of(dataUpdatedEmailContent, dataUpdatedKeywords),
-            Arguments.of(dataNonSourceableEmailContent, dataNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApprovedEmailContent, companyOwnershipClaimApprovedKeywords),
-            Arguments.of(datasetRequestedClaimCompanyOwnershipEmailContent, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(datasetUploadedClaimCompanyOwnershipEmailContent, datasetUploadedClaimCompanyOwnershipKeywords),
             Arguments.of(internalEmailContentTable, keyValueTableKeywords),
         )

@@ -9,7 +9,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestSummaryEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -40,7 +39,6 @@ class EmailMessageListener
         @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
         @Value("\${dataland.email.service.dry.run}") private val dryRunIsActive: Boolean,
         @Value("\${dataland.email.service.additional-recipients.bcc}") private val generalAdditionalBcc: String,
-        @Value("\${dataland.notification.internal.receivers}") private val summaryEmailsAdditionalBcc: String,
     ) {
         private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
 
@@ -103,13 +101,7 @@ class EmailMessageListener
             val cc = resolveRecipients(emailMessage.cc)
             val generalAdditionalBccList =
                 EmailStringConverter.convertEmailsJoinedStringToListOfEmailAddresses(generalAdditionalBcc)
-            val summaryEmailsAdditionalBccList =
-                EmailStringConverter.convertEmailsJoinedStringToListOfEmailAddresses(summaryEmailsAdditionalBcc)
-            val bccList =
-                when (emailMessage.typedEmailContent) {
-                    is DataRequestSummaryEmailContent -> emailMessage.bcc + generalAdditionalBccList + summaryEmailsAdditionalBccList
-                    else -> emailMessage.bcc + generalAdditionalBccList
-                }
+            val bccList = emailMessage.bcc + generalAdditionalBccList
             val bcc = resolveRecipients(bccList)
 
             val blockedContacts = receivers.blockedContacts + cc.blockedContacts + bcc.blockedContacts
