@@ -12,6 +12,8 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
   const chosenReportReference = referencedReports[chosenReport];
   const startPage = faker.number.int({ min: 1, max: 1200 });
   const endPage = faker.number.int({ min: startPage + 1, max: 1300 });
+  const secondEntryStart = endPage + 10;
+  const secondEntryEnd = secondEntryStart + 10;
   const singlePageNumberScheme = (): ExtendedDocumentReference => ({
     page: `${startPage}`,
     fileName: null,
@@ -26,17 +28,13 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
     tagName: faker.company.buzzNoun(),
     publicationDate: null,
   });
-  const pageListScheme = (): ExtendedDocumentReference => {
-    const secondEntryStart = endPage + faker.number.int({ min: 1, max: 50 });
-    const secondEntryEnd = faker.number.int({ min: secondEntryStart + 1, max: secondEntryStart + 50 });
-    return {
-      page: `${startPage}, ${secondEntryStart}-${secondEntryEnd}`,
-      fileName: null,
-      fileReference: chosenReportReference.fileReference,
-      tagName: faker.company.buzzNoun(),
-      publicationDate: null,
-    };
-  };
+  const pageListScheme = (): ExtendedDocumentReference => ({
+    page: `${startPage}, ${secondEntryStart}-${secondEntryEnd}`,
+    fileName: null,
+    fileReference: chosenReportReference.fileReference,
+    tagName: faker.company.buzzNoun(),
+    publicationDate: null,
+  });
   const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme, pageListScheme]);
   return chosenPageNumberScheme();
 }

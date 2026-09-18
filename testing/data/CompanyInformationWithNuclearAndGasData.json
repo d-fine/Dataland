@@ -316,35 +316,40 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Rohan and Sons",
-			"headquarters": "Lake Nicolefurt",
-			"headquartersPostalCode": "44795-5261",
-			"sector": "architectures",
+			"companyName": "Leuschke, Kunde and Conroy",
+			"headquarters": "Port Marcus",
+			"headquartersPostalCode": "32853-6299",
+			"sector": "supply-chains",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"EDeQKZ1H20KBJruJZAxh"
+				],
 				"Isin": [
-					"0PCqtRWnCz5t"
+					"7W5uPhYzaKjP"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"0ty9RI3ja"
+				"Duns": [
+					"Cz5tbOOkf"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SO",
+			"countryCode": "KN",
 			"companyContactDetails": [
-				"Norma21@example.com",
-				"Winifred.Feeney70@example.com"
+				"Mia_Cruickshank53@example.com",
+				"Julian_Beahan18@example.com",
+				"Ollie.Shanahan@example.com"
 			],
 			"companyAlternativeNames": [
-				"Barton - Lind",
-				"Spinka, Beatty and Keebler"
+				"Ebert and Sons",
+				"Funk - Barton",
+				"Thompson Group",
+				"Wintheiser-Schuppe - Prosacco"
 			],
-			"companyLegalForm": null,
-			"website": "https://definitive-jacket.org/",
-			"fiscalYearEnd": "24-Oct",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://scornful-asset.net",
+			"fiscalYearEnd": "06-Jul",
 			"isTeaserCompany": false,
 			"parentCompanyLei": null
 		},
@@ -373,430 +378,275 @@
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1142, 1205-1253",
+							"page": "1142, 1170-1180",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "schemas",
+							"tagName": "synergies",
 							"publicationDate": null
 						},
 						"comment": "synthesize online bandwidth",
 						"quality": "Audited"
 					},
 					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "297",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "content",
-							"publicationDate": null
-						},
-						"comment": "calculate online capacitor",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
 						"value": "No",
-						"dataSource": null,
-						"comment": "program neural application",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
 						"dataSource": {
-							"page": "1178, 1259-1298",
+							"page": "727, 877-887",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
+							"tagName": "mindshare",
 							"publicationDate": null
 						},
-						"comment": "back up neural array",
+						"comment": "parse back-end sensor",
+						"quality": "Audited"
+					},
+					"fossilGasRelatedActivitiesSection430": {
+						"value": null,
+						"dataSource": {
+							"page": "781",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "NoDataFound"
+					},
+					"fossilGasRelatedActivitiesSection431": {
+						"value": null,
+						"dataSource": {
+							"page": "353",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "override solid state alarm",
 						"quality": null
 					}
 				},
 				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 33,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 64.72,
-								"mitigation": 0.53,
-								"adaptation": 18.16
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 72.98,
-								"adaptation": 51.35
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 7.97,
-								"mitigation": 77.69,
-								"adaptation": 45.86
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 15.58,
-								"mitigation": null,
-								"adaptation": 49.18
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 94.74,
-								"mitigation": 61.94,
-								"adaptation": 48.52
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 97.7,
-								"mitigation": null,
-								"adaptation": 21.55
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 71.72,
-								"mitigation": 92.87,
-								"adaptation": 37.25
-							}
-						},
-						"dataSource": {
-							"page": "369-1094",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Audited"
-					},
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 75.17,
-								"mitigation": null,
-								"adaptation": 37.51
+								"mitigationAndAdaptation": 73.4,
+								"mitigation": 52.66,
+								"adaptation": 10.64
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 85.32,
-								"adaptation": 38.66
+								"mitigationAndAdaptation": 30.67,
+								"mitigation": 35.52,
+								"adaptation": 39.63
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 28.52,
-								"mitigation": 4.49,
-								"adaptation": 5.33
+								"mitigationAndAdaptation": 89.18,
+								"mitigation": 9.15,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 29.86,
-								"mitigation": 12.4,
-								"adaptation": null
+								"mitigationAndAdaptation": 6.78,
+								"mitigation": 46.93,
+								"adaptation": 81.3
 							},
 							"taxonomyAlignedShareDenominatorNAndG430": {
 								"mitigationAndAdaptation": null,
-								"mitigation": 8.23,
-								"adaptation": null
+								"mitigation": null,
+								"adaptation": 59.75
 							},
 							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 76.7,
-								"mitigation": 15.43,
-								"adaptation": 25.94
+								"mitigationAndAdaptation": null,
+								"mitigation": 84.5,
+								"adaptation": 7.87
 							},
 							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 89.68,
-								"mitigation": 56.97,
-								"adaptation": null
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 17.33
 							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 52.83,
-								"mitigation": 4.26,
-								"adaptation": null
+								"mitigationAndAdaptation": null,
+								"mitigation": 48.44,
+								"adaptation": 53.73
 							}
 						},
-						"dataSource": null,
-						"comment": "calculate back-end card",
+						"dataSource": {
+							"page": "159",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "reboot back-end driver",
 						"quality": "Estimated"
 					}
 				},
 				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 77.01,
-								"mitigation": 16.33,
-								"adaptation": 3.78
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 73.25,
-								"mitigation": 42.55,
-								"adaptation": 23.51
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 33.15,
-								"mitigation": 20.18,
-								"adaptation": 66.65
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 16.65,
-								"mitigation": null,
-								"adaptation": 36.29
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 85.93,
-								"mitigation": 58.37,
-								"adaptation": 41.9
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 0.32,
-								"mitigation": 94.75,
-								"adaptation": 74.5
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 94.67,
-								"mitigation": 80.15,
-								"adaptation": 64.2
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 5.36,
-								"mitigation": 10.31,
-								"adaptation": 75.94
-							}
-						},
-						"dataSource": null,
-						"comment": "navigate primary port",
-						"quality": null
-					},
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": null,
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 1.76,
-								"mitigation": 42.72,
-								"adaptation": 55.14
+								"mitigationAndAdaptation": 57.01,
+								"mitigation": 40.45,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 64.64,
-								"mitigation": 59.31,
-								"adaptation": 56.53
+								"mitigationAndAdaptation": 55.7,
+								"mitigation": 78.69,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 10.39,
-								"mitigation": 94.43,
-								"adaptation": 17.28
+								"mitigationAndAdaptation": 49.83,
+								"mitigation": 84.43,
+								"adaptation": 98.24
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 91.43,
-								"mitigation": 65.98,
-								"adaptation": 27.12
+								"mitigationAndAdaptation": 50.41,
+								"mitigation": 35.63,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 22.08,
-								"mitigation": 4.06,
-								"adaptation": 81.19
+								"mitigationAndAdaptation": 23.59,
+								"mitigation": null,
+								"adaptation": 41
 							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 82.93,
-								"mitigation": 12.51,
-								"adaptation": 1.63
+								"mitigationAndAdaptation": 70.97,
+								"mitigation": 87.87,
+								"adaptation": 46.41
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 18.27,
-								"mitigation": 61.82,
-								"adaptation": 30.66
+								"mitigationAndAdaptation": null,
+								"mitigation": 60.89,
+								"adaptation": 27.86
 							},
 							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 4.8,
-								"mitigation": 96,
-								"adaptation": 62.17
-							}
-						},
-						"dataSource": {
-							"page": "1037",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": "copy virtual pixel",
-						"quality": "Audited"
-					}
-				},
-				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
 								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 54.87
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 31.14,
-								"mitigation": 71.31,
-								"adaptation": 11.13
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 46.14,
-								"mitigation": null,
-								"adaptation": 96.76
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 28.53,
-								"mitigation": 15.78,
-								"adaptation": 58.7
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 97.76,
-								"mitigation": 62.77,
-								"adaptation": 96.28
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 87.99,
-								"adaptation": 27.03
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 26.17,
-								"mitigation": 32.88,
-								"adaptation": 86.25
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 81.62,
 								"mitigation": null,
 								"adaptation": null
 							}
 						},
 						"dataSource": {
-							"page": "986",
+							"page": "398-442",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "markets",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "users",
 							"publicationDate": null
 						},
-						"comment": "hack virtual array",
-						"quality": "Audited"
-					},
+						"comment": null,
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyEligibleButNotAligned": {
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": null,
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
 								"mitigationAndAdaptation": null,
-								"mitigation": 87.59,
-								"adaptation": 24.57
+								"mitigation": null,
+								"adaptation": 27.61
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 69.28,
-								"mitigation": 84.72,
-								"adaptation": 42.99
+								"mitigationAndAdaptation": 24.67,
+								"mitigation": 51.01,
+								"adaptation": 3.64
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 64.43,
-								"mitigation": 84.91,
-								"adaptation": 75.65
+								"mitigationAndAdaptation": null,
+								"mitigation": 26.99,
+								"adaptation": 82.11
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 10.07,
-								"adaptation": null
+								"mitigationAndAdaptation": 4.41,
+								"mitigation": 66.19,
+								"adaptation": 1.38
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 52.32,
-								"mitigation": 71.44,
-								"adaptation": 12.04
+								"mitigationAndAdaptation": 66.18,
+								"mitigation": 58.54,
+								"adaptation": 93.68
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 18.95,
-								"mitigation": 45.4,
-								"adaptation": 18.54
+								"mitigationAndAdaptation": 98.2,
+								"mitigation": 77.17,
+								"adaptation": 93.25
 							},
 							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 3.51,
-								"mitigation": 4.54,
-								"adaptation": 88.86
+								"mitigationAndAdaptation": 28.33,
+								"mitigation": 93.35,
+								"adaptation": null
 							},
 							"taxonomyEligibleButNotAlignedShare": {
 								"mitigationAndAdaptation": null,
-								"mitigation": 41.62,
-								"adaptation": 95.34
+								"mitigation": 14.15,
+								"adaptation": 82.11
 							}
 						},
-						"dataSource": null,
-						"comment": "navigate virtual port",
-						"quality": "Incomplete"
+						"dataSource": {
+							"page": "1082",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "interfaces",
+							"publicationDate": null
+						},
+						"comment": "back up virtual application",
+						"quality": "Audited"
 					}
 				},
 				"taxonomyNonEligible": {
-					"nuclearAndGasTaxonomyNonEligibleRevenue": {
+					"nuclearAndGasTaxonomyNonEligibleRevenue": null,
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
 						"value": null,
 						"dataSource": {
-							"page": "408, 747-754",
+							"page": "703-813",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
+							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": "navigate back-end program",
-						"quality": "NoDataFound"
-					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": null,
-							"taxonomyNonEligibleShareNAndG427": null,
-							"taxonomyNonEligibleShareNAndG428": 42.58,
-							"taxonomyNonEligibleShareNAndG429": 63.22,
-							"taxonomyNonEligibleShareNAndG430": 96.4,
-							"taxonomyNonEligibleShareNAndG431": 71.17,
-							"taxonomyNonEligibleShareOtherActivities": 3.55,
-							"taxonomyNonEligibleShare": 46
-						},
-						"dataSource": {
-							"page": "271, 1286-1329",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "connect solid state interface",
-						"quality": "Audited"
+						"comment": "input open-source interface",
+						"quality": "Incomplete"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2024"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Swaniawski - Quigley",
-			"headquarters": "West Des Moines",
+			"companyName": "Ebert Inc",
+			"headquarters": "Ignacioshire",
 			"headquartersPostalCode": null,
-			"sector": "interfaces",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"l7bboYLAflPqhak0ykRs"
+				],
 				"Isin": [
-					"iVrOlp3MXQE7",
-					"MoSKEClfB43x"
+					"lfB43xiVrOlp"
 				],
-				"PermId": [
-					"Ih7SkgCBPp"
+				"PermId": [],
+				"Ticker": [
+					"gCBPpvX"
 				],
-				"Ticker": [],
-				"Duns": [
-					"oK7kqFEGu"
+				"Duns": [],
+				"VatNumber": [
+					"qFEGuC4cD"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"BnndHF8zUqmKArm"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "UM",
-			"companyContactDetails": [
-				"Samanta_Goldner57@example.com",
-				"Veronica.Nicolas@example.com",
-				"Rowan_Walter@example.com",
-				"Brandon55@example.com"
-			],
+			"countryCode": "GR",
+			"companyContactDetails": null,
 			"companyAlternativeNames": [
+				"Brakus, Baumbach and Cremin",
+				"Donnelly, Stracke and Hansen",
+				"Lubowitz - Goyette",
 				"Stokes LLC"
 			],
-			"companyLegalForm": null,
-			"website": null,
-			"fiscalYearEnd": "01-Nov",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://elliptical-chops.net/",
+			"fiscalYearEnd": "12-Jul",
 			"isTeaserCompany": false,
-			"parentCompanyLei": null
+			"parentCompanyLei": "EDeQKZ1H20KBJruJZAxh"
 		},
 		"t": {
 			"general": {
@@ -806,43 +656,49 @@
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": null,
 							"publicationDate": null
+						},
+						"AnnualReport": {
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"fileName": null,
+							"publicationDate": null
 						}
 					},
 					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
+						"value": null,
 						"dataSource": {
-							"page": "388",
+							"page": "736-968",
 							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "hack multi-byte application",
-						"quality": "NoDataFound"
+						"comment": null,
+						"quality": "Reported"
 					},
 					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": null,
-						"comment": "generate multi-byte protocol",
-						"quality": null
-					},
+					"nuclearEnergyRelatedActivitiesSection428": null,
 					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
+						"value": "Yes",
 						"dataSource": null,
 						"comment": "copy multi-byte bandwidth",
 						"quality": "Incomplete"
 					},
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "Yes",
-						"dataSource": null,
-						"comment": "navigate online hard drive",
+						"dataSource": {
+							"page": "340, 877-887",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "navigate multi-byte program",
 						"quality": "Estimated"
 					},
 					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"page": "705, 977-987",
+							"page": "954",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -856,258 +712,326 @@
 					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": null,
 						"dataSource": {
-							"page": "867, 999-1021",
+							"page": "254, 1028-1038",
 							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "interfaces",
 							"publicationDate": null
 						},
-						"comment": "input primary matrix",
+						"comment": "connect neural port",
 						"quality": null
 					},
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 71.34,
-								"mitigation": 47.23,
-								"adaptation": 79.17
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 23.67,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 15.63,
-								"adaptation": 8.39
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 21.01,
-								"mitigation": 42.31,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 38.45,
-								"mitigation": 99.5,
-								"adaptation": 88.3
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 73.03,
-								"mitigation": 37.38,
-								"adaptation": 20.18
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 16.16,
-								"mitigation": 69.86,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 23.86,
-								"mitigation": 44.48,
-								"adaptation": null
-							}
-						},
+						"value": null,
 						"dataSource": {
-							"page": "893, 933-979",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": "copy haptic protocol",
-						"quality": null
-					}
-				},
-				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": null,
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": null
-				},
-				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 34.08,
-								"mitigation": null,
-								"adaptation": 9.77
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 2.47,
-								"mitigation": 31.35,
-								"adaptation": 0.91
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 40.35,
-								"mitigation": 30.53,
-								"adaptation": 71.09
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 62.45,
-								"mitigation": 29.15,
-								"adaptation": 54.8
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 32.27,
-								"mitigation": 33.95,
-								"adaptation": 43.92
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 56.03,
-								"adaptation": 25.16
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 31.13
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 96.56,
-								"mitigation": 91.58,
-								"adaptation": 28.23
-							}
-						},
-						"dataSource": {
-							"page": "739, 968-984",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "NoDataFound"
-					},
-					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 36.38,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 39.96,
-								"mitigation": 13.77,
-								"adaptation": 83.73
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 39.67,
-								"adaptation": 40.73
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 87,
-								"mitigation": null,
-								"adaptation": 23.78
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 89.36,
-								"mitigation": 31.05,
-								"adaptation": 47.75
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 17.79,
-								"mitigation": 82.93,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 57.16,
-								"mitigation": 58.81,
-								"adaptation": 70.73
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 93.8,
-								"mitigation": 49.11,
-								"adaptation": 36.34
-							}
-						},
-						"dataSource": {
-							"page": "230",
+							"page": "893, 930-940",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "program virtual card",
-						"quality": "Audited"
+						"comment": "generate optical card",
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyAlignedNumerator": {
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 52.67,
+								"mitigation": 2.93,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 88.59,
+								"mitigation": 56.47,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 63.2,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 42.52
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 16.47,
+								"adaptation": 62.6
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 46.05,
+								"mitigation": 82.81,
+								"adaptation": 52.92
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 28.66,
+								"mitigation": 81.39,
+								"adaptation": 32.73
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 65.58,
+								"mitigation": 61.36,
+								"adaptation": 76.85
+							}
+						},
+						"dataSource": {
+							"page": "180-679",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "paradigms",
+							"publicationDate": null
+						},
+						"comment": "synthesize auxiliary system",
+						"quality": null
+					},
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 25.58,
+								"mitigation": 18.74,
+								"adaptation": 9.64
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 67.87,
+								"mitigation": 2.2,
+								"adaptation": 77.13
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 61.62,
+								"mitigation": 90.22,
+								"adaptation": 57.43
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 55.85,
+								"mitigation": 80.78,
+								"adaptation": 23.24
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 32.25,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 55.85,
+								"mitigation": null,
+								"adaptation": 66.36
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 38.76,
+								"mitigation": 98.07,
+								"adaptation": 71.38
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 49.82,
+								"mitigation": 3.35,
+								"adaptation": 8.52
+							}
+						},
+						"dataSource": {
+							"page": "668-856",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "methodologies",
+							"publicationDate": null
+						},
+						"comment": "generate auxiliary alarm",
+						"quality": null
+					}
+				},
+				"taxonomyEligibleButNotAligned": {
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 43.02,
+								"mitigation": null,
+								"adaptation": 34.08
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 9.77,
+								"adaptation": 2.47
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 31.35,
+								"mitigation": 0.91,
+								"adaptation": 40.35
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 30.53,
+								"mitigation": 71.09,
+								"adaptation": 62.45
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 29.15,
+								"mitigation": 54.8,
+								"adaptation": 32.27
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 33.95,
+								"mitigation": 43.92,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 56.03,
+								"mitigation": 25.16,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 31.13,
+								"adaptation": 96.56
+							}
+						},
+						"dataSource": {
+							"page": "757",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
+						},
+						"comment": "transmit haptic circuit",
+						"quality": "Estimated"
+					},
+					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 49.76,
+								"mitigation": null,
+								"adaptation": 27.96
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 49.26,
+								"mitigation": 15.01,
+								"adaptation": 18.15
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 62.16,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 19.57,
+								"mitigation": 27.84,
+								"adaptation": 90.51
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 51.9,
+								"mitigation": 6.99,
+								"adaptation": 94.59
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 30.45,
+								"mitigation": 20.87,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 91.27,
+								"mitigation": 75.23,
+								"adaptation": 1.14
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 20.56,
+								"mitigation": 95.98,
+								"adaptation": 72.25
+							}
+						},
+						"dataSource": {
+							"page": "695",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "index cross-platform port",
+						"quality": "Estimated"
 					}
 				},
 				"taxonomyNonEligible": {
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": 55.51,
-							"taxonomyNonEligibleShareNAndG427": 24.84,
-							"taxonomyNonEligibleShareNAndG428": 26.63,
-							"taxonomyNonEligibleShareNAndG429": null,
-							"taxonomyNonEligibleShareNAndG430": 86.15,
-							"taxonomyNonEligibleShareNAndG431": 31.49,
-							"taxonomyNonEligibleShareOtherActivities": 57.95,
-							"taxonomyNonEligibleShare": 94.05
-						},
-						"dataSource": {
-							"page": "341, 419-440",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "technologies",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Incomplete"
-					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": null,
-							"taxonomyNonEligibleShareNAndG427": 44.22,
+							"taxonomyNonEligibleShareNAndG426": 94.22,
+							"taxonomyNonEligibleShareNAndG427": null,
 							"taxonomyNonEligibleShareNAndG428": null,
-							"taxonomyNonEligibleShareNAndG429": 78.85,
-							"taxonomyNonEligibleShareNAndG430": 6.47,
-							"taxonomyNonEligibleShareNAndG431": 49.4,
-							"taxonomyNonEligibleShareOtherActivities": 2.73,
+							"taxonomyNonEligibleShareNAndG429": 25.99,
+							"taxonomyNonEligibleShareNAndG430": 55.51,
+							"taxonomyNonEligibleShareNAndG431": 24.84,
+							"taxonomyNonEligibleShareOtherActivities": 26.63,
 							"taxonomyNonEligibleShare": null
 						},
 						"dataSource": {
-							"page": "943-1018",
+							"page": "696, 1022-1032",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
+							"tagName": "networks",
 							"publicationDate": null
 						},
-						"comment": "reboot solid state feed",
+						"comment": null,
+						"quality": "NoDataFound"
+					},
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 55.21,
+							"taxonomyNonEligibleShareNAndG427": 92.69,
+							"taxonomyNonEligibleShareNAndG428": 42.3,
+							"taxonomyNonEligibleShareNAndG429": null,
+							"taxonomyNonEligibleShareNAndG430": 32.89,
+							"taxonomyNonEligibleShareNAndG431": 19.41,
+							"taxonomyNonEligibleShareOtherActivities": 38.46,
+							"taxonomyNonEligibleShare": 5.02
+						},
+						"dataSource": {
+							"page": "786, 879-889",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "synergies",
+							"publicationDate": null
+						},
+						"comment": "hack bluetooth monitor",
 						"quality": "Audited"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Oberbrunner, Flatley and Mraz",
-			"headquarters": "New Ambrose",
-			"headquartersPostalCode": "62948",
-			"sector": "systems",
+			"companyName": "Kassulke, Daugherty and Nicolas",
+			"headquarters": "Denton",
+			"headquartersPostalCode": "06359",
+			"sector": "applications",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"z8iWXk0uRXl0"
+					"uiTVi3Kpz8iW"
 				],
-				"PermId": [],
+				"PermId": [
+					"UfOnoqcezO"
+				],
 				"Ticker": [],
 				"Duns": [
-					"wwQP1L7ZY"
+					"MfKiO2D8w"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"k45GiTZcgolorQF"
-				]
+				"VatNumber": [
+					"QP1L7ZYHk"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AM",
-			"companyContactDetails": null,
+			"countryCode": "ER",
+			"companyContactDetails": [
+				"Jill.McLaughlin7@example.com",
+				"Roxanne7@example.com"
+			],
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": null,
-			"fiscalYearEnd": "15-Jul",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://kaleidoscopic-intent.com",
+			"fiscalYearEnd": "01-Jul",
 			"isTeaserCompany": false,
-			"parentCompanyLei": null
+			"parentCompanyLei": "l7bboYLAflPqhak0ykRs"
 		},
 		"t": {
 			"general": {
@@ -1117,142 +1041,162 @@
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": null,
 							"publicationDate": null
-						},
-						"AnnualReport": {
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"fileName": null,
-							"publicationDate": null
 						}
 					},
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "952-1177",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "metrics",
-							"publicationDate": null
-						},
-						"comment": "quantify open-source firewall",
-						"quality": "Estimated"
-					},
+					"nuclearEnergyRelatedActivitiesSection426": null,
 					"nuclearEnergyRelatedActivitiesSection427": {
 						"value": "Yes",
-						"dataSource": null,
-						"comment": "quantify online monitor",
-						"quality": "Incomplete"
+						"dataSource": {
+							"page": "440-944",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "NoDataFound"
 					},
 					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
-						"dataSource": {
-							"page": "114, 491-533",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
-							"publicationDate": null
-						},
-						"comment": "navigate open-source pixel",
-						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection429": {
 						"value": null,
 						"dataSource": {
-							"page": "228-560",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "copy open-source panel",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "523-1033",
+							"page": "235",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "e-commerce",
+							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "navigate neural driver",
-						"quality": "NoDataFound"
+						"comment": "parse virtual program",
+						"quality": "Reported"
 					},
+					"fossilGasRelatedActivitiesSection429": null,
+					"fossilGasRelatedActivitiesSection430": null,
 					"fossilGasRelatedActivitiesSection431": null
 				},
 				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
-					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 91.85,
-								"mitigation": 63.35,
-								"adaptation": 72.74
+								"mitigationAndAdaptation": 85.98,
+								"mitigation": 59.92,
+								"adaptation": 67.85
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 62.72,
-								"mitigation": 3.38,
-								"adaptation": 21.77
+								"mitigationAndAdaptation": 3.76,
+								"mitigation": 48,
+								"adaptation": 35.79
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 63.62,
-								"mitigation": 94.8,
-								"adaptation": 52.89
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 39.1,
-								"adaptation": 36.08
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 41.72,
-								"mitigation": null,
-								"adaptation": 89.5
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 29.79,
-								"mitigation": 6.6,
-								"adaptation": 49.33
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 25.92,
-								"mitigation": 52.97,
+								"mitigationAndAdaptation": 7.29,
+								"mitigation": 55.84,
 								"adaptation": null
 							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": 71.1,
+								"mitigation": 11.96,
+								"adaptation": 26.5
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": 25.64,
+								"mitigation": 97.86,
+								"adaptation": 51.34
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": 9.75,
+								"mitigation": 6.23,
+								"adaptation": 89.14
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 61.3
+							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 65.52,
-								"mitigation": 86.63,
-								"adaptation": 58.21
+								"mitigationAndAdaptation": 84.78,
+								"mitigation": 56.2,
+								"adaptation": 20.09
 							}
 						},
 						"dataSource": {
-							"page": "374",
+							"page": "1103-1250",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "channels",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "parse optical feed",
-						"quality": "Reported"
+						"comment": null,
+						"quality": null
+					},
+					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+						"value": {
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaptation": 21.77,
+								"mitigation": 63.62,
+								"adaptation": 94.8
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaptation": 52.89,
+								"mitigation": null,
+								"adaptation": 39.1
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaptation": 36.08,
+								"mitigation": 41.72,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": 89.5,
+								"mitigation": 29.79,
+								"adaptation": 6.6
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": 49.33,
+								"mitigation": 25.92,
+								"adaptation": 52.97
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 65.52,
+								"adaptation": 86.63
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": 58.21,
+								"mitigation": 77.88,
+								"adaptation": 33.85
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaptation": 9.08,
+								"mitigation": 73.15,
+								"adaptation": 52.36
+							}
+						},
+						"dataSource": {
+							"page": "470-715",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "connect back-end card",
+						"quality": "Incomplete"
 					}
 				},
 				"taxonomyAlignedNumerator": {
 					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 38.92,
-								"mitigation": 63.67,
-								"adaptation": 73.48
+								"mitigationAndAdaptation": 63.67,
+								"mitigation": 73.48,
+								"adaptation": 2.34
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 2.34,
-								"mitigation": 34.39,
-								"adaptation": 46.54
+								"mitigationAndAdaptation": 34.39,
+								"mitigation": 46.54,
+								"adaptation": 82.38
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 82.38,
-								"mitigation": 97.07,
-								"adaptation": 26.67
+								"mitigationAndAdaptation": 97.07,
+								"mitigation": 26.67,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
 								"mitigationAndAdaptation": null,
@@ -1260,191 +1204,284 @@
 								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 21.01,
-								"adaptation": 15.42
+								"mitigationAndAdaptation": 21.01,
+								"mitigation": 15.42,
+								"adaptation": 29.9
 							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 29.9,
-								"mitigation": 29.48,
+								"mitigationAndAdaptation": 29.48,
+								"mitigation": null,
 								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
 								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 23.39
+								"mitigation": 23.39,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 80.35,
+								"mitigation": null,
+								"adaptation": 42.2
+							}
+						},
+						"dataSource": null,
+						"comment": "index digital firewall",
+						"quality": "Incomplete"
+					},
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 35.4,
+								"mitigation": 32.46,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
 								"mitigationAndAdaptation": null,
-								"mitigation": 80.35,
+								"mitigation": 24.1,
+								"adaptation": 21.59
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 89.14,
+								"adaptation": 39.25
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 19.28,
+								"mitigation": 36.22,
+								"adaptation": 31.33
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 39.19,
+								"mitigation": 31.59,
+								"adaptation": 6.03
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 68.25,
+								"mitigation": 65.64,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 40.78,
+								"mitigation": 45.57,
+								"adaptation": 15.65
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 24.6,
+								"mitigation": 68.38,
 								"adaptation": null
 							}
 						},
 						"dataSource": {
-							"page": "715",
+							"page": "772, 840-850",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "communities",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
 							"publicationDate": null
 						},
-						"comment": "back up multi-byte circuit",
-						"quality": "Estimated"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
-						"value": null,
-						"dataSource": {
-							"page": "994, 1262-1299",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "functionalities",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Estimated"
+						"comment": "generate optical bus",
+						"quality": "Reported"
 					}
 				},
 				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": null,
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 76.27,
+								"mitigation": 48.31,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 13.96
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 61.67,
+								"mitigation": 76.2,
+								"adaptation": 84.48
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 82.38,
+								"mitigation": 51.03,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 77.87
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 24.74,
+								"adaptation": 87.05
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 25.88,
+								"mitigation": 95.07,
+								"adaptation": 11.18
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 76.16,
+								"mitigation": 20.58,
+								"adaptation": 85.17
+							}
+						},
+						"dataSource": {
+							"page": "115",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "solutions",
+							"publicationDate": null
+						},
+						"comment": "index solid state bus",
+						"quality": "Estimated"
+					},
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 94.15,
+								"mitigation": 68.47,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
 								"mitigationAndAdaptation": null,
 								"mitigation": 32,
 								"adaptation": 59.54
 							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
 								"mitigationAndAdaptation": 47.03,
 								"mitigation": 27.48,
 								"adaptation": 23.91
 							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
 								"mitigationAndAdaptation": 81.78,
 								"mitigation": null,
 								"adaptation": 64.68
 							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
 								"mitigationAndAdaptation": 90.85,
 								"mitigation": 70.36,
 								"adaptation": 51.13
 							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
 								"mitigationAndAdaptation": 68.93,
 								"mitigation": 75.25,
 								"adaptation": 42.03
 							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
 								"mitigationAndAdaptation": 24.45,
 								"mitigation": 7.19,
 								"adaptation": null
 							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+							"taxonomyEligibleButNotAlignedShare": {
 								"mitigationAndAdaptation": 73.27,
 								"mitigation": 95.91,
 								"adaptation": 49.79
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 75.11,
-								"mitigation": 32.09,
-								"adaptation": 52.88
 							}
 						},
 						"dataSource": {
-							"page": "57-879",
+							"page": "607-905",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "large language models",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "connect virtual feed",
-						"quality": "NoDataFound"
+						"comment": "navigate open-source application",
+						"quality": "Reported"
 					}
 				},
 				"taxonomyNonEligible": {
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": null,
-							"taxonomyNonEligibleShareNAndG427": 15.68,
-							"taxonomyNonEligibleShareNAndG428": 10.18,
-							"taxonomyNonEligibleShareNAndG429": 68.6,
-							"taxonomyNonEligibleShareNAndG430": 93.18,
-							"taxonomyNonEligibleShareNAndG431": 60.17,
-							"taxonomyNonEligibleShareOtherActivities": 83.01,
-							"taxonomyNonEligibleShare": 48.12
+							"taxonomyNonEligibleShareNAndG426": 40.95,
+							"taxonomyNonEligibleShareNAndG427": 87.43,
+							"taxonomyNonEligibleShareNAndG428": null,
+							"taxonomyNonEligibleShareNAndG429": null,
+							"taxonomyNonEligibleShareNAndG430": 80.41,
+							"taxonomyNonEligibleShareNAndG431": 46.63,
+							"taxonomyNonEligibleShareOtherActivities": 43.76,
+							"taxonomyNonEligibleShare": 62.45
 						},
 						"dataSource": {
-							"page": "698-1046",
+							"page": "1156, 1297-1307",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
+							"tagName": "channels",
 							"publicationDate": null
 						},
-						"comment": "quantify optical hard drive",
-						"quality": "NoDataFound"
+						"comment": "navigate online transmitter",
+						"quality": "Estimated"
 					},
 					"nuclearAndGasTaxonomyNonEligibleCapex": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": 21.06,
-							"taxonomyNonEligibleShareNAndG427": 58.65,
-							"taxonomyNonEligibleShareNAndG428": 15.39,
-							"taxonomyNonEligibleShareNAndG429": null,
-							"taxonomyNonEligibleShareNAndG430": 14.45,
-							"taxonomyNonEligibleShareNAndG431": 55.35,
-							"taxonomyNonEligibleShareOtherActivities": 93.65,
-							"taxonomyNonEligibleShare": 60.58
+							"taxonomyNonEligibleShareNAndG426": 70.17,
+							"taxonomyNonEligibleShareNAndG427": 69.45,
+							"taxonomyNonEligibleShareNAndG428": 21.06,
+							"taxonomyNonEligibleShareNAndG429": 58.65,
+							"taxonomyNonEligibleShareNAndG430": 15.39,
+							"taxonomyNonEligibleShareNAndG431": null,
+							"taxonomyNonEligibleShareOtherActivities": 14.45,
+							"taxonomyNonEligibleShare": 55.35
 						},
 						"dataSource": {
-							"page": "754-822",
+							"page": "922, 1239-1249",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "large language models",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
 							"publicationDate": null
 						},
-						"comment": "parse optical matrix",
-						"quality": "Incomplete"
+						"comment": "override back-end microchip",
+						"quality": "NoDataFound"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Ebert - Renner",
-			"headquarters": "Lake Yvonnefort",
-			"headquartersPostalCode": null,
-			"sector": "technologies",
+			"companyName": "Beier and Sons",
+			"headquarters": "North Madyson",
+			"headquartersPostalCode": "53028",
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [
-					"Slb7rKPBGlcELwjl2KGx"
+					"OcEm85fBdyiJ3F6xZLXr"
 				],
 				"Isin": [
-					"nxcweU6oydWR",
-					"lBcywareeQSI"
+					"Gh4ncMe3WISl"
 				],
-				"PermId": [],
+				"PermId": [
+					"2KGxGnxcwe"
+				],
 				"Ticker": [
-					"GPH6aaa"
+					"6oydWRl"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"k87qTxdhM"
+				"Duns": [
+					"cywareeQS"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"CdP7PSgs1y1GQlD"
+					"aW9GPH6aaaXr4wE"
 				]
 			},
-			"countryCode": "SV",
+			"countryCode": "ME",
 			"companyContactDetails": [
-				"Calvin_Renner33@example.com",
-				"Tommy4@example.com"
+				"Forrest.Carroll@example.com",
+				"Pearl12@example.com",
+				"Irvin_Balistreri@example.com",
+				"Rufus.Kovacek82@example.com",
+				"Estefania_Christiansen20@example.com"
 			],
 			"companyAlternativeNames": [
-				"Lueilwitz - Leuschke",
-				"Mohr, Oberbrunner and King"
+				"Johns - Kutch",
+				"Kunde-Dach - Lueilwitz",
+				"Strosin, Mohr and Oberbrunner",
+				"Turner - Davis"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://delicious-cellar.org",
-			"fiscalYearEnd": "15-Mar",
+			"companyLegalForm": "Sole Trader",
+			"website": null,
+			"fiscalYearEnd": "03-Jun",
 			"isTeaserCompany": false,
 			"parentCompanyLei": null
 		},
@@ -1459,34 +1496,221 @@
 						}
 					},
 					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": null,
+						"value": "No",
+						"dataSource": null,
+						"comment": "calculate wireless bus",
+						"quality": "Estimated"
+					},
+					"nuclearEnergyRelatedActivitiesSection427": {
+						"value": "Yes",
 						"dataSource": {
-							"page": "1121",
+							"page": "720-901",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "initiatives",
+							"publicationDate": null
+						},
+						"comment": "compress open-source alarm",
+						"quality": null
+					},
+					"nuclearEnergyRelatedActivitiesSection428": {
+						"value": null,
+						"dataSource": null,
+						"comment": null,
+						"quality": "Incomplete"
+					},
+					"fossilGasRelatedActivitiesSection429": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "800",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "index wireless bus",
+						"quality": null
+					},
+					"fossilGasRelatedActivitiesSection430": {
+						"value": "No",
+						"dataSource": {
+							"page": "534, 851-861",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "web services",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": null
+					},
+					"fossilGasRelatedActivitiesSection431": {
+						"value": "No",
+						"dataSource": {
+							"page": "759",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "quantify cross-platform microchip",
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyAlignedDenominator": {
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
+					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+						"value": {
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaptation": 87.86,
+								"mitigation": 0.37,
+								"adaptation": 48.41
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 37.39,
+								"adaptation": 60.32
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": 52.63,
+								"mitigation": 39.82,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 6.45,
+								"adaptation": 21.52
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": 15.72,
+								"mitigation": 73.94,
+								"adaptation": 0.56
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 86.17,
+								"adaptation": 71.67
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaptation": 54.13,
+								"mitigation": 90.47,
+								"adaptation": 86.6
+							}
+						},
+						"dataSource": {
+							"page": "622, 777-787",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
 							"publicationDate": null
 						},
-						"comment": "parse multi-byte protocol",
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": null,
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
+						"comment": "hack auxiliary driver",
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyAlignedNumerator": {
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 69.88,
+								"mitigation": 72.77,
+								"adaptation": 45.21
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 2.55,
+								"mitigation": 99.7,
+								"adaptation": 42.4
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 28.83,
+								"mitigation": 35.55,
+								"adaptation": 55.11
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 75.82,
+								"mitigation": 86.47,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 13.65,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 10.8,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 58.41,
+								"mitigation": 86.76,
+								"adaptation": 24.7
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 14.15,
+								"mitigation": 53.24,
+								"adaptation": 3.88
+							}
+						},
 						"dataSource": {
-							"page": "723-919",
+							"page": "200, 285-295",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
+							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": null,
+						"comment": "navigate multi-byte hard drive",
 						"quality": "Audited"
 					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 7.04,
+								"mitigation": 0.32,
+								"adaptation": 7.89
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 93.44,
+								"mitigation": null,
+								"adaptation": 68.48
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 67.95,
+								"adaptation": 60.8
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 73.47,
+								"mitigation": 61.55,
+								"adaptation": 32.28
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 31.46,
+								"mitigation": 76.71,
+								"adaptation": 98.33
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 3.62,
+								"mitigation": 55.5,
+								"adaptation": 71.31
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 64.5,
+								"mitigation": 72.71,
+								"adaptation": 66.28
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 71.91,
+								"mitigation": 45.14,
+								"adaptation": 12.77
+							}
+						},
 						"dataSource": {
-							"page": "534, 891-909",
+							"page": "349",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -1494,315 +1718,66 @@
 						},
 						"comment": null,
 						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "298-905",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
-							"publicationDate": null
-						},
-						"comment": "compress bluetooth hard drive",
-						"quality": "Incomplete"
-					},
-					"fossilGasRelatedActivitiesSection431": null
-				},
-				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 89.39,
-								"mitigation": 98.23,
-								"adaptation": 93.15
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 68.98,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 12.04,
-								"mitigation": 3.76,
-								"adaptation": 16.8
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 19.56,
-								"adaptation": 52.09
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 35.21,
-								"mitigation": 87.46,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 0.82,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 89.58,
-								"mitigation": null,
-								"adaptation": 28.18
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 1.54,
-								"mitigation": null,
-								"adaptation": 77.97
-							}
-						},
-						"dataSource": {
-							"page": "701, 715-756",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "generate online firewall",
-						"quality": null
-					},
-					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 39.82,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 6.45,
-								"mitigation": 21.52,
-								"adaptation": 15.72
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 73.94,
-								"mitigation": 0.56,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 86.17,
-								"mitigation": 71.67,
-								"adaptation": 54.13
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 90.47,
-								"mitigation": 86.6,
-								"adaptation": 47.77
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 44.82,
-								"mitigation": 21.36,
-								"adaptation": 79.4
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 35.24,
-								"adaptation": 72.16
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 54.18,
-								"mitigation": 45.65,
-								"adaptation": null
-							}
-						},
-						"dataSource": {
-							"page": "509",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "mindshare",
-							"publicationDate": null
-						},
-						"comment": "index neural microchip",
-						"quality": "NoDataFound"
-					}
-				},
-				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 86.47,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 13.65,
-								"mitigation": null,
-								"adaptation": 10.8
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 58.41
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 86.76,
-								"mitigation": 24.7,
-								"adaptation": 14.15
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 53.24,
-								"mitigation": 3.88,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 6.65,
-								"adaptation": 64.4
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 58.54,
-								"mitigation": 48.34,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": null
-							}
-						},
-						"dataSource": {
-							"page": "509, 1027-1044",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
-							"publicationDate": null
-						},
-						"comment": "copy bluetooth bandwidth",
-						"quality": "Audited"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
-						"value": null,
-						"dataSource": null,
-						"comment": null,
-						"quality": "NoDataFound"
 					}
 				},
 				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 20.85,
-								"mitigation": null,
-								"adaptation": 22.16
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 8.13,
-								"mitigation": 1.88,
-								"adaptation": 6.33
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 43.48,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 42.28,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 83.94,
-								"mitigation": 18.69,
-								"adaptation": 89.01
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 3.36,
-								"adaptation": 13.16
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 37.41,
-								"adaptation": 62.13
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 88.87,
-								"adaptation": 5.99
-							}
-						},
-						"dataSource": null,
-						"comment": null,
-						"quality": "Estimated"
-					},
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": null,
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 55.88,
-								"adaptation": 21.93
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 65.54,
-								"mitigation": 27.01,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 98.62
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 4.22,
-								"mitigation": 46.74,
-								"adaptation": 65.84
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 89.82,
-								"mitigation": 87.03,
-								"adaptation": 87.33
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 4.76,
-								"mitigation": 94.87,
-								"adaptation": 43.76
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 39.65,
-								"mitigation": 31.78,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 29.97,
-								"mitigation": 51.73,
-								"adaptation": 25.73
-							}
-						},
+						"value": null,
 						"dataSource": {
-							"page": "884",
+							"page": "1061-1166",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
+							"tagName": "interfaces",
 							"publicationDate": null
 						},
-						"comment": "generate online hard drive",
-						"quality": "Incomplete"
+						"comment": null,
+						"quality": "Estimated"
 					}
 				},
 				"taxonomyNonEligible": {
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": null,
-							"taxonomyNonEligibleShareNAndG427": 96.31,
-							"taxonomyNonEligibleShareNAndG428": 27.27,
-							"taxonomyNonEligibleShareNAndG429": 40.05,
-							"taxonomyNonEligibleShareNAndG430": 15.48,
+							"taxonomyNonEligibleShareNAndG426": 44.67,
+							"taxonomyNonEligibleShareNAndG427": 86.74,
+							"taxonomyNonEligibleShareNAndG428": 26.27,
+							"taxonomyNonEligibleShareNAndG429": 77.26,
+							"taxonomyNonEligibleShareNAndG430": 73.62,
 							"taxonomyNonEligibleShareNAndG431": null,
-							"taxonomyNonEligibleShareOtherActivities": 92.22,
-							"taxonomyNonEligibleShare": 28.52
+							"taxonomyNonEligibleShareOtherActivities": 79.44,
+							"taxonomyNonEligibleShare": 57.43
 						},
 						"dataSource": {
-							"page": "826",
+							"page": "186",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "functionalities",
+							"tagName": "e-commerce",
 							"publicationDate": null
 						},
-						"comment": "connect primary program",
-						"quality": "Incomplete"
+						"comment": "hack open-source bandwidth",
+						"quality": "Estimated"
 					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": null
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 5.07,
+							"taxonomyNonEligibleShareNAndG427": 77.38,
+							"taxonomyNonEligibleShareNAndG428": 94.66,
+							"taxonomyNonEligibleShareNAndG429": 73.8,
+							"taxonomyNonEligibleShareNAndG430": 68.81,
+							"taxonomyNonEligibleShareNAndG431": 6.83,
+							"taxonomyNonEligibleShareOtherActivities": 47.07,
+							"taxonomyNonEligibleShare": 77.61
+						},
+						"dataSource": {
+							"page": "294, 567-577",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "parse primary transmitter",
+						"quality": null
+					}
 				}
 			}
 		},
@@ -1810,86 +1785,101 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Hoeger, Stiedemann and Frami",
-			"headquarters": "South Bend",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"companyName": "Hahn - Sipes",
+			"headquarters": "East Tamiabury",
+			"headquartersPostalCode": "38581",
+			"sector": "deliverables",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"PIUiAhVGajm7Z3FBBhQf"
+				],
 				"Isin": [
-					"n2WW1QGRj5SG",
-					"JpLxnLOaQk5a"
+					"O0WeVt21KEVp"
 				],
-				"PermId": [],
-				"Ticker": [
-					"e7Texw5"
+				"PermId": [
+					"n2WW1QGRj5"
 				],
-				"Duns": [
-					"Y1mLy9TR6"
-				],
-				"VatNumber": [
-					"CGxe5krQ4"
-				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CA",
-			"companyContactDetails": null,
-			"companyAlternativeNames": [
-				"Crist, Lebsack and Borer"
+			"countryCode": "SE",
+			"companyContactDetails": [
+				"Sarah26@example.com",
+				"Colin36@example.com"
 			],
-			"companyLegalForm": null,
-			"website": "https://smug-labourer.name",
-			"fiscalYearEnd": "05-May",
+			"companyAlternativeNames": [
+				"Glover and Sons",
+				"Labadie - O'Conner",
+				"Murphy, Zieme and Jast",
+				"Roob, Lindgren and Hermann"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://gripping-community.net",
+			"fiscalYearEnd": "01-Jun",
 			"isTeaserCompany": false,
-			"parentCompanyLei": "Slb7rKPBGlcELwjl2KGx"
+			"parentCompanyLei": "OcEm85fBdyiJ3F6xZLXr"
 		},
 		"t": {
 			"general": {
 				"general": {
 					"referencedReports": {
-						"SustainabilityReport": {
+						"IntegratedReport": {
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": null,
-							"publicationDate": null
-						},
-						"AnnualReport": {
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"fileName": null,
 							"publicationDate": null
 						}
 					},
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
+					"nuclearEnergyRelatedActivitiesSection426": {
+						"value": null,
 						"dataSource": {
-							"page": "18",
+							"page": "592-1183",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "systems",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
 							"publicationDate": null
 						},
-						"comment": null,
-						"quality": "Audited"
+						"comment": "input bluetooth application",
+						"quality": "Incomplete"
 					},
+					"nuclearEnergyRelatedActivitiesSection427": null,
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": "No",
-						"dataSource": null,
-						"comment": "quantify redundant microchip",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
 						"dataSource": {
-							"page": "957, 1174-1218",
+							"page": "685-865",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "connect haptic feed",
-						"quality": "Estimated"
+						"comment": "bypass bluetooth alarm",
+						"quality": "NoDataFound"
 					},
-					"fossilGasRelatedActivitiesSection430": null,
+					"fossilGasRelatedActivitiesSection429": {
+						"value": "No",
+						"dataSource": {
+							"page": "307",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "index primary sensor",
+						"quality": "Audited"
+					},
+					"fossilGasRelatedActivitiesSection430": {
+						"value": "No",
+						"dataSource": {
+							"page": "940, 1247-1257",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
 					"fossilGasRelatedActivitiesSection431": null
 				},
 				"taxonomyAlignedDenominator": {
@@ -1936,934 +1926,236 @@
 								"adaptation": null
 							}
 						},
-						"dataSource": {
-							"page": "242, 283-291",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "bypass neural transmitter",
+						"dataSource": null,
+						"comment": null,
 						"quality": null
 					},
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 18.46,
+								"mitigationAndAdaptation": 96.07,
 								"mitigation": null,
-								"adaptation": 46.89
+								"adaptation": 96.26
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 72.29,
-								"mitigation": 58.22,
-								"adaptation": 36.45
+								"mitigationAndAdaptation": 9.36,
+								"mitigation": 72.14,
+								"adaptation": 29.71
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 25.5,
-								"adaptation": 21.71
+								"mitigationAndAdaptation": 77.21,
+								"mitigation": 38.92,
+								"adaptation": 10.72
 							},
 							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 60.57,
-								"adaptation": 58.49
+								"mitigationAndAdaptation": 84.79,
+								"mitigation": 54.11,
+								"adaptation": 0.25
 							},
 							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 38.46,
-								"mitigation": 12.9,
-								"adaptation": 78.22
+								"mitigationAndAdaptation": 30.74,
+								"mitigation": 92.49,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 85.83,
-								"mitigation": 27.69,
-								"adaptation": 41.67
+								"mitigationAndAdaptation": 91.61,
+								"mitigation": 34.65,
+								"adaptation": 48.09
 							},
 							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 64.93,
-								"mitigation": 61.71,
-								"adaptation": 49.11
+								"mitigationAndAdaptation": 22.02,
+								"mitigation": 70.83,
+								"adaptation": 91.15
 							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 69.1,
-								"adaptation": 45.82
+								"mitigationAndAdaptation": 47.64,
+								"mitigation": 94.87,
+								"adaptation": 15.64
 							}
 						},
 						"dataSource": {
-							"page": "785",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "copy haptic matrix",
-						"quality": "Audited"
-					}
-				},
-				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 28.47,
-								"mitigation": 66.81,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 75.09,
-								"mitigation": 26.34,
-								"adaptation": 43.16
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 77.59,
-								"mitigation": 97.76,
-								"adaptation": 22.2
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 78.09,
-								"mitigation": 29.28,
-								"adaptation": 20.93
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 37.67,
-								"mitigation": null,
-								"adaptation": 10.68
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 75.47,
-								"mitigation": 86.19,
-								"adaptation": 27.81
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 86.32,
-								"mitigation": 98.49,
-								"adaptation": 68.79
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 7.04,
-								"mitigation": 59.42,
-								"adaptation": 84.15
-							}
-						},
-						"dataSource": {
-							"page": "489-886",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "calculate 1080p bandwidth",
-						"quality": "Incomplete"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 2.66,
-								"adaptation": 49.4
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 50.7,
-								"mitigation": null,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 47.17,
-								"mitigation": 74.88,
-								"adaptation": 59.61
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 29.89,
-								"adaptation": 92.07
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 34.03,
-								"mitigation": null,
-								"adaptation": 62.76
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 2.72,
-								"adaptation": 10.02
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 31.24,
-								"mitigation": 1.41,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 26.46,
-								"mitigation": 4.56,
-								"adaptation": null
-							}
-						},
-						"dataSource": {
-							"page": "1137-1249",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "transmit auxiliary protocol",
-						"quality": "Estimated"
-					}
-				},
-				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 9.3,
-								"adaptation": 38.74
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 94.48,
-								"mitigation": 13.67,
-								"adaptation": 63.67
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 24.56,
-								"mitigation": 63.02,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 47.49,
-								"mitigation": null,
-								"adaptation": 82.91
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 98.38,
-								"mitigation": 54.21,
-								"adaptation": 12.04
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 48.35,
-								"mitigation": 81.03,
-								"adaptation": 82.29
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 29.27,
-								"mitigation": null,
-								"adaptation": 25.75
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 61.07,
-								"mitigation": 49.12,
-								"adaptation": 21.64
-							}
-						},
-						"dataSource": {
-							"page": "355, 579-628",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "synergies",
-							"publicationDate": null
-						},
-						"comment": "bypass optical matrix",
-						"quality": "NoDataFound"
-					},
-					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-						"value": null,
-						"dataSource": {
-							"page": "83, 543-584",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "calculate online program",
-						"quality": "Incomplete"
-					}
-				},
-				"taxonomyNonEligible": {
-					"nuclearAndGasTaxonomyNonEligibleRevenue": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 54.84,
-							"taxonomyNonEligibleShareNAndG427": 62.8,
-							"taxonomyNonEligibleShareNAndG428": null,
-							"taxonomyNonEligibleShareNAndG429": 61.5,
-							"taxonomyNonEligibleShareNAndG430": 65.94,
-							"taxonomyNonEligibleShareNAndG431": 48.73,
-							"taxonomyNonEligibleShareOtherActivities": 51.8,
-							"taxonomyNonEligibleShare": 14.96
-						},
-						"dataSource": {
-							"page": "936",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "technologies",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": null
-					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 79.81,
-							"taxonomyNonEligibleShareNAndG427": null,
-							"taxonomyNonEligibleShareNAndG428": 85.89,
-							"taxonomyNonEligibleShareNAndG429": 99.06,
-							"taxonomyNonEligibleShareNAndG430": 51.95,
-							"taxonomyNonEligibleShareNAndG431": null,
-							"taxonomyNonEligibleShareOtherActivities": null,
-							"taxonomyNonEligibleShare": 39.28
-						},
-						"dataSource": {
-							"page": "326",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
-							"publicationDate": null
-						},
-						"comment": "quantify back-end capacitor",
-						"quality": null
-					}
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Steuber and Sons",
-			"headquarters": "Castle Rock",
-			"headquartersPostalCode": "14864",
-			"sector": "schemas",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"IgqR52AjCAJh",
-					"nlKQO5o8Asdf"
-				],
-				"PermId": [
-					"Y29UJHaszT"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "LI",
-			"companyContactDetails": [
-				"Melba.Johnston@example.com",
-				"Dallas_Casper25@example.com",
-				"Chaim80@example.com"
-			],
-			"companyAlternativeNames": [
-				"Koepp, Corkery and Carter",
-				"Ratke and Sons"
-			],
-			"companyLegalForm": null,
-			"website": "https://equatorial-cheetah.info/",
-			"fiscalYearEnd": "10-Jun",
-			"isTeaserCompany": false,
-			"parentCompanyLei": null
-		},
-		"t": {
-			"general": {
-				"general": {
-					"referencedReports": {
-						"ESEFReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": null,
-							"publicationDate": null
-						}
-					},
-					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "5-69",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "input optical panel",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "832, 977-1025",
+							"page": "344",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
 							"publicationDate": null
 						},
-						"comment": null,
-						"quality": null
-					},
-					"nuclearEnergyRelatedActivitiesSection428": null,
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1108, 1281-1293",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "compress back-end matrix",
+						"comment": "input digital hard drive",
 						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection430": null,
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "851",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "infrastructures",
-							"publicationDate": null
-						},
-						"comment": "navigate wireless panel",
-						"quality": null
-					}
-				},
-				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 56.4,
-								"mitigation": 78.56,
-								"adaptation": 32.81
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 21.04,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 58.44,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 37.08,
-								"mitigation": 45.99,
-								"adaptation": 19.08
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 65.99,
-								"mitigation": null,
-								"adaptation": 35.33
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 9.85,
-								"adaptation": 7.77
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 86.97,
-								"mitigation": null,
-								"adaptation": 17.51
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 10.33,
-								"mitigation": 28.66,
-								"adaptation": 93.99
-							}
-						},
-						"dataSource": {
-							"page": "195, 356-396",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
-							"publicationDate": null
-						},
-						"comment": "reboot optical firewall",
-						"quality": "Audited"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
-						"value": {
-							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": 52.21
-							},
-							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 58.48,
-								"mitigation": 99.66,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 60.01,
-								"mitigation": 3.85,
-								"adaptation": 45.96
-							},
-							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 76.73,
-								"mitigation": 15.05,
-								"adaptation": 43.1
-							},
-							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 57.56,
-								"adaptation": 16.41
-							},
-							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 61.72,
-								"mitigation": 60.67,
-								"adaptation": 76.28
-							},
-							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 25.58,
-								"mitigation": 69.83,
-								"adaptation": 5.14
-							},
-							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 77.28,
-								"mitigation": null,
-								"adaptation": 93.25
-							}
-						},
-						"dataSource": {
-							"page": "1083",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "navigate haptic firewall",
-						"quality": null
 					}
 				},
 				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": null,
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 38.13,
+								"mitigation": 44.95,
+								"adaptation": 65.39
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 27.52,
+								"mitigation": 87.74,
+								"adaptation": 79.8
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 77.63,
+								"mitigation": 15.27,
+								"adaptation": 93.37
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 45.56,
+								"mitigation": 22.96,
+								"adaptation": 57.16
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 87.69,
+								"mitigation": 57.87,
+								"adaptation": 64.76
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 50.85,
+								"mitigation": 53.53,
+								"adaptation": 25.14
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 81.4,
+								"adaptation": 93.69
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 26.92,
+								"mitigation": 46.37,
+								"adaptation": 91.41
+							}
+						},
+						"dataSource": {
+							"page": "85-1008",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "transmit online port",
+						"quality": "Incomplete"
+					},
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": null,
 						"dataSource": {
-							"page": "237-493",
+							"page": "980, 1196-1206",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "infrastructures",
+							"tagName": "paradigms",
 							"publicationDate": null
 						},
-						"comment": "reboot auxiliary pixel",
-						"quality": null
+						"comment": "input 1080p protocol",
+						"quality": "Reported"
 					}
 				},
 				"taxonomyEligibleButNotAligned": {
 					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": null,
+								"mitigationAndAdaptation": 6.57,
 								"mitigation": null,
-								"adaptation": null
+								"adaptation": 86.96
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 91.32,
-								"mitigation": 94.68,
-								"adaptation": 57.42
+								"mitigationAndAdaptation": 32.9,
+								"mitigation": null,
+								"adaptation": 67.19
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 50.13,
-								"mitigation": 84.17,
-								"adaptation": 76.14
+								"mitigationAndAdaptation": 65.63,
+								"mitigation": null,
+								"adaptation": 35.14
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 8.31,
-								"mitigation": 75.58,
-								"adaptation": 5.82
+								"mitigationAndAdaptation": 52.72,
+								"mitigation": 72.41,
+								"adaptation": 75.68
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 28.22,
-								"adaptation": 39.36
+								"mitigationAndAdaptation": 8.26,
+								"mitigation": 40.53,
+								"adaptation": 16.29
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 43.47,
-								"mitigation": 14.8,
-								"adaptation": 33.5
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 63.65,
-								"mitigation": null,
-								"adaptation": 43.27
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 93.79,
-								"adaptation": 67.99
-							}
-						},
-						"dataSource": null,
-						"comment": "hack haptic bandwidth",
-						"quality": "Estimated"
-					},
-					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 63.77,
-								"mitigation": null,
-								"adaptation": 65.51
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 97.29,
-								"adaptation": 69.54
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 54.89,
-								"mitigation": 78.76,
-								"adaptation": 43.3
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 80.76,
-								"adaptation": 42.04
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 90.54,
-								"mitigation": 60.77,
-								"adaptation": 38.53
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 88.05,
-								"mitigation": 99.39,
-								"adaptation": 79.97
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 1.31,
-								"mitigation": null,
+								"mitigationAndAdaptation": 54.37,
+								"mitigation": 79.85,
 								"adaptation": null
 							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 44.3,
+								"mitigation": 60.53,
+								"adaptation": 83.84
+							},
 							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 32.19,
-								"mitigation": 88.13,
-								"adaptation": 70.43
-							}
-						},
-						"dataSource": null,
-						"comment": "override virtual circuit",
-						"quality": "NoDataFound"
-					}
-				},
-				"taxonomyNonEligible": {
-					"nuclearAndGasTaxonomyNonEligibleRevenue": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 32.03,
-							"taxonomyNonEligibleShareNAndG427": null,
-							"taxonomyNonEligibleShareNAndG428": 21.2,
-							"taxonomyNonEligibleShareNAndG429": null,
-							"taxonomyNonEligibleShareNAndG430": 71.24,
-							"taxonomyNonEligibleShareNAndG431": null,
-							"taxonomyNonEligibleShareOtherActivities": 87.27,
-							"taxonomyNonEligibleShare": 78.69
-						},
-						"dataSource": {
-							"page": "665-908",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "reboot online transmitter",
-						"quality": null
-					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 50.34,
-							"taxonomyNonEligibleShareNAndG427": null,
-							"taxonomyNonEligibleShareNAndG428": 13.58,
-							"taxonomyNonEligibleShareNAndG429": null,
-							"taxonomyNonEligibleShareNAndG430": 72.7,
-							"taxonomyNonEligibleShareNAndG431": null,
-							"taxonomyNonEligibleShareOtherActivities": 87.26,
-							"taxonomyNonEligibleShare": 77.37
-						},
-						"dataSource": {
-							"page": "376-600",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "initiatives",
-							"publicationDate": null
-						},
-						"comment": "quantify 1080p sensor",
-						"quality": "Audited"
-					}
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Haley LLC",
-			"headquarters": "Bothell",
-			"headquartersPostalCode": "76891-5334",
-			"sector": "communities",
-			"identifiers": {
-				"Lei": [
-					"Smzv2UB5jFdO1pgIrf9U"
-				],
-				"Isin": [
-					"hcY1N68vTPhy"
-				],
-				"PermId": [],
-				"Ticker": [
-					"v3JaiNU"
-				],
-				"Duns": [
-					"JAoqDe028"
-				],
-				"VatNumber": [
-					"hCK3W8bmC"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BH",
-			"companyContactDetails": [
-				"Juliet_Lesch8@example.com"
-			],
-			"companyAlternativeNames": [
-				"Feil LLC",
-				"Labadie LLC",
-				"Schuppe Inc",
-				"Zulauf, Lowe and Swaniawski"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://squiggly-mainstream.org",
-			"fiscalYearEnd": "09-Feb",
-			"isTeaserCompany": false,
-			"parentCompanyLei": null
-		},
-		"t": {
-			"general": {
-				"general": {
-					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": null,
-							"publicationDate": null
-						},
-						"ESEFReport": {
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"fileName": null,
-							"publicationDate": null
-						}
-					},
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "851-1037",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "channels",
-							"publicationDate": null
-						},
-						"comment": "bypass redundant monitor",
-						"quality": "Estimated"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "822-1060",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "connect bluetooth application",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": {
-							"page": "607, 996-1025",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
-							"publicationDate": null
-						},
-						"comment": "quantify multi-byte port",
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "907, 1088-1119",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "quantify optical interface",
-						"quality": "Estimated"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
-						"dataSource": {
-							"page": "415, 1122-1161",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "paradigms",
-							"publicationDate": null
-						},
-						"comment": "input primary protocol",
-						"quality": null
-					}
-				},
-				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
-					"nuclearAndGasTaxonomyAlignedCapexDenominator": null
-				},
-				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 4.38,
-								"mitigation": 41.4,
-								"adaptation": 24.07
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 47.48,
-								"adaptation": 7.87
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 46.15,
-								"adaptation": 61.56
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 75.74,
-								"mitigation": null,
-								"adaptation": 53.28
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 68.64,
-								"mitigation": null,
-								"adaptation": 14.2
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 30.59,
-								"mitigation": null,
-								"adaptation": 34.97
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 94.16,
-								"adaptation": 27.15
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 23.28,
-								"mitigation": 10.58,
-								"adaptation": 7.57
+								"mitigationAndAdaptation": 56.75,
+								"mitigation": 65.34,
+								"adaptation": 15.58
 							}
 						},
 						"dataSource": {
-							"page": "820-1025",
+							"page": "590",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "navigate redundant microchip",
-						"quality": "Audited"
+						"comment": "synthesize digital sensor",
+						"quality": "Incomplete"
 					},
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 50.81,
-								"mitigation": 13.45,
-								"adaptation": 77.61
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 53.9,
-								"mitigation": 75.92,
-								"adaptation": 31.11
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 81.9,
-								"mitigation": 55.92,
-								"adaptation": 84.12
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 2.05,
-								"mitigation": 64.41,
-								"adaptation": 0.22
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 8.48,
-								"mitigation": null,
-								"adaptation": 66.91
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 33.03,
-								"mitigation": 26.66,
-								"adaptation": 41.76
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 18.68,
-								"mitigation": 74.96,
-								"adaptation": 98.24
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 34.01,
-								"adaptation": 10.7
-							}
-						},
-						"dataSource": {
-							"page": "987-1188",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "solutions",
-							"publicationDate": null
-						},
-						"comment": "synthesize open-source hard drive",
-						"quality": "Reported"
-					}
-				},
-				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": null,
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 93.37,
-								"mitigation": 84.71,
+								"mitigationAndAdaptation": 75.15,
+								"mitigation": 97.41,
 								"adaptation": null
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 75.14,
-								"mitigation": null,
-								"adaptation": 24.79
+								"mitigationAndAdaptation": 69.77,
+								"mitigation": 20.45,
+								"adaptation": 89.86
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 13.71,
-								"adaptation": 8.43
+								"mitigationAndAdaptation": 76.11,
+								"mitigation": null,
+								"adaptation": 6.06
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 65.77,
-								"mitigation": null,
-								"adaptation": null
+								"mitigationAndAdaptation": 25.58,
+								"mitigation": 84.41,
+								"adaptation": 52.81
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 26.62,
-								"mitigation": 56.06,
-								"adaptation": null
+								"mitigationAndAdaptation": 35.9,
+								"mitigation": 91.8,
+								"adaptation": 75.2
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 57.03,
-								"mitigation": 39.07,
-								"adaptation": 75.24
+								"mitigationAndAdaptation": 76.32,
+								"mitigation": 38,
+								"adaptation": 64.87
 							},
 							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 6.72,
-								"mitigation": 69.78,
-								"adaptation": 18.95
+								"mitigationAndAdaptation": 92.86,
+								"mitigation": 62.57,
+								"adaptation": 47.68
 							},
 							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 80.44,
-								"mitigation": null,
-								"adaptation": null
+								"mitigationAndAdaptation": 39.8,
+								"mitigation": 8.14,
+								"adaptation": 0.02
 							}
 						},
-						"dataSource": null,
-						"comment": "navigate primary capacitor",
+						"dataSource": {
+							"page": "674",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "architectures",
+							"publicationDate": null
+						},
+						"comment": "copy wireless application",
 						"quality": "NoDataFound"
 					}
 				},
@@ -2871,337 +2163,23 @@
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
 							"taxonomyNonEligibleShareNAndG426": null,
-							"taxonomyNonEligibleShareNAndG427": 74.97,
-							"taxonomyNonEligibleShareNAndG428": null,
-							"taxonomyNonEligibleShareNAndG429": 47.55,
-							"taxonomyNonEligibleShareNAndG430": 73.83,
-							"taxonomyNonEligibleShareNAndG431": 15.76,
-							"taxonomyNonEligibleShareOtherActivities": 71.81,
-							"taxonomyNonEligibleShare": 85.22
+							"taxonomyNonEligibleShareNAndG427": 35.91,
+							"taxonomyNonEligibleShareNAndG428": 42.82,
+							"taxonomyNonEligibleShareNAndG429": 13.61,
+							"taxonomyNonEligibleShareNAndG430": 14.7,
+							"taxonomyNonEligibleShareNAndG431": 81.79,
+							"taxonomyNonEligibleShareOtherActivities": 88.88,
+							"taxonomyNonEligibleShare": 60.26
 						},
 						"dataSource": {
-							"page": "507-1267",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "infrastructures",
-							"publicationDate": null
-						},
-						"comment": "transmit back-end port",
-						"quality": null
-					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 37.77,
-							"taxonomyNonEligibleShareNAndG427": 11.79,
-							"taxonomyNonEligibleShareNAndG428": 38.11,
-							"taxonomyNonEligibleShareNAndG429": 69.11,
-							"taxonomyNonEligibleShareNAndG430": 59.62,
-							"taxonomyNonEligibleShareNAndG431": 83.81,
-							"taxonomyNonEligibleShareOtherActivities": 63.1,
-							"taxonomyNonEligibleShare": 0.88
-						},
-						"dataSource": {
-							"page": "1099-1242",
+							"page": "738-1104",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "override 1080p application",
-						"quality": "NoDataFound"
-					}
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Leuschke - Donnelly",
-			"headquarters": "La Crosse",
-			"headquartersPostalCode": null,
-			"sector": "AI",
-			"identifiers": {
-				"Lei": [
-					"AiAzKZIAOtHivbiwficM"
-				],
-				"Isin": [
-					"r2qIMI5plAP1"
-				],
-				"PermId": [],
-				"Ticker": [
-					"9pugiM1"
-				],
-				"Duns": [
-					"hdeEJ8WlS"
-				],
-				"VatNumber": [
-					"UnU59GDyV"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BY",
-			"companyContactDetails": [
-				"Alan_Schumm@example.com",
-				"Ansel.Padberg53@example.com",
-				"Alejandro.Botsford@example.com"
-			],
-			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://brisk-commercial.com",
-			"fiscalYearEnd": "24-Nov",
-			"isTeaserCompany": false,
-			"parentCompanyLei": "Smzv2UB5jFdO1pgIrf9U"
-		},
-		"t": {
-			"general": {
-				"general": {
-					"referencedReports": {
-						"AnnualReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": null,
-							"publicationDate": null
-						}
-					},
-					"nuclearEnergyRelatedActivitiesSection426": null,
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": "No",
-						"dataSource": {
-							"page": "850",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
-							"publicationDate": null
-						},
-						"comment": "calculate redundant alarm",
-						"quality": "Reported"
-					},
-					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": null,
-						"dataSource": {
-							"page": "364, 1122-1126",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Reported"
-					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": "No",
-						"dataSource": null,
-						"comment": "transmit auxiliary firewall",
-						"quality": "NoDataFound"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": null,
-						"dataSource": {
-							"page": "842, 1279-1304",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "synergies",
+							"tagName": "methodologies",
 							"publicationDate": null
 						},
 						"comment": null,
 						"quality": null
-					},
-					"fossilGasRelatedActivitiesSection431": null
-				},
-				"taxonomyAlignedDenominator": {
-					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
-						"value": null,
-						"dataSource": {
-							"page": "216, 1078-1103",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "interfaces",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Audited"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexDenominator": null
-				},
-				"taxonomyAlignedNumerator": {
-					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 99.82,
-								"adaptation": 83.86
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 99.47,
-								"mitigation": 70.6,
-								"adaptation": 86.42
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 2.93,
-								"mitigation": 44.5,
-								"adaptation": 78.93
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 34.95,
-								"mitigation": 42.42,
-								"adaptation": 5.78
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 52.61,
-								"mitigation": 9.85,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 14.83,
-								"mitigation": 73.96,
-								"adaptation": 60.26
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 15.09,
-								"mitigation": 41.26,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 13.21,
-								"mitigation": 10.61,
-								"adaptation": 89.71
-							}
-						},
-						"dataSource": {
-							"page": "1033-1102",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "index redundant driver",
-						"quality": "Audited"
-					},
-					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
-						"value": {
-							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 21.94,
-								"mitigation": 89.79,
-								"adaptation": 68.45
-							},
-							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 4.03,
-								"mitigation": 99.72,
-								"adaptation": 0.53
-							},
-							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 94.43,
-								"mitigation": 34.44,
-								"adaptation": null
-							},
-							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 9.78,
-								"mitigation": null,
-								"adaptation": 98.86
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 36.06,
-								"adaptation": 96.51
-							},
-							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 3.66,
-								"mitigation": 20.03,
-								"adaptation": 75.55
-							},
-							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 8.6,
-								"mitigation": 48.89,
-								"adaptation": 29.92
-							},
-							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": null,
-								"mitigation": null,
-								"adaptation": null
-							}
-						},
-						"dataSource": {
-							"page": "484, 1201-1226",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "hack optical interface",
-						"quality": "Reported"
-					}
-				},
-				"taxonomyEligibleButNotAligned": {
-					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": null,
-					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
-						"value": {
-							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 96.37,
-								"mitigation": 49.07,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 94.92,
-								"mitigation": 80.47,
-								"adaptation": null
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 20.61,
-								"adaptation": 87.84
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 34.35,
-								"adaptation": 66.39
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 20.46,
-								"mitigation": 50.07,
-								"adaptation": 30.16
-							},
-							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 53.6,
-								"adaptation": 13.55
-							},
-							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 83.84,
-								"mitigation": 71.49,
-								"adaptation": 93.14
-							},
-							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 95.54,
-								"mitigation": 76.12,
-								"adaptation": 31.36
-							}
-						},
-						"dataSource": null,
-						"comment": "quantify solid state driver",
-						"quality": null
-					}
-				},
-				"taxonomyNonEligible": {
-					"nuclearAndGasTaxonomyNonEligibleRevenue": {
-						"value": {
-							"taxonomyNonEligibleShareNAndG426": 13.33,
-							"taxonomyNonEligibleShareNAndG427": 54.92,
-							"taxonomyNonEligibleShareNAndG428": 83.91,
-							"taxonomyNonEligibleShareNAndG429": 67.35,
-							"taxonomyNonEligibleShareNAndG430": 82.92,
-							"taxonomyNonEligibleShareNAndG431": 86.54,
-							"taxonomyNonEligibleShareOtherActivities": 16.52,
-							"taxonomyNonEligibleShare": null
-						},
-						"dataSource": {
-							"page": "109",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "experiences",
-							"publicationDate": null
-						},
-						"comment": null,
-						"quality": "Reported"
 					},
 					"nuclearAndGasTaxonomyNonEligibleCapex": null
 				}
@@ -3211,41 +2189,41 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Gulgowski - Tremblay",
-			"headquarters": "Bountiful",
-			"headquartersPostalCode": "81946",
-			"sector": "systems",
+			"companyName": "Reynolds - Schuster",
+			"headquarters": "North Sheilafurt",
+			"headquartersPostalCode": "37890",
+			"sector": "applications",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"E2BeYxkqWFMEYgJ8nlKQ"
+				],
 				"Isin": [
-					"tBrGI56q5JG2",
-					"VNQGarTlx818"
+					"5o8AsdfIgqR5",
+					"2AjCAJhXsY29"
 				],
 				"PermId": [],
 				"Ticker": [
-					"13GU4IY"
+					"6ykEX9G"
 				],
 				"Duns": [
-					"IJQVELJ9e"
+					"wamppYwf6"
 				],
-				"VatNumber": [
-					"zgMM5f8kO"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"qm5xV0mY3uaUbw4"
+					"c6oNxuP6t5mvC3s"
 				]
 			},
-			"countryCode": "PN",
-			"companyContactDetails": null,
+			"countryCode": "SX",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Roob - Morar",
-				"Skiles LLC"
+				"Bashirian - Kuphal",
+				"Hahn - Dare"
 			],
-			"companyLegalForm": "GmbH",
-			"website": null,
-			"fiscalYearEnd": "25-Jan",
+			"companyLegalForm": "AG",
+			"website": "https://jumbo-shadowbox.org/",
+			"fiscalYearEnd": "14-May",
 			"isTeaserCompany": false,
-			"parentCompanyLei": "AiAzKZIAOtHivbiwficM"
+			"parentCompanyLei": "PIUiAhVGajm7Z3FBBhQf"
 		},
 		"t": {
 			"general": {
@@ -3255,9 +2233,721 @@
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": null,
 							"publicationDate": null
+						}
+					},
+					"nuclearEnergyRelatedActivitiesSection426": {
+						"value": null,
+						"dataSource": {
+							"page": "837",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "interfaces",
+							"publicationDate": null
 						},
+						"comment": "reboot wireless array",
+						"quality": "Estimated"
+					},
+					"nuclearEnergyRelatedActivitiesSection427": {
+						"value": "No",
+						"dataSource": {
+							"page": "234",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "back up primary bandwidth",
+						"quality": "Audited"
+					},
+					"nuclearEnergyRelatedActivitiesSection428": null,
+					"fossilGasRelatedActivitiesSection429": {
+						"value": null,
+						"dataSource": {
+							"page": "679, 1075-1085",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "quantify neural firewall",
+						"quality": null
+					},
+					"fossilGasRelatedActivitiesSection430": null,
+					"fossilGasRelatedActivitiesSection431": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "802, 1136-1146",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "mindshare",
+							"publicationDate": null
+						},
+						"comment": "quantify multi-byte circuit",
+						"quality": "Estimated"
+					}
+				},
+				"taxonomyAlignedDenominator": {
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
+					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+						"value": {
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaptation": 7.72,
+								"mitigation": 18.92,
+								"adaptation": 85.02
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaptation": 36.09,
+								"mitigation": 21.41,
+								"adaptation": 9.98
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 60.84,
+								"adaptation": 72.03
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 95.67,
+								"adaptation": 75.75
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": 8.92,
+								"mitigation": null,
+								"adaptation": 83.91
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": 94.11,
+								"mitigation": 55.32,
+								"adaptation": 21.78
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": 66.14,
+								"mitigation": null,
+								"adaptation": 21.18
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaptation": 98.51,
+								"mitigation": 3.84,
+								"adaptation": 89.59
+							}
+						},
+						"dataSource": {
+							"page": "130",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "web services",
+							"publicationDate": null
+						},
+						"comment": "generate mobile interface",
+						"quality": "Audited"
+					}
+				},
+				"taxonomyAlignedNumerator": {
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": null,
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 36.61,
+								"mitigation": 90.55,
+								"adaptation": 72.85
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 48.07,
+								"mitigation": null,
+								"adaptation": 47.23
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 40.17,
+								"mitigation": 57.78,
+								"adaptation": 15.44
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 72.12,
+								"mitigation": null,
+								"adaptation": 16.81
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 25.6,
+								"mitigation": 83.22,
+								"adaptation": 22.25
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": 78.66,
+								"mitigation": 97.92,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 71.99,
+								"mitigation": 97.72,
+								"adaptation": 71.15
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 62.85,
+								"mitigation": 72.83,
+								"adaptation": null
+							}
+						},
+						"dataSource": {
+							"page": "289-832",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
+						},
+						"comment": "bypass optical transmitter",
+						"quality": null
+					}
+				},
+				"taxonomyEligibleButNotAligned": {
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 19.54,
+								"mitigation": 15.75,
+								"adaptation": 1.5
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 88.19,
+								"mitigation": 92.05,
+								"adaptation": 98.05
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 62.61,
+								"mitigation": 81.86,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 28,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 17.21,
+								"mitigation": 47.77,
+								"adaptation": 22.63
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 62.58,
+								"adaptation": 77.61
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 14.36,
+								"adaptation": 81.22
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 3.25,
+								"mitigation": 62.94,
+								"adaptation": 24.6
+							}
+						},
+						"dataSource": {
+							"page": "353",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "generate back-end microchip",
+						"quality": "Estimated"
+					},
+					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 80.96,
+								"mitigation": 9.44,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 0.39,
+								"mitigation": 45.42,
+								"adaptation": 87.15
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 48.2,
+								"mitigation": 52.79,
+								"adaptation": 91.38
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 17.89,
+								"mitigation": 84.4,
+								"adaptation": 22.24
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 54.04,
+								"mitigation": 92.24,
+								"adaptation": 28.92
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 34.91,
+								"mitigation": 68.42,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 58.24,
+								"mitigation": 0.34,
+								"adaptation": 5.73
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 29.19,
+								"mitigation": 75.15,
+								"adaptation": 74.17
+							}
+						},
+						"dataSource": {
+							"page": "635-769",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "synthesize digital pixel",
+						"quality": "NoDataFound"
+					}
+				},
+				"taxonomyNonEligible": {
+					"nuclearAndGasTaxonomyNonEligibleRevenue": null,
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 31.92,
+							"taxonomyNonEligibleShareNAndG427": 3.65,
+							"taxonomyNonEligibleShareNAndG428": null,
+							"taxonomyNonEligibleShareNAndG429": 6.68,
+							"taxonomyNonEligibleShareNAndG430": 49.31,
+							"taxonomyNonEligibleShareNAndG431": 74.84,
+							"taxonomyNonEligibleShareOtherActivities": 7.16,
+							"taxonomyNonEligibleShare": null
+						},
+						"dataSource": {
+							"page": "1057, 1255-1265",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": "quantify digital capacitor",
+						"quality": "Estimated"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nader - Carroll",
+			"headquarters": "Pollichstead",
+			"headquartersPostalCode": "98467-0329",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"HCJfC13PMBbWjAT6FLFT"
+				],
+				"Isin": [
+					"9vjlsAaxSmzv"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"N68vTPhyj"
+				],
+				"VatNumber": [
+					"G0Ofc9lPU"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AR",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Weissnat Group"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"fiscalYearEnd": "23-Apr",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "E2BeYxkqWFMEYgJ8nlKQ"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"referencedReports": {
 						"AnnualReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": null,
+							"publicationDate": null
+						},
+						"SustainabilityReport": {
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"fileName": null,
+							"publicationDate": null
+						}
+					},
+					"nuclearEnergyRelatedActivitiesSection426": {
+						"value": "No",
+						"dataSource": {
+							"page": "281-430",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "supply-chains",
+							"publicationDate": null
+						},
+						"comment": "synthesize redundant array",
+						"quality": null
+					},
+					"nuclearEnergyRelatedActivitiesSection427": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "562-1041",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "users",
+							"publicationDate": null
+						},
+						"comment": "parse redundant protocol",
+						"quality": "Audited"
+					},
+					"nuclearEnergyRelatedActivitiesSection428": {
+						"value": null,
+						"dataSource": {
+							"page": "653, 1025-1035",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "Estimated"
+					},
+					"fossilGasRelatedActivitiesSection429": null,
+					"fossilGasRelatedActivitiesSection430": {
+						"value": "No",
+						"dataSource": {
+							"page": "377",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "override wireless matrix",
+						"quality": "Incomplete"
+					},
+					"fossilGasRelatedActivitiesSection431": {
+						"value": "No",
+						"dataSource": null,
+						"comment": null,
+						"quality": null
+					}
+				},
+				"taxonomyAlignedDenominator": {
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
+					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+						"value": {
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaptation": 94.89,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 62.58,
+								"adaptation": 43.94
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaptation": 63.07,
+								"mitigation": 82.47,
+								"adaptation": 63.01
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": 52.9,
+								"mitigation": 12.32,
+								"adaptation": 16.18
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 17.22
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": 22.64,
+								"mitigation": 80.98,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": 67.95,
+								"mitigation": 81.06,
+								"adaptation": 6.18
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaptation": 91.82,
+								"mitigation": 79.63,
+								"adaptation": 77.55
+							}
+						},
+						"dataSource": {
+							"page": "154, 758-768",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "large language models",
+							"publicationDate": null
+						},
+						"comment": "input virtual array",
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyAlignedNumerator": {
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 97.37,
+								"mitigation": 8.39,
+								"adaptation": 77.81
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 85.39
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 86.75,
+								"mitigation": 1.78,
+								"adaptation": 90.35
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 52.08,
+								"mitigation": 51.72,
+								"adaptation": 41.12
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 97.82,
+								"mitigation": 31.23,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 4.38,
+								"adaptation": 41.4
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": 24.07,
+								"mitigation": null,
+								"adaptation": 47.48
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 7.87,
+								"mitigation": null,
+								"adaptation": 46.15
+							}
+						},
+						"dataSource": {
+							"page": "545-627",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "NoDataFound"
+					},
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": null
+				},
+				"taxonomyEligibleButNotAligned": {
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 7.83,
+								"adaptation": 72.52
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 35.05,
+								"mitigation": 64.36,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 43.85,
+								"mitigation": 63.06,
+								"adaptation": 91.03
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 6.68,
+								"mitigation": null,
+								"adaptation": 98.45
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 27.76,
+								"mitigation": 59.68,
+								"adaptation": 51.9
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 28.97,
+								"mitigation": null,
+								"adaptation": 90.21
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 46.86,
+								"mitigation": 35.31,
+								"adaptation": 64.11
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 83.69,
+								"mitigation": 27.97,
+								"adaptation": 80.38
+							}
+						},
+						"dataSource": {
+							"page": "280, 712-722",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "partnerships",
+							"publicationDate": null
+						},
+						"comment": "input mobile driver",
+						"quality": "Estimated"
+					},
+					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 46.63,
+								"mitigation": 96.19,
+								"adaptation": 9.76
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 4.52,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 65.3,
+								"mitigation": 49.71,
+								"adaptation": 74.09
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 31.23,
+								"mitigation": 93.9,
+								"adaptation": 16.88
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 14.16,
+								"mitigation": 29.51,
+								"adaptation": 91.16
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 61.65,
+								"mitigation": 76.01,
+								"adaptation": 10.7
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 93.37,
+								"adaptation": 84.71
+							}
+						},
+						"dataSource": {
+							"page": "790-1183",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "applications",
+							"publicationDate": null
+						},
+						"comment": null,
+						"quality": "Audited"
+					}
+				},
+				"taxonomyNonEligible": {
+					"nuclearAndGasTaxonomyNonEligibleRevenue": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 1.62,
+							"taxonomyNonEligibleShareNAndG427": 49.18,
+							"taxonomyNonEligibleShareNAndG428": 50.06,
+							"taxonomyNonEligibleShareNAndG429": 19.62,
+							"taxonomyNonEligibleShareNAndG430": 42.13,
+							"taxonomyNonEligibleShareNAndG431": 52.51,
+							"taxonomyNonEligibleShareOtherActivities": null,
+							"taxonomyNonEligibleShare": 81.83
+						},
+						"dataSource": {
+							"page": "898-1144",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "input solid state driver",
+						"quality": "Audited"
+					},
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 74.51,
+							"taxonomyNonEligibleShareNAndG427": 23.36,
+							"taxonomyNonEligibleShareNAndG428": null,
+							"taxonomyNonEligibleShareNAndG429": 74.97,
+							"taxonomyNonEligibleShareNAndG430": null,
+							"taxonomyNonEligibleShareNAndG431": 47.55,
+							"taxonomyNonEligibleShareOtherActivities": 73.83,
+							"taxonomyNonEligibleShare": 15.76
+						},
+						"dataSource": {
+							"page": "961",
+							"fileName": null,
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "networks",
+							"publicationDate": null
+						},
+						"comment": "transmit open-source driver",
+						"quality": "Incomplete"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ruecker, Hintz and Blick",
+			"headquarters": "Lake Ashlee",
+			"headquartersPostalCode": "83221-2588",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"05w5jdhRsIje",
+					"cbCgAo4ovLNZ"
+				],
+				"PermId": [],
+				"Ticker": [
+					"a5sxeVc"
+				],
+				"Duns": [
+					"sksu5Vjb1"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"HivbiwficMFr2qI"
+				]
+			},
+			"countryCode": "PM",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Howe Inc"
+			],
+			"companyLegalForm": null,
+			"website": "https://rough-consistency.net/",
+			"fiscalYearEnd": "22-Aug",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "HCJfC13PMBbWjAT6FLFT"
+		},
+		"t": {
+			"general": {
+				"general": {
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": null,
 							"publicationDate": null
 						}
@@ -3265,73 +2955,56 @@
 					"nuclearEnergyRelatedActivitiesSection426": {
 						"value": null,
 						"dataSource": {
-							"page": "993-1076",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "large language models",
-							"publicationDate": null
-						},
-						"comment": "back up multi-byte driver",
-						"quality": "Audited"
-					},
-					"nuclearEnergyRelatedActivitiesSection427": {
-						"value": null,
-						"dataSource": {
-							"page": "703-980",
+							"page": "1044-1176",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "deliverables",
+							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "synthesize open-source driver",
-						"quality": "Audited"
+						"comment": "quantify auxiliary alarm",
+						"quality": "Reported"
+					},
+					"nuclearEnergyRelatedActivitiesSection427": {
+						"value": "No",
+						"dataSource": {
+							"page": "972-1259",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
+						},
+						"comment": "transmit bluetooth matrix",
+						"quality": "Reported"
 					},
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": "No",
-						"dataSource": {
-							"page": "366-374",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "program haptic pixel",
-						"quality": "Reported"
+						"dataSource": null,
+						"comment": "quantify digital hard drive",
+						"quality": "Incomplete"
 					},
-					"fossilGasRelatedActivitiesSection429": {
-						"value": null,
-						"dataSource": {
-							"page": "332",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "systems",
-							"publicationDate": null
-						},
-						"comment": "synthesize mobile transmitter",
-						"quality": null
-					},
+					"fossilGasRelatedActivitiesSection429": null,
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "245",
+							"page": "421",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "technologies",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
 							"publicationDate": null
 						},
-						"comment": null,
-						"quality": "Audited"
+						"comment": "navigate optical circuit",
+						"quality": "NoDataFound"
 					},
 					"fossilGasRelatedActivitiesSection431": {
-						"value": null,
+						"value": "Yes",
 						"dataSource": {
-							"page": "837",
+							"page": "1187, 1214-1224",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "schemas",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "AI",
 							"publicationDate": null
 						},
-						"comment": null,
+						"comment": "parse redundant capacitor",
 						"quality": "Estimated"
 					}
 				},
@@ -3339,54 +3012,54 @@
 					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 94.41,
-								"mitigation": 58.05,
-								"adaptation": 25.46
+								"mitigationAndAdaptation": 84.21,
+								"mitigation": 18.77,
+								"adaptation": 65.92
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 87.39,
-								"mitigation": 12.29,
-								"adaptation": 71.18
+								"mitigationAndAdaptation": 91.03,
+								"mitigation": 18.73,
+								"adaptation": 40.67
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 37.56,
-								"mitigation": 19.35,
-								"adaptation": 86.83
+								"mitigationAndAdaptation": 25.31,
+								"mitigation": null,
+								"adaptation": 30.29
 							},
 							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 95.69,
-								"mitigation": 73.86,
-								"adaptation": 61.05
+								"mitigationAndAdaptation": null,
+								"mitigation": 6.55,
+								"adaptation": 32.38
 							},
 							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 42.73,
-								"mitigation": 16.89,
-								"adaptation": 16.88
+								"mitigationAndAdaptation": 93.62,
+								"mitigation": 93.03,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 88.42,
-								"mitigation": 43.47,
-								"adaptation": 95.25
+								"mitigationAndAdaptation": null,
+								"mitigation": 4.44,
+								"adaptation": 10.01
 							},
 							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 6.91,
+								"mitigationAndAdaptation": 37.29,
 								"mitigation": null,
-								"adaptation": 87.34
+								"adaptation": null
 							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 13.66,
-								"mitigation": 94.8,
-								"adaptation": null
+								"mitigationAndAdaptation": 11.94,
+								"mitigation": 86.44,
+								"adaptation": 80.89
 							}
 						},
 						"dataSource": {
-							"page": "258-696",
+							"page": "185",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "niches",
+							"tagName": "paradigms",
 							"publicationDate": null
 						},
-						"comment": "copy mobile pixel",
+						"comment": "back up primary interface",
 						"quality": "Incomplete"
 					},
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": null
@@ -3395,108 +3068,108 @@
 					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": null,
-								"mitigation": 39.39,
-								"adaptation": 55.17
+								"mitigationAndAdaptation": 70.89,
+								"mitigation": 0.61,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 53.5,
-								"mitigation": 14.99,
-								"adaptation": 2.11
+								"mitigationAndAdaptation": null,
+								"mitigation": 17.96,
+								"adaptation": 78.21
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 27.56,
-								"mitigation": 3.68,
+								"mitigationAndAdaptation": 49.51,
+								"mitigation": 20.08,
 								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 61.52,
-								"mitigation": 47.16,
-								"adaptation": 70.59
-							},
-							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 12,
-								"mitigation": 26.8,
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
 								"adaptation": null
 							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 32.88,
+								"mitigation": null,
+								"adaptation": 10.21
+							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 57.72,
-								"mitigation": 27.12,
-								"adaptation": 67.64
+								"mitigationAndAdaptation": 51.77,
+								"mitigation": 35.77,
+								"adaptation": 33.6
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 67.25,
-								"mitigation": 38.53,
-								"adaptation": 34.93
+								"mitigationAndAdaptation": 40.27,
+								"mitigation": 72.98,
+								"adaptation": 18.98
 							},
 							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 9.29,
-								"mitigation": 42.95,
-								"adaptation": 77.6
+								"mitigationAndAdaptation": 3.9,
+								"mitigation": 15.84,
+								"adaptation": 5.84
 							}
 						},
 						"dataSource": {
-							"page": "433-628",
+							"page": "1150, 1277-1287",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "relationships",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
 							"publicationDate": null
 						},
-						"comment": null,
-						"quality": null
+						"comment": "synthesize haptic system",
+						"quality": "NoDataFound"
 					},
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 88.08,
-								"mitigation": 99.09,
-								"adaptation": 64.97
+								"mitigationAndAdaptation": 43.41,
+								"mitigation": 50.66,
+								"adaptation": 62.52
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 70.68,
-								"mitigation": null,
+								"mitigationAndAdaptation": 69.24,
+								"mitigation": 91.38,
 								"adaptation": null
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 35.59,
-								"mitigation": 30.27,
-								"adaptation": 72.89
+								"mitigationAndAdaptation": null,
+								"mitigation": 1.37,
+								"adaptation": 12.53
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 10.5,
-								"mitigation": 11.77,
-								"adaptation": 24.29
+								"mitigationAndAdaptation": 93.97,
+								"mitigation": 40.71,
+								"adaptation": 25.06
 							},
 							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 74.46,
-								"mitigation": 43.32,
-								"adaptation": null
+								"mitigationAndAdaptation": 88.7,
+								"mitigation": null,
+								"adaptation": 86.32
 							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 97.79,
-								"mitigation": 13.25,
-								"adaptation": 5.34
+								"mitigationAndAdaptation": 74.57,
+								"mitigation": 41.35,
+								"adaptation": 53.86
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 87.87,
-								"mitigation": null,
-								"adaptation": 68.85
+								"mitigationAndAdaptation": null,
+								"mitigation": 83.83,
+								"adaptation": null
 							},
 							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 60.66,
+								"mitigationAndAdaptation": 61.13,
 								"mitigation": null,
-								"adaptation": 65
+								"adaptation": 99.52
 							}
 						},
 						"dataSource": {
-							"page": "462, 1145-1175",
+							"page": "182-656",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "networks",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "technologies",
 							"publicationDate": null
 						},
-						"comment": "reboot open-source circuit",
-						"quality": null
+						"comment": null,
+						"quality": "Incomplete"
 					}
 				},
 				"taxonomyEligibleButNotAligned": {
@@ -3506,29 +3179,402 @@
 				"taxonomyNonEligible": {
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": 96.04,
-							"taxonomyNonEligibleShareNAndG427": null,
-							"taxonomyNonEligibleShareNAndG428": 59.91,
-							"taxonomyNonEligibleShareNAndG429": 91.28,
-							"taxonomyNonEligibleShareNAndG430": 69.7,
-							"taxonomyNonEligibleShareNAndG431": 55.27,
-							"taxonomyNonEligibleShareOtherActivities": null,
-							"taxonomyNonEligibleShare": null
+							"taxonomyNonEligibleShareNAndG426": 19.38,
+							"taxonomyNonEligibleShareNAndG427": 85.88,
+							"taxonomyNonEligibleShareNAndG428": 66.56,
+							"taxonomyNonEligibleShareNAndG429": null,
+							"taxonomyNonEligibleShareNAndG430": 52.61,
+							"taxonomyNonEligibleShareNAndG431": 65.37,
+							"taxonomyNonEligibleShareOtherActivities": 36.22,
+							"taxonomyNonEligibleShare": 77.12
 						},
 						"dataSource": {
-							"page": "1141, 1265-1302",
+							"page": "1163, 1198-1208",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "large language models",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "smart contracts",
 							"publicationDate": null
 						},
-						"comment": null,
-						"quality": "Reported"
+						"comment": "synthesize virtual alarm",
+						"quality": "Estimated"
 					},
-					"nuclearAndGasTaxonomyNonEligibleCapex": null
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 80.47,
+							"taxonomyNonEligibleShareNAndG427": null,
+							"taxonomyNonEligibleShareNAndG428": null,
+							"taxonomyNonEligibleShareNAndG429": 20.61,
+							"taxonomyNonEligibleShareNAndG430": 87.84,
+							"taxonomyNonEligibleShareNAndG431": null,
+							"taxonomyNonEligibleShareOtherActivities": 34.35,
+							"taxonomyNonEligibleShare": 66.39
+						},
+						"dataSource": {
+							"page": "1006, 1076-1086",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "metrics",
+							"publicationDate": null
+						},
+						"comment": "input virtual bandwidth",
+						"quality": "Reported"
+					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Abbott - Hills",
+			"headquarters": "East Miguelboro",
+			"headquartersPostalCode": "45513-2292",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"PEsPs2zy2OAx"
+				],
+				"PermId": [
+					"n3XC3cBkUx"
+				],
+				"Ticker": [
+					"sywP589"
+				],
+				"Duns": [
+					"cDho2o1Uo"
+				],
+				"VatNumber": [
+					"C4RWDUpJr"
+				],
+				"CompanyRegistrationNumber": [
+					"nTghpvNdKzBr7NK"
+				]
+			},
+			"countryCode": "SY",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Dach, Heidenreich and Bahringer",
+				"Huels - Waters"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"fiscalYearEnd": "20-Apr",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"general": {
+				"general": {
+					"referencedReports": {
+						"ESEFReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": null,
+							"publicationDate": null
+						}
+					},
+					"nuclearEnergyRelatedActivitiesSection426": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "487",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
+						},
+						"comment": "back up online card",
+						"quality": null
+					},
+					"nuclearEnergyRelatedActivitiesSection427": {
+						"value": null,
+						"dataSource": {
+							"page": "1056, 1210-1220",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "initiatives",
+							"publicationDate": null
+						},
+						"comment": "bypass back-end panel",
+						"quality": "NoDataFound"
+					},
+					"nuclearEnergyRelatedActivitiesSection428": null,
+					"fossilGasRelatedActivitiesSection429": {
+						"value": null,
+						"dataSource": {
+							"page": "821",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "quantify online driver",
+						"quality": "Audited"
+					},
+					"fossilGasRelatedActivitiesSection430": null,
+					"fossilGasRelatedActivitiesSection431": null
+				},
+				"taxonomyAlignedDenominator": {
+					"nuclearAndGasTaxonomyAlignedRevenueDenominator": null,
+					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
+						"value": {
+							"taxonomyAlignedShareDenominatorNAndG426": {
+								"mitigationAndAdaptation": 43.59,
+								"mitigation": 75.88,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareDenominatorNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 92.08,
+								"adaptation": 6.89
+							},
+							"taxonomyAlignedShareDenominatorNAndG428": {
+								"mitigationAndAdaptation": 90.1,
+								"mitigation": 89.51,
+								"adaptation": 99.95
+							},
+							"taxonomyAlignedShareDenominatorNAndG429": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 34.48,
+								"adaptation": 13.3
+							},
+							"taxonomyAlignedShareDenominatorNAndG430": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 79.65
+							},
+							"taxonomyAlignedShareDenominatorNAndG431": {
+								"mitigationAndAdaptation": 80.12,
+								"mitigation": null,
+								"adaptation": 77.02
+							},
+							"taxonomyAlignedShareDenominatorOtherActivities": {
+								"mitigationAndAdaptation": 44.01,
+								"mitigation": 94.04,
+								"adaptation": 90.76
+							},
+							"taxonomyAlignedShareDenominator": {
+								"mitigationAndAdaptation": 18.47,
+								"mitigation": 91.67,
+								"adaptation": null
+							}
+						},
+						"dataSource": {
+							"page": "328-492",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "blockchains",
+							"publicationDate": null
+						},
+						"comment": "synthesize primary matrix",
+						"quality": "Incomplete"
+					}
+				},
+				"taxonomyAlignedNumerator": {
+					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+						"value": {
+							"taxonomyAlignedShareNumeratorNAndG426": {
+								"mitigationAndAdaptation": 32.44,
+								"mitigation": null,
+								"adaptation": 48.01
+							},
+							"taxonomyAlignedShareNumeratorNAndG427": {
+								"mitigationAndAdaptation": 86.07,
+								"mitigation": null,
+								"adaptation": 45.45
+							},
+							"taxonomyAlignedShareNumeratorNAndG428": {
+								"mitigationAndAdaptation": 58.01,
+								"mitigation": 90.1,
+								"adaptation": 97.49
+							},
+							"taxonomyAlignedShareNumeratorNAndG429": {
+								"mitigationAndAdaptation": 58.17,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyAlignedShareNumeratorNAndG430": {
+								"mitigationAndAdaptation": 83.85,
+								"mitigation": 92.38,
+								"adaptation": 44.84
+							},
+							"taxonomyAlignedShareNumeratorNAndG431": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 75.51,
+								"adaptation": 12.95
+							},
+							"taxonomyAlignedShareNumeratorOtherActivities": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 46.97,
+								"adaptation": 42.38
+							},
+							"taxonomyAlignedShareNumerator": {
+								"mitigationAndAdaptation": 19.94,
+								"mitigation": 71.85,
+								"adaptation": 7.61
+							}
+						},
+						"dataSource": {
+							"page": "1059, 1309-1319",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "parse wireless monitor",
+						"quality": "Reported"
+					},
+					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
+						"value": null,
+						"dataSource": null,
+						"comment": "hack multi-byte matrix",
+						"quality": "NoDataFound"
+					}
+				},
+				"taxonomyEligibleButNotAligned": {
+					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": null,
+								"mitigation": null,
+								"adaptation": 84.03
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 81.09,
+								"adaptation": 3.55
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 30.93,
+								"mitigation": 96.45,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 91.97,
+								"mitigation": null,
+								"adaptation": 13.02
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 39.01,
+								"mitigation": 79.04,
+								"adaptation": 71.52
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 29.27,
+								"mitigation": 81.22,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 50.43,
+								"mitigation": 61.21,
+								"adaptation": 85.84
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": null,
+								"mitigation": 59.7,
+								"adaptation": 22.4
+							}
+						},
+						"dataSource": {
+							"page": "634",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
+						},
+						"comment": "navigate wireless sensor",
+						"quality": "Incomplete"
+					},
+					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+						"value": {
+							"taxonomyEligibleButNotAlignedShareNAndG426": {
+								"mitigationAndAdaptation": 70.68,
+								"mitigation": null,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG427": {
+								"mitigationAndAdaptation": 35.59,
+								"mitigation": 30.27,
+								"adaptation": 72.89
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG428": {
+								"mitigationAndAdaptation": 10.5,
+								"mitigation": 11.77,
+								"adaptation": 24.29
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG429": {
+								"mitigationAndAdaptation": 74.46,
+								"mitigation": 43.32,
+								"adaptation": null
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG430": {
+								"mitigationAndAdaptation": 97.79,
+								"mitigation": 13.25,
+								"adaptation": 5.34
+							},
+							"taxonomyEligibleButNotAlignedShareNAndG431": {
+								"mitigationAndAdaptation": 87.87,
+								"mitigation": null,
+								"adaptation": 68.85
+							},
+							"taxonomyEligibleButNotAlignedShareOtherActivities": {
+								"mitigationAndAdaptation": 60.66,
+								"mitigation": null,
+								"adaptation": 65
+							},
+							"taxonomyEligibleButNotAlignedShare": {
+								"mitigationAndAdaptation": 79.28,
+								"mitigation": 8.56,
+								"adaptation": 38.46
+							}
+						},
+						"dataSource": {
+							"page": "143-160",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "reboot solid state alarm",
+						"quality": "Audited"
+					}
+				},
+				"taxonomyNonEligible": {
+					"nuclearAndGasTaxonomyNonEligibleRevenue": {
+						"value": null,
+						"dataSource": {
+							"page": "154",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "initiatives",
+							"publicationDate": null
+						},
+						"comment": "program haptic port",
+						"quality": "NoDataFound"
+					},
+					"nuclearAndGasTaxonomyNonEligibleCapex": {
+						"value": {
+							"taxonomyNonEligibleShareNAndG426": 74.71,
+							"taxonomyNonEligibleShareNAndG427": 91.77,
+							"taxonomyNonEligibleShareNAndG428": 76.32,
+							"taxonomyNonEligibleShareNAndG429": null,
+							"taxonomyNonEligibleShareNAndG430": 49.33,
+							"taxonomyNonEligibleShareNAndG431": 75.3,
+							"taxonomyNonEligibleShareOtherActivities": 4.03,
+							"taxonomyNonEligibleShare": null
+						},
+						"dataSource": {
+							"page": "612",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "transmit cross-platform firewall",
+						"quality": "Incomplete"
+					}
+				}
+			}
+		},
+		"reportingPeriod": "2023"
 	}
 ]
