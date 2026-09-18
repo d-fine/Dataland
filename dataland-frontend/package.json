@@ -32,7 +32,7 @@
     "@ibm/plex": "^6.4.1",
     "@primeuix/themes": "^2.0.3",
     "@primevue/core": "^4.5.5",
-    "@tanstack/vue-query": "^5.101.4",
+    "@tanstack/vue-query": "^5.103.1",
     "@vueuse/core": "^14.4.0",
     "axios": "1.16.1",
     "currency-codes": "^2.2.0",
@@ -46,7 +46,7 @@
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
     "vue": "^3.5.43",
-    "vue-router": "^5.2.0"
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
     "@cypress/code-coverage": "4.0.3",
