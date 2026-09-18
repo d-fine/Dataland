@@ -74,41 +74,48 @@ describeIf(
     let uploadedDocumentMetaInfo: DocumentMetaInfoEntity;
 
     before(function () {
-      cy.fixture<FixtureData<EutaxonomyFinancialsData>[]>(
-        'CompanyInformationWithEutaxonomyFinancialsPreparedFixtures'
-      ).then((rawFixtures) => {
-        preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
-      });
+      let adminToken = '';
+      let documentId = '';
+      let documentControllerApi!: DocumentControllerApi;
 
-      getAdminToken().then((token: string) => {
-        const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
-        return getOrUploadCompanyViaApi(token, testCompany).then((newCompany) => {
+      return cy
+        .fixture<FixtureData<EutaxonomyFinancialsData>[]>('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures')
+        .then((rawFixtures) => {
+          preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
+          return getAdminToken();
+        })
+        .then((token) => {
+          adminToken = token;
+          documentControllerApi = new DocumentControllerApi(new Configuration({ accessToken: token }));
+
+          const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
+
+          return getOrUploadCompanyViaApi(token, testCompany);
+        })
+        .then((newCompany) => {
           storedCompany = newCompany;
+          return cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null);
+        })
+        .then((buffer) => {
+          const arrayBuffer = Uint8Array.from(buffer).buffer;
 
-          cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
-            const arrayBuffer = Uint8Array.from(buffer).buffer;
-            const documentControllerApi = new DocumentControllerApi(new Configuration({ accessToken: token }));
-            return uploadDocumentViaApi(token, arrayBuffer, TEST_PDF_REPORT_FILE_NAME, {
-              documentName: TEST_PDF_REPORT_FILE_NAME,
-              documentCategory: 'Other',
-              companyIds: [] as unknown as Set<string>,
-            }).then((documentMetaInfoResponse) => {
-              // The uploaded document might already exist from an earlier test run (same file content
-              // -> same hash -> 409 conflict). In that case `uploadDocumentViaApi` only returns a
-              // synthetic response containing the `documentId`, without the actual stored `documentName`.
-              // Explicitly (and additively) associate our company with the document regardless of upload
-              // outcome, then fetch the authoritative meta information so we know the real `documentName`
-              // that the Judge Dialog's document dropdown will actually display.
-              return documentControllerApi
-                .patchDocumentMetaInfoCompanyIds(documentMetaInfoResponse.documentId, storedCompany.companyId)
-                .then(() => documentControllerApi.getDocumentMetaInformation(documentMetaInfoResponse.documentId))
-                .then((response) => {
-                  uploadedDocumentMetaInfo = response.data;
-                });
-            });
+          return uploadDocumentViaApi(adminToken, arrayBuffer, TEST_PDF_REPORT_FILE_NAME, {
+            documentName: TEST_PDF_REPORT_FILE_NAME,
+            documentCategory: 'Other',
+            companyIds: [] as unknown as Set<string>,
           });
+        })
+        .then((documentMetaInfoResponse) => {
+          documentId = documentMetaInfoResponse.documentId;
+
+          // The document may already exist because its ID is based on its content hash.
+          // Always associate it with this test company.
+          return documentControllerApi.patchDocumentMetaInfoCompanyIds(documentId, storedCompany.companyId);
+        })
+        .then(() => documentControllerApi.getDocumentMetaInformation(documentId))
+        .then((response) => {
+          uploadedDocumentMetaInfo = response.data;
         });
-      });
     });
 
     beforeEach(() =>
