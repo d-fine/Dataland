@@ -144,19 +144,4 @@ class SecurityUtilsService(
                 false
             }
         }
-
-    /**
-     * Returns true if all passed parameters are null, otherwise false.
-     *
-     * @param parameters A vararg list of function parameters
-     * @return whether any of the provided parameters is not null
-     */
-    fun areAllParametersUnset(vararg parameters: Any?): Boolean =
-        parameters.all {
-            when (it) {
-                is String -> it.isBlank()
-                is Collection<*> -> it.isEmpty()
-                else -> it == null
-            }
-        }
 }
