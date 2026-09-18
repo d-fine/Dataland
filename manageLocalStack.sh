@@ -8,14 +8,12 @@ VERBOSE=false
 export VERBOSE
 source "$project_root/localstack/docker_functions.sh"
 source "$project_root/localstack/env_functions.sh"
-source "$project_root/localstack/cert_functions.sh"
 
 print_usage() {
-  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--self-signed-certs] [--no-container-backend] [--verbose]" >&3
+  echo "Usage: $(basename "$0") [--start] [--stop] [--reset] [--no-container-backend] [--verbose]" >&3
   echo "  --start: Start the development stack" >&3
   echo "  --stop: Stop the development stack" >&3
   echo "  --reset: Reset and restart the development stack from scratch" >&3
-  echo "  --self-signed-certs: Generate and use self-signed SSL certificates instead of retrieving them" >&3
   echo "  --no-container-backend: Run backend without containers" >&3
   echo "  --verbose: Print subcommand output while also writing it to the local stack log" >&3
   echo "" >&3
@@ -44,11 +42,10 @@ start_backend() {
 }
 
 start_development_stack() {
-  local self_signed="$1"
-  local container_backend="$2"
+  local container_backend="$1"
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
-  run_step "Setting up SSL certificates" setup_certificates "$self_signed"
+  run_step "Setting up SSL certificates" generate_self_signed_certificates
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
   run_step "Loading generated GitHub environment" source_github_env_log
@@ -95,9 +92,23 @@ assemble_all_projects() {
   ./gradlew assemble dataland-frontend:npmInstall dataland-website:npmBuild
 }
 
-reset_development_stack() {
-  local self_signed="$1"
+generate_self_signed_certificates() {
+  mkdir -p ./local/certs
 
+  if [[ -f ./local/certs/privkey.pem ]] && [[ -f ./local/certs/fullchain.pem ]]; then
+    log_info "Self-signed SSL certificates already exist. Skipping generation."
+    return 0
+  fi
+
+  MSYS_NO_PATHCONV=1 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+    -keyout ./local/certs/privkey.pem \
+    -out ./local/certs/fullchain.pem \
+    -subj "/C=DE/ST=Hessen/L=Frankfurt/O=DatalandTest/CN=local-dev.dataland.com"
+  cp ./local/certs/fullchain.pem ./local/certs/cert.pem
+  cp ./local/certs/fullchain.pem ./local/certs/chain.pem
+}
+
+reset_development_stack() {
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
   check_backend_not_running
   log_step "Clearing Docker state"
@@ -117,8 +128,7 @@ parse_arguments() {
   local do_stop=false
   local do_reset=false
   local do_start=false
-  
-  local self_signed=false
+
   local container_backend=true
 
   load_dev_environment
@@ -144,10 +154,6 @@ parse_arguments() {
         do_start=true
         shift
         ;;
-      --self-signed-certs)
-        self_signed=true
-        shift
-        ;;
       --no-container-backend)
         container_backend=false
         shift
@@ -170,11 +176,11 @@ parse_arguments() {
   fi
 
   if [[ "$do_reset" = true ]]; then
-    reset_development_stack "$self_signed"
+    reset_development_stack
   fi
 
   if [[ "$do_start" = true ]]; then
-    start_development_stack "$self_signed" "$container_backend"
+    start_development_stack "$container_backend"
   fi
 }
 
