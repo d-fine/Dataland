@@ -53,14 +53,7 @@ const tabs = ref<Array<TabInfo>>([
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
   { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
-  { id: 'my-data-requests-legacy', label: 'MY DATA REQUESTS LEGACY', route: '/requests-legacy', isVisible: true },
   { id: 'all-data-requests', label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
-  {
-    id: 'all-data-requests-legacy',
-    label: 'ALL DATA REQUESTS LEGACY',
-    route: '/requestoverview-legacy',
-    isVisible: false,
-  },
 ]);
 
 const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || tab.id === currentTabId.value));
@@ -156,7 +149,6 @@ function setVisibilityForAdminTab(): void {
   checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
     .then((hasUserAdminRights) => {
       getTabById('all-data-requests').isVisible = hasUserAdminRights;
-      getTabById('all-data-requests-legacy').isVisible = hasUserAdminRights;
     })
     .catch((error) => console.log(error));
 }

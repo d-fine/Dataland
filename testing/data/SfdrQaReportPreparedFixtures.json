@@ -2,37 +2,33 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Mertieboro",
+			"headquarters": "West Lorrainechester",
 			"headquartersPostalCode": null,
-			"sector": "platforms",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"bRuAtENXnD9CDs4b7egj"
+					"qW1G5QzJSOoRa7wafrVG"
 				],
 				"Isin": [
-					"yiP6eUmWfQYZ",
-					"QBDYbnCrZuZp"
+					"ofCBfsHHOUeQ",
+					"VxKMeudtbIYe"
 				],
-				"PermId": [],
-				"Ticker": [
-					"4xde8Zr"
+				"PermId": [
+					"SJDQXCI0Py"
 				],
+				"Ticker": [],
 				"Duns": [
-					"aU69fkdH8"
+					"cmN9DmVCa"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ohQh6oilRlMfBs0"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FO",
-			"companyContactDetails": null,
-			"companyAlternativeNames": [
-				"Klein-West and Sons"
-			],
-			"companyLegalForm": null,
-			"website": "https://fuzzy-stool.info",
-			"fiscalYearEnd": "24-Jul",
+			"countryCode": "BW",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://unlawful-premeditation.org",
+			"fiscalYearEnd": "11-Feb",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -49,6 +45,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

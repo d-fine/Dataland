@@ -10,8 +10,6 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.CompanyRolesTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
-import org.dataland.e2etests.utils.communityManager.assertErrorCodeInCommunityManagerClientException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -84,7 +82,7 @@ class CompanyRolesControllerTest {
             assertThrows<ClientException> {
                 companyRolesTestUtils.hasUserCompanyRole(CompanyRole.CompanyOwner, firstCompanyId, dataReaderUserId)
             }
-        assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         companyRolesTestUtils.assertAccessDeniedWhenUploadingFrameworkData(firstCompanyId, frameworkSampleData, false)
@@ -157,7 +155,7 @@ class CompanyRolesControllerTest {
                     dataReaderUserId,
                 )
             }
-        assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
     }
 
     @Test
@@ -169,25 +167,26 @@ class CompanyRolesControllerTest {
             assertThrows<ClientException> {
                 companyRolesTestUtils.assignCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
             }
-        assertAccessDeniedResponseBodyInCommunityManagerClientException(postCompanyOwnerExceptionBecauseOfMissingRights)
+        companyRolesTestUtils
+            .assertAccessDeniedResponseBodyInCommunityManagerClientException(postCompanyOwnerExceptionBecauseOfMissingRights)
 
         val deleteExceptionBecauseOfMissingRights =
             assertThrows<ClientException> {
                 companyRolesTestUtils.removeCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
             }
-        assertAccessDeniedResponseBodyInCommunityManagerClientException(deleteExceptionBecauseOfMissingRights)
+        companyRolesTestUtils.assertAccessDeniedResponseBodyInCommunityManagerClientException(deleteExceptionBecauseOfMissingRights)
 
         val expectedClientExceptionWhenCallingHeadEndpoint =
             assertThrows<ClientException> {
                 companyRolesTestUtils.hasUserCompanyRole(CompanyRole.CompanyOwner, companyId, dataReaderUserId)
             }
-        assertErrorCodeInCommunityManagerClientException(expectedClientExceptionWhenCallingHeadEndpoint, 403)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(expectedClientExceptionWhenCallingHeadEndpoint, 403)
 
         val expectedClientExceptionWhenCallingGetCompanyOwnersEndpoint =
             assertThrows<ClientException> {
                 companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.CompanyOwner, companyId = companyId)
             }
-        assertErrorCodeInCommunityManagerClientException(
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(
             expectedClientExceptionWhenCallingGetCompanyOwnersEndpoint,
             403,
         )
@@ -252,7 +251,7 @@ class CompanyRolesControllerTest {
             assertThrows<ClientException> {
                 apiAccessor.companyRolesControllerApi.hasCompanyAtLeastOneOwner(companyId)
             }
-        assertErrorCodeInCommunityManagerClientException(headExceptionForNonExistingCompanyOwners, 404)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(headExceptionForNonExistingCompanyOwners, 404)
     }
 
     @Test
@@ -275,7 +274,7 @@ class CompanyRolesControllerTest {
                 assertThrows<ClientException> {
                     companyRolesTestUtils.hasUserCompanyRole(it, companyId, dataUploaderUserId)
                 }
-            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+            companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
         }
     }
 
@@ -301,7 +300,7 @@ class CompanyRolesControllerTest {
                 assertThrows<ClientException> {
                     companyRolesTestUtils.hasUserCompanyRole(it, companyId, dataUploaderUserId)
                 }
-            assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
+            companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenCheckingIfUserIsCompanyOwner, 404)
         }
 
         rolesThatCannotBeModified.forEach {
@@ -310,7 +309,7 @@ class CompanyRolesControllerTest {
                 assertThrows<ClientException> {
                     companyRolesTestUtils.assignCompanyRole(it, companyId, dataUploaderUserId)
                 }
-            assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
+            companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToAddCompanyMembers, 403)
         }
     }
 
@@ -365,12 +364,12 @@ class CompanyRolesControllerTest {
             assertThrows<ClientException> {
                 companyRolesTestUtils.getCompanyRoleAssignments(CompanyRole.Analyst, companyId = companyIdAlpha)
             }
-        assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToGetCompanyRoles, 403)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToGetCompanyRoles, 403)
         val exceptionWhenTryingToCheckCompanyRoles =
             assertThrows<ClientException> {
                 companyRolesTestUtils.hasUserCompanyRole(CompanyRole.DataUploader, companyIdAlpha, dataUploaderUserId)
             }
-        assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
+        companyRolesTestUtils.assertErrorCodeInCommunityManagerClientException(exceptionWhenTryingToCheckCompanyRoles, 403)
     }
 
     @Test

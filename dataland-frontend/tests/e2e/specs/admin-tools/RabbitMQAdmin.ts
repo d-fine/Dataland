@@ -23,10 +23,8 @@ const queues = [
   'user-service.processMessageForAvailableDataAndUpdates',
   'qa-service.processNonSourceabilitySubmission',
   'data-sourcing-service.processNonSourceabilitySubmission',
-  'community-manager.processNonSourceabilitySubmission',
   'backend.processNonSourceabilityQaDecision',
   'data-sourcing-service.processNonSourceabilityQaDecision',
-  'community-manager.processNonSourceabilityQaDecision',
 ];
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);

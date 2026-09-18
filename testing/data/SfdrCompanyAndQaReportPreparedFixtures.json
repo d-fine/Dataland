@@ -2,41 +2,44 @@
 	{
 		"preparedFixture": {
 			"companyInformation": {
-				"companyName": "Sipes, Kirlin and Bosco",
-				"headquarters": "Schuppefort",
-				"headquartersPostalCode": "18426",
-				"sector": "lifetime value",
+				"companyName": "Wisoky, Gutkowski and Hoeger",
+				"headquarters": "Lake Arno",
+				"headquartersPostalCode": "46024",
+				"sector": "architectures",
 				"identifiers": {
-					"Lei": [],
+					"Lei": [
+						"iL8IVlWdfUaQc4egP4OE"
+					],
 					"Isin": [
-						"L0zn10XfubHL"
+						"DV6CZZP3FyPl",
+						"BTm8ktn2lkbm"
 					],
 					"PermId": [
-						"lcT2icAR8a"
+						"8fAS2DJlOj"
 					],
 					"Ticker": [
-						"ejwdcli"
+						"YKAEyv0"
 					],
 					"Duns": [
-						"XDUUKKAjT"
+						"UasAz7axy"
 					],
 					"VatNumber": [
-						"nVnRGVG3J"
+						"8DjnV42JG"
 					],
 					"CompanyRegistrationNumber": [
-						"HvsivysQiJCdQ80"
+						"ZFznQMYffOkR8Sz"
 					]
 				},
-				"countryCode": "LA",
+				"countryCode": "IT",
 				"companyContactDetails": [
-					"Wendy4@example.com"
+					"Abby_Lindgren58@example.com"
 				],
 				"companyAlternativeNames": [
-					"Schowalter, Mertz and Treutel"
+					"Wilkinson Group"
 				],
-				"companyLegalForm": "AG",
-				"website": "https://crazy-case.biz",
-				"fiscalYearEnd": "10-Jun",
+				"companyLegalForm": "GmbH & Co. KG",
+				"website": "https://excited-blowgun.name",
+				"fiscalYearEnd": "14-Jun",
 				"isTeaserCompany": false
 			},
 			"t": {
@@ -50,6 +53,11 @@
 							"value": "2024-12-31"
 						},
 						"referencedReports": {
+							"ESEFReport": {
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"fileName": null,
+								"publicationDate": null
+							},
 							"IntegratedReport": {
 								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 								"fileName": null,
@@ -61,16 +69,16 @@
 				"social": {
 					"humanRights": {
 						"numberOfReportedIncidentsOfHumanRightsViolations": {
-							"value": 5155,
+							"value": 2038,
 							"dataSource": {
-								"page": "485-518",
+								"page": "640",
 								"fileName": null,
 								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-								"tagName": "lifetime value",
+								"tagName": "AI",
 								"publicationDate": null
 							},
-							"comment": "back up multi-byte driver",
-							"quality": "NoDataFound"
+							"comment": "quantify mobile transmitter",
+							"quality": "Reported"
 						}
 					}
 				},
@@ -84,14 +92,14 @@
 						"biodiversityProtectionPolicy": {
 							"value": "Yes",
 							"dataSource": {
-								"page": "510",
+								"page": "121-238",
 								"fileName": null,
-								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-								"tagName": "niches",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+								"tagName": "functionalities",
 								"publicationDate": null
 							},
-							"comment": "copy digital card",
-							"quality": "Estimated"
+							"comment": "index back-end bandwidth",
+							"quality": "Audited"
 						}
 					}
 				}

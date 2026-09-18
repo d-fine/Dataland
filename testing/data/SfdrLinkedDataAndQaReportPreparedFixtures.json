@@ -2,20 +2,20 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-12-11",
+				"dataDate": "2024-09-19",
 				"fiscalYearDeviation": {
 					"value": "NoDeviation"
 				},
 				"fiscalYearEnd": {
-					"value": "2024-10-04"
+					"value": "2024-06-24"
 				},
 				"referencedReports": {
-					"ESEFReport": {
+					"IntegratedReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"fileName": null,
 						"publicationDate": null
 					},
-					"IntegratedReport": {
+					"AnnualReport": {
 						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 						"fileName": null,
 						"publicationDate": null
@@ -26,16 +26,16 @@
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 5437,
+					"value": 3279,
 					"dataSource": {
-						"page": "129",
+						"page": "477-598",
 						"fileName": null,
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "e-commerce",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "content",
 						"publicationDate": null
 					},
-					"comment": "connect solid state interface",
-					"quality": "NoDataFound"
+					"comment": "synthesize virtual bandwidth",
+					"quality": "Reported"
 				}
 			}
 		},
@@ -44,26 +44,26 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "324",
+						"page": "272-1220",
 						"fileName": null,
 						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "models",
+						"tagName": "markets",
 						"publicationDate": null
 					},
-					"comment": "program digital microchip",
+					"comment": "synthesize online application",
 					"quality": "NoDataFound"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "No",
 					"dataSource": {
-						"page": "1041-1126",
+						"page": "510-576",
 						"fileName": null,
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "partnerships",
+						"tagName": "niches",
 						"publicationDate": null
 					},
-					"comment": "connect haptic port",
-					"quality": "Incomplete"
+					"comment": "back up optical matrix",
+					"quality": "NoDataFound"
 				}
 			}
 		}
