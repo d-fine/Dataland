@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
-import org.dataland.e2etests.utils.communityManager.assertErrorCodeInCommunityManagerClientException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
@@ -67,6 +66,17 @@ class CompanyRolesTestUtils {
 
     fun uploadEuTaxoDataWithBypassQa(companyId: UUID) {
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(companyId.toString(), frameworkSampleData, "2021", true)
+    }
+
+    fun assertErrorCodeInCommunityManagerClientException(
+        communityManagerClientException: ClientException,
+        expectedErrorCode: Number,
+    ) {
+        assertEquals("Client error : $expectedErrorCode ", communityManagerClientException.message)
+    }
+
+    fun assertAccessDeniedResponseBodyInCommunityManagerClientException(communityManagerClientException: ClientException) {
+        assertErrorCodeInCommunityManagerClientException(communityManagerClientException, 403)
     }
 
     fun assertCompanyNotFoundResponseBodyInCommunityManagerClientException(
