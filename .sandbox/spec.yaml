@@ -18,6 +18,7 @@ permissions:
       - "raw.githubusercontent.com:443"
       - "github.com:443"
       - "download-cdn.jetbrains.com:443"
+      - "download.jetbrains.com:443"
       - "resources.jetbrains.com:443"
       - "deb.debian.org:443"
 
