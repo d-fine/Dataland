@@ -4,11 +4,9 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -66,17 +64,17 @@ class CommunityManagerListener(
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        logger.info("Received data QA completed message for dataset with ID $dataId")
+        logger.info("Received data QA completed message for dataset with ID $dataId (correlation ID: $id)")
         if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
-            logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
+            logger.info(
+                "Dataset with ID $dataId was not accepted and request matching is cancelled (correlation ID: $id)",
+            )
             return
         }
         MessageQueueUtils.rejectMessageOnException {
-
             investorRelationsManager.saveNotificationEventForInvestorRelationsEmails(
                 dataId = dataId,
             )
         }
     }
-
 }

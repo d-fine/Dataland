@@ -28,7 +28,6 @@ class ApiClients(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 
-
     /**
      * Creates an auto-authenticated version of the DocumentControllerApi of the document manager.
      * Uses the patient (long-timeout) OkHttp client because batch metadata requests for large

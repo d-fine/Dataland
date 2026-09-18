@@ -14,7 +14,6 @@ describe('Component tests for the company info sheet', function (): void {
 
   let companyInformationForTest: CompanyInformation;
 
-
   before(function () {
     cy.fixture('CompanyInformationWithLksgData').then(function (jsonContent) {
       companyInformationForTest = (jsonContent as Array<FixtureData<LksgData>>)[0].companyInformation;

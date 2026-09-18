@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component
 class CompanyOwnershipAcceptedEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    //@Autowired private val dataRequestQueryManager: DataRequestQueryManager,
 ) {
     /**
      * Function that generates the message object for company ownership request acceptance mails
@@ -37,7 +36,7 @@ class CompanyOwnershipAcceptedEmailMessageBuilder(
         val emailData =
             CompanyOwnershipClaimApprovedEmailContent(
                 companyId = datalandCompanyId,
-                companyName = companyName
+                companyName = companyName,
             )
         val message =
             EmailMessage(

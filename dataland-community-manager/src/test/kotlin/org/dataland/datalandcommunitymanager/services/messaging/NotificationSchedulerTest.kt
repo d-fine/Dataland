@@ -61,7 +61,7 @@ class NotificationSchedulerTest {
         val notificationEventEntity =
             NotificationEventEntity(
                 UUID.randomUUID(),
-                NotificationEventType.AvailableEvent,
+                NotificationEventType.InvestorRelationsEvent,
                 userUUID,
                 false,
                 companyUUID,

@@ -63,7 +63,6 @@ class SecurityUtilsService(
             }
     }
 
-
     /**
      * Returns true if the user is member of the company
      * @param companyId Dataland company ID
@@ -122,9 +121,8 @@ class SecurityUtilsService(
                 ?.companyRole
         val allowedRoles = roleModificationPermissionsMap[userCompanyRole] ?: emptyList()
         return (companyRoleAfterModification == null || allowedRoles.contains(companyRoleAfterModification)) &&
-                (companyRoleBeforeModification == null || allowedRoles.contains(companyRoleBeforeModification))
+            (companyRoleBeforeModification == null || allowedRoles.contains(companyRoleBeforeModification))
     }
-
 
     /**
      * Returns true if the requesting user is company owner
@@ -161,5 +159,4 @@ class SecurityUtilsService(
                 else -> it == null
             }
         }
-
 }
