@@ -56,7 +56,11 @@
       </div>
       <div
         class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+        role="button"
+        tabindex="0"
         @click="toggleShowAll"
+        @keydown.enter="toggleShowAll"
+        @keydown.space.prevent="toggleShowAll"
         style="margin-left: auto"
       >
         <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">

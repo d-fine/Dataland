@@ -11,7 +11,17 @@
     >
       <FormKit type="group" v-for="id in listOfElementIds" :key="id">
         <div :data-test="dataTestSubForm" class="formListSection">
-          <em :data-test="dataTestRemoveButton" @click="removeItem(id)" class="material-icons close-section">close</em>
+          <em
+            :data-test="dataTestRemoveButton"
+            @click="removeItem(id)"
+            @keydown.enter="removeItem(id)"
+            @keydown.space.prevent="removeItem(id)"
+            class="material-icons close-section"
+            role="button"
+            tabindex="0"
+            aria-label="Remove item"
+            >close</em
+          >
           <component :is="subFormComponent" @fieldSpecificDocumentsUpdated="fieldSpecificDocumentsUpdated" />
         </div>
       </FormKit>

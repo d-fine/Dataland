@@ -1,5 +1,5 @@
 <template>
-  <div class="user-menu-container" @click="toggleDropdown">
+  <div class="user-menu-container" @click="toggleDropdown" @keydown="handleUserMenuContainerKeydown">
     <Button data-test="user-profile-toggle" variant="outlined" severity="contrast" rounded icon="pi pi-user" />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>
@@ -44,6 +44,16 @@ const menu = useTemplateRef('menu');
  */
 function toggleDropdown(event: Event): void {
   menu?.value?.toggle(event);
+}
+
+/**
+ * No-op keydown handler for the user menu container. The container only exists to enlarge the clickable
+ * area around the nested, natively keyboard-accessible Button, which already handles Enter/Space itself and
+ * triggers the click handler via event bubbling. This handler exists solely so that the container is
+ * recognized as keyboard-accessible as well, without triggering the toggle a second time.
+ */
+function handleUserMenuContainerKeydown(): void {
+  // Intentionally left blank, see JSDoc above.
 }
 
 /**

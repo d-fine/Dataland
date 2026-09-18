@@ -51,7 +51,16 @@
       <p class="header-styling">Company identifiers in portfolio</p>
       <ul class="list-none overflow-y-auto" id="existing-company-identifiers" style="margin: 0">
         <li v-for="(company, index) in portfolioCompanies" :key="company.companyId">
-          <i class="pi pi-trash" @click="portfolioCompanies.splice(index, 1)" title="Remove company from portfolio" />
+          <i
+            class="pi pi-trash"
+            role="button"
+            tabindex="0"
+            aria-label="Remove company from portfolio"
+            title="Remove company from portfolio"
+            @click="portfolioCompanies.splice(index, 1)"
+            @keydown.enter="portfolioCompanies.splice(index, 1)"
+            @keydown.space.prevent="portfolioCompanies.splice(index, 1)"
+          />
           {{ company.companyName }}
         </li>
       </ul>

@@ -120,7 +120,11 @@
             class="link claim-panel-text"
             style="font-weight: bold"
             data-test="viewDataset"
+            role="button"
+            tabindex="0"
             @click="goToAnsweringDataSetPage()"
+            @keydown.enter="goToAnsweringDataSetPage()"
+            @keydown.space.prevent="goToAnsweringDataSetPage()"
           >
             VIEW DATASET
           </div>
@@ -171,7 +175,11 @@
                 <span
                   v-show="isNewMessageAllowed()"
                   style="cursor: pointer; display: flex; align-items: center"
+                  role="button"
+                  tabindex="0"
                   @click="openMessageDialog()"
+                  @keydown.enter="openMessageDialog()"
+                  @keydown.space.prevent="openMessageDialog()"
                   data-test="newMessage"
                 >
                   <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />

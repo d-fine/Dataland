@@ -48,7 +48,16 @@
           <template v-for="index in companyAlternativeNames.length" :key="index">
             <span class="form-list-item">
               {{ companyAlternativeNames[index - 1] }}
-              <em @click="removeAlternativeName(index)" class="material-icons">close</em>
+              <em
+                @click="removeAlternativeName(index)"
+                @keydown.enter="removeAlternativeName(index)"
+                @keydown.space.prevent="removeAlternativeName(index)"
+                class="material-icons"
+                role="button"
+                tabindex="0"
+                aria-label="Remove alternative name"
+                >close</em
+              >
             </span>
           </template>
 

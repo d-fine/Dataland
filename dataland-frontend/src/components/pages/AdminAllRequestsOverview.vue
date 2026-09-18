@@ -216,7 +216,11 @@
             <span class="paginator-spacer"></span>
           </template>
           <template #paginatorend>
-            <div class="column-selector-container" @click="toggleColumnPopover">
+            <div
+              class="column-selector-container"
+              @click="toggleColumnPopover"
+              @keydown="handleColumnSelectorContainerKeydown"
+            >
               <span class="column-selector-label">Select Columns</span>
               <PrimeButton
                 type="button"
@@ -339,6 +343,16 @@ const columnPopover = ref<InstanceType<typeof Popover> | null>(null);
  */
 function toggleColumnPopover(event: Event): void {
   columnPopover.value?.toggle(event);
+}
+
+/**
+ * No-op keydown handler for the column selector container. The container only exists to enlarge the
+ * clickable area around the nested, natively keyboard-accessible button, which already handles Enter/Space
+ * itself and triggers the click handler via event bubbling. This handler exists solely so that the container
+ * is recognized as keyboard-accessible as well, without triggering the toggle a second time.
+ */
+function handleColumnSelectorContainerKeydown(): void {
+  // Intentionally left blank, see JSDoc above.
 }
 
 /**

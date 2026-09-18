@@ -2,8 +2,12 @@
   <span data-test="chooseFrameworkDropdown" class="p-dropdown-panel" ref="chooseFrameworkDropdown">
     <span
       @click="dropdownExtended = !dropdownExtended"
+      @keydown.enter="dropdownExtended = !dropdownExtended"
+      @keydown.space.prevent="dropdownExtended = !dropdownExtended"
       class="fill-dropdown always-fill"
       :class="dropdownExtended ? 'p-overlay-open' : ''"
+      role="button"
+      tabindex="0"
       :aria-expanded="dropdownExtended"
     >
       <span data-test="chooseFrameworkLabel">

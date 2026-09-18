@@ -19,7 +19,16 @@
             :key="selection"
             class="bordered-box p-3 relative col-12 mb-4"
           >
-            <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
+            <em
+              @click="removeItem(selection)"
+              @keydown.enter="removeItem(selection)"
+              @keydown.space.prevent="removeItem(selection)"
+              class="material-icons gray-closeIcon"
+              role="button"
+              tabindex="0"
+              aria-label="Remove sector"
+              >close</em
+            >
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
             <div class="grid-2-form-cards">
               <FormKit type="group" :name="`NaceCode${selection}`">
