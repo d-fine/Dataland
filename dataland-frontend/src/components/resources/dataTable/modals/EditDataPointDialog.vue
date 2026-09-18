@@ -9,7 +9,7 @@
       icon="pi pi-save"
       @click="updateDataPoint"
       data-test="save-data-point-button"
-      :disabled="buttonDisabled"
+      :disabled="buttonDisabled || !isPageValid"
     />
   </div>
 </template>
@@ -42,7 +42,12 @@ const resolvedComponent = computed<Component | null>(() => {
 });
 const buttonDisabled = ref(false);
 
-const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string }>();
+const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageValid: boolean }>();
+
+/**
+ * Whether the page reference currently entered in the resolved form component is valid.
+ */
+const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
 const extendedDataPointObject: ExtendedDataPointType = {
   value: ((): string | undefined => {

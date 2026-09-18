@@ -27,7 +27,11 @@ describe('As a user I want to have displayed the associated documents for the co
     }).as('fetchDocuments');
   });
 
-  it('displays documents from API in the select dropdown', () => {
+  /**
+   * Mounts the ExtendedDataPointFormFieldDialog with the standard test setup used by all
+   * test cases in this file.
+   */
+  function mountDialog(): void {
     cy.mountWithPlugins(ExtendedDataPointFormFieldDialog, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -38,6 +42,10 @@ describe('As a user I want to have displayed the associated documents for the co
         },
       },
     });
+  }
+
+  it('displays documents from API in the select dropdown', () => {
+    mountDialog();
     cy.wait('@fetchDocuments');
     cy.get('[data-test="page-number-input"]').should('be.disabled');
     cy.get('[data-test="document-select"] .p-select-label').click();
@@ -50,16 +58,7 @@ describe('As a user I want to have displayed the associated documents for the co
   });
 
   it('updates meta information when different documents are selected', () => {
-    cy.mountWithPlugins(ExtendedDataPointFormFieldDialog, {
-      keycloak: minimalKeycloakMock({}),
-      global: {
-        provide: {
-          companyId: dummyCompanyId,
-          dialogRef: { value: { close: cy.stub() } },
-          getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
-        },
-      },
-    });
+    mountDialog();
     cy.wait('@fetchDocuments');
     cy.get('[data-test="document-select"] .p-select-label').click();
     cy.get('.p-select-option-label').contains(mockDocuments[0].documentName).click();
@@ -73,5 +72,18 @@ describe('As a user I want to have displayed the associated documents for the co
     cy.get('.dataland-info-text').should('contain', `Category: ${mockDocuments[1].documentCategory}`);
     cy.get('.dataland-info-text').should('contain', `Publication Date: ${mockDocuments[1].publicationDate}`);
     cy.get('.dataland-info-text').should('contain', `Reporting Period: ${mockDocuments[1].reportingPeriod}`);
+  });
+
+  it('shows a validation error for an invalid page reference and accepts a valid comma-separated page list', () => {
+    mountDialog();
+    cy.wait('@fetchDocuments');
+    cy.get('[data-test="document-select"] .p-select-label').click();
+    cy.get('.p-select-option-label').contains(mockDocuments[0].documentName).click();
+
+    cy.get('[data-test="page-number-input"]').type('5-3');
+    cy.get('[data-test="page-number-error"]').should('exist');
+
+    cy.get('[data-test="page-number-input"]').clear().type('4, 112');
+    cy.get('[data-test="page-number-error"]').should('not.exist');
   });
 });
