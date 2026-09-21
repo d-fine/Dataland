@@ -39,6 +39,33 @@ install_cypress_prerequisites() {
 	npm install -g npm
 }
 
+sandbox_cypress_gui_forwarding() {
+	echo "Install packages needed to forward the Cypress UI (e.g. 'npm run cypress' in dataland-frontend) to the desktop"
+	sudo apt-get -y install x11vnc novnc websockify xauth x11-xserver-utils x11-utils
+
+	local display=":99"
+
+	echo "Persist DISPLAY=$display so future shells (and Cypress) use the virtual display"
+	if ! grep -q "^export DISPLAY=$display" ~/.bashrc; then
+		echo "export DISPLAY=$display" >>~/.bashrc
+	fi
+	export DISPLAY="$display"
+
+	echo "Register auto-recovery of Xvfb/x11vnc/noVNC in ~/.bashrc so it survives sandbox restarts"
+	if ! grep -q "ensureCypressGuiForwarding.sh" ~/.bashrc; then
+		{
+			echo "if [ -f \"$project_root/ensureCypressGuiForwarding.sh\" ]; then"
+			echo "	bash \"$project_root/ensureCypressGuiForwarding.sh\" || true"
+			echo "fi"
+		} >>~/.bashrc
+	fi
+
+	echo "Start Xvfb/x11vnc/noVNC now"
+	bash "$project_root/ensureCypressGuiForwarding.sh"
+
+	echo "Cypress UI will now render on DISPLAY=$display; forward/open port 6080 on your desktop and browse to http://localhost:6080/vnc.html to view it"
+}
+
 update_opencode() {
 	echo "Update OpenCode"
 	opencode upgrade
@@ -75,6 +102,7 @@ initialize_stack() {
 
 install_base_packages
 install_cypress_prerequisites
+sandbox_cypress_gui_forwarding
 install_java
 update_opencode
 set_automatic_sourcing
