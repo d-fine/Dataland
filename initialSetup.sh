@@ -54,14 +54,14 @@ sandbox_cypress_gui_forwarding() {
 	echo "Register auto-recovery of Xvfb/x11vnc/noVNC in ~/.bashrc so it survives sandbox restarts"
 	if ! grep -q "ensureCypressGuiForwarding.sh" ~/.bashrc; then
 		{
-			echo "if [ -f \"$project_root/ensureCypressGuiForwarding.sh\" ]; then"
-			echo "	bash \"$project_root/ensureCypressGuiForwarding.sh\" || true"
+			echo "if [ -f \"$project_root/developer-tools/ensureCypressGuiForwarding.sh\" ]; then"
+			echo "	bash \"$project_root/developer-tools/ensureCypressGuiForwarding.sh\" || true"
 			echo "fi"
 		} >>~/.bashrc
 	fi
 
 	echo "Start Xvfb/x11vnc/noVNC now"
-	bash "$project_root/ensureCypressGuiForwarding.sh"
+	bash "$project_root/developer-tools/ensureCypressGuiForwarding.sh"
 
 	echo "Cypress UI will now render on DISPLAY=$display; forward/open port 6080 on your desktop and browse to http://localhost:6080/vnc.html to view it"
 }
