@@ -3,7 +3,7 @@ import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import { type ParsedSingleDataPoint, removeInferableDocumentFields, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
-  { value: null, quality: null, comment: null, dataSource: { fileName: null, page: null } },
+  { value: null, quality: null, comment: null, dataSource: null },
   null,
   2
 );
