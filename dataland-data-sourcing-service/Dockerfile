@@ -5,4 +5,4 @@ FROM eclipse-temurin:21.0.11_10-jre-alpine@sha256:3f08b13888f595cc49edabea7250ba
 COPY --from=builder /app/dataland-data-sourcing-service/build/libs/dataland-data-sourcing-service-0.0.1-SNAPSHOT.jar /jar/dataland-data-sourcing-service.jar
 CMD ["java","-jar","/jar/dataland-data-sourcing-service.jar"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/data-sourcing/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --start-interval=60s --retries=6 CMD wget -nv -O- -t 1 http://localhost:8080/data-sourcing/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false
