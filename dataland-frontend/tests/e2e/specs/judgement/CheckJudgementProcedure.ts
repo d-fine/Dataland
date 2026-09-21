@@ -222,6 +222,45 @@ describeIf(
         cy.contains('Failed to update data point judgement').should('not.exist');
       });
     });
+
+    it('Check accepting a custom data point copied from a QA-corrected value with a document reference succeeds', () => {
+      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
+
+      const [dataPointType, dataPointId] = Object.entries(overview.dataPointsWithoutQaReports)[0];
+      const correctedValueWithDocReference = JSON.stringify({
+        value: '99',
+        quality: 'Estimated',
+        dataSource: {
+          fileReference: uploadedDocumentMetaInfo.documentId,
+          fileName: null,
+          publicationDate: null,
+          page: '5',
+        },
+      });
+
+      uploadQaReportForDataPoint(
+        dataPointId,
+        tokens.reviewerToken,
+        QaReportDataPointVerdict.QaRejected,
+        correctedValueWithDocReference
+      ).then(() => {
+        createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+          cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
+          cy.get('[data-test="judge-modal"]').should('be.visible');
+
+          cy.get('[data-test="edit-mode-toggle"]').click();
+          cy.get('[data-test="copy-corrected-to-custom"]').click();
+
+          cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(
+            'patchCopiedCorrectedDatapoint'
+          );
+          cy.get('[data-test="accept-custom-button"]').click();
+
+          cy.wait('@patchCopiedCorrectedDatapoint').its('response.statusCode').should('eq', 200);
+          cy.contains('Failed to update data point judgement').should('not.exist');
+        });
+      });
+    });
   }
 );
 

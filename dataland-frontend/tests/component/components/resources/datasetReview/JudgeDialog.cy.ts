@@ -711,6 +711,82 @@ describe('JudgeDialog component tests', () => {
     });
 
     it(
+      'strips the inferable fileName/publicationDate fields when copying an original data point with a ' +
+        'fileReference into the JSON textarea',
+      () => {
+        mountJudgeDialog({
+          originalDataPointBody: {
+            value: 'original-value-with-doc-ref',
+            quality: 'Audited',
+            dataSource: { fileName: null, fileReference: 'ref-original-789', publicationDate: null, page: '3' },
+          },
+        });
+        cy.wait('@getOriginalDataPoint');
+
+        cy.get('[data-test="edit-mode-toggle"]').click();
+        cy.get('[data-test="copy-original-to-custom"]').click();
+
+        cy.get('[data-test="custom-json-textarea"]')
+          .invoke('val')
+          .then((value) => {
+            expect(value as string).to.contain('ref-original-789');
+            expect(value as string).to.not.contain('fileName');
+            expect(value as string).to.not.contain('publicationDate');
+          });
+      }
+    );
+
+    it(
+      'strips the inferable fileName/publicationDate fields when copying a QA-corrected data point with a ' +
+        'fileReference into the JSON textarea',
+      () => {
+        const judgementWithDocRefCorrectedData: DatasetJudgementResponse = {
+          ...baseDatasetJudgement,
+          dataPoints: {
+            ...baseDatasetJudgement.dataPoints,
+            [dataPointTypeId]: {
+              ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+              qaReports: [
+                {
+                  qaReportId: 'qa-report-doc-ref',
+                  verdict: QaReportDataPointVerdict.QaRejected,
+                  correctedData: JSON.stringify({
+                    value: 'corrected-value-with-doc-ref',
+                    quality: 'Estimated',
+                    dataSource: {
+                      fileName: null,
+                      fileReference: 'ref-corrected-789',
+                      publicationDate: null,
+                      page: '7',
+                    },
+                  }),
+                  reporterUserId: reporterUserId1,
+                  uploadTime: 1000,
+                  active: true,
+                  dataPointId: dataPointId,
+                  dataPointType: dataPointTypeId,
+                  comment: 'qa-comment',
+                },
+              ],
+            },
+          },
+        };
+        mountJudgeDialog({ datasetJudgement: judgementWithDocRefCorrectedData });
+
+        cy.get('[data-test="edit-mode-toggle"]').click();
+        cy.get('[data-test="copy-corrected-to-custom"]').click();
+
+        cy.get('[data-test="custom-json-textarea"]')
+          .invoke('val')
+          .then((value) => {
+            expect(value as string).to.contain('ref-corrected-789');
+            expect(value as string).to.not.contain('fileName');
+            expect(value as string).to.not.contain('publicationDate');
+          });
+      }
+    );
+
+    it(
       'copies an Activity-typed (object/array valued) original data point in normal mode and accepts it as custom ' +
         'without double-encoding the value',
       () => {
