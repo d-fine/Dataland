@@ -137,10 +137,8 @@ function getFormData(): ExtendedDataPointMetaInfoType {
     quality: chosenQuality.value ?? undefined,
     comment: insertedComment.value ?? undefined,
     dataSource: {
-      fileName: selectedDocumentMetaInformation.value?.documentName ?? undefined,
       page: insertedPage.value?.trim() || undefined,
       fileReference: selectedDocument.value ?? undefined,
-      publicationDate: selectedDocumentMetaInformation.value?.publicationDate ?? undefined,
     },
   };
 }

@@ -100,9 +100,7 @@ export function buildApiBody(
   if (extendedDataPoint?.dataSource?.fileReference) {
     dataPointObj.dataSource = {
       fileReference: extendedDataPoint.dataSource?.fileReference,
-      fileName: extendedDataPoint.dataSource.fileName,
       page: extendedDataPoint.dataSource?.page ?? undefined,
-      publicationDate: extendedDataPoint.dataSource.publicationDate,
     };
   }
 
