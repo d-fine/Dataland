@@ -140,9 +140,13 @@ open class DataExportService<T>(
     /**
      * Create a ByteStream of the latest available data per company to be used for export from a list of SingleCompanyExportData.
      *
-     * For companies without a latest dataset, any currently-active non-sourceability entry for the requested framework
-     * (across any reporting period) is used to produce a synthetic non-sourceable row instead of silently omitting
-     * the company from the export.
+     * For each company, the "latest" data dimension is determined by comparing the latest real dataset against the
+     * latest active non-sourceability entry (across any reporting period): whichever has the chronologically later
+     * reporting period wins. If both are for the exact same period, the real dataset always wins - a
+     * non-sourceability entry can never override an actually available dataset for that same period. This means a
+     * company's real data can be superseded by a more recent non-sourceability entry, and a company with no real
+     * data at all but an active non-sourceability entry still produces a synthetic non-sourceable row instead of
+     * being silently omitted.
      *
      * @param companyIds the companies for which the latest data is to be exported
      * @param newExportJob correlationId for unique identification
@@ -157,24 +161,64 @@ open class DataExportService<T>(
         exportOptions: ExportOptions,
     ) = runExportJob(newExportJob) {
         val correlationId = newExportJob.id.toString()
-        val dataDimensionsWithDataStrings = getLatestPlainData(companyIds, exportOptions.dataType.toString(), correlationId)
+        val realDataDimensions = getLatestPlainData(companyIds, exportOptions.dataType.toString(), correlationId)
 
-        val missingCompanyIds = companyIds.toSet() - dataDimensionsWithDataStrings.keys.map { it.companyId }.toSet()
-        val nonSourceableGapDimensions =
-            if (missingCompanyIds.isEmpty()) {
+        val nonSourceableDimensionsPerCompany =
+            if (companyIds.isEmpty()) {
                 emptySet()
             } else {
                 selectLatestNonSourceableDimensionPerCompany(
                     nonSourceabilityInformationManager.searchActiveNonSourceableDimensions(
                         DataDimensionQuery(
-                            companyIds = missingCompanyIds.toList(),
+                            companyIds = companyIds.toList(),
                             dataTypes = listOf(exportOptions.dataType.toString()),
                         ),
                     ),
                 )
             }
 
-        buildStream(dataDimensionsWithDataStrings, nonSourceableGapDimensions, newExportJob, clazz, exportOptions)
+        val (finalRealDataDimensions, finalNonSourceableGapDimensions) =
+            reconcileLatestDimensions(realDataDimensions, nonSourceableDimensionsPerCompany)
+
+        buildStream(finalRealDataDimensions, finalNonSourceableGapDimensions, newExportJob, clazz, exportOptions)
+    }
+
+    /**
+     * Reconciles, per company, the latest real dataset against the latest active non-sourceability entry, to
+     * determine which single data dimension represents "the latest" for that company.
+     *
+     * The chronologically later reporting period wins. If both are for the exact same period, the real dataset
+     * wins - a non-sourceability entry can never override an actually available dataset for that same period.
+     *
+     * @param realDataDimensions the latest real dataset per company (at most one entry per company)
+     * @param nonSourceableDimensionsPerCompany the latest active non-sourceable dimension per company (at most
+     *   one entry per company)
+     * @return a pair of (real data map, non-sourceable set) which together contain at most one entry per company
+     */
+    private fun reconcileLatestDimensions(
+        realDataDimensions: Map<BasicDatasetDimensions, String>,
+        nonSourceableDimensionsPerCompany: Set<BasicDataDimensions>,
+    ): Pair<Map<BasicDatasetDimensions, String>, Set<BasicDataDimensions>> {
+        val nonSourceableByCompany = nonSourceableDimensionsPerCompany.associateBy { it.companyId }
+        val realDataCompanyIds = realDataDimensions.keys.map { it.companyId }.toSet()
+
+        val finalRealDataDimensions = mutableMapOf<BasicDatasetDimensions, String>()
+        val finalNonSourceableDimensions = mutableSetOf<BasicDataDimensions>()
+
+        realDataDimensions.forEach { (dimensions, data) ->
+            val nonSourceableCandidate = nonSourceableByCompany[dimensions.companyId]
+            if (nonSourceableCandidate != null && nonSourceableCandidate.reportingPeriod > dimensions.reportingPeriod) {
+                finalNonSourceableDimensions += nonSourceableCandidate
+            } else {
+                finalRealDataDimensions[dimensions] = data
+            }
+        }
+
+        nonSourceableDimensionsPerCompany
+            .filterNot { it.companyId in realDataCompanyIds }
+            .forEach { finalNonSourceableDimensions += it }
+
+        return finalRealDataDimensions to finalNonSourceableDimensions
     }
 
     /**
