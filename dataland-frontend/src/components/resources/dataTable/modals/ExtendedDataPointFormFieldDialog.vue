@@ -87,7 +87,6 @@ const props = defineProps<{
 
 const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);
 const selectedDocument = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileReference ?? null);
-const fileName = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileName ?? null);
 const insertedComment = ref<string | undefined>(props.extendedDataPointObject?.comment ?? undefined);
 const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
 const companyId = inject<string>('companyId');
@@ -114,11 +113,7 @@ watch(selectedDocument, (val) => {
 onMounted(async () => {
   await updateDocumentsList();
 
-  if (fileName.value) {
-    setSelectedDocument(allDocuments.value.find((doc) => doc.documentName === fileName.value)?.documentId ?? null);
-  } else {
-    setSelectedDocument(null);
-  }
+  setSelectedDocument(selectedDocument.value);
 
   if (chosenQuality.value) {
     const matchQuality = qualityOptionsList.find((q) => q.value === chosenQuality.value);

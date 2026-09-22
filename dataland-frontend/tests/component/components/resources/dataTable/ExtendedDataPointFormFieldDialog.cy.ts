@@ -1,5 +1,6 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
+import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
 
 describe('As a user I want to have displayed the associated documents for the company I am editing', () => {
   const dummyCompanyId = 'test-company-id';
@@ -30,10 +31,15 @@ describe('As a user I want to have displayed the associated documents for the co
   /**
    * Mounts the ExtendedDataPointFormFieldDialog with the standard test setup used by all
    * test cases in this file.
+   * @param extendedDataPointObject optional data point object to prefill the dialog with
    */
-  function mountDialog(): void {
+  function mountDialog(extendedDataPointObject?: ExtendedDataPointType): void {
     cy.mountWithPlugins(ExtendedDataPointFormFieldDialog, {
       keycloak: minimalKeycloakMock({}),
+      // @ts-ignore
+      props: {
+        extendedDataPointObject,
+      },
       global: {
         provide: {
           companyId: dummyCompanyId,
@@ -85,5 +91,31 @@ describe('As a user I want to have displayed the associated documents for the co
 
     cy.get('[data-test="page-number-input"]').clear().type('4, 112');
     cy.get('[data-test="page-number-error"]').should('not.exist');
+  });
+
+  it('pre-selects the previously attached document via fileReference when editing an existing data point', () => {
+    mountDialog({
+      dataSource: {
+        fileReference: mockDocuments[1].documentId,
+        page: '12',
+      },
+    });
+    cy.wait('@fetchDocuments');
+    cy.get('[data-test="document-select"] .p-select-label').should('contain', mockDocuments[1].documentName);
+    cy.get('[data-test="page-number-input"]').should('have.value', '12');
+    cy.get('.dataland-info-text').should('contain', `Name: ${mockDocuments[1].documentName}`);
+  });
+
+  it('clears the selection if the previously referenced document no longer exists', () => {
+    mountDialog({
+      dataSource: {
+        fileReference: 'no-longer-existing-doc-id',
+        page: '12',
+      },
+    });
+    cy.wait('@fetchDocuments');
+    cy.get('[data-test="document-select"] .p-select-label').should('not.contain', mockDocuments[0].documentName);
+    cy.get('[data-test="document-select"] .p-select-label').should('not.contain', mockDocuments[1].documentName);
+    cy.get('[data-test="page-number-input"]').should('have.value', '');
   });
 });
