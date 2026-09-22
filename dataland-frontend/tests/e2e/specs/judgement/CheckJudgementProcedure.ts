@@ -36,6 +36,14 @@ import { parseJsonValue } from '@e2e/utils/JsonUtils.ts';
 import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
+import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
+import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
+import {
+  Configuration,
+  DocumentControllerApi,
+  type DocumentMetaInfoEntity,
+  type DocumentMetaInfoResponse,
+} from '@clients/documentmanager';
 
 enum IconState {
   Accepted,
@@ -63,20 +71,51 @@ describeIf(
     let tokens: QaTokens;
     let uploadedDataMetaInfo: DataMetaInformation;
     let overview: DataPointOverview;
+    let uploadedDocumentMetaInfo: DocumentMetaInfoEntity;
 
     before(function () {
-      cy.fixture<FixtureData<EutaxonomyFinancialsData>[]>(
-        'CompanyInformationWithEutaxonomyFinancialsPreparedFixtures'
-      ).then((rawFixtures) => {
-        preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
-      });
+      let adminToken = '';
+      let documentId = '';
+      let documentControllerApi!: DocumentControllerApi;
 
-      getAdminToken().then((token: string) => {
-        const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
-        return getOrUploadCompanyViaApi(token, testCompany).then((newCompany) => {
+      return cy
+        .fixture<FixtureData<EutaxonomyFinancialsData>[]>('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures')
+        .then((rawFixtures) => {
+          preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
+          return getAdminToken();
+        })
+        .then((token) => {
+          adminToken = token;
+          documentControllerApi = new DocumentControllerApi(new Configuration({ accessToken: token }));
+
+          const testCompany = generateDummyCompanyInformation(`company-for-testing-judgement-${Date.now()}`);
+
+          return getOrUploadCompanyViaApi(token, testCompany);
+        })
+        .then((newCompany) => {
           storedCompany = newCompany;
+          return cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null);
+        })
+        .then((buffer) => {
+          const arrayBuffer = Uint8Array.from(buffer).buffer;
+
+          return uploadDocumentViaApi(adminToken, arrayBuffer, TEST_PDF_REPORT_FILE_NAME, {
+            documentName: TEST_PDF_REPORT_FILE_NAME,
+            documentCategory: 'Other',
+            companyIds: [] as unknown as Set<string>,
+          });
+        })
+        .then((documentMetaInfoResponse) => {
+          documentId = documentMetaInfoResponse.documentId;
+
+          // The document may already exist because its ID is based on its content hash.
+          // Always associate it with this test company.
+          return documentControllerApi.patchDocumentMetaInfoCompanyIds(documentId, storedCompany.companyId);
+        })
+        .then(() => documentControllerApi.getDocumentMetaInformation(documentId))
+        .then((response) => {
+          uploadedDocumentMetaInfo = response.data;
         });
-      });
     });
 
     beforeEach(() =>
@@ -152,8 +191,109 @@ describeIf(
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken);
       rejectDatasetInJudgementModal(uploadedDataMetaInfo.dataId);
     });
+
+    it('Check accepting a custom data point with a selected document reference and page succeeds', () => {
+      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
+
+      createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+        const [dataPointType, dataPointId] = Object.entries(overview.dataPointsWithoutQaReports)[0];
+
+        cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
+        cy.get('[data-test="judge-modal"]').should('be.visible');
+
+        cy.get('[data-test="custom-value-field"]').click();
+        cy.get('[data-test="custom-value-field"]').clear();
+        cy.get('[data-test="custom-value-field"]').type('42');
+
+        cy.get('[data-test="custom-document-field"]').click();
+        cy.get('.p-select-overlay').should('be.visible');
+        cy.contains(uploadedDocumentMetaInfo.documentName ?? uploadedDocumentMetaInfo.documentId).click();
+        //select the documentId in case that the file name is not shown in the drop-down menu of the documents
+
+        cy.get('[data-test="custom-pages-field"]').click();
+        cy.get('[data-test="custom-pages-field"]').type('5');
+
+        cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(
+          'patchCustomDocumentDatapoint'
+        );
+        cy.get('[data-test="accept-custom-button"]').click();
+
+        cy.wait('@patchCustomDocumentDatapoint').its('response.statusCode').should('eq', 200);
+        cy.contains('Failed to update data point judgement').should('not.exist');
+      });
+    });
+
+    it('Check accepting a custom data point copied from a QA-corrected value with a document reference succeeds', () => {
+      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
+
+      const [dataPointType, dataPointId] = Object.entries(overview.dataPointsWithoutQaReports)[0];
+      const correctedValueWithDocReference = JSON.stringify({
+        value: '99',
+        quality: 'Estimated',
+        dataSource: {
+          fileReference: uploadedDocumentMetaInfo.documentId,
+          fileName: null,
+          publicationDate: null,
+          page: '5',
+        },
+      });
+
+      uploadQaReportForDataPoint(
+        dataPointId,
+        tokens.reviewerToken,
+        QaReportDataPointVerdict.QaRejected,
+        correctedValueWithDocReference
+      ).then(() => {
+        createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+          cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
+          cy.get('[data-test="judge-modal"]').should('be.visible');
+
+          cy.get('[data-test="edit-mode-toggle"]').click();
+          cy.get('[data-test="copy-corrected-to-custom"]').click();
+
+          cy.intercept('PATCH', `**/qa/dataset-judgements/**/data-points/${dataPointType}**`).as(
+            'patchCopiedCorrectedDatapoint'
+          );
+          cy.get('[data-test="accept-custom-button"]').click();
+
+          cy.wait('@patchCopiedCorrectedDatapoint').its('response.statusCode').should('eq', 200);
+          cy.contains('Failed to update data point judgement').should('not.exist');
+        });
+      });
+    });
   }
 );
+
+/**
+ * Polls the real "search document meta information by company" endpoint until the given
+ * document id shows up in the results for the given company, or the retry budget is exhausted.
+ *
+ * Newly uploaded documents start with `qaStatus = Pending` and only become searchable once an
+ * asynchronous, message-queue-driven QA acceptance step (document-manager -> internal-storage ->
+ * qa-service -> document-manager) has completed. Since this test runs last in the file, most of
+ * that time has usually already elapsed by the time this function is called, so this is mainly a
+ * safety net rather than an expected long wait.
+ *
+ * @param companyId  The Dataland company id the document should be associated with.
+ * @param documentId The id (sha256 hash) of the document to wait for.
+ */
+function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string): void {
+  cy.waitUntil(
+    () =>
+      cy
+        .request<DocumentMetaInfoResponse[]>({
+          method: 'GET',
+          url: `${apiBaseUrl}/documents/`,
+          qs: { companyId },
+          failOnStatusCode: false,
+        })
+        .then((response) => {
+          if (response.status !== 200) return false;
+          return response.body.some((document) => document.documentId === documentId);
+        }),
+    { timeout: 30000, interval: 1000 }
+  );
+}
 
 /**
  * Starts a dataset judgement via the backend API and returns the created dataset judgement id.

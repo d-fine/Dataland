@@ -231,7 +231,12 @@ import type { CellRow } from '@/components/resources/datasetReview/DatasetReview
 import { type AxiosError } from 'axios';
 import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
 import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { type ParsedSingleDataPoint, unwrapDataPointJson, wrapDataPointJson } from '@/utils/DataPoint.ts';
+import {
+  type ParsedSingleDataPoint,
+  removeInferableDocumentFields,
+  unwrapDataPointJson,
+  wrapDataPointJson,
+} from '@/utils/DataPoint.ts';
 
 // ===== Props & emits =====
 
@@ -493,7 +498,7 @@ function copyOriginalToCustom(): void {
   if (!originalData.value) return;
 
   if (editModeEnabled.value) {
-    customJson.value = JSON.stringify(originalData.value, null, 2);
+    customJson.value = JSON.stringify(removeInferableDocumentFields(originalData.value), null, 2);
   } else {
     customFormData.value = transformDataPointDetailToFormData(originalData.value);
   }
@@ -509,7 +514,7 @@ function copyCorrectedToCustom(): void {
   if (!currentQaCorrectedData.value) return;
 
   if (editModeEnabled.value) {
-    customJson.value = JSON.stringify(currentQaCorrectedData.value, null, 2);
+    customJson.value = JSON.stringify(removeInferableDocumentFields(currentQaCorrectedData.value), null, 2);
   } else {
     customFormData.value = transformDataPointDetailToFormData(currentQaCorrectedData.value);
   }
