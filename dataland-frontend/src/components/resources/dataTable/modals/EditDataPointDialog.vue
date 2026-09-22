@@ -63,7 +63,6 @@ const extendedDataPointObject: ExtendedDataPointType = {
   })(),
   comment: unref(dataPoint?.displayValue?.comment ?? ''),
   dataSource: {
-    fileName: unref(dataPoint?.displayValue?.dataSource?.fileName ?? ''),
     page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
   },
 };
