@@ -11,9 +11,19 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V18__RemoveLegacyRequestTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        context!!.connection.createStatement().execute(
-            "DELETE FROM notification_events WHERE notification_event_type <> 'InvestorRelationsEvent'",
-        )
+        val notificationEventsTable = "notification_events"
+        val notificationEventsTableExists =
+            context!!
+                .connection.metaData
+                .getTables(null, null, notificationEventsTable, null)
+                .next()
+
+        if (notificationEventsTableExists) {
+            context.connection.createStatement().execute(
+                "DELETE FROM notification_events WHERE notification_event_type <> 'InvestorRelationsEvent'",
+            )
+        }
+
         context.connection.createStatement().execute("DROP TABLE IF EXISTS messages")
         context.connection.createStatement().execute("DROP TABLE IF EXISTS request_status_history")
         context.connection.createStatement().execute("DROP TABLE IF EXISTS data_requests")
