@@ -107,7 +107,7 @@ describe('parseFormDataToDataPointJson', () => {
     });
   });
 
-  it('merges selected document dataSource and pages into the dataSource object', () => {
+  it('merges selected document dataSource and pages into the dataSource object, stripping inferable fields', () => {
     const form: CustomFormData = {
       value: '987.65',
       quality: 'Audited',
@@ -123,14 +123,12 @@ describe('parseFormDataToDataPointJson', () => {
     expect(parsed.quality).to.equal('Audited');
     expect(parsed.comment).to.equal('Verified against Annual Report 2023.');
     expect(parsed.dataSource).to.deep.equal({
-      fileName: 'AnnualReport2023.pdf',
       fileReference: 'ref-123',
-      publicationDate: '2024-01-01',
       page: '5',
     });
   });
 
-  it('uses only document dataSource when pages is empty', () => {
+  it('uses only document dataSource when pages is empty, stripping inferable fields', () => {
     const form: CustomFormData = {
       value: '',
       quality: '',
@@ -144,9 +142,7 @@ describe('parseFormDataToDataPointJson', () => {
 
     expect(parsed).to.deep.equal({
       dataSource: {
-        fileName: 'AnnualReport2023.pdf',
         fileReference: 'ref-123',
-        publicationDate: '2024-01-01',
       },
     });
   });
