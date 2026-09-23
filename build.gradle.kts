@@ -187,6 +187,7 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
+                "dataland-frontend/tests/component/components/resources/datasetReview/JudgeDialog.cy.ts," +
                 "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
                 // frontend legacy files
                 "dataland-frontend/src/components/general/DatalandTagLegacy.vue," +
