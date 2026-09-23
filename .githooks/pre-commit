@@ -25,14 +25,13 @@ else
 
 fi
 
-# Fallback to load npx and node node via fnm in non-interactive shells (like IntelliJ in WSL)
-if ! command -v npx &> /dev/null; then
-  export PATH="$HOME/.local/share/fnm:$HOME/.fnm:$PATH"
-
-  if command -v fnm &> /dev/null; then
-    eval "$(fnm env)"
-  fi
+# Always prefer the WSL-native node/npx managed by fnm over any Windows npx that may be
+# on PATH through WSL interop (non-interactive shells, like IntelliJ in WSL, don't source
+# ~/.bashrc, so PATH ordering can otherwise let the Windows npx win, which breaks on UNC paths).
+export PATH="$HOME/.local/share/fnm:$HOME/.fnm:$PATH"
+if command -v fnm &> /dev/null; then
+  eval "$(fnm env)"
 fi
 
 echo "Starting eslint hook"
-cd dataland-frontend && npx --prefix ./dataland-frontend lint-staged
+npx --prefix ./dataland-frontend lint-staged
