@@ -34,4 +34,4 @@ if command -v fnm &> /dev/null; then
 fi
 
 echo "Starting eslint hook"
-npx --prefix ./dataland-frontend lint-staged
+(cd dataland-frontend && npx lint-staged)
