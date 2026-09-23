@@ -15,14 +15,29 @@ import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils';
  * it also makes sure invalid page numbers cannot be uploaded
  */
 function fillAndValidateAssuranceReportPageNumber(): void {
-  const invalidPageNumberInputs = ['abc', '0', '01', '0.5', '-13', '5-3', '5-5', '5-', '-5'];
+  const invalidPageNumberInputs = [
+    'abc',
+    '0',
+    '01',
+    '0.5',
+    '-13',
+    '5-3',
+    '5-5',
+    '5-',
+    '-5',
+    '4,,5',
+    '4-6,5-7',
+    '10-12,4',
+    '4,4',
+    '4,4-6',
+  ];
   for (const invalidPageNumberInput of invalidPageNumberInputs) {
     cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(invalidPageNumberInput);
     cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
     cy.get('[data-message-type="validation"]').should('contain', PAGE_NUMBER_VALIDATION_ERROR_MESSAGE).should('exist');
     submitButton.buttonAppearsDisabled();
   }
-  const validPageNumberInputs = ['3', '10-11'];
+  const validPageNumberInputs = ['3', '10-11', '4, 112', '1,3-5,10'];
   for (const validPageNumberInput of validPageNumberInputs) {
     cy.get('div[label="General"] input[name="page"]:not([type="hidden"])').last().clear().type(validPageNumberInput);
     cy.get('div[label="General"] em[title="Page(s)"]:not([type="hidden"])').last().click();
