@@ -184,10 +184,15 @@ import PortfolioReportingPeriodsCell, {
 import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
 
 /**
- * Merges the (comma-separated) string of real, available reporting periods for a framework with the real
- * non-sourceable reporting periods for that same framework (from the backend), and returns a single,
+ * Merges the (comma-separated) string of available reporting periods for a framework (which, for the purposes of
+ * bulk download and the period filter, may already include non-sourceable periods as "resolved") with the
+ * independently-fetched non-sourceable reporting periods for that same framework, and returns a single,
  * ascendingly sorted list where each entry is marked whether it is non-sourceable.
- * @param availableReportingPeriodsCsv the comma-separated string of real, available reporting periods
+ *
+ * Note: whether a year is non-sourceable is determined solely by membership in `nonSourceableDimensionsForFramework`
+ * (the dedicated non-sourceability query), not by exclusion from `availableReportingPeriodsCsv` - the latter may
+ * already contain non-sourceable years merged in, and must not be used to decide the strikethrough status.
+ * @param availableReportingPeriodsCsv the comma-separated string of available reporting periods
  * @param nonSourceableDimensionsForFramework the set of non-sourceable data dimensions for this company/framework
  */
 function mergeReportingPeriods(
@@ -195,11 +200,13 @@ function mergeReportingPeriods(
   nonSourceableDimensionsForFramework: Set<BasicDataDimensions> | undefined
 ): ReportingPeriodEntry[] {
   const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
-  const nonSourceableYears = Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod);
+  const nonSourceableYears = new Set(
+    Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod)
+  );
   const allYears = new Set([...realYears, ...nonSourceableYears]);
   return Array.from(allYears)
     .sort()
-    .map((year) => ({ year, nonSourceable: !realYears.includes(year) }));
+    .map((year) => ({ year, nonSourceable: nonSourceableYears.has(year) }));
 }
 
 /**
