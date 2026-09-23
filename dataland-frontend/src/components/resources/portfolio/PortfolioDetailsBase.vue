@@ -431,7 +431,7 @@ function getReportingPeriodEntries(
  * @param frameworkName
  */
 function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, frameworkName: string): boolean {
-  return Boolean(portfolioEntryPrepared.frameworkHyphenatedNamesToDataRef.get(frameworkName));
+  return getReportingPeriodEntries(portfolioEntryPrepared, frameworkName).some((period) => !period.nonSourceable);
 }
 
 /**
