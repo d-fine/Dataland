@@ -127,6 +127,54 @@ class MetaDataControllerNonSourceableTest
         }
 
         @Test
+        fun `get nonSourceable with dataType omitted returns all entries matching the other filters`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val resultsWithDataTypeOmitted =
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, null, reportingPeriod, null)
+
+            assertEquals(2, resultsWithDataTypeOmitted.body?.size)
+        }
+
+        @Test
+        fun `get nonSourceable with dataType set still filters out entries of other dataTypes`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val resultsFilteredByDataType =
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, dataType, reportingPeriod, null)
+
+            assertEquals(1, resultsFilteredByDataType.body?.size)
+            assertEquals(dataType, resultsFilteredByDataType.body?.single()?.dataType)
+        }
+
+        @Test
+        fun `get nonSourceable with all filters omitted returns everything`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val allResults = metaDataController.getInfoOnNonSourceabilityOfDatasets(null, null, null, null)
+
+            assertEquals(2, allResults.body?.size)
+        }
+
+        @Test
         fun `head nonSourceable returns 200 for active entry`() {
             AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
             metaDataController.postNonSourceabilityOfADataset(body("Active"), bypassQa = true, currentlyActive = true)
