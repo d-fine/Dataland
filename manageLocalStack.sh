@@ -30,6 +30,13 @@ start_health_check() {
   ./health-check/healthCheck.sh &
 }
 
+ensure_cypress_gui_forwarding() {
+  local script_path="$project_root/developer-tools/ensureCypressGuiForwarding.sh"
+  if [[ -f "$script_path" ]]; then
+    bash "$script_path" || log_info "Cypress GUI forwarding (noVNC) setup failed, continuing anyway."
+  fi
+}
+
 prepare_loki_bind_mounts() {
   # Docker creates missing bind-mount source directories as root before the container starts.
   # Create both Loki bind-mount paths as the local user first so files written into the
@@ -45,6 +52,7 @@ start_development_stack() {
   local container_backend="$1"
 
   run_step "Verifying environment variables" ./verifyEnvironmentVariables.sh
+  run_step "Ensuring Cypress GUI forwarding (Xvfb/x11vnc/noVNC)" ensure_cypress_gui_forwarding
   run_step "Setting up SSL certificates" generate_self_signed_certificates
   run_step "Assembling projects" assemble_all_projects
   run_step "Rebuilding Gradle base image" rebuild_gradle_dockerfile
