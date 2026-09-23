@@ -1,28 +1,18 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.DataDimensionQuery
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportAvailability
-import org.dataland.datalandbackend.model.export.ExportJob
-import org.dataland.datalandbackend.model.export.ExportOptions
-import org.dataland.datalandbackend.model.export.SingleCompanyExportData
-import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
-import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.model.ExportFileType
-import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
@@ -34,53 +24,7 @@ import java.util.UUID
  *
  * See [DataExportServiceDimensionAvailabilityTest] for the equivalent tests for the dimension-based export path.
  */
-class DataExportServiceLatestAvailabilityTest {
-    private val objectMapper = JsonUtils.defaultObjectMapper
-    private val mockDatasetAssembler = mock<DatasetAssembler>()
-    private val mockSpecificationService = mock<SpecificationService>()
-    private val mockCompanyQueryManager = mock<CompanyQueryManager>()
-    private val mockDatasetStorageService = mock<DatasetStorageService>()
-    private val mockNonSourceabilityInformationManager = mock<NonSourceabilityInformationManager>()
-    private val dataExportService =
-        DataExportService<LksgData>(
-            mockDatasetAssembler,
-            mockSpecificationService,
-            mockCompanyQueryManager,
-            mockDatasetStorageService,
-            mockNonSourceabilityInformationManager,
-        )
-
-    private val testDataProvider = TestDataProvider(objectMapper)
-
-    private val nonSourceableTestCompanyId = UUID.randomUUID().toString()
-    private val nonSourceableTestCompanyInfo =
-        BasicCompanyInformation(
-            companyId = nonSourceableTestCompanyId,
-            companyName = TEST_COMPANY_NAME,
-            headquarters = "Test City",
-            countryCode = "DE",
-            sector = null,
-            lei = TEST_COMPANY_LEI,
-        )
-
-    private fun newExportJob(): ExportJob =
-        ExportJob(
-            id = UUID.randomUUID(),
-            fileToExport = null,
-            fileType = ExportFileType.JSON,
-            frameworkName = "lksg",
-            progressState = ExportJobProgressState.Pending,
-            creationTime = 0L,
-        )
-
-    private fun readExportedRows(exportJob: ExportJob): List<SingleCompanyExportData<LksgData>> =
-        objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(exportJob.fileToExport!!.inputStream)
-
-    private fun mockCompanyInformationLookup() {
-        whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))
-            .doReturn(mapOf(nonSourceableTestCompanyId to nonSourceableTestCompanyInfo))
-    }
-
+class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTestBase() {
     @Test
     fun `check that latest export marks a company with a latest dataset as available`() {
         mockCompanyInformationLookup()
@@ -100,7 +44,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -125,7 +69,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -151,7 +95,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
@@ -180,7 +124,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -219,7 +163,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -263,7 +207,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -296,7 +240,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         verify(mockNonSourceabilityInformationManager).searchActiveNonSourceableDimensions(any())
@@ -336,7 +280,7 @@ class DataExportServiceLatestAvailabilityTest {
             listOf(nonSourceableTestCompanyId, secondCompanyId),
             exportJob,
             LksgData::class.java,
-            ExportOptions(DataType.valueOf("lksg"), ExportFileType.JSON, keepValueFieldsOnly = true, includeAliases = false),
+            lksgExportOptions,
         )
 
         Assertions.assertEquals(ExportJobProgressState.Success, exportJob.progressState)
