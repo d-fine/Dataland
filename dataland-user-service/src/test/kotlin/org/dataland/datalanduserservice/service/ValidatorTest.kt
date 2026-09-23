@@ -163,6 +163,36 @@ class ValidatorTest {
     }
 
     @Test
+    fun `test that replacing an existing portfolio with an unchanged name does not throw ConflictApiException`() {
+        doReturn(true)
+            .whenever(mockPortfolioService)
+            .existsPortfolioForUser(dummyPortfolioId.toString(), dummyCorrelationId)
+        doReturn(BasePortfolio(validPortfolioUpload)).whenever(mockPortfolioService).getPortfolio(any(), any())
+        doReturn(true)
+            .whenever(mockPortfolioService)
+            .existsPortfolioWithNameForUser(dummyPortfolioName, dummyCorrelationId)
+
+        assertDoesNotThrow {
+            validator.validatePortfolioReplacement(
+                dummyPortfolioId.toString(),
+                validPortfolioUpload,
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that validating a valid portfolioUpload on creation does not throw`() {
+        doReturn(false)
+            .whenever(mockPortfolioService)
+            .existsPortfolioWithNameForUser(dummyPortfolioName, dummyCorrelationId)
+
+        assertDoesNotThrow {
+            validator.validatePortfolioCreation(validPortfolioUpload, dummyCorrelationId)
+        }
+    }
+
+    @Test
     fun `test that a valid proxy company replacement does not throw`() {
         assertDoesNotThrow {
             validator.validateProxyCompanyReplacements(

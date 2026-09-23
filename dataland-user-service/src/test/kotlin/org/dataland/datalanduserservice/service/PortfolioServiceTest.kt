@@ -4,6 +4,7 @@ import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
+import org.dataland.datalanduserservice.model.ProxyCompanyReplacement
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -236,6 +237,42 @@ class PortfolioServiceTest {
         val expectedPortfolioNames = listOf(BasePortfolioName(dummyPortfolio), BasePortfolioName(dummyPortfolio2))
         val portfolioNames = assertDoesNotThrow { portfolioService.getAllPortfolioNamesForCurrentUser() }
         assertEquals(expectedPortfolioNames, portfolioNames)
+    }
+
+    @Test
+    fun `test that deleting a portfolio delegates to the repository with the correct portfolioId`() {
+        portfolioService.deletePortfolio(dummyPortfolio.portfolioId)
+        verify(mockPortfolioRepository).deleteByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+    }
+
+    @Test
+    fun `test that replacing a portfolio with proxyCompanyReplacements creates the correct entity`() {
+        val portfolioEntityCaptor = argumentCaptor<PortfolioEntity>()
+
+        doReturn(dummyPortfolio.toPortfolioEntity())
+            .whenever(mockPortfolioRepository)
+            .getPortfolioByPortfolioId(UUID.fromString(dummyPortfolio.portfolioId))
+
+        val proxyCompanyReplacement =
+            ProxyCompanyReplacement(
+                userId = dummyUserId,
+                timestamp = Instant.now().toEpochMilli(),
+                proxiedCompanyId = dummyCompanyId,
+                proxyCompanyId = dummyCompanyId,
+            )
+        val portfolioWithReplacements =
+            dummyPortfolio2.copy(proxyCompanyReplacements = listOf(proxyCompanyReplacement))
+
+        assertDoesNotThrow {
+            portfolioService.replacePortfolio(dummyPortfolio.portfolioId, portfolioWithReplacements, dummyCorrelationId)
+        }
+
+        verify(mockPortfolioRepository).save(portfolioEntityCaptor.capture())
+        assertEquals(1, portfolioEntityCaptor.firstValue.proxyCompanyReplacements.size)
+        val capturedReplacement = portfolioEntityCaptor.firstValue.proxyCompanyReplacements.first()
+        assertEquals(dummyUserId, capturedReplacement.userId)
+        assertEquals(dummyCompanyId, capturedReplacement.proxiedCompanyId)
+        assertEquals(dummyCompanyId, capturedReplacement.proxyCompanyId)
     }
 
     /**
