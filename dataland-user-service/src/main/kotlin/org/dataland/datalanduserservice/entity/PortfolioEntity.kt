@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.ProxyCompanyReplacement
 import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import java.util.UUID
@@ -53,6 +54,9 @@ data class PortfolioEntity(
     @CollectionTable(name = "portfolio_shared_users", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "shared_user_ids")
     val sharedUserIds: Set<String>?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "portfolio_proxy_company_replacements", joinColumns = [JoinColumn(name = "portfolio_id")])
+    val proxyCompanyReplacements: MutableSet<ProxyCompanyReplacementEmbeddable> = mutableSetOf(),
 ) {
     /**
      * Converts this PortfolioEntity to a BasePortfolio API model.
@@ -70,5 +74,13 @@ data class PortfolioEntity(
             notificationFrequency,
             timeWindowThreshold,
             sharedUserIds ?: emptySet(),
+            proxyCompanyReplacements.map {
+                ProxyCompanyReplacement(
+                    userId = it.userId,
+                    timestamp = it.timestamp,
+                    proxiedCompanyId = it.proxiedCompanyId,
+                    proxyCompanyId = it.proxyCompanyId,
+                )
+            },
         )
 }

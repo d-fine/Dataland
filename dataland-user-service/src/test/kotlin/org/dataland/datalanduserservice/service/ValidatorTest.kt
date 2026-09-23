@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.ProxyCompanyReplacementUpload
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -15,6 +16,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -157,6 +159,80 @@ class ValidatorTest {
                     validPortfolioUpload.copy(portfolioName = invalidPortfolioName),
                     dummyCorrelationId,
                 )
+        }
+    }
+
+    @Test
+    fun `test that a valid proxy company replacement does not throw`() {
+        assertDoesNotThrow {
+            validator.validateProxyCompanyReplacements(
+                setOf(validCompanyId),
+                listOf(ProxyCompanyReplacementUpload(proxiedCompanyId = validCompanyId, proxyCompanyId = validCompanyId)),
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that a proxy company that is not contained in the portfolio throws ResourceNotFoundApiException`() {
+        assertThrows<ResourceNotFoundApiException> {
+            validator.validateProxyCompanyReplacements(
+                setOf(validCompanyId),
+                listOf(
+                    ProxyCompanyReplacementUpload(
+                        proxiedCompanyId = validCompanyId,
+                        proxyCompanyId = "some-other-company-id-not-in-portfolio",
+                    ),
+                ),
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that a proxied company that is not a valid company throws ResourceNotFoundApiException`() {
+        assertThrows<ResourceNotFoundApiException> {
+            validator.validateProxyCompanyReplacements(
+                setOf(validCompanyId),
+                listOf(
+                    ProxyCompanyReplacementUpload(
+                        proxiedCompanyId = invalidCompanyId,
+                        proxyCompanyId = validCompanyId,
+                    ),
+                ),
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that duplicate proxied company entries throw ConflictApiException`() {
+        assertThrows<ConflictApiException> {
+            validator.validateProxyCompanyReplacements(
+                setOf(validCompanyId),
+                listOf(
+                    ProxyCompanyReplacementUpload(proxiedCompanyId = validCompanyId, proxyCompanyId = validCompanyId),
+                    ProxyCompanyReplacementUpload(proxiedCompanyId = validCompanyId, proxyCompanyId = validCompanyId),
+                ),
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that validating a portfolio upload with an invalid proxy company replacement throws`() {
+        val invalidPortfolioUpload =
+            validPortfolioUpload.copy(
+                proxyCompanyReplacements =
+                    listOf(
+                        ProxyCompanyReplacementUpload(
+                            proxiedCompanyId = validCompanyId,
+                            proxyCompanyId = "some-other-company-id-not-in-portfolio",
+                        ),
+                    ),
+            )
+        assertThrows<ResourceNotFoundApiException> {
+            validator.validatePortfolioCreation(invalidPortfolioUpload, dummyCorrelationId)
         }
     }
 }

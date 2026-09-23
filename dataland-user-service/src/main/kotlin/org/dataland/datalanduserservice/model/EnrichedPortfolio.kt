@@ -64,4 +64,12 @@ data class EnrichedPortfolio(
             ),
     )
     val sharedUserIds: Set<String>?,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
+            ),
+    )
+    val proxyCompanyReplacements: List<ProxyCompanyReplacement> = emptyList(),
 )

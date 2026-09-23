@@ -36,6 +36,16 @@ object UserServiceOpenApiDescriptionsAndExamples {
     const val PORTFOLIO_SHARED_USER_IDS_DESCRIPTION = "A list of user IDs with whom the portfolio is shared."
     const val PORTFOLIO_SHARED_USER_IDS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"]"
 
+    const val PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION =
+        "A list of replacements tracking which companies in the portfolio are proxied by another company " +
+            "contained in the portfolio."
+
+    const val PROXIED_COMPANY_ID_DESCRIPTION = "The ID of the company that is being replaced by the proxy company."
+    const val PROXY_COMPANY_ID_DESCRIPTION =
+        "The ID of the company that proxies the proxied company. Must be a company contained in the portfolio."
+    const val PROXY_COMPANY_REPLACEMENT_TIMESTAMP_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the proxy company replacement was made."
+
     const val PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION = "The access rights that the user has for the shared portfolio."
     const val PORTFOLIO_ACCESS_RIGHTS_EXAMPLE = "Owner"
 

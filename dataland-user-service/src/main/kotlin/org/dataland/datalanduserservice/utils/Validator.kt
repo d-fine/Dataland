@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.PortfolioUpload
+import org.dataland.datalanduserservice.model.ProxyCompanyReplacementUpload
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -40,6 +41,7 @@ class Validator
                 )
             }
             portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
+            validateProxyCompanyReplacements(portfolioUpload.identifiers, portfolioUpload.proxyCompanyReplacements, correlationId)
         }
 
         /**
@@ -68,6 +70,49 @@ class Validator
                 )
             }
             portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
+            validateProxyCompanyReplacements(portfolioUpload.identifiers, portfolioUpload.proxyCompanyReplacements, correlationId)
+        }
+
+        /**
+         * Validates the proxy company replacements of an uploaded portfolio.
+         * Checks that each proxy company is contained in the portfolio's (validated) identifiers, that each proxied
+         * company is a valid company, and that no proxied company is targeted by more than one replacement entry.
+         * @param validCompanyIds the set of company IDs that are (or will be) contained in the portfolio
+         * @param proxyCompanyReplacements the list of proxy company replacements to validate
+         * @param correlationId the correlationId used for logging and error messages
+         */
+        fun validateProxyCompanyReplacements(
+            validCompanyIds: Set<String>,
+            proxyCompanyReplacements: List<ProxyCompanyReplacementUpload>,
+            correlationId: String,
+        ) {
+            val duplicateProxiedCompanyIds =
+                proxyCompanyReplacements
+                    .groupingBy { it.proxiedCompanyId }
+                    .eachCount()
+                    .filter { it.value > 1 }
+                    .keys
+
+            if (duplicateProxiedCompanyIds.isNotEmpty()) {
+                throw ConflictApiException(
+                    message = "Conflicting input detected.",
+                    summary =
+                        "Conflicting input detected: the following companies are proxied by more than one entry: " +
+                            "$duplicateProxiedCompanyIds. CorrelationId: $correlationId",
+                )
+            }
+
+            proxyCompanyReplacements.forEach { proxyCompanyReplacement ->
+                if (proxyCompanyReplacement.proxyCompanyId !in validCompanyIds) {
+                    throw ResourceNotFoundApiException(
+                        summary = "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} not found in portfolio.",
+                        message =
+                            "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} is not contained " +
+                                "in the portfolio. CorrelationId: $correlationId",
+                    )
+                }
+                isCompanyIdValid(proxyCompanyReplacement.proxiedCompanyId, correlationId)
+            }
         }
 
         /**

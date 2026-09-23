@@ -1358,6 +1358,7 @@
           "monitoredFrameworks",
           "notificationFrequency",
           "portfolioName",
+          "proxyCompanyReplacements",
           "sharedUserIds"
         ],
         "type": "object",
@@ -1416,6 +1417,32 @@
             "items": {
               "type": "string"
             }
+          },
+          "proxyCompanyReplacements": {
+            "type": "array",
+            "description": "A list of replacements tracking which companies in the portfolio are proxied by another company contained in the portfolio.",
+            "items": {
+              "$ref": "#/components/schemas/ProxyCompanyReplacementUpload"
+            }
+          }
+        }
+      },
+      "ProxyCompanyReplacementUpload": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId"
+        ],
+        "type": "object",
+        "properties": {
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The ID of the company that is being replaced by the proxy company.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The ID of the company that proxies the proxied company. Must be a company contained in the portfolio.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
@@ -1429,6 +1456,7 @@
           "notificationFrequency",
           "portfolioId",
           "portfolioName",
+          "proxyCompanyReplacements",
           "sharedUserIds",
           "userId"
         ],
@@ -1509,6 +1537,45 @@
             "items": {
               "type": "string"
             }
+          },
+          "proxyCompanyReplacements": {
+            "type": "array",
+            "description": "A list of replacements tracking which companies in the portfolio are proxied by another company contained in the portfolio.",
+            "items": {
+              "$ref": "#/components/schemas/ProxyCompanyReplacement"
+            }
+          }
+        }
+      },
+      "ProxyCompanyReplacement": {
+        "required": [
+          "proxiedCompanyId",
+          "proxyCompanyId",
+          "timestamp",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The user ID of the user who created the portfolio.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the proxy company replacement was made.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "proxiedCompanyId": {
+            "type": "string",
+            "description": "The ID of the company that is being replaced by the proxy company.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The ID of the company that proxies the proxied company. Must be a company contained in the portfolio.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           }
         }
       },
@@ -1593,6 +1660,7 @@
           "notificationFrequency",
           "portfolioId",
           "portfolioName",
+          "proxyCompanyReplacements",
           "userId"
         ],
         "type": "object",
@@ -1654,6 +1722,13 @@
             ],
             "items": {
               "type": "string"
+            }
+          },
+          "proxyCompanyReplacements": {
+            "type": "array",
+            "description": "A list of replacements tracking which companies in the portfolio are proxied by another company contained in the portfolio.",
+            "items": {
+              "$ref": "#/components/schemas/ProxyCompanyReplacement"
             }
           }
         }
