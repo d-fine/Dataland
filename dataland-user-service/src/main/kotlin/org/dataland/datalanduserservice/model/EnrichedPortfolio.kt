@@ -71,5 +71,5 @@ data class EnrichedPortfolio(
                 description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
             ),
     )
-    val proxyCompanyReplacements: List<ProxyCompanyReplacement> = emptyList(),
+    val proxyCompanyReplacements: List<ProxyCompanyReplacement>? = null,
 )

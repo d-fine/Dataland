@@ -172,7 +172,7 @@ class PortfolioService
                     timeWindowThreshold = portfolio.timeWindowThreshold,
                     sharedUserIds = portfolio.sharedUserIds,
                     proxyCompanyReplacements =
-                        portfolio.proxyCompanyReplacements
+                        (portfolio.proxyCompanyReplacements ?: emptyList())
                             .map {
                                 ProxyCompanyReplacementEmbeddable(
                                     userId = it.userId,

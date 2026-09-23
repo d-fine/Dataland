@@ -75,7 +75,7 @@ data class PortfolioUpload(
                 description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
             ),
     )
-    val proxyCompanyReplacements: List<ProxyCompanyReplacementUpload> = emptyList(),
+    val proxyCompanyReplacements: List<ProxyCompanyReplacementUpload>? = null,
 ) : Portfolio,
     PortfolioMonitoring,
     PortfolioSharing

@@ -1358,7 +1358,6 @@
           "monitoredFrameworks",
           "notificationFrequency",
           "portfolioName",
-          "proxyCompanyReplacements",
           "sharedUserIds"
         ],
         "type": "object",
@@ -1456,7 +1455,6 @@
           "notificationFrequency",
           "portfolioId",
           "portfolioName",
-          "proxyCompanyReplacements",
           "sharedUserIds",
           "userId"
         ],
@@ -1660,7 +1658,6 @@
           "notificationFrequency",
           "portfolioId",
           "portfolioName",
-          "proxyCompanyReplacements",
           "userId"
         ],
         "type": "object",

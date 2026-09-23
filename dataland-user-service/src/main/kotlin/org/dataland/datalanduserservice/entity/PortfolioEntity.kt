@@ -74,13 +74,14 @@ data class PortfolioEntity(
             notificationFrequency,
             timeWindowThreshold,
             sharedUserIds ?: emptySet(),
-            proxyCompanyReplacements.map {
-                ProxyCompanyReplacement(
-                    userId = it.userId,
-                    timestamp = it.timestamp,
-                    proxiedCompanyId = it.proxiedCompanyId,
-                    proxyCompanyId = it.proxyCompanyId,
-                )
-            },
+            proxyCompanyReplacements
+                .map {
+                    ProxyCompanyReplacement(
+                        userId = it.userId,
+                        timestamp = it.timestamp,
+                        proxiedCompanyId = it.proxiedCompanyId,
+                        proxyCompanyId = it.proxyCompanyId,
+                    )
+                }.takeIf { it.isNotEmpty() },
         )
 }

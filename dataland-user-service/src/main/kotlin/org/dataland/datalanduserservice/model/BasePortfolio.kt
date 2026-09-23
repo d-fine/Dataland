@@ -100,7 +100,7 @@ data class BasePortfolio(
                 description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
             ),
     )
-    val proxyCompanyReplacements: List<ProxyCompanyReplacement> = emptyList(),
+    val proxyCompanyReplacements: List<ProxyCompanyReplacement>? = null,
 ) : Portfolio,
     PortfolioMonitoring,
     PortfolioSharing {
@@ -117,14 +117,15 @@ data class BasePortfolio(
         timeWindowThreshold = portfolioUpload.timeWindowThreshold,
         sharedUserIds = portfolioUpload.sharedUserIds,
         proxyCompanyReplacements =
-            portfolioUpload.proxyCompanyReplacements.map {
-                ProxyCompanyReplacement(
-                    userId = DatalandAuthentication.fromContext().userId,
-                    timestamp = Instant.now().toEpochMilli(),
-                    proxiedCompanyId = it.proxiedCompanyId,
-                    proxyCompanyId = it.proxyCompanyId,
-                )
-            },
+            portfolioUpload.proxyCompanyReplacements
+                ?.map {
+                    ProxyCompanyReplacement(
+                        userId = DatalandAuthentication.fromContext().userId,
+                        timestamp = Instant.now().toEpochMilli(),
+                        proxiedCompanyId = it.proxiedCompanyId,
+                        proxyCompanyId = it.proxyCompanyId,
+                    )
+                }?.takeIf { it.isNotEmpty() },
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -168,7 +169,7 @@ data class BasePortfolio(
         notificationFrequency: NotificationFrequency = this.notificationFrequency,
         timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
         sharedUserIds: Set<String> = this.sharedUserIds,
-        proxyCompanyReplacements: List<ProxyCompanyReplacement> = this.proxyCompanyReplacements,
+        proxyCompanyReplacements: List<ProxyCompanyReplacement>? = this.proxyCompanyReplacements,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -183,7 +184,7 @@ data class BasePortfolio(
             timeWindowThreshold = timeWindowThreshold,
             sharedUserIds = sharedUserIds,
             proxyCompanyReplacements =
-                proxyCompanyReplacements
+                (proxyCompanyReplacements ?: emptyList())
                     .map {
                         ProxyCompanyReplacementEmbeddable(
                             userId = it.userId,

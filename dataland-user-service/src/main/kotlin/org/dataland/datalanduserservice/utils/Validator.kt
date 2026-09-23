@@ -41,7 +41,11 @@ class Validator
                 )
             }
             portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
-            validateProxyCompanyReplacements(portfolioUpload.identifiers, portfolioUpload.proxyCompanyReplacements, correlationId)
+            validateProxyCompanyReplacements(
+                portfolioUpload.identifiers,
+                portfolioUpload.proxyCompanyReplacements ?: emptyList(),
+                correlationId,
+            )
         }
 
         /**
@@ -70,7 +74,11 @@ class Validator
                 )
             }
             portfolioUpload.identifiers.forEach { isCompanyIdValid(it, correlationId) }
-            validateProxyCompanyReplacements(portfolioUpload.identifiers, portfolioUpload.proxyCompanyReplacements, correlationId)
+            validateProxyCompanyReplacements(
+                portfolioUpload.identifiers,
+                portfolioUpload.proxyCompanyReplacements ?: emptyList(),
+                correlationId,
+            )
         }
 
         /**
