@@ -21,7 +21,6 @@ for attempt in $(seq 1 "$max_attempts"); do
   sleep 30  # Retry
 done
 
-
 docker compose --project-name dala-e2e-test --profile testing up -d || exit
 timeout 3600 sh -c "docker logs dala-e2e-test-e2etests-1 --follow"
 

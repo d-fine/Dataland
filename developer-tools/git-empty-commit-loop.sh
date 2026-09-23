@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # Set the number of commits you want to create
-NUM_COMMITS=2
+NUM_COMMITS=3
 
 # Set the delay between commits in seconds
 DELAY=5
