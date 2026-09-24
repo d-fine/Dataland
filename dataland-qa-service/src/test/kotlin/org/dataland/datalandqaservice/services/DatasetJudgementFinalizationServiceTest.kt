@@ -192,6 +192,64 @@ class DatasetJudgementFinalizationServiceTest {
     }
 
     @Test
+    fun `handleAcceptance with Qa source uses the latest QA report per reviewer when several exist`() {
+        val staleCorrectedData = """{"value": 1}"""
+        val latestCorrectedData = """{"value": 99}"""
+
+        dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
+            dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+            dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+
+            val staleReport = dataPoint.qaReports.first()
+            staleReport.correctedData = staleCorrectedData
+            staleReport.uploadTime = 1000
+            staleReport.active = false
+
+            dataPoint.qaReports.add(
+                staleReport.copy(
+                    qaReportId = UUID.randomUUID().toString(),
+                    correctedData = latestCorrectedData,
+                    uploadTime = 2000,
+                    active = true,
+                ),
+            )
+        }
+
+        service.handleAcceptance(dummyDatasetJudgement)
+
+        verifyUploadedDataPoint(latestCorrectedData)
+    }
+
+    @Test
+    fun `handleAcceptance with Qa source throws when the latest report of the accepted reviewer has no corrected data`() {
+        dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
+            dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+            dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+
+            val staleReport = dataPoint.qaReports.first()
+            staleReport.correctedData = """{"value": 1}"""
+            staleReport.uploadTime = 1000
+            staleReport.active = false
+
+            dataPoint.qaReports.add(
+                staleReport.copy(
+                    qaReportId = UUID.randomUUID().toString(),
+                    correctedData = null,
+                    uploadTime = 2000,
+                    active = true,
+                ),
+            )
+        }
+
+        assertThrows<InvalidInputApiException> {
+            service.handleAcceptance(dummyDatasetJudgement)
+        }
+
+        verify(dataPointControllerApi, never()).postDataPoint(any(), any())
+        verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
+    }
+
+    @Test
     fun `handleAcceptance with mixed sources routes each data point to the correct review path`() {
         val correctedData = """{"value": 99}"""
 

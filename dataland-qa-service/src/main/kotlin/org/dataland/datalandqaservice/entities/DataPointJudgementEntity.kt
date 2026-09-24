@@ -69,8 +69,12 @@ class DataPointJudgementEntity(
 
     /**
      * Reduces [qaReports] to at most one report per reviewer, keeping the one with the greatest uploadTime.
-     * The system only expects a single QA report per reviewer at any time.
+     * The system only expects a single QA report per reviewer at any time, but historic/superseded reports
+     * from repeated submissions by the same reviewer are never deleted (only marked inactive), so
+     * [qaReports] itself may contain several rows per reviewer. Any code that needs to look up "the"
+     * QA report of a given reviewer (e.g. display, or resolving the report accepted by the judge) must
+     * go through this method instead of searching [qaReports] directly.
      */
-    private fun latestQaReportsByReviewer(): List<DataPointQaReportEntity> =
+    fun latestQaReportsByReviewer(): List<DataPointQaReportEntity> =
         qaReports.groupBy { it.reporterUserId }.values.map { reports -> reports.maxBy { it.uploadTime } }
 }

@@ -141,7 +141,7 @@ class DatasetJudgementFinalizationService
          */
         private fun getReplacementValueFromQaReport(dataPoint: DataPointJudgementEntity): String {
             val acceptedReport =
-                dataPoint.qaReports.find {
+                dataPoint.latestQaReportsByReviewer().find {
                     it.reporterUserId == dataPoint.reporterUserIdOfAcceptedQaReport?.toString()
                 } ?: throw InvalidInputApiException(
                     summary = "Accepted QA report not found.",

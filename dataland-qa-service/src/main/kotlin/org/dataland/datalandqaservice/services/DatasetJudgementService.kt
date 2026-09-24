@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError as BackendClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 /**
@@ -204,12 +206,56 @@ class DatasetJudgementService
                 } catch (e: BackendClientException) {
                     throw InvalidInputApiException(
                         "Custom datapoint not valid.",
-                        "Custom datapoint given does not match the specification of $dataPointType.",
+                        buildCustomDataPointValidationErrorMessage(dataPointType, e),
                         e,
                     )
                 }
                 dataPoint.customValue = customDataPoint
             }
+        }
+
+        /**
+         * Builds a detailed error message for an invalid custom data point, including the concrete
+         * validation reason reported by the backend's data point validator when available (e.g. the
+         * specific field/value that failed validation), instead of only the generic mismatch message.
+         *
+         * @param dataPointType The type identifier the custom value was validated against.
+         * @param exception The client exception raised by the backend validation call.
+         * @return A human-readable error message combining the generic and the specific validation reason.
+         */
+        private fun buildCustomDataPointValidationErrorMessage(
+            dataPointType: String,
+            exception: BackendClientException,
+        ): String {
+            val genericMessage = "Custom datapoint given does not match the specification of $dataPointType."
+            val backendReason = extractBackendValidationReason(exception) ?: return genericMessage
+            return "$genericMessage $backendReason"
+        }
+
+        /**
+         * Attempts to extract the specific validation error message from the raw error response body
+         * of a failed backend call, following the standard Dataland error response format
+         * (`{"errors": [{"message": "...", ...}]}`).
+         *
+         * The response body is parsed leniently as a generic JSON tree (rather than deserialized into
+         * [ErrorResponse]/[org.dataland.datalandbackendutils.model.ErrorDetails]) since those model
+         * classes only define a one-way JSON serializer for their `httpStatus` field and are not meant
+         * to be deserialized.
+         *
+         * @param exception The client exception raised by the backend validation call.
+         * @return The first error's message, if the response body could be parsed; otherwise null.
+         */
+        private fun extractBackendValidationReason(exception: BackendClientException): String? {
+            val responseBody = (exception.response as? BackendClientError<*>)?.body as? String ?: return null
+            return runCatching {
+                JsonUtils.defaultObjectMapper
+                    .readTree(responseBody)
+                    .path("errors")
+                    .firstOrNull()
+                    ?.path("message")
+                    ?.takeIf { it.isTextual }
+                    ?.asText()
+            }.getOrNull()
         }
 
         /**

@@ -3,6 +3,9 @@ package org.dataland.datalandqaservice.services
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.ErrorDetails
+import org.dataland.datalandbackendutils.model.ErrorResponse
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
@@ -16,7 +19,9 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.http.HttpStatus
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError as BackendClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException as BackendClientException
 
 class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
@@ -208,5 +213,62 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
         }.also { exception ->
             assertTrue(exception.cause is BackendClientException)
         }
+    }
+
+    @Test
+    fun `patchJudgementDetails with Custom includes the specific backend validation reason when available`() {
+        val specificReason =
+            "Cannot deserialize value of type `YesNo` from String \"maybe\": " +
+                "not one of the values accepted for Enum class: [Yes, No]"
+        val backendErrorResponseBody =
+            JsonUtils.defaultObjectMapper.writeValueAsString(
+                ErrorResponse(
+                    errors =
+                        listOf(
+                            ErrorDetails(
+                                errorType = "invalid-input",
+                                summary = "Validation failed for data point.",
+                                message = specificReason,
+                                httpStatus = HttpStatus.BAD_REQUEST,
+                            ),
+                        ),
+                ),
+            )
+        val clientError = BackendClientError<Any?>("Bad Request", backendErrorResponseBody, 400, emptyMap())
+        whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
+            .thenThrow(BackendClientException("Client error : 400 Bad Request", 400, clientError))
+
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                service.patchJudgementDetails(
+                    UUID.randomUUID(),
+                    mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+                    JudgementDetailsPatch(null, null, """{"value": "maybe"}"""),
+                )
+            }
+
+        assertTrue(exception.message.contains(specificReason))
+    }
+
+    @Test
+    fun `patchJudgementDetails with Custom falls back to the generic message when the response body is not parseable`() {
+        val clientError = BackendClientError<Any?>("Bad Request", "not-json", 400, emptyMap())
+        whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
+            .thenThrow(BackendClientException("Client error : 400 Bad Request", 400, clientError))
+
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                service.patchJudgementDetails(
+                    UUID.randomUUID(),
+                    mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+                    JudgementDetailsPatch(null, null, """{"value": "maybe"}"""),
+                )
+            }
+
+        assertEquals(
+            "Custom datapoint given does not match the specification of " +
+                "${mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE}.",
+            exception.message,
+        )
     }
 }
