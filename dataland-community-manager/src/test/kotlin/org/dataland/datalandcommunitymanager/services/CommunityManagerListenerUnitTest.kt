@@ -56,7 +56,7 @@ class CommunityManagerListenerUnitTest {
                 BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
                 false,
             )
-        communityManagerListener.changeRequestStatusAfterQaDecision(
+        communityManagerListener.saveInvestorRelationsNotificationAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
             typeQAStatusChange, correlationId,
         )
@@ -89,7 +89,7 @@ class CommunityManagerListenerUnitTest {
                 BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"), false,
             )
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.changeRequestStatusAfterQaDecision(
+            communityManagerListener.saveInvestorRelationsNotificationAfterQaDecision(
                 jacksonObjectMapper.writeValueAsString(invalidQaStatusChangeMessage),
                 typeQAStatusChange, correlationId,
             )

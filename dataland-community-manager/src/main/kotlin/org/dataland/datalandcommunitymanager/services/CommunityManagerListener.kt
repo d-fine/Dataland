@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * This service checks if freshly uploaded and validated data answers a data request
+ * Processes QA decisions for investor-relations notifications.
  */
 @Service("CommunityManagerListener")
 class CommunityManagerListener(
@@ -30,8 +30,7 @@ class CommunityManagerListener(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Checks if, for a given dataset, there are open or nonsourceable requests with matching company identifier,
-     * reporting period and data type and sets their status to answered.
+     * Records an investor-relations notification event for an accepted dataset.
      * @param payload the message describing the result of the completed QA process
      * @param type the type of the message
      */
@@ -53,7 +52,7 @@ class CommunityManagerListener(
         ],
     )
     @Transactional
-    fun changeRequestStatusAfterQaDecision(
+    fun saveInvestorRelationsNotificationAfterQaDecision(
         @Payload payload: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
@@ -67,7 +66,7 @@ class CommunityManagerListener(
         logger.info("Received data QA completed message for dataset with ID $dataId (correlation ID: $id)")
         if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
             logger.info(
-                "Dataset with ID $dataId was not accepted and request matching is cancelled (correlation ID: $id)",
+                "Dataset with ID $dataId was not accepted; no investor-relations notification event will be saved (correlation ID: $id)",
             )
             return
         }
