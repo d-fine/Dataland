@@ -28,7 +28,7 @@
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
 					"value": 3279,
 					"dataSource": {
-						"page": "477-598",
+						"page": "477, 608-618",
 						"fileName": null,
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"tagName": "content",
@@ -44,7 +44,7 @@
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 					"value": "Yes",
 					"dataSource": {
-						"page": "272-1220",
+						"page": "272, 1230-1240",
 						"fileName": null,
 						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 						"tagName": "markets",
@@ -56,7 +56,7 @@
 				"biodiversityProtectionPolicy": {
 					"value": "No",
 					"dataSource": {
-						"page": "510-576",
+						"page": "510, 586-596",
 						"fileName": null,
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 						"tagName": "niches",
