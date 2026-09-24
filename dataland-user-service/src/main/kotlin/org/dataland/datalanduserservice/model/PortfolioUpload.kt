@@ -68,6 +68,14 @@ data class PortfolioUpload(
             ),
     )
     override val sharedUserIds: Set<String> = emptySet(),
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
+            ),
+    )
+    val proxyCompanyReplacements: List<ProxyCompanyReplacementUpload>? = null,
 ) : Portfolio,
     PortfolioMonitoring,
     PortfolioSharing

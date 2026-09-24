@@ -144,5 +144,6 @@ class PortfolioEnrichmentService
                 notificationFrequency = portfolio.notificationFrequency,
                 timeWindowThreshold = portfolio.timeWindowThreshold,
                 sharedUserIds = portfolio.sharedUserIds,
+                proxyCompanyReplacements = portfolio.proxyCompanyReplacements,
             )
     }
