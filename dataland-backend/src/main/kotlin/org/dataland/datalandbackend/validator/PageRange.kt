@@ -13,18 +13,30 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [PageRangeValidator::class])
 annotation class PageRange(
     val message: String =
-        "Valid inputs are a positive number or a range of two ascending positive numbers separated " +
-            "by '-'. The numbers must not begin with a zero. Valid examples are '2' or '13-15'.",
+        "Valid inputs are a comma-separated list of positive page numbers and/or ascending page ranges " +
+            "(e.g. '4', '4-5' or '4, 112'). Numbers must not begin with a zero, ranges must consist of two " +
+            "ascending numbers separated by '-', and list entries must be listed in strictly ascending, " +
+            "non-overlapping order.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
 
 /**
- * Validator class for validating a page range in the form of "A-B" or a single page number.
+ * Validator class for validating a page reference consisting of a comma-separated list of single page
+ * numbers and/or ascending page ranges (e.g. "4", "4-5" or "4, 112"). List entries must be strictly
+ * ascending and non-overlapping.
  */
 class PageRangeValidator : ConstraintValidator<PageRange, String> {
+    /**
+     * A single parsed list entry, e.g. "4" becomes PageEntry(4, 4) and "4-7" becomes PageEntry(4, 7).
+     */
+    private data class PageEntry(
+        val start: Int,
+        val end: Int,
+    )
+
     companion object {
-        private val regexPage = """^([1-9]\d*)(?:-([1-9]\d*))?$""".toRegex()
+        private val regexEntry = """^([1-9]\d*)(?:-([1-9]\d*))?$""".toRegex()
     }
 
     override fun initialize(constraintAnnotation: PageRange) {
@@ -37,18 +49,20 @@ class PageRangeValidator : ConstraintValidator<PageRange, String> {
     ): Boolean {
         if (value == null) return true
 
-        val matchResult = regexPage.matchEntire(value)
-        return if (matchResult != null) {
-            val (a, b) = matchResult.destructured
-            if (b.isEmpty()) {
-                true
-            } else {
-                val pageA = a.toInt()
-                val pageB = b.toInt()
-                pageA < pageB
-            }
-        } else {
-            false
-        }
+        val entries = value.split(",").map { parseEntry(it.trim()) }
+        return entries.all { it != null } &&
+            entries.filterNotNull().zipWithNext().all { (previous, current) -> current.start > previous.end }
+    }
+
+    /**
+     * Parses a single trimmed list entry into a [PageEntry]. Returns null if the entry is not a valid
+     * single page number or an ascending page range.
+     */
+    private fun parseEntry(entry: String): PageEntry? {
+        val matchResult = regexEntry.matchEntire(entry) ?: return null
+        val (startText, endText) = matchResult.destructured
+        val start = startText.toInt()
+        val end = if (endText.isEmpty()) start else endText.toInt()
+        return if (endText.isNotEmpty() && start >= end) null else PageEntry(start, end)
     }
 }

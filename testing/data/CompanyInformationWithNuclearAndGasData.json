@@ -63,7 +63,7 @@
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": null,
 						"dataSource": {
-							"page": "695",
+							"page": "695-716",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "interfaces",
@@ -200,7 +200,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "228",
+							"page": "228-863",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "convergence",
@@ -378,7 +378,7 @@
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1142-1160",
+							"page": "1142, 1170-1180",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "synergies",
@@ -390,7 +390,7 @@
 					"fossilGasRelatedActivitiesSection429": {
 						"value": "No",
 						"dataSource": {
-							"page": "727-867",
+							"page": "727, 877-887",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -526,7 +526,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "398",
+							"page": "398-442",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -597,7 +597,7 @@
 					"nuclearAndGasTaxonomyNonEligibleCapex": {
 						"value": null,
 						"dataSource": {
-							"page": "703",
+							"page": "703-813",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -666,7 +666,7 @@
 					"nuclearEnergyRelatedActivitiesSection426": {
 						"value": null,
 						"dataSource": {
-							"page": "736",
+							"page": "736-968",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "applications",
@@ -686,7 +686,7 @@
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "340-867",
+							"page": "340, 877-887",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "blockchains",
@@ -712,7 +712,7 @@
 					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": null,
 						"dataSource": {
-							"page": "254-1018",
+							"page": "254, 1028-1038",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "interfaces",
@@ -724,7 +724,7 @@
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
 						"value": null,
 						"dataSource": {
-							"page": "893-920",
+							"page": "893, 930-940",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -779,7 +779,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "180",
+							"page": "180-679",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "paradigms",
@@ -963,7 +963,7 @@
 							"taxonomyNonEligibleShare": null
 						},
 						"dataSource": {
-							"page": "696-1012",
+							"page": "696, 1022-1032",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -984,7 +984,7 @@
 							"taxonomyNonEligibleShare": 5.02
 						},
 						"dataSource": {
-							"page": "786-869",
+							"page": "786, 879-889",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -1272,7 +1272,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "772-830",
+							"page": "772, 840-850",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -1380,7 +1380,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "607",
+							"page": "607-905",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -1403,7 +1403,7 @@
 							"taxonomyNonEligibleShare": 62.45
 						},
 						"dataSource": {
-							"page": "1156-1287",
+							"page": "1156, 1297-1307",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -1424,7 +1424,7 @@
 							"taxonomyNonEligibleShare": 55.35
 						},
 						"dataSource": {
-							"page": "922-1229",
+							"page": "922, 1239-1249",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -1534,7 +1534,7 @@
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "No",
 						"dataSource": {
-							"page": "534-841",
+							"page": "534, 851-861",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -1602,7 +1602,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "622-767",
+							"page": "622, 777-787",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -1657,7 +1657,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "200-275",
+							"page": "200, 285-295",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -1725,7 +1725,7 @@
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": null,
 						"dataSource": {
-							"page": "1061",
+							"page": "1061-1166",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -1769,7 +1769,7 @@
 							"taxonomyNonEligibleShare": 77.61
 						},
 						"dataSource": {
-							"page": "294-557",
+							"page": "294, 567-577",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -1871,7 +1871,7 @@
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "No",
 						"dataSource": {
-							"page": "940-1237",
+							"page": "940, 1247-1257",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -2041,7 +2041,7 @@
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": null,
 						"dataSource": {
-							"page": "980-1186",
+							"page": "980, 1196-1206",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -2263,7 +2263,7 @@
 					"fossilGasRelatedActivitiesSection429": {
 						"value": null,
 						"dataSource": {
-							"page": "679-1065",
+							"page": "679, 1075-1085",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -2276,7 +2276,7 @@
 					"fossilGasRelatedActivitiesSection431": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "802-1126",
+							"page": "802, 1136-1146",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -2388,7 +2388,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "289",
+							"page": "289-832",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -2520,7 +2520,7 @@
 							"taxonomyNonEligibleShare": null
 						},
 						"dataSource": {
-							"page": "1057-1245",
+							"page": "1057, 1255-1265",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -2586,7 +2586,7 @@
 					"nuclearEnergyRelatedActivitiesSection426": {
 						"value": "No",
 						"dataSource": {
-							"page": "281",
+							"page": "281-430",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -2610,7 +2610,7 @@
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": null,
 						"dataSource": {
-							"page": "653-1015",
+							"page": "653, 1025-1035",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -2685,7 +2685,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "154-748",
+							"page": "154, 758-768",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "large language models",
@@ -2796,7 +2796,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "280-702",
+							"page": "280, 712-722",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "partnerships",
@@ -2849,7 +2849,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "790",
+							"page": "790-1183",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -2955,7 +2955,7 @@
 					"nuclearEnergyRelatedActivitiesSection426": {
 						"value": null,
 						"dataSource": {
-							"page": "1044",
+							"page": "1044-1176",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -2967,7 +2967,7 @@
 					"nuclearEnergyRelatedActivitiesSection427": {
 						"value": "No",
 						"dataSource": {
-							"page": "972",
+							"page": "972-1259",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -2998,7 +2998,7 @@
 					"fossilGasRelatedActivitiesSection431": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1187-1204",
+							"page": "1187, 1214-1224",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -3109,7 +3109,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "1150-1267",
+							"page": "1150, 1277-1287",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -3162,7 +3162,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "182",
+							"page": "182-656",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -3189,7 +3189,7 @@
 							"taxonomyNonEligibleShare": 77.12
 						},
 						"dataSource": {
-							"page": "1163-1188",
+							"page": "1163, 1198-1208",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -3210,7 +3210,7 @@
 							"taxonomyNonEligibleShare": 66.39
 						},
 						"dataSource": {
-							"page": "1006-1066",
+							"page": "1006, 1076-1086",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -3288,7 +3288,7 @@
 					"nuclearEnergyRelatedActivitiesSection427": {
 						"value": null,
 						"dataSource": {
-							"page": "1056-1200",
+							"page": "1056, 1210-1220",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -3414,7 +3414,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "1059-1299",
+							"page": "1059, 1309-1319",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -3528,7 +3528,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "143",
+							"page": "143-160",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
