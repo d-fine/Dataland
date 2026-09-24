@@ -224,6 +224,6 @@ export function getAvailableFileNames(injectReportsNameAndReferences: ObjectType
 }
 
 export const PAGE_NUMBER_DESCRIPTION =
-  'The single page or the range of pages of the document from where the information ' +
-  'was sourced. On Dataland, a single page is defined as the n-th page of the PDF, i.e., ' +
-  'the page number when looking at the PDF in a browser.';
+  'The page(s) of the document from where the information was sourced. A single page, a range of ' +
+  'pages, or a comma-separated list of these (e.g. 4, 5-7). On Dataland, a single page is defined as ' +
+  'the n-th page of the PDF, i.e., the page number when looking at the PDF in a browser.';
