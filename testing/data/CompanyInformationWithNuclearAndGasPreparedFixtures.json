@@ -66,7 +66,7 @@
 					"nuclearEnergyRelatedActivitiesSection427": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "404-484",
+							"page": "404, 494-504",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -78,7 +78,7 @@
 					"nuclearEnergyRelatedActivitiesSection428": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "7-1147",
+							"page": "7, 1157-1167",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -102,7 +102,7 @@
 					"fossilGasRelatedActivitiesSection430": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "792-1078",
+							"page": "792, 1088-1098",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -114,7 +114,7 @@
 					"fossilGasRelatedActivitiesSection431": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1152-1236",
+							"page": "1152, 1246-1256",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -222,7 +222,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "670",
+							"page": "670-683",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -330,7 +330,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "987-1251",
+							"page": "987, 1261-1271",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -438,7 +438,7 @@
 							}
 						},
 						"dataSource": {
-							"page": "429-1298",
+							"page": "429, 1308-1318",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -482,7 +482,7 @@
 							"taxonomyNonEligibleShare": 5.59
 						},
 						"dataSource": {
-							"page": "526",
+							"page": "526-794",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
