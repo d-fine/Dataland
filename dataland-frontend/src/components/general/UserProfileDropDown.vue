@@ -1,15 +1,20 @@
 <template>
-  <div
-    class="user-menu-container"
-    tabindex="0"
+  <button
+    type="button"
+    class="user-menu-container button-reset"
     aria-label="Open user profile menu"
     @click="toggleDropdown"
-    @keydown.enter="toggleDropdown"
-    @keydown.space.prevent="toggleDropdown"
   >
-    <Button data-test="user-profile-toggle" variant="outlined" severity="contrast" rounded icon="pi pi-user" />
+    <Button
+      as="span"
+      data-test="user-profile-toggle"
+      variant="outlined"
+      severity="contrast"
+      rounded
+      icon="pi pi-user"
+    />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
-  </div>
+  </button>
 
   <PrimeMenu
     id="user-menu-overlay"

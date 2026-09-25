@@ -216,24 +216,21 @@
             <span class="paginator-spacer"></span>
           </template>
           <template #paginatorend>
-            <div
-              class="column-selector-container"
-              tabindex="0"
+            <button
+              type="button"
+              class="column-selector-container button-reset"
               aria-label="Configure columns"
               @click="toggleColumnPopover"
-              @keydown.enter="toggleColumnPopover"
-              @keydown.space.prevent="toggleColumnPopover"
             >
               <span class="column-selector-label">Select Columns</span>
               <PrimeButton
-                type="button"
+                as="span"
                 icon="pi pi-cog"
                 variant="text"
                 class="column-selector-button"
                 data-test="column-selector-button"
-                aria-label="Configure columns"
               />
-            </div>
+            </button>
             <Popover ref="columnPopover" data-test="column-selector-popover">
               <div class="column-popover-content">
                 <div v-for="col in allColumns" :key="col.field" class="column-checkbox-row">
