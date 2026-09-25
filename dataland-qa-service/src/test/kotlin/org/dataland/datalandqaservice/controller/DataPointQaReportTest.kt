@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.controller
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
@@ -17,6 +18,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
 import org.dataland.datalandqaservice.utils.NoBackendRequestQaReportConfiguration
 import org.dataland.datalandqaservice.utils.UtilityFunctions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -98,7 +100,16 @@ class DataPointQaReportTest(
         )
         `when`(dataPointApi.getDataPointMetaInfo(dummyDataId)).thenReturn(dummyDataMetaInformation)
         `when`(dataPointApi.validateDataPoint(DataPointToValidate(incorrectDataPlaceholder, dummyDataPointType)))
-            .thenThrow(ClientException(statusCode = 400))
+            .thenThrow(
+                ClientException(
+                    statusCode = 400,
+                    response =
+                        ClientError<String>(
+                            body = """{"errors":[{"message":"dataSource must not set fileName"}]}""",
+                            statusCode = 400,
+                        ),
+                ),
+            )
     }
 
     @Test
@@ -113,16 +124,18 @@ class DataPointQaReportTest(
     @Test
     fun `uploading a data point QA report with incorrect data should not work`() {
         UtilityFunctions.withReviewerAuthentication {
-            assertThrows<InvalidInputApiException> {
-                dataPointQaReportController.postQaReport(
-                    dummyDataId,
-                    QaReportDataPoint(
-                        comment = "",
-                        verdict = QaReportDataPointVerdict.QaRejected,
-                        correctedData = incorrectDataPlaceholder,
-                    ),
-                )
-            }
+            val exception =
+                assertThrows<InvalidInputApiException> {
+                    dataPointQaReportController.postQaReport(
+                        dummyDataId,
+                        QaReportDataPoint(
+                            comment = "",
+                            verdict = QaReportDataPointVerdict.QaRejected,
+                            correctedData = incorrectDataPlaceholder,
+                        ),
+                    )
+                }
+            assertEquals("dataSource must not set fileName", exception.getErrorResponse().message)
         }
     }
 

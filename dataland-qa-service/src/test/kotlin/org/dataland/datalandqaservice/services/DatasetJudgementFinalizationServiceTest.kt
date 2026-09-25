@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -23,6 +25,7 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DatasetJudgementFinalizationServiceTest {
@@ -224,5 +227,24 @@ class DatasetJudgementFinalizationServiceTest {
         assertEquals(2, rejectedTasksCaptor.firstValue.size)
 
         verify(dataPointControllerApi, org.mockito.kotlin.times(2)).postDataPoint(any(), any())
+    }
+
+    @Test
+    fun `handleAcceptance exposes backend validation failure without accepting dataset`() {
+        dummyDatasetJudgement.dataPoints.forEach {
+            it.acceptedSource = AcceptedDataPointSource.Custom
+            it.customValue = MockDatasetJudgementEntityForTest.CUSTOM_VALUE
+        }
+        whenever(dataPointControllerApi.postDataPoint(any(), any())).thenThrow(
+            ClientException(
+                statusCode = 400,
+                response = ClientError<String>(body = """{"errors":[{"message":"dataSource must not set fileName"}]}"""),
+            ),
+        )
+
+        val exception = assertThrows<InvalidInputApiException> { service.handleAcceptance(dummyDatasetJudgement) }
+        assertTrue(exception.getErrorResponse().message.contains("dataSource must not set fileName"))
+        assertTrue(exception.getErrorResponse().message.contains(dummyDatasetJudgement.dataPoints.first().dataPointId))
+        verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
     }
 }

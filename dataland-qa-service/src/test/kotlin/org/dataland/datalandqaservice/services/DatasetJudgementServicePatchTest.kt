@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -197,7 +198,12 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     @Test
     fun `patchJudgementDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
         whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
-            .thenThrow(BackendClientException())
+            .thenThrow(
+                BackendClientException(
+                    statusCode = 400,
+                    response = ClientError<String>(body = """{"errors":[{"message":"dataSource must not set publicationDate"}]}"""),
+                ),
+            )
 
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
@@ -207,6 +213,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
             )
         }.also { exception ->
             assertTrue(exception.cause is BackendClientException)
+            assertEquals("dataSource must not set publicationDate", exception.getErrorResponse().message)
         }
     }
 }
