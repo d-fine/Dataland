@@ -34,7 +34,7 @@ class NonSourceabilityInformationManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -291,9 +291,8 @@ class NonSourceabilityInformationManager(
         // going through the code path that deactivates it (see deactivateExistingNonSourceabilitiesForTriple).
         // Cross-check against real, currently-active data to avoid reporting such triples as non-sourceable.
         val triplesWithRealData =
-            dataMetaInformationManager
-                .getActiveDataMetaInformation(nonSourceableDimensions.map { it.toBasicDatasetDimensions() })
-                .map { it.toBasicDataDimensions() }
+            dataAvailabilityChecker
+                .filterViewableDimensions(nonSourceableDimensions.toList())
                 .toSet()
 
         return nonSourceableDimensions - triplesWithRealData
