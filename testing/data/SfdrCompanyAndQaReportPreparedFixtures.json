@@ -3,7 +3,7 @@
 		"preparedFixture": {
 			"companyInformation": {
 				"companyName": "Wisoky, Gutkowski and Hoeger",
-				"headquarters": "Lake Arno",
+				"headquarters": "Lake Ashton",
 				"headquartersPostalCode": "46024",
 				"sector": "architectures",
 				"identifiers": {
@@ -32,7 +32,7 @@
 				},
 				"countryCode": "IT",
 				"companyContactDetails": [
-					"Abby_Lindgren58@example.com"
+					"Addison_Lindgren58@example.com"
 				],
 				"companyAlternativeNames": [
 					"Wilkinson Group"
