@@ -75,4 +75,25 @@ abstract class DataExportServiceAvailabilityTestBase {
         whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))
             .doReturn(mapOf(nonSourceableTestCompanyId to nonSourceableTestCompanyInfo))
     }
+
+    protected val secondTestCompanyId = UUID.randomUUID().toString()
+    protected val secondTestCompanyInfo =
+        BasicCompanyInformation(
+            companyId = secondTestCompanyId,
+            companyName = "second test company",
+            headquarters = "Test City",
+            countryCode = "DE",
+            sector = null,
+            lei = "second-test-lei",
+        )
+
+    protected fun mockCompanyInformationLookupForTwoCompanies() {
+        whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))
+            .doReturn(
+                mapOf(
+                    nonSourceableTestCompanyId to nonSourceableTestCompanyInfo,
+                    secondTestCompanyId to secondTestCompanyInfo,
+                ),
+            )
+    }
 }
