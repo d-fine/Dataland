@@ -150,6 +150,7 @@ class DatasetJudgementFinalizationServiceTest {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+            dataPoint.acceptedQaReportId = dataPoint.qaReports.first().qaReportId
             dataPoint.qaReports.forEach { it.correctedData = correctedData }
         }
 
@@ -164,10 +165,42 @@ class DatasetJudgementFinalizationServiceTest {
     }
 
     @Test
+    fun `handleAcceptance uses pinned report despite a newer report from the same reviewer`() {
+        val dataPoint = dummyDatasetJudgement.dataPoints.first()
+        val selected = dataPoint.qaReports.first()
+        selected.correctedData = """{"value": 99}"""
+        dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+        dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+        dataPoint.acceptedQaReportId = selected.qaReportId
+        dataPoint.qaReports.add(
+            selected.copy(
+                qaReportId = UUID.randomUUID().toString(),
+                uploadTime = selected.uploadTime + 1,
+                correctedData = """{"value": 100}""",
+            ),
+        )
+
+        service.handleAcceptance(dummyDatasetJudgement)
+
+        verifyUploadedDataPoint("""{"value": 99}""")
+    }
+
+    @Test
+    fun `handleAcceptance requires a legacy reporter-only selection to be reselected`() {
+        val dataPoint = dummyDatasetJudgement.dataPoints.first()
+        dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+        dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+
+        assertThrows<InvalidInputApiException> { service.handleAcceptance(dummyDatasetJudgement) }
+        verify(dataPointControllerApi, never()).postDataPoint(any(), any())
+    }
+
+    @Test
     fun `handleAcceptance with Qa source throws when no matching QA report is found`() {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = UUID.randomUUID()
+            dataPoint.acceptedQaReportId = UUID.randomUUID().toString()
         }
 
         assertThrows<InvalidInputApiException> {
@@ -183,6 +216,7 @@ class DatasetJudgementFinalizationServiceTest {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+            dataPoint.acceptedQaReportId = dataPoint.qaReports.first().qaReportId
             dataPoint.qaReports.forEach { it.correctedData = null }
         }
 
@@ -211,6 +245,7 @@ class DatasetJudgementFinalizationServiceTest {
             MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
                 it.acceptedSource = AcceptedDataPointSource.Qa
                 it.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+                it.acceptedQaReportId = it.qaReports.first().qaReportId
                 it.qaReports.first().correctedData = correctedData
                 it.qaReports.first().verdict = QaReportDataPointVerdict.QaRejected
             },

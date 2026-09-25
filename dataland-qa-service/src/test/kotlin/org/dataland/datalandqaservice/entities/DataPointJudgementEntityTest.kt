@@ -67,4 +67,24 @@ class DataPointJudgementEntityTest {
 
         assertThat(entity.qaReports).hasSize(4)
     }
+
+    @Test
+    fun `response retains the pinned report when a newer report exists`() {
+        val selected = buildQaReport(reporterA, 100L, QaReportDataPointVerdict.QaRejected)
+        val newer = buildQaReport(reporterA, 200L, QaReportDataPointVerdict.QaRejected)
+        val entity =
+            DataPointJudgementEntity(
+                dataPointType = dataPointType,
+                dataPointId = dataPointId,
+                qaReports = mutableListOf(selected, newer),
+                acceptedSource = null,
+                reporterUserIdOfAcceptedQaReport = null,
+                customValue = null,
+                acceptedQaReportId = selected.qaReportId,
+            )
+
+        val response = entity.toDataPointJudgementDetails()
+        assertThat(response.qaReports.single().qaReportId).isEqualTo(newer.qaReportId)
+        assertThat(response.acceptedQaReport?.qaReportId).isEqualTo(selected.qaReportId)
+    }
 }

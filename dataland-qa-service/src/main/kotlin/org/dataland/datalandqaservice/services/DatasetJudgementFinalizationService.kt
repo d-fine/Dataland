@@ -155,12 +155,12 @@ class DatasetJudgementFinalizationService
         private fun getReplacementValueFromQaReport(dataPoint: DataPointJudgementEntity): String {
             val acceptedReport =
                 dataPoint.qaReports.find {
-                    it.reporterUserId == dataPoint.reporterUserIdOfAcceptedQaReport?.toString()
+                    it.qaReportId == dataPoint.acceptedQaReportId
                 } ?: throw InvalidInputApiException(
                     summary = "Accepted QA report not found.",
                     message =
-                        "No QA report from user ${dataPoint.reporterUserIdOfAcceptedQaReport} " +
-                            "found for data point ${dataPoint.dataPointId}.",
+                        "No pinned QA report found for data point ${dataPoint.dataPointId}. " +
+                            "Please reselect the QA correction before accepting the dataset.",
                 )
             return acceptedReport.correctedData ?: throw InvalidInputApiException(
                 summary = "QA report has no corrected data.",
