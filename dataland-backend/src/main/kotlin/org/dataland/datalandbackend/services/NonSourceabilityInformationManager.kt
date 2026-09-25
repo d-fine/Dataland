@@ -34,6 +34,7 @@ class NonSourceabilityInformationManager(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -273,16 +274,28 @@ class NonSourceabilityInformationManager(
      */
     fun searchActiveNonSourceableDimensions(query: DataDimensionQuery): Set<BasicDataDimensions> {
         val dataTypes = query.dataTypes.map { DataType.valueOf(it) }
-        return nonSourceabilityDataRepository
-            .findActiveTriples(
-                companyIds = query.companyIds,
-                isCompanyIdsEmpty = query.companyIds.isEmpty(),
-                dataTypes = dataTypes,
-                isDataTypesEmpty = dataTypes.isEmpty(),
-                reportingPeriods = query.reportingPeriods,
-                isReportingPeriodsEmpty = query.reportingPeriods.isEmpty(),
-            ).map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
-            .toSet()
+        val nonSourceableDimensions =
+            nonSourceabilityDataRepository
+                .findActiveTriples(
+                    companyIds = query.companyIds,
+                    isCompanyIdsEmpty = query.companyIds.isEmpty(),
+                    dataTypes = dataTypes,
+                    isDataTypesEmpty = dataTypes.isEmpty(),
+                    reportingPeriods = query.reportingPeriods,
+                    isReportingPeriodsEmpty = query.reportingPeriods.isEmpty(),
+                ).map { BasicDataDimensions(it.companyId, it.dataType.name, it.reportingPeriod) }
+                .toSet()
+        if (nonSourceableDimensions.isEmpty()) return nonSourceableDimensions
+
+        // A non-sourceability entry can become stale if real data was accepted for the same triple without
+        // going through the code path that deactivates it (see deactivateExistingNonSourceabilitiesForTriple).
+        // Cross-check against real, currently-active data to avoid reporting such triples as non-sourceable.
+        val triplesWithRealData =
+            dataAvailabilityChecker
+                .filterViewableDimensions(nonSourceableDimensions.toList())
+                .toSet()
+
+        return nonSourceableDimensions - triplesWithRealData
     }
 
     /**

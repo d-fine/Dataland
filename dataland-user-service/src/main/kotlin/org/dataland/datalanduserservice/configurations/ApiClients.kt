@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
+import org.dataland.datalandbackend.openApiClient.api.NonSourceabilityControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.InheritedRolesControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -34,6 +35,14 @@ class ApiClients(
     fun getDataAvailabilityControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): DataAvailabilityControllerApi = DataAvailabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the [NonSourceabilityControllerApi] of the backend
+     */
+    @Bean
+    fun getNonSourceabilityControllerApi(
+        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
+    ): NonSourceabilityControllerApi = NonSourceabilityControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an auto-authenticated version of the [InheritedRolesControllerApi] of the community manager

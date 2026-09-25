@@ -19,6 +19,7 @@ import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
+import org.dataland.datalandbackend.services.NonSourceabilityInformationManager
 import org.dataland.datalandbackend.services.SpecificationService
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.DefaultMocks
@@ -62,12 +63,14 @@ internal class DataControllerTest {
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
     private val mockDatasetStorageService = mock<DatasetStorageService>()
     private val mockDatasetAssembler = mock<DatasetAssembler>()
+    private val mockNonSourceabilityInformationManager = mock<NonSourceabilityInformationManager>()
     private val dataExportService =
         DataExportService<LksgData>(
             mockDatasetAssembler,
             mockSpecificationService,
             mockCompanyQueryManager,
             mockDatasetStorageService,
+            mockNonSourceabilityInformationManager,
         )
 
     private final val testDataProvider = TestDataProvider(objectMapper)
