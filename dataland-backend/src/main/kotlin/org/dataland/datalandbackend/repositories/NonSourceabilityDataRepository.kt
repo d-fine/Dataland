@@ -17,12 +17,16 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
     /**
      * Returns entries matching optional filters on companyId, dataType, reportingPeriod, and qaStatus.
      * Null parameters are treated as "no filter".
+     *
+     * "dataType" uses a separate "isDataTypeEmpty" flag instead of "(:dataType IS NULL OR ...)"
+     * because Hibernate cannot reuse a converted (DataTypeConverter) parameter for both an IS NULL
+     * and an equality check - see [findActiveTriples] for the same workaround.
      */
     @Query(
         """
         SELECT e FROM NonSourceabilityInformationEntity e
         WHERE (:companyId IS NULL OR e.companyId = :companyId)
-          AND (:dataType IS NULL OR e.dataType = :dataType)
+          AND (:isDataTypeEmpty = true OR e.dataType = :dataType)
           AND (:reportingPeriod IS NULL OR e.reportingPeriod = :reportingPeriod)
           AND (:qaStatus IS NULL OR e.qaStatus = :qaStatus)
         ORDER BY e.uploadTime DESC
@@ -31,6 +35,7 @@ interface NonSourceabilityDataRepository : JpaRepository<NonSourceabilityInforma
     fun findByFilters(
         @Param("companyId") companyId: String?,
         @Param("dataType") dataType: DataType?,
+        @Param("isDataTypeEmpty") isDataTypeEmpty: Boolean,
         @Param("reportingPeriod") reportingPeriod: String?,
         @Param("qaStatus") qaStatus: QaStatus?,
     ): List<NonSourceabilityInformationEntity>
