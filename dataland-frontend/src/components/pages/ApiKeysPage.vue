@@ -63,7 +63,12 @@
                     placeholder="Key goes here"
                     class="p-inputText p-component col-10"
                   />
-                  <em @click="copyToClipboard" class="pi pi-clone form-inputs-bg primary-color copy-button fs-lg" />
+                  <button
+                    type="button"
+                    @click="copyToClipboard"
+                    aria-label="Copy API key to clipboard"
+                    class="pi pi-clone form-inputs-bg primary-color copy-button fs-lg button-reset"
+                  />
                 </div>
               </div>
             </template>

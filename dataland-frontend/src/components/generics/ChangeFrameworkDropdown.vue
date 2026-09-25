@@ -1,8 +1,9 @@
 <template>
   <span data-test="chooseFrameworkDropdown" class="p-dropdown-panel" ref="chooseFrameworkDropdown">
-    <span
+    <button
+      type="button"
       @click="dropdownExtended = !dropdownExtended"
-      class="fill-dropdown always-fill"
+      class="fill-dropdown always-fill button-reset"
       :class="dropdownExtended ? 'p-overlay-open' : ''"
       :aria-expanded="dropdownExtended"
     >
@@ -10,7 +11,7 @@
         {{ humanizeStringOrNumber(dataType) }}
         <span class="p-dropdown-trigger-icon pi pi-angle-down" aria-hidden="true" data-pc-section="dropdownicon"></span>
       </span>
-    </span>
+    </button>
     <span v-if="dropdownExtended" class="p-dropdown-trigger p-dropdown-items" data-test="chooseFrameworkList">
       <a
         v-for="option in getFrameworkListSorted(availableDataDimensions)"

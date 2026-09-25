@@ -30,7 +30,7 @@ describe('Component test for AlignedActivitiesFormField', () => {
       .eq(1)
       .find('div.p-multiselect-label')
       .should('contain', '41 - Construction of buildings, 43 - Specialised construction activities');
-    cy.get('em[data-test="removeButton"]').eq(1).click();
+    cy.get('button[data-test="removeButton"]').eq(1).click();
     cy.get('div[data-test="alignedActivitiesSection"]').eq(1).should('not.exist');
   });
 });
