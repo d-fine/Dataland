@@ -27,8 +27,8 @@ function verifyCreatingApiKeyAndCopyingIt(): void {
     );
   }
 
-  cy.get('[data-test="apiKeyInfo"]').find('em').should('exist');
-  cy.get('[data-test="text-info"]').find('em').click();
+  cy.get('[data-test="apiKeyInfo"]').find('button.copy-button').should('exist');
+  cy.get('[data-test="text-info"]').find('button.copy-button').click();
 
   cy.get('[data-test="text-info"]').find('textarea').should('have.focus');
   cy.get('[data-test="apiKeyInfo"]').find('textarea').should('have.attr', 'readonly');
