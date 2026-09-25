@@ -1,7 +1,6 @@
 <template>
   <div
     class="user-menu-container"
-    role="button"
     tabindex="0"
     aria-label="Open user profile menu"
     @click="toggleDropdown"

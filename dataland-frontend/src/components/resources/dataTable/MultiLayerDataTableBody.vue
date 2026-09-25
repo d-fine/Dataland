@@ -77,7 +77,6 @@
           "
           :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
-          role="button"
           tabindex="0"
           :aria-label="`Toggle section ${cellOrSectionConfig.label}`"
           @click="toggleSection(idx)"

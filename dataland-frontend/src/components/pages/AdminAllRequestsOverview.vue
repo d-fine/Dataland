@@ -218,7 +218,6 @@
           <template #paginatorend>
             <div
               class="column-selector-container"
-              role="button"
               tabindex="0"
               aria-label="Configure columns"
               @click="toggleColumnPopover"

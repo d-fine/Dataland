@@ -1,23 +1,21 @@
 <template>
-  <span
+  <button
+    type="button"
     :title="disabled ? 'No data available' : ''"
     :class="{
       toggled: isToggled,
       disabled: disabled,
     }"
-    class="toggle-chip mr-2 mb-2"
+    class="toggle-chip mr-2 mb-2 button-reset"
     data-test="toggle-chip"
-    role="button"
-    :tabindex="disabled ? -1 : 0"
+    :disabled="disabled"
     :aria-pressed="isToggled"
-    @click="!disabled && toggle()"
-    @keydown.enter="!disabled && toggle()"
-    @keydown.space.prevent="!disabled && toggle()"
+    @click="toggle"
   >
     <span class="label">
       {{ label }}
     </span>
-  </span>
+  </button>
 </template>
 
 <script lang="ts">

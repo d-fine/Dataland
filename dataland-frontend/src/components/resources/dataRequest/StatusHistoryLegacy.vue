@@ -1,14 +1,11 @@
 <template>
-  <div
-    class="card__data"
+  <button
+    type="button"
+    class="card__data button-reset"
     style="cursor: pointer; margin-bottom: 1rem"
     data-test="status_history_toggle"
-    role="button"
-    tabindex="0"
     aria-label="Toggle request status history"
     @click="toggleViewStatusHistory()"
-    @keydown.enter="toggleViewStatusHistory()"
-    @keydown.space.prevent="toggleViewStatusHistory()"
   >
     <div v-show="!isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Show Request Status History </span>
@@ -18,7 +15,7 @@
       <span> Hide Request Status History </span>
       <i class="pi pi-chevron-up p-icon p-row-toggler-icon ml-2" />
     </div>
-  </div>
+  </button>
 
   <div v-show="isStatusHistoryVisible">
     <div>

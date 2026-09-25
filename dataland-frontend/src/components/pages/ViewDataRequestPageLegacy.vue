@@ -115,20 +115,17 @@
             <div class="card__subtitle">Reporting year</div>
             <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
           </div>
-          <div
+          <button
+            type="button"
             v-show="answeringDataSetUrl"
-            class="link claim-panel-text"
+            class="link claim-panel-text button-reset"
             style="font-weight: bold"
             data-test="viewDataset"
-            role="button"
-            tabindex="0"
             aria-label="View dataset"
             @click="goToAnsweringDataSetPage()"
-            @keydown.enter="goToAnsweringDataSetPage()"
-            @keydown.space.prevent="goToAnsweringDataSetPage()"
           >
             VIEW DATASET
-          </div>
+          </button>
         </div>
         <div class="grid col-8 flex-direction-column">
           <div class="col-12">
@@ -173,20 +170,18 @@
             <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
               <span style="display: flex; align-items: center">
                 <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
-                <span
+                <button
+                  type="button"
                   v-show="isNewMessageAllowed()"
                   style="cursor: pointer; display: flex; align-items: center"
-                  role="button"
-                  tabindex="0"
+                  class="button-reset"
                   aria-label="Send new message"
                   @click="openMessageDialog()"
-                  @keydown.enter="openMessageDialog()"
-                  @keydown.space.prevent="openMessageDialog()"
                   data-test="newMessage"
                 >
                   <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
                   <span style="font-weight: bold">NEW MESSAGE</span>
-                </span>
+                </button>
               </span>
               <div class="card__separator" />
               <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">

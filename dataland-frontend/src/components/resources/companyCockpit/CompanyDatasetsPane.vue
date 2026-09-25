@@ -54,14 +54,11 @@
           :data-test="`${framework}-summary-panel`"
         />
       </div>
-      <div
-        class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
-        role="button"
-        tabindex="0"
+      <button
+        type="button"
+        class="document-button cursor-pointer flex flex-row align-items-center justify-content-end button-reset"
         aria-label="Toggle show all frameworks"
         @click="toggleShowAll"
-        @keydown.enter="toggleShowAll"
-        @keydown.space.prevent="toggleShowAll"
         style="margin-left: auto"
       >
         <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
@@ -70,7 +67,7 @@
         <i class="material-icons text-primary">
           {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
         </i>
-      </div>
+      </button>
     </div>
   </div>
 </template>

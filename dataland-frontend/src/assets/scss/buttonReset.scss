@@ -1,0 +1,15 @@
+// Neutralizes the native browser chrome (background/border/padding/margin) of a <button> element so
+// that it can be used as a drop-in replacement for custom clickable elements (e.g. icons, chips, rows)
+// that previously relied on role="button". Using a real <button> element ensures correct semantics and
+// keyboard/touch/voice-control accessibility across all devices without any extra ARIA/keyboard glue code.
+// Any layout-relevant property (display, padding, border, background, ...) that a component actually needs
+// is expected to be re-declared by that component's own (scoped) CSS, which always wins due to higher
+// selector specificity from Vue's scoped-style attribute.
+.button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
