@@ -71,7 +71,6 @@ class V16__RemoveInferableDocumentFieldsFromQaDataTest {
     private fun assertMigratedData(
         connection: Connection,
         cleaned: String,
-        legacy: String,
         judgementId: UUID,
     ) {
         val mapper = JsonUtils.defaultObjectMapper
@@ -125,7 +124,7 @@ class V16__RemoveInferableDocumentFieldsFromQaDataTest {
             whenever(context.connection).thenReturn(connection)
             V16__RemoveInferableDocumentFieldsFromQaData().migrate(context)
 
-            assertMigratedData(connection, cleaned, legacy, judgementId)
+            assertMigratedData(connection, cleaned, judgementId)
         }
     }
 
