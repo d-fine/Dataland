@@ -3,7 +3,18 @@
     content.displayValue
   }}</span>
   <span data-test="freetext-collapsed" v-else class="preserve-line-wrap">{{ teaserText }}</span>
-  <span data-test="freetext-toggle" v-if="teaserText" @click="expanded = !expanded" class="link">{{ toggleText }}</span>
+  <span
+    data-test="freetext-toggle"
+    v-if="teaserText"
+    role="button"
+    tabindex="0"
+    :aria-label="toggleText"
+    @click="expanded = !expanded"
+    @keydown.enter="expanded = !expanded"
+    @keydown.space.prevent="expanded = !expanded"
+    class="link"
+    >{{ toggleText }}</span
+  >
 </template>
 
 <style scoped>

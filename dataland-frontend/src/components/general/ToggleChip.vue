@@ -7,7 +7,12 @@
     }"
     class="toggle-chip mr-2 mb-2"
     data-test="toggle-chip"
+    role="button"
+    :tabindex="disabled ? -1 : 0"
+    :aria-pressed="isToggled"
     @click="!disabled && toggle()"
+    @keydown.enter="!disabled && toggle()"
+    @keydown.space.prevent="!disabled && toggle()"
   >
     <span class="label">
       {{ label }}

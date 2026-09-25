@@ -1,5 +1,13 @@
 <template>
-  <div class="user-menu-container" @click="toggleDropdown">
+  <div
+    class="user-menu-container"
+    role="button"
+    tabindex="0"
+    aria-label="Open user profile menu"
+    @click="toggleDropdown"
+    @keydown.enter="toggleDropdown"
+    @keydown.space.prevent="toggleDropdown"
+  >
     <Button data-test="user-profile-toggle" variant="outlined" severity="contrast" rounded icon="pi pi-user" />
     <img src="@/assets/images/elements/triangle_down.svg" class="d-triangle-down" alt="Open drop down menu icon" />
   </div>

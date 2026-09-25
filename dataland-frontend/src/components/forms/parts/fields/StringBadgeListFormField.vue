@@ -35,7 +35,16 @@
     <div class="">
       <span class="form-list-item" :key="element" v-for="element in listOfElements">
         {{ element }}
-        <em @click="removeItem(element)" class="material-icons">close</em>
+        <em
+          @click="removeItem(element)"
+          @keydown.enter="removeItem(element)"
+          @keydown.space.prevent="removeItem(element)"
+          role="button"
+          tabindex="0"
+          aria-label="Remove value"
+          class="material-icons"
+          >close</em
+        >
       </span>
     </div>
   </div>

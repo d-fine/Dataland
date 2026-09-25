@@ -77,7 +77,12 @@
           "
           :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
+          role="button"
+          tabindex="0"
+          :aria-label="`Toggle section ${cellOrSectionConfig.label}`"
           @click="toggleSection(idx)"
+          @keydown.enter="toggleSection(idx)"
+          @keydown.space.prevent="toggleSection(idx)"
           v-show="isVisible"
         >
           <td :colspan="dataAndMetaInfo.length + 1" :class="isTopLevel ? 'pl-2' : null">

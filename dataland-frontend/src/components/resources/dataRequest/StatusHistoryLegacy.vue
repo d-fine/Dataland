@@ -3,7 +3,12 @@
     class="card__data"
     style="cursor: pointer; margin-bottom: 1rem"
     data-test="status_history_toggle"
+    role="button"
+    tabindex="0"
+    aria-label="Toggle request status history"
     @click="toggleViewStatusHistory()"
+    @keydown.enter="toggleViewStatusHistory()"
+    @keydown.space.prevent="toggleViewStatusHistory()"
   >
     <div v-show="!isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Show Request Status History </span>

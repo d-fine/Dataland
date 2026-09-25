@@ -216,7 +216,15 @@
             <span class="paginator-spacer"></span>
           </template>
           <template #paginatorend>
-            <div class="column-selector-container" @click="toggleColumnPopover">
+            <div
+              class="column-selector-container"
+              role="button"
+              tabindex="0"
+              aria-label="Configure columns"
+              @click="toggleColumnPopover"
+              @keydown.enter="toggleColumnPopover"
+              @keydown.space.prevent="toggleColumnPopover"
+            >
               <span class="column-selector-label">Select Columns</span>
               <PrimeButton
                 type="button"
