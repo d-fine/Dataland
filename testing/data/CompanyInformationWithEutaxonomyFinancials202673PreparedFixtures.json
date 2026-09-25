@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-EU-Taxonomy-Financials-202673-Framework-Company",
-			"headquarters": "South Yvette",
+			"headquarters": "South Zoey",
 			"headquartersPostalCode": "52643-9313",
 			"sector": null,
 			"identifiers": {
@@ -24,9 +24,9 @@
 			},
 			"countryCode": "RS",
 			"companyContactDetails": [
-				"Dwight94@example.com",
-				"Stephen99@example.com",
-				"Edith_Reilly84@example.com"
+				"Duncan94@example.com",
+				"Steve99@example.com",
+				"Diane_Reilly84@example.com"
 			],
 			"companyAlternativeNames": [
 				"Spencer Inc"
@@ -42,7 +42,7 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "928",
+							"page": "928-1201",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -54,7 +54,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-01-27",
 						"dataSource": {
-							"page": "598",
+							"page": "598-638",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -73,7 +73,7 @@
 					"areAllGroupEntitiesCovered": {
 						"value": "No",
 						"dataSource": {
-							"page": "239-460",
+							"page": "239, 470-480",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -85,7 +85,7 @@
 					"numberOfEmployees": {
 						"value": 30781.73,
 						"dataSource": {
-							"page": "1083",
+							"page": "1083-1259",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -97,7 +97,7 @@
 					"isEuTaxonomyDataReportedOnAMandatoryBasis": {
 						"value": "No",
 						"dataSource": {
-							"page": "992-998",
+							"page": "992, 1008-1018",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -188,7 +188,7 @@
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 4425516373.25,
 						"dataSource": {
-							"page": "1095-1285",
+							"page": "1095, 1295-1305",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -203,7 +203,7 @@
 					"capexBasedTotalGrossCarryingAmount": {
 						"value": 7068992703.95,
 						"dataSource": {
-							"page": "157-723",
+							"page": "157, 733-743",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -242,7 +242,7 @@
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 8887550819.51,
 						"dataSource": {
-							"page": "613-837",
+							"page": "613, 847-857",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -270,7 +270,7 @@
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivities": {
 						"value": 9237292648.2,
 						"dataSource": {
-							"page": "927-1258",
+							"page": "927, 1268-1278",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -296,7 +296,7 @@
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 5400279014.69,
 						"dataSource": {
-							"page": "1087-1298",
+							"page": "1087, 1308-1318",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -309,7 +309,7 @@
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 4702932199.09,
 						"dataSource": {
-							"page": "949-1061",
+							"page": "949, 1071-1081",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -322,7 +322,7 @@
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 7973382259.02,
 						"dataSource": {
-							"page": "579-1063",
+							"page": "579, 1073-1083",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -335,7 +335,7 @@
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 5851455805.54,
 						"dataSource": {
-							"page": "411-508",
+							"page": "411, 518-528",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -363,7 +363,7 @@
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 351414193.17,
 						"dataSource": {
-							"page": "948-1133",
+							"page": "948, 1143-1153",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -376,7 +376,7 @@
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 4288057920.15,
 						"dataSource": {
-							"page": "1110-1170",
+							"page": "1110, 1180-1190",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -402,7 +402,7 @@
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 3901228481.4,
 						"dataSource": {
-							"page": "686",
+							"page": "686-1126",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -415,7 +415,7 @@
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 6519698787.66,
 						"dataSource": {
-							"page": "283-545",
+							"page": "283, 555-565",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -430,7 +430,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentEligible": {
 						"value": 64.18,
 						"dataSource": {
-							"page": "995-1282",
+							"page": "995, 1292-1302",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -442,7 +442,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
 						"value": 38.8,
 						"dataSource": {
-							"page": "791-1028",
+							"page": "791, 1038-1048",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -454,7 +454,7 @@
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 47.51,
 						"dataSource": {
-							"page": "623-988",
+							"page": "623, 998-1008",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -466,7 +466,7 @@
 					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 						"value": 25.16,
 						"dataSource": {
-							"page": "298-1292",
+							"page": "298, 1302-1312",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -490,7 +490,7 @@
 					"substantialContributionToTransitionToACircularEconomyInPercentAligned": {
 						"value": 67.5,
 						"dataSource": {
-							"page": "631-1016",
+							"page": "631, 1026-1036",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -502,7 +502,7 @@
 					"substantialContributionToPollutionPreventionAndControlInPercentAligned": {
 						"value": 55.15,
 						"dataSource": {
-							"page": "1015-1037",
+							"page": "1015, 1047-1057",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -514,7 +514,7 @@
 					"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 9.54,
 						"dataSource": {
-							"page": "267-643",
+							"page": "267, 653-663",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -550,7 +550,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
 						"value": 24.9,
 						"dataSource": {
-							"page": "704-1162",
+							"page": "704, 1172-1182",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -562,7 +562,7 @@
 					"turnoverBasedNonAssessedExposures": {
 						"value": 27.88,
 						"dataSource": {
-							"page": "786-1100",
+							"page": "786, 1110-1120",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -588,7 +588,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned": {
 						"value": 1.01,
 						"dataSource": {
-							"page": "1127-1214",
+							"page": "1127, 1224-1234",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -600,7 +600,7 @@
 					"substantialContributionToClimateChangeMitigationInPercentAligned": {
 						"value": 69,
 						"dataSource": {
-							"page": "151",
+							"page": "151-1137",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -612,7 +612,7 @@
 					"substantialContributionToClimateChangeAdaptationInPercentAligned": {
 						"value": 98.32,
 						"dataSource": {
-							"page": "541-760",
+							"page": "541, 770-780",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -672,7 +672,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds": {
 						"value": 80.23,
 						"dataSource": {
-							"page": "634-1097",
+							"page": "634, 1107-1117",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -684,7 +684,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichTransitional": {
 						"value": 73.34,
 						"dataSource": {
-							"page": "38-85",
+							"page": "38, 95-105",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -696,7 +696,7 @@
 					"substantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichEnabling": {
 						"value": 88.16,
 						"dataSource": {
-							"page": "354-1153",
+							"page": "354, 1163-1173",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -776,7 +776,7 @@
 					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
 						"value": 64.05,
 						"dataSource": {
-							"page": "605-955",
+							"page": "605, 965-975",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -788,7 +788,7 @@
 					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
 						"value": 1.14,
 						"dataSource": {
-							"page": "461",
+							"page": "461-1132",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -812,7 +812,7 @@
 					"shareOfTurnoverBasedKpiInPercentOfWhichTransitional": {
 						"value": 52.6,
 						"dataSource": {
-							"page": "749-1145",
+							"page": "749, 1155-1165",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -836,7 +836,7 @@
 					"shareOfTurnoverBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 39.58,
 						"dataSource": {
-							"page": "589",
+							"page": "589-771",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -862,7 +862,7 @@
 					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 97.5,
 						"dataSource": {
-							"page": "1122-1153",
+							"page": "1122, 1163-1173",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -910,7 +910,7 @@
 					"shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 35.35,
 						"dataSource": {
-							"page": "941-1058",
+							"page": "941, 1068-1078",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -922,7 +922,7 @@
 					"shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 83.62,
 						"dataSource": {
-							"page": "529-847",
+							"page": "529, 857-867",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -960,7 +960,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 16.42,
 						"dataSource": {
-							"page": "950",
+							"page": "950-1048",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -986,7 +986,7 @@
 					"shareOfCapexBasedKpiInPercentEligible": {
 						"value": 57.46,
 						"dataSource": {
-							"page": "2-752",
+							"page": "2, 762-772",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -1046,7 +1046,7 @@
 					"shareOfCapexBasedKpiInPercentOfWhichEnabling": {
 						"value": 46.78,
 						"dataSource": {
-							"page": "1105",
+							"page": "1105-1278",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1084,7 +1084,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 62.47,
 						"dataSource": {
-							"page": "1036",
+							"page": "1036-1144",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -1132,7 +1132,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned": {
 						"value": 60.79,
 						"dataSource": {
-							"page": "772-1076",
+							"page": "772, 1086-1096",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -1144,7 +1144,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 39.9,
 						"dataSource": {
-							"page": "954-1052",
+							"page": "954, 1062-1072",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -1182,7 +1182,7 @@
 					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 18.53,
 						"dataSource": {
-							"page": "823-1058",
+							"page": "823, 1068-1078",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -1194,7 +1194,7 @@
 					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 84.51,
 						"dataSource": {
-							"page": "259-960",
+							"page": "259, 970-980",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -1210,7 +1210,7 @@
 					"totalOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 8612018927.77,
 						"dataSource": {
-							"page": "773-1000",
+							"page": "773, 1010-1020",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1223,7 +1223,7 @@
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 5.2,
 						"dataSource": {
-							"page": "479",
+							"page": "479-1298",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -1272,7 +1272,7 @@
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
 						"value": 2.36,
 						"dataSource": {
-							"page": "437-750",
+							"page": "437, 760-770",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -1284,7 +1284,7 @@
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities": {
 						"value": 18.43,
 						"dataSource": {
-							"page": "789-1042",
+							"page": "789, 1052-1062",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -1448,7 +1448,7 @@
 					"shareOfTurnoverBasedKpiInPercentOfWhichEnabling": {
 						"value": 67.16,
 						"dataSource": {
-							"page": "445",
+							"page": "445-599",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -1472,7 +1472,7 @@
 					"shareOfTurnoverBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 42.17,
 						"dataSource": {
-							"page": "30-406",
+							"page": "30, 416-426",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -1486,7 +1486,7 @@
 					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 6.59,
 						"dataSource": {
-							"page": "1172",
+							"page": "1172-1242",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -1498,7 +1498,7 @@
 					"shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 37.31,
 						"dataSource": {
-							"page": "344",
+							"page": "344-1192",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -1572,7 +1572,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 94.73,
 						"dataSource": {
-							"page": "588-817",
+							"page": "588, 827-837",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -1584,7 +1584,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 56.52,
 						"dataSource": {
-							"page": "99",
+							"page": "99-615",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -1610,7 +1610,7 @@
 					"shareOfCapexBasedKpiInPercentEligible": {
 						"value": 3.96,
 						"dataSource": {
-							"page": "124-990",
+							"page": "124, 1000-1010",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -1622,7 +1622,7 @@
 					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentEligible": {
 						"value": 28.39,
 						"dataSource": {
-							"page": "69-1270",
+							"page": "69, 1280-1290",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -1634,7 +1634,7 @@
 					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentEligible": {
 						"value": 56.64,
 						"dataSource": {
-							"page": "681-995",
+							"page": "681, 1005-1015",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -1646,7 +1646,7 @@
 					"shareOfCapexBasedKpiInPercentAligned": {
 						"value": 85.13,
 						"dataSource": {
-							"page": "433-1144",
+							"page": "433, 1154-1164",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -1658,7 +1658,7 @@
 					"shareOfCapexBasedKpiInPercentOfWhichTransitional": {
 						"value": 12.38,
 						"dataSource": {
-							"page": "459-1283",
+							"page": "459, 1293-1303",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -1682,7 +1682,7 @@
 					"shareOfCapexBasedKpiExposedTowardsNuclearActivitiesInPercentAligned": {
 						"value": 10.87,
 						"dataSource": {
-							"page": "72-778",
+							"page": "72, 788-798",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -1694,7 +1694,7 @@
 					"shareOfCapexBasedKpiExposedTowardsFossilGasActivitiesInPercentAligned": {
 						"value": 43.15,
 						"dataSource": {
-							"page": "930-1274",
+							"page": "930, 1284-1294",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -1708,7 +1708,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned": {
 						"value": 63.01,
 						"dataSource": {
-							"page": "833",
+							"page": "833-993",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -1720,7 +1720,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned": {
 						"value": 19.44,
 						"dataSource": {
-							"page": "615-772",
+							"page": "615, 782-792",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -1768,7 +1768,7 @@
 					"shareOfCapexBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned": {
 						"value": 43.21,
 						"dataSource": {
-							"page": "229",
+							"page": "229-1062",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -1794,7 +1794,7 @@
 					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 19.25,
 						"dataSource": {
-							"page": "34-1050",
+							"page": "34, 1060-1070",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -1806,7 +1806,7 @@
 					"capexBasedNonAssessedExposuresOfWhichExposuresToCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 0.37,
 						"dataSource": {
-							"page": "85-1086",
+							"page": "85, 1096-1106",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -1818,7 +1818,7 @@
 					"capexBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 13.46,
 						"dataSource": {
-							"page": "1190-1274",
+							"page": "1190, 1284-1294",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -1884,7 +1884,7 @@
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 28.31,
 						"dataSource": {
-							"page": "308-793",
+							"page": "308, 803-813",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -1932,7 +1932,7 @@
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 2.66,
 						"dataSource": {
-							"page": "455-1281",
+							"page": "455, 1291-1301",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -1980,7 +1980,7 @@
 					"turnoverBasedNonAssessedExposures": {
 						"value": 28.18,
 						"dataSource": {
-							"page": "1038-1164",
+							"page": "1038, 1174-1184",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -1992,7 +1992,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 4.17,
 						"dataSource": {
-							"page": "456",
+							"page": "456-1275",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -2004,7 +2004,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 66.71,
 						"dataSource": {
-							"page": "323-1101",
+							"page": "323, 1111-1121",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -2016,7 +2016,7 @@
 					"turnoverBasedNonAssessedExposuresOfWhichNonAssessedExposuresConsideredNonMaterialByTheReportingEntity": {
 						"value": 2.06,
 						"dataSource": {
-							"page": "762-924",
+							"page": "762, 934-944",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -2040,7 +2040,7 @@
 					"turnoverBasedProportionOfAssetsExposedTowardsNuclearActivitiesAligned": {
 						"value": 48.98,
 						"dataSource": {
-							"page": "452",
+							"page": "452-1215",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -2052,7 +2052,7 @@
 					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesEligible": {
 						"value": 89.95,
 						"dataSource": {
-							"page": "1159-1265",
+							"page": "1159, 1275-1285",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -2064,7 +2064,7 @@
 					"turnoverBasedProportionOfAssetsExposedTowardsFossilGasActivitiesAligned": {
 						"value": 36.88,
 						"dataSource": {
-							"page": "1184-1242",
+							"page": "1184, 1252-1262",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -2116,7 +2116,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 48.78,
 						"dataSource": {
-							"page": "359-1137",
+							"page": "359, 1147-1157",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -2140,7 +2140,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 1.52,
 						"dataSource": {
-							"page": "30-39",
+							"page": "30, 49-59",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -2152,7 +2152,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 15.72,
 						"dataSource": {
-							"page": "1066-1250",
+							"page": "1066, 1260-1270",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -2164,7 +2164,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 50.92,
 						"dataSource": {
-							"page": "45-506",
+							"page": "45, 516-526",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -2176,7 +2176,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 48.83,
 						"dataSource": {
-							"page": "429-938",
+							"page": "429, 948-958",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -2212,7 +2212,7 @@
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
 						"value": 92.71,
 						"dataSource": {
-							"page": "938",
+							"page": "938-1238",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -2224,7 +2224,7 @@
 					"capexBasedNonAssessedExposures": {
 						"value": 73.12,
 						"dataSource": {
-							"page": "790",
+							"page": "790-1173",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -2236,7 +2236,7 @@
 					"capexBasedNonAssessedExposuresOfWhichExposuresFinancingNonAssessedNonMaterialActivitiesOfCounterparties": {
 						"value": 38.66,
 						"dataSource": {
-							"page": "609-1032",
+							"page": "609, 1042-1052",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -2322,7 +2322,7 @@
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount": {
 						"value": 2994236549.76,
 						"dataSource": {
-							"page": "991-1153",
+							"page": "991, 1163-1173",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -2335,7 +2335,7 @@
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 7775264061.69,
 						"dataSource": {
-							"page": "88",
+							"page": "88-564",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -2348,7 +2348,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 97.89,
 						"dataSource": {
-							"page": "155-584",
+							"page": "155, 594-604",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -2360,7 +2360,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 10.32,
 						"dataSource": {
-							"page": "98",
+							"page": "98-570",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -2372,7 +2372,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
 						"value": 27.88,
 						"dataSource": {
-							"page": "6",
+							"page": "6-439",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -2384,7 +2384,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned": {
 						"value": 92.24,
 						"dataSource": {
-							"page": "414",
+							"page": "414-1052",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -2396,7 +2396,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 70.62,
 						"dataSource": {
-							"page": "449-506",
+							"page": "449, 516-526",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -2408,7 +2408,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned": {
 						"value": 36.98,
 						"dataSource": {
-							"page": "57",
+							"page": "57-652",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -2432,7 +2432,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 75.59,
 						"dataSource": {
-							"page": "405",
+							"page": "405-408",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -2444,7 +2444,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
 						"value": 63.73,
 						"dataSource": {
-							"page": "209",
+							"page": "209-467",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -2456,7 +2456,7 @@
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling": {
 						"value": 91.39,
 						"dataSource": {
-							"page": "292-745",
+							"page": "292, 755-765",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -2492,7 +2492,7 @@
 					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesAligned": {
 						"value": 65.03,
 						"dataSource": {
-							"page": "1123-1135",
+							"page": "1123, 1145-1155",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -2516,7 +2516,7 @@
 					"turnoverBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
 						"value": 58.3,
 						"dataSource": {
-							"page": "525-634",
+							"page": "525, 644-654",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -2568,7 +2568,7 @@
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
 						"value": 34.17,
 						"dataSource": {
-							"page": "277-294",
+							"page": "277, 304-314",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -2604,7 +2604,7 @@
 					"capexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned": {
 						"value": 13.37,
 						"dataSource": {
-							"page": "695-945",
+							"page": "695, 955-965",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -2628,7 +2628,7 @@
 					"capexBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned": {
 						"value": 42.76,
 						"dataSource": {
-							"page": "162-496",
+							"page": "162, 506-516",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -2640,7 +2640,7 @@
 					"capexBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned": {
 						"value": 2.46,
 						"dataSource": {
-							"page": "243-1233",
+							"page": "243, 1243-1253",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -2652,7 +2652,7 @@
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional": {
 						"value": 0.98,
 						"dataSource": {
-							"page": "722-850",
+							"page": "722, 860-870",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -2688,7 +2688,7 @@
 					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichNuclearActivitiesEligible": {
 						"value": 20.86,
 						"dataSource": {
-							"page": "1085",
+							"page": "1085-1164",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -2724,7 +2724,7 @@
 					"capexBasedProportionOfRevenueFromOperationOfAnOtfOfWhichFossilGasActivitiesAligned": {
 						"value": 53.99,
 						"dataSource": {
-							"page": "511",
+							"page": "511-962",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",

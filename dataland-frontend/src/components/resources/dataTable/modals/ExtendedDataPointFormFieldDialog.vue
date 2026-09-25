@@ -27,12 +27,16 @@
     />
     <InputText
       v-model="insertedPage"
-      placeholder="Page Number"
+      placeholder="Page(s)"
       data-test="page-number-input"
       style="width: 8em"
       :disabled="!selectedDocument"
+      :invalid="!isPageValid"
     />
   </div>
+  <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
+    {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
+  </small>
   <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
     <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
     <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
@@ -66,6 +70,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
+import { isPageReferenceValid, PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils.ts';
 import type {
   ExtendedDataPointType,
   ExtendedDataPointMetaInfoType,
@@ -82,13 +87,20 @@ const props = defineProps<{
 
 const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);
 const selectedDocument = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileReference ?? null);
-const fileName = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileName ?? null);
 const insertedComment = ref<string | undefined>(props.extendedDataPointObject?.comment ?? undefined);
 const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
 const companyId = inject<string>('companyId');
 const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
 const selectedDocumentMetaInformation = computed(() => {
   return allDocuments.value.find((doc) => doc.documentId === selectedDocument.value) ?? null;
+});
+
+/**
+ * Whether the currently entered page reference is valid. An empty value is considered valid, since the page field is optional.
+ */
+const isPageValid = computed<boolean>(() => {
+  const trimmedPage = insertedPage.value?.trim();
+  return !trimmedPage || isPageReferenceValid(trimmedPage);
 });
 
 watch(selectedDocument, (val) => {
@@ -101,11 +113,7 @@ watch(selectedDocument, (val) => {
 onMounted(async () => {
   await updateDocumentsList();
 
-  if (fileName.value) {
-    setSelectedDocument(allDocuments.value.find((doc) => doc.documentName === fileName.value)?.documentId ?? null);
-  } else {
-    setSelectedDocument(null);
-  }
+  setSelectedDocument(selectedDocument.value);
 
   if (chosenQuality.value) {
     const matchQuality = qualityOptionsList.find((q) => q.value === chosenQuality.value);
@@ -124,16 +132,15 @@ function getFormData(): ExtendedDataPointMetaInfoType {
     quality: chosenQuality.value ?? undefined,
     comment: insertedComment.value ?? undefined,
     dataSource: {
-      fileName: selectedDocumentMetaInformation.value?.documentName ?? undefined,
       page: insertedPage.value?.trim() || undefined,
       fileReference: selectedDocument.value ?? undefined,
-      publicationDate: selectedDocumentMetaInformation.value?.publicationDate ?? undefined,
     },
   };
 }
 
 defineExpose({
   getFormData,
+  isPageValid,
 });
 
 /**
@@ -176,5 +183,11 @@ function setSelectedDocument(docId: string | null): void {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+}
+
+.page-number-error {
+  color: var(--input-error);
+  display: block;
+  margin-top: var(--spacing-xxs);
 }
 </style>

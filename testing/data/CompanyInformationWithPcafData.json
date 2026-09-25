@@ -23,7 +23,7 @@
 			},
 			"countryCode": "UA",
 			"companyContactDetails": [
-				"Homer28@example.com"
+				"Hassan28@example.com"
 			],
 			"companyAlternativeNames": [
 				"Buckridge, Hettinger and Rosenbaum",
@@ -41,7 +41,7 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "236",
+							"page": "236-481",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -90,7 +90,7 @@
 					"bookValueOfDebtInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "27-544",
+							"page": "27, 554-564",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -139,7 +139,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "282-666",
+							"page": "282, 676-686",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "systems",
@@ -194,7 +194,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 60768.64,
 						"dataSource": {
-							"page": "775-1135",
+							"page": "775, 1145-1155",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -224,7 +224,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 15383.83,
 						"dataSource": {
-							"page": "106",
+							"page": "106-729",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -241,7 +241,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Goldner Group",
-			"headquarters": "Fort Elyssastad",
+			"headquarters": "Fort Floridastad",
 			"headquartersPostalCode": "28228-6044",
 			"sector": "supply-chains",
 			"identifiers": {
@@ -266,8 +266,8 @@
 			},
 			"countryCode": "SK",
 			"companyContactDetails": [
-				"Bernardo_Nicolas@example.com",
-				"Angela_Aufderhar@example.com"
+				"Brian_Nicolas@example.com",
+				"Alisha_Aufderhar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Hagenes, Kassulke and Pfannerstill"
@@ -296,7 +296,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-11-09",
 						"dataSource": {
-							"page": "468-665",
+							"page": "468, 675-685",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -310,7 +310,7 @@
 					"mainPcafSector": {
 						"value": null,
 						"dataSource": {
-							"page": "108-1006",
+							"page": "108, 1016-1026",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -395,7 +395,7 @@
 					"bookValueOfDebtInEUR": {
 						"value": 22463.33,
 						"dataSource": {
-							"page": "140",
+							"page": "140-783",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -407,7 +407,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 41555.34,
 						"dataSource": {
-							"page": "522-833",
+							"page": "522, 843-853",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -444,7 +444,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 45743.61,
 						"dataSource": {
-							"page": "786-905",
+							"page": "786, 915-925",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -527,7 +527,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-06-19",
 						"dataSource": {
-							"page": "641",
+							"page": "641-664",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -541,7 +541,7 @@
 					"mainPcafSector": {
 						"value": "Industry",
 						"dataSource": {
-							"page": "641-1073",
+							"page": "641, 1083-1093",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -596,7 +596,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 37835.21,
 						"dataSource": {
-							"page": "818",
+							"page": "818-943",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -612,7 +612,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 32323.84,
 						"dataSource": {
-							"page": "1144-1212",
+							"page": "1144, 1222-1232",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -637,7 +637,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 98862.49,
 						"dataSource": {
-							"page": "1147-1253",
+							"page": "1147, 1263-1273",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -653,7 +653,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 64600.11,
 						"dataSource": {
-							"page": "322-1063",
+							"page": "322, 1073-1083",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -707,7 +707,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "946-1178",
+							"page": "946, 1188-1198",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -772,9 +772,9 @@
 			},
 			"countryCode": "VG",
 			"companyContactDetails": [
-				"Makenna70@example.com",
-				"Camylle83@example.com",
-				"Beth_Hessel@example.com"
+				"Milan70@example.com",
+				"Camilla83@example.com",
+				"Antonietta_Hessel@example.com"
 			],
 			"companyAlternativeNames": [
 				"Prosacco - Price"
@@ -805,7 +805,7 @@
 					"mainPcafSector": {
 						"value": "ConsumerDiscretionary",
 						"dataSource": {
-							"page": "188",
+							"page": "188-866",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -817,7 +817,7 @@
 					"companyExchangeStatus": {
 						"value": "Listed",
 						"dataSource": {
-							"page": "310",
+							"page": "310-561",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -882,7 +882,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": 77686.25,
 						"dataSource": {
-							"page": "197-407",
+							"page": "197, 417-427",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "partnerships",
@@ -894,7 +894,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 72496.38,
 						"dataSource": {
-							"page": "948",
+							"page": "948-1001",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "mindshare",
@@ -984,7 +984,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Cartwright, Mraz and Kreiger",
-			"headquarters": "Fayfort",
+			"headquarters": "Fletafort",
 			"headquartersPostalCode": "83372-5503",
 			"sector": "users",
 			"identifiers": {
@@ -1006,10 +1006,10 @@
 			},
 			"countryCode": "GB",
 			"companyContactDetails": [
-				"Fred.Sporer44@example.com",
-				"Gust74@example.com",
-				"Bryan80@example.com",
-				"Israel6@example.com"
+				"Foster.Sporer44@example.com",
+				"Herta74@example.com",
+				"Bryce80@example.com",
+				"Ibrahim6@example.com"
 			],
 			"companyAlternativeNames": [
 				"Berge - Corwin",
@@ -1028,7 +1028,7 @@
 					"fiscalYearDeviation": {
 						"value": null,
 						"dataSource": {
-							"page": "903",
+							"page": "903-1261",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -1040,7 +1040,7 @@
 					"fiscalYearEnd": {
 						"value": null,
 						"dataSource": {
-							"page": "962",
+							"page": "962-1164",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -1071,7 +1071,7 @@
 					"marketCapitalizationInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "401",
+							"page": "401-412",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -1084,7 +1084,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 37712.29,
 						"dataSource": {
-							"page": "724-1097",
+							"page": "724, 1107-1117",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -1098,7 +1098,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "836-1152",
+							"page": "836, 1162-1172",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -1128,7 +1128,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "503-916",
+							"page": "503, 926-936",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -1182,7 +1182,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": 48481.05,
 						"dataSource": {
-							"page": "257",
+							"page": "257-989",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -1200,7 +1200,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "560",
+							"page": "560-697",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -1217,7 +1217,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Schmitt and Sons",
-			"headquarters": "Fort Theodorachester",
+			"headquarters": "Fort Toneychester",
 			"headquartersPostalCode": "77006-9524",
 			"sector": null,
 			"identifiers": {
@@ -1241,9 +1241,9 @@
 			},
 			"countryCode": "NC",
 			"companyContactDetails": [
-				"Lucile38@example.com",
-				"Ashley_Reynolds22@example.com",
-				"Jimmy.Bins@example.com"
+				"Madelyn38@example.com",
+				"Andreane_Reynolds22@example.com",
+				"Jayce.Bins@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
@@ -1258,7 +1258,7 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "166-1156",
+							"page": "166, 1166-1176",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -1290,7 +1290,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 9483.89,
 						"dataSource": {
-							"page": "568",
+							"page": "568-910",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -1302,7 +1302,7 @@
 					"bookValueOfDebtInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "285-1163",
+							"page": "285, 1173-1183",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -1314,7 +1314,7 @@
 					"minoritiesInterestInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "117-430",
+							"page": "117, 440-450",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -1328,7 +1328,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 39223.18,
 						"dataSource": {
-							"page": "59",
+							"page": "59-992",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -1344,7 +1344,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "581",
+							"page": "581-1135",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -1357,7 +1357,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 59373.12,
 						"dataSource": {
-							"page": "117",
+							"page": "117-398",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -1369,7 +1369,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 62733.97,
 						"dataSource": {
-							"page": "185-1205",
+							"page": "185, 1215-1225",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -1403,7 +1403,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 79288.1,
 						"dataSource": {
-							"page": "1036",
+							"page": "1036-1085",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -1441,7 +1441,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 60357.64,
 						"dataSource": {
-							"page": "238-1047",
+							"page": "238, 1057-1067",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -1458,7 +1458,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Rodriguez LLC",
-			"headquarters": "Port Robbie",
+			"headquarters": "Port Rosalyn",
 			"headquartersPostalCode": "15152-2792",
 			"sector": "markets",
 			"identifiers": {
@@ -1478,10 +1478,10 @@
 			},
 			"countryCode": "KP",
 			"companyContactDetails": [
-				"Bridget.Sawayn@example.com",
-				"Linda73@example.com",
-				"Wendell.Boyle@example.com",
-				"Webster37@example.com"
+				"Belle.Sawayn@example.com",
+				"Layla73@example.com",
+				"Wilbert.Boyle@example.com",
+				"Vita37@example.com"
 			],
 			"companyAlternativeNames": [
 				"Considine and Sons",
@@ -1500,7 +1500,7 @@
 					"fiscalYearDeviation": {
 						"value": null,
 						"dataSource": {
-							"page": "1191-1240",
+							"page": "1191, 1250-1260",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -1555,7 +1555,7 @@
 					"minoritiesInterestInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "975-1112",
+							"page": "975, 1122-1132",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -1574,7 +1574,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 49022.14,
 						"dataSource": {
-							"page": "246",
+							"page": "246-398",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -1617,7 +1617,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 71400.06,
 						"dataSource": {
-							"page": "448",
+							"page": "448-807",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -1636,7 +1636,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 5572.09,
 						"dataSource": {
-							"page": "1037-1267",
+							"page": "1037, 1277-1287",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -1649,7 +1649,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "608-1153",
+							"page": "608, 1163-1173",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -1661,7 +1661,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 58117.88,
 						"dataSource": {
-							"page": "125-1208",
+							"page": "125, 1218-1228",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -1678,7 +1678,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Douglas, Goyette and Buckridge",
-			"headquarters": "South Darrylbury",
+			"headquarters": "South Davinbury",
 			"headquartersPostalCode": "14110-1109",
 			"sector": "niches",
 			"identifiers": {
@@ -1703,10 +1703,10 @@
 			},
 			"countryCode": "BQ",
 			"companyContactDetails": [
-				"Inez72@example.com",
-				"June11@example.com",
-				"Kristen65@example.com",
-				"Beatrice_Kunze@example.com"
+				"Haylee72@example.com",
+				"Josefina11@example.com",
+				"Katrine65@example.com",
+				"Anissa_Kunze@example.com"
 			],
 			"companyAlternativeNames": [
 				"Kiehn, O'Reilly-Pfeffer and Corwin",
@@ -1724,7 +1724,7 @@
 					"fiscalYearDeviation": {
 						"value": null,
 						"dataSource": {
-							"page": "1152",
+							"page": "1152-1182",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "schemas",
@@ -1802,7 +1802,7 @@
 					"minoritiesInterestInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "308",
+							"page": "308-900",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -1816,7 +1816,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 56273.8,
 						"dataSource": {
-							"page": "975-1056",
+							"page": "975, 1066-1076",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -1850,7 +1850,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 38861.22,
 						"dataSource": {
-							"page": "780-1229",
+							"page": "780, 1239-1249",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "mindshare",
@@ -1905,7 +1905,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "643-1004",
+							"page": "643, 1014-1024",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "e-commerce",
@@ -1970,9 +1970,9 @@
 			},
 			"countryCode": "GE",
 			"companyContactDetails": [
-				"Frances_Crona@example.com",
-				"Odessa_Bailey@example.com",
-				"Maximus.Morar@example.com"
+				"Ettie_Crona@example.com",
+				"Pedro_Bailey@example.com",
+				"Mozell.Morar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bernier - Ryan",
@@ -2002,7 +2002,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-09-16",
 						"dataSource": {
-							"page": "244-463",
+							"page": "244, 473-483",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -2016,7 +2016,7 @@
 					"mainPcafSector": {
 						"value": "RealEstate",
 						"dataSource": {
-							"page": "986",
+							"page": "986-1064",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -2044,7 +2044,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 10385.2,
 						"dataSource": {
-							"page": "812-1228",
+							"page": "812, 1238-1248",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -2098,7 +2098,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "287-631",
+							"page": "287, 641-651",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -2128,7 +2128,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 60056.54,
 						"dataSource": {
-							"page": "204",
+							"page": "204-1024",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -2140,7 +2140,7 @@
 					"bookValueOfDebtInEUR": {
 						"value": 42980.94,
 						"dataSource": {
-							"page": "110",
+							"page": "110-441",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -2155,7 +2155,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 83138.32,
 						"dataSource": {
-							"page": "9",
+							"page": "9-556",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -2171,7 +2171,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "847",
+							"page": "847-1195",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -2183,7 +2183,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "888-1028",
+							"page": "888, 1038-1048",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -2207,7 +2207,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "836-903",
+							"page": "836, 913-923",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -2224,7 +2224,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Langosh and Sons",
-			"headquarters": "New Ulices",
+			"headquarters": "New Teagan",
 			"headquartersPostalCode": "10814-5165",
 			"sector": "channels",
 			"identifiers": {
@@ -2265,7 +2265,7 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "1166",
+							"page": "1166-1208",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "interfaces",
@@ -2308,7 +2308,7 @@
 					"marketCapitalizationInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "617",
+							"page": "617-907",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -2340,7 +2340,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 17417.53,
 						"dataSource": {
-							"page": "890-1254",
+							"page": "890, 1264-1274",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -2375,7 +2375,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 53350.35,
 						"dataSource": {
-							"page": "1178",
+							"page": "1178-1228",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "content",
@@ -2396,7 +2396,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": null,
 						"dataSource": {
-							"page": "396-1185",
+							"page": "396, 1195-1205",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -2436,7 +2436,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "344-1218",
+							"page": "344, 1228-1238",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "methodologies",
