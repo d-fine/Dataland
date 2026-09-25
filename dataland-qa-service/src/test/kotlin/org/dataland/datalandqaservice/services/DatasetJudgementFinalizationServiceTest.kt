@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -23,6 +25,7 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DatasetJudgementFinalizationServiceTest {
@@ -147,6 +150,7 @@ class DatasetJudgementFinalizationServiceTest {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+            dataPoint.acceptedQaReportId = dataPoint.qaReports.first().qaReportId
             dataPoint.qaReports.forEach { it.correctedData = correctedData }
         }
 
@@ -161,10 +165,42 @@ class DatasetJudgementFinalizationServiceTest {
     }
 
     @Test
+    fun `handleAcceptance uses pinned report despite a newer report from the same reviewer`() {
+        val dataPoint = dummyDatasetJudgement.dataPoints.first()
+        val selected = dataPoint.qaReports.first()
+        selected.correctedData = """{"value": 99}"""
+        dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+        dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+        dataPoint.acceptedQaReportId = selected.qaReportId
+        dataPoint.qaReports.add(
+            selected.copy(
+                qaReportId = UUID.randomUUID().toString(),
+                uploadTime = selected.uploadTime + 1,
+                correctedData = """{"value": 100}""",
+            ),
+        )
+
+        service.handleAcceptance(dummyDatasetJudgement)
+
+        verifyUploadedDataPoint("""{"value": 99}""")
+    }
+
+    @Test
+    fun `handleAcceptance requires a legacy reporter-only selection to be reselected`() {
+        val dataPoint = dummyDatasetJudgement.dataPoints.first()
+        dataPoint.acceptedSource = AcceptedDataPointSource.Qa
+        dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+
+        assertThrows<InvalidInputApiException> { service.handleAcceptance(dummyDatasetJudgement) }
+        verify(dataPointControllerApi, never()).postDataPoint(any(), any())
+    }
+
+    @Test
     fun `handleAcceptance with Qa source throws when no matching QA report is found`() {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = UUID.randomUUID()
+            dataPoint.acceptedQaReportId = UUID.randomUUID().toString()
         }
 
         assertThrows<InvalidInputApiException> {
@@ -180,6 +216,7 @@ class DatasetJudgementFinalizationServiceTest {
         dummyDatasetJudgement.dataPoints.forEach { dataPoint ->
             dataPoint.acceptedSource = AcceptedDataPointSource.Qa
             dataPoint.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+            dataPoint.acceptedQaReportId = dataPoint.qaReports.first().qaReportId
             dataPoint.qaReports.forEach { it.correctedData = null }
         }
 
@@ -208,6 +245,7 @@ class DatasetJudgementFinalizationServiceTest {
             MockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntity().dataPoints.first().also {
                 it.acceptedSource = AcceptedDataPointSource.Qa
                 it.reporterUserIdOfAcceptedQaReport = MockDatasetJudgementEntityForTest.dummyUserId
+                it.acceptedQaReportId = it.qaReports.first().qaReportId
                 it.qaReports.first().correctedData = correctedData
                 it.qaReports.first().verdict = QaReportDataPointVerdict.QaRejected
             },
@@ -224,5 +262,24 @@ class DatasetJudgementFinalizationServiceTest {
         assertEquals(2, rejectedTasksCaptor.firstValue.size)
 
         verify(dataPointControllerApi, org.mockito.kotlin.times(2)).postDataPoint(any(), any())
+    }
+
+    @Test
+    fun `handleAcceptance exposes backend validation failure without accepting dataset`() {
+        dummyDatasetJudgement.dataPoints.forEach {
+            it.acceptedSource = AcceptedDataPointSource.Custom
+            it.customValue = MockDatasetJudgementEntityForTest.CUSTOM_VALUE
+        }
+        whenever(dataPointControllerApi.postDataPoint(any(), any())).thenThrow(
+            ClientException(
+                statusCode = 400,
+                response = ClientError<String>(body = """{"errors":[{"message":"dataSource must not set fileName"}]}"""),
+            ),
+        )
+
+        val exception = assertThrows<InvalidInputApiException> { service.handleAcceptance(dummyDatasetJudgement) }
+        assertTrue(exception.getErrorResponse().message.contains("dataSource must not set fileName"))
+        assertTrue(exception.getErrorResponse().message.contains(dummyDatasetJudgement.dataPoints.first().dataPointId))
+        verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
     }
 }

@@ -51,6 +51,8 @@ class DataPointJudgementEntity(
     @Column(columnDefinition = "TEXT", nullable = true)
     @Convert(converter = PreApprovalCheckResultsConverter::class)
     var preApprovalCheckResults: PreApprovalCheckResults? = null,
+    @Column(name = "accepted_qa_report_id")
+    var acceptedQaReportId: String? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
@@ -62,6 +64,8 @@ class DataPointJudgementEntity(
             qaReports = latestQaReportsByReviewer().map { it.toApiModel() },
             acceptedSource = acceptedSource,
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
+            acceptedQaReportId = acceptedQaReportId,
+            acceptedQaReport = qaReports.find { it.qaReportId == acceptedQaReportId }?.toApiModel(),
             customValue = customValue,
             reasonForCustomDataPoint = reasonForCustomDataPoint,
             preApprovalCheckResults = preApprovalCheckResults,
@@ -71,6 +75,6 @@ class DataPointJudgementEntity(
      * Reduces [qaReports] to at most one report per reviewer, keeping the one with the greatest uploadTime.
      * The system only expects a single QA report per reviewer at any time.
      */
-    private fun latestQaReportsByReviewer(): List<DataPointQaReportEntity> =
+    fun latestQaReportsByReviewer(): List<DataPointQaReportEntity> =
         qaReports.groupBy { it.reporterUserId }.values.map { reports -> reports.maxBy { it.uploadTime } }
 }

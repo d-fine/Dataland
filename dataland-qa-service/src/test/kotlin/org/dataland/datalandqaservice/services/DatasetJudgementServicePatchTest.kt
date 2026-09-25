@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -22,7 +23,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     private fun patchAndGetDataPoint(
         source: AcceptedDataPointSource?,
-        reporterUserId: String? = null,
+        acceptedQaReportId: String? = null,
         customValue: String? = null,
         reasonForCustomDataPoint: String? = null,
         dataPointType: String = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
@@ -30,7 +31,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
         service.patchJudgementDetails(
             UUID.randomUUID(),
             dataPointType,
-            JudgementDetailsPatch(source, reporterUserId, customValue, reasonForCustomDataPoint),
+            JudgementDetailsPatch(source, null, customValue, reasonForCustomDataPoint, acceptedQaReportId),
         )
 
         return captureSavedJudgement()
@@ -44,6 +45,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
 
         assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
         assertNull(saved.reporterUserIdOfAcceptedQaReport)
+        assertNull(saved.acceptedQaReportId)
     }
 
     @Test
@@ -51,11 +53,17 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
+                acceptedQaReportId =
+                    datasetJudgementEntity.dataPoints
+                        .first()
+                        .qaReports
+                        .first()
+                        .qaReportId,
             )
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
         assertEquals(mockDatasetJudgementEntityForTest.dummyUserId, saved.reporterUserIdOfAcceptedQaReport)
+        assertEquals(saved.qaReports.first().qaReportId, saved.acceptedQaReportId)
     }
 
     @Test
@@ -68,6 +76,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
         assertNull(saved.reporterUserIdOfAcceptedQaReport)
+        assertNull(saved.acceptedQaReportId)
     }
 
     @Test
@@ -117,7 +126,12 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Qa,
-                reporterUserId = mockDatasetJudgementEntityForTest.dummyUserId.toString(),
+                acceptedQaReportId =
+                    datasetJudgementEntity.dataPoints
+                        .first()
+                        .qaReports
+                        .first()
+                        .qaReportId,
             )
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
@@ -152,7 +166,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     }
 
     @Test
-    fun `patchJudgementDetails with Qa without reporterUserIdOfAcceptedQaReport throws InvalidInputApiException`() {
+    fun `patchJudgementDetails with Qa without acceptedQaReportId throws InvalidInputApiException`() {
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
                 UUID.randomUUID(),
@@ -163,6 +177,13 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
                     null,
                 ),
             )
+        }
+    }
+
+    @Test
+    fun `patchJudgementDetails with Qa rejects a report not associated with the data point`() {
+        assertThrows<InvalidInputApiException> {
+            patchAndGetDataPoint(AcceptedDataPointSource.Qa, acceptedQaReportId = UUID.randomUUID().toString())
         }
     }
 
@@ -197,7 +218,12 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     @Test
     fun `patchJudgementDetails with Custom wraps BackendClientException into InvalidInputApiException`() {
         whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
-            .thenThrow(BackendClientException())
+            .thenThrow(
+                BackendClientException(
+                    statusCode = 400,
+                    response = ClientError<String>(body = """{"errors":[{"message":"dataSource must not set publicationDate"}]}"""),
+                ),
+            )
 
         assertThrows<InvalidInputApiException> {
             service.patchJudgementDetails(
@@ -207,6 +233,7 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
             )
         }.also { exception ->
             assertTrue(exception.cause is BackendClientException)
+            assertEquals("dataSource must not set publicationDate", exception.getErrorResponse().message)
         }
     }
 }

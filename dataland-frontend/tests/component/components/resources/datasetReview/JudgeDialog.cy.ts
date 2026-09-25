@@ -399,7 +399,7 @@ describe('JudgeDialog component tests', () => {
         expect(interception.request.body).to.deep.include({
           acceptedSource: AcceptedDataPointSource.Original,
         });
-        expect(interception.request.body.reporterUserIdOfAcceptedQaReport).to.be.undefined;
+        expect(interception.request.body.acceptedQaReportId).to.be.undefined;
         expect(interception.request.body.customDataPoint).to.be.undefined;
       });
     });
@@ -459,7 +459,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
 
-    it('calls PATCH with AcceptedDataPointSource.Qa and reporter userId when accepting the QA report', () => {
+    it('calls PATCH with AcceptedDataPointSource.Qa and the selected report ID', () => {
       mountJudgeDialog();
 
       cy.get('[data-test="accept-report-button"]').click();
@@ -470,7 +470,7 @@ describe('JudgeDialog component tests', () => {
         );
         expect(interception.request.body).to.deep.include({
           acceptedSource: AcceptedDataPointSource.Qa,
-          reporterUserIdOfAcceptedQaReport: reporterUserId1,
+          acceptedQaReportId: 'qa-report-1',
         });
         expect(interception.request.body.customDataPoint).to.be.undefined;
       });
@@ -1116,7 +1116,7 @@ describe('JudgeDialog component tests', () => {
           value: 'previously-accepted-value',
           quality: 'Estimated',
           comment: 'previously-accepted-comment',
-          dataSource: { fileName: null, fileReference: 'ref-789', page: '12' },
+          dataSource: { fileReference: 'ref-789', page: '12' },
         };
 
         const judgementWithPreviousCustom: DatasetJudgementResponse = {
@@ -1134,6 +1134,7 @@ describe('JudgeDialog component tests', () => {
         const docsWithReferenceOnly: DocumentMetaInfoResponse[] = [
           {
             documentId: 'ref-789',
+            documentName: 'Restored Annual Report',
             publicationDate: '2023-01-01',
             uploaderId: 'u1',
           },
@@ -1141,7 +1142,14 @@ describe('JudgeDialog component tests', () => {
 
         mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, companyDocuments: docsWithReferenceOnly });
         cy.wait('@getCompanyDocuments');
-        cy.get('[data-test="custom-document-field"]').should('contain', 'ref-789');
+        cy.get('[data-test="custom-document-field"]').should('contain', 'Restored Annual Report');
+        cy.get('[data-test="accept-custom-button"]').click();
+        cy.wait('@patchJudgementDetail').then(({ request }) => {
+          expect(JSON.parse(request.body.customDataPoint).dataSource).to.deep.equal({
+            fileReference: 'ref-789',
+            page: '12',
+          });
+        });
       });
     });
   });
@@ -1350,7 +1358,7 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
     });
 
-    it('shows the accepted-check on the reviewed section when acceptedSource is Qa and the reporter matches', () => {
+    it('shows the accepted-check on the reviewed section when the pinned report matches', () => {
       const judgementWithQaAccepted: DatasetJudgementResponse = {
         ...baseDatasetJudgement,
         dataPoints: {
@@ -1359,6 +1367,7 @@ describe('JudgeDialog component tests', () => {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
             acceptedSource: AcceptedDataPointSource.Qa,
             reporterUserIdOfAcceptedQaReport: reporterUserId1,
+            acceptedQaReportId: 'qa-report-1',
           },
         },
       };
@@ -1367,6 +1376,30 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('be.visible');
       cy.get('[data-test="original-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
       cy.get('[data-test="custom-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+    });
+
+    it('keeps the accepted correction selectable when a newer report from the same reviewer arrives', () => {
+      const selected = baseDatasetJudgement.dataPoints[dataPointTypeId].qaReports[0];
+      const newer = { ...selected, qaReportId: 'qa-report-new', uploadTime: 2000 };
+      const datasetJudgement: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            qaReports: [newer],
+            acceptedSource: AcceptedDataPointSource.Qa,
+            acceptedQaReportId: selected.qaReportId,
+            acceptedQaReport: selected,
+          },
+        },
+      };
+      mountJudgeDialog({ datasetJudgement });
+
+      cy.get('[data-test="qa-accepted-info-text"]').should('contain.text', 'report 2/2 accepted');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('not.exist');
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="qa-next-button"]').click();
+      cy.get('[data-test="corrected-datapoint-section"]').find('[data-test="accepted-check"]').should('be.visible');
     });
 
     it('shows message indicating which qa report has been selected on the reviewed section when acceptedSource is Qa for another report and the reporter does not match', () => {
@@ -1378,6 +1411,7 @@ describe('JudgeDialog component tests', () => {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
             acceptedSource: AcceptedDataPointSource.Qa,
             reporterUserIdOfAcceptedQaReport: reporterUserId2,
+            acceptedQaReportId: 'qa-report-2',
             qaReports: [
               {
                 qaReportId: 'qa-report-1',

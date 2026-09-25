@@ -61,4 +61,7 @@ data class DataPointJudgement(
         example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_EXAMPLE,
     )
     val preApprovalCheckResults: PreApprovalCheckResults?,
+    @field:Schema(description = "ID of the exact QA report accepted by the reviewer, if applicable.")
+    val acceptedQaReportId: String? = null,
+    val acceptedQaReport: DataPointQaReport? = null,
 )
