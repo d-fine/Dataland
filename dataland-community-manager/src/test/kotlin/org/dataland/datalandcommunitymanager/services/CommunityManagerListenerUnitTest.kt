@@ -6,13 +6,11 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -22,31 +20,26 @@ import org.mockito.kotlin.verify
 import java.util.UUID
 
 /**
- * Tests if the listener processes the incoming non-sourceable data information correctly.
+ * Tests if the listener processes the incoming QA status change information correctly.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommunityManagerListenerUnitTest {
     private lateinit var communityManagerListener: CommunityManagerListener
     private val jacksonObjectMapper = jacksonObjectMapper().findAndRegisterModules()
-    private val mockDataRequestUpdateManager = mock<DataRequestUpdateManager>()
     private val mockInvestorRelationsManager = mock<InvestorRelationsManager>()
     private val validDataId = UUID.randomUUID().toString()
     private val invalidDataId = ""
     private val correlationId = UUID.randomUUID().toString()
 
     private val typeQAStatusChange = MessageType.QA_STATUS_UPDATED
-    private val typeNonSourceabilityAutoAccepted = MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED
-    private val typeNonSourceabilityQaAccepted = MessageType.NON_SOURCEABILITY_QA_ACCEPTED
 
     @BeforeEach
     fun setUp() {
         reset(
-            mockDataRequestUpdateManager,
             mockInvestorRelationsManager,
         )
         communityManagerListener =
             CommunityManagerListener(
-                mockDataRequestUpdateManager,
                 mockInvestorRelationsManager,
             )
     }
@@ -63,23 +56,17 @@ class CommunityManagerListenerUnitTest {
                 BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"),
                 false,
             )
-        communityManagerListener.changeRequestStatusAfterQaDecision(
+        communityManagerListener.saveInvestorRelationsNotificationAfterQaDecision(
             jacksonObjectMapper.writeValueAsString(qaStatusChangeMessage),
             typeQAStatusChange, correlationId,
         )
 
         when (qaStatus) {
             QaStatus.Accepted -> {
-                verify(mockDataRequestUpdateManager).processUserRequests(
-                    validDataId, correlationId,
-                )
                 verify(mockInvestorRelationsManager).saveNotificationEventForInvestorRelationsEmails(validDataId)
             }
 
             QaStatus.Rejected -> {
-                verify(mockDataRequestUpdateManager, times(0)).processUserRequests(
-                    any<String>(), any<String>(),
-                )
                 verify(
                     mockInvestorRelationsManager,
                     times(0),
@@ -102,84 +89,9 @@ class CommunityManagerListenerUnitTest {
                 BasicDataDimensions(UUID.randomUUID().toString(), "sfdr", "2025"), false,
             )
         assertThrows<MessageQueueRejectException> {
-            communityManagerListener.changeRequestStatusAfterQaDecision(
+            communityManagerListener.saveInvestorRelationsNotificationAfterQaDecision(
                 jacksonObjectMapper.writeValueAsString(invalidQaStatusChangeMessage),
                 typeQAStatusChange, correlationId,
-            )
-        }
-    }
-
-    @Test
-    fun `valid non sourceability auto accepted lifecycle event should be processed successfully`() {
-        val event =
-            NonSourceabilityLifecycleEvent(
-                nonSourceabilityId = UUID.randomUUID().toString(),
-                companyId = "exampleCompany",
-                dataType = "sfdr",
-                reportingPeriod = "2023",
-            )
-
-        communityManagerListener.processNonSourceabilityAutoAcceptedEvent(
-            jacksonObjectMapper.writeValueAsString(event),
-            typeNonSourceabilityAutoAccepted,
-            correlationId,
-        )
-
-        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            companyId = event.companyId,
-            dataTypeAsString = event.dataType,
-            reportingPeriod = event.reportingPeriod,
-            correlationId = correlationId,
-        )
-    }
-
-    @Test
-    fun `valid non sourceability QA accepted lifecycle event should be processed successfully`() {
-        val event =
-            NonSourceabilityLifecycleEvent(
-                nonSourceabilityId = UUID.randomUUID().toString(),
-                companyId = "exampleCompany",
-                dataType = "sfdr",
-                reportingPeriod = "2023",
-            )
-
-        communityManagerListener.processNonSourceabilityQaAcceptedEvent(
-            jacksonObjectMapper.writeValueAsString(event),
-            typeNonSourceabilityQaAccepted,
-            correlationId,
-        )
-
-        verify(mockDataRequestUpdateManager).patchAllNonWithdrawnRequestsToStatusNonSourceable(
-            companyId = event.companyId,
-            dataTypeAsString = event.dataType,
-            reportingPeriod = event.reportingPeriod,
-            correlationId = correlationId,
-        )
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-        value = [
-            ",2023",
-            "exampleCompany,",
-        ],
-    )
-    fun `should throw exception for incomplete lifecycle event`(
-        companyId: String?,
-        reportingPeriod: String?,
-    ) {
-        val event =
-            NonSourceabilityLifecycleEvent(
-                nonSourceabilityId = UUID.randomUUID().toString(),
-                companyId = companyId.orEmpty(),
-                dataType = "sfdr",
-                reportingPeriod = reportingPeriod.orEmpty(),
-            )
-        assertThrows<MessageQueueRejectException> {
-            communityManagerListener.processNonSourceabilityAutoAcceptedEvent(
-                jacksonObjectMapper.writeValueAsString(event),
-                typeNonSourceabilityAutoAccepted,
-                correlationId,
             )
         }
     }

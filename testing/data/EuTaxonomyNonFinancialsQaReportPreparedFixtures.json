@@ -2,32 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "La Habra",
-			"headquartersPostalCode": "16983-8401",
-			"sector": "content",
+			"headquarters": "Jonesstead",
+			"headquartersPostalCode": "00469",
+			"sector": "convergence",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"l6sw1npxfoWU"
+					"TyQdMlPF8Wsq",
+					"eBbX0T4v1anV"
 				],
-				"PermId": [
-					"QrOx0dSE6i"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"qd3qKbVKP"
+					"FGgr9DhqS"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"VoVHjztNKzogd4B"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TJ",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": null,
-			"fiscalYearEnd": "12-May",
+			"countryCode": "LI",
+			"companyContactDetails": [
+				"Janessa18@example.com",
+				"Brayan20@example.com",
+				"Loma.Windler32@example.com",
+				"Joelle_Stokes11@example.com"
+			],
+			"companyAlternativeNames": [
+				"MacGyver-Weber Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://brown-starboard.name/",
+			"fiscalYearEnd": "22-Aug",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -104,6 +108,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2023"
 	}
 ]

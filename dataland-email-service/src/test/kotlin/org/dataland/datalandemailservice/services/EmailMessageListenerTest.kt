@@ -26,7 +26,6 @@ private const val EMAIL_ADDRESS_B = "2@example.com"
 private const val EMAIL_ADDRESS_C = "3@example.com"
 private const val EMAIL_ADDRESS_D = "a@example.com"
 private const val EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC = "general_additional_bcc@example.com"
-private const val EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC = "summary_additional_bcc@example.com"
 
 class EmailMessageListenerTest {
     private val mockEmailSender = mock<EmailSender>()
@@ -46,10 +45,6 @@ class EmailMessageListenerTest {
                 EmailContact(
                     EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC,
                 ),
-            EmailRecipient.EmailAddress(EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC) to
-                EmailContact(
-                    EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC,
-                ),
         )
 
     private val senderContact = EmailContact("sender@example.com")
@@ -61,7 +56,6 @@ class EmailMessageListenerTest {
             EmailContact(EMAIL_ADDRESS_C) to Pair(true, UUID.randomUUID()),
             EmailContact(EMAIL_ADDRESS_D) to Pair(false, UUID.randomUUID()),
             EmailContact(EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC) to Pair(true, UUID.randomUUID()),
-            EmailContact(EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC) to Pair(true, UUID.randomUUID()),
         )
 
     private val correlationId = "correlationId"
@@ -80,7 +74,6 @@ class EmailMessageListenerTest {
     private val allowedBcc =
         listOf(
             EmailContact(EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC),
-            EmailContact(EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC),
         )
 
     @BeforeEach
@@ -117,39 +110,6 @@ class EmailMessageListenerTest {
         email.bcc == bcc
 
     @Test
-    fun `test that correct data request summary email is sent to correct contacts`() {
-        val typedEmailContent = testData.dataRequestSummaryEmailContent
-        val keywords = testData.dataRequestSummaryKeywords
-        val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
-        doNothing().whenever(mockEmailSender).sendEmail(any())
-
-        val emailMessageListener =
-            EmailMessageListener(
-                mockEmailSender,
-                mockEmailContactService,
-                mockEmailSubscriptionTracker,
-                dummyProxyPrimaryUrl,
-                true,
-                "  $EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC;;",
-                EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC,
-            )
-        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
-
-        val emailCaptor = argumentCaptor<Email>()
-
-        verify(mockEmailSender).sendEmail(emailCaptor.capture())
-
-        val sentEmail = emailCaptor.firstValue
-
-        assertSenderReceiverCcAndBcc(sentEmail, allowedReceiver, allowedCc, allowedBcc)
-        keywords.forEach { keyword ->
-            assert(
-                sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
-            ) { "Either htmlContent or textContent does not contain '$keyword'" }
-        }
-    }
-
-    @Test
     fun `test that correct portfolio changes summary email is sent to correct contacts`() {
         val typedEmailContent = testData.portfolioChangesSummaryEmailContent
         val keywords = testData.portfolioChangesSummaryKeywords
@@ -164,7 +124,6 @@ class EmailMessageListenerTest {
                 dummyProxyPrimaryUrl,
                 true,
                 "  $EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC;;",
-                EMAIL_ADDRESS_SUMMARY_ADDITIONAL_BCC,
             )
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
@@ -180,48 +139,5 @@ class EmailMessageListenerTest {
                 sentEmail.content.htmlContent.contains(keyword) && sentEmail.content.textContent.contains(keyword),
             ) { "Either htmlContent or textContent does not contain '$keyword'" }
         }
-    }
-
-    @Test
-    fun `test that correct email is sent to correct contacts with correct subscription uuid`() {
-        val recipient = recipientToContactMap.keys.first()
-        val receiver = listOf(recipient)
-        val receiverContact = EmailContact.create(EMAIL_ADDRESS_A)
-        val typedEmailContent = testData.dataNonSourceableEmailContent
-        val keywords = testData.dataNonSourceableKeywords.toMutableList()
-        keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add("https://$dummyProxyPrimaryUrl")
-        keywords.remove(testData.subscriptionUuid)
-        val jsonString =
-            objectMapper.writeValueAsString(
-                EmailMessage(typedEmailContent, receiver, emptyList(), emptyList()),
-            )
-        doNothing().whenever(mockEmailSender).sendEmail(any())
-
-        val emailMessageListener =
-            EmailMessageListener(
-                mockEmailSender,
-                mockEmailContactService,
-                mockEmailSubscriptionTracker,
-                dummyProxyPrimaryUrl,
-                true,
-                "",
-                "",
-            )
-        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
-
-        val emailCaptor = argumentCaptor<Email>()
-
-        verify(mockEmailSender).sendEmail(emailCaptor.capture())
-
-        val sentEmail = emailCaptor.firstValue
-
-        assertSenderReceiverCcAndBcc(sentEmail, listOf(receiverContact), emptyList(), emptyList())
-        assert(
-            keywords.all { keyword ->
-                sentEmail.content.htmlContent.contains(keyword) &&
-                    sentEmail.content.textContent.contains(keyword)
-            },
-        )
     }
 }

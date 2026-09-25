@@ -47,7 +47,6 @@ describe('Component test for the view multiple dataset display base component', 
       preparedFixtureLksgData
     );
 
-    cy.intercept('/community/requests/user', {});
     cy.intercept('/api/companies/mock-company-id/info', companyInformation);
     cy.intercept('/api/data/lksg/companies/mock-company-id*', [mockDataAndMetaInfo]);
     cy.intercept('POST', '/api/data-availability/viewable-dimensions/search', [

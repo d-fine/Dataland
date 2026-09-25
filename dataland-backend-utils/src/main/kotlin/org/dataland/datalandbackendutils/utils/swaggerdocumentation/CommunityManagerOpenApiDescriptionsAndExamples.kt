@@ -1,40 +1,7 @@
 package org.dataland.datalandbackendutils.utils.swaggerdocumentation
 
 object CommunityManagerOpenApiDescriptionsAndExamples {
-    const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
-        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION
-    const val BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_COMPANY_IDENTIFIERS_EXAMPLE
-
-    const val BULK_REQUEST_DATA_TYPES_DESCRIPTION =
-        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_DESCRIPTION
-    const val BULK_REQUEST_DATA_TYPES_EXAMPLE =
-        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_DATA_TYPES_EXAMPLE
-
-    const val BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION =
-        GeneralOpenApiDescriptionsAndExamples.BULK_REQUEST_REPORTING_PERIODS_DESCRIPTION
-    const val BULK_REQUEST_REPORTING_PERIODS_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE
-
-    const val BULK_REQUEST_NOTIFY_ME_IMMEDIATELY_DESCRIPTION =
-        "Boolean indicating whether an immediate notification email shall be sent whenever there is an update concerning one of " +
-            "the posted requests. If set to false, these updates are listed in the weekly summary email."
-
     const val COMPANY_ROLE_USER_ID_DESCRIPTION = "The unique identifier of the user in the company role assignment."
-
-    const val CONTACTS_MESSAGE_DESCRIPTION = "A message to be sent to the specified company contacts."
-    const val CONTACTS_MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."
-
-    const val ACCEPTED_DATA_REQUESTS_DESCRIPTION = "Contains information about all accepted data requests"
-
-    const val ALREADY_EXISTING_REQUESTS_DESCRIPTION =
-        "Contains information about all already existing data requests."
-
-    const val ALREADY_EXISTING_DATASETS_DESCRIPTION = "Contains information about all already existing data sets"
-
-    const val REJECTED_COMPANY_IDENTIFIERS_DESCRIPTION = "Contains all company identifiers that were rejected by Dataland"
-    const val REJECTED_COMPANY_IDENTIFIERS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.COMPANY_SINGLE_IDENTIFIER_EXAMPLE}\"]"
-
-    const val DATA_REQUEST_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user who created this data request."
     const val COMPANY_ROLE_USER_EMAIL_ADDRESS_DESCRIPTION = "The email address of the user in the company role assignment."
 
     const val GENERAL_FIRST_NAME_DESCRIPTION = "The first name of the Dataland user in question."
@@ -47,76 +14,14 @@ object CommunityManagerOpenApiDescriptionsAndExamples {
 
     const val COMPANY_ROLE_LAST_NAME_DESCRIPTION = "The last name of the user in the company role assignment."
 
-    const val CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the user created the data request."
-    const val CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
-
-    const val LAST_MODIFIED_DATE_DESCRIPTION = "The timestamp (epoch milliseconds) when the data request has been modified the last time."
-    const val LAST_MODIFIED_DATE_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
-
-    const val MESSAGE_HISTORY_DESCRIPTION =
-        "Information on the messages sent to company contacts regarding the data request."
-
-    const val REQUEST_STATUS_DESCRIPTION =
-        "The current request status of the data request."
-
-    const val REQUEST_PRIORITY_DESCRIPTION = "The priority of the data request."
-
-    const val ADMIN_COMMENT_DESCRIPTION = "The admin comment of the data request."
-    const val ADMIN_COMMENT_EXAMPLE = "Should be processed with high priority."
-
     const val DATA_REQUEST_ID_DESCRIPTION = "The unique identifier of the data request on Dataland."
     const val DATA_REQUEST_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
-
-    const val CONTACTS_DESCRIPTION = "A list of company contact email addresses specified by the user creating the request."
-    const val CONTACTS_EXAMPLE = "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_EMAIL_EXAMPLE}\"]"
-
-    const val MESSAGE_DESCRIPTION = "A message specified by the user creating the request to be sent to the company contacts."
-    const val MESSAGE_EXAMPLE = "Please consider sharing your data on Dataland."
-
-    const val MESSAGE_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the message object was created."
-    const val MESSAGE_CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
-
-    const val STATUS_CREATION_TIMESTAMP_DESCRIPTION = "The timestamp (epoch milliseconds) when the status object was created."
-    const val STATUS_CREATION_TIMESTAMP_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_TIMESTAMP_EXAMPLE
-
-    const val REQUEST_STATUS_CHANGE_REASON_DESCRIPTION = "The reason for the status change."
-    const val REQUEST_STATUS_CHANGE_REASON_EXAMPLE = "The company has not published data for this reporting period yet."
-
-    const val ANSWERING_DATA_ID_DESCRIPTION = "The data ID of the data set that answered the request."
-    const val ANSWERING_DATA_ID_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE
-
-    const val AGGREGATED_DATA_REQUEST_PRIORITY_DESCRIPTION =
-        "The aggregated data request priority."
-
-    const val DATA_REQUEST_COUNT_DESCRIPTION =
-        "The count of existing data requests for this framework, reporting period, company and priority."
-    const val DATA_REQUEST_COUNT_EXAMPLE = "23"
 
     const val COMPANY_ROLE_DESCRIPTION =
         "One of the Dataland specific roles which a user can have with respect to a company on Dataland."
 
     const val OWNERSHIP_COMMENT_DESCRIPTION = "An accompanying comment to a company ownership request."
     const val OWNERSHIP_COMMENT_EXAMPLE = "I am the CEO of this company, please make me its owner on Dataland."
-
-    const val USER_PROVIDED_IDENTIFIER_DESCRIPTION =
-        "The identifier (e.g., Dataland company ID or LEI) through which the user specified the respective company."
-    const val USER_PROVIDED_IDENTIFIER_EXAMPLE = GeneralOpenApiDescriptionsAndExamples.GENERAL_LEI_EXAMPLE
-
-    const val RESOURCE_ID_DESCRIPTION =
-        "Identifier of the referenced resource. For data requests, this is the data request ID. " +
-            "For already existing datasets, this is a composite identifier consisting of company ID, framework, " +
-            "and reporting period in the format '{companyId}/{framework}/{reportingPeriod}'."
-    const val RESOURCE_ID_EXAMPLE =
-        "[\"${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
-            "\"550e8400-e29b-41d4-a716-446655440000/SFDR/2023\"]"
-
-    const val RESOURCE_URL_DESCRIPTION =
-        "A URL pointing to the referenced resource. For data requests, this points to the request page. " +
-            "For already existing datasets, this points to the company framework page."
-    const val RESOURCE_URL_EXAMPLE =
-        "[\"https://dataland.com/requests/${GeneralOpenApiDescriptionsAndExamples.GENERAL_UUID_EXAMPLE}\"," +
-            " \"https://dataland.com/companies/" +
-            "${GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE}/frameworks/sfdr\"]"
 
     const val COMPANY_RIGHT_DESCRIPTION = "One of the Dataland-specific rights which can be assigned to a company on Dataland."
 

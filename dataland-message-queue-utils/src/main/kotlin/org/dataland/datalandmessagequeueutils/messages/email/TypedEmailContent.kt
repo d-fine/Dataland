@@ -20,14 +20,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     property = "type",
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = DataAvailableEmailContent::class, name = "DataAvailableEmailContent"),
-    JsonSubTypes.Type(value = DataNonSourceableEmailContent::class, name = "DataNonSourceableEmailContent"),
-    JsonSubTypes.Type(value = DataUpdatedEmailContent::class, name = "DataUpdatedEmailContent"),
-    JsonSubTypes.Type(value = DataRequestSummaryEmailContent::class, name = "DataRequestSummaryEmailContent"),
     JsonSubTypes.Type(value = PortfolioMonitoringUpdateSummaryEmailContent::class, name = "PortfolioMonitoringUpdateSummaryEmailContent"),
     JsonSubTypes.Type(value = CompanyOwnershipClaimApprovedEmailContent::class, name = "CompanyOwnershipClaimApprovedEmailContent"),
-    JsonSubTypes
-        .Type(value = DatasetRequestedClaimCompanyOwnershipEmailContent::class, name = "DatasetRequestedClaimCompanyOwnershipEmailContent"),
     JsonSubTypes
         .Type(value = DatasetAvailableClaimCompanyOwnershipEmailContent::class, name = "DatasetAvailableClaimCompanyOwnershipEmailContent"),
     JsonSubTypes.Type(value = InternalEmailContentTable::class, name = "InternalEmailContentTable"),
@@ -53,65 +47,6 @@ interface InitializeSubscriptionUuidLater {
  */
 interface InitializeBaseUrlLater {
     var baseUrl: String
-}
-
-/**
- * Content of an email sent to the user, when the user has opted for immediate notifications and
- * data for a data request becomes available for the first time.
- */
-data class DataAvailableEmailContent(
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-    val dataRequestId: String,
-    val closedInDays: Int,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your data request has been answered!"
-    override val templateName = "data_request_immediate_notification_on_data_available.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * Content of an email sent to the user, when the user has opted for immediate notifications and
- * data for a data request becomes was updated.
- */
-data class DataUpdatedEmailContent(
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-    val dataRequestId: String,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your data request has been updated!"
-    override val templateName = "data_request_immediate_notification_on_data_updated.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * Content of an email sent to the user, when the user has opted for immediate notifications and
- * data for a data request is not providable.
- */
-data class DataNonSourceableEmailContent(
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-    val dataRequestId: String,
-    val nonSourceableComment: String?,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "There are no sources for your requested data available!"
-    override val templateName = "data_request_immediate_notification_on_data_non_sourceable.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
 }
 
 /**
@@ -143,70 +78,15 @@ data class PortfolioMonitoringUpdateSummaryEmailContent(
 }
 
 /**
- * Content of an email sent to the user, when the user receives regular update summaries and
- * data for data requests is available, updated or not sourceable.
- */
-data class DataRequestSummaryEmailContent(
-    val newData: List<FrameworkData>,
-    val updatedData: List<FrameworkData>,
-    val nonSourceableData: List<FrameworkData>,
-    val frequency: String,
-    val portfolioNamesString: String,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Summary for your data requests changes!"
-    override val templateName = "data_request_summary.ftl"
-
-    /**
-     * A class that stores the information about the multiple frameworks that have been changed.
-     */
-    data class FrameworkData(
-        val dataTypeLabel: String,
-        val reportingPeriod: String,
-        val companies: List<String>,
-    )
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
  * Content of an email sent to the company's contact, when their request to claim ownership is approved.
  */
 data class CompanyOwnershipClaimApprovedEmailContent(
     val companyId: String,
     val companyName: String,
-    val numberOfOpenDataRequestsForCompany: Int,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Your company ownership claim for ${this.companyName} is confirmed!"
     override val templateName = "company_ownership_claim_approved.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * Content of an email sent to the company's contact prompting them to claim ownership,
- * triggered when a dataset is requested for this company that has no designated owner.
- */
-data class DatasetRequestedClaimCompanyOwnershipEmailContent(
-    val companyId: String,
-    val companyName: String,
-    val requesterEmail: String,
-    val dataTypeLabel: String,
-    val reportingPeriods: List<String>,
-    val message: String?,
-    val firstName: String?,
-    val lastName: String?,
-) : TypedEmailContent(),
-    InitializeSubscriptionUuidLater,
-    InitializeBaseUrlLater {
-    override val subject = "A message from Dataland: Your data are high on demand!"
-    override val templateName = "company_ownership_claim_request_prompt_on_dataset_requested.ftl"
-
-    @JsonIgnore
-    override lateinit var subscriptionUuid: String
 
     @JsonIgnore
     override lateinit var baseUrl: String
