@@ -92,15 +92,13 @@ class V16__RemoveInferableDocumentFieldsFromQaData : BaseJavaMigration() {
             } catch (exception: JsonProcessingException) {
                 throw IllegalStateException("Invalid JSON in $table.$valueColumn for ID $id", exception)
             }
-        val removed =
-            if (legacy && root.isObject) {
-                removeFromLegacyReport(root)
-            } else if (legacy) {
-                0
-            } else {
-                removeFromDataPoint(root)
-            }
-        if (removed == 0) return false
+        val original = root.deepCopy<JsonNode>()
+        if (!legacy) {
+            cleanDataPoint(root)
+        } else if (root.isObject) {
+            cleanQaReport(root)
+        }
+        if (root == original) return false
 
         update.setString(1, JsonUtils.defaultObjectMapper.writeValueAsString(root))
         if (idColumn == "id") update.setObject(2, UUID.fromString(id)) else update.setString(2, id)
@@ -108,36 +106,28 @@ class V16__RemoveInferableDocumentFieldsFromQaData : BaseJavaMigration() {
         return true
     }
 
-    private fun removeFromLegacyReport(node: JsonNode): Int =
+    /** Removes inferable document fields from all correctedData values of a legacy QA report. */
+    fun cleanQaReport(qaReport: JsonNode): JsonNode {
         when {
-            node.isArray -> node.sumOf { removeFromLegacyReport(it) }
-            node.isObject ->
-                node.fieldNames().asSequence().toList().sumOf { key ->
-                    val value = node.get(key)
-                    if (key == "correctedData") removeFromDataPoint(value) else removeFromLegacyReport(value)
+            qaReport.isArray -> qaReport.forEach { cleanQaReport(it) }
+            qaReport.isObject ->
+                qaReport.properties().forEach { (key, value) ->
+                    if (key == "correctedData") cleanDataPoint(value) else cleanQaReport(value)
                 }
-            else -> 0
         }
+        return qaReport
+    }
 
-    private fun removeFromDataPoint(node: JsonNode): Int =
+    /** Removes fileName and publicationDate from all dataSource objects within a data point. */
+    fun cleanDataPoint(dataPoint: JsonNode): JsonNode {
         when {
-            node.isArray -> node.sumOf { removeFromDataPoint(it) }
-            node.isObject ->
-                node.fieldNames().asSequence().toList().sumOf { key ->
-                    val value = node.get(key)
-                    var removed = 0
-                    if (key == "dataSource" && value is ObjectNode) {
-                        if (value.has("fileName")) {
-                            value.remove("fileName")
-                            removed++
-                        }
-                        if (value.has("publicationDate")) {
-                            value.remove("publicationDate")
-                            removed++
-                        }
-                    }
-                    removed + removeFromDataPoint(value)
+            dataPoint.isArray -> dataPoint.forEach { cleanDataPoint(it) }
+            dataPoint.isObject ->
+                dataPoint.properties().forEach { (key, value) ->
+                    if (key == "dataSource" && value is ObjectNode) value.remove(listOf("fileName", "publicationDate"))
+                    cleanDataPoint(value)
                 }
-            else -> 0
         }
+        return dataPoint
+    }
 }
