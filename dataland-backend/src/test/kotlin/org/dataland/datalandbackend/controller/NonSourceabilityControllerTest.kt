@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.NonSourceabilityInformationManager
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -27,12 +28,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.transaction.annotation.Transactional
 
 private const val SEARCH_NON_SOURCEABLE_PATH = "/non-sourceable/search"
 private const val SEARCH_NON_SOURCEABLE_GROUPED_PATH = "/non-sourceable/search/grouped"
@@ -40,29 +39,28 @@ private const val CONTENT_TYPE = "application/json"
 
 /**
  * Endpoint test for POST /non-sourceable/search and POST /non-sourceable/search/grouped, exercising the full stack
- * (controller -> NonSourceabilityInformationManager -> NonSourceabilityDataRepository -> H2)
+ * (controller -> NonSourceabilityInformationManager -> NonSourceabilityDataRepository -> Postgres)
  * without mocking the business service layer. Only the CloudEventMessageHandler (RabbitMQ
  * side effect) is mocked, matching the pattern used in MetaDataControllerNonSourceableTest.
+ *
+ * Uses a real PostgreSQL test container (via BaseIntegrationTest) instead of the H2 in-memory
+ * database, because the code path exercised here (DataAvailabilityChecker.filterViewableDimensions)
+ * relies on native PostgreSQL JSONB functions that H2 does not support.
  *
  * Response bodies are deserialized back into their Kotlin target types before asserting on them,
  * rather than navigating the raw JSON via jsonPath. This still validates the actual serialized
  * response bytes (via the real ObjectMapper), while keeping the assertions readable and
  * order-independent (important since several of the response types are Kotlin Sets).
  */
-@SpringBootTest(
-    classes = [DatalandBackend::class],
-    properties = ["spring.profiles.active=nodb"],
-)
+@SpringBootTest(classes = [DatalandBackend::class])
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Transactional
 @DefaultMocks
 @MockitoBean(types = [CloudEventMessageHandler::class])
 class NonSourceabilityControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
-) {
+) : BaseIntegrationTest() {
     private val objectMapper = JsonUtils.defaultObjectMapper
 
     private lateinit var storedCompany: StoredCompanyEntity
