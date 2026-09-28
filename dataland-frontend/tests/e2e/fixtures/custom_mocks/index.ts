@@ -5,7 +5,6 @@ import {
 } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
-import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
 import {
   generateSfdrLinkedQaReports,
   generateSfdrQaReportPreparedFixtures,
@@ -49,16 +48,6 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/DataSearchStoredCompanyMocks.json',
     JSON.stringify(generateListOfDataSearchStoredCompany(), null, '\t')
-  );
-
-  fs.writeFileSync(
-    '../testing/data/DataRequestsMock.json',
-    JSON.stringify(
-      generateStoredDataRequests(),
-
-      (_key, value) => (value instanceof Set ? Array.from(value) : value),
-      '\t'
-    )
   );
   fs.writeFileSync(
     '../testing/data/SfdrQaReportPreparedFixtures.json',
