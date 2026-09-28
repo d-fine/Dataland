@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Casper and Sons",
-			"headquarters": "Victoriafort",
+			"headquarters": "Vivianfort",
 			"headquartersPostalCode": "86534",
 			"sector": null,
 			"identifiers": {
@@ -24,7 +24,7 @@
 			},
 			"countryCode": "CG",
 			"companyContactDetails": [
-				"Cheryl80@example.com"
+				"Carmela80@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
@@ -317,7 +317,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Leuschke, Kunde and Conroy",
-			"headquarters": "Port Marcus",
+			"headquarters": "Port Lon",
 			"headquartersPostalCode": "32853-6299",
 			"sector": "supply-chains",
 			"identifiers": {
@@ -337,9 +337,9 @@
 			},
 			"countryCode": "KN",
 			"companyContactDetails": [
-				"Mia_Cruickshank53@example.com",
-				"Julian_Beahan18@example.com",
-				"Ollie.Shanahan@example.com"
+				"Meggie_Cruickshank53@example.com",
+				"Johnson_Beahan18@example.com",
+				"Natasha.Shanahan@example.com"
 			],
 			"companyAlternativeNames": [
 				"Ebert and Sons",
@@ -614,7 +614,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Ebert Inc",
-			"headquarters": "Ignacioshire",
+			"headquarters": "Hobartshire",
 			"headquartersPostalCode": null,
 			"sector": "communities",
 			"identifiers": {
@@ -1023,8 +1023,8 @@
 			},
 			"countryCode": "ER",
 			"companyContactDetails": [
-				"Jill.McLaughlin7@example.com",
-				"Roxanne7@example.com"
+				"Janessa.McLaughlin7@example.com",
+				"Robyn7@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
@@ -1441,7 +1441,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Beier and Sons",
-			"headquarters": "North Madyson",
+			"headquarters": "North Mallory",
 			"headquartersPostalCode": "53028",
 			"sector": "blockchains",
 			"identifiers": {
@@ -1467,11 +1467,11 @@
 			},
 			"countryCode": "ME",
 			"companyContactDetails": [
-				"Forrest.Carroll@example.com",
-				"Pearl12@example.com",
-				"Irvin_Balistreri@example.com",
-				"Rufus.Kovacek82@example.com",
-				"Estefania_Christiansen20@example.com"
+				"Felipe.Carroll@example.com",
+				"Olive12@example.com",
+				"Houston_Balistreri@example.com",
+				"Roosevelt.Kovacek82@example.com",
+				"Garnet_Christiansen20@example.com"
 			],
 			"companyAlternativeNames": [
 				"Johns - Kutch",
@@ -1786,7 +1786,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Hahn - Sipes",
-			"headquarters": "East Tamiabury",
+			"headquarters": "East Tillmanbury",
 			"headquartersPostalCode": "38581",
 			"sector": "deliverables",
 			"identifiers": {
@@ -1806,8 +1806,8 @@
 			},
 			"countryCode": "SE",
 			"companyContactDetails": [
-				"Sarah26@example.com",
-				"Colin36@example.com"
+				"Rylee26@example.com",
+				"Corbin36@example.com"
 			],
 			"companyAlternativeNames": [
 				"Glover and Sons",
@@ -2190,7 +2190,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Reynolds - Schuster",
-			"headquarters": "North Sheilafurt",
+			"headquarters": "North Samanthafurt",
 			"headquartersPostalCode": "37890",
 			"sector": "applications",
 			"identifiers": {
@@ -2910,7 +2910,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Ruecker, Hintz and Blick",
-			"headquarters": "Lake Ashlee",
+			"headquarters": "Lake Blake",
 			"headquartersPostalCode": "83221-2588",
 			"sector": "paradigms",
 			"identifiers": {
@@ -3227,7 +3227,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Abbott - Hills",
-			"headquarters": "East Miguelboro",
+			"headquarters": "East Mathewboro",
 			"headquartersPostalCode": "45513-2292",
 			"sector": "channels",
 			"identifiers": {
