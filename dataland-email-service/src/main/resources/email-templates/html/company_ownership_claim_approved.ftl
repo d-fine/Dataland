@@ -20,8 +20,7 @@
     <tr>
         <td colspan="3">
             Great news! 📣<br>You've successfully claimed company ownership for ${companyName}.<br>
-            <br>Now, take the next step to access your company overview, view your data requests, and provide data.<br>
-            <br>Please note, that ${companyName} has ${numberOfOpenDataRequestsForCompany} open data requests.
+            <br>Now, take the next step to access your company overview, view your data requests, and provide data.
         </td>
     </tr>
     <@spacerRow/>

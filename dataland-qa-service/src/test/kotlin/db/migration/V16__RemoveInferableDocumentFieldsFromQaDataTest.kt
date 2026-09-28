@@ -1,168 +1,141 @@
 package db.migration
 
-import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.flywaydb.core.api.migration.Context
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.skyscreamer.jsonassert.JSONAssert
 import java.sql.Connection
-import java.sql.DriverManager
-import java.util.UUID
+import java.sql.DatabaseMetaData
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 
 @Suppress("ClassName")
 class V16__RemoveInferableDocumentFieldsFromQaDataTest {
-    private fun createSchema(connection: Connection) {
-        connection.createStatement().use { statement ->
-            statement.execute("CREATE TABLE data_point_qa_reports (qa_report_id VARCHAR(40) PRIMARY KEY, corrected_data CLOB)")
-            statement.execute("CREATE TABLE dataset_judgement_entity_data_point_judgement (id UUID PRIMARY KEY, custom_value CLOB)")
-            statement.execute("CREATE TABLE qa_reports (qa_report_id VARCHAR(40) PRIMARY KEY, qa_report CLOB)")
-        }
+    private val migration = V16__RemoveInferableDocumentFieldsFromQaData()
+    private val mockContext = mock<Context>()
+    private val mockConnection = mock<Connection>()
+    private val mockMetaData = mock<DatabaseMetaData>()
+    private val mockResultSet = mock<ResultSet>()
+    private val mockPreparedStatement = mock<PreparedStatement>()
+
+    private val tables = listOf("data_point_qa_reports", "dataset_judgement_entity_data_point_judgement", "qa_reports")
+
+    @BeforeEach
+    fun setup() {
+        reset(mockContext, mockConnection, mockMetaData, mockResultSet, mockPreparedStatement)
+        whenever(mockContext.connection).thenReturn(mockConnection)
+        whenever(mockConnection.metaData).thenReturn(mockMetaData)
     }
 
-    private fun insertSeedData(
-        connection: Connection,
-        dataPoint: String,
-        legacy: String,
-        judgementId: UUID,
-    ) {
-        connection.prepareStatement("INSERT INTO data_point_qa_reports VALUES (?, ?)").use { insert ->
-            insert.setString(1, "report")
-            insert.setString(2, dataPoint)
-            insert.executeUpdate()
-            insert.setString(1, "unchanged")
-            insert.setString(2, """{"value":1,"comment":"fileName"}""")
-            insert.executeUpdate()
-            insert.setString(1, "null")
-            insert.setString(2, null)
-            insert.executeUpdate()
-        }
-        connection.prepareStatement("INSERT INTO dataset_judgement_entity_data_point_judgement VALUES (?, ?)").use { insert ->
-            insert.setObject(1, judgementId)
-            insert.setString(2, dataPoint)
-            insert.executeUpdate()
-        }
-        connection.prepareStatement("INSERT INTO qa_reports VALUES (?, ?)").use { insert ->
-            insert.setString(1, "legacy")
-            insert.setString(2, legacy)
-            insert.executeUpdate()
-            insert.setString(1, "assembled")
-            insert.setString(2, """["fileName"]""")
-            insert.executeUpdate()
-        }
-    }
-
-    private fun stored(
-        connection: Connection,
+    private fun mockSingleRow(
         table: String,
-        column: String,
         idColumn: String,
+        valueColumn: String,
         id: String,
-    ): String =
-        connection.prepareStatement("SELECT $column FROM $table WHERE $idColumn = ?").use { query ->
-            query.setString(1, id)
-            query.executeQuery().use { rows ->
-                rows.next()
-                rows.getString(1)
-            }
-        }
-
-    private fun assertMigratedData(
-        connection: Connection,
-        cleaned: String,
-        judgementId: UUID,
+        value: String?,
     ) {
-        val mapper = JsonUtils.defaultObjectMapper
-        assertEquals(
-            mapper.readTree(cleaned),
-            mapper.readTree(stored(connection, "data_point_qa_reports", "corrected_data", "qa_report_id", "report")),
-        )
-        assertEquals(
-            mapper.readTree(cleaned),
-            mapper.readTree(
-                stored(
-                    connection,
-                    "dataset_judgement_entity_data_point_judgement",
-                    "custom_value",
-                    "id",
-                    judgementId.toString(),
-                ),
-            ),
-        )
-        assertEquals(
-            mapper.readTree("""{"energy":{"correctedData":$cleaned,"comment":"fileName"}}"""),
-            mapper.readTree(stored(connection, "qa_reports", "qa_report", "qa_report_id", "legacy")),
-        )
-        assertEquals(
-            """{"value":1,"comment":"fileName"}""",
-            stored(connection, "data_point_qa_reports", "corrected_data", "qa_report_id", "unchanged"),
-        )
-        assertEquals("""["fileName"]""", stored(connection, "qa_reports", "qa_report", "qa_report_id", "assembled"))
-        connection.createStatement().use { statement ->
-            statement.executeQuery("SELECT corrected_data FROM data_point_qa_reports WHERE qa_report_id = 'null'").use { rows ->
-                rows.next()
-                assertEquals(null, rows.getString(1))
-            }
-        }
+        val existingTable = mock<ResultSet>()
+        whenever(existingTable.next()).thenReturn(true)
+        tables.forEach { whenever(mockMetaData.getTables(null, null, it, null)).thenReturn(mockResultSet) }
+        whenever(mockMetaData.getTables(null, null, table, null)).thenReturn(existingTable)
+
+        val rows = mock<ResultSet>()
+        whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
+        whenever(mockPreparedStatement.executeQuery()).thenReturn(rows)
+        whenever(rows.next()).thenReturn(true, false)
+        whenever(rows.getString(idColumn)).thenReturn(id)
+        whenever(rows.getString(valueColumn)).thenReturn(value)
+    }
+
+    private fun assertMigratedJsonMatchesFixture(
+        table: String,
+        idColumn: String,
+        valueColumn: String,
+        originalResource: String,
+        expectedResource: String,
+    ) {
+        val originalJson = javaClass.getResource("/db/migration/$originalResource")!!.readText()
+        val expectedJson = javaClass.getResource("/db/migration/$expectedResource")!!.readText()
+        mockSingleRow(table, idColumn, valueColumn, "report-id", originalJson)
+
+        migration.migrate(mockContext)
+
+        val capturedValue = argumentCaptor<String>()
+        verify(mockPreparedStatement).setString(eq(1), capturedValue.capture())
+        JSONAssert.assertEquals(expectedJson, capturedValue.firstValue, true)
     }
 
     @Test
-    fun `cleans existing reports custom values and legacy reports without changing unrelated data`() {
-        DriverManager.getConnection("jdbc:h2:mem:v16_qa_${UUID.randomUUID()};DATABASE_TO_LOWER=TRUE").use { connection ->
-            createSchema(connection)
-            val dataPoint =
-                """{"value":39,"dataSource":{"page":"8","fileReference":"ref","fileName":"report", """ +
-                    """"publicationDate":"2026-07-21"},"other":[{"dataSource":{"fileName":null,"tagName":"tag"}}]}"""
-            val cleaned =
-                """{"value":39,"dataSource":{"page":"8","fileReference":"ref"},"other":[{"dataSource":{"tagName":"tag"}}]}"""
-            val legacy = """{"energy":{"correctedData":$dataPoint,"comment":"fileName"}}"""
-            val judgementId = UUID.randomUUID()
-            insertSeedData(connection, dataPoint, legacy, judgementId)
-
-            val context = mock<Context>()
-            whenever(context.connection).thenReturn(connection)
-            V16__RemoveInferableDocumentFieldsFromQaData().migrate(context)
-
-            assertMigratedData(connection, cleaned, judgementId)
-        }
+    fun `check migration for data point`() {
+        assertMigratedJsonMatchesFixture(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            originalResource = "V16/originalDataPoint.json",
+            expectedResource = "V16/expectedDataPoint.json",
+        )
     }
 
     @Test
-    fun `missing tables do not prevent migration of an existing table`() {
-        DriverManager.getConnection("jdbc:h2:mem:v16_qa_${UUID.randomUUID()};DATABASE_TO_LOWER=TRUE").use { connection ->
-            connection.createStatement().use {
-                it
-                    .execute("CREATE TABLE data_point_qa_reports (qa_report_id VARCHAR(40), corrected_data CLOB)")
-            }
-            connection.prepareStatement("INSERT INTO data_point_qa_reports VALUES (?, ?)").use { insert ->
-                insert.setString(1, "report")
-                insert.setString(2, """{"dataSource":{"fileName":"report"}}""")
-                insert.executeUpdate()
-            }
-            val context = mock<Context>()
-            whenever(context.connection).thenReturn(connection)
-            V16__RemoveInferableDocumentFieldsFromQaData().migrate(context)
-            connection.createStatement().use { statement ->
-                statement.executeQuery("SELECT corrected_data FROM data_point_qa_reports").use { rows ->
-                    rows.next()
-                    assertEquals("""{"dataSource":{}}""", rows.getString(1))
-                }
-            }
-        }
+    fun `check migration for legacy QA report`() {
+        assertMigratedJsonMatchesFixture(
+            table = "qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "qa_report",
+            originalResource = "V16/originalQaReport.json",
+            expectedResource = "V16/expectedQaReport.json",
+        )
     }
 
     @Test
-    fun `invalid candidate JSON fails with the row identifier`() {
-        DriverManager.getConnection("jdbc:h2:mem:v16_qa_${UUID.randomUUID()};DATABASE_TO_LOWER=TRUE").use { connection ->
-            connection.createStatement().use {
-                it.execute("CREATE TABLE data_point_qa_reports (qa_report_id VARCHAR(40), corrected_data CLOB)")
-                it.execute("INSERT INTO data_point_qa_reports VALUES ('broken', '{fileName:')")
-            }
-            val context = mock<Context>()
-            whenever(context.connection).thenReturn(connection)
-            val exception = assertThrows<IllegalStateException> { V16__RemoveInferableDocumentFieldsFromQaData().migrate(context) }
-            assertEquals("Invalid JSON in data_point_qa_reports.corrected_data for ID broken", exception.message)
-        }
+    fun `check that migration does not start if tables are missing`() {
+        tables.forEach { whenever(mockMetaData.getTables(null, null, it, null)).thenReturn(mockResultSet) }
+        whenever(mockResultSet.next()).thenReturn(false)
+
+        migration.migrate(mockContext)
+
+        verify(mockConnection, never()).prepareStatement(any<String>())
+    }
+
+    @Test
+    fun `check that migration updates rows containing inferable fields`() {
+        mockSingleRow(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            id = "report-id",
+            value = """{"value":1,"dataSource":{"page":"8","fileName":"Annual Report"}}""",
+        )
+
+        migration.migrate(mockContext)
+
+        verify(mockPreparedStatement).setString(1, """{"value":1,"dataSource":{"page":"8"}}""")
+        verify(mockPreparedStatement).setString(2, "report-id")
+        verify(mockPreparedStatement).executeUpdate()
+    }
+
+    @Test
+    fun `check that migration throws on invalid JSON`() {
+        mockSingleRow(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            id = "report-id",
+            value = "{fileName:",
+        )
+
+        val exception = assertThrows<IllegalStateException> { migration.migrate(mockContext) }
+
+        assertEquals("Invalid JSON in data_point_qa_reports.corrected_data for ID report-id", exception.message)
     }
 }

@@ -58,7 +58,7 @@ sequenceDiagram
     mq -) community: Receive 'QA status updated'
     deactivate mq
     activate community
-    community ->> community: Update Data Requests and send notifications
+    community ->> community:  Save notification event and send investor-relations notifications
     deactivate community
    
     opt Reviewer Performs Quality Assurance (if requierd)
@@ -86,7 +86,7 @@ sequenceDiagram
         mq -) community: Receive 'QA status updated'
         deactivate mq
         activate community
-        community ->> community: Update Data Requests and send notifications
+        community ->> community:  Save notification event and send investor-relations notifications
         deactivate community
     end
 ```
