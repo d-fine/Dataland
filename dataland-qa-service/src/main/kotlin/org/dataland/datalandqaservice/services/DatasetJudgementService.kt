@@ -13,6 +13,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -121,7 +122,7 @@ class DatasetJudgementService
          * @param state The new judgement state to apply.
          * @return DatasetJudgementResponse The API response with updated review details.
          */
-        @Transactional
+        @Transactional(rollbackFor = [InvalidInputApiException::class])
         fun setJudgementState(
             datasetJudgementId: UUID,
             state: DatasetJudgementState,
@@ -202,9 +203,10 @@ class DatasetJudgementService
                 try {
                     datasetJudgementSupportService.validateCustomDataPoint(customDataPoint, dataPointType)
                 } catch (e: BackendClientException) {
+                    if (e.statusCode != HttpStatus.BAD_REQUEST.value()) throw e
                     throw InvalidInputApiException(
                         "Custom datapoint not valid.",
-                        "Custom datapoint given does not match the specification of $dataPointType.",
+                        e.validationMessageOr("Custom datapoint given does not match the specification of $dataPointType."),
                         e,
                     )
                 }
