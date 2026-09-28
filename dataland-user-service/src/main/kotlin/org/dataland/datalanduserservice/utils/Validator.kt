@@ -111,23 +111,39 @@ class Validator
             }
 
             proxyCompanyReplacements.forEach { proxyCompanyReplacement ->
-                if (proxyCompanyReplacement.proxyCompanyId == proxyCompanyReplacement.proxiedCompanyId) {
-                    throw ConflictApiException(
-                        message = "Conflicting input detected.",
-                        summary =
-                            "Conflicting input detected: company ${proxyCompanyReplacement.proxyCompanyId} cannot proxy itself. " +
-                                "CorrelationId: $correlationId",
-                    )
-                }
-                if (proxyCompanyReplacement.proxyCompanyId !in validCompanyIds) {
-                    throw ResourceNotFoundApiException(
-                        summary = "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} not found in portfolio.",
-                        message =
-                            "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} is not contained " +
-                                "in the portfolio. CorrelationId: $correlationId",
-                    )
-                }
+                validateSingleProxyCompanyReplacement(proxyCompanyReplacement, validCompanyIds, correlationId)
                 isCompanyIdValid(proxyCompanyReplacement.proxiedCompanyId, correlationId)
+            }
+        }
+
+        /**
+         * Validates a single proxy company replacement entry.
+         * Checks that the proxy company does not proxy itself and that it is contained in the portfolio's
+         * (validated) identifiers.
+         * @param proxyCompanyReplacement the proxy company replacement to validate
+         * @param validCompanyIds the set of company IDs that are (or will be) contained in the portfolio
+         * @param correlationId the correlationId used for logging and error messages
+         */
+        private fun validateSingleProxyCompanyReplacement(
+            proxyCompanyReplacement: ProxyCompanyReplacementUpload,
+            validCompanyIds: Set<String>,
+            correlationId: String,
+        ) {
+            if (proxyCompanyReplacement.proxyCompanyId == proxyCompanyReplacement.proxiedCompanyId) {
+                throw ConflictApiException(
+                    message = "Conflicting input detected.",
+                    summary =
+                        "Conflicting input detected: company ${proxyCompanyReplacement.proxyCompanyId} cannot proxy itself. " +
+                            "CorrelationId: $correlationId",
+                )
+            }
+            if (proxyCompanyReplacement.proxyCompanyId !in validCompanyIds) {
+                throw ResourceNotFoundApiException(
+                    summary = "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} not found in portfolio.",
+                    message =
+                        "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} is not contained " +
+                            "in the portfolio. CorrelationId: $correlationId",
+                )
             }
         }
 
