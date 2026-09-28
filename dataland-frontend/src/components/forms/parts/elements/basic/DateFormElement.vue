@@ -31,7 +31,6 @@ export default defineComponent({
   data() {
     return {
       dateFormatted: undefined as string | undefined,
-      Date,
     };
   },
   watch: {

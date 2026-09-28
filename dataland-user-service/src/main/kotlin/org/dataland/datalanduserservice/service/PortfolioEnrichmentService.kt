@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataAvailabilityControllerApi
+import org.dataland.datalandbackend.openApiClient.api.NonSourceabilityControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataDimensionSearchRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
@@ -20,6 +21,7 @@ class PortfolioEnrichmentService
     constructor(
         private val dataAvailabilityControllerApi: DataAvailabilityControllerApi,
         private val companyDataControllerApi: CompanyDataControllerApi,
+        private val nonSourceabilityControllerApi: NonSourceabilityControllerApi,
     ) {
         private val majorFrameworks =
             listOf(
@@ -46,6 +48,11 @@ class PortfolioEnrichmentService
         /**
          * Return a mapping: (companyId) => ( mapping: (framework) => available reporting periods ) that has the
          * passed companyIds as keys, and the inner mapping has the passed frameworks as keys.
+         *
+         * A reporting period is considered "available" if either an actual, viewable dataset exists for it, or it
+         * is confirmed as non-sourceable - both are treated as equally resolved, sufficient information for the
+         * user, as opposed to a reporting period that was simply never looked at.
+         *
          * @param companyIds
          * @param frameworks
          */
@@ -53,17 +60,20 @@ class PortfolioEnrichmentService
             companyIds: List<String>,
             frameworks: List<String>,
         ): Map<String, Map<String, List<String>>> {
-            val availableDataDimensions =
-                dataAvailabilityControllerApi.searchViewableDimensions(
-                    DataDimensionSearchRequest(
-                        companyIds = companyIds,
-                        dataTypes = frameworks,
-                        reportingPeriods = emptyList(),
-                    ),
+            val searchRequest =
+                DataDimensionSearchRequest(
+                    companyIds = companyIds,
+                    dataTypes = frameworks,
+                    reportingPeriods = emptyList(),
                 )
 
+            val availableDataDimensions = dataAvailabilityControllerApi.searchViewableDimensions(searchRequest)
+            val nonSourceableDataDimensions = nonSourceabilityControllerApi.searchNonSourceableDimensions(searchRequest)
+
+            val combinedDataDimensions = (availableDataDimensions + nonSourceableDataDimensions).distinct()
+
             val mapFromCompanyToListOfPairsOfFrameworkAndReportingPeriod =
-                availableDataDimensions
+                combinedDataDimensions
                     .groupBy(
                         { it.companyId },
                         { Pair(it.dataType, it.reportingPeriod) },
@@ -79,7 +89,7 @@ class PortfolioEnrichmentService
 
             return mapFromCompanyToMapFromFrameworkToAvailableReportingPeriodsInAnyOrder.mapValues {
                 it.value.mapValues {
-                    it.value.sortedDescending()
+                    it.value.distinct().sortedDescending()
                 }
             }
         }

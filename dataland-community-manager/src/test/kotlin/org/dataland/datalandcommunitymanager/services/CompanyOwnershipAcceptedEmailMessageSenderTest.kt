@@ -26,7 +26,6 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     private val correlationId = UUID.randomUUID().toString()
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"
-    private val numberOfOpenDataRequestsForCompany = 0
 
     @BeforeEach
     fun setupAuthentication() {
@@ -37,12 +36,10 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
     fun `validate that the output of the external email message sender is correctly build for all frameworks`() {
         mockCloudEventMessageHandlerAndSetChecks()
 
-        val dataRequestQueryManager = mock(DataRequestQueryManager::class.java)
         val companyOwnershipAcceptedEmailMessageBuilder =
             CompanyOwnershipAcceptedEmailMessageBuilder(
                 cloudEventMessageHandlerMock,
                 objectMapper,
-                dataRequestQueryManager,
             )
 
         companyOwnershipAcceptedEmailMessageBuilder
@@ -74,9 +71,6 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                 val companyOwnershipClaimApprovedEmailContent = emailMessage.typedEmailContent as CompanyOwnershipClaimApprovedEmailContent
                 Assertions.assertEquals(companyId, companyOwnershipClaimApprovedEmailContent.companyId)
                 Assertions.assertEquals(companyName, companyOwnershipClaimApprovedEmailContent.companyName)
-                Assertions.assertEquals(
-                    numberOfOpenDataRequestsForCompany, companyOwnershipClaimApprovedEmailContent.numberOfOpenDataRequestsForCompany,
-                )
                 Assertions.assertEquals(listOf(EmailRecipient.UserId(userId)), emailMessage.receiver)
                 Assertions.assertEquals(MessageType.SEND_EMAIL, arg2)
                 Assertions.assertEquals(correlationId, arg3)

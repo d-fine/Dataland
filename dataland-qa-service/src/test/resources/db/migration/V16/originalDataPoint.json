@@ -1,0 +1,18 @@
+{
+  "value": 39,
+  "comment": "The fileName is mentioned in this comment",
+  "dataSource": {
+    "page": "8",
+    "fileReference": "fileReference",
+    "fileName": "Annual Report",
+    "publicationDate": "2026-07-21"
+  },
+  "details": [
+    {
+      "dataSource": {
+        "fileName": null,
+        "tagName": "tag"
+      }
+    }
+  ]
+}

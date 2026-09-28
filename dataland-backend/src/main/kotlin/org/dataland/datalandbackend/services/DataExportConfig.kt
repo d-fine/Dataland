@@ -14,6 +14,7 @@ class DataExportConfig(
     private val datasetAssembler: DatasetAssembler,
     private val specificationService: SpecificationService,
     private val companyQueryManager: CompanyQueryManager,
+    private val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
 ) {
     /**
      * DataExportService for assembled frameworks which should be most frameworks
@@ -39,5 +40,6 @@ class DataExportConfig(
             specificationService,
             companyQueryManager,
             datasetStorageService,
+            nonSourceabilityInformationManager,
         )
 }

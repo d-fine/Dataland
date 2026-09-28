@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-financials-dataset-with-no-null-fields",
-			"headquarters": "Kayceeview",
+			"headquarters": "Lacyview",
 			"headquartersPostalCode": "35900",
 			"sector": "experiences",
 			"identifiers": {
@@ -29,10 +29,10 @@
 			},
 			"countryCode": "AZ",
 			"companyContactDetails": [
-				"Jay.Haley@example.com",
-				"Luther_Hoppe91@example.com",
-				"Barney64@example.com",
-				"Sonya92@example.com"
+				"Jack.Haley@example.com",
+				"Leland_Hoppe91@example.com",
+				"Braulio64@example.com",
+				"Shelia92@example.com"
 			],
 			"companyAlternativeNames": [
 				"Tremblay Inc"
@@ -2949,7 +2949,7 @@
 	{
 		"companyInformation": {
 			"companyName": "lightweight-eu-taxo-financials-dataset",
-			"headquarters": "Chaimmouth",
+			"headquarters": "Chandlermouth",
 			"headquartersPostalCode": "60249",
 			"sector": "supply-chains",
 			"identifiers": {
@@ -3419,7 +3419,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForIncompleteReferencedReport",
-			"headquarters": "South Zulaside",
+			"headquarters": "South Zechariahside",
 			"headquartersPostalCode": "42915-0573",
 			"sector": "technologies",
 			"identifiers": {
@@ -3438,8 +3438,8 @@
 			},
 			"countryCode": "MW",
 			"companyContactDetails": [
-				"Grayson.Schmidt@example.com",
-				"Tiffany.Legros72@example.com"
+				"Gerard.Schmidt@example.com",
+				"Tonya.Legros72@example.com"
 			],
 			"companyAlternativeNames": [
 				"Boyle - Ondricka",
@@ -6346,7 +6346,7 @@
 	{
 		"companyInformation": {
 			"companyName": "minimalistic-all-field-types-dataset-for-blanket-test",
-			"headquarters": "West Esther",
+			"headquarters": "West Elyssa",
 			"headquartersPostalCode": "51329-0076",
 			"sector": "communities",
 			"identifiers": {
@@ -6365,7 +6365,7 @@
 			},
 			"countryCode": "AD",
 			"companyContactDetails": [
-				"Estefania.Littel86@example.com"
+				"Garnett.Littel86@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,

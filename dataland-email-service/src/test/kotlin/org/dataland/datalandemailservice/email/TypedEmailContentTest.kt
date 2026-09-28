@@ -48,7 +48,7 @@ class TypedEmailContentTest {
     @Test
     fun `test that late init vars specified in interfaces are correctly injected`() {
         val emailSubscriptionTracker = mock<EmailSubscriptionTracker>()
-        val content = CompanyOwnershipClaimApprovedEmailContent("company-id", "Company", 1)
+        val content = CompanyOwnershipClaimApprovedEmailContent("company-id", "Company")
         val subscriptionUuid = UUID.randomUUID()
         val receiver =
             mapOf(

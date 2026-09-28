@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceabilityRequest
@@ -9,6 +11,7 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -21,26 +24,29 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.clearInvocations
 import org.mockito.Mockito.verifyNoInteractions
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
+import java.util.UUID
 
 /**
  * Tests for NonSourceabilityInformationManager.
  * Covers all four (bypassQa, currentlyActive) combinations, constraint checks,
  * reversal logic, and event emission behaviour.
  */
-@SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.rabbitmq.listener.simple.auto-startup=false"],
+)
 @DefaultMocks
 @MockitoBean(types = [CloudEventMessageHandler::class])
 class NonSourceabilityInformationManagerTest(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val manager: NonSourceabilityInformationManager,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-) {
+) : BaseIntegrationTest() {
     private lateinit var companyId: String
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
@@ -117,7 +123,10 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `new request allowed after Rejected entry`() {
         manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
-        val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
+        val entity =
+            nonSourceabilityDataRepository
+                .findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, QaStatus.Pending)
+                .first()
         entity.qaStatus = QaStatus.Rejected
         nonSourceabilityDataRepository.save(entity)
 
@@ -141,7 +150,7 @@ class NonSourceabilityInformationManagerTest(
     fun `NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source")
     }
 
@@ -172,7 +181,7 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         }
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
         assertEquals(QaStatus.Pending, entries.single().qaStatus)
     }
@@ -186,7 +195,7 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         }
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
         assertTrue(entries.single().currentlyActive, "Active entry must remain active after rejected duplicate")
     }
@@ -212,7 +221,7 @@ class NonSourceabilityInformationManagerTest(
         assertFalse(response.currentlyActive)
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertFalse(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
-        val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(2, allEntries.size)
         assertTrue(allEntries.all { !it.currentlyActive })
         assertEquals(2, allEntries.count { it.bypassQa && !it.currentlyActive && it.qaStatus == QaStatus.Accepted })
@@ -243,5 +252,46 @@ class NonSourceabilityInformationManagerTest(
         clearInvocations(cloudEventMessageHandler)
         manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = false)
         verifyNoInteractions(cloudEventMessageHandler)
+    }
+
+    // --- searchActiveNonSourceableDimensions vs. real data ---
+
+    @Test
+    fun `searchActiveNonSourceableDimensions returns a triple with only an active non-sourceability entry and no real data`() {
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
+
+        val result = manager.searchActiveNonSourceableDimensions(DataDimensionQuery(companyIds = listOf(companyId)))
+
+        assertEquals(1, result.size)
+        val dimension = result.first()
+        assertEquals(companyId, dimension.companyId)
+        assertEquals(dataType.toString(), dimension.dataType)
+        assertEquals(reportingPeriod, dimension.reportingPeriod)
+    }
+
+    @Test
+    fun `searchActiveNonSourceableDimensions excludes a triple that has real active data despite a stale active non-sourceability entry`() {
+        AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+        manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
+
+        // Simulate a stale non-sourceability entry by persisting real, currently-active data for the same triple
+        // without going through the code path that would normally deactivate the non-sourceability entry.
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                dataId = UUID.randomUUID().toString(),
+                company = companyQueryManager.getCompanyById(companyId),
+                dataType = dataType.toString(),
+                uploaderUserId = "uploaderId",
+                uploadTime = 0L,
+                reportingPeriod = reportingPeriod,
+                currentlyActive = true,
+                qaStatus = QaStatus.Accepted,
+            ),
+        )
+
+        val result = manager.searchActiveNonSourceableDimensions(DataDimensionQuery(companyIds = listOf(companyId)))
+
+        assertTrue(result.isEmpty(), "A triple with real active data must not be reported as non-sourceable")
     }
 }
