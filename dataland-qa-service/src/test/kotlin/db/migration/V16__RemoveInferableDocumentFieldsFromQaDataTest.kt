@@ -1,13 +1,13 @@
 package db.migration
 
-import com.fasterxml.jackson.databind.JsonNode
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
@@ -37,47 +37,63 @@ class V16__RemoveInferableDocumentFieldsFromQaDataTest {
         whenever(mockConnection.metaData).thenReturn(mockMetaData)
     }
 
-    private fun testMigrationOfSingleJson(
-        locationOfOriginalJson: String,
-        locationOfExpectedJson: String,
-        migratingFunction: (JsonNode) -> JsonNode,
+    private fun mockSingleRow(
+        table: String,
+        idColumn: String,
+        valueColumn: String,
+        id: String,
+        value: String?,
     ) {
-        val originalJson = defaultObjectMapper.readTree(javaClass.getResource("/db/migration/$locationOfOriginalJson")!!.readText())
-        val expectedJson = javaClass.getResource("/db/migration/$locationOfExpectedJson")!!.readText()
-
-        val migratedJson = migratingFunction(originalJson)
-        JSONAssert.assertEquals(expectedJson, defaultObjectMapper.writeValueAsString(migratedJson), true)
-    }
-
-    private fun mockSingleRowInDataPointQaReports(correctedData: String) {
         val existingTable = mock<ResultSet>()
         whenever(existingTable.next()).thenReturn(true)
         tables.forEach { whenever(mockMetaData.getTables(null, null, it, null)).thenReturn(mockResultSet) }
-        whenever(mockMetaData.getTables(null, null, "data_point_qa_reports", null)).thenReturn(existingTable)
+        whenever(mockMetaData.getTables(null, null, table, null)).thenReturn(existingTable)
 
         val rows = mock<ResultSet>()
         whenever(mockConnection.prepareStatement(any<String>())).thenReturn(mockPreparedStatement)
         whenever(mockPreparedStatement.executeQuery()).thenReturn(rows)
         whenever(rows.next()).thenReturn(true, false)
-        whenever(rows.getString("qa_report_id")).thenReturn("report-id")
-        whenever(rows.getString("corrected_data")).thenReturn(correctedData)
+        whenever(rows.getString(idColumn)).thenReturn(id)
+        whenever(rows.getString(valueColumn)).thenReturn(value)
+    }
+
+    private fun assertMigratedJsonMatchesFixture(
+        table: String,
+        idColumn: String,
+        valueColumn: String,
+        originalResource: String,
+        expectedResource: String,
+    ) {
+        val originalJson = javaClass.getResource("/db/migration/$originalResource")!!.readText()
+        val expectedJson = javaClass.getResource("/db/migration/$expectedResource")!!.readText()
+        mockSingleRow(table, idColumn, valueColumn, "report-id", originalJson)
+
+        migration.migrate(mockContext)
+
+        val capturedValue = argumentCaptor<String>()
+        verify(mockPreparedStatement).setString(eq(1), capturedValue.capture())
+        JSONAssert.assertEquals(expectedJson, capturedValue.firstValue, true)
     }
 
     @Test
     fun `check migration for data point`() {
-        testMigrationOfSingleJson(
-            "V16/originalDataPoint.json",
-            "V16/expectedDataPoint.json",
-            migration::cleanDataPoint,
+        assertMigratedJsonMatchesFixture(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            originalResource = "V16/originalDataPoint.json",
+            expectedResource = "V16/expectedDataPoint.json",
         )
     }
 
     @Test
     fun `check migration for legacy QA report`() {
-        testMigrationOfSingleJson(
-            "V16/originalQaReport.json",
-            "V16/expectedQaReport.json",
-            migration::cleanQaReport,
+        assertMigratedJsonMatchesFixture(
+            table = "qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "qa_report",
+            originalResource = "V16/originalQaReport.json",
+            expectedResource = "V16/expectedQaReport.json",
         )
     }
 
@@ -93,7 +109,13 @@ class V16__RemoveInferableDocumentFieldsFromQaDataTest {
 
     @Test
     fun `check that migration updates rows containing inferable fields`() {
-        mockSingleRowInDataPointQaReports("""{"value":1,"dataSource":{"page":"8","fileName":"Annual Report"}}""")
+        mockSingleRow(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            id = "report-id",
+            value = """{"value":1,"dataSource":{"page":"8","fileName":"Annual Report"}}""",
+        )
 
         migration.migrate(mockContext)
 
@@ -104,7 +126,13 @@ class V16__RemoveInferableDocumentFieldsFromQaDataTest {
 
     @Test
     fun `check that migration throws on invalid JSON`() {
-        mockSingleRowInDataPointQaReports("{fileName:")
+        mockSingleRow(
+            table = "data_point_qa_reports",
+            idColumn = "qa_report_id",
+            valueColumn = "corrected_data",
+            id = "report-id",
+            value = "{fileName:",
+        )
 
         val exception = assertThrows<IllegalStateException> { migration.migrate(mockContext) }
 
