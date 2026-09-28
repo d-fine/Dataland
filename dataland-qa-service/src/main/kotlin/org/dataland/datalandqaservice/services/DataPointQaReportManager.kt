@@ -72,8 +72,10 @@ class DataPointQaReportManager(
                 if (ex.statusCode == HttpStatus.BAD_REQUEST.value()) {
                     InvalidInputApiException(
                         "Provided 'correctedData' does not conform to data point specification",
-                        "The provided data point verdict does not conform to the data point specification for " +
-                            "'${dataPointMetaInfo.dataPointType}'",
+                        ex.validationMessageOr(
+                            "The provided data point verdict does not conform to the data point specification for " +
+                                "'${dataPointMetaInfo.dataPointType}'",
+                        ),
                         ex,
                     )
                 } else {

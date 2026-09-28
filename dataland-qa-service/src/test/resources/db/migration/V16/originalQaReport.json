@@ -1,0 +1,17 @@
+{
+  "energy": {
+    "totalEnergyConsumption": {
+      "verdict": "QaRejected",
+      "comment": "Wrong fileName",
+      "correctedData": {
+        "value": 39,
+        "dataSource": {
+          "page": "8",
+          "fileReference": "fileReference",
+          "fileName": "Annual Report",
+          "publicationDate": "2026-07-21"
+        }
+      }
+    }
+  }
+}

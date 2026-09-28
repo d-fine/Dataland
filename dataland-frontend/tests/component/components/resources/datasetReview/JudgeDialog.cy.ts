@@ -1116,7 +1116,7 @@ describe('JudgeDialog component tests', () => {
           value: 'previously-accepted-value',
           quality: 'Estimated',
           comment: 'previously-accepted-comment',
-          dataSource: { fileName: null, fileReference: 'ref-789', page: '12' },
+          dataSource: { fileReference: 'ref-789', page: '12' },
         };
 
         const judgementWithPreviousCustom: DatasetJudgementResponse = {
@@ -1134,6 +1134,7 @@ describe('JudgeDialog component tests', () => {
         const docsWithReferenceOnly: DocumentMetaInfoResponse[] = [
           {
             documentId: 'ref-789',
+            documentName: 'Restored Annual Report',
             publicationDate: '2023-01-01',
             uploaderId: 'u1',
           },
@@ -1141,7 +1142,14 @@ describe('JudgeDialog component tests', () => {
 
         mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustom, companyDocuments: docsWithReferenceOnly });
         cy.wait('@getCompanyDocuments');
-        cy.get('[data-test="custom-document-field"]').should('contain', 'ref-789');
+        cy.get('[data-test="custom-document-field"]').should('contain', 'Restored Annual Report');
+        cy.get('[data-test="accept-custom-button"]').click();
+        cy.wait('@patchJudgementDetail').then(({ request }) => {
+          expect(JSON.parse(request.body.customDataPoint).dataSource).to.deep.equal({
+            fileReference: 'ref-789',
+            page: '12',
+          });
+        });
       });
     });
   });

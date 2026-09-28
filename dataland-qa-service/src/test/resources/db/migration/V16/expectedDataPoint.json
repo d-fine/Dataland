@@ -1,0 +1,15 @@
+{
+  "value": 39,
+  "comment": "The fileName is mentioned in this comment",
+  "dataSource": {
+    "page": "8",
+    "fileReference": "fileReference"
+  },
+  "details": [
+    {
+      "dataSource": {
+        "tagName": "tag"
+      }
+    }
+  ]
+}
