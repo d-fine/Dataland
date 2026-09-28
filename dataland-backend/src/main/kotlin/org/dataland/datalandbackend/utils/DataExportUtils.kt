@@ -18,6 +18,7 @@ class DataExportUtils private constructor() {
                 "companyName" to "COMPANY_NAME",
                 "companyLei" to "COMPANY_LEI",
                 "reportingPeriod" to "REPORTING_PERIOD",
+                "availability" to "AVAILABILITY",
             )
         const val DATA = "data"
         const val VALUE = "value"
