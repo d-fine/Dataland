@@ -165,4 +165,16 @@ class V16__RemoveInferableDocumentFieldsFromQaData : BaseJavaMigration() {
         dataSource.remove(field)
         return 1
     }
+
+    /** Removes fileName and publicationDate from all dataSource objects within a data point. */
+    internal fun cleanDataPoint(dataPoint: JsonNode): JsonNode {
+        removeInferableDocumentFields(dataPoint)
+        return dataPoint
+    }
+
+    /** Removes inferable document fields from all correctedData values of a legacy QA report. */
+    internal fun cleanQaReport(qaReport: JsonNode): JsonNode {
+        removeInferableDocumentFields(qaReport)
+        return qaReport
+    }
 }
