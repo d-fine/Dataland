@@ -3,10 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.DerivedRightsUtils
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,10 +19,8 @@ import java.util.UUID
 @Suppress("TooManyFunctions")
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val companyRoleAssignmentRepository: CompanyRoleAssignmentRepository,
     @Autowired private val companyRolesManager: CompanyRolesManager,
-    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
     @Autowired private val inheritedRolesManager: InheritedRolesManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -66,66 +61,6 @@ class SecurityUtilsService(
             ).any {
                 it.companyRole in listOf(CompanyRole.CompanyOwner, CompanyRole.Admin)
             }
-    }
-
-    /**
-     * Returns true if and only if the currently authenticated user is asking for his/her own request
-     */
-    @Transactional(readOnly = true)
-    fun isUserAskingForOwnRequest(requestId: UUID): Boolean {
-        val userIdOfRequest = dataRequestRepository.findById(requestId.toString()).get().userId
-        val userIdRequester = SecurityContextHolder.getContext().authentication.name
-        return (userIdOfRequest == userIdRequester)
-    }
-
-    /**
-     * Returns true if the request status is subject to change and conditions are met.
-     * This is the case when the request is to be changed from answered to either closed or open
-     * or if the status is changed to withdrawn.
-     */
-    @Transactional(readOnly = true)
-    fun isRequestStatusChangeableByUser(
-        requestId: UUID,
-        requestStatusToPatch: RequestStatus?,
-    ): Boolean {
-        if (requestStatusToPatch == null) return true
-        val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-
-        return when (currentRequestStatus) {
-            RequestStatus.Answered -> {
-                requestStatusToPatch in listOf(RequestStatus.Resolved, RequestStatus.Open, RequestStatus.Withdrawn)
-            }
-            RequestStatus.Open -> {
-                requestStatusToPatch == RequestStatus.Withdrawn
-            }
-            RequestStatus.NonSourceable -> {
-                requestStatusToPatch == RequestStatus.Open
-            }
-            else -> {
-                false
-            }
-        }
-    }
-
-    /**
-     * Returns true if the request message history is subject to change and conditions are met.
-     * This is the case when no contacts are provided or
-     * the request status is open or answered and patched to open as well
-     */
-    @Transactional(readOnly = true)
-    fun isRequestMessageHistoryChangeableByUser(
-        requestId: UUID,
-        requestStatusToPatch: RequestStatus?,
-        contacts: Set<String>?,
-        message: String?,
-    ): Boolean {
-        if (contacts == null) return true
-        val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        return message != null &&
-            (
-                currentRequestStatus == RequestStatus.Open ||
-                    (currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open)
-            )
     }
 
     /**
@@ -191,15 +126,6 @@ class SecurityUtilsService(
 
     /**
      * Returns true if the requesting user is company owner
-     * @param requestId the requestId for which a company ownership check should be done
-     */
-    fun isUserCompanyOwnerForRequestId(requestId: String): Boolean {
-        val requestEntity = dataRequestQueryManager.getDataRequestById(requestId)
-        return isUserCompanyOwnerForCompanyId(requestEntity.datalandCompanyId)
-    }
-
-    /**
-     * Returns true if the requesting user is company owner
      * @param companyId the company Id for which ownership should be tested
      */
     fun isUserCompanyOwnerForCompanyId(companyId: String?): Boolean =
@@ -218,51 +144,4 @@ class SecurityUtilsService(
                 false
             }
         }
-
-    /**
-     * Returns true if all passed parameters are null, otherwise false.
-     *
-     * @param parameters A vararg list of function parameters
-     * @return whether any of the provided parameters is not null
-     */
-    fun areAllParametersUnset(vararg parameters: Any?): Boolean =
-        parameters.all {
-            when (it) {
-                is String -> it.isBlank()
-                is Collection<*> -> it.isEmpty()
-                else -> it == null
-            }
-        }
-
-    /**
-     * Returns true if the user is allowed to patch given the passed request body
-     * @param dataRequestID
-     * @param dataRequestPatch
-     */
-    @Transactional(readOnly = true)
-    fun canUserPatchDataRequest(
-        dataRequestID: UUID,
-        dataRequestPatch: DataRequestPatch,
-    ): Boolean {
-        val isOwnRequest = isUserAskingForOwnRequest(dataRequestID)
-        val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
-        val notPatchingStatusPriorityComment =
-            areAllParametersUnset(
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-            )
-        val messageHistoryChangeable =
-            isRequestMessageHistoryChangeableByUser(
-                dataRequestID,
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
-            )
-
-        val ownRequestPatchAllowed = (
-            isOwnRequest && requestStatusChangeable && notPatchingStatusPriorityComment && messageHistoryChangeable
-        )
-
-        return ownRequestPatchAllowed
-    }
 }

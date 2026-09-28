@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Ebert - Pfannerstill",
-			"headquarters": "Reneechester",
+			"headquarters": "Preciouschester",
 			"headquartersPostalCode": "27322",
 			"sector": "channels",
 			"identifiers": {
@@ -24,8 +24,8 @@
 			},
 			"countryCode": "AQ",
 			"companyContactDetails": [
-				"Carroll_Tremblay90@example.com",
-				"Ruben70@example.com"
+				"Carlton_Tremblay90@example.com",
+				"Rolando70@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bauch, Spinka-Larson and Frami",
@@ -103,7 +103,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 47695.96,
 						"dataSource": {
-							"page": "883-1220",
+							"page": "883, 1230-1240",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -145,7 +145,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "610",
+							"page": "610-1122",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -170,7 +170,7 @@
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "315",
+							"page": "315-317",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -194,7 +194,7 @@
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "876",
+							"page": "876-942",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -232,7 +232,7 @@
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": 64136.88,
 						"dataSource": {
-							"page": "1008-1170",
+							"page": "1008, 1180-1190",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -256,7 +256,7 @@
 					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
 						"value": 88229.52,
 						"dataSource": {
-							"page": "845-992",
+							"page": "845, 1002-1012",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -280,7 +280,7 @@
 					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
 						"value": 28942.71,
 						"dataSource": {
-							"page": "1032",
+							"page": "1032-1251",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -293,7 +293,7 @@
 					"financedScope1AndScope2Emissions": {
 						"value": null,
 						"dataSource": {
-							"page": "716",
+							"page": "716-921",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -305,7 +305,7 @@
 					"financedScope3Emissions": {
 						"value": null,
 						"dataSource": {
-							"page": "565",
+							"page": "565-941",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -349,7 +349,7 @@
 					"relativeNonRenewableEnergyProductionInPercent": {
 						"value": null,
 						"dataSource": {
-							"page": "375-835",
+							"page": "375, 845-855",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -373,7 +373,7 @@
 					"relativeNonRenewableEnergyConsumptionInPercent": {
 						"value": 72882.8,
 						"dataSource": {
-							"page": "792-1257",
+							"page": "792, 1267-1277",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -423,7 +423,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 58556.44,
 								"dataSource": {
-									"page": "929-1118",
+									"page": "929, 1128-1138",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "metrics",
@@ -437,7 +437,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": null,
 								"dataSource": {
-									"page": "1175-1261",
+									"page": "1175, 1271-1281",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "synergies",
@@ -449,7 +449,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 17114.61,
 								"dataSource": {
-									"page": "228-589",
+									"page": "228, 599-609",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "solutions",
@@ -501,7 +501,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 67347.5,
 								"dataSource": {
-									"page": "875-1198",
+									"page": "875, 1208-1218",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "metrics",
@@ -541,7 +541,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 16298.47,
 								"dataSource": {
-									"page": "968",
+									"page": "968-1300",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "mindshare",
@@ -553,7 +553,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 80119.97,
 								"dataSource": {
-									"page": "653-1006",
+									"page": "653, 1016-1026",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "partnerships",
@@ -580,7 +580,7 @@
 					"nonRenewableEnergyConsumptionCrudeOilInGWh": {
 						"value": 3649.12,
 						"dataSource": {
-							"page": "284-1256",
+							"page": "284, 1266-1276",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -644,7 +644,7 @@
 					"rareOrEndangeredEcosystemsExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "752",
+							"page": "752-782",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -656,7 +656,7 @@
 					"highlyBiodiverseGrasslandExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "617-701",
+							"page": "617, 711-721",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -669,7 +669,7 @@
 					"landDegradationDesertificationSoilSealingExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1146-1162",
+							"page": "1146, 1172-1182",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -693,7 +693,7 @@
 					"sustainableOceansAndSeasPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "731-1278",
+							"page": "731, 1288-1298",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -732,7 +732,7 @@
 					"emissionsToWaterInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "896-1029",
+							"page": "896, 1039-1049",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -756,7 +756,7 @@
 					"waterReusedInCubicMeters": {
 						"value": 57654.71,
 						"dataSource": {
-							"page": "1157-1234",
+							"page": "1157, 1244-1254",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -769,7 +769,7 @@
 					"waterManagementPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "120-1207",
+							"page": "120, 1217-1227",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -816,7 +816,7 @@
 					"emissionsOfAirPollutantsInTonnes": {
 						"value": 63372.79,
 						"dataSource": {
-							"page": "927-971",
+							"page": "927, 981-991",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -828,7 +828,7 @@
 					"emissionsOfOzoneDepletionSubstancesInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "393-1282",
+							"page": "393, 1292-1302",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -840,7 +840,7 @@
 					"carbonReductionInitiatives": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "85-296",
+							"page": "85, 306-316",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -862,7 +862,7 @@
 					"iloCoreLabourStandards": {
 						"value": "No",
 						"dataSource": {
-							"page": "66-841",
+							"page": "66, 851-861",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -874,7 +874,7 @@
 					"environmentalPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "284-953",
+							"page": "284, 963-973",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -886,7 +886,7 @@
 					"corruptionLegalProceedings": {
 						"value": "No",
 						"dataSource": {
-							"page": "883-1155",
+							"page": "883, 1165-1175",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -898,7 +898,7 @@
 					"transparencyDisclosurePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "91",
+							"page": "91-1142",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -910,7 +910,7 @@
 					"humanRightsDueDiligencePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "746",
+							"page": "746-1256",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -934,7 +934,7 @@
 					"policyAgainstForcedLabour": {
 						"value": null,
 						"dataSource": {
-							"page": "834-1089",
+							"page": "834, 1099-1109",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -946,7 +946,7 @@
 					"policyAgainstDiscriminationInTheWorkplace": {
 						"value": null,
 						"dataSource": {
-							"page": "239-708",
+							"page": "239, 718-728",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -994,7 +994,7 @@
 					"technologiesExpertiseTransferPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "121-1185",
+							"page": "121, 1195-1205",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1087,7 +1087,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": 5093,
 						"dataSource": {
-							"page": "907-1197",
+							"page": "907, 1207-1217",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -1105,7 +1105,7 @@
 					"boardGenderDiversitySupervisoryBoardInPercent": {
 						"value": 13.97,
 						"dataSource": {
-							"page": "927",
+							"page": "927-933",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -1123,7 +1123,7 @@
 					"controversialWeaponsExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "1141",
+							"page": "1141-1205",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -1136,7 +1136,7 @@
 					"rateOfAccidents": {
 						"value": 42508.39,
 						"dataSource": {
-							"page": "485-970",
+							"page": "485, 980-990",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -1206,7 +1206,7 @@
 					"traffickingInHumanBeingsPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "287",
+							"page": "287-711",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -1218,7 +1218,7 @@
 					"reportedChildLabourIncidents": {
 						"value": null,
 						"dataSource": {
-							"page": "82",
+							"page": "82-709",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -1256,7 +1256,7 @@
 					"casesOfInsufficientActionAgainstBriberyAndCorruption": {
 						"value": 7491,
 						"dataSource": {
-							"page": "329-674",
+							"page": "329, 684-694",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -1286,7 +1286,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Quigley - Kozey",
-			"headquarters": "East Allan",
+			"headquarters": "East Alford",
 			"headquartersPostalCode": null,
 			"sector": "initiatives",
 			"identifiers": {
@@ -1336,7 +1336,7 @@
 					"fiscalYearEnd": {
 						"value": null,
 						"dataSource": {
-							"page": "234-672",
+							"page": "234, 682-692",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -1366,7 +1366,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "32-1277",
+							"page": "32, 1287-1297",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -1378,7 +1378,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 99133.6,
 						"dataSource": {
-							"page": "919-1287",
+							"page": "919, 1297-1307",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -1403,7 +1403,7 @@
 					"scope1And2GhgEmissionsMarketBasedInTonnes": {
 						"value": 75739.71,
 						"dataSource": {
-							"page": "586-1181",
+							"page": "586, 1191-1201",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -1427,7 +1427,7 @@
 					"scope3UpstreamGhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "741",
+							"page": "741-1234",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -1463,7 +1463,7 @@
 					"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "431-664",
+							"page": "431, 674-684",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -1476,7 +1476,7 @@
 					"scope4GhgEmissionsInTonnes": {
 						"value": 7258.28,
 						"dataSource": {
-							"page": "764",
+							"page": "764-1037",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -1512,7 +1512,7 @@
 					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 59832.31,
 						"dataSource": {
-							"page": "1046-1090",
+							"page": "1046, 1100-1110",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -1525,7 +1525,7 @@
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "1116",
+							"page": "1116-1274",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -1537,7 +1537,7 @@
 					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
 						"value": 51878.21,
 						"dataSource": {
-							"page": "954",
+							"page": "954-1050",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -1561,7 +1561,7 @@
 					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "348",
+							"page": "348-1226",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -1632,7 +1632,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 44965.74,
 								"dataSource": {
-									"page": "295-1145",
+									"page": "295, 1155-1165",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "technologies",
@@ -1658,7 +1658,7 @@
 					"totalHighImpactClimateSectorEnergyConsumptionInGWh": {
 						"value": 46059.49,
 						"dataSource": {
-							"page": "1130",
+							"page": "1130-1182",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -1670,7 +1670,7 @@
 					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
 						"value": 86704.59,
 						"dataSource": {
-							"page": "205",
+							"page": "205-305",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -1712,7 +1712,7 @@
 					"nonRenewableEnergyConsumptionCoalInGWh": {
 						"value": 98913.14,
 						"dataSource": {
-							"page": "1069-1122",
+							"page": "1069, 1132-1142",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1724,7 +1724,7 @@
 					"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
 						"value": 34891.39,
 						"dataSource": {
-							"page": "244-928",
+							"page": "244, 938-948",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -1739,7 +1739,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "1109-1180",
+							"page": "1109, 1190-1200",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -1752,7 +1752,7 @@
 					"rareOrEndangeredEcosystemsExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "1013",
+							"page": "1013-1127",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -1796,7 +1796,7 @@
 					"threatenedSpeciesExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "474",
+							"page": "474-995",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1808,7 +1808,7 @@
 					"biodiversityProtectionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "550-1141",
+							"page": "550, 1151-1161",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -1824,7 +1824,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": "68-579",
+							"page": "68, 589-599",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -1848,7 +1848,7 @@
 					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
 						"value": 67505.14,
 						"dataSource": {
-							"page": "936",
+							"page": "936-1245",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -1872,7 +1872,7 @@
 					"highWaterStressAreaExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "413-970",
+							"page": "413, 980-990",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -1886,7 +1886,7 @@
 					"hazardousAndRadioactiveWasteInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "399-690",
+							"page": "399, 700-710",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -1901,7 +1901,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "696-915",
+							"page": "696, 925-935",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -1914,7 +1914,7 @@
 					"emissionsOfOzoneDepletionSubstancesInTonnes": {
 						"value": 59285.54,
 						"dataSource": {
-							"page": "507",
+							"page": "507-1071",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -1948,7 +1948,7 @@
 					"iloCoreLabourStandards": {
 						"value": null,
 						"dataSource": {
-							"page": "852-860",
+							"page": "852, 870-880",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -1960,7 +1960,7 @@
 					"environmentalPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "620-732",
+							"page": "620, 742-752",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -1972,7 +1972,7 @@
 					"corruptionLegalProceedings": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1150",
+							"page": "1150-1224",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -1984,7 +1984,7 @@
 					"transparencyDisclosurePolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "1089",
+							"page": "1089-1262",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -1998,7 +1998,7 @@
 					"policyAgainstForcedLabour": {
 						"value": "No",
 						"dataSource": {
-							"page": "1090-1128",
+							"page": "1090, 1138-1148",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -2030,7 +2030,7 @@
 					"technologiesExpertiseTransferPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "56-574",
+							"page": "56, 584-594",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -2042,7 +2042,7 @@
 					"fairCompetitionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "1073-1256",
+							"page": "1073, 1266-1276",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -2055,7 +2055,7 @@
 					"unGlobalCompactPrinciplesCompliancePolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "296",
+							"page": "296-913",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -2067,7 +2067,7 @@
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
 						"value": "No",
 						"dataSource": {
-							"page": "1177",
+							"page": "1177-1255",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -2079,7 +2079,7 @@
 					"averageGrossHourlyEarningsMaleEmployees": {
 						"value": 3319517551.64,
 						"dataSource": {
-							"page": "786-866",
+							"page": "786, 876-886",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -2100,7 +2100,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "615-1036",
+							"page": "615, 1046-1056",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -2113,7 +2113,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "650",
+							"page": "650-832",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -2125,7 +2125,7 @@
 					"maleBoardMembersBoardOfDirectors": {
 						"value": null,
 						"dataSource": {
-							"page": "480",
+							"page": "480-1168",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -2161,7 +2161,7 @@
 					"controversialWeaponsExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "243-988",
+							"page": "243, 998-1008",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -2204,7 +2204,7 @@
 					"grievanceHandlingMechanism": {
 						"value": "No",
 						"dataSource": {
-							"page": "671",
+							"page": "671-1067",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -2216,7 +2216,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "269-1080",
+							"page": "269, 1090-1100",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -2258,7 +2258,7 @@
 					"humanRightsDueDiligence": {
 						"value": "No",
 						"dataSource": {
-							"page": "1069-1192",
+							"page": "1069, 1202-1212",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -2282,7 +2282,7 @@
 					"reportedChildLabourIncidents": {
 						"value": "No",
 						"dataSource": {
-							"page": "970",
+							"page": "970-1213",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -2306,7 +2306,7 @@
 					"numberOfReportedIncidentsOfHumanRightsViolations": {
 						"value": null,
 						"dataSource": {
-							"page": "305-1073",
+							"page": "305, 1083-1093",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -2320,7 +2320,7 @@
 					"casesOfInsufficientActionAgainstBriberyAndCorruption": {
 						"value": 7535,
 						"dataSource": {
-							"page": "182-983",
+							"page": "182, 993-1003",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -2332,7 +2332,7 @@
 					"reportedConvictionsOfBriberyAndCorruption": {
 						"value": 9762,
 						"dataSource": {
-							"page": "337",
+							"page": "337-995",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -2344,7 +2344,7 @@
 					"totalAmountOfReportedFinesOfBriberyAndCorruption": {
 						"value": null,
 						"dataSource": {
-							"page": "922",
+							"page": "922-1167",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -2362,7 +2362,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Daniel - Hickle",
-			"headquarters": "Lake Favianside",
+			"headquarters": "Lake Flavieside",
 			"headquartersPostalCode": "77635",
 			"sector": "large language models",
 			"identifiers": {
@@ -2386,7 +2386,7 @@
 			},
 			"countryCode": "TJ",
 			"companyContactDetails": [
-				"Yolanda.Kilback@example.com"
+				"Zena.Kilback@example.com"
 			],
 			"companyAlternativeNames": [
 				"Kilback - Friesen",
@@ -2405,7 +2405,7 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "697-797",
+							"page": "697, 807-817",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -2417,7 +2417,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-10-30",
 						"dataSource": {
-							"page": "805",
+							"page": "805-959",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -2459,7 +2459,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 63242.98,
 						"dataSource": {
-							"page": "616",
+							"page": "616-1294",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -2485,7 +2485,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 92300.47,
 						"dataSource": {
-							"page": "1174",
+							"page": "1174-1175",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -2517,7 +2517,7 @@
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "705",
+							"page": "705-1076",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -2547,7 +2547,7 @@
 					"totalRevenueInEUR": {
 						"value": 81817.63,
 						"dataSource": {
-							"page": "621-867",
+							"page": "621, 877-887",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -2573,7 +2573,7 @@
 					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
 						"value": 27441.02,
 						"dataSource": {
-							"page": "64-508",
+							"page": "64, 518-528",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -2609,7 +2609,7 @@
 					"financedScope1AndScope2Emissions": {
 						"value": 60953.7,
 						"dataSource": {
-							"page": "23-1062",
+							"page": "23, 1072-1082",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -2631,7 +2631,7 @@
 					"nonRenewableEnergyProductionInGWh": {
 						"value": 56973.46,
 						"dataSource": {
-							"page": "368-519",
+							"page": "368, 529-539",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -2643,7 +2643,7 @@
 					"relativeNonRenewableEnergyProductionInPercent": {
 						"value": 14608.87,
 						"dataSource": {
-							"page": "474",
+							"page": "474-590",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -2713,7 +2713,7 @@
 					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
 						"value": 10233.11,
 						"dataSource": {
-							"page": "655-1155",
+							"page": "655, 1165-1175",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -2740,7 +2740,7 @@
 					"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
 						"value": 9794.08,
 						"dataSource": {
-							"page": "892",
+							"page": "892-1293",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -2766,7 +2766,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "803-1102",
+							"page": "803, 1112-1122",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -2792,7 +2792,7 @@
 					"manufactureOfAgrochemicalPesticidesProducts": {
 						"value": null,
 						"dataSource": {
-							"page": "10",
+							"page": "10-1015",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -2811,7 +2811,7 @@
 					"sustainableOceansAndSeasPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "671-807",
+							"page": "671, 817-827",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -2823,7 +2823,7 @@
 					"threatenedSpeciesExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1149-1159",
+							"page": "1149, 1169-1179",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -2980,7 +2980,7 @@
 					"environmentalPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "618-710",
+							"page": "618, 720-730",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -3102,7 +3102,7 @@
 					"unGlobalCompactPrinciplesCompliancePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "307-323",
+							"page": "307, 333-343",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -3114,7 +3114,7 @@
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
 						"value": "No",
 						"dataSource": {
-							"page": "69-1158",
+							"page": "69, 1168-1178",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -3152,7 +3152,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "553-1218",
+							"page": "553, 1228-1238",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -3164,7 +3164,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 9472,
 						"dataSource": {
-							"page": "351",
+							"page": "351-546",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -3176,7 +3176,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": 77,
 						"dataSource": {
-							"page": "45-509",
+							"page": "45, 519-529",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -3188,7 +3188,7 @@
 					"maleBoardMembersBoardOfDirectors": {
 						"value": null,
 						"dataSource": {
-							"page": "710",
+							"page": "710-1069",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -3200,7 +3200,7 @@
 					"boardGenderDiversitySupervisoryBoardInPercent": {
 						"value": 93.51,
 						"dataSource": {
-							"page": "634",
+							"page": "634-800",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -3214,7 +3214,7 @@
 					"workplaceAccidentPreventionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "880-1095",
+							"page": "880, 1105-1115",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -3226,7 +3226,7 @@
 					"rateOfAccidents": {
 						"value": 32115.21,
 						"dataSource": {
-							"page": "803-960",
+							"page": "803, 970-980",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -3276,7 +3276,7 @@
 					"sanctionedIncidentsOfDiscrimination": {
 						"value": 5216,
 						"dataSource": {
-							"page": "997-1010",
+							"page": "997, 1020-1030",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -3336,7 +3336,7 @@
 					"reportedForcedOrCompulsoryLabourIncidents": {
 						"value": "No",
 						"dataSource": {
-							"page": "80",
+							"page": "80-413",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -3404,7 +3404,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Berge - Dicki",
-			"headquarters": "South Terrell",
+			"headquarters": "South Timmothy",
 			"headquartersPostalCode": "94106",
 			"sector": null,
 			"identifiers": {
@@ -3446,7 +3446,7 @@
 					"fiscalYearDeviation": {
 						"value": null,
 						"dataSource": {
-							"page": "172-580",
+							"page": "172, 590-600",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -3458,7 +3458,7 @@
 					"fiscalYearEnd": {
 						"value": "2025-01-05",
 						"dataSource": {
-							"page": "633-809",
+							"page": "633, 819-829",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -3481,7 +3481,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "450-690",
+							"page": "450, 700-710",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -3506,7 +3506,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 96536.8,
 						"dataSource": {
-							"page": "487-494",
+							"page": "487, 504-514",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -3519,7 +3519,7 @@
 					"scope1And2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "203-1019",
+							"page": "203, 1029-1039",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -3531,7 +3531,7 @@
 					"scope1And2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "140-813",
+							"page": "140, 823-833",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -3543,7 +3543,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "828-1285",
+							"page": "828, 1295-1305",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -3555,7 +3555,7 @@
 					"scope3UpstreamGhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "858-996",
+							"page": "858, 1006-1016",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -3567,7 +3567,7 @@
 					"scope3DownstreamGhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "238",
+							"page": "238-546",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -3606,7 +3606,7 @@
 					"totalRevenueInEUR": {
 						"value": 62833.5,
 						"dataSource": {
-							"page": "415-624",
+							"page": "415, 634-644",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -3618,7 +3618,7 @@
 					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 78716.5,
 						"dataSource": {
-							"page": "601-786",
+							"page": "601, 796-806",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -3679,7 +3679,7 @@
 					"financedScope1AndScope2Emissions": {
 						"value": 47553.1,
 						"dataSource": {
-							"page": "359-1151",
+							"page": "359, 1161-1171",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -3729,7 +3729,7 @@
 					"nonRenewableEnergyProductionInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "84",
+							"page": "84-293",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -3741,7 +3741,7 @@
 					"relativeNonRenewableEnergyProductionInPercent": {
 						"value": null,
 						"dataSource": {
-							"page": "148-752",
+							"page": "148, 762-772",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -3779,7 +3779,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 93002.6,
 								"dataSource": {
-									"page": "10",
+									"page": "10-567",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "initiatives",
@@ -3832,7 +3832,7 @@
 					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
 						"value": 66837.48,
 						"dataSource": {
-							"page": "1198-1201",
+							"page": "1198, 1211-1221",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -3934,7 +3934,7 @@
 					"sustainableAgriculturePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "330-553",
+							"page": "330, 563-573",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -3970,7 +3970,7 @@
 					"biodiversityProtectionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "223",
+							"page": "223-311",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -4002,7 +4002,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": 23929.46,
 						"dataSource": {
-							"page": "604-942",
+							"page": "604, 952-962",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -4036,7 +4036,7 @@
 					"hazardousAndRadioactiveWasteInTonnes": {
 						"value": 59198.68,
 						"dataSource": {
-							"page": "931-1201",
+							"page": "931, 1211-1221",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -4051,7 +4051,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "910-960",
+							"page": "910, 970-980",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -4087,7 +4087,7 @@
 					"carbonReductionInitiatives": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "701-1095",
+							"page": "701, 1105-1115",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -4141,7 +4141,7 @@
 					"humanRightsDueDiligencePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "257",
+							"page": "257-956",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -4153,7 +4153,7 @@
 					"policyAgainstChildLabour": {
 						"value": null,
 						"dataSource": {
-							"page": "467-584",
+							"page": "467, 594-604",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -4203,7 +4203,7 @@
 					"technologiesExpertiseTransferPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "699",
+							"page": "699-1191",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -4233,7 +4233,7 @@
 					"unGlobalCompactPrinciplesCompliancePolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "270-1002",
+							"page": "270, 1012-1022",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -4277,7 +4277,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": 9725,
 						"dataSource": {
-							"page": "22-532",
+							"page": "22, 542-552",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -4289,7 +4289,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 5673,
 						"dataSource": {
-							"page": "544-1048",
+							"page": "544, 1058-1068",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -4301,7 +4301,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "738-1164",
+							"page": "738, 1174-1184",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -4356,7 +4356,7 @@
 					"rateOfAccidents": {
 						"value": 65640.09,
 						"dataSource": {
-							"page": "1103",
+							"page": "1103-1159",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -4368,7 +4368,7 @@
 					"workdaysLostInDays": {
 						"value": 17345.61,
 						"dataSource": {
-							"page": "50-1223",
+							"page": "50, 1233-1243",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -4380,7 +4380,7 @@
 					"supplierCodeOfConduct": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1198",
+							"page": "1198-1240",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "initiatives",
@@ -4404,7 +4404,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "766-1141",
+							"page": "766, 1151-1161",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -4443,7 +4443,7 @@
 					"securitiesNotCertifiedAsGreen": {
 						"value": "No",
 						"dataSource": {
-							"page": "200-755",
+							"page": "200, 765-775",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -4458,7 +4458,7 @@
 					"humanRightsDueDiligence": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1042-1208",
+							"page": "1042, 1218-1228",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -4470,7 +4470,7 @@
 					"traffickingInHumanBeingsPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "583-776",
+							"page": "583, 786-796",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -4520,7 +4520,7 @@
 					"casesOfInsufficientActionAgainstBriberyAndCorruption": {
 						"value": 2544,
 						"dataSource": {
-							"page": "978-1099",
+							"page": "978, 1109-1119",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -4576,10 +4576,10 @@
 			},
 			"countryCode": "NU",
 			"companyContactDetails": [
-				"Milton55@example.com",
-				"Javonte91@example.com",
-				"Hazel_Sanford@example.com",
-				"Rudolph_Veum58@example.com"
+				"Mauricio55@example.com",
+				"Jacques91@example.com",
+				"Gisselle_Sanford@example.com",
+				"Rollin_Veum58@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
@@ -4607,7 +4607,7 @@
 					"fiscalYearEnd": {
 						"value": null,
 						"dataSource": {
-							"page": "896-1088",
+							"page": "896, 1098-1108",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -4667,7 +4667,7 @@
 					"scope1And2GhgEmissionsInTonnes": {
 						"value": 20159.73,
 						"dataSource": {
-							"page": "1002-1026",
+							"page": "1002, 1036-1046",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -4680,7 +4680,7 @@
 					"scope1And2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "208",
+							"page": "208-1029",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -4695,7 +4695,7 @@
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "139-297",
+							"page": "139, 307-317",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -4707,7 +4707,7 @@
 					"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
 						"value": 60613.31,
 						"dataSource": {
-							"page": "203-817",
+							"page": "203, 827-837",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -4719,7 +4719,7 @@
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
 						"value": 75273.56,
 						"dataSource": {
-							"page": "995",
+							"page": "995-1234",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -4743,7 +4743,7 @@
 					"enterpriseValueInEUR": {
 						"value": 92291.62,
 						"dataSource": {
-							"page": "1139-1170",
+							"page": "1139, 1180-1190",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -4755,7 +4755,7 @@
 					"totalRevenueInEUR": {
 						"value": 40308.44,
 						"dataSource": {
-							"page": "103-470",
+							"page": "103, 480-490",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -4798,7 +4798,7 @@
 					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "283-424",
+							"page": "283, 434-444",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -4822,7 +4822,7 @@
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "674",
+							"page": "674-889",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -4891,7 +4891,7 @@
 					"nonRenewableEnergyConsumptionInGWh": {
 						"value": 2075.3,
 						"dataSource": {
-							"page": "692-791",
+							"page": "692, 801-811",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -4937,7 +4937,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 90013.24,
 								"dataSource": {
-									"page": "400-431",
+									"page": "400, 441-451",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "architectures",
@@ -4963,7 +4963,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 58602.53,
 								"dataSource": {
-									"page": "1109",
+									"page": "1109-1171",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "smart contracts",
@@ -4989,7 +4989,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 6192.22,
 								"dataSource": {
-									"page": "1005-1206",
+									"page": "1005, 1216-1226",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "interfaces",
@@ -5004,7 +5004,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 31229,
 								"dataSource": {
-									"page": "525-1069",
+									"page": "525, 1079-1089",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "relationships",
@@ -5025,7 +5025,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": null,
 								"dataSource": {
-									"page": "970-983",
+									"page": "970, 993-1003",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "experiences",
@@ -5045,7 +5045,7 @@
 					"nonRenewableEnergyConsumptionFossilFuelsInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "130",
+							"page": "130-573",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -5057,7 +5057,7 @@
 					"nonRenewableEnergyConsumptionCrudeOilInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "131",
+							"page": "131-410",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -5120,7 +5120,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "1181",
+							"page": "1181-1193",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -5132,7 +5132,7 @@
 					"protectedAreasExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "138",
+							"page": "138-376",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -5171,7 +5171,7 @@
 					"sustainableOceansAndSeasPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "775-791",
+							"page": "775, 801-811",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -5183,7 +5183,7 @@
 					"threatenedSpeciesExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "1064-1256",
+							"page": "1064, 1266-1276",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -5222,7 +5222,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": "175-557",
+							"page": "175, 567-577",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -5234,7 +5234,7 @@
 					"waterReusedInCubicMeters": {
 						"value": 88324.31,
 						"dataSource": {
-							"page": "186",
+							"page": "186-1219",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -5253,7 +5253,7 @@
 					"highWaterStressAreaExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "606-1272",
+							"page": "606, 1282-1292",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -5279,7 +5279,7 @@
 					"nonRecycledWasteInTonnes": {
 						"value": 47472.73,
 						"dataSource": {
-							"page": "942-1090",
+							"page": "942, 1100-1110",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -5293,7 +5293,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "24-216",
+							"page": "24, 226-236",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -5323,7 +5323,7 @@
 					"humanRightsLegalProceedings": {
 						"value": "No",
 						"dataSource": {
-							"page": "1181-1183",
+							"page": "1181, 1193-1203",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -5359,7 +5359,7 @@
 					"transparencyDisclosurePolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "894-1288",
+							"page": "894, 1298-1308",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -5445,7 +5445,7 @@
 					"fairCompetitionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "912-1270",
+							"page": "912, 1280-1290",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "AI",
@@ -5470,7 +5470,7 @@
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1022-1270",
+							"page": "1022, 1280-1290",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -5502,7 +5502,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": 7709,
 						"dataSource": {
-							"page": "542-659",
+							"page": "542, 669-679",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -5514,7 +5514,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 4239,
 						"dataSource": {
-							"page": "267-999",
+							"page": "267, 1009-1019",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -5532,7 +5532,7 @@
 					"maleBoardMembersBoardOfDirectors": {
 						"value": 4769,
 						"dataSource": {
-							"page": "983-1094",
+							"page": "983, 1104-1114",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -5544,7 +5544,7 @@
 					"boardGenderDiversitySupervisoryBoardInPercent": {
 						"value": 34.77,
 						"dataSource": {
-							"page": "936",
+							"page": "936-987",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -5556,7 +5556,7 @@
 					"boardGenderDiversityBoardOfDirectorsInPercent": {
 						"value": 69.18,
 						"dataSource": {
-							"page": "1196",
+							"page": "1196-1226",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -5574,7 +5574,7 @@
 					"workplaceAccidentPreventionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "442",
+							"page": "442-1251",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -5598,7 +5598,7 @@
 					"workdaysLostInDays": {
 						"value": 54327.59,
 						"dataSource": {
-							"page": "784",
+							"page": "784-1261",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -5636,7 +5636,7 @@
 					"excessiveCeoPayRatio": {
 						"value": 92043.05,
 						"dataSource": {
-							"page": "533-983",
+							"page": "533, 993-1003",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -5650,7 +5650,7 @@
 					"securitiesNotCertifiedAsGreen": {
 						"value": null,
 						"dataSource": {
-							"page": "281",
+							"page": "281-417",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -5676,7 +5676,7 @@
 					"humanRightsDueDiligence": {
 						"value": "No",
 						"dataSource": {
-							"page": "173-1193",
+							"page": "173, 1203-1213",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -5757,7 +5757,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Kunde, Kuhic and Wolf",
-			"headquarters": "Jimmieshire",
+			"headquarters": "Jayceshire",
 			"headquartersPostalCode": "61294-1151",
 			"sector": "ROI",
 			"identifiers": {
@@ -5782,10 +5782,10 @@
 			},
 			"countryCode": "JE",
 			"companyContactDetails": [
-				"Adam.Lowe0@example.com",
-				"Stewart.Pouros@example.com",
-				"Jordi.Monahan@example.com",
-				"Thomas61@example.com"
+				"Adalberto.Lowe0@example.com",
+				"Talon.Pouros@example.com",
+				"Kathlyn.Monahan@example.com",
+				"Tod61@example.com"
 			],
 			"companyAlternativeNames": [
 				"Adams, Lowe and Anderson",
@@ -5818,7 +5818,7 @@
 					"fiscalYearEnd": {
 						"value": null,
 						"dataSource": {
-							"page": "497-1190",
+							"page": "497, 1200-1210",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "lifetime value",
@@ -5846,7 +5846,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 52850.26,
 						"dataSource": {
-							"page": "597-621",
+							"page": "597, 631-641",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "synergies",
@@ -5864,7 +5864,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "864-1228",
+							"page": "864, 1238-1248",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -5888,7 +5888,7 @@
 					"scope1And2GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "64-154",
+							"page": "64, 164-174",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "e-commerce",
@@ -5924,7 +5924,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 40092.21,
 						"dataSource": {
-							"page": "515-1222",
+							"page": "515, 1232-1242",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -5943,7 +5943,7 @@
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "424-528",
+							"page": "424, 538-548",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -5961,7 +5961,7 @@
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
 						"value": 34607,
 						"dataSource": {
-							"page": "779",
+							"page": "779-1073",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "e-commerce",
@@ -5973,7 +5973,7 @@
 					"scope4GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "728-917",
+							"page": "728, 927-937",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "functionalities",
@@ -6011,7 +6011,7 @@
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": 78011.44,
 						"dataSource": {
-							"page": "778-1172",
+							"page": "778, 1182-1192",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -6054,7 +6054,7 @@
 					"renewableEnergyConsumptionInGWh": {
 						"value": 77087.56,
 						"dataSource": {
-							"page": "638",
+							"page": "638-652",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "technologies",
@@ -6079,7 +6079,7 @@
 					"nonRenewableEnergyConsumptionInGWh": {
 						"value": 5301.43,
 						"dataSource": {
-							"page": "184-1129",
+							"page": "184, 1139-1149",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -6137,7 +6137,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 28433.63,
 								"dataSource": {
-									"page": "21",
+									"page": "21-1251",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "synergies",
@@ -6256,7 +6256,7 @@
 					"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
 						"value": 29218.13,
 						"dataSource": {
-							"page": "895-1013",
+							"page": "895, 1023-1033",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -6282,7 +6282,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "761",
+							"page": "761-1259",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "applications",
@@ -6306,7 +6306,7 @@
 					"rareOrEndangeredEcosystemsExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "898",
+							"page": "898-935",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -6318,7 +6318,7 @@
 					"highlyBiodiverseGrasslandExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "471-663",
+							"page": "471, 673-683",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "lifetime value",
@@ -6336,7 +6336,7 @@
 					"landDegradationDesertificationSoilSealingExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "675-1169",
+							"page": "675, 1179-1189",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "initiatives",
@@ -6348,7 +6348,7 @@
 					"sustainableAgriculturePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "130",
+							"page": "130-414",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -6388,7 +6388,7 @@
 					"emissionsToWaterInTonnes": {
 						"value": 69381.45,
 						"dataSource": {
-							"page": "379",
+							"page": "379-1199",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "blockchains",
@@ -6412,7 +6412,7 @@
 					"waterReusedInCubicMeters": {
 						"value": null,
 						"dataSource": {
-							"page": "1156-1208",
+							"page": "1156, 1218-1228",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -6430,7 +6430,7 @@
 					"waterManagementPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "327",
+							"page": "327-523",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -6501,7 +6501,7 @@
 					"iloCoreLabourStandards": {
 						"value": "No",
 						"dataSource": {
-							"page": "386-907",
+							"page": "386, 917-927",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "experiences",
@@ -6514,7 +6514,7 @@
 					"corruptionLegalProceedings": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "319-718",
+							"page": "319, 728-738",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "platforms",
@@ -6552,7 +6552,7 @@
 					"policyAgainstDiscriminationInTheWorkplace": {
 						"value": null,
 						"dataSource": {
-							"page": "171",
+							"page": "171-364",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -6564,7 +6564,7 @@
 					"iso14001Certificate": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "897",
+							"page": "897-1253",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "ROI",
@@ -6588,7 +6588,7 @@
 					"fairBusinessMarketingAdvertisingPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "602-1077",
+							"page": "602, 1087-1097",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "applications",
@@ -6618,7 +6618,7 @@
 					"violationOfTaxRulesAndRegulation": {
 						"value": null,
 						"dataSource": {
-							"page": "499-503",
+							"page": "499, 513-523",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "AI",
@@ -6630,7 +6630,7 @@
 					"unGlobalCompactPrinciplesCompliancePolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "549-1289",
+							"page": "549, 1299-1309",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -6654,7 +6654,7 @@
 					"averageGrossHourlyEarningsMaleEmployees": {
 						"value": 151651165.87,
 						"dataSource": {
-							"page": "668",
+							"page": "668-896",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -6667,7 +6667,7 @@
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": null,
 						"dataSource": {
-							"page": "866",
+							"page": "866-1049",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -6704,7 +6704,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": null,
 						"dataSource": {
-							"page": "678-1242",
+							"page": "678, 1252-1262",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "channels",
@@ -6820,7 +6820,7 @@
 					"sanctionedIncidentsOfDiscrimination": {
 						"value": 9838,
 						"dataSource": {
-							"page": "1060-1116",
+							"page": "1060, 1126-1136",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "communities",
@@ -6903,7 +6903,7 @@
 					"numberOfReportedIncidentsOfHumanRightsViolations": {
 						"value": 559,
 						"dataSource": {
-							"page": "960-1222",
+							"page": "960, 1232-1242",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -6917,7 +6917,7 @@
 					"casesOfInsufficientActionAgainstBriberyAndCorruption": {
 						"value": 4821,
 						"dataSource": {
-							"page": "554",
+							"page": "554-806",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "mindshare",
@@ -6930,7 +6930,7 @@
 					"totalAmountOfReportedFinesOfBriberyAndCorruption": {
 						"value": 5347552731.15,
 						"dataSource": {
-							"page": "662-1226",
+							"page": "662, 1236-1246",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -6971,7 +6971,7 @@
 			},
 			"countryCode": "MK",
 			"companyContactDetails": [
-				"Jeanne65@example.com"
+				"Isabelle65@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bruen - Schoen"
@@ -6989,7 +6989,7 @@
 					"fiscalYearDeviation": {
 						"value": "NoDeviation",
 						"dataSource": {
-							"page": "497-734",
+							"page": "497, 744-754",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -7025,7 +7025,7 @@
 					"scope2GhgEmissionsInTonnes": {
 						"value": 28541.34,
 						"dataSource": {
-							"page": "998-1002",
+							"page": "998, 1012-1022",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -7037,7 +7037,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "231-767",
+							"page": "231, 777-787",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -7056,7 +7056,7 @@
 					"scope1And2GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "433-595",
+							"page": "433, 605-615",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -7116,7 +7116,7 @@
 					"scope1And2And3GhgEmissionsInTonnes": {
 						"value": 24789.74,
 						"dataSource": {
-							"page": "485-722",
+							"page": "485, 732-742",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -7129,7 +7129,7 @@
 					"scope1And2And3GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "912",
+							"page": "912-1062",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "smart contracts",
@@ -7154,7 +7154,7 @@
 					"totalRevenueInEUR": {
 						"value": 49893.47,
 						"dataSource": {
-							"page": "386-393",
+							"page": "386, 403-413",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -7184,7 +7184,7 @@
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": 12737.33,
 						"dataSource": {
-							"page": "173-226",
+							"page": "173, 236-246",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -7196,7 +7196,7 @@
 					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
 						"value": 48589.86,
 						"dataSource": {
-							"page": "1027-1279",
+							"page": "1027, 1289-1299",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -7209,7 +7209,7 @@
 					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "96",
+							"page": "96-378",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -7237,7 +7237,7 @@
 					"renewableEnergyProductionInGWh": {
 						"value": 57127.59,
 						"dataSource": {
-							"page": "1127-1210",
+							"page": "1127, 1220-1230",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -7250,7 +7250,7 @@
 					"nonRenewableEnergyProductionInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "763-1300",
+							"page": "763, 1310-1320",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -7310,7 +7310,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 12687.54,
 								"dataSource": {
-									"page": "70-1235",
+									"page": "70, 1245-1255",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "systems",
@@ -7337,7 +7337,7 @@
 					"nonRenewableEnergyConsumptionCrudeOilInGWh": {
 						"value": 20708.69,
 						"dataSource": {
-							"page": "303-909",
+							"page": "303, 919-929",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -7349,7 +7349,7 @@
 					"nonRenewableEnergyConsumptionNaturalGasInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "951",
+							"page": "951-1025",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -7361,7 +7361,7 @@
 					"nonRenewableEnergyConsumptionLigniteInGWh": {
 						"value": 42091.63,
 						"dataSource": {
-							"page": "428",
+							"page": "428-459",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -7397,7 +7397,7 @@
 					"nonRenewableEnergyConsumptionOtherInGWh": {
 						"value": 68911.28,
 						"dataSource": {
-							"page": "751-875",
+							"page": "751, 885-895",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -7417,7 +7417,7 @@
 					"protectedAreasExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "277-770",
+							"page": "277, 780-790",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -7429,7 +7429,7 @@
 					"rareOrEndangeredEcosystemsExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "816",
+							"page": "816-1044",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -7441,7 +7441,7 @@
 					"highlyBiodiverseGrasslandExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "393",
+							"page": "393-1108",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -7460,7 +7460,7 @@
 					"sustainableAgriculturePolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "708",
+							"page": "708-1079",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -7490,7 +7490,7 @@
 					"biodiversityProtectionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "577",
+							"page": "577-710",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "metrics",
@@ -7502,7 +7502,7 @@
 					"deforestationPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "629-776",
+							"page": "629, 786-796",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -7516,7 +7516,7 @@
 					"emissionsToWaterInTonnes": {
 						"value": 4101.58,
 						"dataSource": {
-							"page": "308-628",
+							"page": "308, 638-648",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -7528,7 +7528,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": 95829.48,
 						"dataSource": {
-							"page": "460",
+							"page": "460-791",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -7594,7 +7594,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "422",
+							"page": "422-1136",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -7607,7 +7607,7 @@
 					"emissionsOfOzoneDepletionSubstancesInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "998-1030",
+							"page": "998, 1040-1050",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -7698,7 +7698,7 @@
 					"iso14001Certificate": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "849",
+							"page": "849-886",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -7736,7 +7736,7 @@
 					"violationOfTaxRulesAndRegulation": {
 						"value": null,
 						"dataSource": {
-							"page": "202",
+							"page": "202-1148",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -7804,7 +7804,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "20",
+							"page": "20-93",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -7822,7 +7822,7 @@
 					"boardGenderDiversitySupervisoryBoardInPercent": {
 						"value": 0.51,
 						"dataSource": {
-							"page": "284-1100",
+							"page": "284, 1110-1120",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -7871,7 +7871,7 @@
 					"workdaysLostInDays": {
 						"value": 25253.21,
 						"dataSource": {
-							"page": "510-524",
+							"page": "510, 534-544",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -7883,7 +7883,7 @@
 					"supplierCodeOfConduct": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "320-1038",
+							"page": "320, 1048-1058",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -7907,7 +7907,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "362-667",
+							"page": "362, 677-687",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -7919,7 +7919,7 @@
 					"reportedIncidentsOfDiscrimination": {
 						"value": 4284,
 						"dataSource": {
-							"page": "1133-1158",
+							"page": "1133, 1168-1178",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -7931,7 +7931,7 @@
 					"sanctionedIncidentsOfDiscrimination": {
 						"value": null,
 						"dataSource": {
-							"page": "678-699",
+							"page": "678, 709-719",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -7943,7 +7943,7 @@
 					"excessiveCeoPayRatio": {
 						"value": null,
 						"dataSource": {
-							"page": "569-648",
+							"page": "569, 658-668",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -7957,7 +7957,7 @@
 					"securitiesNotCertifiedAsGreen": {
 						"value": null,
 						"dataSource": {
-							"page": "784-1224",
+							"page": "784, 1234-1244",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -7985,7 +7985,7 @@
 					"reportedChildLabourIncidents": {
 						"value": "No",
 						"dataSource": {
-							"page": "569-731",
+							"page": "569, 741-751",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -8047,7 +8047,7 @@
 					"totalAmountOfReportedFinesOfBriberyAndCorruption": {
 						"value": null,
 						"dataSource": {
-							"page": "622-1274",
+							"page": "622, 1284-1294",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -8065,7 +8065,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Schoen - Klein",
-			"headquarters": "Pierceburgh",
+			"headquarters": "Rayburgh",
 			"headquartersPostalCode": "10273-2001",
 			"sector": "users",
 			"identifiers": {
@@ -8133,7 +8133,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "110-224",
+							"page": "110, 234-244",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -8163,7 +8163,7 @@
 					"scope2GhgEmissionsMarketBasedInTonnes": {
 						"value": 58465.06,
 						"dataSource": {
-							"page": "887-1257",
+							"page": "887, 1267-1277",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -8190,7 +8190,7 @@
 					"scope3UpstreamGhgEmissionsInTonnes": {
 						"value": 40863.86,
 						"dataSource": {
-							"page": "607",
+							"page": "607-617",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -8218,7 +8218,7 @@
 					"enterpriseValueInEUR": {
 						"value": 33150.81,
 						"dataSource": {
-							"page": "1024-1224",
+							"page": "1024, 1234-1244",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -8236,7 +8236,7 @@
 					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 5083.08,
 						"dataSource": {
-							"page": "359-1188",
+							"page": "359, 1198-1208",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -8260,7 +8260,7 @@
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "1190-1298",
+							"page": "1190, 1308-1318",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -8272,7 +8272,7 @@
 					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "530-1262",
+							"page": "530, 1272-1282",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -8284,7 +8284,7 @@
 					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
 						"value": 18847.42,
 						"dataSource": {
-							"page": "367-509",
+							"page": "367, 519-529",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -8332,7 +8332,7 @@
 					"financedScope3Emissions": {
 						"value": null,
 						"dataSource": {
-							"page": "1065",
+							"page": "1065-1152",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -8347,7 +8347,7 @@
 					"renewableEnergyConsumptionInGWh": {
 						"value": 22639.12,
 						"dataSource": {
-							"page": "403-1261",
+							"page": "403, 1271-1281",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -8438,7 +8438,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": null,
 								"dataSource": {
-									"page": "117-695",
+									"page": "117, 705-715",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "solutions",
@@ -8483,7 +8483,7 @@
 					"nonRenewableEnergyConsumptionNaturalGasInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "657-1229",
+							"page": "657, 1239-1249",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -8528,7 +8528,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "46",
+							"page": "46-165",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -8540,7 +8540,7 @@
 					"protectedAreasExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "826-971",
+							"page": "826, 981-991",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -8552,7 +8552,7 @@
 					"rareOrEndangeredEcosystemsExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "417-1023",
+							"page": "417, 1033-1043",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -8588,7 +8588,7 @@
 					"landDegradationDesertificationSoilSealingExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "854-931",
+							"page": "854, 941-951",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -8600,7 +8600,7 @@
 					"sustainableAgriculturePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "691-1209",
+							"page": "691, 1219-1229",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -8612,7 +8612,7 @@
 					"sustainableOceansAndSeasPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "851",
+							"page": "851-1070",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -8625,7 +8625,7 @@
 					"biodiversityProtectionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "1163",
+							"page": "1163-1291",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -8651,7 +8651,7 @@
 					"emissionsToWaterInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "545-679",
+							"page": "545, 689-699",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -8663,7 +8663,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": 97211.61,
 						"dataSource": {
-							"page": "210",
+							"page": "210-815",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -8675,7 +8675,7 @@
 					"waterReusedInCubicMeters": {
 						"value": 70766.35,
 						"dataSource": {
-							"page": "153-1094",
+							"page": "153, 1104-1114",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -8687,7 +8687,7 @@
 					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
 						"value": 20558.53,
 						"dataSource": {
-							"page": "130-612",
+							"page": "130, 622-632",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "relationships",
@@ -8715,7 +8715,7 @@
 					"nonRecycledWasteInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "836-959",
+							"page": "836, 969-979",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -8765,7 +8765,7 @@
 					"iloCoreLabourStandards": {
 						"value": null,
 						"dataSource": {
-							"page": "740-1193",
+							"page": "740, 1203-1213",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -8777,7 +8777,7 @@
 					"environmentalPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "959-991",
+							"page": "959, 1001-1011",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -8820,7 +8820,7 @@
 					"policyAgainstForcedLabour": {
 						"value": "No",
 						"dataSource": {
-							"page": "258-929",
+							"page": "258, 939-949",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -8838,7 +8838,7 @@
 					"iso14001Certificate": {
 						"value": null,
 						"dataSource": {
-							"page": "726-835",
+							"page": "726, 845-855",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -8850,7 +8850,7 @@
 					"policyAgainstBriberyAndCorruption": {
 						"value": "No",
 						"dataSource": {
-							"page": "7-1034",
+							"page": "7, 1044-1054",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -8862,7 +8862,7 @@
 					"fairBusinessMarketingAdvertisingPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "130-133",
+							"page": "130, 143-153",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -8900,7 +8900,7 @@
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
 						"value": "No",
 						"dataSource": {
-							"page": "164-1259",
+							"page": "164, 1269-1279",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -8912,7 +8912,7 @@
 					"averageGrossHourlyEarningsMaleEmployees": {
 						"value": 5207971230.65,
 						"dataSource": {
-							"page": "25-486",
+							"page": "25, 496-506",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -8944,7 +8944,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": 8899,
 						"dataSource": {
-							"page": "313-412",
+							"page": "313, 422-432",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -8956,7 +8956,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 7556,
 						"dataSource": {
-							"page": "119-600",
+							"page": "119, 610-620",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -8968,7 +8968,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": 9325,
 						"dataSource": {
-							"page": "950-1054",
+							"page": "950, 1064-1074",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -9000,7 +9000,7 @@
 					"workplaceAccidentPreventionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "224-461",
+							"page": "224, 471-481",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "experiences",
@@ -9038,7 +9038,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "146-441",
+							"page": "146, 451-461",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -9062,7 +9062,7 @@
 					"sanctionedIncidentsOfDiscrimination": {
 						"value": 2106,
 						"dataSource": {
-							"page": "241-290",
+							"page": "241, 300-310",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -9102,7 +9102,7 @@
 					"humanRightsPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "690-1129",
+							"page": "690, 1139-1149",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "channels",
@@ -9114,7 +9114,7 @@
 					"humanRightsDueDiligence": {
 						"value": "No",
 						"dataSource": {
-							"page": "430-939",
+							"page": "430, 949-959",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -9166,7 +9166,7 @@
 					"reportedConvictionsOfBriberyAndCorruption": {
 						"value": 6312,
 						"dataSource": {
-							"page": "184-557",
+							"page": "184, 567-577",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -9184,7 +9184,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Corwin LLC",
-			"headquarters": "Kathrynstad",
+			"headquarters": "Kaitlinstad",
 			"headquartersPostalCode": "03740-8690",
 			"sector": "ROI",
 			"identifiers": {
@@ -9207,8 +9207,8 @@
 			},
 			"countryCode": "SZ",
 			"companyContactDetails": [
-				"Ashley9@example.com",
-				"Garrick.Heaney82@example.com"
+				"Anastasia9@example.com",
+				"Ira.Heaney82@example.com"
 			],
 			"companyAlternativeNames": [
 				"Franecki - Schuster",
@@ -9227,7 +9227,7 @@
 					"fiscalYearDeviation": {
 						"value": null,
 						"dataSource": {
-							"page": "158-994",
+							"page": "158, 1004-1014",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "large language models",
@@ -9239,7 +9239,7 @@
 					"fiscalYearEnd": {
 						"value": null,
 						"dataSource": {
-							"page": "561-1273",
+							"page": "561, 1283-1293",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -9267,7 +9267,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "189-975",
+							"page": "189, 985-995",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "convergence",
@@ -9279,7 +9279,7 @@
 					"scope2GhgEmissionsInTonnes": {
 						"value": 99720.57,
 						"dataSource": {
-							"page": "609-884",
+							"page": "609, 894-904",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -9298,7 +9298,7 @@
 					"scope1And2GhgEmissionsInTonnes": {
 						"value": 67562.67,
 						"dataSource": {
-							"page": "168-815",
+							"page": "168, 825-835",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "content",
@@ -9324,7 +9324,7 @@
 					"scope3UpstreamGhgEmissionsInTonnes": {
 						"value": 2561.05,
 						"dataSource": {
-							"page": "1092-1236",
+							"page": "1092, 1246-1256",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "blockchains",
@@ -9343,7 +9343,7 @@
 					"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
 						"value": 99424.24,
 						"dataSource": {
-							"page": "499",
+							"page": "499-1147",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "architectures",
@@ -9379,7 +9379,7 @@
 					"totalRevenueInEUR": {
 						"value": 88183.72,
 						"dataSource": {
-							"page": "599",
+							"page": "599-1009",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -9392,7 +9392,7 @@
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
 						"value": null,
 						"dataSource": {
-							"page": "619-989",
+							"page": "619, 999-1009",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "relationships",
@@ -9422,7 +9422,7 @@
 					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
 						"value": 98837.26,
 						"dataSource": {
-							"page": "641",
+							"page": "641-1213",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "methodologies",
@@ -9448,7 +9448,7 @@
 					"financedScope3Emissions": {
 						"value": null,
 						"dataSource": {
-							"page": "278",
+							"page": "278-864",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "markets",
@@ -9492,7 +9492,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 99257.78,
 								"dataSource": {
-									"page": "1084-1210",
+									"page": "1084, 1220-1230",
 									"fileName": null,
 									"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 									"tagName": "systems",
@@ -9537,7 +9537,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 28574.34,
 								"dataSource": {
-									"page": "159-389",
+									"page": "159, 399-409",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "channels",
@@ -9563,7 +9563,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 91996.36,
 								"dataSource": {
-									"page": "1136-1160",
+									"page": "1136, 1170-1180",
 									"fileName": null,
 									"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 									"tagName": "experiences",
@@ -9624,7 +9624,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 14724.23,
 								"dataSource": {
-									"page": "737",
+									"page": "737-939",
 									"fileName": null,
 									"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 									"tagName": "synergies",
@@ -9638,7 +9638,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 2179.61,
 								"dataSource": {
-									"page": "857-1244",
+									"page": "857, 1254-1264",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "architectures",
@@ -9700,7 +9700,7 @@
 					"nonRenewableEnergyConsumptionNaturalGasInGWh": {
 						"value": 89227.93,
 						"dataSource": {
-							"page": "397-965",
+							"page": "397, 975-985",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "supply-chains",
@@ -9719,7 +9719,7 @@
 					"nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "761-1083",
+							"page": "761, 1093-1103",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "markets",
@@ -9731,7 +9731,7 @@
 					"nonRenewableEnergyConsumptionOtherInGWh": {
 						"value": 64267.61,
 						"dataSource": {
-							"page": "630",
+							"page": "630-827",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "convergence",
@@ -9745,7 +9745,7 @@
 					"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "347",
+							"page": "347-1040",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -9806,7 +9806,7 @@
 					"sustainableAgriculturePolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "85",
+							"page": "85-1006",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -9837,7 +9837,7 @@
 					"deforestationPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "1113",
+							"page": "1113-1133",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -9863,7 +9863,7 @@
 					"waterConsumptionInCubicMeters": {
 						"value": 87840.7,
 						"dataSource": {
-							"page": "829",
+							"page": "829-1055",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -9899,7 +9899,7 @@
 					"waterManagementPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "25-66",
+							"page": "25, 76-86",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -9926,7 +9926,7 @@
 					"nonRecycledWasteInTonnes": {
 						"value": 63852.24,
 						"dataSource": {
-							"page": "956",
+							"page": "956-1033",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -9940,7 +9940,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "889-1148",
+							"page": "889, 1158-1168",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -9965,7 +9965,7 @@
 					"carbonReductionInitiatives": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "455-674",
+							"page": "455, 684-694",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "channels",
@@ -9981,7 +9981,7 @@
 					"humanRightsLegalProceedings": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1102",
+							"page": "1102-1103",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "schemas",
@@ -9993,7 +9993,7 @@
 					"iloCoreLabourStandards": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "205",
+							"page": "205-246",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "infrastructures",
@@ -10068,7 +10068,7 @@
 					"policyAgainstBriberyAndCorruption": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1014",
+							"page": "1014-1298",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "partnerships",
@@ -10080,7 +10080,7 @@
 					"fairBusinessMarketingAdvertisingPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "539-568",
+							"page": "539, 578-588",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -10110,7 +10110,7 @@
 					"violationOfTaxRulesAndRegulation": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "471",
+							"page": "471-614",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -10134,7 +10134,7 @@
 					"oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
 						"value": null,
 						"dataSource": {
-							"page": "716-832",
+							"page": "716, 842-852",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -10146,7 +10146,7 @@
 					"averageGrossHourlyEarningsMaleEmployees": {
 						"value": 1052962771.41,
 						"dataSource": {
-							"page": "637-1142",
+							"page": "637, 1152-1162",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -10172,7 +10172,7 @@
 					"unadjustedGenderPayGapInPercent": {
 						"value": null,
 						"dataSource": {
-							"page": "173-999",
+							"page": "173, 1009-1019",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "functionalities",
@@ -10184,7 +10184,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": null,
 						"dataSource": {
-							"page": "1103-1275",
+							"page": "1103, 1285-1295",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -10196,7 +10196,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 7665,
 						"dataSource": {
-							"page": "973-1096",
+							"page": "973, 1106-1116",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -10208,7 +10208,7 @@
 					"maleBoardMembersSupervisoryBoard": {
 						"value": 1939,
 						"dataSource": {
-							"page": "5-314",
+							"page": "5, 324-334",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -10220,7 +10220,7 @@
 					"maleBoardMembersBoardOfDirectors": {
 						"value": 2639,
 						"dataSource": {
-							"page": "742-1038",
+							"page": "742, 1048-1058",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -10232,7 +10232,7 @@
 					"boardGenderDiversitySupervisoryBoardInPercent": {
 						"value": null,
 						"dataSource": {
-							"page": "581-1159",
+							"page": "581, 1169-1179",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -10257,7 +10257,7 @@
 					"workplaceAccidentPreventionPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "64-795",
+							"page": "64, 805-815",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "lifetime value",
@@ -10281,7 +10281,7 @@
 					"workdaysLostInDays": {
 						"value": 99181.03,
 						"dataSource": {
-							"page": "281-979",
+							"page": "281, 989-999",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -10300,7 +10300,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "478-1002",
+							"page": "478, 1012-1022",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -10336,7 +10336,7 @@
 					"excessiveCeoPayRatio": {
 						"value": 45208.68,
 						"dataSource": {
-							"page": "265-1040",
+							"page": "265, 1050-1060",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -10350,7 +10350,7 @@
 					"securitiesNotCertifiedAsGreen": {
 						"value": "No",
 						"dataSource": {
-							"page": "885-889",
+							"page": "885, 899-909",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -10377,7 +10377,7 @@
 					"traffickingInHumanBeingsPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "722-1168",
+							"page": "722, 1178-1188",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "supply-chains",
@@ -10407,7 +10407,7 @@
 					"numberOfReportedIncidentsOfHumanRightsViolations": {
 						"value": 6343,
 						"dataSource": {
-							"page": "489",
+							"page": "489-1293",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -10433,7 +10433,7 @@
 					"reportedConvictionsOfBriberyAndCorruption": {
 						"value": 4946,
 						"dataSource": {
-							"page": "1037-1291",
+							"page": "1037, 1301-1311",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "initiatives",
@@ -10463,7 +10463,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Carter, Gottlieb and Huels",
-			"headquarters": "Port Duaneport",
+			"headquarters": "Port Donnellport",
 			"headquartersPostalCode": null,
 			"sector": "synergies",
 			"identifiers": {
@@ -10483,9 +10483,9 @@
 			},
 			"countryCode": "VA",
 			"companyContactDetails": [
-				"Mona.Koepp@example.com",
-				"Isai_Bayer3@example.com",
-				"Santiago_Robel@example.com"
+				"Mckenna.Koepp@example.com",
+				"Jennings_Bayer3@example.com",
+				"Sam_Robel@example.com"
 			],
 			"companyAlternativeNames": [
 				"Boehm Inc"
@@ -10521,7 +10521,7 @@
 					"scope1GhgEmissionsInTonnes": {
 						"value": 15231.21,
 						"dataSource": {
-							"page": "567-1078",
+							"page": "567, 1088-1098",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -10534,7 +10534,7 @@
 					"scope2GhgEmissionsLocationBasedInTonnes": {
 						"value": 80391.19,
 						"dataSource": {
-							"page": "578",
+							"page": "578-714",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
@@ -10559,7 +10559,7 @@
 					"scope1And2GhgEmissionsLocationBasedInTonnes": {
 						"value": 92931.95,
 						"dataSource": {
-							"page": "682-729",
+							"page": "682, 739-749",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -10571,7 +10571,7 @@
 					"scope1And2GhgEmissionsMarketBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "196-711",
+							"page": "196, 721-731",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "web services",
@@ -10620,7 +10620,7 @@
 					"scope1And2And3GhgEmissionsLocationBasedInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "642-698",
+							"page": "642, 708-718",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -10674,7 +10674,7 @@
 					"carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
 						"value": 33224.14,
 						"dataSource": {
-							"page": "712-1204",
+							"page": "712, 1214-1224",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -10692,7 +10692,7 @@
 					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
 						"value": 74136.56,
 						"dataSource": {
-							"page": "924-946",
+							"page": "924, 956-966",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -10728,7 +10728,7 @@
 					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
 						"value": 58353.16,
 						"dataSource": {
-							"page": "919-1104",
+							"page": "919, 1114-1124",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -10741,7 +10741,7 @@
 					"financedScope1AndScope2Emissions": {
 						"value": 83801.12,
 						"dataSource": {
-							"page": "879-956",
+							"page": "879, 966-976",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -10767,7 +10767,7 @@
 					"renewableEnergyProductionInGWh": {
 						"value": 76316.9,
 						"dataSource": {
-							"page": "765-1029",
+							"page": "765, 1039-1049",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "mindshare",
@@ -10779,7 +10779,7 @@
 					"renewableEnergyConsumptionInGWh": {
 						"value": 1691.76,
 						"dataSource": {
-							"page": "516",
+							"page": "516-695",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "markets",
@@ -10805,7 +10805,7 @@
 					"relativeNonRenewableEnergyConsumptionInPercent": {
 						"value": 10398.84,
 						"dataSource": {
-							"page": "155-671",
+							"page": "155, 681-691",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "interfaces",
@@ -10819,7 +10819,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWh": {
 								"value": 24238.72,
 								"dataSource": {
-									"page": "1104-1300",
+									"page": "1104, 1310-1320",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "systems",
@@ -10846,7 +10846,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 65424.46,
 								"dataSource": {
-									"page": "369-1291",
+									"page": "369, 1301-1311",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "content",
@@ -10861,7 +10861,7 @@
 							"highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
 								"value": 64601.35,
 								"dataSource": {
-									"page": "13",
+									"page": "13-1119",
 									"fileName": null,
 									"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 									"tagName": "applications",
@@ -10875,7 +10875,7 @@
 					"totalHighImpactClimateSectorEnergyConsumptionInGWh": {
 						"value": 34605.42,
 						"dataSource": {
-							"page": "1044-1253",
+							"page": "1044, 1263-1273",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -10899,7 +10899,7 @@
 					"nonRenewableEnergyConsumptionCrudeOilInGWh": {
 						"value": null,
 						"dataSource": {
-							"page": "459-710",
+							"page": "459, 720-730",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -10973,7 +10973,7 @@
 					"protectedAreasExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "211-346",
+							"page": "211, 356-366",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "deliverables",
@@ -10997,7 +10997,7 @@
 					"highlyBiodiverseGrasslandExposure": {
 						"value": "No",
 						"dataSource": {
-							"page": "392-1020",
+							"page": "392, 1030-1040",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -11052,7 +11052,7 @@
 					"deforestationPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "184-442",
+							"page": "184, 452-462",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -11066,7 +11066,7 @@
 					"emissionsToWaterInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "131-1122",
+							"page": "131, 1132-1142",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -11114,7 +11114,7 @@
 					"highWaterStressAreaExposure": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1159-1185",
+							"page": "1159, 1195-1205",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "systems",
@@ -11140,7 +11140,7 @@
 					"nonRecycledWasteInTonnes": {
 						"value": 27339.72,
 						"dataSource": {
-							"page": "763-1283",
+							"page": "763, 1293-1303",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -11154,7 +11154,7 @@
 					"emissionsOfInorganicPollutantsInTonnes": {
 						"value": 29354,
 						"dataSource": {
-							"page": "81",
+							"page": "81-743",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "blockchains",
@@ -11178,7 +11178,7 @@
 					"emissionsOfOzoneDepletionSubstancesInTonnes": {
 						"value": null,
 						"dataSource": {
-							"page": "1104-1235",
+							"page": "1104, 1245-1255",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "niches",
@@ -11190,7 +11190,7 @@
 					"carbonReductionInitiatives": {
 						"value": "No",
 						"dataSource": {
-							"page": "700-859",
+							"page": "700, 869-879",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "functionalities",
@@ -11230,7 +11230,7 @@
 					"environmentalPolicy": {
 						"value": "No",
 						"dataSource": {
-							"page": "830-853",
+							"page": "830, 863-873",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "e-commerce",
@@ -11310,7 +11310,7 @@
 					"fairBusinessMarketingAdvertisingPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "789",
+							"page": "789-862",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",
@@ -11350,7 +11350,7 @@
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": null,
 						"dataSource": {
-							"page": "357-814",
+							"page": "357, 824-834",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "synergies",
@@ -11363,7 +11363,7 @@
 					"unadjustedGenderPayGapInPercent": {
 						"value": 59122.41,
 						"dataSource": {
-							"page": "31-536",
+							"page": "31, 546-556",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -11375,7 +11375,7 @@
 					"femaleBoardMembersSupervisoryBoard": {
 						"value": 7610,
 						"dataSource": {
-							"page": "132",
+							"page": "132-524",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "content",
@@ -11387,7 +11387,7 @@
 					"femaleBoardMembersBoardOfDirectors": {
 						"value": 817,
 						"dataSource": {
-							"page": "1141-1159",
+							"page": "1141, 1169-1179",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "networks",
@@ -11430,7 +11430,7 @@
 					"controversialWeaponsExposure": {
 						"value": null,
 						"dataSource": {
-							"page": "558-1193",
+							"page": "558, 1203-1213",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -11442,7 +11442,7 @@
 					"workplaceAccidentPreventionPolicy": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "97-751",
+							"page": "97, 761-771",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "technologies",
@@ -11472,7 +11472,7 @@
 					"supplierCodeOfConduct": {
 						"value": "No",
 						"dataSource": {
-							"page": "467",
+							"page": "467-1229",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "communities",
@@ -11490,7 +11490,7 @@
 					"whistleblowerProtectionPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "1109-1236",
+							"page": "1109, 1246-1256",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "partnerships",
@@ -11540,7 +11540,7 @@
 					"securitiesNotCertifiedAsGreen": {
 						"value": "No",
 						"dataSource": {
-							"page": "813-1101",
+							"page": "813, 1111-1121",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -11554,7 +11554,7 @@
 					"humanRightsPolicy": {
 						"value": null,
 						"dataSource": {
-							"page": "1091-1115",
+							"page": "1091, 1125-1135",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
@@ -11578,7 +11578,7 @@
 					"reportedChildLabourIncidents": {
 						"value": "Yes",
 						"dataSource": {
-							"page": "1175",
+							"page": "1175-1262",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "platforms",
@@ -11591,7 +11591,7 @@
 					"numberOfReportedIncidentsOfHumanRightsViolations": {
 						"value": null,
 						"dataSource": {
-							"page": "278-1139",
+							"page": "278, 1149-1159",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "supply-chains",
@@ -11623,7 +11623,7 @@
 					"totalAmountOfReportedFinesOfBriberyAndCorruption": {
 						"value": null,
 						"dataSource": {
-							"page": "68-934",
+							"page": "68, 944-954",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "methodologies",

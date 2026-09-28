@@ -36,7 +36,7 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "827",
+							"page": "827-1013",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "initiatives",
@@ -48,7 +48,7 @@
 					"fiscalYearEnd": {
 						"value": "2024-04-28",
 						"dataSource": {
-							"page": "1172",
+							"page": "1172-1204",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "architectures",
@@ -62,7 +62,7 @@
 					"mainPcafSector": {
 						"value": "Industrials",
 						"dataSource": {
-							"page": "449-1238",
+							"page": "449, 1248-1258",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "users",
@@ -74,7 +74,7 @@
 					"companyExchangeStatus": {
 						"value": "Listed",
 						"dataSource": {
-							"page": "1025-1227",
+							"page": "1025, 1237-1247",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
@@ -114,7 +114,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 12568.87,
 						"dataSource": {
-							"page": "568-1026",
+							"page": "568, 1036-1046",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "paradigms",
@@ -180,7 +180,7 @@
 					"scope3GhgEmissionsInTonnes": {
 						"value": 54776.41,
 						"dataSource": {
-							"page": "382-454",
+							"page": "382, 464-474",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "applications",
@@ -196,7 +196,7 @@
 					"marketCapitalizationInEUR": {
 						"value": 57093.38,
 						"dataSource": {
-							"page": "647-1048",
+							"page": "647, 1058-1068",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "schemas",
@@ -220,7 +220,7 @@
 					"minoritiesInterestInEUR": {
 						"value": 61557.91,
 						"dataSource": {
-							"page": "251-701",
+							"page": "251, 711-721",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "convergence",
@@ -234,7 +234,7 @@
 					"totalEquityAndDebtInEUR": {
 						"value": 809.8,
 						"dataSource": {
-							"page": "444-831",
+							"page": "444, 841-851",
 							"fileName": null,
 							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"tagName": "supply-chains",

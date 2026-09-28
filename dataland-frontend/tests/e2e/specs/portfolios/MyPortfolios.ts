@@ -128,7 +128,6 @@ describeIf(
 
       cy.ensureLoggedInAsAdmin();
       cy.visitAndCheckAppMount('/portfolios');
-      cy.intercept('POST', '**/community/requests/bulk').as('postBulkRequest');
       cy.intercept('PATCH', '**/users/portfolios/**/monitoring').as('patchMonitoring');
       cy.intercept('GET', '**/users/portfolios/names').as('getPortfolioNames');
       cy.intercept('GET', '**/users/portfolios/**/enriched-portfolio').as('getEnrichedPortfolio');
