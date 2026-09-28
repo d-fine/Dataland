@@ -13,7 +13,7 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceO
 data class ProxyCompanyReplacement(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_DESCRIPTION,
+        description = UserServiceOpenApiDescriptionsAndExamples.PROXY_COMPANY_REPLACEMENT_USER_ID_DESCRIPTION,
         example = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_USER_ID_EXAMPLE,
     )
     val userId: String,

@@ -46,6 +46,7 @@ class ValidatorTest {
     private val dummyPortfolioId = UUID.randomUUID()
     private val dummyPortfolioName = "Test Portfolio"
     private val validCompanyId = "valid-company-id"
+    private val validCompanyId2 = "valid-company-id-2"
     private val invalidCompanyId = "invalid-company-id"
     private val isMonitored = true
     private val dummyMonitoredFrameworks = mutableSetOf("sfdr", "eutaxonomy")
@@ -195,6 +196,17 @@ class ValidatorTest {
     @Test
     fun `test that a valid proxy company replacement does not throw`() {
         assertDoesNotThrow {
+            validator.validateProxyCompanyReplacements(
+                setOf(validCompanyId, validCompanyId2),
+                listOf(ProxyCompanyReplacementUpload(proxiedCompanyId = validCompanyId, proxyCompanyId = validCompanyId2)),
+                dummyCorrelationId,
+            )
+        }
+    }
+
+    @Test
+    fun `test that a company that is its own proxy throws ConflictApiException`() {
+        assertThrows<ConflictApiException> {
             validator.validateProxyCompanyReplacements(
                 setOf(validCompanyId),
                 listOf(ProxyCompanyReplacementUpload(proxiedCompanyId = validCompanyId, proxyCompanyId = validCompanyId)),

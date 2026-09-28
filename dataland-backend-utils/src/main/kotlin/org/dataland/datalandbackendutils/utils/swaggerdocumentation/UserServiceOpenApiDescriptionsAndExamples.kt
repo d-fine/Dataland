@@ -45,6 +45,7 @@ object UserServiceOpenApiDescriptionsAndExamples {
         "The ID of the company that proxies the proxied company. Must be a company contained in the portfolio."
     const val PROXY_COMPANY_REPLACEMENT_TIMESTAMP_DESCRIPTION =
         "The timestamp (epoch milliseconds) at which the proxy company replacement was made."
+    const val PROXY_COMPANY_REPLACEMENT_USER_ID_DESCRIPTION = "The user ID of the user who made this proxy replacement."
 
     const val PORTFOLIO_ACCESS_RIGHTS_DESCRIPTION = "The access rights that the user has for the shared portfolio."
     const val PORTFOLIO_ACCESS_RIGHTS_EXAMPLE = "Owner"

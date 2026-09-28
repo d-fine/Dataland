@@ -111,6 +111,14 @@ class Validator
             }
 
             proxyCompanyReplacements.forEach { proxyCompanyReplacement ->
+                if (proxyCompanyReplacement.proxyCompanyId == proxyCompanyReplacement.proxiedCompanyId) {
+                    throw ConflictApiException(
+                        message = "Conflicting input detected.",
+                        summary =
+                            "Conflicting input detected: company ${proxyCompanyReplacement.proxyCompanyId} cannot proxy itself. " +
+                                "CorrelationId: $correlationId",
+                    )
+                }
                 if (proxyCompanyReplacement.proxyCompanyId !in validCompanyIds) {
                     throw ResourceNotFoundApiException(
                         summary = "Proxy company with CompanyId ${proxyCompanyReplacement.proxyCompanyId} not found in portfolio.",

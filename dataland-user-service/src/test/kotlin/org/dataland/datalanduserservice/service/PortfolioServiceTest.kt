@@ -48,6 +48,7 @@ class PortfolioServiceTest {
     private val dummyUserId = "userId"
     private val adminUserId = "adminUserId"
     private val dummyCompanyId = "companyId"
+    private val dummyProxyCompanyId = "proxyCompanyId"
 
     private val dummyPortfolio = buildPortfolio(portfolioName = "Portfolio", userId = dummyUserId)
     private val dummyPortfolio2 = buildPortfolio(portfolioName = "Portfolio 2", userId = dummyUserId)
@@ -258,7 +259,7 @@ class PortfolioServiceTest {
                 userId = dummyUserId,
                 timestamp = Instant.now().toEpochMilli(),
                 proxiedCompanyId = dummyCompanyId,
-                proxyCompanyId = dummyCompanyId,
+                proxyCompanyId = dummyProxyCompanyId,
             )
         val portfolioWithReplacements =
             dummyPortfolio2.copy(proxyCompanyReplacements = listOf(proxyCompanyReplacement))
@@ -272,7 +273,7 @@ class PortfolioServiceTest {
         val capturedReplacement = portfolioEntityCaptor.firstValue.proxyCompanyReplacements.first()
         assertEquals(dummyUserId, capturedReplacement.userId)
         assertEquals(dummyCompanyId, capturedReplacement.proxiedCompanyId)
-        assertEquals(dummyCompanyId, capturedReplacement.proxyCompanyId)
+        assertEquals(dummyProxyCompanyId, capturedReplacement.proxyCompanyId)
     }
 
     /**
