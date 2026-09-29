@@ -230,7 +230,7 @@ class NonSourceabilityInformationManager(
         qaStatus: QaStatus?,
     ): List<NonSourceabilityInformationResponse> =
         nonSourceabilityDataRepository
-            .findByFilters(companyId, dataType, reportingPeriod, qaStatus)
+            .findByFilters(companyId, dataType, isDataTypeEmpty = (dataType == null), reportingPeriod, qaStatus)
             .map { it.toResponse() }
 
     /**
