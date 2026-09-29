@@ -151,6 +151,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const fetchedCompanyInformation = ref<CompanyInformation>({} as CompanyInformation);
 const availableDataDimensions = ref<BasicDataDimensions[]>([]);
+const nonSourceableDataDimensions = ref<BasicDataDimensions[]>([]);
 const isDataProcessedSuccessfully = ref(false);
 const hideEmptyFields = ref(true);
 const hasUserUploaderRights = ref(false);
@@ -199,11 +200,23 @@ const isEditableByCurrentUser = computed(
 
 const reportingPeriodsPerFramework = computed(() =>
   groupReportingPeriodsPerFrameworkForCompany(
-    availableDataDimensions.value.map((meta) => ({
+    downloadableDataDimensions.value.map((meta) => ({
       metaInfo: { dataType: meta.dataType, reportingPeriod: meta.reportingPeriod },
     }))
   )
 );
+
+/**
+ * Data dimensions to offer for download: real, viewable data dimensions plus data dimensions that are confirmed
+ * as non-sourceable. Both are treated as equally resolved, sufficient information for the user, as opposed to a
+ * reporting period that was simply never looked at. This must only be used for the download-period selection -
+ * ChangeFrameworkDropdown and the active-reporting-period map emitted to the parent must stay based on
+ * availableDataDimensions only, since those drive actually viewing/rendering a dataset.
+ */
+const downloadableDataDimensions = computed(() => [
+  ...availableDataDimensions.value,
+  ...nonSourceableDataDimensions.value,
+]);
 
 const dataPointsAreEditableForCurrentUser = computed(() => isEditableByCurrentUser.value && hasUserAdminRights.value);
 
@@ -213,6 +226,7 @@ watch(
     void (async (): Promise<void> => {
       try {
         await getMetaData();
+        await getNonSourceableDataDimensions();
       } catch (error) {
         console.error('Error watching companyID:', error);
       }
@@ -230,6 +244,7 @@ watch(isReviewableByCurrentUser, () => {
 
 onMounted(async () => {
   await getMetaData();
+  await getNonSourceableDataDimensions();
   if (dataId.value) {
     await getDatasetJudgementId();
   }
@@ -288,6 +303,26 @@ async function getMetaData(): Promise<void> {
     isDataProcessedSuccessfully.value = true;
   } catch (err) {
     isDataProcessedSuccessfully.value = false;
+    console.error(err);
+  }
+}
+
+/**
+ * Retrieves data dimensions confirmed as non-sourceable for the current company, so they can be offered
+ * alongside real data dimensions for download. This is supplementary information: if the call fails, the
+ * download-period selection simply falls back to real data dimensions only, it does not affect
+ * isDataProcessedSuccessfully or any other part of the page.
+ */
+async function getNonSourceableDataDimensions(): Promise<void> {
+  try {
+    const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.nonSourceabilityController;
+    const response = await api.searchNonSourceableDimensions({
+      companyIds: [props.companyID],
+      dataTypes: ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
+      reportingPeriods: [],
+    });
+    nonSourceableDataDimensions.value = Array.from(response.data);
+  } catch (err) {
     console.error(err);
   }
 }

@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import SelectButton from 'primevue/selectbutton';
 
@@ -40,11 +40,16 @@ const dataPointValue = ref<string | null>(
     : null
 );
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
-const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType }>();
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 const options = [
   { label: 'Yes', value: 'Yes' },
   { label: 'No', value: 'No' },
 ];
+
+/**
+ * Whether the page reference entered in the extended dialog is valid.
+ */
+const isPageValid = computed<boolean>(() => extendedDialogRef.value?.isPageValid ?? true);
 
 /**
  * Reference to the extended dialog to get form data
@@ -53,5 +58,5 @@ function buildApiBodyWithExtendedInfo(): string {
   return buildApiBody(dataPointValue.value, undefined, extendedDialogRef.value?.getFormData());
 }
 
-defineExpose({ buildApiBodyWithExtendedInfo });
+defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>

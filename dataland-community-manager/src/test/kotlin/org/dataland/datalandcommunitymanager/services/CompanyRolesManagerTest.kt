@@ -106,10 +106,6 @@ class CompanyRolesManagerTest {
 
     @BeforeEach
     fun setupMocks() {
-        doReturn(5)
-            .whenever(mockCompanyOwnershipAcceptedEmailMessageBuilder)
-            .getNumberOfOpenDataRequestsForCompany(anyString())
-
         doAnswer { invocation -> invocation.arguments[0] }.whenever(mockCompanyRoleAssignmentRepository).save(any())
 
         doNothing()

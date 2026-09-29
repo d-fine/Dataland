@@ -67,10 +67,62 @@ export function isCompanyIdValid(companyId: string): boolean {
   return uuidRegexExp.test(companyId);
 }
 
+/**
+ * Matches a single page-reference list entry, i.e. either a single page number ("4") or an ascending page
+ * range ("4-7").
+ */
 export const regexPageNumber = /^([1-9]\d*)(?:-([1-9]\d*))?$/;
 
 export const PAGE_NUMBER_VALIDATION_ERROR_MESSAGE =
-  'Page(s) must be a positive integer or a range of ascending positive integers, e.g. 2, 13-15, etc.';
+  'Page(s) must be a positive integer, a range of ascending positive integers, or a comma-separated, ' +
+  'strictly ascending list of these, e.g. 2, 13-15, or 4, 112.';
+
+/**
+ * A single parsed page-reference list entry, e.g. "4" becomes { start: 4, end: 4 } and "4-7" becomes
+ * { start: 4, end: 7 }.
+ */
+export interface PageEntry {
+  start: number;
+  end: number;
+}
+
+/**
+ * Parses a single, already-trimmed page-reference list entry into a PageEntry.
+ * @param entry the trimmed single entry to parse, e.g. "4" or "4-7"
+ * @returns the parsed PageEntry, or undefined if the entry is not a valid single page number or an
+ * ascending page range
+ */
+export function parsePageEntry(entry: string): PageEntry | undefined {
+  const match = regexPageNumber.exec(entry);
+  if (!match) return undefined;
+
+  const start = Number(match[1]);
+  const end = match[2] === undefined ? start : Number(match[2]);
+  if (match[2] !== undefined && start >= end) return undefined;
+
+  return { start, end };
+}
+
+/**
+ * Checks if a page reference is valid. A valid page reference is a comma-separated list of single page
+ * numbers and/or ascending page ranges (e.g. "4", "4-5" or "4, 112"). Whitespace around list entries is
+ * allowed and ignored. List entries must be listed in strictly ascending, non-overlapping order. This
+ * logic must be kept consistent with the backend's PageRangeValidator (dataland-backend PageRange.kt).
+ * @param value the page reference string to validate
+ * @returns true if the page reference is valid, false otherwise
+ */
+export function isPageReferenceValid(value: string): boolean {
+  const parsedEntries = value.split(',').map((entry) => parsePageEntry(entry.trim()));
+
+  return parsedEntries.reduce<{ isValidSoFar: boolean; previousEnd: number }>(
+    (result, entry) => ({
+      isValidSoFar: result.isValidSoFar && entry !== undefined && entry.start > result.previousEnd,
+      previousEnd: entry?.end ?? result.previousEnd,
+    }),
+    { isValidSoFar: true, previousEnd: 0 }
+  ).isValidSoFar;
+}
+
 /**
  * Checks if a page number is valid
  * @param node FormKitNode
@@ -80,13 +132,7 @@ export function validatePageNumber(node: FormKitNode): boolean {
   const pageNumber = node.value;
   if (typeof pageNumber !== 'string') return false;
 
-  const match = regexPageNumber.exec(pageNumber);
-  if (!match) return false;
-
-  const firstNumber = Number(match[1]);
-  const secondNumber = match[2] === undefined ? undefined : Number(match[2]);
-
-  return secondNumber === undefined || firstNumber < secondNumber;
+  return isPageReferenceValid(pageNumber);
 }
 
 // This RegEx should be kept consistent with the regex used in the backend and defined by EmailUtils.kt

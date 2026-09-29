@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -11,6 +12,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DatasetJudgementValidationHelper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -95,6 +97,7 @@ class DatasetJudgementFinalizationService
          * @param companyId The company ID to use when uploading the replacement data point.
          * @param reportingPeriod The reporting period to use when uploading the replacement data point.
          */
+        @Suppress("ThrowsCount")
         private fun uploadReplacementDataPointIfNeeded(
             dataPoint: DataPointJudgementEntity,
             companyId: UUID,
@@ -120,16 +123,26 @@ class DatasetJudgementFinalizationService
                     }
                 }
 
-            dataPointControllerApi.postDataPoint(
-                uploadedDataPoint =
-                    UploadedDataPoint(
-                        dataPoint = replacementValue,
-                        dataPointType = dataPoint.dataPointType,
-                        companyId = companyId.toString(),
-                        reportingPeriod = reportingPeriod,
-                    ),
-                bypassQa = true,
-            )
+            try {
+                dataPointControllerApi.postDataPoint(
+                    uploadedDataPoint =
+                        UploadedDataPoint(
+                            dataPoint = replacementValue,
+                            dataPointType = dataPoint.dataPointType,
+                            companyId = companyId.toString(),
+                            reportingPeriod = reportingPeriod,
+                        ),
+                    bypassQa = true,
+                )
+            } catch (ex: ClientException) {
+                if (ex.statusCode != HttpStatus.BAD_REQUEST.value()) throw ex
+                throw InvalidInputApiException(
+                    "Replacement data point is invalid.",
+                    "Data point ${dataPoint.dataPointType} (${dataPoint.dataPointId}): " +
+                        ex.validationMessageOr("The replacement data point could not be uploaded."),
+                    ex,
+                )
+            }
         }
 
         /**
@@ -141,7 +154,7 @@ class DatasetJudgementFinalizationService
          */
         private fun getReplacementValueFromQaReport(dataPoint: DataPointJudgementEntity): String {
             val acceptedReport =
-                dataPoint.qaReports.find {
+                dataPoint.latestQaReportsByReviewer().find {
                     it.reporterUserId == dataPoint.reporterUserIdOfAcceptedQaReport?.toString()
                 } ?: throw InvalidInputApiException(
                     summary = "Accepted QA report not found.",

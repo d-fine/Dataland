@@ -802,7 +802,11 @@ function acceptQaReportDatapoint(): void {
  */
 function acceptCustomDatapoint(): void {
   if (!currentDataPointTypeId.value) return;
-  const documentOption = availableDocuments.value.find((doc) => doc.value === customFormData.value.document) ?? null;
+  const documentOption =
+    availableDocuments.value.find(
+      (doc) =>
+        doc.value === customFormData.value.document || doc.dataSource.fileReference === customFormData.value.document
+    ) ?? null;
   const customDataPointJson = unwrapDataPointJson(
     editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
     originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
@@ -837,6 +841,8 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
   if (judgementMetaData?.acceptedSource === AcceptedDataPointSource.Custom && judgementMetaData.customValue) {
     const parsed = parseDataPointJsonToFormData(judgementMetaData.customValue);
     if (parsed !== null) {
+      const matchingDocument = availableDocuments.value.find((doc) => doc.dataSource.fileReference === parsed.document);
+      if (matchingDocument) parsed.document = matchingDocument.value;
       customFormData.value = parsed;
       const wrapped = wrapDataPointJson(judgementMetaData.customValue);
       customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
@@ -851,6 +857,12 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
 }
 
 watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });
+watch(availableDocuments, () => {
+  const matchingDocument = availableDocuments.value.find(
+    (doc) => doc.dataSource.fileReference === customFormData.value.document
+  );
+  if (matchingDocument) customFormData.value.document = matchingDocument.value;
+});
 
 // ===== Overflow popover =====
 

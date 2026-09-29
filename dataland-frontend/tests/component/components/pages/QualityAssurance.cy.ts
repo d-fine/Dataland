@@ -494,7 +494,6 @@ describe('Component tests for the Quality Assurance page', () => {
       LksgFixture.t
     );
 
-    cy.intercept(`**/community/requests/user`, {});
     cy.intercept('POST', '**/api/data-availability/viewable-dimensions/search', [
       {
         companyId: mockDataMetaInfoForActiveDataset.companyId,
