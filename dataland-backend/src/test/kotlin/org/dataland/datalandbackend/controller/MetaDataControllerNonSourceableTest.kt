@@ -29,7 +29,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @DefaultMocks
@@ -124,6 +124,54 @@ class MetaDataControllerNonSourceableTest
             assertEquals(1, allResults.body?.size)
             assertEquals(1, acceptedResults.body?.size)
             assertEquals(0, pendingResults.body?.size)
+        }
+
+        @Test
+        fun `get nonSourceable with dataType omitted returns all entries matching the other filters`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val resultsWithDataTypeOmitted =
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, null, reportingPeriod, null)
+
+            assertEquals(2, resultsWithDataTypeOmitted.body?.size)
+        }
+
+        @Test
+        fun `get nonSourceable with dataType set still filters out entries of other dataTypes`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val resultsFilteredByDataType =
+                metaDataController.getInfoOnNonSourceabilityOfDatasets(storedCompany.companyId, dataType, reportingPeriod, null)
+
+            assertEquals(1, resultsFilteredByDataType.body?.size)
+            assertEquals(dataType, resultsFilteredByDataType.body?.single()?.dataType)
+        }
+
+        @Test
+        fun `get nonSourceable with all filters omitted returns everything`() {
+            AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
+            metaDataController.postNonSourceabilityOfADataset(body("First framework"), bypassQa = true, currentlyActive = true)
+            metaDataController.postNonSourceabilityOfADataset(
+                body("Second framework").copy(dataType = DataType("sfdr")),
+                bypassQa = true,
+                currentlyActive = true,
+            )
+
+            val allResults = metaDataController.getInfoOnNonSourceabilityOfDatasets(null, null, null, null)
+
+            assertEquals(2, allResults.body?.size)
         }
 
         @Test
