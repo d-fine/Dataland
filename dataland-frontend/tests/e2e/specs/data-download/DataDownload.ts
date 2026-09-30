@@ -22,6 +22,24 @@ function checkThatFileExists(filePath: string): void {
 }
 
 /**
+ * Checks that the content of the given file contains the expected column headers.
+ *
+ * @param filePath path to the downloaded file
+ * @param useAliases whether aliases (e.g. 'COMPANY_NAME') or plain names (e.g. 'companyName') are expected
+ */
+function checkAliasesInFile(filePath: string, useAliases: boolean): void {
+  cy.readFile(filePath).then((txt) => {
+    if (useAliases) {
+      expect(txt).to.contain('COMPANY_NAME');
+      expect(txt).to.not.contain('companyName');
+    } else {
+      expect(txt).to.contain('companyName');
+      expect(txt).to.not.contain('COMPANY_NAME');
+    }
+  });
+}
+
+/**
  * Deletes the file and checks that it is deleted
  * @param filePath path to file
  */
@@ -112,24 +130,6 @@ describeIf(
         expect(filePathStr).to.exist;
         checkThatFileExists(filePathStr);
         checkFileSizeAndDeleteAfterwards(filePathStr);
-      });
-    }
-
-    /**
-     * Checks that the content of the given file contains the expected column headers.
-     *
-     * @param filePath path to the downloaded file
-     * @param useAliases whether aliases (e.g. 'COMPANY_NAME') or plain names (e.g. 'companyName') are expected
-     */
-    function checkAliasesInFile(filePath: string, useAliases: boolean): void {
-      cy.readFile(filePath).then((txt) => {
-        if (useAliases) {
-          expect(txt).to.contain('COMPANY_NAME');
-          expect(txt).to.not.contain('companyName');
-        } else {
-          expect(txt).to.contain('companyName');
-          expect(txt).to.not.contain('COMPANY_NAME');
-        }
       });
     }
 
