@@ -11,7 +11,7 @@
     "lint": "eslint . --fix",
     "lintci": "eslint . --max-warnings 0 --no-fix",
     "typecheck": "vue-tsc --build --force",
-    "cypress": "cypress open",
+    "cypress": "DISPLAY=:99 npx cypress open",
     "checkcypresscompilation": "tsc --noEmit -P tsconfig.cypress-e2e.json",
     "testcomponent": "cypress run --component",
     "testpipeline": "cypress run --spec tests/e2e/specs/index.ts",
