@@ -229,7 +229,7 @@ describeIf(
     });
 
     it('Check accepting a custom data point copied from a QA-corrected value with a document reference succeeds', () => {
-      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId)
+      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
       const dataPointType = DATA_POINT_TYPES.areAllGroupEntitiesCovered;
       const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
       const correctedValueWithDocReference = JSON.stringify({
