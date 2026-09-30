@@ -4,12 +4,14 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.validator.ValidCurrencyDataPoint
 import java.math.BigDecimal
 
 /**
  * --- API model ---
  * Fields of a currency data point without restrictions on the value
  */
+@ValidCurrencyDataPoint
 data class ExtendedCurrencyDataPoint(
     override val value: BigDecimal? = null,
     val currency: String? = null,
