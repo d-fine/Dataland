@@ -58,6 +58,7 @@
           :data-test="`${framework}-non-sourceable-info-icon`"
           v-tooltip.top="{ value: nonSourceableInfoTooltipText }"
           @click.stop
+          @keydown.stop
         >
           info
         </em>

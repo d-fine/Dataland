@@ -27,7 +27,7 @@ describe('Component tests for the LksgSubcontractingCompaniesFormField', () => {
         .parents('.form-field')
         .first()
         .find('.d-nace-chipview');
-      cy.get('em').should('contain', 'close');
+      cy.get('.d-nace-chipview button').should('contain', 'close');
     });
   });
 });
