@@ -225,66 +225,69 @@ describeIf(
      */
     function uploadCompanyAlphaAndData(): void {
       const timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps = 1;
-      getAdminToken().then((token: string) => {
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(nameOfCompanyAlpha))
-          .then((storedCompany) => {
-            companyIdOfAlpha = storedCompany.companyId;
-            return uploadFrameworkDataForPublicToolboxFramework(
-              LksgBaseFrameworkDefinition,
-              token,
-              companyIdOfAlpha,
-              '2023',
-              getPreparedFixture('LkSG-date-2023-04-18', lksgPreparedFixtures).t
-            );
-          })
-          .then((dataMetaInformation) => {
-            dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
-          })
-          .then(() => {
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
-          })
-          .then(() => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              LksgBaseFrameworkDefinition,
-              token,
-              companyIdOfAlpha,
-              '2023',
-              getPreparedFixture('LkSG-date-2023-06-22', lksgPreparedFixtures).t
-            );
-          })
-          .then(() => {
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
-          })
-          .then(() => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              LksgBaseFrameworkDefinition,
-              token,
-              companyIdOfAlpha,
-              '2022',
-              getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
-            );
-          })
-          .then(() => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              SfdrBaseFrameworkDefinition,
-              token,
-              companyIdOfAlpha,
-              '2019',
-              getPreparedFixture('companyWithOneFilledSfdrSubcategory', sfdrPreparedFixtures).t
-            );
-          })
-          .then(() => {
-            return uploadFrameworkDataForPublicToolboxFramework(
-              EuTaxonomyFinancialsBaseFrameworkDefinition,
-              token,
-              companyIdOfAlpha,
-              '2019',
-              getPreparedFixture('lightweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
-            );
-          });
-      });
+      let adminToken: string;
+      getAdminToken()
+        .then((token: string) => {
+          adminToken = token;
+          return getOrUploadCompanyViaApi(adminToken, generateDummyCompanyInformation(nameOfCompanyAlpha));
+        })
+        .then((storedCompany) => {
+          companyIdOfAlpha = storedCompany.companyId;
+          return uploadFrameworkDataForPublicToolboxFramework(
+            LksgBaseFrameworkDefinition,
+            adminToken,
+            companyIdOfAlpha,
+            '2023',
+            getPreparedFixture('LkSG-date-2023-04-18', lksgPreparedFixtures).t
+          );
+        })
+        .then((dataMetaInformation) => {
+          dataIdOfSupersededLksg2023ForAlpha = dataMetaInformation.dataId;
+        })
+        .then(() => {
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
+        })
+        .then(() => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            LksgBaseFrameworkDefinition,
+            adminToken,
+            companyIdOfAlpha,
+            '2023',
+            getPreparedFixture('LkSG-date-2023-06-22', lksgPreparedFixtures).t
+          );
+        })
+        .then(() => {
+          // eslint-disable-next-line cypress/no-unnecessary-waiting
+          return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps);
+        })
+        .then(() => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            LksgBaseFrameworkDefinition,
+            adminToken,
+            companyIdOfAlpha,
+            '2022',
+            getPreparedFixture('LkSG-date-2022-07-30', lksgPreparedFixtures).t
+          );
+        })
+        .then(() => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            SfdrBaseFrameworkDefinition,
+            adminToken,
+            companyIdOfAlpha,
+            '2019',
+            getPreparedFixture('companyWithOneFilledSfdrSubcategory', sfdrPreparedFixtures).t
+          );
+        })
+        .then(() => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
+            adminToken,
+            companyIdOfAlpha,
+            '2019',
+            getPreparedFixture('lightweight-eu-taxo-financials-dataset', euTaxoFinancialPreparedFixtures).t
+          );
+        });
     }
 
     /**
