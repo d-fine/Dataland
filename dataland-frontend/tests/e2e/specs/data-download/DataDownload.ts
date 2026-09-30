@@ -116,6 +116,24 @@ describeIf(
     }
 
     /**
+     * Checks that the content of the given file contains the expected column headers.
+     *
+     * @param filePath path to the downloaded file
+     * @param useAliases whether aliases (e.g. 'COMPANY_NAME') or plain names (e.g. 'companyName') are expected
+     */
+    function checkAliasesInFile(filePath: string, useAliases: boolean): void {
+      cy.readFile(filePath).then((txt) => {
+        if (useAliases) {
+          expect(txt).to.contain('COMPANY_NAME');
+          expect(txt).to.not.contain('companyName');
+        } else {
+          expect(txt).to.contain('companyName');
+          expect(txt).to.not.contain('COMPANY_NAME');
+        }
+      });
+    }
+
+    /**
      * Verifies that the downloaded file contains an alias when specified and a column header that is not an alias,
      * when export without aliases is selected
      *
@@ -131,15 +149,7 @@ describeIf(
         extension: fileExtension,
       }).then((filePath) => {
         if (typeof filePath === 'string') {
-          cy.readFile(filePath).then((txt) => {
-            if (useAliases) {
-              expect(txt).to.contain('COMPANY_NAME');
-              expect(txt).to.not.contain('companyName');
-            } else {
-              expect(txt).to.contain('companyName');
-              expect(txt).to.not.contain('COMPANY_NAME');
-            }
-          });
+          checkAliasesInFile(filePath, useAliases);
           deleteFile(filePath);
         }
       });
