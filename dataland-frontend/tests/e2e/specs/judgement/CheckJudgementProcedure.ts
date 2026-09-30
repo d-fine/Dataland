@@ -26,6 +26,7 @@ import type {
   DataPointOverview,
   QaRole,
 } from '@e2e/utils/CheckJudgementJson.ts';
+import { DATA_POINT_TYPES } from '@e2e/utils/CheckJudgementJson.ts';
 import {
   QA_SCENARIO_CONFIG,
   DATA_POINT_PATH_MAP,
@@ -35,6 +36,7 @@ import {
 import { parseJsonValue } from '@e2e/utils/JsonUtils.ts';
 import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
+import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 import { uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
@@ -196,7 +198,8 @@ describeIf(
       waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
 
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
-        const [dataPointType, dataPointId] = Object.entries(overview.dataPointsWithoutQaReports)[0];
+        const dataPointType = DATA_POINT_TYPES.greenAssetRatioEligible;
+        const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
 
         cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
         cy.get('[data-test="judge-modal"]').should('be.visible');
@@ -204,6 +207,8 @@ describeIf(
         cy.get('[data-test="custom-value-field"]').click();
         cy.get('[data-test="custom-value-field"]').clear();
         cy.get('[data-test="custom-value-field"]').type('42');
+
+        selectItemFromDropdownByValue(cy.get('[data-test="custom-currency-field"]').should('be.visible'), 'EUR', true);
 
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
@@ -224,11 +229,11 @@ describeIf(
     });
 
     it('Check accepting a custom data point copied from a QA-corrected value with a document reference succeeds', () => {
-      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
-
-      const [dataPointType, dataPointId] = Object.entries(overview.dataPointsWithoutQaReports)[0];
+      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId)
+      const dataPointType = DATA_POINT_TYPES.areAllGroupEntitiesCovered;
+      const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
       const correctedValueWithDocReference = JSON.stringify({
-        value: '99',
+        value: 'Yes',
         quality: 'Estimated',
         dataSource: {
           fileReference: uploadedDocumentMetaInfo.documentId,

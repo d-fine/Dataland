@@ -151,6 +151,7 @@ function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): Fixture
   input.t.environmental!.biodiversity!.protectedAreasExposure!.value = YesNo.No;
   input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure!.value = YesNo.Yes;
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure!.value = YesNo.Yes;
+  input.t.environmental!.greenhouseGasEmissions!.fossilFuelSectorExposure!.value = YesNo.No;
   return input;
 }
 

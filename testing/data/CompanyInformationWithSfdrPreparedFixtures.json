@@ -3627,7 +3627,7 @@
 						"quality": "Audited"
 					},
 					"fossilFuelSectorExposure": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"page": "451, 1114-1124",
 							"fileName": null,

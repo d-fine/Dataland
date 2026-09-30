@@ -330,6 +330,7 @@ export type CellRow = {
   type: 'cell';
   label: string;
   dataPointTypeId?: string;
+  uploadComponentName?: string;
   originalDisplay: AvailableMLDTDisplayObjectTypes;
   qaReviewDisplay: Map<string, AvailableMLDTDisplayObjectTypes>;
   customDisplay: AvailableMLDTDisplayObjectTypes;
@@ -364,6 +365,7 @@ function buildRowsFromConfig(config: MLDTConfig<FrameworkData>, data: FrameworkD
         type: 'cell',
         label: cell.label,
         dataPointTypeId: cell.dataPointTypeId,
+        uploadComponentName: cell.uploadComponentName,
         originalDisplay: cell.valueGetter(data),
         qaReviewDisplay: getQaReviewMap(cell),
         customDisplay: getCustomDisplay(cell),
