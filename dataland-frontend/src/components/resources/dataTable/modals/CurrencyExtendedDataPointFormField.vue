@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -52,7 +52,7 @@ const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((c
 );
 const dataPointValue = ref<number | null>(parseValue(props.extendedDataPointObject.value));
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
-const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType }>();
+const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 const currency = ref<string | undefined>(undefined);
 
 onMounted(() => {
@@ -62,13 +62,18 @@ onMounted(() => {
 });
 
 /**
+ * Whether the page reference entered in the extended dialog is valid.
+ */
+const isPageValid = computed<boolean>(() => extendedDialogRef.value?.isPageValid ?? true);
+
+/**
  * Reference to the extended dialog to get form data
  */
 function buildApiBodyWithExtendedInfo(): string {
   return buildApiBody(dataPointValue.value, currency.value, extendedDialogRef.value?.getFormData());
 }
 
-defineExpose({ buildApiBodyWithExtendedInfo });
+defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>
 
 <style scoped>

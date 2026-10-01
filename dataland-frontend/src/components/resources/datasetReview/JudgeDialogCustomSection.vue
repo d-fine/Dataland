@@ -211,6 +211,7 @@ import Textarea from 'primevue/textarea';
 import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
+import { isPageReferenceValid } from '@/utils/ValidationUtils.ts';
 import {
   DEFAULT_CUSTOM_FORM_DATA,
   DEFAULT_CUSTOM_JSON,
@@ -289,7 +290,7 @@ const isFormValid = computed<boolean>(() => {
   const valueHasContent = hasValueContent(f.value);
   const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
   const hasAnyContent = valueHasContent || otherFieldsHaveContent;
-  const pagesPatternOk = !f.pages || /^[0-9,\-\s]+$/.test(f.pages);
+  const pagesPatternOk = !f.pages || isPageReferenceValid(f.pages);
 
   return hasAnyContent && pagesPatternOk;
 });

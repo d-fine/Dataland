@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.service
 
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.entity.ProxyCompanyReplacementEmbeddable
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.BasePortfolioName
@@ -170,6 +171,16 @@ class PortfolioService
                     notificationFrequency = portfolio.notificationFrequency,
                     timeWindowThreshold = portfolio.timeWindowThreshold,
                     sharedUserIds = portfolio.sharedUserIds,
+                    proxyCompanyReplacements =
+                        (portfolio.proxyCompanyReplacements ?: emptyList())
+                            .map {
+                                ProxyCompanyReplacementEmbeddable(
+                                    userId = it.userId,
+                                    timestamp = it.timestamp,
+                                    proxiedCompanyId = it.proxiedCompanyId,
+                                    proxyCompanyId = it.proxyCompanyId,
+                                )
+                            }.toMutableSet(),
                 )
 
             return portfolioRepository.save(updatedPortfolioEntity).toBasePortfolio()

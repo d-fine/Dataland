@@ -10,7 +10,6 @@ let returnPassword: string;
 let returnTotpKey: string;
 
 export default defineConfig({
-  allowCypressEnv: false,
   env: {
     KEYCLOAK_DATALAND_ADMIN_PASSWORD: process.env.KEYCLOAK_DATALAND_ADMIN_PASSWORD,
     KEYCLOAK_REVIEWER_PASSWORD: process.env.KEYCLOAK_REVIEWER_PASSWORD,
@@ -48,7 +47,6 @@ export default defineConfig({
     EXECUTION_ENVIRONMENT: process.env.CYPRESS_EXECUTION_ENVIRONMENT ?? 'developmentLocal',
     RESET_DATABASE: process.env.CYPRESS_RESET_DATABASE,
   },
-  experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
   defaultCommandTimeout: 10000,
   pageLoadTimeout: 120000,

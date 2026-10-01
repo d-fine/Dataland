@@ -61,5 +61,4 @@ located [here](https://test.dataland.com/api/swagger-ui/index.html). Requests ca
   * run `npm run testpipeline -- --env EXECUTION_ENVIRONMENT=""` 
 
 ## Licenses
-This project makes use of open source dependencies. To see a list of gradle dependencies along with their 
-licenses, run `./gradlew generateLicenseReport` 
+This project makes use of open source dependencies. To see a list of gradle dependencies along with their licenses, run `./gradlew generateLicenseReport` 

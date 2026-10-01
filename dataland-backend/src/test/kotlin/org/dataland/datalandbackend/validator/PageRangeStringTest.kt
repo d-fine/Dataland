@@ -29,4 +29,40 @@ class PageRangeStringTest {
             assert(violations.size == 1) { "Expected 1 violation for invalid input: $it" }
         }
     }
+
+    @Test
+    fun `check that valid comma-separated page lists are processed correctly`() {
+        listOf(
+            "4, 112",
+            "4,112",
+            "4 , 112",
+            "1-2,4",
+            "1,3-5,10",
+            "2,5-7",
+            "1,2,3",
+        ).forEach {
+            val violations = validator.validate(PageRangeHolder(it))
+            println("Testing value $it: Violations: ${violations.size}")
+            assert(violations.isEmpty()) { "Expected no violations for valid input: $it" }
+        }
+    }
+
+    @Test
+    fun `check that validation fails correctly for invalid page lists`() {
+        listOf(
+            "4,,5",
+            "4-6,5-7",
+            "10-12,4",
+            "4,4",
+            "4,4-6",
+            "4 - 6",
+            ",4",
+            "4,",
+            "4,5,",
+        ).forEach {
+            val violations = validator.validate(PageRangeHolder(it))
+            println("Testing value $it: Violations: ${violations.size}")
+            assert(violations.size == 1) { "Expected 1 violation for invalid input: $it" }
+        }
+    }
 }

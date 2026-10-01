@@ -29,9 +29,10 @@ open class ExportStreamBuilder(
 ) {
     companion object {
         private const val HEADER_ROW_INDEX = 0
-        private const val COMPANY_NAME_POSITION = -3
-        private const val COMPANY_LEI_POSITION = -2
-        private const val REPORTING_PERIOD_POSITION = -1
+        private const val COMPANY_NAME_POSITION = -4
+        private const val COMPANY_LEI_POSITION = -3
+        private const val REPORTING_PERIOD_POSITION = -2
+        private const val AVAILABILITY_POSITION = -1
         private const val FIXED_COLUMN_WIDTH = 30
         private const val BUFFER = 15
         private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
@@ -319,6 +320,7 @@ open class ExportStreamBuilder(
                         it.startsWith("companyName") -> COMPANY_NAME_POSITION
                         it.startsWith("companyLei") -> COMPANY_LEI_POSITION
                         it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
+                        it.startsWith("availability") -> AVAILABILITY_POSITION
                         else -> 0
                     }
                 }.then(naturalOrder()),

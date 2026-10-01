@@ -12,6 +12,7 @@ import 'material-icons/iconfont/material-icons.css'; // prefer these icons in mo
 import 'primeflex/primeflex.min.css';
 import '@/assets/fonts/ibm-plex-sans.scss';
 import '@/assets/theme/main.css';
+import '@/assets/scss/buttonReset.scss';
 import '@formkit/themes/genesis';
 import router from './router';
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';

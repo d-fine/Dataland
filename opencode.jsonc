@@ -3,7 +3,7 @@
   "enabled_providers": [
     "github-copilot"
   ],
-  "model": "github-copilot/claude-sonnet-5",
+  "model": "github-copilot/claude-sonnet-5.5",
   // Load only the root shared guidance globally; package-specific AGENTS.md files are referenced from there.
   "instructions": [
     "AGENTS.md"
