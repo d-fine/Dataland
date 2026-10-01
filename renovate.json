@@ -12,6 +12,7 @@
   "separateMultipleMajor": true,
   "minimumReleaseAge": "5 days",
   "updateNotScheduled": false,
+  "timezone": "Europe/Berlin",
   "schedule": [
     "after 11pm every weekday",
     "before 6am every weekday",
@@ -64,6 +65,13 @@
         "minor"
       ],
       "automerge": true
+    },
+    {
+      "description": "Maven Central rate-limits Mend-hosted Renovate (HTTP 429), which aborts the whole run. Kotlin is updated manually until this is resolved.",
+      "matchPackageNames": [
+        "/^org\\.jetbrains\\.kotlin[.:]/"
+      ],
+      "enabled": false
     }
   ]
 }
