@@ -1,0 +1,60 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2021-12-31",
+      "fiscalYearDeviation": "NoDeviation",
+      "referencedReports": {}
+    },
+    "company": {
+      "fiscalYearEnd": "2021-12-31"
+    }
+  },
+  "environmental": {
+    "biodiversity": {
+      "landDegradationDesertificationSoilSealing": "Yes",
+      "protectedAreasExposure": null
+    },
+    "energyPerformance": {
+      "totalHighImpactClimateSectorEnergyConsumptionInGWh": null
+    },
+    "greenhouseGasEmissions": {
+      "scope1GhgEmissionsInTonnes": 100
+    },
+    "water": {
+      "waterWithdrawalInCubicMeters": {
+        "value": 42.0
+      },
+      "waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue": {
+        "value": 4.2
+      },
+      "waterReusedInCubicMeters": null
+    }
+  },
+  "financial": {
+    "financial": {
+      "totalRevenueInEUR": {
+        "value": 654321.0
+      }
+    },
+    "listedCompany": {
+      "enterpriseValueInEUR": {
+        "value": 123456.0
+      }
+    }
+  },
+  "social": {
+    "humanRights": {
+      "riskOfChildLabourIncidents": "No",
+      "riskOfReportedForcedOrCompulsoryLabourIncidents": "No",
+      "humanRightsPolicy": null
+    },
+    "antiCorruptionAndAntiBribery": {
+      "numberOfReportedConvictionsOfBriberyAndCorruption": 2,
+      "casesOfInsufficientActionAgainstBriberyAndCorruption": null
+    },
+    "socialAndEmployeeMatters": {
+      "violationOfUngcPrinciplesAndOecdGuidelines": "No",
+      "rateOfAccidentsInPercent": null
+    }
+  }
+}
