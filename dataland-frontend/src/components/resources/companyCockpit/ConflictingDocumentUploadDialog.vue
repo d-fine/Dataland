@@ -78,7 +78,7 @@ async function getConflictingCompanyNames(): Promise<void> {
     const response = await documentControllerApi.getDocumentMetaInformation(props.documentId);
     conflictingCompanyIds.value = new Set(response.data.companyIds);
     for (const companyId of conflictingCompanyIds.value) {
-      const companyName = (await companyControllerApi.getCompanyInfo(companyId)).data.companyName;
+      const companyName = (await companyControllerApi.getCompanyInfo(companyId)).data.companyName; // NOSONAR: keep sequential
       conflictingCompanyNames.value.add(companyName);
     }
   } catch (error) {

@@ -15,19 +15,13 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const login = (): void => {
   assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      if (keycloak.authenticated) return;
-      keycloak.login().catch((error) => console.error(error));
-    })
+    .then((keycloak) => (keycloak.authenticated ? undefined : keycloak.login()))
     .catch((error) => console.error(error));
 };
 
 const register = (): void => {
   assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      if (keycloak.authenticated) return;
-      keycloak.register().catch((error) => console.error(error));
-    })
+    .then((keycloak) => (keycloak.authenticated ? undefined : keycloak.register()))
     .catch((error) => console.error(error));
 };
 </script>
