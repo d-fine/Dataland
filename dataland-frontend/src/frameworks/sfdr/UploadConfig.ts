@@ -154,7 +154,7 @@ export const sfdrDataModel = [
   {
     name: 'financial',
     label: 'Financial',
-    color: '',
+    color: 'blue',
     showIf: (): boolean => true,
     subcategories: [
       {

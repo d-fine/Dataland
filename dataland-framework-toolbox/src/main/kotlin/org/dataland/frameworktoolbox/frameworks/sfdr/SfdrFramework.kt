@@ -117,5 +117,10 @@ class SfdrFramework :
             viewPageLabelBadgeColor = LabelBadgeColor.Yellow
             uploadPageLabelBadgeColor = LabelBadgeColor.Yellow
         }
+
+        root.edit<ComponentGroup>("financial") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Blue
+            uploadPageLabelBadgeColor = LabelBadgeColor.Blue
+        }
     }
 }

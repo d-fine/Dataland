@@ -428,6 +428,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         ],
       },
     ],
+    labelBadgeColor: 'blue',
   },
   {
     type: 'section',
