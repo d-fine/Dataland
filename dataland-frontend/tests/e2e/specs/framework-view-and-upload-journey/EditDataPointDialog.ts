@@ -61,6 +61,7 @@ describeIf(
     let expectedScope1GhgEmissions: string;
     let expectedScope1GhgEmissionsQuality: string;
     let expectedTotalAmountOfReportedFinesOfBriberyAndCorruption: string;
+    let expectedFossilFuelSectorExposure: string;
 
     before(() => {
       cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then((jsonContent) => {
@@ -77,6 +78,8 @@ describeIf(
           SfdrFixtureWithNoNullFields.t.social?.antiCorruptionAndAntiBribery
             ?.totalAmountOfReportedFinesOfBriberyAndCorruption?.value
         );
+        expectedFossilFuelSectorExposure =
+          SfdrFixtureWithNoNullFields.t.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure?.value ?? '';
       });
 
       getAdminToken().then((token: string) => {
@@ -183,16 +186,20 @@ describeIf(
       navigateToEditMode();
       openEditDialog('extendedEnumYesNoFossilFuelSectorExposure');
 
+      const newFossilFuelSectorExposure = expectedFossilFuelSectorExposure === 'Yes' ? 'No' : 'Yes';
+
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="yes-no-select"]').should('be.visible');
-          cy.get('[data-test="yes-no-select"]').contains('button', 'No').should('have.attr', 'aria-pressed', 'true');
-          cy.get('[data-test="yes-no-select"]').contains('Yes').click();
+          cy.get('[data-test="yes-no-select"]')
+            .contains('button', expectedFossilFuelSectorExposure)
+            .should('have.attr', 'aria-pressed', 'true');
+          cy.get('[data-test="yes-no-select"]').contains(newFossilFuelSectorExposure).click();
         });
 
       saveDataPoint();
-      verifyFieldValue('Fossil Fuel Sector Exposure', 'Yes');
+      verifyFieldValue('Fossil Fuel Sector Exposure', newFossilFuelSectorExposure);
     });
 
     it('should open a Currency EditDataPointDialog, edit all fields and save changes successfully', () => {

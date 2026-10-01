@@ -167,6 +167,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.water = null;
   input.t.environmental!.emissions = null;
   input.t.environmental!.greenhouseGasEmissions = null;
+  input.t.financial = null;
 
   input.t.social = null;
   return input;

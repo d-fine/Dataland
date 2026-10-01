@@ -135,7 +135,6 @@ import MostImportantProductsFormField from '@/components/forms/parts/fields/Most
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
@@ -185,7 +184,6 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
-    HighImpactClimateSectorsFormField,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyExtendedDataPointFormField,
