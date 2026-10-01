@@ -72,6 +72,28 @@ class SfdrFramework :
                     }
                 }
             }
+            edit<ComponentGroup>("company") {
+                edit<SingleSelectComponent>("mainPcafSector") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumSfdrMainPcafSector",
+                            dataPointTypeIdOverwrite = "extendedEnumSfdrMainPcafSector",
+                        )
+                    }
+                }
+                edit<SingleSelectComponent>("companyExchangeStatus") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumSfdrCompanyExchangeStatus",
+                            dataPointTypeIdOverwrite = "extendedEnumSfdrCompanyExchangeStatus",
+                        )
+                    }
+                }
+            }
         }
     }
 
