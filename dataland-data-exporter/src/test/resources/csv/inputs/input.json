@@ -1,8 +1,0 @@
-{
-  "presentMapping": "Here",
-  "notMapped": "NotMapped",
-  "nested": {
-    "nestedMapping": "NestedHere"
-  },
-  "nullValued": null
-}
