@@ -13,6 +13,15 @@
         "comment": "connect multi-byte pixel",
         "quality": "Reported"
       },
+      "referencedReports": {
+        "SustainabilityReport": {
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "fileName": "SustainabilityReport",
+          "publicationDate": "2023-03-23"
+        }
+      }
+    },
+    "company": {
       "fiscalYearEnd": {
         "value": "2024-05-31",
         "dataSource": {
@@ -24,12 +33,27 @@
         "comment": "transmit auxiliary alarm",
         "quality": "Reported"
       },
-      "referencedReports": {
-        "SustainabilityReport": {
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+      "mainPcafSector": {
+        "value": "Energy",
+        "dataSource": {
+          "page": 12,
           "fileName": "SustainabilityReport",
-          "publicationDate": "2023-03-23"
-        }
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "pcaf-sector"
+        },
+        "comment": "main pcaf sector of the company",
+        "quality": "Reported"
+      },
+      "companyExchangeStatus": {
+        "value": "Listed",
+        "dataSource": {
+          "page": 13,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "exchange-status"
+        },
+        "comment": "listed on an exchange",
+        "quality": "Reported"
       }
     }
   },
@@ -179,28 +203,6 @@
         "comment": "back up mobile protocol",
         "quality": "Reported"
       },
-      "enterpriseValueInEUR": {
-        "value": 7862174462.06,
-        "dataSource": {
-          "page": 673,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "channels"
-        },
-        "comment": "override back-end program",
-        "quality": "Reported"
-      },
-      "totalRevenueInEUR": {
-        "value": 4011820680.46,
-        "dataSource": {
-          "page": 548,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "supply-chains"
-        },
-        "comment": "override wireless alarm",
-        "quality": "Audited"
-      },
       "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
         "value": 81868.4,
         "dataSource": {
@@ -254,17 +256,6 @@
           "tagName": "supply-chains"
         },
         "comment": "program solid state application",
-        "quality": "NoDataFound"
-      },
-      "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-        "value": 62410.32,
-        "dataSource": {
-          "page": 726,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "bandwidth"
-        },
-        "comment": "transmit haptic microchip",
         "quality": "NoDataFound"
       },
       "fossilFuelSectorExposure": {
@@ -345,224 +336,6 @@
         },
         "comment": "quantify open-source card",
         "quality": "Audited"
-      },
-      "applicableHighImpactClimateSectors": {
-        "NaceCodeA": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeB": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeC": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeD": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeE": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeF": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeG": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeH": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        },
-        "NaceCodeL": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "value": 49855.91,
-            "dataSource": {
-              "page": 3,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "e-business"
-            },
-            "comment": "copy solid state application",
-            "quality": "NoDataFound"
-          },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "value": 39774.05,
-            "dataSource": {
-              "page": 691,
-              "fileName": "SustainabilityReport",
-              "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-              "tagName": "lifetime value"
-            },
-            "comment": "hack virtual capacitor",
-            "quality": "NoDataFound"
-          }
-        }
       },
       "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
         "value": 29015.59,
@@ -687,17 +460,6 @@
         "comment": "reboot bluetooth alarm",
         "quality": "Reported"
       },
-      "highlyBiodiverseGrasslandExposure": {
-        "value": "Yes",
-        "dataSource": {
-          "page": 866,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "initiatives"
-        },
-        "comment": "program primary port",
-        "quality": "Incomplete"
-      },
       "manufactureOfAgrochemicalPesticidesProducts": {
         "value": "Yes",
         "dataSource": {
@@ -708,17 +470,6 @@
         },
         "comment": "reboot open-source microchip",
         "quality": "Estimated"
-      },
-      "landDegradationDesertificationSoilSealingExposure": {
-        "value": "Yes",
-        "dataSource": {
-          "page": 356,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "technologies"
-        },
-        "comment": "compress back-end system",
-        "quality": "NoDataFound"
       },
       "sustainableAgriculturePolicy": {
         "value": "No",
@@ -774,6 +525,17 @@
         },
         "comment": "transmit redundant monitor",
         "quality": "Incomplete"
+      },
+      "landDegradationDesertificationSoilSealing": {
+        "value": "Yes",
+        "dataSource": {
+          "page": 356,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "technologies"
+        },
+        "comment": "compress back-end system",
+        "quality": "NoDataFound"
       }
     },
     "water": {
@@ -788,17 +550,6 @@
         "comment": "parse bluetooth firewall",
         "quality": "Incomplete"
       },
-      "waterConsumptionInCubicMeters": {
-        "value": 37869.57,
-        "dataSource": {
-          "page": 574,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "schemas"
-        },
-        "comment": "connect digital port",
-        "quality": "Estimated"
-      },
       "waterReusedInCubicMeters": {
         "value": 49771.22,
         "dataSource": {
@@ -809,17 +560,6 @@
         },
         "comment": "generate online pixel",
         "quality": "Reported"
-      },
-      "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-        "value": 45500.79,
-        "dataSource": {
-          "page": 643,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "models"
-        },
-        "comment": "transmit cross-platform interface",
-        "quality": "Estimated"
       },
       "waterManagementPolicy": {
         "value": "Yes",
@@ -842,6 +582,28 @@
         },
         "comment": "override cross-platform port",
         "quality": "Incomplete"
+      },
+      "waterWithdrawalInCubicMeters": {
+        "value": 37869.57,
+        "dataSource": {
+          "page": 574,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "schemas"
+        },
+        "comment": "connect digital port",
+        "quality": "Estimated"
+      },
+      "waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue": {
+        "value": 45500.79,
+        "dataSource": {
+          "page": 643,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "models"
+        },
+        "comment": "transmit cross-platform interface",
+        "quality": "Estimated"
       }
     },
     "waste": {
@@ -961,17 +723,6 @@
         "comment": "reboot mobile bandwidth",
         "quality": "Reported"
       },
-      "transparencyDisclosurePolicy": {
-        "value": "Yes",
-        "dataSource": {
-          "page": 667,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "paradigms"
-        },
-        "comment": "override multi-byte pixel",
-        "quality": "NoDataFound"
-      },
       "humanRightsDueDiligencePolicy": {
         "value": "Yes",
         "dataSource": {
@@ -1016,17 +767,6 @@
         "comment": "bypass back-end bandwidth",
         "quality": "NoDataFound"
       },
-      "iso14001Certificate": {
-        "value": "No",
-        "dataSource": {
-          "page": 557,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "communities"
-        },
-        "comment": "index digital driver",
-        "quality": "Audited"
-      },
       "policyAgainstBriberyAndCorruption": {
         "value": "No",
         "dataSource": {
@@ -1049,17 +789,6 @@
         "comment": "generate optical bus",
         "quality": "NoDataFound"
       },
-      "technologiesExpertiseTransferPolicy": {
-        "value": "Yes",
-        "dataSource": {
-          "page": 1158,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "channels"
-        },
-        "comment": "transmit 1080p system",
-        "quality": "Estimated"
-      },
       "fairCompetitionPolicy": {
         "value": "Yes",
         "dataSource": {
@@ -1070,17 +799,6 @@
         },
         "comment": "bypass 1080p array",
         "quality": "Reported"
-      },
-      "violationOfTaxRulesAndRegulation": {
-        "value": "Yes",
-        "dataSource": {
-          "page": 834,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "methodologies"
-        },
-        "comment": "connect optical interface",
-        "quality": "Estimated"
       },
       "unGlobalCompactPrinciplesCompliancePolicy": {
         "value": "No",
@@ -1103,30 +821,6 @@
         },
         "comment": "quantify redundant bus",
         "quality": "Reported"
-      },
-      "averageGrossHourlyEarningsMaleEmployees": {
-        "value": 2587166298.18,
-        "dataSource": {
-          "page": 552,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "communities"
-        },
-        "comment": "program solid state transmitter",
-        "quality": "Reported",
-        "currency": "TWD"
-      },
-      "averageGrossHourlyEarningsFemaleEmployees": {
-        "value": 4231106175.57,
-        "dataSource": {
-          "page": 161,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "networks"
-        },
-        "comment": "calculate primary feed",
-        "quality": "Reported",
-        "currency": "SZL"
       },
       "unadjustedGenderPayGapInPercent": {
         "value": 76003.84,
@@ -1314,18 +1008,16 @@
         },
         "comment": "generate wireless pixel",
         "quality": "Incomplete"
-      }
-    },
-    "greenSecurities": {
-      "securitiesNotCertifiedAsGreen": {
-        "value": "No",
+      },
+      "violationOfUngcPrinciplesAndOecdGuidelines": {
+        "value": "Yes",
         "dataSource": {
-          "page": 832,
+          "page": 834,
           "fileName": "SustainabilityReport",
           "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "deliverables"
+          "tagName": "methodologies"
         },
-        "comment": "program online interface",
+        "comment": "connect optical interface",
         "quality": "Estimated"
       }
     },
@@ -1363,7 +1055,18 @@
         "comment": "reboot cross-platform alarm",
         "quality": "Reported"
       },
-      "reportedChildLabourIncidents": {
+      "numberOfReportedIncidentsOfHumanRightsViolations": {
+        "value": 555,
+        "dataSource": {
+          "page": 762,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "action-items"
+        },
+        "comment": "program digital application",
+        "quality": "Incomplete"
+      },
+      "riskOfChildLabourIncidents": {
         "value": "Yes",
         "dataSource": {
           "page": 495,
@@ -1374,7 +1077,7 @@
         "comment": "reboot haptic transmitter",
         "quality": "Estimated"
       },
-      "reportedForcedOrCompulsoryLabourIncidents": {
+      "riskOfReportedForcedOrCompulsoryLabourIncidents": {
         "value": "Yes",
         "dataSource": {
           "page": 421,
@@ -1383,17 +1086,6 @@
           "tagName": "platforms"
         },
         "comment": "connect multi-byte sensor",
-        "quality": "Incomplete"
-      },
-      "numberOfReportedIncidentsOfHumanRightsViolations": {
-        "value": 555,
-        "dataSource": {
-          "page": 762,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "action-items"
-        },
-        "comment": "program digital application",
         "quality": "Incomplete"
       }
     },
@@ -1409,17 +1101,6 @@
         "comment": "transmit online sensor",
         "quality": "Estimated"
       },
-      "reportedConvictionsOfBriberyAndCorruption": {
-        "value": 6149,
-        "dataSource": {
-          "page": 786,
-          "fileName": "SustainabilityReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "tagName": "solutions"
-        },
-        "comment": "connect digital bus",
-        "quality": "Audited"
-      },
       "totalAmountOfReportedFinesOfBriberyAndCorruption": {
         "value": 1270146633.03,
         "dataSource": {
@@ -1431,6 +1112,113 @@
         "comment": "copy auxiliary transmitter",
         "quality": "Estimated",
         "currency": "WST"
+      },
+      "numberOfReportedConvictionsOfBriberyAndCorruption": {
+        "value": 6149,
+        "dataSource": {
+          "page": 786,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "solutions"
+        },
+        "comment": "connect digital bus",
+        "quality": "Audited"
+      }
+    }
+  },
+  "financial": {
+    "financial": {
+      "grossDomesticProductGdpInEUR": {
+        "value": 3500000000000.0,
+        "dataSource": {
+          "page": 20,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "gdp"
+        },
+        "comment": "gross domestic product of the country",
+        "quality": "Reported"
+      },
+      "totalRevenueInEUR": {
+        "value": 4011820680.46,
+        "dataSource": {
+          "page": 548,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "supply-chains"
+        },
+        "comment": "override wireless alarm",
+        "quality": "Audited"
+      },
+      "bookValueOfDebtInEUR": {
+        "value": 1234567890.12,
+        "dataSource": {
+          "page": 21,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "book-value-of-debt"
+        },
+        "comment": "book value of debt as listed on the balance sheet",
+        "quality": "Reported"
+      }
+    },
+    "listedCompany": {
+      "marketCapitalizationInEUR": {
+        "value": 9876543210.98,
+        "dataSource": {
+          "page": 22,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "market-cap"
+        },
+        "comment": "market capitalization of the company",
+        "quality": "Reported"
+      },
+      "minoritiesInterestInEUR": {
+        "value": 567890123.45,
+        "dataSource": {
+          "page": 23,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "minorities-interest"
+        },
+        "comment": "minorities interest as listed on the balance sheet",
+        "quality": "Reported"
+      },
+      "enterpriseValueInEUR": {
+        "value": 7862174462.06,
+        "dataSource": {
+          "page": 673,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "channels"
+        },
+        "comment": "override back-end program",
+        "quality": "Reported"
+      }
+    },
+    "unlistedCompany": {
+      "totalEquityInEUR": {
+        "value": 2345678901.23,
+        "dataSource": {
+          "page": 24,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "total-equity"
+        },
+        "comment": "total equity as listed on the balance sheet",
+        "quality": "Reported"
+      },
+      "totalEquityAndDebtInEUR": {
+        "value": 3456789012.34,
+        "dataSource": {
+          "page": 25,
+          "fileName": "SustainabilityReport",
+          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "tagName": "total-equity-and-debt"
+        },
+        "comment": "sum of total equity and total debt as listed on the balance sheet",
+        "quality": "Reported"
       }
     }
   }

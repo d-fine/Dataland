@@ -5757,15 +5757,15 @@
           },
           "totalRevenueInEUR": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "bookValueOfDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
       "SfdrFinancialListedCompany": {
         "type": "object",
         "properties": {
-          "bookValueOfDebtInEUR": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "marketCapitalizationInEUR": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },

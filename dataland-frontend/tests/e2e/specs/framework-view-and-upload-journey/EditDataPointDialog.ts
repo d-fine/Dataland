@@ -60,7 +60,7 @@ describeIf(
     let SfdrFixtureWithNoNullFields: FixtureData<SfdrData>;
     let expectedScope1GhgEmissions: string;
     let expectedScope1GhgEmissionsQuality: string;
-    let expectedAverageGrossHourlyEarningsMale: string;
+    let expectedTotalAmountOfReportedFinesOfBriberyAndCorruption: string;
 
     before(() => {
       cy.fixture('CompanyInformationWithSfdrPreparedFixtures').then((jsonContent) => {
@@ -73,8 +73,9 @@ describeIf(
         expectedScope1GhgEmissionsQuality =
           SfdrFixtureWithNoNullFields.t.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.quality ??
           '';
-        expectedAverageGrossHourlyEarningsMale = formatNumberToReadableFormat(
-          SfdrFixtureWithNoNullFields.t.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees?.value
+        expectedTotalAmountOfReportedFinesOfBriberyAndCorruption = formatNumberToReadableFormat(
+          SfdrFixtureWithNoNullFields.t.social?.antiCorruptionAndAntiBribery
+            ?.totalAmountOfReportedFinesOfBriberyAndCorruption?.value
         );
       });
 
@@ -198,14 +199,14 @@ describeIf(
       const newValue = '1234.56';
 
       navigateToEditMode();
-      openEditDialog('extendedCurrencyAverageGrossHourlyEarningsMaleEmployees');
+      openEditDialog('extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption');
 
       cy.get('div.p-dialog-content')
         .should('be.visible')
         .within(() => {
           cy.get('[data-test="currency-value-input"] input')
             .should('exist')
-            .should('have.value', expectedAverageGrossHourlyEarningsMale);
+            .should('have.value', expectedTotalAmountOfReportedFinesOfBriberyAndCorruption);
 
           cy.get('[data-test="currency"]').should('exist');
         });
@@ -228,7 +229,7 @@ describeIf(
 
       saveDataPoint();
       verifyFieldValue(
-        'Average Gross Hourly Earnings Male Employees',
+        'Total Amount Of Reported Fines Of Bribery and Corruption',
         formatNumberToReadableFormat(Number.parseFloat(newValue))
       );
     });

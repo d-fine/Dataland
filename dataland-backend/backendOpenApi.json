@@ -9511,12 +9511,7 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
-          }
-        }
-      },
-      "SfdrFinancialListedCompany": {
-        "type": "object",
-        "properties": {
+          },
           "bookValueOfDebtInEUR": {
             "nullable": true,
             "allOf": [
@@ -9524,7 +9519,12 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
-          },
+          }
+        }
+      },
+      "SfdrFinancialListedCompany": {
+        "type": "object",
+        "properties": {
           "marketCapitalizationInEUR": {
             "nullable": true,
             "allOf": [

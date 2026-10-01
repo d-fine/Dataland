@@ -10,8 +10,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrFinancialListedCompany(
     @field:Valid()
-    val bookValueOfDebtInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val marketCapitalizationInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val minoritiesInterestInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

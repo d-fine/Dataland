@@ -76,7 +76,7 @@ function manipulateFixtureCompanyNameForFrameworkSearchTest(input: FixtureData<S
  */
 function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-currency-input';
-  input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
+  input.t.social!.antiCorruptionAndAntiBribery!.totalAmountOfReportedFinesOfBriberyAndCorruption!.value = -100;
   return input;
 }
 
@@ -100,7 +100,7 @@ function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<
  */
 function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-negative-long-input';
-  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
+  input.t.social!.antiCorruptionAndAntiBribery!.numberOfReportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }
 
@@ -125,7 +125,7 @@ function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>
 function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-two-invalid-inputs';
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidents!.value = -1;
-  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
+  input.t.social!.antiCorruptionAndAntiBribery!.numberOfReportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }
 
@@ -161,7 +161,7 @@ function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): Fixture
  */
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'companyWithOneFilledSfdrSubcategory';
-  input.t.general!.general!.fiscalYearEnd!.value = '2020-01-03';
+  input.t.general!.company!.fiscalYearEnd!.value = '2020-01-03';
   input.t.environmental!.energyPerformance = null;
   input.t.environmental!.waste = null;
   input.t.environmental!.water = null;
@@ -193,8 +193,10 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
       general: {
         dataDate: '2022-08-27',
         fiscalYearDeviation: { value: 'Deviation' },
-        fiscalYearEnd: { value: '2023-01-01' },
         referencedReports: null!,
+      },
+      company: {
+        fiscalYearEnd: { value: '2023-01-01' },
       },
     },
     social: {

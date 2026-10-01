@@ -1,6 +1,6 @@
 {
-  "id" : "extendedIntegerReportedConvictionsOfBriberyAndCorruption",
-  "name" : "Reported Convictions Of Bribery and Corruption",
+  "id" : "extendedIntegerNumberOfReportedConvictionsOfBriberyAndCorruption",
+  "name" : "Number Of Reported Convictions Of Bribery And Corruption",
   "businessDefinition" : "Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17",
   "dataPointBaseTypeId" : "extendedInteger",
   "frameworkOwnership" : [ "sfdr" ],

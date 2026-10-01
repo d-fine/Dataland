@@ -59,7 +59,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.general?.company?.companyExchangeStatus?.dataSource?.fileReference,
             dataset.financial?.financial?.grossDomesticProductGdpInEUR?.dataSource?.fileReference,
             dataset.financial?.financial?.totalRevenueInEUR?.dataSource?.fileReference,
-            dataset.financial?.listedCompany?.bookValueOfDebtInEUR?.dataSource?.fileReference,
+            dataset.financial?.financial?.bookValueOfDebtInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.marketCapitalizationInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.minoritiesInterestInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.enterpriseValueInEUR?.dataSource?.fileReference,

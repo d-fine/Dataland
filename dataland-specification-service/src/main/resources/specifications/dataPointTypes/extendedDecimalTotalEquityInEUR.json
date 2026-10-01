@@ -1,0 +1,9 @@
+{
+  "id" : "extendedDecimalTotalEquityInEUR",
+  "name" : "Total equity",
+  "businessDefinition" : "Total equity in EUR as listed on the balance sheet",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : [ "min:0" ],
+  "calculationRules" : [ ]
+}

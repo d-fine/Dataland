@@ -1,6 +1,6 @@
 {
-  "id" : "extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents",
-  "name" : "Reported Forced Or Compulsory Labour Incidents",
+  "id" : "extendedEnumYesNoRiskOfReportedForcedOrCompulsoryLabourIncidents",
+  "name" : "Risk Of Reported Forced Or Compulsory Labour Incidents",
   "businessDefinition" : "Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : [ "sfdr" ],
