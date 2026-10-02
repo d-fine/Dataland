@@ -87,9 +87,20 @@ class V34__RenameDeleteAndAddSfdrFields : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(context, "sfdr", this::migrateSfdrData)
-        renameDataPointTypes(context)
-        deleteDataPointTypes(context)
+        if (dataPointItemsTableExists(context)) {
+            renameDataPointTypes(context)
+            deleteDataPointTypes(context)
+        }
     }
+
+    /**
+     * The data_point_items table is created by Hibernate and therefore does not exist yet on a fresh database.
+     */
+    private fun dataPointItemsTableExists(context: Context?): Boolean =
+        context!!
+            .connection.metaData
+            .getTables(null, null, "data_point_items", null)
+            .use { it.next() }
 
     /**
      * Applies all renames, deletions, and restructuring to a single SFDR dataset blob.
