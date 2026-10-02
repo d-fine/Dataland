@@ -57,21 +57,20 @@ export function useAcceptAllRemainingOriginalDataPointsMutation(): UseMutationRe
         .map((dataPoint) => dataPoint.dataPointType);
 
       for (const batch of chunk(remainingDataPointTypeIds, MAX_CONCURRENT_REQUESTS)) {
-        await Promise.allSettled(
-          batch.map((dataPointTypeId) =>
-            apiClientProvider.apiClients.datasetJudgementController
-              .patchJudgementDetails(judgementId, dataPointTypeId, {
-                acceptedSource: AcceptedDataPointSource.Original,
-              })
-              .catch((error: unknown) => {
-                console.error(
-                  `Error accepting original data point for dataPointType: ${dataPointTypeId} ` +
-                    `while accepting all remaining original data points.`,
-                  error
-                );
-              })
-          )
+        const requests = batch.map((dataPointTypeId) =>
+          apiClientProvider.apiClients.datasetJudgementController
+            .patchJudgementDetails(judgementId, dataPointTypeId, {
+              acceptedSource: AcceptedDataPointSource.Original,
+            })
+            .catch((error: unknown) => {
+              console.error(
+                `Error accepting original data point for dataPointType: ${dataPointTypeId} ` +
+                  `while accepting all remaining original data points.`,
+                error
+              );
+            })
         );
+        await Promise.allSettled(requests); // NOSONAR: sequential batches limit concurrency
       }
     },
 

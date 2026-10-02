@@ -36,11 +36,11 @@ function fillRequiredEutaxonomyNonFinancialsFields(): void {
  * @param frontendDocumentHash calculated hash of the document
  */
 function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string, frontendDocumentHash: string): void {
-  cy.task<{ [type: string]: ArrayBuffer }>('readFile', `../${TEST_PDF_FILE_PATH}`).then(async (bufferObject) => {
-    await uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH).then((response) => {
+  cy.task<{ [type: string]: ArrayBuffer }>('readFile', `../${TEST_PDF_FILE_PATH}`)
+    .then((bufferObject) => uploadDocumentViaApi(keycloakToken, bufferObject.data, TEST_PDF_FILE_PATH))
+    .then((response) => {
       expect(frontendDocumentHash).to.equal(response.documentId);
     });
-  });
 }
 
 /**
@@ -51,11 +51,15 @@ function validateFrontendAndBackendDocumentHashesCoincide(keycloakToken: string,
  */
 function createOwnedCompany(token: string): Promise<{ token: string; companyId: string }> {
   const dummyCompanyInformation = generateDummyCompanyInformation(`Company-For-DataUpload-test-${Date.now()}`);
-  return getOrUploadCompanyViaApi(token, dummyCompanyInformation).then((storedCompany) => {
-    return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
-      return { token: token, companyId: storedCompany.companyId };
+  let companyId: string;
+  return getOrUploadCompanyViaApi(token, dummyCompanyInformation)
+    .then((storedCompany) => {
+      companyId = storedCompany.companyId;
+      return assignCompanyOwnershipToDatalandAdmin(token, companyId);
+    })
+    .then(() => {
+      return { token: token, companyId: companyId };
     });
-  });
 }
 
 describeIf(
