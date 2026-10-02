@@ -34,7 +34,8 @@ export function deleteAllPortfolios(): void {
     ).getAllPortfolioNamesForCurrentUser();
     const allUserPortfolios = allUserPortfoliosAxiosResponse.data;
     for (const portfolio of allUserPortfolios) {
-      await new PortfolioControllerApi(new Configuration({ accessToken: token })).deletePortfolio(
+      // prettier-ignore
+      await new PortfolioControllerApi(new Configuration({ accessToken: token })).deletePortfolio( // NOSONAR: sequential, test helper
         portfolio.portfolioId
       );
     }

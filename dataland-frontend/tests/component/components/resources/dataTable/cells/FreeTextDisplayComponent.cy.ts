@@ -13,7 +13,7 @@ it('Should entirely display a short string without an expand option', () => {
   });
 
   cy.get('span[data-test=freetext-full]').contains(shortTestString);
-  cy.get('span[data-test=freetext-toggle]').should('not.exist');
+  cy.get('button[data-test=freetext-toggle]').should('not.exist');
 });
 
 const longText = 'long'.repeat(100);
@@ -30,9 +30,9 @@ it('Should initially show the collapsed string but allow expanding for longer te
 
   cy.get('span[data-test=freetext-collapsed]').should('exist');
 
-  cy.get('span[data-test=freetext-toggle]').contains('Show more').click();
+  cy.get('button[data-test=freetext-toggle]').contains('Show more').click();
   cy.get('span[data-test=freetext-full]').should('exist');
 
-  cy.get('span[data-test=freetext-toggle]').contains('Show less').click();
+  cy.get('button[data-test=freetext-toggle]').contains('Show less').click();
   cy.get('span[data-test=freetext-collapsed]').should('exist');
 });

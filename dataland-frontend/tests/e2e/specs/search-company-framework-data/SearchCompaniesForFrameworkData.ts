@@ -198,20 +198,20 @@ describeIf(
       const placeholder = 'Search company by name or identifier (e.g. PermID, LEI, ...)';
       const inputValue = 'A company name';
 
-      getUploaderToken().then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
-            cy.visitAndCheckAppMount(
-              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
-            );
-            cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
-            cy.get('input[id=company_search_bar_standard]')
-              .should('have.value', inputValue)
-              .invoke('attr', 'placeholder')
-              .should('contain', placeholder);
-          }
-        );
-      });
+      getUploaderToken()
+        .then((token) =>
+          cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials))
+        )
+        .then((basicCompanyInformations: Array<BasicCompanyInformation>) => {
+          cy.visitAndCheckAppMount(
+            `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`
+          );
+          cy.get('input[id=company_search_bar_standard]').should('not.be.disabled').type(inputValue);
+          cy.get('input[id=company_search_bar_standard]')
+            .should('have.value', inputValue)
+            .invoke('attr', 'placeholder')
+            .should('contain', placeholder);
+        });
     });
 
     it('Search with autocompletion for companies with a common name fragment in it, click and use arrow keys, find searched company in recommendation', () => {
@@ -220,67 +220,64 @@ describeIf(
       // value, since that threshold controls when the "View all results" button appears further down.
       const minimumNumberOfAutocompleteMatchesForViewAllResultsButton = 3;
 
-      getUploaderToken().then((token) => {
-        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (basicCompanyInformation: Array<BasicCompanyInformation>) => {
-            if (basicCompanyInformation.length < 2) {
-              throw new Error('Expected at least two companies in framework data search results.');
-            }
-            const testCompany = basicCompanyInformation[1];
-            cy.visitAndCheckAppMount('/companies');
-
-            verifySearchResultTableExists();
-            cy.intercept('GET', '**/api/companies/names*').as('companyNameAutocomplete');
-
-            cy.get('input[id=search-bar-input]').click();
-            cy.get('input[id=search-bar-input]').type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
-
-            cy.wait('@companyNameAutocomplete');
-
-            cy.get('.p-autocomplete-option').should(
-              'have.length',
-              minimumNumberOfAutocompleteMatchesForViewAllResultsButton
-            );
-
-            cy.contains('[data-test="view-all-results-button"]', 'View all results')
-              .should('be.visible')
-              // The button is rendered inside the PrimeVue AutoComplete overlay.
-              // A normal Cypress click can fail because the overlay is re-rendered/hidden
-              // while Cypress performs actionability checks. Thats why the force: true is necessary
-              .click({ force: true });
-
-            verifySearchResultTableExists();
-            cy.url().should(
-              'include',
-              `/companies?input=${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
-            );
-            cy.scrollTo('top');
-            cy.get('input[id=search-bar-input]').click();
-            cy.get('input[id=search-bar-input]').type(
-              `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
-            );
-            cy.get('.p-autocomplete-list-container').should('exist');
-            cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
-            cy.get('input[id=search-bar-input]').should('be.focused');
-            cy.wait(shortTimeoutInMs);
-            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
-            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
-            cy.get('.p-autocomplete-option').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-option').eq(1).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').type('{upArrow}', { scrollBehavior: false });
-            cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
-            cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
-            cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
-            cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
-            assertSearchedCompanyNameIsUnique(testCompany);
-            const testCompanyName = testCompany.companyName;
-            cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
-            validateCompanyCockpitPage(testCompanyName, testCompany.companyId);
+      getUploaderToken()
+        .then((token) =>
+          cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials))
+        )
+        .then((basicCompanyInformation: Array<BasicCompanyInformation>) => {
+          if (basicCompanyInformation.length < 2) {
+            throw new Error('Expected at least two companies in framework data search results.');
           }
-        );
-      });
+          const testCompany = basicCompanyInformation[1];
+          cy.visitAndCheckAppMount('/companies');
+
+          verifySearchResultTableExists();
+          cy.intercept('GET', '**/api/companies/names*').as('companyNameAutocomplete');
+
+          cy.get('input[id=search-bar-input]').click();
+          cy.get('input[id=search-bar-input]').type(searchStringResultingInAtLeastThreeAutocompleteSuggestions);
+
+          cy.wait('@companyNameAutocomplete');
+
+          cy.get('.p-autocomplete-option').should(
+            'have.length',
+            minimumNumberOfAutocompleteMatchesForViewAllResultsButton
+          );
+
+          cy.contains('[data-test="view-all-results-button"]', 'View all results')
+            .should('be.visible')
+            // The button is rendered inside the PrimeVue AutoComplete overlay.
+            // A normal Cypress click can fail because the overlay is re-rendered/hidden
+            // while Cypress performs actionability checks. Thats why the force: true is necessary
+            .click({ force: true });
+
+          verifySearchResultTableExists();
+          cy.url().should('include', `/companies?input=${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`);
+          cy.scrollTo('top');
+          cy.get('input[id=search-bar-input]').click();
+          cy.get('input[id=search-bar-input]').type(
+            `{backspace}{backspace}{backspace}${searchStringResultingInAtLeastThreeAutocompleteSuggestions}`
+          );
+          cy.get('.p-autocomplete-list-container').should('exist');
+          cy.get('.p-autocomplete-option').should('have.length.at.least', 2);
+          cy.get('input[id=search-bar-input]').should('be.focused');
+          cy.wait(shortTimeoutInMs);
+          cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
+          cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+          cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+          cy.get('input[id=search-bar-input]').type('{downArrow}', { scrollBehavior: false });
+          cy.get('.p-autocomplete-option').eq(0).should('not.have.class', primevueHighlightedSuggestionClass);
+          cy.get('.p-autocomplete-option').eq(1).should('have.class', primevueHighlightedSuggestionClass);
+          cy.get('input[id=search-bar-input]').type('{upArrow}', { scrollBehavior: false });
+          cy.get('.p-autocomplete-option').eq(0).should('have.class', primevueHighlightedSuggestionClass);
+          cy.get('.p-autocomplete-option').eq(1).should('not.have.class', primevueHighlightedSuggestionClass);
+          cy.get('input[id=search-bar-input]').click({ scrollBehavior: false });
+          cy.get('input[id=search-bar-input]').type(`{backspace}{backspace}{backspace}${testCompany.companyName}`);
+          assertSearchedCompanyNameIsUnique(testCompany);
+          const testCompanyName = testCompany.companyName;
+          cy.get('.p-autocomplete-option').eq(0).should('contain.text', testCompanyName).click({ force: true });
+          validateCompanyCockpitPage(testCompanyName, testCompany.companyId);
+        });
     });
   }
 );

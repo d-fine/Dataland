@@ -54,8 +54,10 @@
           :data-test="`${framework}-summary-panel`"
         />
       </div>
-      <div
-        class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+      <button
+        type="button"
+        class="document-button cursor-pointer flex flex-row align-items-center justify-content-end button-reset"
+        aria-label="Toggle show all frameworks"
         @click="toggleShowAll"
         style="margin-left: auto"
       >
@@ -65,7 +67,7 @@
         <i class="material-icons text-primary">
           {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
         </i>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -190,10 +192,17 @@ async function getAggregatedFrameworkDataSummary(): Promise<void> {
  */
 async function getMetaInfoForLatestDocuments(): Promise<void> {
   const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.documentController;
-  for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
-    const result = await api.searchForDocumentMetaInformation(props.companyId, new Set([value]), undefined, chunkSize);
-    latestDocuments[`latest${value}`] = result.data;
-  }
+  await Promise.all(
+    Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum).map(async (value) => {
+      const result = await api.searchForDocumentMetaInformation(
+        props.companyId,
+        new Set([value]),
+        undefined,
+        chunkSize
+      );
+      latestDocuments[`latest${value}`] = result.data;
+    })
+  );
 }
 
 /**

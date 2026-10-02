@@ -19,75 +19,83 @@ describeIf(
   function () {
     const uploadReports = new UploadReports('referencedReports');
 
+    /**
+     * Fills the upload form with two reports, submits it and checks that the linked reports are downloadable.
+     * @param companyName the name of the company the data is uploaded for
+     * @param storedCompanyId the id of the company the data is uploaded for
+     */
+    function fillFormAndSubmit(companyName: string, storedCompanyId: string): void {
+      cy.ensureLoggedInAsAdmin();
+
+      cy.visitAndCheckAppMount(
+        '/companies/' + storedCompanyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload'
+      );
+      cy.get('h1').should('contain', companyName);
+
+      uploadReports.selectFile(TEST_PDF_FILE_NAME);
+      uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+      uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
+
+      uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+      uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
+      uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
+
+      uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
+
+      cy.get('div.form-field:contains("Assurance")').find('div.p-select').click();
+      cy.get('.p-select-option').contains('None').click();
+
+      cy.get('.p-select-overlay').should('not.exist');
+
+      cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
+      selectItemFromDropdownByValue(
+        cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
+        TEST_PDF_FILE_NAME
+      );
+
+      cy.get('.p-select-overlay').should('not.exist');
+
+      cy.get(
+        'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
+      ).within(() => {
+        cy.get('#dataPointIsAvailableSwitch').click();
+      });
+      selectItemFromDropdownByValue(
+        cy
+          .get(`[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"]`)
+          .find(`[data-test="dataReport"]`),
+        `${TEST_PDF_FILE_NAME}2`
+      );
+
+      cy.intercept(
+        {
+          method: 'POST',
+          url: `**/api/data/**`,
+          times: 1,
+        },
+        (request) => {
+          const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
+          expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
+          expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
+        }
+      ).as('postDataWithTwoReports');
+      cy.get('button[data-test="submitButton"]').click();
+      cy.wait('@postDataWithTwoReports', { timeout: shortTimeoutInMs }).then((interception) => {
+        expect(interception.response?.statusCode).to.eq(200);
+      });
+      cy.get('[data-test="datasets-table"]').should('be.visible');
+      checkIfLinkedReportsAreDownloadable(storedCompanyId);
+    }
+
     it('Check if the files upload works as expected', () => {
       const companyName = 'financials-upload-form-document-upload-test' + Date.now();
-      let storedCompanyId: string;
-      getAdminToken().then(async (token: string) => {
-        const storedCompany = await getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName));
-        storedCompanyId = storedCompany.companyId;
-        cy.ensureLoggedInAsAdmin();
-
-        cy.visitAndCheckAppMount(
-          '/companies/' + storedCompanyId + '/frameworks/' + DataTypeEnum.EutaxonomyFinancials + '/upload'
-        );
-        cy.get('h1').should('contain', companyName);
-
-        uploadReports.selectFile(TEST_PDF_FILE_NAME);
-        uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-        uploadReports.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);
-
-        uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
-        uploadReports.validateReportToUploadHasContainerInTheFileSelector(`${TEST_PDF_FILE_NAME}2`);
-        uploadReports.validateReportToUploadHasContainerWithInfoForm(`${TEST_PDF_FILE_NAME}2`);
-
-        uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
-
-        cy.get('div.form-field:contains("Assurance")').find('div.p-select').click();
-        cy.get('.p-select-option').contains('None').click();
-
-        cy.get('.p-select-overlay').should('not.exist');
-
-        cy.get('div[data-test="totalGrossCarryingAmount"] div[data-test="dataPointToggleButton"]').within(() => {
-          cy.get('#dataPointIsAvailableSwitch').click();
+      getAdminToken()
+        .then((token: string) => getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)))
+        .then((storedCompany) => {
+          fillFormAndSubmit(companyName, storedCompany.companyId);
         });
-        selectItemFromDropdownByValue(
-          cy.get(`[data-test="totalGrossCarryingAmount"]`).find(`[data-test="dataReport"]`),
-          TEST_PDF_FILE_NAME
-        );
-
-        cy.get('.p-select-overlay').should('not.exist');
-
-        cy.get(
-          'div[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"] div[data-test="dataPointToggleButton"]'
-        ).within(() => {
-          cy.get('#dataPointIsAvailableSwitch').click();
-        });
-        selectItemFromDropdownByValue(
-          cy
-            .get(`[data-test="totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible"]`)
-            .find(`[data-test="dataReport"]`),
-          `${TEST_PDF_FILE_NAME}2`
-        );
-
-        cy.intercept(
-          {
-            method: 'POST',
-            url: `**/api/data/**`,
-            times: 1,
-          },
-          (request) => {
-            const data = assertDefined((request.body as CompanyAssociatedDataEutaxonomyFinancialsData).data);
-            expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
-            expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.general?.referencedReports)).to.equal(true);
-          }
-        ).as('postDataWithTwoReports');
-        cy.get('button[data-test="submitButton"]').click();
-        cy.wait('@postDataWithTwoReports', { timeout: shortTimeoutInMs }).then((interception) => {
-          expect(interception.response?.statusCode).to.eq(200);
-        });
-        cy.get('[data-test="datasets-table"]').should('be.visible');
-        checkIfLinkedReportsAreDownloadable(storedCompanyId);
-      });
     });
   }
 );

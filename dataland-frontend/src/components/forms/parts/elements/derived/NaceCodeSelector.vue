@@ -15,7 +15,14 @@
         v-for="naceCode in modelValue"
       >
         {{ naceCode }}
-        <em @click="this.selectedTreeNodes.delete(naceCode)" class="material-icons">close</em>
+        <button
+          type="button"
+          @click="this.selectedTreeNodes.delete(naceCode)"
+          aria-label="Remove NACE code"
+          class="material-icons button-reset"
+        >
+          close
+        </button>
       </span>
     </div>
   </div>

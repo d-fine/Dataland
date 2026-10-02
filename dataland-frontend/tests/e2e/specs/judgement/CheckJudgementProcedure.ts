@@ -120,31 +120,45 @@ describeIf(
         });
     });
 
-    beforeEach(() =>
-      getTokens().then((retrievedTokens) => {
-        tokens = retrievedTokens;
-        const euTaxonomyData = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
+    /**
+     * Builds the data point overview of the uploaded dataset and uploads the QA reports for it.
+     *
+     * @returns A Cypress.Chainable that resolves after all QA reports have been uploaded.
+     */
+    function initializeOverviewAndUploadQaReports(): Cypress.Chainable {
+      return initializeDataPointOverviewForDataset(uploadedDataMetaInfo, tokens.adminToken).then(
+        (preparedOverview: DataPointOverview) => {
+          overview = preparedOverview;
+          return uploadQaReportsForDataset(overview, {
+            reviewerToken: tokens.reviewerToken,
+            adminToken: tokens.adminToken,
+          });
+        }
+      );
+    }
 
-        return uploadFrameworkDataForPublicToolboxFramework(
-          EuTaxonomyFinancialsBaseFrameworkDefinition,
-          tokens.uploaderToken,
-          storedCompany.companyId,
-          '2024',
-          euTaxonomyData.t,
-          false
-        ).then((dataMetaInfo: DataMetaInformation) => {
-          uploadedDataMetaInfo = dataMetaInfo;
-          return initializeDataPointOverviewForDataset(uploadedDataMetaInfo, tokens.adminToken).then(
-            (preparedOverview: DataPointOverview) => {
-              overview = preparedOverview;
-              return uploadQaReportsForDataset(overview, {
-                reviewerToken: tokens.reviewerToken,
-                adminToken: tokens.adminToken,
-              });
-            }
+    beforeEach(() =>
+      getTokens()
+        .then((retrievedTokens) => {
+          tokens = retrievedTokens;
+          const euTaxonomyData = getPreparedFixture(
+            'lightweight-eu-taxo-financials-dataset',
+            preparedEuTaxonomyFixtures
           );
-        });
-      })
+
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
+            tokens.uploaderToken,
+            storedCompany.companyId,
+            '2024',
+            euTaxonomyData.t,
+            false
+          );
+        })
+        .then((dataMetaInfo: DataMetaInformation) => {
+          uploadedDataMetaInfo = dataMetaInfo;
+          return initializeOverviewAndUploadQaReports();
+        })
     );
 
     it('Check creating a Judgement and reassigning the Judge works as expected', () => {
@@ -248,8 +262,9 @@ describeIf(
         tokens.reviewerToken,
         QaReportDataPointVerdict.QaRejected,
         correctedValueWithDocReference
-      ).then(() => {
-        createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
+      )
+        .then(() => createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken))
+        .then(() => {
           cy.get(`[data-test="data-point-row-${dataPointId}"]`).find('button.kpi-link').click();
           cy.get('[data-test="judge-modal"]').should('be.visible');
 
@@ -264,7 +279,6 @@ describeIf(
           cy.wait('@patchCopiedCorrectedDatapoint').its('response.statusCode').should('eq', 200);
           cy.contains('Failed to update data point judgement').should('not.exist');
         });
-      });
     });
   }
 );
