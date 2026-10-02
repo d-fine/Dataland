@@ -29,6 +29,18 @@ async function sha256Hex(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
 }
 
 /**
+ * Reads a document from disk and uploads it via the API
+ * @param token the keycloak token for authentication
+ * @param filePath the path of the document to read
+ * @param name the file name used for the upload
+ */
+function readAndUploadDocument(token: string, filePath: string, name: string): void {
+  cy.task<{ [type: string]: ArrayBuffer }>('readFile', filePath).then((bufferObject) =>
+    uploadDocumentViaApi(token, bufferObject.data, name)
+  );
+}
+
+/**
  * Uploads all documents from a folder
  * @param token the keycloak token for authentication
  * @param documentDirectory the directory where the documents are stored
@@ -38,9 +50,7 @@ function uploadAllDocumentsFromFolder(token: string, documentDirectory: string):
     const allFileNames = fileNames as string[];
     const pdfFileNames = allFileNames.filter((name: string) => name.endsWith('.pdf'));
     for (const name of pdfFileNames) {
-      cy.task<{ [type: string]: ArrayBuffer }>('readFile', documentDirectory + name).then((bufferObject) =>
-        uploadDocumentViaApi(token, bufferObject.data, name)
-      );
+      readAndUploadDocument(token, documentDirectory + name, name);
     }
   });
 }

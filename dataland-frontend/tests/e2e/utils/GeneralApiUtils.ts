@@ -56,8 +56,8 @@ export async function countCompaniesAndDatasetsForDataType(
   let numberOfDatasetsForDataType = 0;
   const metaDataController = new MetaDataControllerApi(new Configuration({ accessToken: token }));
   for (const basicCompanyInfo of basicCompanyInformations) {
-    numberOfDatasetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
-      .length;
+    const metaInfos = await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId); // NOSONAR: sequential, test helper
+    numberOfDatasetsForDataType += metaInfos.data.length;
   }
 
   return {

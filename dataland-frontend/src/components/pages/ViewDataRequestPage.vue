@@ -236,12 +236,24 @@ async function initializeComponent(): Promise<void> {
     .then(async () => {
       await setUserAccessFields();
       if (getKeycloakPromise) {
-        await getAndStoreRequestHistory().catch((error) => console.error(error));
-        await getAndStoreDataSourcingDetails().catch((error) => console.error(error));
-        await checkForAvailableData().catch((error) => console.error(error));
+        await runAndLogErrors(getAndStoreRequestHistory);
+        await runAndLogErrors(getAndStoreDataSourcingDetails);
+        await runAndLogErrors(checkForAvailableData);
       }
     })
     .catch((error) => console.error(error));
+}
+
+/**
+ * Runs the given task and logs any error instead of propagating it.
+ * @param task the asynchronous task to run
+ */
+async function runAndLogErrors(task: () => Promise<void>): Promise<void> {
+  try {
+    await task();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 /**
