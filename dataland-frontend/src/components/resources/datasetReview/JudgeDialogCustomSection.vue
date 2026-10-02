@@ -73,6 +73,26 @@
                 />
               </td>
             </tr>
+            <tr v-if="isCurrencyDataPoint">
+              <th scope="row" class="headers-bg">
+                <label for="custom-currency-field">Currency</label>
+              </th>
+              <td>
+                <Select
+                  v-model="formData.currency"
+                  :options="currencyOptions"
+                  option-label="label"
+                  option-value="value"
+                  size="small"
+                  fluid
+                  filter
+                  placeholder="Select Currency"
+                  data-test="custom-currency-field"
+                  inputId="custom-currency-field"
+                  aria-label="Currency"
+                />
+              </td>
+            </tr>
             <tr>
               <th scope="row" class="headers-bg">
                 <label for="custom-quality-field">Quality</label>
@@ -212,6 +232,7 @@ import { QualityOptions } from '@clients/backend';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import { isPageReferenceValid } from '@/utils/ValidationUtils.ts';
+import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets.ts';
 import {
   DEFAULT_CUSTOM_FORM_DATA,
   DEFAULT_CUSTOM_JSON,
@@ -225,12 +246,17 @@ const qualityOptions = Object.values(QualityOptions).map((qualityOption) => ({
   value: qualityOption,
 }));
 
+const currencyOptions = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((currencyA, currencyB) =>
+  currencyA.label.localeCompare(currencyB.label)
+);
+
 const props = defineProps<{
   acceptDisabled?: boolean;
   canCopyOriginal?: boolean;
   canCopyCorrected?: boolean;
   availableDocuments?: DocumentOption[];
   isAccepted?: boolean;
+  isCurrencyDataPoint?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -291,8 +317,9 @@ const isFormValid = computed<boolean>(() => {
   const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
   const hasAnyContent = valueHasContent || otherFieldsHaveContent;
   const pagesPatternOk = !f.pages || isPageReferenceValid(f.pages);
+  const currencyRequirementOk = !props.isCurrencyDataPoint || !valueHasContent || f.currency.trim().length > 0;
 
-  return hasAnyContent && pagesPatternOk;
+  return hasAnyContent && pagesPatternOk && currencyRequirementOk;
 });
 
 const isJsonValid = computed<boolean>(() => {
@@ -389,7 +416,7 @@ watch(
   () => formData.value.quality,
   (newQuality) => {
     if (newQuality === QualityOptions.NoDataFound) {
-      formData.value = { ...formData.value, value: '', document: '', pages: '', comment: '' };
+      formData.value = { ...formData.value, value: '', document: '', pages: '', comment: '', currency: '' };
     }
 
     updateTextareaOverflowStates();

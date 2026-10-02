@@ -6,6 +6,9 @@ export const DATA_POINT_TYPES = {
     'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount',
   isNfrdMandatory: 'extendedEnumYesNoIsNfrdMandatory',
   numberOfEmployees: 'extendedDecimalNumberOfEmployees',
+  areAllGroupEntitiesCovered: 'extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports',
+  greenAssetRatioEligible:
+    'extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible',
 } as const;
 
 export type DataPointTypeKey = keyof typeof DATA_POINT_TYPES;
@@ -24,6 +27,7 @@ export interface QaJudgement {
   reporterUserIdOfAcceptedQaReport?: string;
   reporterUserNameOfAcceptedQaReport?: string;
   customValue?: string;
+  customCurrency?: string;
   reasonForCustomDataPoint?: string;
 }
 

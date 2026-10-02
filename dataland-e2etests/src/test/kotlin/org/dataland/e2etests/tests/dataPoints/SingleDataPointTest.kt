@@ -34,7 +34,7 @@ class SingleDataPointTest {
         """.trimIndent()
     private val dataPointWithEmptyString =
         """
-        {"value": "", "currency": "USD" }
+        {"value": "", "currency": null }
         """.trimIndent()
     private val dummyDataPointType = "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)

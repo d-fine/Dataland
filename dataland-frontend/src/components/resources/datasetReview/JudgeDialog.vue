@@ -63,6 +63,7 @@
         :show-nav="false"
         :nav-index="0"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
+        :is-currency-data-point="isCurrencyDataPoint"
         section-type="original"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
@@ -89,6 +90,7 @@
           currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
         "
         :index-of-accepted-qa-report="indexOfAcceptedQaReport"
+        :is-currency-data-point="isCurrencyDataPoint"
         section-type="qa"
         @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
@@ -120,6 +122,7 @@
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
         :available-documents="availableDocuments"
+        :is-currency-data-point="isCurrencyDataPoint"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Custom"
         @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
@@ -304,6 +307,17 @@ const currentDataPointLabel = computed(() => {
   const row = props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value);
   return row ? row.label : currentDataPointTypeId.value;
 });
+
+const currentUploadComponentName = computed(
+  () => props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value)?.uploadComponentName
+);
+
+/**
+ * Whether the data point currently shown in the Judge modal is a Currency-typed data point.
+ */
+const isCurrencyDataPoint = computed<boolean>(
+  () => currentUploadComponentName.value === 'CurrencyExtendedDataPointFormField'
+);
 
 watch(
   () => props.dataPointTypeId,

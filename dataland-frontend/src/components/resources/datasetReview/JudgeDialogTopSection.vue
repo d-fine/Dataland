@@ -129,6 +129,7 @@ const props = defineProps<{
   indexOfAcceptedQaReport?: number;
   sectionType: 'original' | 'qa';
   currentQaReportComment?: string | null;
+  isCurrencyDataPoint?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -137,13 +138,22 @@ const emit = defineEmits<{
   next: [];
 }>();
 
-const tableRows = computed(() => [
-  { label: 'Value', value: props.data?.value },
-  { label: 'Quality', value: props.data?.quality },
-  { label: 'Document', value: props.data?.dataSource?.fileName ?? props.data?.dataSource?.fileReference },
-  { label: 'Page(s)', value: props.data?.dataSource?.page, noOverflow: true },
-  { label: 'Comment', value: props.data?.comment },
-]);
+const tableRows = computed(() => {
+  const rows = [{ label: 'Value', value: props.data?.value }];
+
+  if (props.isCurrencyDataPoint) {
+    rows.push({ label: 'Currency', value: props.data?.currency });
+  }
+
+  rows.push(
+    { label: 'Quality', value: props.data?.quality },
+    { label: 'Document', value: props.data?.dataSource?.fileName ?? props.data?.dataSource?.fileReference },
+    { label: 'Page(s)', value: props.data?.dataSource?.page },
+    { label: 'Comment', value: props.data?.comment }
+  );
+
+  return rows;
+});
 
 const isQaSection = computed(() => props.sectionType === 'qa');
 const isOriginalSection = computed(() => props.sectionType === 'original');
