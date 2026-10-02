@@ -192,10 +192,17 @@ async function getAggregatedFrameworkDataSummary(): Promise<void> {
  */
 async function getMetaInfoForLatestDocuments(): Promise<void> {
   const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.documentController;
-  for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
-    const result = await api.searchForDocumentMetaInformation(props.companyId, new Set([value]), undefined, chunkSize);
-    latestDocuments[`latest${value}`] = result.data;
-  }
+  await Promise.all(
+    Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum).map(async (value) => {
+      const result = await api.searchForDocumentMetaInformation(
+        props.companyId,
+        new Set([value]),
+        undefined,
+        chunkSize
+      );
+      latestDocuments[`latest${value}`] = result.data;
+    })
+  );
 }
 
 /**

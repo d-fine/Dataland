@@ -32,7 +32,7 @@ export function initEqualButtons(): void {
   globalThis.addEventListener('load', updateAllGroups);
 
   if ('fonts' in document) {
-    document.fonts.ready.then(updateAllGroups);
+    void document.fonts.ready.then(updateAllGroups);
   }
 }
 

@@ -28,14 +28,17 @@ describeIf(
       cy.intercept('/api/data/lksg*', { middleware: true }, (req) => {
         req.headers['REQUIRE-QA'] = 'true';
       });
-      getAdminToken().then((token: string) => {
-        return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
-          LksgBaseFrameworkDefinition,
-          token,
-          generateCompanyInformation(),
-          lksgFixture.t,
-          lksgFixture.reportingPeriod
-        ).then((uploadIds) => {
+      getAdminToken()
+        .then((token: string) => {
+          return uploadCompanyAndFrameworkDataForPublicToolboxFramework(
+            LksgBaseFrameworkDefinition,
+            token,
+            generateCompanyInformation(),
+            lksgFixture.t,
+            lksgFixture.reportingPeriod
+          );
+        })
+        .then((uploadIds) => {
           cy.intercept(`**/api/data/lksg/${uploadIds.dataId}`).as('getPostedDataset');
           cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg/${uploadIds.dataId}`);
           cy.wait('@getPostedDataset');
@@ -49,7 +52,6 @@ describeIf(
             .should('exist')
             .should('contain', 'Rejected');
         });
-      });
     });
   }
 );

@@ -34,6 +34,15 @@ export function logout(): void {
 let globalJwt = '';
 
 /**
+ * Waits for the portfolios request and stores the authorization header of that request as global JWT.
+ */
+function storeJwtFromPortfoliosRequest(): void {
+  cy.wait('@getPortfolios', { timeout: longTimeoutInMs }).then((interception) => {
+    globalJwt = interception.request.headers['authorization'] as string;
+  });
+}
+
+/**
  * Logs in via the keycloak login form with the provided credentials. Verifies that the login worked.
  * @param username the username to use
  * @param password the password to use
@@ -73,9 +82,7 @@ export function login(username: string, password: string, otpGenerator?: () => s
         urlToRedirectTo = getBaseUrl() + '/portfolios';
       }
       cy.url({ timeout: longTimeoutInMs }).should('eq', urlToRedirectTo);
-      cy.wait('@getPortfolios', { timeout: longTimeoutInMs }).then((interception) => {
-        globalJwt = interception.request.headers['authorization'] as string;
-      });
+      storeJwtFromPortfoliosRequest();
     });
   }
 }

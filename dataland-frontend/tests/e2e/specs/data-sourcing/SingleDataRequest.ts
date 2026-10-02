@@ -63,13 +63,13 @@ describeIf(
      * Uploads a company without data
      */
     function uploadCompanyWithoutData(): void {
-      getAdminToken().then(async (token: string) => {
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName)).then(
-          (storedCompany) => {
-            memberStoredCompany = storedCompany;
-          }
-        );
-      });
+      getAdminToken()
+        .then(async (token: string) => {
+          return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(memberCompanyName));
+        })
+        .then((storedCompany) => {
+          memberStoredCompany = storedCompany;
+        });
     }
 
     /**
@@ -77,14 +77,14 @@ describeIf(
      * @param reportingPeriod the year for which the data is uploaded
      */
     function uploadCompanyWithData(reportingPeriod: string): void {
-      getAdminToken().then(async (token: string) => {
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
-          (storedCompany) => {
-            testStoredCompany = storedCompany;
-            return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
-          }
-        );
-      });
+      getAdminToken()
+        .then(async (token: string) => {
+          return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName));
+        })
+        .then((storedCompany) => {
+          testStoredCompany = storedCompany;
+          return uploadFrameworkDataForCompany(storedCompany.companyId, reportingPeriod);
+        });
     }
 
     /**

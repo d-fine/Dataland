@@ -33,15 +33,15 @@ describeIf(
         getPreparedFixture('lksg-all-fields', preparedFixturesLksg);
       });
 
-      getAdminToken().then((token: string) => {
-        const uniqueCompanyMarker = Date.now().toString();
-        const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
-        return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName)).then(
-          (newStoredCompany) => {
-            storedCompany = newStoredCompany;
-          }
-        );
-      });
+      getAdminToken()
+        .then((token: string) => {
+          const uniqueCompanyMarker = Date.now().toString();
+          const testStoredCompanyName = 'Company-Created-For-Download-Test-' + uniqueCompanyMarker;
+          return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(testStoredCompanyName));
+        })
+        .then((newStoredCompany) => {
+          storedCompany = newStoredCompany;
+        });
 
       cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
         const arrayBuffer = Uint8Array.from(buffer).buffer;

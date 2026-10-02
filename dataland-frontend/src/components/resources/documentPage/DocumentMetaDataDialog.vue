@@ -218,7 +218,7 @@ async function getDocumentMetaInformation(): Promise<void> {
     for (const companyDetailPromise of companyDetailsPromises) {
       companyDetails.push({
         id: companyDetailPromise.id,
-        name: (await companyDetailPromise.promise).data.companyName,
+        name: (await companyDetailPromise.promise).data.companyName, // NOSONAR: requests already run in parallel
       });
     }
     metaData.value = { ...data, company: companyDetails };

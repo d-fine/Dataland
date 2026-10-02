@@ -15,9 +15,9 @@ const apiBaseUrl = getBaseUrl();
  * Creates a data sourcing request as uploader and returns the requestId.
  */
 function createRequest(): Cypress.Chainable<string> {
-  return getUploaderToken().then((token) => {
-    return cy
-      .request({
+  return getUploaderToken()
+    .then((token) => {
+      return cy.request({
         method: 'POST',
         url: `${apiBaseUrl}/data-sourcing/requests`,
         headers: { Authorization: `Bearer ${token}` },
@@ -27,11 +27,11 @@ function createRequest(): Cypress.Chainable<string> {
           reportingPeriod: testYear,
           memberComment: testMessage,
         },
-      })
-      .then((createResp) => {
-        return createResp.body.requestId || createResp.body.id;
       });
-  });
+    })
+    .then((createResp) => {
+      return createResp.body.requestId || createResp.body.id;
+    });
 }
 
 /**
@@ -60,6 +60,19 @@ function patchRequestToProcessing(requestId: string): Cypress.Chainable {
   });
 }
 
+/**
+ * Moves the request through the states 'Processing' and 'Processed' and opens its detail page.
+ * @param id the id of the request
+ */
+function processRequestAndVisitPage(id: string): void {
+  requestId = id;
+  patchRequestToProcessing(requestId);
+  patchRequestToProcessed(requestId).then(() => {
+    cy.visit(getBaseUrl() + `/requests/${requestId}`);
+    cy.wait('@getRequest');
+  });
+}
+
 describeIf(
   'As an admin, I want to be able to view a data sourcing request and ' +
     'resubmit or withdraw it from the request details page',
@@ -77,14 +90,7 @@ describeIf(
       cy.intercept('POST', `${apiBaseUrl}/data-sourcing/requests**`).as('resubmit');
       cy.intercept('PATCH', `${apiBaseUrl}/data-sourcing/requests/*/state?requestState=Withdrawn`).as('withdraw');
       cy.intercept('GET', `${apiBaseUrl}/data-sourcing/requests/*`).as('getRequest');
-      createRequest().then((id) => {
-        requestId = id;
-        patchRequestToProcessing(requestId);
-        patchRequestToProcessed(requestId).then(() => {
-          cy.visit(getBaseUrl() + `/requests/${requestId}`);
-          cy.wait('@getRequest');
-        });
-      });
+      createRequest().then(processRequestAndVisitPage);
     });
 
     it('should open and close the resubmit modal', () => {
