@@ -522,6 +522,12 @@ function getQaReportFor(dataPointTypeId?: string, reporterUserId?: string): Data
   if (!dataPointTypeId || !reporterUserId) return undefined;
   const datapointEntry = props.datasetReview.dataPoints[dataPointTypeId];
   if (!datapointEntry) return undefined;
+  if (
+    datapointEntry.acceptedSource === AcceptedDataPointSource.Qa &&
+    datapointEntry.acceptedQaReport?.reporterUserId === reporterUserId
+  ) {
+    return datapointEntry.acceptedQaReport;
+  }
   return datapointEntry.qaReports.find((r) => r.reporterUserId === reporterUserId);
 }
 

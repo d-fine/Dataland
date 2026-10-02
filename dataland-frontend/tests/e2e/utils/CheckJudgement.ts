@@ -48,13 +48,12 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
     expect(body.acceptedSource, 'acceptedSource in request body').to.eq(judgement.acceptedSource);
   }
 
-  if (judgement.reporterUserIdOfAcceptedQaReport == null) {
+  if (judgement.acceptedSource !== AcceptedDataPointSource.Qa) {
+    expect(body.acceptedQaReportId ?? null, 'acceptedQaReportId in request body').to.eq(null);
+  } else {
+    expect(body.acceptedQaReportId, 'acceptedQaReportId in request body').to.be.a('string').and.not.be.empty;
     expect(body.reporterUserIdOfAcceptedQaReport ?? null, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
       null
-    );
-  } else {
-    expect(body.reporterUserIdOfAcceptedQaReport, 'reporterUserIdOfAcceptedQaReport in request body').to.eq(
-      judgement.reporterUserIdOfAcceptedQaReport
     );
   }
 
