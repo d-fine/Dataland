@@ -34,13 +34,13 @@ export async function uploadFiles(
       continue;
     }
 
-    const fileIsAlreadyInStorage = await isDocumentAlreadyInStorage(documentControllerApi, fileToUpload.fileReference);
+    const fileIsAlreadyInStorage = await isDocumentAlreadyInStorage(documentControllerApi, fileToUpload.fileReference); // NOSONAR: sequential
     const documentMetaInfo = documentMetaInfoByReference.get(fileToUpload.fileReference);
 
     if (fileIsAlreadyInStorage) {
-      await patchDocumentMetaInfoIfProvided(documentControllerApi, fileToUpload.fileReference, documentMetaInfo);
+      await patchDocumentMetaInfoIfProvided(documentControllerApi, fileToUpload.fileReference, documentMetaInfo); // NOSONAR: sequential
     } else {
-      await uploadDocumentAndValidateHash(documentControllerApi, fileToUpload, documentMetaInfo);
+      await uploadDocumentAndValidateHash(documentControllerApi, fileToUpload, documentMetaInfo); // NOSONAR: sequential
     }
 
     alreadyUploadedFileReferences.add(fileToUpload.fileReference);

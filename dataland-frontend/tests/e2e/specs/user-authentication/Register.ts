@@ -3,6 +3,17 @@ import { getStringCypressEnv } from '@e2e/utils/Cypress';
 import { isString } from '@/utils/TypeScriptUtils';
 import { generate } from 'otplib';
 
+/**
+ * Types the value of the given Cypress environment variable into the input field with the given selector.
+ * @param envName name of the Cypress environment variable
+ * @param selector selector of the input field
+ */
+function typeCypressEnvValueIntoField(envName: string, selector: string): void {
+  getStringCypressEnv(envName).then((value) => {
+    cy.get(selector).should('exist').type(value, { force: true });
+  });
+}
+
 describe('As a user I want to be able to register for an account and be able to log in and out of that account', () => {
   const email = `test_user${Date.now()}@example.com`;
   const firstName = 'Dummy';
@@ -12,6 +23,30 @@ describe('As a user I want to be able to register for an account and be able to 
 
   const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
   const shortTimeoutInMs = Number(Cypress.expose('short_timeout_in_ms') ?? 10000);
+
+  /**
+   * Reads the TOTP secret key from the Keycloak account page, confirms it with a generated token,
+   * completes the setup and stores the key via a Cypress task.
+   */
+  function enterTotpKeyAndSaveIt(): void {
+    let totpKey: string;
+    cy.get("span[id='kc-totp-secret-key']")
+      .should('be.visible', { timeout: shortTimeoutInMs })
+      .invoke('text')
+      .then((text) => {
+        totpKey = text.replaceAll(/\s/g, '');
+        return cy.wrap(generate({ secret: totpKey }));
+      })
+      .then((token) => {
+        cy.get("input[id='totp']").type(token as string);
+        cy.get("input[id='saveTOTPBtn']").click();
+        cy.get(`button:contains('${firstName} ${lastName}')`).click();
+        cy.get("span:contains('Sign out')").should('exist', {
+          timeout: mediumTimeoutInMs,
+        });
+        cy.task('setTotpKey', totpKey);
+      });
+  }
 
   it('Checks that the Dataland password-policy gets respected', () => {
     cy.visitAndCheckAppMount('/').get("[data-test='signup-dataland-button']").click();
@@ -61,12 +96,8 @@ describe('As a user I want to be able to register for an account and be able to 
       cy.visit('http://dataland-admin:6789/keycloak/admin/master/console/#/datalandsecurity/users');
       cy.get('h1').should('exist').should('contain', 'Sign in to your account');
       cy.url().should('contain', 'realms/master');
-      getStringCypressEnv('KC_BOOTSTRAP_ADMIN_USERNAME').then((username) => {
-        cy.get('#username').should('exist').type(username, { force: true });
-      });
-      getStringCypressEnv('KC_BOOTSTRAP_ADMIN_PASSWORD').then((password) => {
-        cy.get('#password').should('exist').type(password, { force: true });
-      });
+      typeCypressEnvValueIntoField('KC_BOOTSTRAP_ADMIN_USERNAME', '#username');
+      typeCypressEnvValueIntoField('KC_BOOTSTRAP_ADMIN_PASSWORD', '#password');
       cy.get('#kc-login').should('exist').click();
       cy.intercept('GET', '/keycloak/admin/realms/datalandsecurity/ui-ext/*example.com').as('typedUsernameInSearch');
       cy.get('input.pf-v5-c-text-input-group__text-input').type(`${returnEmail}{enter}`, { force: true });
@@ -116,21 +147,7 @@ describe('As a user I want to be able to register for an account and be able to 
             .should('be.visible', { timeout: mediumTimeoutInMs })
             .click();
           cy.get("a:contains('Unable to scan')").should('be.visible', { timeout: shortTimeoutInMs }).click();
-          cy.get("span[id='kc-totp-secret-key']")
-            .should('be.visible', { timeout: shortTimeoutInMs })
-            .invoke('text')
-            .then((text) => {
-              const totpKey = text.replaceAll(/\s/g, '');
-              return cy.wrap(generate({ secret: totpKey })).then((token) => {
-                cy.get("input[id='totp']").type(token as string);
-                cy.get("input[id='saveTOTPBtn']").click();
-                cy.get(`button:contains('${firstName} ${lastName}')`).click();
-                cy.get("span:contains('Sign out')").should('exist', {
-                  timeout: mediumTimeoutInMs,
-                });
-                cy.task('setTotpKey', totpKey);
-              });
-            });
+          enterTotpKeyAndSaveIt();
         });
       });
     });

@@ -43,7 +43,7 @@ export async function removeAllCompanyRoles(token: string, companyId: string, us
 
   for (const role of roles) {
     try {
-      await api.removeCompanyRole(role, companyId, userId);
+      await api.removeCompanyRole(role, companyId, userId); // NOSONAR: sequential, test helper
     } catch (error: unknown) {
       if (isHttpStatus(error, 404)) continue;
 

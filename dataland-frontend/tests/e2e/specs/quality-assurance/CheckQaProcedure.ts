@@ -34,42 +34,48 @@ describeIf(
         preparedLksgFixtures = jsonContent as Array<FixtureData<LksgData>>;
       });
 
-      getAdminToken().then((token: string) => {
-        const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
-        return getOrUploadCompanyViaApi(token, testCompany).then((newCompany) => (storedCompany = newCompany));
-      });
+      getAdminToken()
+        .then((token: string) => {
+          const testCompany = generateDummyCompanyInformation(`company-for-testing-qa-${Date.now()}`);
+          return getOrUploadCompanyViaApi(token, testCompany);
+        })
+        .then((newCompany) => (storedCompany = newCompany));
     });
 
     it('Check whether newly added dataset has Pending status and can be approved by an admin', () => {
       const data = getPreparedFixture('lightweight-eu-taxo-financials-dataset', preparedEuTaxonomyFixtures);
-      getUploaderToken().then((token: string) => {
-        return uploadFrameworkDataForPublicToolboxFramework(
-          EuTaxonomyFinancialsBaseFrameworkDefinition,
-          token,
-          storedCompany.companyId,
-          '2022',
-          data.t,
-          false
-        ).then((dataMetaInfo) => {
+      getUploaderToken()
+        .then((token: string) => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            EuTaxonomyFinancialsBaseFrameworkDefinition,
+            token,
+            storedCompany.companyId,
+            '2022',
+            data.t,
+            false
+          );
+        })
+        .then((dataMetaInfo) => {
           testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany, dataMetaInfo);
         });
-      });
     });
 
     it('Check whether newly added dataset has Rejected status and can be edited', () => {
       const data = getPreparedFixture('lksg-all-fields', preparedLksgFixtures);
-      getUploaderToken().then((token: string) => {
-        return uploadFrameworkDataForPublicToolboxFramework(
-          LksgBaseFrameworkDefinition,
-          token,
-          storedCompany.companyId,
-          '2022',
-          data.t,
-          false
-        ).then((dataMetaInfo) => {
+      getUploaderToken()
+        .then((token: string) => {
+          return uploadFrameworkDataForPublicToolboxFramework(
+            LksgBaseFrameworkDefinition,
+            token,
+            storedCompany.companyId,
+            '2022',
+            data.t,
+            false
+          );
+        })
+        .then((dataMetaInfo) => {
           testSubmittedDatasetIsInReviewListAndRejectIt(storedCompany, dataMetaInfo);
         });
-      });
     });
   }
 );

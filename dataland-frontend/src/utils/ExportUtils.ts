@@ -32,7 +32,7 @@ export async function pollExportJobStatus(
       throw new Error('Export job failed on server');
     }
 
-    await new Promise((resolve) => setTimeout(resolve, EXPORT_POLL_INTERVAL_MS));
+    await new Promise((resolve) => setTimeout(resolve, EXPORT_POLL_INTERVAL_MS)); // NOSONAR: polling delay
   }
 
   if (state === ExportJobProgressState.Pending) {
