@@ -84,7 +84,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
+    val riskOfChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Operations or suppliers at significant risk of incidents of forced or compulsory labour.
@@ -102,7 +102,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
+    val riskOfReportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

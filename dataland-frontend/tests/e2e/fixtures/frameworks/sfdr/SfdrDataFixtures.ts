@@ -4,7 +4,12 @@ import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
 import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
-import { SfdrGeneralGeneralFiscalYearDeviationOptions, type SfdrData } from '@clients/backend';
+import {
+  SfdrGeneralCompanyCompanyExchangeStatusOptions,
+  SfdrGeneralCompanyMainPcafSectorOptions,
+  SfdrGeneralGeneralFiscalYearDeviationOptions,
+  type SfdrData,
+} from '@clients/backend';
 
 /**
  * Generates a set number of sfdr fixtures
@@ -38,8 +43,32 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
           dataGenerator.valueOrNull(pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)))
         ),
-        fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
         referencedReports: dataGenerator.reports,
+      },
+      company: {
+        fiscalYearEnd: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFutureDate()),
+        mainPcafSector: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.valueOrNull(pickOneElement(Object.values(SfdrGeneralCompanyMainPcafSectorOptions)))
+        ),
+        companyExchangeStatus: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.valueOrNull(pickOneElement(Object.values(SfdrGeneralCompanyCompanyExchangeStatusOptions)))
+        ),
+      },
+    },
+    financial: {
+      financial: {
+        grossDomesticProductGdpInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        totalRevenueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
+      listedCompany: {
+        marketCapitalizationInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        minoritiesInterestInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        enterpriseValueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      },
+      unlistedCompany: {
+        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        totalEquityInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
     },
     environmental: {
@@ -61,9 +90,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         scope1And2And3GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
         ),
-        scope4GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        enterpriseValueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        totalRevenueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         carbonFootprintInTonnesPerMillionEUREnterpriseValue: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
         ),
@@ -75,9 +101,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
           dataGenerator.randomFloat()
         ),
         ghgIntensityScope3InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat()
-        ),
-        ghgIntensityScope4InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
         ),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
@@ -95,7 +118,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat(0)
         ),
-        applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
         totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat(0)
         ),
@@ -119,11 +141,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         protectedAreasExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         rareOrEndangeredEcosystemsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        highlyBiodiverseGrasslandExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         manufactureOfAgrochemicalPesticidesProducts: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        landDegradationDesertificationSoilSealingExposure: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomYesNo()
-        ),
+        landDegradationDesertificationSoilSealing: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         sustainableAgriculturePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         sustainableOceansAndSeasPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         threatenedSpeciesExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
@@ -132,9 +151,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
       },
       water: {
         emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        waterWithdrawalInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        relativeWaterUsageInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+        waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat(0)
         ),
         waterManagementPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
@@ -159,23 +178,18 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         iloCoreLabourStandards: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         environmentalPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         corruptionLegalProceedings: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        transparencyDisclosurePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         humanRightsDueDiligencePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         policyAgainstChildLabour: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         policyAgainstForcedLabour: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         policyAgainstDiscriminationInTheWorkplace: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        iso14001Certificate: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         policyAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         fairBusinessMarketingAdvertisingPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        technologiesExpertiseTransferPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        violationOfUngcPrinciplesAndOecdGuidelines: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomYesNo()
         ),
-        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
-        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
         unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         femaleBoardMembersSupervisoryBoard: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
         femaleBoardMembersBoardOfDirectors: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
@@ -198,15 +212,14 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
         excessiveCeoPayRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
-      greenSecurities: {
-        securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-      },
       humanRights: {
         humanRightsPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         humanRightsDueDiligence: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         traffickingInHumanBeingsPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        riskOfChildLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        riskOfReportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomYesNo()
+        ),
         numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomInt(0)
         ),
@@ -215,7 +228,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomInt(0)
         ),
-        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
+        numberOfReportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomInt(0)
+        ),
         totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(0),
       },
     },

@@ -11,12 +11,13 @@ import {
 import {
   type CurrencyDataPoint,
   type YesNoNa,
+  type SfdrGeneralCompanyCompanyExchangeStatusOptions,
+  type SfdrGeneralCompanyMainPcafSectorOptions,
   type SfdrGeneralGeneralFiscalYearDeviationOptions,
   type SfdrData,
 } from '@clients/backend';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
-import { formatHighImpactClimateSectorForDisplay } from '@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
@@ -87,6 +88,14 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumFiscalYearDeviation',
           },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: 'cell',
             label: 'Fiscal Year End',
@@ -94,9 +103,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
+                formatStringForDatatable(dataset.general?.company?.fiscalYearEnd?.value),
                 'Fiscal Year End',
-                dataset.general?.general?.fiscalYearEnd
+                dataset.general?.company?.fiscalYearEnd
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -107,10 +116,319 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             uploadComponentName: 'DateExtendedDataPointFormField',
             dataPointTypeId: 'extendedDateFiscalYearEnd',
           },
+          {
+            type: 'cell',
+            label: 'Main PCAF sector',
+            explanation:
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    CommunicationServices: 'Communication Services',
+                    ConsumerDiscretionary: 'Consumer Discretionary',
+                    ConsumerStaples: 'Consumer Staples',
+                    Energy: 'Energy',
+                    Financials: 'Financials',
+                    HealthCare: 'Health Care',
+                    Industrials: 'Industrials',
+                    Industry: 'Industry',
+                    InformationTechnology: 'Information Technology',
+                    Materials: 'Materials',
+                    RealEstate: 'Real Estate',
+                    Sovereign: 'Sovereign',
+                    Utilities: 'Utilities',
+                  };
+                  return formatStringForDatatable(
+                    dataset.general?.company?.mainPcafSector?.value
+                      ? getOriginalNameFromTechnicalName(dataset.general?.company?.mainPcafSector?.value, mappings)
+                      : ''
+                  );
+                })(),
+                'Main PCAF sector',
+                dataset.general?.company?.mainPcafSector
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    CommunicationServices: 'Communication Services',
+                    ConsumerDiscretionary: 'Consumer Discretionary',
+                    ConsumerStaples: 'Consumer Staples',
+                    Energy: 'Energy',
+                    Financials: 'Financials',
+                    HealthCare: 'Health Care',
+                    Industrials: 'Industrials',
+                    Industry: 'Industry',
+                    InformationTechnology: 'Information Technology',
+                    Materials: 'Materials',
+                    RealEstate: 'Real Estate',
+                    Sovereign: 'Sovereign',
+                    Utilities: 'Utilities',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as SfdrGeneralCompanyMainPcafSectorOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as SfdrGeneralCompanyMainPcafSectorOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Main PCAF sector',
+                dataPoint
+              ),
+            uploadComponentName: 'ExtendedSingleSelectFormField',
+            dataPointTypeId: 'extendedEnumSfdrMainPcafSector',
+          },
+          {
+            type: 'cell',
+            label: 'Company exchange status',
+            explanation: '"Listed" if the company is listed on an exchange - otherwise "Unlisted"',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Listed: 'Listed',
+                    Unlisted: 'Unlisted',
+                  };
+                  return formatStringForDatatable(
+                    dataset.general?.company?.companyExchangeStatus?.value
+                      ? getOriginalNameFromTechnicalName(
+                          dataset.general?.company?.companyExchangeStatus?.value,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Company exchange status',
+                dataset.general?.company?.companyExchangeStatus
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                ((): AvailableMLDTDisplayObjectTypes => {
+                  const mappings = {
+                    Listed: 'Listed',
+                    Unlisted: 'Unlisted',
+                  };
+                  return formatStringForDatatable(
+                    (extractDatapointValue(dataPoint) as SfdrGeneralCompanyCompanyExchangeStatusOptions)
+                      ? getOriginalNameFromTechnicalName(
+                          extractDatapointValue(dataPoint) as SfdrGeneralCompanyCompanyExchangeStatusOptions,
+                          mappings
+                        )
+                      : ''
+                  );
+                })(),
+                'Company exchange status',
+                dataPoint
+              ),
+            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
+            dataPointTypeId: 'extendedEnumSfdrCompanyExchangeStatus',
+          },
         ],
       },
     ],
     labelBadgeColor: 'orange',
+  },
+  {
+    type: 'section',
+    label: 'Financial',
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: 'section',
+        label: 'Financial',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Gross Domestic Product (GDP)',
+            explanation: 'Total economic activity within a country in EUR',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.financial?.grossDomesticProductGdpInEUR?.value, 'EUR'),
+                'Gross Domestic Product (GDP)',
+                dataset.financial?.financial?.grossDomesticProductGdpInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Gross Domestic Product (GDP)',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalGrossDomesticProductGdpInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Total Revenue',
+            explanation:
+              "Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm\'s total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.financial?.totalRevenueInEUR?.value, 'EUR'),
+                'Total Revenue',
+                dataset.financial?.financial?.totalRevenueInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Total Revenue',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalTotalRevenueInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Book value of debt',
+            explanation:
+              'Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.financial?.bookValueOfDebtInEUR?.value, 'EUR'),
+                'Book value of debt',
+                dataset.financial?.financial?.bookValueOfDebtInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Book value of debt',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalBookValueOfDebtInEUR',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Listed company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Market capitalization',
+            explanation: 'Market capitalization in EUR calculated as: number of shares * price per share',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.listedCompany?.marketCapitalizationInEUR?.value, 'EUR'),
+                'Market capitalization',
+                dataset.financial?.listedCompany?.marketCapitalizationInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Market capitalization',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalMarketCapitalizationInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Minorities interest',
+            explanation:
+              'Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.listedCompany?.minoritiesInterestInEUR?.value, 'EUR'),
+                'Minorities interest',
+                dataset.financial?.listedCompany?.minoritiesInterestInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Minorities interest',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalMinoritiesInterestInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Enterprise Value',
+            explanation:
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.listedCompany?.enterpriseValueInEUR?.value, 'EUR'),
+                'Enterprise Value',
+                dataset.financial?.listedCompany?.enterpriseValueInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Enterprise Value',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalEnterpriseValueInEUR',
+          },
+        ],
+      },
+      {
+        type: 'section',
+        label: 'Unlisted company',
+        expandOnPageLoad: true,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: 'cell',
+            label: 'Total equity and debt',
+            explanation: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
+                'Total equity and debt',
+                dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Total equity and debt',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Total equity',
+            explanation: 'Total equity in EUR as listed on the balance sheet',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityInEUR?.value, 'EUR'),
+                'Total equity',
+                dataset.financial?.unlistedCompany?.totalEquityInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Total equity',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalTotalEquityInEUR',
+          },
+        ],
+      },
+    ],
+    labelBadgeColor: 'blue',
   },
   {
     type: 'section',
@@ -438,78 +756,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Scope 4 GHG emissions',
-            explanation:
-              'Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes?.value,
-                  'Tonnes'
-                ),
-                'Scope 4 GHG emissions',
-                dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'Tonnes'),
-                'Scope 4 GHG emissions',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalScope4GhgEmissionsInTonnes',
-          },
-          {
-            type: 'cell',
-            label: 'Enterprise Value',
-            explanation:
-              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR?.value,
-                  'EUR'
-                ),
-                'Enterprise Value',
-                dataset.environmental?.greenhouseGasEmissions?.enterpriseValueInEUR
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Enterprise Value',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalEnterpriseValueInEUR',
-          },
-          {
-            type: 'cell',
-            label: 'Total Revenue',
-            explanation:
-              "Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm\'s total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR?.value,
-                  'EUR'
-                ),
-                'Total Revenue',
-                dataset.environmental?.greenhouseGasEmissions?.totalRevenueInEUR
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Total Revenue',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalTotalRevenueInEUR',
-          },
-          {
-            type: 'cell',
             label: 'Carbon footprint',
             explanation:
               'Tons of GHG emissions per million EUR enterprise value. See also (EU) 2022/1288 Annex I formula (2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 2',
@@ -643,33 +889,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGhgIntensityScope3InTonnesPerMillionEURRevenue',
-          },
-          {
-            type: 'cell',
-            label: 'GHG intensity - scope 4',
-            explanation:
-              'Tons of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes \/ \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 4',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(
-                  extractDatapointValue(dataPoint) as number | null | undefined,
-                  'Tonnes \/ \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 4',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalGhgIntensityScope4InTonnesPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -893,19 +1112,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalRelativeNonRenewableEnergyConsumptionInPercent',
-          },
-          {
-            type: 'cell',
-            label: 'Applicable High Impact Climate Sectors',
-            explanation:
-              'Sector applicable activities. See also Regulation (EU) 2022/1288, Annex I, top (9).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatHighImpactClimateSectorForDisplay(
-                dataset.environmental?.energyPerformance?.applicableHighImpactClimateSectors
-              ),
-            uploadComponentName: 'HighImpactClimateSectorsFormField',
-            dataPointTypeId: 'plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors',
           },
           {
             type: 'cell',
@@ -1176,29 +1382,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Highly Biodiverse Grassland Exposure',
-            explanation:
-              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure?.value
-                ),
-                'Highly Biodiverse Grassland Exposure',
-                dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Highly Biodiverse Grassland Exposure',
-                dataPoint
-              ),
-            uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoHighlyBiodiverseGrasslandExposure',
-          },
-          {
-            type: 'cell',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             explanation:
               'Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EC) No 1893/2006, Annex I, Division 20.2.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 9',
@@ -1222,26 +1405,26 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Land Degradation Desertification Soil Sealing Exposure',
+            label: 'Land Degradation Desertification Soil Sealing',
             explanation:
               'Involvement in activities, which cause land degradation, desertification or soil sealing.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure?.value
+                  dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealing?.value
                 ),
-                'Land Degradation Desertification Soil Sealing Exposure',
-                dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealingExposure
+                'Land Degradation Desertification Soil Sealing',
+                dataset.environmental?.biodiversity?.landDegradationDesertificationSoilSealing
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Land Degradation Desertification Soil Sealing Exposure',
+                'Land Degradation Desertification Soil Sealing',
                 dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoLandDegradationDesertificationSoilSealingExposure',
+            dataPointTypeId: 'extendedEnumYesNoLandDegradationDesertificationSoilSealing',
           },
           {
             type: 'cell',
@@ -1388,11 +1571,11 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.environmental?.water?.waterConsumptionInCubicMeters?.value,
+                  dataset.environmental?.water?.waterWithdrawalInCubicMeters?.value,
                   'Cubic Meters'
                 ),
                 'Water Withdrawal',
-                dataset.environmental?.water?.waterConsumptionInCubicMeters
+                dataset.environmental?.water?.waterWithdrawalInCubicMeters
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -1401,7 +1584,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalWaterConsumptionInCubicMeters',
+            dataPointTypeId: 'extendedDecimalWaterWithdrawalInCubicMeters',
           },
           {
             type: 'cell',
@@ -1433,11 +1616,11 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
+                  dataset.environmental?.water?.waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue?.value,
                   'Cubic Meters \/ \u20ACM Revenue'
                 ),
                 'Water Withdrawal Intensity',
-                dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
+                dataset.environmental?.water?.waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -1449,7 +1632,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalRelativeWaterUsageInCubicMetersPerMillionEURRevenue',
+            dataPointTypeId: 'extendedDecimalWaterWithdrawalIntensityInCubicMetersPerMillionEURRevenue',
           },
           {
             type: 'cell',
@@ -1753,29 +1936,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Transparency Disclosure Policy',
-            explanation:
-              'Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy?.value
-                ),
-                'Transparency Disclosure Policy',
-                dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Transparency Disclosure Policy',
-                dataPoint
-              ),
-            uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoTransparencyDisclosurePolicy',
-          },
-          {
-            type: 'cell',
             label: 'Human Rights Due Diligence Policy',
             explanation:
               'Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10',
@@ -1865,26 +2025,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'ISO 14001 Certificate',
-            explanation: 'The whole company is ISO 14001 certified.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value),
-                'ISO 14001 Certificate',
-                dataset.social?.socialAndEmployeeMatters?.iso14001Certificate
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'ISO 14001 Certificate',
-                dataPoint
-              ),
-            uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoIso14001Certificate',
-          },
-          {
-            type: 'cell',
             label: 'Policy against Bribery and Corruption',
             explanation:
               'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 15',
@@ -1931,29 +2071,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Technologies Expertise Transfer Policy',
-            explanation:
-              'Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy?.value
-                ),
-                'Technologies Expertise Transfer Policy',
-                dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Technologies Expertise Transfer Policy',
-                dataPoint
-              ),
-            uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoTechnologiesExpertiseTransferPolicy',
-          },
-          {
-            type: 'cell',
             label: 'Fair Competition Policy',
             explanation:
               'Existence of policies and procedures in place related to fair competition and anti-competitive cartels.',
@@ -1975,26 +2092,26 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
+            label: 'Violation Of UNGC Principles And OECD Guidelines',
             explanation:
               'Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value
+                  dataset.social?.socialAndEmployeeMatters?.violationOfUngcPrinciplesAndOecdGuidelines?.value
                 ),
-                'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
-                dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation
+                'Violation Of UNGC Principles And OECD Guidelines',
+                dataset.social?.socialAndEmployeeMatters?.violationOfUngcPrinciplesAndOecdGuidelines
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
+                'Violation Of UNGC Principles And OECD Guidelines',
                 dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoViolationOfTaxRulesAndRegulation',
+            dataPointTypeId: 'extendedEnumYesNoViolationOfUngcPrinciplesAndOecdGuidelines',
           },
           {
             type: 'cell',
@@ -2042,44 +2159,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
             dataPointTypeId: 'extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling',
-          },
-          {
-            type: 'cell',
-            label: 'Average Gross Hourly Earnings Male Employees',
-            explanation:
-              'Average gross hourly earnings of male employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(
-                dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees,
-                'Average Gross Hourly Earnings Male Employees'
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(
-                parseDataPoint(dataPoint) as CurrencyDataPoint,
-                'Average Gross Hourly Earnings Male Employees'
-              ),
-            uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'extendedCurrencyAverageGrossHourlyEarningsMaleEmployees',
-          },
-          {
-            type: 'cell',
-            label: 'Average Gross Hourly Earnings Female Employees',
-            explanation:
-              'Average gross hourly earnings of female employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(
-                dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees,
-                'Average Gross Hourly Earnings Female Employees'
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              formatCurrencyForDisplay(
-                parseDataPoint(dataPoint) as CurrencyDataPoint,
-                'Average Gross Hourly Earnings Female Employees'
-              ),
-            uploadComponentName: 'CurrencyExtendedDataPointFormField',
-            dataPointTypeId: 'extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees',
           },
           {
             type: 'cell',
@@ -2477,35 +2556,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
       },
       {
         type: 'section',
-        label: 'Green securities',
-        expandOnPageLoad: true,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Securities Not Certified As Green',
-            explanation:
-              'Possession of securities in investments that are not certified as green under a future EU legal act setting up an EU Green Bond Standard.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value),
-                'Securities Not Certified As Green',
-                dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Securities Not Certified As Green',
-                dataPoint
-              ),
-            uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoSecuritiesNotCertifiedAsGreen',
-          },
-        ],
-      },
-      {
-        type: 'section',
         label: 'Human rights',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
@@ -2575,47 +2625,47 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Risk of Child Labour Incidents',
+            label: 'Risk Of Child Labour Incidents',
             explanation:
               'Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value),
-                'Risk of Child Labour Incidents',
-                dataset.social?.humanRights?.reportedChildLabourIncidents
+                formatYesNoValueForDatatable(dataset.social?.humanRights?.riskOfChildLabourIncidents?.value),
+                'Risk Of Child Labour Incidents',
+                dataset.social?.humanRights?.riskOfChildLabourIncidents
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Risk of Child Labour Incidents',
+                'Risk Of Child Labour Incidents',
                 dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoReportedChildLabourIncidents',
+            dataPointTypeId: 'extendedEnumYesNoRiskOfChildLabourIncidents',
           },
           {
             type: 'cell',
-            label: 'Risk of Forced Or Compulsory Labour Incidents',
+            label: 'Risk Of Reported Forced Or Compulsory Labour Incidents',
             explanation:
               'Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(
-                  dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value
+                  dataset.social?.humanRights?.riskOfReportedForcedOrCompulsoryLabourIncidents?.value
                 ),
-                'Risk of Forced Or Compulsory Labour Incidents',
-                dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents
+                'Risk Of Reported Forced Or Compulsory Labour Incidents',
+                dataset.social?.humanRights?.riskOfReportedForcedOrCompulsoryLabourIncidents
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatYesNoValueForDatatable(extractDatapointValue(dataPoint) as YesNoNa),
-                'Risk of Forced Or Compulsory Labour Incidents',
+                'Risk Of Reported Forced Or Compulsory Labour Incidents',
                 dataPoint
               ),
             uploadComponentName: 'YesNoExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents',
+            dataPointTypeId: 'extendedEnumYesNoRiskOfReportedForcedOrCompulsoryLabourIncidents',
           },
           {
             type: 'cell',
@@ -2676,27 +2726,28 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Number of Reported Convictions Of Bribery and Corruption',
+            label: 'Number Of Reported Convictions Of Bribery And Corruption',
             explanation:
               'Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption?.value,
+                  dataset.social?.antiCorruptionAndAntiBribery?.numberOfReportedConvictionsOfBriberyAndCorruption
+                    ?.value,
                   ''
                 ),
-                'Number of Reported Convictions Of Bribery and Corruption',
-                dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption
+                'Number Of Reported Convictions Of Bribery And Corruption',
+                dataset.social?.antiCorruptionAndAntiBribery?.numberOfReportedConvictionsOfBriberyAndCorruption
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, ''),
-                'Number of Reported Convictions Of Bribery and Corruption',
+                'Number Of Reported Convictions Of Bribery And Corruption',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedIntegerReportedConvictionsOfBriberyAndCorruption',
+            dataPointTypeId: 'extendedIntegerNumberOfReportedConvictionsOfBriberyAndCorruption',
           },
           {
             type: 'cell',

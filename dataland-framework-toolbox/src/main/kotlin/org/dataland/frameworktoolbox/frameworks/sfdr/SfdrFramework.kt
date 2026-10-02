@@ -72,6 +72,28 @@ class SfdrFramework :
                     }
                 }
             }
+            edit<ComponentGroup>("company") {
+                edit<SingleSelectComponent>("mainPcafSector") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumSfdrMainPcafSector",
+                            dataPointTypeIdOverwrite = "extendedEnumSfdrMainPcafSector",
+                        )
+                    }
+                }
+                edit<SingleSelectComponent>("companyExchangeStatus") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumSfdrCompanyExchangeStatus",
+                            dataPointTypeIdOverwrite = "extendedEnumSfdrCompanyExchangeStatus",
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -94,6 +116,11 @@ class SfdrFramework :
         root.edit<ComponentGroup>("social") {
             viewPageLabelBadgeColor = LabelBadgeColor.Yellow
             uploadPageLabelBadgeColor = LabelBadgeColor.Yellow
+        }
+
+        root.edit<ComponentGroup>("financial") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Blue
+            uploadPageLabelBadgeColor = LabelBadgeColor.Blue
         }
     }
 }

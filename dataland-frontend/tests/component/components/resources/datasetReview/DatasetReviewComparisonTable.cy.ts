@@ -45,6 +45,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
         fiscalYearDeviation: {
           value: 'Deviation',
         },
+      },
+      company: {
         fiscalYearEnd: {
           value: '2023-12-31',
         },

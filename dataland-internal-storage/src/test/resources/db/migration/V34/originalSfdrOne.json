@@ -1,0 +1,74 @@
+{
+  "general": {
+    "general": {
+      "dataDate": "2021-12-31",
+      "fiscalYearDeviation": "NoDeviation",
+      "fiscalYearEnd": "2021-12-31",
+      "referencedReports": {}
+    }
+  },
+  "environmental": {
+    "biodiversity": {
+      "landDegradationDesertificationSoilSealingExposure": "Yes",
+      "highlyBiodiverseGrasslandExposure": "No",
+      "protectedAreasExposure": null
+    },
+    "energyPerformance": {
+      "applicableHighImpactClimateSectors": {
+        "NaceCodeA": {
+          "highImpactClimateSectorEnergyConsumptionInGWh": {
+            "value": 12.3
+          }
+        }
+      },
+      "totalHighImpactClimateSectorEnergyConsumptionInGWh": null
+    },
+    "greenhouseGasEmissions": {
+      "scope1GhgEmissionsInTonnes": 100,
+      "scope4GhgEmissionsInTonnes": 50,
+      "ghgIntensityScope4InTonnesPerMillionEURRevenue": 5,
+      "enterpriseValueInEUR": {
+        "value": 123456.0
+      },
+      "totalRevenueInEUR": {
+        "value": 654321.0
+      }
+    },
+    "water": {
+      "waterConsumptionInCubicMeters": {
+        "value": 42.0
+      },
+      "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+        "value": 4.2
+      },
+      "waterReusedInCubicMeters": null
+    }
+  },
+  "social": {
+    "greenSecurities": {
+      "securitiesNotCertifiedAsGreen": "No"
+    },
+    "humanRights": {
+      "reportedChildLabourIncidents": "No",
+      "reportedForcedOrCompulsoryLabourIncidents": "No",
+      "humanRightsPolicy": null
+    },
+    "antiCorruptionAndAntiBribery": {
+      "reportedConvictionsOfBriberyAndCorruption": 2,
+      "casesOfInsufficientActionAgainstBriberyAndCorruption": null
+    },
+    "socialAndEmployeeMatters": {
+      "violationOfTaxRulesAndRegulation": "No",
+      "averageGrossHourlyEarningsFemaleEmployees": {
+        "value": 20.0
+      },
+      "averageGrossHourlyEarningsMaleEmployees": {
+        "value": 25.0
+      },
+      "iso14001Certificate": "Yes",
+      "technologiesExpertiseTransferPolicy": "No",
+      "transparencyDisclosurePolicy": "No",
+      "rateOfAccidentsInPercent": null
+    }
+  }
+}

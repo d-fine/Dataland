@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.general.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
@@ -12,6 +11,4 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrGeneralGeneral(
     @field:Valid()
     val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions?>? = null,
-    @field:Valid()
-    val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
 )

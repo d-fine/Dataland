@@ -253,59 +253,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     val scope1And2And3GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.""",
-        example = """{
-      "value" : 100.5, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val scope4GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).
-Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2""",
-        example = """{
-      "value" : 100.5, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val enterpriseValueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm's total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).
-Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3""",
-        example = """{
-      "value" : 100.5, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val totalRevenueInEUR: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Tons of GHG emissions per million EUR enterprise value. See also (EU) 2022/1288 Annex I formula (2).
 Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 2""",
         example = """{
@@ -394,23 +341,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     )
     @field:Valid()
     val ghgIntensityScope3InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Tons of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.""",
-        example = """{
-      "value" : 100.5, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val ghgIntensityScope4InTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).

@@ -37,23 +37,6 @@ data class SfdrGeneralGeneral(
     )
     @field:Valid()
     val fiscalYearDeviation: ExtendedDataPoint<SfdrGeneralGeneralFiscalYearDeviationOptions?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """The date the fiscal year ends.""",
-        example = """{
-      "value" :  "2007-03-05" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val fiscalYearEnd: ExtendedDataPoint<LocalDate?>? = null,
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,

@@ -67,24 +67,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     val rareOrEndangeredEcosystemsExposure: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.
-Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7""",
-        example = """{
-      "value" :  "Yes" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val highlyBiodiverseGrasslandExposure: ExtendedDataPoint<YesNo?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Involvements in manufacture of pesticides and other agrochemical products. See Regulation (EC) No 1893/2006, Annex I, Division 20.2.
 Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 9""",
         example = """{
@@ -118,7 +100,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo?>? = null,
+    val landDegradationDesertificationSoilSealing: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Existence of sustainable land or agriculture practices or policies.

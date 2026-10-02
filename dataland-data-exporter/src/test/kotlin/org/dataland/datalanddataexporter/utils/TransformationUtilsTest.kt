@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDa
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
+import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralCompany
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalanddataexporter.TestDataProvider
@@ -127,14 +128,18 @@ class TransformationUtilsTest {
                 data =
                     SfdrData(
                         SfdrGeneral(
-                            SfdrGeneralGeneral(
-                                dataDate = LocalDate.parse("2022-01-01"),
-                                fiscalYearEnd = ExtendedDataPointLocalDate(LocalDate.parse("2022-01-01")),
-                                fiscalYearDeviation =
-                                    ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions(
-                                        SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
-                                    ),
-                            ),
+                            general =
+                                SfdrGeneralGeneral(
+                                    dataDate = LocalDate.parse("2022-01-01"),
+                                    fiscalYearDeviation =
+                                        ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions(
+                                            SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                                        ),
+                                ),
+                            company =
+                                SfdrGeneralCompany(
+                                    fiscalYearEnd = ExtendedDataPointLocalDate(LocalDate.parse("2022-01-01")),
+                                ),
                         ),
                     ),
                 companyId = "companyId",

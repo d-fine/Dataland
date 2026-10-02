@@ -1,0 +1,9 @@
+{
+  "id" : "extendedDecimalGrossDomesticProductGdpInEUR",
+  "name" : "Gross Domestic Product (GDP)",
+  "businessDefinition" : "Total economic activity within a country in EUR",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : [ "min:0" ],
+  "calculationRules" : [ ]
+}
