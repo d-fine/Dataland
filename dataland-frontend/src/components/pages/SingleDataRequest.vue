@@ -313,9 +313,7 @@ export default defineComponent({
         const singleRequests = this.collectDataToSend();
         const requestControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
-        for (const singleRequest of singleRequests) {
-          await requestControllerApi.createRequest(singleRequest);
-        }
+        await Promise.all(singleRequests.map((singleRequest) => requestControllerApi.createRequest(singleRequest)));
         this.editStateVariables('', true, true);
       } catch (error) {
         console.error(error);
