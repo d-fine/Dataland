@@ -1,5 +1,5 @@
 # Base image from Grafana
-FROM grafana/grafana:12.4.4@sha256:378f94b054e5384cd74322cbf7542cff6a43e068e4011f81ea5e75323247df02
+FROM grafana/grafana:12.4.11@sha256:3ea272e5cab64a4a62240c682e2c62433b25614d956d44c299a10cb6994f6f2e
 
 # Copy the pre-configured provisioning directory and entrypoint script into the image
 COPY ./dataland-grafana/provisioning /etc/grafana/provisioning
