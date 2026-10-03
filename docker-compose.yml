@@ -334,7 +334,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "development" ]
-    image: node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b
+    image: node:24.14.0@sha256:5a593d74b632d1c6f816457477b6819760e13624455d587eef0fa418c8d0777b
     networks:
       internal:
         aliases:
