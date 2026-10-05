@@ -3,8 +3,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandqaservice.model.reports.AcceptedDataPointSource
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetJudgementState
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.JudgementDetailsPatch
@@ -41,6 +41,21 @@ object DatasetJudgementValidationHelper {
             throw ConflictApiException(
                 "Missing custom data point.",
                 "Custom data point has to be provided when acceptedSource is Custom.",
+            )
+        }
+    }
+
+    /**
+     * Ensures a QA report ID is provided when the accepted source is QA.
+     *
+     * @param patch The patch payload to validate.
+     * @throws InvalidInputApiException If acceptedSource is Qa but acceptedQaReportId is missing.
+     */
+    fun validateAcceptedQaReportIdIsSetIfAcceptedSourceIsQa(patch: JudgementDetailsPatch) {
+        if (patch.acceptedSource == AcceptedDataPointSource.Qa && patch.acceptedQaReportId == null) {
+            throw InvalidInputApiException(
+                summary = "Missing accepted QA report ID.",
+                message = "Accepted QA report ID must be provided when accepted source is QA.",
             )
         }
     }

@@ -167,17 +167,19 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
 
     @Test
     fun `patchJudgementDetails with Qa without acceptedQaReportId throws InvalidInputApiException`() {
-        assertThrows<InvalidInputApiException> {
-            service.patchJudgementDetails(
-                UUID.randomUUID(),
-                mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
-                JudgementDetailsPatch(
-                    AcceptedDataPointSource.Qa,
-                    null,
-                    null,
-                ),
-            )
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                service.patchJudgementDetails(
+                    UUID.randomUUID(),
+                    mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
+                    JudgementDetailsPatch(
+                        AcceptedDataPointSource.Qa,
+                        null,
+                        null,
+                    ),
+                )
+            }
+        assertEquals("Missing accepted QA report ID.", exception.summary)
     }
 
     @Test

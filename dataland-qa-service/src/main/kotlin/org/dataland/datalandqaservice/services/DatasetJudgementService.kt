@@ -172,6 +172,7 @@ class DatasetJudgementService
             val datasetJudgement = getDatasetJudgement(datasetJudgementId)
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
+            DatasetJudgementValidationHelper.validateAcceptedQaReportIdIsSetIfAcceptedSourceIsQa(patch)
             val dataPoint =
                 datasetJudgement.dataPoints
                     .find { it.dataPointType == dataPointType }
