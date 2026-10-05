@@ -46,35 +46,6 @@ object DatasetJudgementValidationHelper {
     }
 
     /**
-     * Validates the accepted QA report user ID for a data point
-     *
-     * Ensures the user ID is correctly provided or omitted and checks for the existence
-     * of a QA report from the specified user.
-     * Throws an exception if validation fails for absence, or existence conditions.
-     *
-     * @param qaReports Collection of QA reports for the data point.
-     * @param reporterUserIdOfAcceptedQaReport The user ID to validate as accepted QA report source.
-     * @throws InvalidInputApiException If the user ID is missing or does not correspond to a valid QA report.
-     */
-    fun validateReporterUserIdOfAcceptedQaReport(
-        qaReports: Collection<DataPointQaReportEntity>,
-        reporterUserIdOfAcceptedQaReport: String?,
-    ) {
-        if (reporterUserIdOfAcceptedQaReport == null) {
-            throw InvalidInputApiException(
-                "Missing reporterUserIdOfAcceptedQaReport.",
-                "reporterUserIdOfAcceptedQaReport must be provided when acceptedSource is Qa.",
-            )
-        }
-        if (qaReports.none { it.reporterUserId == reporterUserIdOfAcceptedQaReport }) {
-            throw InvalidInputApiException(
-                "QA report not found.",
-                "No QA report from company with id $reporterUserIdOfAcceptedQaReport found for this data point.",
-            )
-        }
-    }
-
-    /**
      * Throws InsufficientRightsApiException if user is not reviewer.
      *
      * @param reviewerUserId Expected reviewer user id for the dataset review.
