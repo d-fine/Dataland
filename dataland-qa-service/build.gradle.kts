@@ -56,6 +56,7 @@ dependencies {
     testImplementation(libs.spring.security.test)
     testImplementation(libs.mockito.kotlin)
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
+    testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
     kapt(Spring.boot.configurationProcessor)
 }
