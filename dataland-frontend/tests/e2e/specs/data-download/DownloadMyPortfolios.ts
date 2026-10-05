@@ -79,6 +79,23 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
 }
 
 /**
+ * Checks that the file at the given path is larger than the minimum expected size,
+ * deletes it afterwards and verifies that it is gone.
+ *
+ * @param {string} filePath - The path to the downloaded file.
+ * @return {void} This function does not return a value.
+ */
+function checkFileSizeAndDeleteAfterwards(filePath: string): void {
+  cy.task('getFileSize', filePath).then((size) => {
+    expect(size).to.be.greaterThan(5000);
+  });
+
+  cy.task('deleteFile', filePath).then(() => {
+    cy.readFile(filePath).should('not.exist');
+  });
+}
+
+/**
  * Tests the functionality for downloading a portfolio file with specified options.
  *
  * @param {Object} params - The parameters for the download operation.
@@ -121,13 +138,7 @@ function testDownloadPortfolio({
 
       cy.readFile(filePathStr, { timeout: longTimeoutInMs }).should('exist');
 
-      cy.task('getFileSize', filePathStr).then((size) => {
-        expect(size).to.be.greaterThan(5000);
-      });
-
-      cy.task('deleteFile', filePathStr).then(() => {
-        cy.readFile(filePathStr).should('not.exist');
-      });
+      checkFileSizeAndDeleteAfterwards(filePathStr);
     });
   });
 }
@@ -169,16 +180,19 @@ describeIf(
       const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
       portfolioName = `Download Portfolio ${Date.now()}`;
 
+      let adminToken: string;
+
       return getAdminToken()
         .then((token) => {
-          return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024'])
-            .then((company1) => {
-              storedCompany = company1;
-              return setupCompanyWithData(token, secondCompanyName, ['2023', '2024']);
-            })
-            .then((company2) => {
-              secondCompany = company2;
-            });
+          adminToken = token;
+          return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024']);
+        })
+        .then((company1) => {
+          storedCompany = company1;
+          return setupCompanyWithData(adminToken, secondCompanyName, ['2023', '2024']);
+        })
+        .then((company2) => {
+          secondCompany = company2;
         })
         .then(() => {
           createPortfolio(storedCompany, secondCompany, portfolioName);

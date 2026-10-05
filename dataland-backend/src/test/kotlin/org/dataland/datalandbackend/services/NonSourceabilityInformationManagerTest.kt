@@ -123,7 +123,10 @@ class NonSourceabilityInformationManagerTest(
     @Test
     fun `new request allowed after Rejected entry`() {
         manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
-        val entity = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, QaStatus.Pending).first()
+        val entity =
+            nonSourceabilityDataRepository
+                .findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, QaStatus.Pending)
+                .first()
         entity.qaStatus = QaStatus.Rejected
         nonSourceabilityDataRepository.save(entity)
 
@@ -147,7 +150,7 @@ class NonSourceabilityInformationManagerTest(
     fun `NonSourceabilityDataRepository is canonical runtime source not SourceabilityDataRepository`() {
         AuthenticationMock.mockSecurityContext("admin", "adminId", adminRoles)
         manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertTrue(entries.isNotEmpty(), "NonSourceabilityDataRepository must be the runtime source")
     }
 
@@ -178,7 +181,7 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = false, currentlyActive = false)
         }
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
         assertEquals(QaStatus.Pending, entries.single().qaStatus)
     }
@@ -192,7 +195,7 @@ class NonSourceabilityInformationManagerTest(
         assertThrows<ConflictApiException> {
             manager.processNonSourceabilityRequest(request(), bypassQa = true, currentlyActive = true)
         }
-        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val entries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(1, entries.size, "Conflict must not create a duplicate entry")
         assertTrue(entries.single().currentlyActive, "Active entry must remain active after rejected duplicate")
     }
@@ -218,7 +221,7 @@ class NonSourceabilityInformationManagerTest(
         assertFalse(response.currentlyActive)
         assertEquals(QaStatus.Accepted, response.qaStatus)
         assertFalse(manager.isTripleCurrentlyNonSourceable(companyId, dataType, reportingPeriod))
-        val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, reportingPeriod, null)
+        val allEntries = nonSourceabilityDataRepository.findByFilters(companyId, dataType, isDataTypeEmpty = false, reportingPeriod, null)
         assertEquals(2, allEntries.size)
         assertTrue(allEntries.all { !it.currentlyActive })
         assertEquals(2, allEntries.count { it.bypassQa && !it.currentlyActive && it.qaStatus == QaStatus.Accepted })

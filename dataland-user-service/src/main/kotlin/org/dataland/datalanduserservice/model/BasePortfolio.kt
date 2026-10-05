@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.UserServiceOpenApiDescriptionsAndExamples
 import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.entity.ProxyCompanyReplacementEmbeddable
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.time.Instant
@@ -92,6 +93,14 @@ data class BasePortfolio(
             ),
     )
     override val sharedUserIds: Set<String>,
+    @field:JsonProperty(required = false)
+    @field:ArraySchema(
+        arraySchema =
+            Schema(
+                description = UserServiceOpenApiDescriptionsAndExamples.PORTFOLIO_PROXY_COMPANY_REPLACEMENTS_DESCRIPTION,
+            ),
+    )
+    val proxyCompanyReplacements: List<ProxyCompanyReplacement>? = null,
 ) : Portfolio,
     PortfolioMonitoring,
     PortfolioSharing {
@@ -107,6 +116,16 @@ data class BasePortfolio(
         notificationFrequency = portfolioUpload.notificationFrequency,
         timeWindowThreshold = portfolioUpload.timeWindowThreshold,
         sharedUserIds = portfolioUpload.sharedUserIds,
+        proxyCompanyReplacements =
+            portfolioUpload.proxyCompanyReplacements
+                ?.map {
+                    ProxyCompanyReplacement(
+                        userId = DatalandAuthentication.fromContext().userId,
+                        timestamp = Instant.now().toEpochMilli(),
+                        proxiedCompanyId = it.proxiedCompanyId,
+                        proxyCompanyId = it.proxyCompanyId,
+                    )
+                }?.takeIf { it.isNotEmpty() },
     )
 
     constructor(portfolioMonitoringPatch: PortfolioMonitoringPatch) : this(
@@ -150,6 +169,7 @@ data class BasePortfolio(
         notificationFrequency: NotificationFrequency = this.notificationFrequency,
         timeWindowThreshold: TimeWindowThreshold? = this.timeWindowThreshold,
         sharedUserIds: Set<String> = this.sharedUserIds,
+        proxyCompanyReplacements: List<ProxyCompanyReplacement>? = this.proxyCompanyReplacements,
     ): PortfolioEntity =
         PortfolioEntity(
             portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.fromString(this.portfolioId),
@@ -163,5 +183,15 @@ data class BasePortfolio(
             notificationFrequency = notificationFrequency,
             timeWindowThreshold = timeWindowThreshold,
             sharedUserIds = sharedUserIds,
+            proxyCompanyReplacements =
+                (proxyCompanyReplacements ?: emptyList())
+                    .map {
+                        ProxyCompanyReplacementEmbeddable(
+                            userId = it.userId,
+                            timestamp = it.timestamp,
+                            proxiedCompanyId = it.proxiedCompanyId,
+                            proxyCompanyId = it.proxyCompanyId,
+                        )
+                    }.toMutableSet(),
         )
 }

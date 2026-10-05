@@ -79,6 +79,16 @@ export function getAdminPw(): Cypress.Chainable<string> {
 }
 
 /**
+ * Runs the processor on all elements of a chunk in parallel
+ * @param chunk the elements to operate on
+ * @param processor a function performing some operation on a single element
+ * @returns a promise that resolves once all elements have been processed
+ */
+function processChunk<T>(chunk: Array<T>, processor: (element: T) => Promise<void>): Promise<void> {
+  return Promise.all(chunk.map((element): Promise<void> => processor(element))).then();
+}
+
+/**
  * A higher level function that operates on a list of elements (dataArray) and applys a
  * potentially time-intensive operation (processor) to each element. These operations are completed in chunks
  * of chunkSize. The resulting promise is entered into the Cypress chain
@@ -95,9 +105,7 @@ export function doThingsInChunks<T>(
   let promise: Promise<void> = Promise.resolve();
   for (let i = 0; i < dataArray.length; i += chunkSize) {
     const chunk = dataArray.slice(i, i + chunkSize);
-    promise = promise.then((): Promise<void> =>
-      Promise.all(chunk.map((element): Promise<void> => processor(element))).then()
-    );
+    promise = promise.then((): Promise<void> => processChunk(chunk, processor));
   }
   return cy.then((): Bluebird<void> => {
     return wrapPromiseToCypressPromise(promise);
