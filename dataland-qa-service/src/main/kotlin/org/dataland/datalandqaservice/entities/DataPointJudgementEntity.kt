@@ -51,6 +51,8 @@ class DataPointJudgementEntity(
     @Column(columnDefinition = "TEXT", nullable = true)
     @Convert(converter = PreApprovalCheckResultsConverter::class)
     var preApprovalCheckResults: PreApprovalCheckResults? = null,
+    @Column(name = "data_point_base_type", columnDefinition = "TEXT", nullable = true)
+    val dataPointBaseType: String? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
@@ -65,6 +67,7 @@ class DataPointJudgementEntity(
             customValue = customValue,
             reasonForCustomDataPoint = reasonForCustomDataPoint,
             preApprovalCheckResults = preApprovalCheckResults,
+            dataPointBaseType = dataPointBaseType,
         )
 
     /**
