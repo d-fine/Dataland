@@ -26,7 +26,7 @@ moshi = "1.15.2"
 mockito = "5.23.0"
 junit-jupiter = "6.1.3"
 log4j = "2.26.1"
-jackson = "2.22.2"
+jackson = "2.22.3"
 logback = "1.6.3"
 flyway = "11.20.3"
 cloudevents = "5.0.0"
@@ -75,7 +75,7 @@ logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.
 logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = "logback" }
 
 # SLF4J
-slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.19" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.20" }
 
 # Spring
 spring-boot = { group = "org.springframework.boot", name = "spring-boot", version.ref = "spring-boot" }
@@ -104,7 +104,7 @@ spring-test = { group = "org.springframework", name = "spring-test", version.ref
 postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.13" }
 
 # H2
-h2 = { group = "com.h2database", name = "h2", version = "2.5.250" }
+h2 = { group = "com.h2database", name = "h2", version = "2.5.252" }
 
 # Moshi
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
