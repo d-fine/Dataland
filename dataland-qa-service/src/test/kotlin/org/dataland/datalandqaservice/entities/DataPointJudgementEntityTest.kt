@@ -67,4 +67,29 @@ class DataPointJudgementEntityTest {
 
         assertThat(entity.qaReports).hasSize(4)
     }
+
+    @Test
+    fun `toDataPointJudgementDetails exposes the stored data point base type`() {
+        val entity = buildEntity(dataPointBaseType = "extendedCurrency")
+
+        assertThat(entity.toDataPointJudgementDetails().dataPointBaseType).isEqualTo("extendedCurrency")
+    }
+
+    @Test
+    fun `toDataPointJudgementDetails returns null base type for judgements created without one`() {
+        val entity = buildEntity(dataPointBaseType = null)
+
+        assertThat(entity.toDataPointJudgementDetails().dataPointBaseType).isNull()
+    }
+
+    private fun buildEntity(dataPointBaseType: String?) =
+        DataPointJudgementEntity(
+            dataPointType = dataPointType,
+            dataPointId = dataPointId,
+            qaReports = mutableListOf(),
+            acceptedSource = null,
+            reporterUserIdOfAcceptedQaReport = null,
+            customValue = null,
+            dataPointBaseType = dataPointBaseType,
+        )
 }

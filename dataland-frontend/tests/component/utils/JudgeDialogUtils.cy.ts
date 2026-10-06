@@ -4,6 +4,7 @@ import {
   parseFormDataToDataPointJson,
   parseDataPointJsonToFormData,
   transformDataPointDetailToFormData,
+  isCurrencyDataPointType,
 } from '@/utils/JudgeDialogUtils';
 import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts';
 import { type ParsedSingleDataPoint, unwrapDataPointJson, wrapDataPointJson } from '@/utils/DataPoint.ts';
@@ -436,5 +437,18 @@ describe('wrapDataPointJson', () => {
     const nullJson = JSON.stringify(null);
     const wrapped = wrapDataPointJson(nullJson);
     expect(wrapped).to.deep.equal({ value: null });
+  });
+});
+
+describe('isCurrencyDataPointType', () => {
+  it('uses the base type when it is set', () => {
+    expect(isCurrencyDataPointType('extendedCurrency', undefined)).to.equal(true);
+    expect(isCurrencyDataPointType('extendedDecimal', 'CurrencyExtendedDataPointFormField')).to.equal(false);
+  });
+
+  it('falls back to the upload component name when the base type is missing', () => {
+    expect(isCurrencyDataPointType(null, 'CurrencyExtendedDataPointFormField')).to.equal(true);
+    expect(isCurrencyDataPointType(undefined, 'PercentageExtendedDataPointFormField')).to.equal(false);
+    expect(isCurrencyDataPointType(undefined, undefined)).to.equal(false);
   });
 });

@@ -2,6 +2,28 @@ import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import { type ParsedSingleDataPoint, removeInferableDocumentFields, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
+export const DataPointBaseType = {
+  ExtendedCurrency: 'extendedCurrency',
+} as const;
+
+const LEGACY_CURRENCY_UPLOAD_COMPONENT_NAME = 'CurrencyExtendedDataPointFormField';
+
+/**
+ * Determines whether a data point is currency-typed.
+ * Uses the base type stored on the judgement; judgements created before the base type was stored return null for it,
+ * in which case the upload component name of the view config is used as a fallback.
+ * @param dataPointBaseType base type id from the data point judgement (may be null/undefined for old judgements)
+ * @param uploadComponentName upload component name from the view config (fallback)
+ * @returns true if the data point is currency-typed
+ */
+export function isCurrencyDataPointType(
+  dataPointBaseType: string | null | undefined,
+  uploadComponentName: string | undefined
+): boolean {
+  if (dataPointBaseType) return dataPointBaseType === DataPointBaseType.ExtendedCurrency;
+  return uploadComponentName === LEGACY_CURRENCY_UPLOAD_COMPONENT_NAME;
+}
+
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: null },
   null,
