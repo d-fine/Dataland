@@ -305,7 +305,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatCurrencyForDisplay(dataset.revenue?.totalAmount, 'Total Amount'),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
-        uploadComponentName: 'CurrencyDataPointFormField',
+        uploadComponentName: 'CurrencyExtendedDataPointFormField',
         dataPointTypeId: 'extendedCurrencyTotalAmount',
       },
       {
@@ -1189,7 +1189,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatCurrencyForDisplay(dataset.capex?.totalAmount, 'Total Amount'),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
-        uploadComponentName: 'CurrencyDataPointFormField',
+        uploadComponentName: 'CurrencyExtendedDataPointFormField',
         dataPointTypeId: 'extendedCurrencyCapexTotalAmount',
       },
       {
@@ -2067,7 +2067,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatCurrencyForDisplay(dataset.opex?.totalAmount, 'Total Amount'),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(parseDataPoint(dataPoint) as CurrencyDataPoint, 'Total Amount'),
-        uploadComponentName: 'CurrencyDataPointFormField',
+        uploadComponentName: 'CurrencyExtendedDataPointFormField',
         dataPointTypeId: 'extendedCurrencyOpexTotalAmount',
       },
       {
