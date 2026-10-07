@@ -2,6 +2,8 @@ import type { Interception } from 'cypress/types/net-stubbing';
 import { AcceptedDataPointSource } from '@clients/qaservice';
 import type { QaJudgement } from '@e2e/utils/CheckJudgementJson.ts';
 import { recurse } from 'cypress-recurse';
+import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
+import { DropdownDatasetIdentifier, getDatasetAsMap } from '@/utils/PremadeDropdownDatasets.ts';
 
 /**
  * Selects the given data point type in the judge modal's "Next datapoint" dropdown.
@@ -113,6 +115,16 @@ export function makeJudgementDecision(judgement: QaJudgement): void {
     cy.get('[data-test="custom-value-field"]').click();
     cy.get('[data-test="custom-value-field"]').clear();
     cy.get('[data-test="custom-value-field"]').type(judgement.customValue);
+  }
+
+  if (judgement.customCurrency != null) {
+    // Select by the full "<Name> (<ISO code>)" label instead of the bare code
+    const currencyLabel = getDatasetAsMap(DropdownDatasetIdentifier.CurrencyCodes)[judgement.customCurrency];
+    selectItemFromDropdownByValue(
+      cy.get('[data-test="custom-currency-field"]').should('be.visible'),
+      currencyLabel ?? judgement.customCurrency,
+      true
+    );
   }
 
   if (judgement.reasonForCustomDataPoint != null) {

@@ -15,6 +15,7 @@ import org.dataland.datalandspecificationservice.openApiClient.api.Specification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Service to support data point judgement operations.
@@ -31,6 +32,8 @@ class DatasetJudgementSupportService
         private val datasetJudgementRepository: DatasetJudgementRepository,
         private val objectMapper: ObjectMapper,
     ) {
+        private val baseTypeIdCache = ConcurrentHashMap<String, String>()
+
         /**
          * Retrieves meta data of a dataset.
          *
@@ -159,5 +162,7 @@ class DatasetJudgementSupportService
          * @return The base type id string (e.g. "extendedDecimal", "extendedInteger", "extendedEnumYesNo").
          */
         fun resolveBaseTypeId(dataPointType: String): String =
-            specificationControllerApi.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            baseTypeIdCache.getOrPut(dataPointType) {
+                specificationControllerApi.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            }
     }

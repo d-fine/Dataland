@@ -10,6 +10,7 @@ import type { CellRow } from '@/components/resources/datasetReview/DatasetReview
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
+import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 // ===== Shared test data =====
 
@@ -280,6 +281,104 @@ describe('JudgeDialog component tests', () => {
         cy.get('[data-test="empty-text"]').should('be.visible').and('contain.text', 'No QA reports available.');
         cy.get('table').should('not.exist');
       });
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 1b. Currency data points: Original/Reviewed display and Custom form
+  // ---------------------------------------------------------------------------
+  describe('Currency data points', () => {
+    const withBaseType = (baseType: string | undefined): DatasetJudgementResponse => ({
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: { ...baseDatasetJudgement.dataPoints[dataPointTypeId], dataPointBaseType: baseType },
+      },
+    });
+
+    it('shows the currency in the Original and Reviewed sections for a Currency data point', () => {
+      const judgementWithCurrencyQaReport: DatasetJudgementResponse = {
+        ...baseDatasetJudgement,
+        dataPoints: {
+          ...baseDatasetJudgement.dataPoints,
+          [dataPointTypeId]: {
+            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
+            dataPointBaseType: 'extendedCurrency',
+            qaReports: [
+              {
+                ...baseDatasetJudgement.dataPoints[dataPointTypeId].qaReports[0],
+                correctedData: JSON.stringify({ value: '456.78', currency: 'USD', quality: 'Estimated' }),
+              },
+            ],
+          },
+        },
+      };
+
+      mountJudgeDialog({
+        datasetJudgement: judgementWithCurrencyQaReport,
+        originalDataPointBody: { value: '123.45', currency: 'EUR', quality: 'Audited' },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Currency').should('contain.text', 'EUR');
+      });
+      cy.get('[data-test="corrected-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Currency').should('contain.text', 'USD');
+      });
+    });
+
+    it('does not show a Currency row in the Original/Reviewed sections for non-Currency data points', () => {
+      mountJudgeDialog();
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Currency').should('not.exist');
+      });
+      cy.get('[data-test="corrected-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Currency').should('not.exist');
+      });
+    });
+
+    it('shows a currency selector in the Custom form and includes it in the PATCH payload when accepting a custom value', () => {
+      mountJudgeDialog({
+        datasetJudgement: withBaseType('extendedCurrency'),
+        originalDataPointBody: { value: '123.45', currency: 'EUR', quality: 'Audited' },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="custom-value-field"]').click();
+      cy.get('[data-test="custom-value-field"]').clear();
+      cy.get('[data-test="custom-value-field"]').type('999.99');
+
+      selectItemFromDropdownByValue(
+        cy.get('[data-test="custom-currency-field"]').should('be.visible'),
+        'Euro (EUR)',
+        true
+      );
+
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        const body = interception.request.body as { customDataPoint?: string };
+        const parsed = JSON.parse(body.customDataPoint ?? '{}') as { value?: string; currency?: string };
+        expect(parsed.value).to.equal('999.99');
+        expect(parsed.currency).to.equal('EUR');
+      });
+    });
+
+    it('does not show a currency selector in the Custom form for non-Currency data points', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="custom-currency-field"]').should('not.exist');
+    });
+
+    it('does not show a currency selector for judgements created without a stored base type', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType(undefined) });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="custom-currency-field"]').should('not.exist');
     });
   });
 

@@ -43,6 +43,7 @@ describe('parseFormDataToDataPointJson', () => {
     document: '',
     pages: '',
     comment: '',
+    currency: '',
   };
 
   // Realistic base example: numeric value, quality, pages, and comment
@@ -57,6 +58,7 @@ describe('parseFormDataToDataPointJson', () => {
     document: '', // no document selected in this scenario
     pages: baseFormPages,
     comment: baseFormComment,
+    currency: '',
   };
 
   const documentOption: DocumentOption = {
@@ -95,6 +97,7 @@ describe('parseFormDataToDataPointJson', () => {
       document: '',
       pages: '10–12',
       comment: '',
+      currency: '',
     };
 
     const json = parseFormDataToDataPointJson(form, null);
@@ -114,6 +117,7 @@ describe('parseFormDataToDataPointJson', () => {
       document: documentOption.value,
       pages: '5',
       comment: 'Verified against Annual Report 2023.',
+      currency: '',
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
@@ -135,6 +139,7 @@ describe('parseFormDataToDataPointJson', () => {
       document: documentOption.value,
       pages: '',
       comment: '',
+      currency: '',
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
@@ -145,6 +150,28 @@ describe('parseFormDataToDataPointJson', () => {
         fileReference: 'ref-123',
       },
     });
+  });
+
+  it('includes currency in the JSON payload for currency data points, but omits it when empty', () => {
+    const formWithCurrency: CustomFormData = {
+      value: '400400400.23',
+      quality: '',
+      document: '',
+      pages: '',
+      comment: '',
+      currency: 'EUR',
+    };
+
+    const parsedWithCurrency = JSON.parse(
+      parseFormDataToDataPointJson(formWithCurrency, null)
+    ) as ParsedSingleDataPoint;
+    expect(parsedWithCurrency).to.deep.equal({ value: '400400400.23', currency: 'EUR' });
+
+    const formWithoutCurrency: CustomFormData = { ...formWithCurrency, currency: '' };
+    const parsedWithoutCurrency = JSON.parse(
+      parseFormDataToDataPointJson(formWithoutCurrency, null)
+    ) as ParsedSingleDataPoint;
+    expect(parsedWithoutCurrency).to.deep.equal({ value: '400400400.23' });
   });
 });
 
@@ -169,6 +196,7 @@ describe('transformDataPointDetailToFormData', () => {
       document: 'SustainabilityReport2023.pdf', // fileName preferred
       pages: '12',
       comment: 'Taken from Sustainability Report 2023, page 12.',
+      currency: '',
     });
   });
 
@@ -206,6 +234,7 @@ describe('transformDataPointDetailToFormData', () => {
       document: '',
       pages: '',
       comment: '',
+      currency: '',
     });
   });
 
@@ -226,6 +255,19 @@ describe('transformDataPointDetailToFormData', () => {
 
     expect(form.value).to.deep.equal(activities);
     expect(form.value).to.not.be.a('string');
+  });
+
+  it('maps a currency data point detail including its currency field', () => {
+    const detail: ParsedSingleDataPoint = {
+      value: '400400400.23',
+      currency: 'EUR',
+      quality: 'Reported',
+    };
+
+    const form = transformDataPointDetailToFormData(detail);
+
+    expect(form.currency).to.equal('EUR');
+    expect(form.value).to.equal('400400400.23');
   });
 });
 
@@ -276,6 +318,7 @@ describe('parseDataPointJsonToFormData', () => {
       document: 'ParsedReport.pdf',
       pages: '9',
       comment: 'Verified against ParsedReport.pdf.',
+      currency: '',
     });
   });
 
@@ -285,6 +328,20 @@ describe('parseDataPointJsonToFormData', () => {
     const form = parseDataPointJsonToFormData(invalidJson);
 
     expect(form).to.equal(null);
+  });
+
+  it('round-trips a currency value together with its currency code', () => {
+    const detail: ParsedSingleDataPoint = {
+      value: '74568964325',
+      currency: 'EUR',
+      quality: 'Reported',
+    };
+
+    const json = JSON.stringify(detail);
+    const form = parseDataPointJsonToFormData(json);
+
+    expect(form?.currency).to.equal('EUR');
+    expect(form?.value).to.equal('74568964325');
   });
 });
 

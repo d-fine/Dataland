@@ -275,7 +275,7 @@ class DataControllerTest {
                 testDataEuTaxonomyNonFinancials.copy(
                     revenue =
                         EutaxonomyNonFinancialsRevenue(
-                            totalAmount = CurrencyDataPoint(value = BigDecimal(reportingPeriod)),
+                            totalAmount = CurrencyDataPoint(value = BigDecimal(reportingPeriod), currency = "EUR"),
                         ),
                 ),
                 bypassQa = true,

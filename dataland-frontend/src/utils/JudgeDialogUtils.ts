@@ -2,6 +2,10 @@ import type { CustomFormData, DocumentOption } from '@/types/JudgeDialogTypes.ts
 import { toSafeDisplayString } from '@/utils/StringFormatter.ts';
 import { type ParsedSingleDataPoint, removeInferableDocumentFields, wrapDataPointJson } from '@/utils/DataPoint.ts';
 
+export const DataPointBaseType = {
+  ExtendedCurrency: 'extendedCurrency',
+} as const;
+
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
   { value: null, quality: null, comment: null, dataSource: null },
   null,
@@ -14,6 +18,7 @@ export const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
   document: '',
   pages: '',
   comment: '',
+  currency: '',
 };
 
 type JudgementErrorItem = {
@@ -60,7 +65,7 @@ export function parseFormDataToDataPointJson(
   formData: CustomFormData,
   selectedDocument: DocumentOption | null
 ): string {
-  const { value, quality, comment, pages } = formData;
+  const { value, quality, comment, pages, currency } = formData;
 
   const documentDataSource = selectedDocument?.dataSource ?? null;
   let dataSource: ParsedSingleDataPoint['dataSource'] | null;
@@ -76,6 +81,7 @@ export function parseFormDataToDataPointJson(
     ...(hasValueContent(value) ? { value } : {}),
     ...(quality && { quality }),
     ...(comment && { comment }),
+    ...(currency && { currency }),
     ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
   };
 
@@ -114,5 +120,6 @@ export function transformDataPointDetailToFormData(detail: ParsedSingleDataPoint
     document: toSafeDisplayString(detail.dataSource?.fileName ?? detail.dataSource?.fileReference),
     pages: toSafeDisplayString(detail.dataSource?.page),
     comment: toSafeDisplayString(detail.comment),
+    currency: toSafeDisplayString(detail.currency),
   };
 }

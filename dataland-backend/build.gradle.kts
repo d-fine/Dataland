@@ -67,6 +67,10 @@ dependencies {
     implementation(libs.kotlin.reflect)
 }
 
+springBoot {
+    mainClass.set("org.dataland.datalandbackend.DatalandBackendKt")
+}
+
 openApi {
     apiDocsUrl.set("http://localhost:8482/api/v3/api-docs")
     customBootRun {
@@ -232,6 +236,16 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
             "removeEnumValuePrefix" to false,
         ),
     )
+}
+
+tasks.register("generateCurrencyCodesFile", JavaExec::class) {
+    doNotTrackState("The file should always be regenerated.")
+    description = "Generates the shared ISO 4217 currencyCodes.json in dataland-backend-utils from the JDK currencies."
+    group = "build"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "org.dataland.datalandbackend.utils.CurrencyCodeFileGenerator"
+    workingDir = rootDir
+    args = listOf("$rootDir/dataland-backend-utils/src/main/resources/currencyCodes.json")
 }
 
 tasks.register("generateClients") {

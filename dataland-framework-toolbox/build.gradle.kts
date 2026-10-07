@@ -63,6 +63,12 @@ tasks.register("runCreateFrameworkList", JavaExec::class) {
     workingDir = rootDir
 }
 
+tasks.register("runGenerateCurrencyCodes") {
+    description = "Regenerates the shared currencyCodes.json via the backend generator task."
+    group = "Verification"
+    dependsOn(":dataland-backend:generateCurrencyCodesFile")
+}
+
 jacoco {
     toolVersion = jacocoVersion
     this.applyTo(tasks.named<JavaExec>("integrationTest").get())

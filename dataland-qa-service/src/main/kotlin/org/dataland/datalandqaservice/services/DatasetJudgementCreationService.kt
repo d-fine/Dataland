@@ -178,6 +178,7 @@ class DatasetJudgementCreationService
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
                         customValue = null,
+                        dataPointBaseType = datasetJudgementSupportService.resolveBaseTypeId(dataPointType),
                     )
 
                 datasetJudgementEntity.addAssociatedDataPoints(currentDataPointJudgementDetails)

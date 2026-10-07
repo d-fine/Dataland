@@ -4755,6 +4755,11 @@
           },
           "preApprovalCheckResults": {
             "$ref": "#/components/schemas/PreApprovalCheckResults"
+          },
+          "dataPointBaseType": {
+            "type": "string",
+            "description": "The id of the base type of this data point type, as defined in the specification service. Null for judgements that were created before the base type was stored.",
+            "example": "extendedCurrency"
           }
         },
         "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
