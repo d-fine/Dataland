@@ -55,8 +55,8 @@ class CompanyProxyControllerTest(
         private const val COMPANIES_ENDPOINT = "/companies"
         private const val APPLICATION_JSON = "application/json"
         private const val COMPANY_ID_JSON_FIELD = "companyId"
-        private const val JSON_PATH_PROXIED_COMPANY_ID = "\$.proxiedCompanyId"
-        private const val JSON_PATH_PROXY_COMPANY_ID = "\$.proxyCompanyId"
+        private const val JSON_PATH_CHILD_COMPANY_ID = "\$.childCompanyId"
+        private const val JSON_PATH_PARENT_COMPANY_ID = "\$.parentCompanyId"
         private const val JSON_PATH_FRAMEWORK = "\$.framework"
         private const val JSON_PATH_REPORTING_PERIOD = "\$.reportingPeriod"
     }
@@ -203,15 +203,15 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `create proxy then get by id returns correct data`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val requestBody = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
 
         val postResult =
             performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
                 .andExpect(status().isOk)
-                .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
-                .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+                .andExpect(jsonPath(JSON_PATH_CHILD_COMPANY_ID).value(companyIdChildCompany))
+                .andExpect(jsonPath(JSON_PATH_PARENT_COMPANY_ID).value(companyIdParentCompany))
                 .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
                 .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
 
@@ -223,8 +223,8 @@ class CompanyProxyControllerTest(
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
             .andExpect(jsonPath("$.proxyId").value(proxyId))
-            .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
-            .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+            .andExpect(jsonPath(JSON_PATH_CHILD_COMPANY_ID).value(companyIdChildCompany))
+            .andExpect(jsonPath(JSON_PATH_PARENT_COMPANY_ID).value(companyIdParentCompany))
             .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
             .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
     }
@@ -238,9 +238,9 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `create proxy then delete proxy and assert that it is no longer retrievable`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val requestBody = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
         val postResult =
             performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
                 .andExpect(status().isOk)
@@ -263,14 +263,14 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `change existing company proxy using put request`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val createRequest = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val createRequest = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
         val postResult =
             performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, createRequest)
                 .andExpect(status().isOk)
         val proxyId = getProxyIdFromResult(postResult)
-        val updateRequest = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "lksg", "2023")
+        val updateRequest = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "lksg", "2023")
         performProxyRequest("PUT", COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId, updateRequest)
             .andExpect(status().isOk)
         mockMvc
@@ -279,26 +279,26 @@ class CompanyProxyControllerTest(
                     .contentType(APPLICATION_JSON)
                     .with(securityContext(mockSecurityContext)),
             ).andExpect(status().isOk)
-            .andExpect(jsonPath(JSON_PATH_PROXIED_COMPANY_ID).value(companyIdProxiedCompany))
-            .andExpect(jsonPath(JSON_PATH_PROXY_COMPANY_ID).value(companyIdProxyCompany))
+            .andExpect(jsonPath(JSON_PATH_CHILD_COMPANY_ID).value(companyIdChildCompany))
+            .andExpect(jsonPath(JSON_PATH_PARENT_COMPANY_ID).value(companyIdParentCompany))
             .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("lksg"))
             .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2023"))
     }
 
     @Test
     fun `trying to create a proxy as a non admin user results in a 403`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val requestBody = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
         performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody, user = User.UPLOADER)
             .andExpect(status().isForbidden)
     }
 
     @Test
     fun `trying to delete a proxy as a non admin user results in a 403`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val requestBody = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
         val postResult =
             performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
                 .andExpect(status().isOk)
@@ -314,9 +314,9 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `trying to get a proxy relation by proxyId as a non admin user results in a 403`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
-        val requestBody = CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "sfdr", "2024")
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
+        val requestBody = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "sfdr", "2024")
         val postResult =
             performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, requestBody)
                 .andExpect(status().isOk)
@@ -332,10 +332,10 @@ class CompanyProxyControllerTest(
 
     @Test
     fun `creating a proxy with an invalid framework returns 400`() {
-        val companyIdProxyCompany = createCompany()
-        val companyIdProxiedCompany = createCompany()
+        val companyIdParentCompany = createCompany()
+        val companyIdChildCompany = createCompany()
         val invalidFrameworkRequest =
-            CompanyProxy(companyIdProxiedCompany, companyIdProxyCompany, "NOT_A_REAL_FRAMEWORK", "2024")
+            CompanyProxy(companyIdChildCompany, companyIdParentCompany, "NOT_A_REAL_FRAMEWORK", "2024")
         performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, invalidFrameworkRequest)
             .andExpect(status().isBadRequest)
     }

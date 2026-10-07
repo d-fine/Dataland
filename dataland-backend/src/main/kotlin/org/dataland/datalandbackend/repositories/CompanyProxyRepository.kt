@@ -14,12 +14,12 @@ import java.util.UUID
  */
 interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
     /**
-     * Finds all CompanyProxyEntity objects with the given proxiedCompanyId.
+     * Finds all CompanyProxyEntity objects with the given childCompanyId.
      *
-     * @param proxiedCompanyId The ID of the proxied company.
+     * @param childCompanyId The ID of the proxied company.
      * @return A list of CompanyProxyEntity objects.
      */
-    fun findAllByProxiedCompanyId(proxiedCompanyId: UUID): List<CompanyProxyEntity>
+    fun findAllByChildCompanyId(childCompanyId: UUID): List<CompanyProxyEntity>
 
     /**
      * Finds all CompanyProxyEntity objects matching the given filters.
@@ -32,8 +32,8 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
         """
     SELECT c FROM CompanyProxyEntity c
     WHERE
-        (:#{#searchFilter.proxiedCompanyId} IS NULL OR c.proxiedCompanyId = :#{#searchFilter.proxiedCompanyId})
-        AND (:#{#searchFilter.proxyCompanyId} IS NULL OR c.proxyCompanyId = :#{#searchFilter.proxyCompanyId})
+        (:#{#searchFilter.childCompanyId} IS NULL OR c.childCompanyId = :#{#searchFilter.childCompanyId})
+        AND (:#{#searchFilter.parentCompanyId} IS NULL OR c.parentCompanyId = :#{#searchFilter.parentCompanyId})
         AND (
             (:#{#searchFilter.frameworks.isEmpty()} = TRUE)
             OR (c.framework IN :#{#searchFilter.frameworks})

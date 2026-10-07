@@ -8,8 +8,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  * Class defining the stored proxying rules between two companies.
  *
  * @param proxyId The unique identifier of the stored company proxy.
- * @param proxiedCompanyId The company whose data may be substituted.
- * @param proxyCompanyId The company whose data may serve as a proxy.
+ * @param childCompanyId The company whose data may be substituted.
+ * @param parentCompanyId The company whose data may serve as a proxy.
  * @param framework The framework for which proxying is allowed.
  *        Empty or null means all frameworks may be proxied.
  * @param reportingPeriod A reporting period for which proxying is allowed.
@@ -22,15 +22,15 @@ data class StoredCompanyProxy(
     )
     val proxyId: String,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.CHILD_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    val proxiedCompanyId: String,
+    val childCompanyId: String,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.PARENT_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
-    val proxyCompanyId: String,
+    val parentCompanyId: String,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,

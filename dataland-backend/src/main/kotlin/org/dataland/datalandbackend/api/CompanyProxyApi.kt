@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
     /**
-     * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
+     * Creates a proxy rule for a given (childCompanyId, parentCompanyId) pair.
      *
      * The submitted resource defines which data of one company may be substituted by
      * the corresponding data of another company.
@@ -141,20 +141,20 @@ interface CompanyProxyApi {
     fun searchCompanyProxies(
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHILD_COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         @CompanyExists
-        proxiedCompanyId: String?,
+        childCompanyId: String?,
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.PARENT_COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         @CompanyExists
-        proxyCompanyId: String?,
+        parentCompanyId: String?,
         @RequestParam
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,

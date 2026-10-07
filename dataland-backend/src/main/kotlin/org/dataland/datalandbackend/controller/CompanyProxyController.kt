@@ -30,8 +30,8 @@ class CompanyProxyController
         override fun postCompanyProxy(companyProxy: CompanyProxy<String>): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to create proxy relation for " +
-                    "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
-                    "proxyCompanyId='${companyProxy.proxyCompanyId}', " +
+                    "childCompanyId='${companyProxy.childCompanyId}', " +
+                    "parentCompanyId='${companyProxy.parentCompanyId}', " +
                     "framework='${companyProxy.framework}', " +
                     "reportingPeriod='${companyProxy.reportingPeriod}'",
             )
@@ -58,8 +58,8 @@ class CompanyProxyController
          * GET /company-proxies/company-proxy
          */
         override fun searchCompanyProxies(
-            proxiedCompanyId: String?,
-            proxyCompanyId: String?,
+            childCompanyId: String?,
+            parentCompanyId: String?,
             frameworks: Set<String>?,
             reportingPeriods: Set<String>?,
             chunkSize: Int,
@@ -68,8 +68,8 @@ class CompanyProxyController
             logger.info("Received request to get all company proxies")
             return ResponseEntity.ok(
                 companyProxyManager.getCompanyProxiesByFilters(
-                    proxiedCompanyId = proxiedCompanyId?.let { ValidationUtils.convertToUUID(it) },
-                    proxyCompanyId = proxyCompanyId?.let { ValidationUtils.convertToUUID(it) },
+                    childCompanyId = childCompanyId?.let { ValidationUtils.convertToUUID(it) },
+                    parentCompanyId = parentCompanyId?.let { ValidationUtils.convertToUUID(it) },
                     frameworks = frameworks,
                     reportingPeriods = reportingPeriods,
                     chunkSize = chunkSize,
@@ -100,7 +100,7 @@ class CompanyProxyController
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to update proxy rule for " +
-                    "proxiedCompanyId = '${companyProxy.proxiedCompanyId}', proxyCompanyId = '${companyProxy.proxyCompanyId}'",
+                    "childCompanyId = '${companyProxy.childCompanyId}', parentCompanyId = '${companyProxy.parentCompanyId}'",
             )
             return ResponseEntity.ok(
                 companyProxyManager.editCompanyProxy(

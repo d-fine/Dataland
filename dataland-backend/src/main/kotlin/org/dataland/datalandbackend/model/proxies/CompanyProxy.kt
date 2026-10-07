@@ -14,8 +14,8 @@ import java.util.UUID
  * --- API model ---
  * Class defining the proxying rules between two companies.
  *
- * @param proxiedCompanyId The company whose data may be substituted.
- * @param proxyCompanyId The company whose data may serve as a proxy.
+ * @param childCompanyId The company whose data may be substituted.
+ * @param parentCompanyId The company whose data may serve as a proxy.
  * @param framework The framework for which proxying is allowed.
  *        Empty or null means all frameworks may be proxied.
  * @param reportingPeriod A reporting period for which proxying is allowed.
@@ -24,18 +24,18 @@ import java.util.UUID
 data class CompanyProxy<IdType>(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.CHILD_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     @field:CompanyExists
-    val proxiedCompanyId: IdType,
+    val childCompanyId: IdType,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.PARENT_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     @field:CompanyExists
-    val proxyCompanyId: IdType,
+    val parentCompanyId: IdType,
     @field:Schema(
         description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
@@ -57,8 +57,8 @@ data class CompanyProxy<IdType>(
     @JsonIgnore
     fun convertToCompanyProxyWithUUIDs(): CompanyProxy<UUID> =
         CompanyProxy(
-            proxiedCompanyId = convertToUUID(this.proxiedCompanyId.toString()),
-            proxyCompanyId = convertToUUID(this.proxyCompanyId.toString()),
+            childCompanyId = convertToUUID(this.childCompanyId.toString()),
+            parentCompanyId = convertToUUID(this.parentCompanyId.toString()),
             framework = this.framework,
             reportingPeriod = this.reportingPeriod,
         )

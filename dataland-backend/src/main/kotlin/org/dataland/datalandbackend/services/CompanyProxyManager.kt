@@ -58,8 +58,8 @@ class CompanyProxyManager
          */
         @Transactional(readOnly = true)
         fun getCompanyProxiesByFilters(
-            proxiedCompanyId: UUID?,
-            proxyCompanyId: UUID?,
+            childCompanyId: UUID?,
+            parentCompanyId: UUID?,
             frameworks: Set<String>?,
             reportingPeriods: Set<String>?,
             chunkSize: Int = 100,
@@ -71,8 +71,8 @@ class CompanyProxyManager
             val page =
                 companyProxyRepository.findByFilters(
                     CompanyProxyFilter(
-                        proxiedCompanyId = proxiedCompanyId,
-                        proxyCompanyId = proxyCompanyId,
+                        childCompanyId = childCompanyId,
+                        parentCompanyId = parentCompanyId,
                         frameworks = frameworksSet,
                         reportingPeriods = reportingPeriodsSet,
                     ),
@@ -91,32 +91,32 @@ class CompanyProxyManager
          */
         @Transactional
         fun addProxyRelation(candidateProxy: CompanyProxy<UUID>): CompanyProxyEntity {
-            val proxiedCompanyId = candidateProxy.proxiedCompanyId
-            val proxyCompanyId = candidateProxy.proxyCompanyId
+            val childCompanyId = candidateProxy.childCompanyId
+            val parentCompanyId = candidateProxy.parentCompanyId
 
             logger.info(
-                "Adding proxy relation for proxiedCompanyId=$proxiedCompanyId, " +
-                    "proxyCompanyId=$proxyCompanyId, " +
+                "Adding proxy relation for childCompanyId=$childCompanyId, " +
+                    "parentCompanyId=$parentCompanyId, " +
                     "framework='${candidateProxy.framework}', " +
                     "reportingPeriod='${candidateProxy.reportingPeriod}'",
             )
             logger.info("Checking for existing proxy relations to avoid duplicates...")
 
-            val existingProxies = companyProxyRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
+            val existingProxies = companyProxyRepository.findAllByChildCompanyId(candidateProxy.childCompanyId)
             assertNoConflictingProxiesExist(existingProxies, candidateProxy)
 
             val entity =
                 CompanyProxyEntity(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
                     framework = candidateProxy.framework,
                     reportingPeriod = candidateProxy.reportingPeriod,
                 )
 
             val saved = companyProxyRepository.save(entity)
             logger.info(
-                "Saved proxy rule with id=${saved.proxyId} for proxiedCompanyId=$proxiedCompanyId, " +
-                    "proxyCompanyId=$proxyCompanyId",
+                "Saved proxy rule with id=${saved.proxyId} for childCompanyId=$childCompanyId, " +
+                    "parentCompanyId=$parentCompanyId",
             )
 
             return saved
@@ -151,8 +151,8 @@ class CompanyProxyManager
                 val expandedExistingCombinations =
                     getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
                         CompanyProxy(
-                            proxiedCompanyId = existingProxy.proxiedCompanyId,
-                            proxyCompanyId = existingProxy.proxyCompanyId,
+                            childCompanyId = existingProxy.childCompanyId,
+                            parentCompanyId = existingProxy.parentCompanyId,
                             framework = existingProxy.framework,
                             reportingPeriod = existingProxy.reportingPeriod,
                         ),
@@ -185,7 +185,7 @@ class CompanyProxyManager
         }
 
         /**
-         * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
+         * Deletes all proxy rules for a given (childCompanyId, parentCompanyId) pair.
          *
          * If no rules exist for this pair, a ResourceNotFoundApiException is thrown.
          */
@@ -203,8 +203,8 @@ class CompanyProxyManager
 
             logger.info(
                 "Deleting proxy rule with id=$proxyId " +
-                    "(proxiedCompanyId=${existing.proxiedCompanyId}, " +
-                    "proxyCompanyId=${existing.proxyCompanyId}, " +
+                    "(childCompanyId=${existing.childCompanyId}, " +
+                    "parentCompanyId=${existing.parentCompanyId}, " +
                     "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",
             )
 
@@ -228,13 +228,13 @@ class CompanyProxyManager
         ): StoredCompanyProxy {
             val existingProxiesForCompany =
                 companyProxyRepository
-                    .findAllByProxiedCompanyId(updatedCompanyProxy.proxiedCompanyId)
+                    .findAllByChildCompanyId(updatedCompanyProxy.childCompanyId)
                     .filter { it.proxyId != proxyId }
             assertNoConflictingProxiesExist(existingProxiesForCompany, updatedCompanyProxy)
 
             val existing = retrieveCompanyProxyEntityById(proxyId)
-            existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
-            existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId
+            existing.childCompanyId = updatedCompanyProxy.childCompanyId
+            existing.parentCompanyId = updatedCompanyProxy.parentCompanyId
             existing.framework = updatedCompanyProxy.framework
             existing.reportingPeriod = updatedCompanyProxy.reportingPeriod
 

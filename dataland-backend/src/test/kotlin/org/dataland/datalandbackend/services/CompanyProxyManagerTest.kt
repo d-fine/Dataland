@@ -31,50 +31,50 @@ class CompanyProxyManagerTest
         private val companyProxyRepository: CompanyProxyRepository,
         private val companyProxyManager: CompanyProxyManager,
     ) : BaseIntegrationTest() {
-        private val defaultProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000001")
-        private val defaultProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000002")
+        private val defaultChildCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000001")
+        private val defaultParentCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000002")
         private val defaultFramework = "sfdr"
         private val defaultReportingPeriod = "2025"
-        private val altProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000003")
-        private val altProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000004")
+        private val altChildCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000003")
+        private val altParentCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000004")
         private val altFramework = "eutaxonomy-financials"
         private val altReportingPeriod = "2026"
 
-        private val nullFrameworkProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000005")
-        private val nullFrameworkProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000006")
+        private val nullFrameworkChildCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000005")
+        private val nullFrameworkParentCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000006")
         private val nullFrameworkReportingPeriod = "2023"
 
-        private val nullReportingPeriodProxiedCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000007")
-        private val nullReportingPeriodProxyCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000008")
+        private val nullReportingPeriodChildCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000007")
+        private val nullReportingPeriodParentCompanyId = UUID.fromString("00000000-0000-0000-0000-000000000008")
         private val nullReportingPeriodFramework = "nuclear-and-gas"
 
         private val defaultCompanyProxy =
             CompanyProxy<UUID>(
-                proxiedCompanyId = defaultProxiedCompanyId,
-                proxyCompanyId = defaultProxyCompanyId,
+                childCompanyId = defaultChildCompanyId,
+                parentCompanyId = defaultParentCompanyId,
                 framework = defaultFramework,
                 reportingPeriod = defaultReportingPeriod,
             )
         private val altCompanyProxy =
             CompanyProxy<UUID>(
-                proxiedCompanyId = altProxiedCompanyId,
-                proxyCompanyId = altProxyCompanyId,
+                childCompanyId = altChildCompanyId,
+                parentCompanyId = altParentCompanyId,
                 framework = altFramework,
                 reportingPeriod = altReportingPeriod,
             )
 
         private val nullFrameworkCompanyProxy =
             CompanyProxy<UUID>(
-                proxiedCompanyId = nullFrameworkProxiedCompanyId,
-                proxyCompanyId = nullFrameworkProxyCompanyId,
+                childCompanyId = nullFrameworkChildCompanyId,
+                parentCompanyId = nullFrameworkParentCompanyId,
                 framework = null,
                 reportingPeriod = nullFrameworkReportingPeriod,
             )
 
         private val nullReportingPeriodCompanyProxy =
             CompanyProxy<UUID>(
-                proxiedCompanyId = nullReportingPeriodProxiedCompanyId,
-                proxyCompanyId = nullReportingPeriodProxyCompanyId,
+                childCompanyId = nullReportingPeriodChildCompanyId,
+                parentCompanyId = nullReportingPeriodParentCompanyId,
                 framework = nullReportingPeriodFramework,
                 reportingPeriod = null,
             )
@@ -83,11 +83,11 @@ class CompanyProxyManagerTest
         fun `test that addProxyRelation creates and persists a new proxy relation`() {
             val proxyRelation = defaultCompanyProxy
             val savedEntity = companyProxyManager.addProxyRelation(proxyRelation)
-            val retrievedEntity = companyProxyRepository.findAllByProxiedCompanyId(defaultProxiedCompanyId).first()
+            val retrievedEntity = companyProxyRepository.findAllByChildCompanyId(defaultChildCompanyId).first()
 
             assertNotNull(retrievedEntity)
-            assertEquals(proxyRelation.proxiedCompanyId, retrievedEntity.proxiedCompanyId)
-            assertEquals(proxyRelation.proxyCompanyId, retrievedEntity.proxyCompanyId)
+            assertEquals(proxyRelation.childCompanyId, retrievedEntity.childCompanyId)
+            assertEquals(proxyRelation.parentCompanyId, retrievedEntity.parentCompanyId)
             assertEquals(proxyRelation.framework, retrievedEntity.framework)
             assertEquals(proxyRelation.reportingPeriod, retrievedEntity.reportingPeriod)
             assertEquals(savedEntity, retrievedEntity)
@@ -111,8 +111,8 @@ class CompanyProxyManagerTest
 
             val conflictingProxy =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = defaultProxiedCompanyId,
-                    proxyCompanyId = altProxyCompanyId,
+                    childCompanyId = defaultChildCompanyId,
+                    parentCompanyId = altParentCompanyId,
                     framework = defaultFramework,
                     reportingPeriod = defaultReportingPeriod,
                 )
@@ -126,8 +126,8 @@ class CompanyProxyManagerTest
 
             val conflictingProxyWithNullValues =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = defaultProxiedCompanyId,
-                    proxyCompanyId = altProxyCompanyId,
+                    childCompanyId = defaultChildCompanyId,
+                    parentCompanyId = altParentCompanyId,
                     framework = null,
                     reportingPeriod = null,
                 )
@@ -192,15 +192,15 @@ class CompanyProxyManagerTest
         }
 
         @Test
-        fun `addProxyRelation with null framework and reportingPeriod rejects if any for proxiedId exists`() {
+        fun `addProxyRelation with null framework and reportingPeriod rejects if any for childId exists`() {
             val anotherProxyId = UUID.randomUUID()
 
             val proxyId = companyProxyManager.addProxyRelation(defaultCompanyProxy).proxyId
 
             val general =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = defaultProxiedCompanyId,
-                    proxyCompanyId = anotherProxyId,
+                    childCompanyId = defaultChildCompanyId,
+                    parentCompanyId = anotherProxyId,
                     framework = null,
                     reportingPeriod = null,
                 )
@@ -213,12 +213,12 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation with null framework allows adding relations with different reporting periods`() {
-            val proxiedCompanyId = UUID.randomUUID()
-            val proxyCompanyId = UUID.randomUUID()
+            val childCompanyId = UUID.randomUUID()
+            val parentCompanyId = UUID.randomUUID()
             val base =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
                     framework = null,
                     reportingPeriod = "2023",
                 )
@@ -226,8 +226,8 @@ class CompanyProxyManagerTest
 
             val conflict =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
                     framework = null,
                     reportingPeriod = "2023",
                 )
@@ -244,13 +244,13 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation with null reportingPeriod allows adding relation with different framework `() {
-            val proxiedCompanyId = UUID.randomUUID()
-            val proxyCompanyId = UUID.randomUUID()
+            val childCompanyId = UUID.randomUUID()
+            val parentCompanyId = UUID.randomUUID()
 
             val base =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
                     framework = "sfdr",
                     reportingPeriod = null,
                 )
@@ -258,8 +258,8 @@ class CompanyProxyManagerTest
 
             val conflict =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
                     framework = "sfdr",
                     reportingPeriod = null,
                 )
@@ -277,12 +277,12 @@ class CompanyProxyManagerTest
 
         @Test
         fun `addProxyRelation rejects a ProxyRelation if there already as on for the company pair with only null values`() {
-            val proxiedId = UUID.randomUUID()
+            val childId = UUID.randomUUID()
 
             val generic =
                 CompanyProxy<UUID>(
-                    proxiedCompanyId = proxiedId,
-                    proxyCompanyId = UUID.randomUUID(),
+                    childCompanyId = childId,
+                    parentCompanyId = UUID.randomUUID(),
                     framework = null,
                     reportingPeriod = null,
                 )
@@ -290,7 +290,7 @@ class CompanyProxyManagerTest
 
             val specific =
                 generic.copy(
-                    proxyCompanyId = UUID.randomUUID(),
+                    parentCompanyId = UUID.randomUUID(),
                     framework = "sfdr",
                     reportingPeriod = "2023",
                 )
@@ -302,15 +302,15 @@ class CompanyProxyManagerTest
         }
 
         private fun callFilterFunction(
-            proxiedCompanyId: UUID? = null,
-            proxyCompanyId: UUID? = null,
+            childCompanyId: UUID? = null,
+            parentCompanyId: UUID? = null,
             frameworks: Set<String>? = null,
             reportingPeriods: Set<String>? = null,
             size: Int = 100,
             idx: Int = 0,
         ) = companyProxyManager.getCompanyProxiesByFilters(
-            proxiedCompanyId = proxiedCompanyId,
-            proxyCompanyId = proxyCompanyId,
+            childCompanyId = childCompanyId,
+            parentCompanyId = parentCompanyId,
             frameworks = frameworks,
             reportingPeriods = reportingPeriods,
             chunkSize = size,
@@ -318,14 +318,14 @@ class CompanyProxyManagerTest
         )
 
         private fun createProxyEntity(
-            proxiedCompanyId: UUID = defaultProxiedCompanyId,
-            proxyCompanyId: UUID = defaultProxyCompanyId,
+            childCompanyId: UUID = defaultChildCompanyId,
+            parentCompanyId: UUID = defaultParentCompanyId,
             framework: String = defaultFramework,
             reportingPeriod: String = defaultReportingPeriod,
         ) = companyProxyRepository.save(
             CompanyProxyEntity(
-                proxiedCompanyId = proxiedCompanyId,
-                proxyCompanyId = proxyCompanyId,
+                childCompanyId = childCompanyId,
+                parentCompanyId = parentCompanyId,
                 framework = framework,
                 reportingPeriod = reportingPeriod,
             ),
@@ -335,55 +335,55 @@ class CompanyProxyManagerTest
 
         @Test
         fun `getCompanyProxiesByFilters supports all filters and pagination`() {
-            val entity1 = createProxyEntity(defaultProxiedCompanyId, defaultProxyCompanyId, defaultFramework, "2023")
-            val entity2 = createProxyEntity(defaultProxiedCompanyId, altProxyCompanyId, defaultFramework, "2022")
-            val entity3 = createProxyEntity(defaultProxiedCompanyId, defaultProxyCompanyId, altFramework, "2023")
-            val entity4 = createProxyEntity(altProxiedCompanyId, altProxyCompanyId, altFramework, "2021")
+            val entity1 = createProxyEntity(defaultChildCompanyId, defaultParentCompanyId, defaultFramework, "2023")
+            val entity2 = createProxyEntity(defaultChildCompanyId, altParentCompanyId, defaultFramework, "2022")
+            val entity3 = createProxyEntity(defaultChildCompanyId, defaultParentCompanyId, altFramework, "2023")
+            val entity4 = createProxyEntity(altChildCompanyId, altParentCompanyId, altFramework, "2021")
 
             assertEquals(
                 setOf(entity1.proxyId, entity2.proxyId, entity3.proxyId),
-                proxyIds(callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId)),
+                proxyIds(callFilterFunction(childCompanyId = defaultChildCompanyId)),
             )
 
             assertEquals(
                 setOf(entity1.proxyId, entity2.proxyId),
-                proxyIds(callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, frameworks = setOf(defaultFramework))),
+                proxyIds(callFilterFunction(childCompanyId = defaultChildCompanyId, frameworks = setOf(defaultFramework))),
             )
 
             assertEquals(
                 setOf(entity1.proxyId, entity3.proxyId),
-                proxyIds(callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, reportingPeriods = setOf("2023"))),
+                proxyIds(callFilterFunction(childCompanyId = defaultChildCompanyId, reportingPeriods = setOf("2023"))),
             )
 
             assertEquals(
                 setOf(entity1.proxyId),
                 proxyIds(
                     callFilterFunction(
-                        proxiedCompanyId = defaultProxiedCompanyId,
-                        proxyCompanyId = defaultProxyCompanyId,
+                        childCompanyId = defaultChildCompanyId,
+                        parentCompanyId = defaultParentCompanyId,
                         frameworks = setOf(defaultFramework),
                         reportingPeriods = setOf("2023"),
                     ),
                 ),
             )
 
-            val page0 = callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, size = 1, idx = 0)
-            val page1 = callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, size = 1, idx = 1)
+            val page0 = callFilterFunction(childCompanyId = defaultChildCompanyId, size = 1, idx = 0)
+            val page1 = callFilterFunction(childCompanyId = defaultChildCompanyId, size = 1, idx = 1)
             assertEquals(1, page0.size)
             assertEquals(1, page1.size)
             assertNotEquals(page0.first().proxyId, page1.first().proxyId)
 
-            assertEquals(2, callFilterFunction(proxiedCompanyId = defaultProxiedCompanyId, size = 2, idx = 0).size)
+            assertEquals(2, callFilterFunction(childCompanyId = defaultChildCompanyId, size = 2, idx = 0).size)
 
-            assertEquals(setOf(entity4.proxyId), proxyIds(callFilterFunction(proxiedCompanyId = altProxiedCompanyId)))
+            assertEquals(setOf(entity4.proxyId), proxyIds(callFilterFunction(childCompanyId = altChildCompanyId)))
         }
 
         @Test
         fun `getCompanyProxiesByFilters returns empty list if nothing matches`() {
             val result =
                 companyProxyManager.getCompanyProxiesByFilters(
-                    proxiedCompanyId = UUID.randomUUID(),
-                    proxyCompanyId = null,
+                    childCompanyId = UUID.randomUUID(),
+                    parentCompanyId = null,
                     frameworks = null,
                     reportingPeriods = null,
                     chunkSize = 10,
@@ -419,8 +419,8 @@ class CompanyProxyManagerTest
             val expected =
                 StoredCompanyProxy(
                     proxyId = savedEntity.proxyId.toString(),
-                    proxiedCompanyId = altProxiedCompanyId.toString(),
-                    proxyCompanyId = altProxyCompanyId.toString(),
+                    childCompanyId = altChildCompanyId.toString(),
+                    parentCompanyId = altParentCompanyId.toString(),
                     framework = altFramework,
                     reportingPeriod = altReportingPeriod,
                 )

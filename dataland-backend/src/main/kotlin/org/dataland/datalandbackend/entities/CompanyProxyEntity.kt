@@ -17,8 +17,8 @@ import java.util.UUID
     uniqueConstraints = [
         UniqueConstraint(
             columnNames = [
-                "proxied_company_id",
-                "proxy_company_id",
+                "child_company_id",
+                "parent_company_id",
                 "framework",
                 "reporting_period",
             ],
@@ -29,10 +29,10 @@ class CompanyProxyEntity(
     @Id
     @Column(name = "id", nullable = false)
     val proxyId: UUID = UUID.randomUUID(),
-    @Column(name = "proxied_company_id", nullable = false)
-    var proxiedCompanyId: UUID,
-    @Column(name = "proxy_company_id", nullable = false)
-    var proxyCompanyId: UUID,
+    @Column(name = "child_company_id", nullable = false)
+    var childCompanyId: UUID,
+    @Column(name = "parent_company_id", nullable = false)
+    var parentCompanyId: UUID,
     @Column(name = "framework")
     var framework: String? = null, // null => all frameworks
     @Column(name = "reporting_period")
@@ -44,8 +44,8 @@ class CompanyProxyEntity(
     fun toStoredCompanyProxy(): StoredCompanyProxy =
         StoredCompanyProxy(
             proxyId = proxyId.toString(),
-            proxiedCompanyId = proxiedCompanyId.toString(),
-            proxyCompanyId = proxyCompanyId.toString(),
+            childCompanyId = childCompanyId.toString(),
+            parentCompanyId = parentCompanyId.toString(),
             framework = framework,
             reportingPeriod = reportingPeriod,
         )
