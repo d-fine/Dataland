@@ -7,10 +7,11 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.core.io.ClassPathResource
-import java.io.File
+import java.nio.file.Path
 
 class ValidCurrencyCodeValidatorTest {
     private val validator = Validation.buildDefaultValidatorFactory().validator
@@ -61,16 +62,14 @@ class ValidCurrencyCodeValidatorTest {
     }
 
     @Test
-    fun `check that the generator produces a well formed currency code list`() {
-        val file = File.createTempFile("currencyCodes", ".json")
-        try {
-            CurrencyCodeFileGenerator.main(arrayOf(file.absolutePath))
-            val entries = defaultObjectMapper.readValue<List<CodeEntry>>(file)
-            assertWellFormed(entries)
-            assertTrue(entries.any { it.code == "EUR" })
-        } finally {
-            file.delete()
-        }
+    fun `check that the generator produces a well formed currency code list`(
+        @TempDir tempDir: Path,
+    ) {
+        val file = tempDir.resolve("currencyCodes.json").toFile()
+        CurrencyCodeFileGenerator.main(arrayOf(file.absolutePath))
+        val entries = defaultObjectMapper.readValue<List<CodeEntry>>(file)
+        assertWellFormed(entries)
+        assertTrue(entries.any { it.code == "EUR" })
     }
 
     private fun assertWellFormed(entries: List<CodeEntry>) {
