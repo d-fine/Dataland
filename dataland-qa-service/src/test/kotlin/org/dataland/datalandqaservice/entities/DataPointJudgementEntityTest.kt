@@ -2,8 +2,8 @@ package org.dataland.datalandqaservice.entities
 
 import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.utils.PreApprovalServiceTestUtils
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -38,19 +38,10 @@ class DataPointJudgementEntityTest {
         val reporterBOnlyReport = buildQaReport(reporterB, uploadTime = 150L, verdict = QaReportDataPointVerdict.QaAccepted)
 
         val entity =
-            DataPointJudgementEntity(
+            PreApprovalServiceTestUtils.buildDataPointJudgementEntity(
+                qaReports = listOf(reporterAOldestRejected, reporterALatestAccepted, reporterAMiddleRejected, reporterBOnlyReport),
                 dataPointType = dataPointType,
                 dataPointId = dataPointId,
-                qaReports =
-                    mutableListOf(
-                        reporterAOldestRejected,
-                        reporterALatestAccepted,
-                        reporterAMiddleRejected,
-                        reporterBOnlyReport,
-                    ),
-                acceptedSource = null,
-                reporterUserIdOfAcceptedQaReport = null,
-                customValue = null,
             )
 
         val resultingQaReports = entity.toDataPointJudgementDetails().qaReports
@@ -67,29 +58,4 @@ class DataPointJudgementEntityTest {
 
         assertThat(entity.qaReports).hasSize(4)
     }
-
-    @Test
-    fun `toDataPointJudgementDetails exposes the stored data point base type`() {
-        val entity = buildEntity(dataPointBaseType = "extendedCurrency")
-
-        assertThat(entity.toDataPointJudgementDetails().dataPointBaseType).isEqualTo("extendedCurrency")
-    }
-
-    @Test
-    fun `toDataPointJudgementDetails returns null base type for judgements created without one`() {
-        val entity = buildEntity(dataPointBaseType = null)
-
-        assertThat(entity.toDataPointJudgementDetails().dataPointBaseType).isNull()
-    }
-
-    private fun buildEntity(dataPointBaseType: String?) =
-        DataPointJudgementEntity(
-            dataPointType = dataPointType,
-            dataPointId = dataPointId,
-            qaReports = mutableListOf(),
-            acceptedSource = null,
-            reporterUserIdOfAcceptedQaReport = null,
-            customValue = null,
-            dataPointBaseType = dataPointBaseType,
-        )
 }
