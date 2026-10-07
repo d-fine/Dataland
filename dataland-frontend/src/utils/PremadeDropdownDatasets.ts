@@ -1,5 +1,5 @@
 import { getAllCountryNamesWithCodes } from '@/utils/CountryCodeConverter';
-import currencyCodeData from 'currency-codes/data';
+import currencyCodeData from '@/generated/currencyCodes.json';
 import { RiskPositionType } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
@@ -68,7 +68,7 @@ function getCurrencyCodeDropdownDataset(): DropdownDataset {
   const currencyCodeDataset: DropdownDataset = [];
   for (const it of currencyCodeData) {
     currencyCodeDataset.push({
-      label: `${it.currency} (${it.code})`,
+      label: `${it.name} (${it.code})`,
       value: it.code,
     });
   }

@@ -40,8 +40,16 @@ tasks.withType<NpmTask> {
     if (name != "npmInstallFrontend") {
         dependsOn("generateClients")
         dependsOn("copyAstroWebsite")
+        dependsOn("copyCurrencyCodes")
         dependsOn("npmInstallFrontend")
     }
+}
+
+tasks.register<Copy>("copyCurrencyCodes") {
+    group = "build"
+    description = "Copies the shared ISO 4217 currency code list from dataland-backend-utils into the frontend sources"
+    from("${project.rootDir}/dataland-backend-utils/src/main/resources/currencyCodes.json")
+    into("$projectDir/src/generated")
 }
 
 tasks.register("copyAstroWebsite") {

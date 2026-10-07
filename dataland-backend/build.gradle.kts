@@ -234,6 +234,16 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
     )
 }
 
+tasks.register("generateCurrencyCodesFile", JavaExec::class) {
+    doNotTrackState("The file should always be regenerated.")
+    description = "Generates the shared ISO 4217 currencyCodes.json in dataland-backend-utils from the JDK currencies."
+    group = "build"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "org.dataland.datalandbackend.utils.CurrencyCodeFileGenerator"
+    workingDir = rootDir
+    args = listOf("$rootDir/dataland-backend-utils/src/main/resources/currencyCodes.json")
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
