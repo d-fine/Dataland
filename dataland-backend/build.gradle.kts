@@ -67,6 +67,10 @@ dependencies {
     implementation(libs.kotlin.reflect)
 }
 
+springBoot {
+    mainClass.set("org.dataland.datalandbackend.DatalandBackendKt")
+}
+
 openApi {
     apiDocsUrl.set("http://localhost:8482/api/v3/api-docs")
     customBootRun {
