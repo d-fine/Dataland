@@ -67,7 +67,6 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_SPECIFICATION_SERVICE_BASE_VERSION="${DATALAND_SPECIFICATION_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_EMAIL_SERVICE_BASE_VERSION="${DATALAND_EMAIL_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_GRADLE_BASE_VERSION="${DATALAND_GRADLE_BASE_VERSION:-}" \
-                        --build-arg DATALAND_DATA_EXPORTER_BASE_VERSION="${DATALAND_DATA_EXPORTER_BASE_VERSION:-}" \
                         --build-arg DATALAND_USER_SERVICE_BASE_VERSION="${DATALAND_USER_SERVICE_BASE_VERSION:-}" \
                         --build-arg DATALAND_LOKI_VERSION="${DATALAND_LOKI_VERSION:-}" \
                         --build-arg DATALAND_ALLOY_VERSION="${DATALAND_ALLOY_VERSION:-}" \
