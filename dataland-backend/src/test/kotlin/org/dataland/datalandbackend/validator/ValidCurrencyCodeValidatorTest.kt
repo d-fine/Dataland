@@ -51,6 +51,16 @@ class ValidCurrencyCodeValidatorTest {
     }
 
     @Test
+    fun `check that the committed currency code file is up to date with the JDK currencies`() {
+        val committed = ClassPathResource("currencyCodes.json").inputStream.use { String(it.readBytes(), Charsets.UTF_8) }
+        assertEquals(
+            CurrencyCodeFileGenerator.buildJson().trim(),
+            committed.trim(),
+            "currencyCodes.json is outdated. Run ./gradlew dataland-framework-toolbox:runGenerateCurrencyCodes and commit it.",
+        )
+    }
+
+    @Test
     fun `check that the generator produces a well formed currency code list`() {
         val file = File.createTempFile("currencyCodes", ".json")
         try {
