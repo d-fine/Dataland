@@ -133,6 +133,18 @@ describe('DatasetReviewComparisonTable component tests', () => {
         ],
         acceptedSource: AcceptedDataPointSource.Qa,
         reporterUserIdOfAcceptedQaReport: qaReporter2.reporterUserId,
+        acceptedQaReportId: 'qa-report-2',
+        acceptedQaReport: {
+          dataPointId: 'data-point-id-2',
+          dataPointType: 'type-id-2',
+          qaReportId: 'qa-report-2',
+          verdict: QaReportDataPointVerdict.QaRejected,
+          correctedData: JSON.stringify({ value: 'NoDeviation', quality: QualityOptions.Reported }),
+          reporterUserId: qaReporter2.reporterUserId,
+          uploadTime: 9999,
+          active: true,
+          comment: 'comment',
+        },
       },
       extendedDateFiscalYearEnd: {
         dataPointType: 'extendedDateFiscalYearEnd',
@@ -266,6 +278,27 @@ describe('DatasetReviewComparisonTable component tests', () => {
         cy.get('td').eq(2).find('.rejected-check').should('not.exist');
         cy.get('td').eq(3).find('.rejected-check').should('exist');
         cy.get('td').eq(4).find('.accepted-check').should('exist');
+      });
+  });
+
+  it('shows the pinned correction instead of a newer report in the accepted QA column', () => {
+    const review: DatasetJudgementResponse = structuredClone(baseDatasetReview);
+    const dataPoint = review.dataPoints.extendedEnumFiscalYearDeviation;
+    const latest = dataPoint.qaReports[1];
+    dataPoint.qaReports[1] = {
+      ...latest,
+      qaReportId: 'newer-qa-report',
+      correctedData: JSON.stringify({ value: 'Deviation', quality: QualityOptions.Reported }),
+      uploadTime: latest.uploadTime + 1,
+    };
+
+    mountComponent({ datasetReview: review });
+
+    cy.contains('button', 'Fiscal Year Deviation')
+      .closest('tr')
+      .within(() => {
+        cy.get('td').eq(3).should('contain.text', 'No Deviation');
+        cy.get('td').eq(3).find('.accepted-check').should('exist');
       });
   });
 

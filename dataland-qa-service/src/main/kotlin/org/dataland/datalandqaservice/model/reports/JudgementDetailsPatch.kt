@@ -29,4 +29,6 @@ data class JudgementDetailsPatch(
         example = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE,
     )
     var reasonForCustomDataPoint: String? = null,
+    @field:Schema(description = "ID of the QA report whose correction is being accepted.")
+    var acceptedQaReportId: String? = null,
 )
