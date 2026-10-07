@@ -181,6 +181,32 @@ jobs:
         with:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
+  currency-codes-up-to-date:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/logObjects
+        name: log job contexts
+        with:
+          task: "currency-codes-up-to-date"
+          env: ${{ toJSON(env) }}
+          job: ${{ toJSON(job) }}
+          steps: ${{ toJSON(steps) }}
+          strategy: ${{ toJSON(strategy) }}
+          matrix: ${{ toJSON(matrix) }}
+          needs: ${{ toJSON(needs) }}
+          inputs: ${{ toJSON(inputs) }}
+          vars: ${{ toJSON(vars) }}
+      - uses: ./.github/workflows/loadEnvironmentVariables
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Regenerate the shared currency code list
+        run: ./gradlew dataland-framework-toolbox:runGenerateCurrencyCodes --no-daemon --stacktrace
+      - name: Verify that there are no changed (git-tracked) files
+        run: ./testing/verify_that_no_git_tracked_files_changed.sh
   gradle-based-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -353,6 +379,7 @@ jobs:
       - frontend-component-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
+      - currency-codes-up-to-date
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
@@ -444,6 +471,7 @@ jobs:
       - frontend-component-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
+      - currency-codes-up-to-date
     if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
