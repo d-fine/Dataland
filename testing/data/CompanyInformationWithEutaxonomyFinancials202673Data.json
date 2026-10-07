@@ -109,7 +109,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "CDF"
+						"currency": "CHF"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": {
 						"value": 2059497793.55,
@@ -122,7 +122,7 @@
 						},
 						"comment": "compress redundant feed",
 						"quality": null,
-						"currency": "SSP"
+						"currency": "TTD"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 657120358.53,
@@ -135,7 +135,7 @@
 						},
 						"comment": "quantify solid state port",
 						"quality": "NoDataFound",
-						"currency": "MWK"
+						"currency": "NPR"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 5232041745.74,
@@ -148,7 +148,7 @@
 						},
 						"comment": "index optical port",
 						"quality": "Audited",
-						"currency": "BGN"
+						"currency": "BGL"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": null
 				},
@@ -164,7 +164,7 @@
 						},
 						"comment": "override primary port",
 						"quality": "Incomplete",
-						"currency": "MMK"
+						"currency": "MYR"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": {
 						"value": 7905973035.17,
@@ -177,7 +177,7 @@
 						},
 						"comment": "transmit auxiliary pixel",
 						"quality": "Estimated",
-						"currency": "UAH"
+						"currency": "XAU"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 6272923841.73,
@@ -190,7 +190,7 @@
 						},
 						"comment": "reboot mobile feed",
 						"quality": "NoDataFound",
-						"currency": "UGX"
+						"currency": "XBA"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 1143685533.78,
@@ -216,7 +216,7 @@
 						},
 						"comment": "generate haptic application",
 						"quality": null,
-						"currency": "IQD"
+						"currency": "JMD"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -231,7 +231,7 @@
 						},
 						"comment": "navigate solid state bandwidth",
 						"quality": "Estimated",
-						"currency": "MOP"
+						"currency": "MZN"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 7602287458.86,
@@ -244,7 +244,7 @@
 						},
 						"comment": "hack primary array",
 						"quality": "Estimated",
-						"currency": "UAH"
+						"currency": "XAU"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 2018552102.38,
@@ -257,14 +257,14 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "BYN"
+						"currency": "BYR"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 6170329630.52,
 						"dataSource": null,
 						"comment": "generate cross-platform program",
 						"quality": "NoDataFound",
-						"currency": "UZS"
+						"currency": "XCD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 7266497178.54,
@@ -277,7 +277,7 @@
 						},
 						"comment": "program primary interface",
 						"quality": "Estimated",
-						"currency": "FJD"
+						"currency": "FIM"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 2832014189.54,
@@ -290,7 +290,7 @@
 						},
 						"comment": "parse cross-platform array",
 						"quality": "Audited",
-						"currency": "AFN"
+						"currency": "AFA"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -319,7 +319,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "AMD"
+						"currency": "ALL"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 1656805841.9,
@@ -332,7 +332,7 @@
 						},
 						"comment": "synthesize neural alarm",
 						"quality": "NoDataFound",
-						"currency": "STN"
+						"currency": "UAH"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 4311519000.68,
@@ -345,14 +345,14 @@
 						},
 						"comment": "quantify cross-platform panel",
 						"quality": "Reported",
-						"currency": "BDT"
+						"currency": "BEF"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 7579995451.37,
 						"dataSource": null,
 						"comment": "generate solid state interface",
 						"quality": "Estimated",
-						"currency": "BYN"
+						"currency": "BYR"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -588,7 +588,7 @@
 						},
 						"comment": "parse wireless bandwidth",
 						"quality": "Incomplete",
-						"currency": "SBD"
+						"currency": "STN"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": null,
@@ -601,7 +601,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "CDF"
+						"currency": "CHF"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -988,7 +988,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "QAR"
+						"currency": "SKK"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": null,
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedNuclearActivities": {
@@ -1019,7 +1019,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "BGN"
+						"currency": "BHD"
 					},
 					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
 						"value": 69.48,
@@ -1044,7 +1044,7 @@
 						},
 						"comment": "reboot digital panel",
 						"quality": null,
-						"currency": "XPF"
+						"currency": "YER"
 					}
 				},
 				"assetUnderManagement": {
@@ -1059,7 +1059,7 @@
 						},
 						"comment": "bypass solid state circuit",
 						"quality": "Incomplete",
-						"currency": "DJF"
+						"currency": "DEM"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 91.89,
@@ -1417,7 +1417,7 @@
 						},
 						"comment": "generate wireless bandwidth",
 						"quality": null,
-						"currency": "UZS"
+						"currency": "XCG"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 49.82,
@@ -1597,7 +1597,7 @@
 						},
 						"comment": "synthesize 1080p bus",
 						"quality": "NoDataFound",
-						"currency": "SLE"
+						"currency": "TPE"
 					},
 					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 2362622955.28,
@@ -1775,7 +1775,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "SLE"
+						"currency": "TOP"
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 2.13,
@@ -1930,7 +1930,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "SCR"
+						"currency": "SVC"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
@@ -2224,14 +2224,14 @@
 						"dataSource": null,
 						"comment": "index neural protocol",
 						"quality": "Estimated",
-						"currency": "RSD"
+						"currency": "SOS"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": {
 						"value": 3098898930.34,
 						"dataSource": null,
 						"comment": "parse solid state card",
 						"quality": "Incomplete",
-						"currency": "VUV"
+						"currency": "XOF"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 387056038.02,
@@ -2244,7 +2244,7 @@
 						},
 						"comment": "connect mobile monitor",
 						"quality": "Reported",
-						"currency": "GNF"
+						"currency": "GTQ"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 5129025289.99,
@@ -2257,7 +2257,7 @@
 						},
 						"comment": "parse online bandwidth",
 						"quality": "Audited",
-						"currency": "BBD"
+						"currency": "BDT"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 7934716176.16,
@@ -2285,7 +2285,7 @@
 						},
 						"comment": "input primary array",
 						"quality": "NoDataFound",
-						"currency": "TOP"
+						"currency": "VES"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": {
 						"value": null,
@@ -2305,7 +2305,7 @@
 						},
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "UYU"
+						"currency": "XBC"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 2284934794.88,
@@ -2318,7 +2318,7 @@
 						},
 						"comment": "navigate auxiliary bus",
 						"quality": "Audited",
-						"currency": "IDR"
+						"currency": "ILS"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 179011338.07,
@@ -2331,7 +2331,7 @@
 						},
 						"comment": "synthesize solid state application",
 						"quality": "Estimated",
-						"currency": "IRR"
+						"currency": "JPY"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -2346,7 +2346,7 @@
 						},
 						"comment": "override primary transmitter",
 						"quality": "Estimated",
-						"currency": "TJS"
+						"currency": "UYI"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": null,
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": null,
@@ -2361,14 +2361,14 @@
 						},
 						"comment": "program cross-platform capacitor",
 						"quality": "Estimated",
-						"currency": "BSD"
+						"currency": "BWP"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 4531495897.85,
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "XOF"
+						"currency": "XUA"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 3294356759.33,
@@ -2381,7 +2381,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "ARS"
+						"currency": "ATS"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -2396,7 +2396,7 @@
 						},
 						"comment": "copy primary alarm",
 						"quality": "Incomplete",
-						"currency": "XOF"
+						"currency": "XXX"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 7615466773.73,
@@ -2409,7 +2409,7 @@
 						},
 						"comment": "quantify bluetooth card",
 						"quality": "Audited",
-						"currency": "FJD"
+						"currency": "FIM"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 3364439562.22,
@@ -2422,7 +2422,7 @@
 						},
 						"comment": "navigate neural bus",
 						"quality": null,
-						"currency": "UZS"
+						"currency": "XCD"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 9865926795.72,
@@ -2435,7 +2435,7 @@
 						},
 						"comment": "compress digital monitor",
 						"quality": "Reported",
-						"currency": "BRL"
+						"currency": "BTN"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 3252680439.45,
@@ -2448,7 +2448,7 @@
 						},
 						"comment": "compress 1080p microchip",
 						"quality": "Estimated",
-						"currency": "KMF"
+						"currency": "LKR"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": null
 				},
@@ -2658,7 +2658,7 @@
 						},
 						"comment": "input solid state microchip",
 						"quality": null,
-						"currency": "HKD"
+						"currency": "HNL"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": null,
@@ -2683,7 +2683,7 @@
 						},
 						"comment": "program mobile circuit",
 						"quality": "Audited",
-						"currency": "MWK"
+						"currency": "NZD"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -3066,7 +3066,7 @@
 						"dataSource": null,
 						"comment": "override primary microchip",
 						"quality": "Estimated",
-						"currency": "CAD"
+						"currency": "CDF"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 49.28,
@@ -3142,7 +3142,7 @@
 						},
 						"comment": "generate optical hard drive",
 						"quality": "Audited",
-						"currency": "PEN"
+						"currency": "RUR"
 					},
 					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
 						"value": null,
@@ -3161,7 +3161,7 @@
 						},
 						"comment": "transmit virtual pixel",
 						"quality": "Reported",
-						"currency": "BMD"
+						"currency": "BND"
 					}
 				},
 				"assetUnderManagement": {
@@ -3176,7 +3176,7 @@
 						},
 						"comment": "calculate bluetooth sensor",
 						"quality": "Estimated",
-						"currency": "BTN"
+						"currency": "IRR"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 94.78,
@@ -3560,7 +3560,7 @@
 						},
 						"comment": "quantify primary monitor",
 						"quality": "NoDataFound",
-						"currency": "XPF"
+						"currency": "XXX"
 					},
 					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 9983802066.18,
@@ -3573,7 +3573,7 @@
 						},
 						"comment": "synthesize 1080p monitor",
 						"quality": "Estimated",
-						"currency": "MYR"
+						"currency": "PAB"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 17.72,
@@ -3783,7 +3783,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "LSL"
+						"currency": "ZMW"
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -3947,7 +3947,7 @@
 						},
 						"comment": "bypass solid state firewall",
 						"quality": "Estimated",
-						"currency": "UAH"
+						"currency": "XAU"
 					},
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": null,
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
@@ -4087,7 +4087,7 @@
 						},
 						"comment": "connect redundant sensor",
 						"quality": "NoDataFound",
-						"currency": "KHR"
+						"currency": "LAK"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
@@ -4390,7 +4390,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "XAF"
+						"currency": "XPT"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": null,
@@ -4418,7 +4418,7 @@
 						},
 						"comment": "input 1080p microchip",
 						"quality": "Estimated",
-						"currency": "ZWL"
+						"currency": "ZWR"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": {
 						"value": 6274280567.79,
@@ -4431,7 +4431,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "SRD"
+						"currency": "TRY"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": null,
@@ -4464,7 +4464,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "SEK"
+						"currency": "TJS"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -4493,7 +4493,7 @@
 						},
 						"comment": "navigate haptic transmitter",
 						"quality": "Reported",
-						"currency": "YER"
+						"currency": "YUM"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": null,
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
@@ -4507,7 +4507,7 @@
 						},
 						"comment": "override auxiliary interface",
 						"quality": "Audited",
-						"currency": "ISK"
+						"currency": "KES"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 9108929129.75,
@@ -4530,7 +4530,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "GMD"
+						"currency": "GNF"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": null,
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": null,
@@ -4545,14 +4545,14 @@
 						},
 						"comment": "compress open-source matrix",
 						"quality": "Reported",
-						"currency": "ALL"
+						"currency": "AFN"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 749951924.86,
 						"dataSource": null,
 						"comment": "copy cross-platform driver",
 						"quality": "NoDataFound",
-						"currency": "XOF"
+						"currency": "XUA"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -4819,7 +4819,7 @@
 						},
 						"comment": "connect virtual transmitter",
 						"quality": "Incomplete",
-						"currency": "HNL"
+						"currency": "HTG"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -5202,7 +5202,7 @@
 						},
 						"comment": "calculate back-end capacitor",
 						"quality": "Audited",
-						"currency": "AMD"
+						"currency": "ALL"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 95.23,
@@ -5228,7 +5228,7 @@
 						"dataSource": null,
 						"comment": "generate solid state sensor",
 						"quality": "NoDataFound",
-						"currency": "SCR"
+						"currency": "SYP"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
 						"value": null,
@@ -5295,7 +5295,7 @@
 						},
 						"comment": "override cross-platform card",
 						"quality": null,
-						"currency": "BSD"
+						"currency": "BYB"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 54.05,
@@ -5314,7 +5314,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "XPF"
+						"currency": "XXX"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -5692,7 +5692,7 @@
 						},
 						"comment": "calculate auxiliary sensor",
 						"quality": "Estimated",
-						"currency": "DZD"
+						"currency": "EEK"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
@@ -6026,7 +6026,7 @@
 						},
 						"comment": "compress optical feed",
 						"quality": "Estimated",
-						"currency": "SBD"
+						"currency": "STN"
 					},
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 2686258280.28,
@@ -6039,7 +6039,7 @@
 						},
 						"comment": "bypass neural microchip",
 						"quality": "Audited",
-						"currency": "PAB"
+						"currency": "RUR"
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -6194,7 +6194,7 @@
 						},
 						"comment": "override virtual bandwidth",
 						"quality": "Estimated",
-						"currency": "LAK"
+						"currency": "MDL"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 5856128136.97,
@@ -6207,7 +6207,7 @@
 						},
 						"comment": "program redundant driver",
 						"quality": "Incomplete",
-						"currency": "ZMW"
+						"currency": "ZWL"
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 90.43,
@@ -6497,7 +6497,7 @@
 						},
 						"comment": "navigate redundant array",
 						"quality": "Incomplete",
-						"currency": "BBD"
+						"currency": "BDT"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": {
 						"value": null,
@@ -6523,7 +6523,7 @@
 						},
 						"comment": "index open-source driver",
 						"quality": null,
-						"currency": "UGX"
+						"currency": "XBA"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 5360147685.27,
@@ -6536,7 +6536,7 @@
 						},
 						"comment": "reboot online protocol",
 						"quality": null,
-						"currency": "PEN"
+						"currency": "RWF"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 8416948325.27,
@@ -6549,7 +6549,7 @@
 						},
 						"comment": "transmit cross-platform system",
 						"quality": "Incomplete",
-						"currency": "PEN"
+						"currency": "RWF"
 					}
 				},
 				"capexBasedAssetsForCalculationOfGreenAssetRatio": {
@@ -6613,7 +6613,7 @@
 						},
 						"comment": "index neural application",
 						"quality": "Estimated",
-						"currency": "MMK"
+						"currency": "MYR"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 4369911774.2,
@@ -6626,7 +6626,7 @@
 						},
 						"comment": "copy mobile monitor",
 						"quality": "Estimated",
-						"currency": "INR"
+						"currency": "ISK"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 8940308512.28,
@@ -6639,7 +6639,7 @@
 						},
 						"comment": "generate open-source transmitter",
 						"quality": "Estimated",
-						"currency": "RSD"
+						"currency": "SLL"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 6861544431.55,
@@ -6652,7 +6652,7 @@
 						},
 						"comment": "input cross-platform pixel",
 						"quality": "Reported",
-						"currency": "BIF"
+						"currency": "BMD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 2829553641.11,
@@ -6665,7 +6665,7 @@
 						},
 						"comment": "navigate mobile panel",
 						"quality": "NoDataFound",
-						"currency": "AFN"
+						"currency": "AED"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 8734148931.78,
@@ -6678,7 +6678,7 @@
 						},
 						"comment": "connect digital bus",
 						"quality": "NoDataFound",
-						"currency": "CRC"
+						"currency": "CSD"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -6693,7 +6693,7 @@
 						},
 						"comment": "compress 1080p sensor",
 						"quality": "Estimated",
-						"currency": "NAD"
+						"currency": "ZWG"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": null,
@@ -6733,14 +6733,14 @@
 						},
 						"comment": "calculate multi-byte transmitter",
 						"quality": "Estimated",
-						"currency": "HUF"
+						"currency": "IEP"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 304401184.76,
 						"dataSource": null,
 						"comment": "quantify multi-byte interface",
 						"quality": null,
-						"currency": "AUD"
+						"currency": "AWG"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -6982,7 +6982,7 @@
 						},
 						"comment": "quantify 1080p firewall",
 						"quality": "Reported",
-						"currency": "SRD"
+						"currency": "TRY"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": null,
@@ -7007,7 +7007,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "TMT"
+						"currency": "UZS"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -7434,7 +7434,7 @@
 						},
 						"comment": "reboot back-end alarm",
 						"quality": "Incomplete",
-						"currency": "TRY"
+						"currency": "VES"
 					},
 					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": null,
 					"totalOfAbsolutePremiums": null
@@ -7451,7 +7451,7 @@
 						},
 						"comment": "navigate back-end transmitter",
 						"quality": null,
-						"currency": "GBP"
+						"currency": "FRF"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": null,
@@ -7861,7 +7861,7 @@
 						},
 						"comment": "transmit virtual firewall",
 						"quality": "Incomplete",
-						"currency": "DJF"
+						"currency": "CZK"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 79.07,
@@ -8380,7 +8380,7 @@
 						},
 						"comment": "synthesize 1080p driver",
 						"quality": "Incomplete",
-						"currency": "MGA"
+						"currency": "MVR"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 9476021014.74,
@@ -8393,7 +8393,7 @@
 						},
 						"comment": "parse auxiliary microchip",
 						"quality": "Estimated",
-						"currency": "MYR"
+						"currency": "PAB"
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -8626,7 +8626,7 @@
 						},
 						"comment": "calculate online panel",
 						"quality": null,
-						"currency": "XOF"
+						"currency": "XUA"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": null,
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
@@ -8640,7 +8640,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "MRU"
+						"currency": "NAD"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 4204623827.05,
@@ -8668,7 +8668,7 @@
 						},
 						"comment": "parse mobile sensor",
 						"quality": "Reported",
-						"currency": "ZMW"
+						"currency": "ZWG"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": {
 						"value": 8468352325.87,
@@ -8681,7 +8681,7 @@
 						},
 						"comment": "override mobile interface",
 						"quality": "Reported",
-						"currency": "SLE"
+						"currency": "TOP"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": null,
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
@@ -8695,7 +8695,7 @@
 						},
 						"comment": "override online transmitter",
 						"quality": "Audited",
-						"currency": "CNY"
+						"currency": "COP"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 1834097148.2,
@@ -8708,7 +8708,7 @@
 						},
 						"comment": "compress redundant matrix",
 						"quality": null,
-						"currency": "SZL"
+						"currency": "USN"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -8723,7 +8723,7 @@
 						},
 						"comment": "generate 1080p protocol",
 						"quality": "Incomplete",
-						"currency": "MOP"
+						"currency": "NAD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 834434103.35,
@@ -8736,7 +8736,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "GEL"
+						"currency": "GHC"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 3442314592.76,
@@ -8749,7 +8749,7 @@
 						},
 						"comment": "program neural firewall",
 						"quality": "Incomplete",
-						"currency": "AWG"
+						"currency": "AYM"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 2556137043.06,
@@ -8762,7 +8762,7 @@
 						},
 						"comment": "quantify wireless transmitter",
 						"quality": "Estimated",
-						"currency": "KYD"
+						"currency": "LYD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 7553724042.41,
@@ -8775,7 +8775,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "CHF"
+						"currency": "CLF"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 2715307640.36,
@@ -8788,7 +8788,7 @@
 						},
 						"comment": "bypass online hard drive",
 						"quality": "NoDataFound",
-						"currency": "TMT"
+						"currency": "UZS"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -8803,7 +8803,7 @@
 						},
 						"comment": "transmit open-source pixel",
 						"quality": "Reported",
-						"currency": "USD"
+						"currency": "XBC"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 3753122537.39,
@@ -8816,7 +8816,7 @@
 						},
 						"comment": "synthesize primary port",
 						"quality": "Reported",
-						"currency": "CHF"
+						"currency": "CHW"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": null,
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
@@ -9060,7 +9060,7 @@
 						},
 						"comment": "back up solid state array",
 						"quality": "Estimated",
-						"currency": "XAF"
+						"currency": "XPF"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -9414,7 +9414,7 @@
 						},
 						"comment": "quantify mobile interface",
 						"quality": "Estimated",
-						"currency": "SOS"
+						"currency": "TRL"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -9523,7 +9523,7 @@
 						},
 						"comment": "navigate redundant alarm",
 						"quality": "Reported",
-						"currency": "AUD"
+						"currency": "AWG"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": null,
@@ -9548,7 +9548,7 @@
 						},
 						"comment": "override neural application",
 						"quality": "Reported",
-						"currency": "WST"
+						"currency": "XPF"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -9931,7 +9931,7 @@
 						},
 						"comment": "compress 1080p hard drive",
 						"quality": "Incomplete",
-						"currency": "SZL"
+						"currency": "USN"
 					},
 					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 8986646699.16,
@@ -9944,7 +9944,7 @@
 						},
 						"comment": "calculate solid state program",
 						"quality": "Reported",
-						"currency": "NAD"
+						"currency": "ZWD"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 19.36,
@@ -10115,7 +10115,7 @@
 						},
 						"comment": "index mobile monitor",
 						"quality": "Reported",
-						"currency": "TMT"
+						"currency": "UZS"
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 25.04,
@@ -10308,7 +10308,7 @@
 						},
 						"comment": "copy optical capacitor",
 						"quality": "NoDataFound",
-						"currency": "ZMW"
+						"currency": "ZWL"
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 37.58,
@@ -10475,7 +10475,7 @@
 						},
 						"comment": "generate wireless application",
 						"quality": null,
-						"currency": "SSP"
+						"currency": "TWD"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": null,
@@ -10751,7 +10751,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "JOD"
+						"currency": "KMF"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": null,
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
@@ -10765,7 +10765,7 @@
 						},
 						"comment": "input redundant circuit",
 						"quality": "Estimated",
-						"currency": "WST"
+						"currency": "XPF"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 9035030428.38,
@@ -10794,7 +10794,7 @@
 						},
 						"comment": "input back-end circuit",
 						"quality": "NoDataFound",
-						"currency": "CHF"
+						"currency": "CHW"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": {
 						"value": 1756197571.86,
@@ -10834,7 +10834,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "RSD"
+						"currency": "SLL"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -10849,7 +10849,7 @@
 						},
 						"comment": "bypass online capacitor",
 						"quality": "Incomplete",
-						"currency": "SYP"
+						"currency": "USD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 1837684697.97,
@@ -10862,7 +10862,7 @@
 						},
 						"comment": "quantify auxiliary bandwidth",
 						"quality": "Reported",
-						"currency": "BDT"
+						"currency": "BEF"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 6036000274.56,
@@ -10875,7 +10875,7 @@
 						},
 						"comment": "synthesize wireless interface",
 						"quality": null,
-						"currency": "BND"
+						"currency": "BOV"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 7147036517.25,
@@ -10888,7 +10888,7 @@
 						},
 						"comment": "parse solid state protocol",
 						"quality": "Audited",
-						"currency": "XOF"
+						"currency": "XUA"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 886594836.85,
@@ -10901,7 +10901,7 @@
 						},
 						"comment": "quantify optical transmitter",
 						"quality": "Incomplete",
-						"currency": "TND"
+						"currency": "VED"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": null
 				},
@@ -10930,7 +10930,7 @@
 						},
 						"comment": "parse open-source protocol",
 						"quality": null,
-						"currency": "BSD"
+						"currency": "BWP"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 1556812786.67,
@@ -10943,7 +10943,7 @@
 						},
 						"comment": "hack open-source matrix",
 						"quality": "Audited",
-						"currency": "LYD"
+						"currency": "MRO"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": null,
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
@@ -10957,7 +10957,7 @@
 						},
 						"comment": "quantify solid state feed",
 						"quality": "Estimated",
-						"currency": "MAD"
+						"currency": "MRU"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 7258168602.56,
@@ -10970,7 +10970,7 @@
 						},
 						"comment": "input haptic capacitor",
 						"quality": "Incomplete",
-						"currency": "SCR"
+						"currency": "SVC"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -11227,7 +11227,7 @@
 						},
 						"comment": "input redundant capacitor",
 						"quality": "Audited",
-						"currency": "KES"
+						"currency": "KWD"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 96.07,
@@ -11246,7 +11246,7 @@
 						},
 						"comment": "back up bluetooth bandwidth",
 						"quality": "Estimated",
-						"currency": "LRD"
+						"currency": "MNT"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -11667,7 +11667,7 @@
 						},
 						"comment": "parse open-source application",
 						"quality": "Reported",
-						"currency": "CAD"
+						"currency": "CDF"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -11983,7 +11983,7 @@
 						},
 						"comment": "synthesize digital bus",
 						"quality": "Estimated",
-						"currency": "MVR"
+						"currency": "NPR"
 					},
 					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 5871403073.08,
@@ -11996,7 +11996,7 @@
 						},
 						"comment": "reboot digital transmitter",
 						"quality": "Estimated",
-						"currency": "INR"
+						"currency": "ISK"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -12178,7 +12178,7 @@
 						},
 						"comment": "input cross-platform system",
 						"quality": null,
-						"currency": "LRD"
+						"currency": "MOP"
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 57.17,
@@ -12510,7 +12510,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "BRL"
+						"currency": "BTN"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 6381321507.02,
@@ -12523,7 +12523,7 @@
 						},
 						"comment": "reboot multi-byte hard drive",
 						"quality": "Reported",
-						"currency": "AFN"
+						"currency": "AED"
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -12834,7 +12834,7 @@
 						},
 						"comment": "back up optical driver",
 						"quality": "Reported",
-						"currency": "MDL"
+						"currency": "MTL"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": null,
@@ -12860,7 +12860,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "SSP"
+						"currency": "TWD"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": null
 				},
@@ -12870,7 +12870,7 @@
 						"dataSource": null,
 						"comment": "override auxiliary microchip",
 						"quality": null,
-						"currency": "ETB"
+						"currency": "ESP"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposures": null,
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
@@ -12884,7 +12884,7 @@
 						},
 						"comment": "input virtual microchip",
 						"quality": "Audited",
-						"currency": "NOK"
+						"currency": "PYG"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": 8558164404.59,
@@ -12897,7 +12897,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "ARS"
+						"currency": "ATS"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 5619886598.41,
@@ -12910,7 +12910,7 @@
 						},
 						"comment": "calculate auxiliary circuit",
 						"quality": "Incomplete",
-						"currency": "JOD"
+						"currency": "KMF"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -12920,7 +12920,7 @@
 						"dataSource": null,
 						"comment": "program back-end application",
 						"quality": "NoDataFound",
-						"currency": "GTQ"
+						"currency": "GWP"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": null,
@@ -12941,7 +12941,7 @@
 						},
 						"comment": "input haptic matrix",
 						"quality": "Reported",
-						"currency": "MUR"
+						"currency": "NLG"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": null
 				},
@@ -12973,7 +12973,7 @@
 						},
 						"comment": "transmit cross-platform array",
 						"quality": "Incomplete",
-						"currency": "NZD"
+						"currency": "ROL"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": null
 				},
@@ -13204,7 +13204,7 @@
 						},
 						"comment": "bypass virtual feed",
 						"quality": "Incomplete",
-						"currency": "CUP"
+						"currency": "CUC"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 67.21,
@@ -13229,7 +13229,7 @@
 						},
 						"comment": "copy 1080p protocol",
 						"quality": "Reported",
-						"currency": "MUR"
+						"currency": "NLG"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -13627,7 +13627,7 @@
 						},
 						"comment": "parse open-source alarm",
 						"quality": null,
-						"currency": "VES"
+						"currency": "XFO"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": null,
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities": {
@@ -13653,7 +13653,7 @@
 						"dataSource": null,
 						"comment": "navigate online application",
 						"quality": "Incomplete",
-						"currency": "JMD"
+						"currency": "KHR"
 					},
 					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": {
 						"value": 89.89,
@@ -13678,7 +13678,7 @@
 						},
 						"comment": "navigate multi-byte protocol",
 						"quality": "Estimated",
-						"currency": "AUD"
+						"currency": "AWG"
 					}
 				},
 				"assetUnderManagement": {
@@ -14059,7 +14059,7 @@
 						},
 						"comment": "index online interface",
 						"quality": "Incomplete",
-						"currency": "MXN"
+						"currency": "NZD"
 					},
 					"turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": 5458623447.91,
@@ -14072,7 +14072,7 @@
 						},
 						"comment": "hack back-end pixel",
 						"quality": null,
-						"currency": "CHF"
+						"currency": "CHW"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -14253,7 +14253,7 @@
 						},
 						"comment": "calculate 1080p pixel",
 						"quality": null,
-						"currency": "EUR"
+						"currency": "FIM"
 					},
 					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": null,
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
@@ -14418,7 +14418,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "XOF"
+						"currency": "XUA"
 					},
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": null,
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
@@ -14570,7 +14570,7 @@
 						},
 						"comment": "reboot digital microchip",
 						"quality": "Audited",
-						"currency": "MUR"
+						"currency": "NIO"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
@@ -14847,7 +14847,7 @@
 						},
 						"comment": "hack open-source application",
 						"quality": "Estimated",
-						"currency": "TJS"
+						"currency": "UYU"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": {
 						"value": 8220130224.7,
@@ -14860,7 +14860,7 @@
 						},
 						"comment": "hack neural program",
 						"quality": "Reported",
-						"currency": "HNL"
+						"currency": "HRK"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": null,
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
@@ -14874,7 +14874,7 @@
 						},
 						"comment": "connect primary sensor",
 						"quality": "Audited",
-						"currency": "YER"
+						"currency": "YUM"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 5781481030.31,
@@ -14887,7 +14887,7 @@
 						},
 						"comment": "compress haptic circuit",
 						"quality": "Audited",
-						"currency": "PKR"
+						"currency": "SDG"
 					}
 				},
 				"capexBasedAssetsForCalculationOfGreenAssetRatio": {
@@ -14929,7 +14929,7 @@
 						},
 						"comment": "compress redundant capacitor",
 						"quality": "Reported",
-						"currency": "THB"
+						"currency": "USS"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": null
 				},
@@ -14946,7 +14946,7 @@
 						},
 						"comment": "connect open-source alarm",
 						"quality": "Reported",
-						"currency": "BND"
+						"currency": "BOV"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": null,
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": null,
@@ -14961,7 +14961,7 @@
 						},
 						"comment": "navigate multi-byte driver",
 						"quality": "Reported",
-						"currency": "LRD"
+						"currency": "MNT"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 977097517.56,
@@ -14974,7 +14974,7 @@
 						},
 						"comment": "navigate bluetooth microchip",
 						"quality": "Audited",
-						"currency": "COP"
+						"currency": "COU"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -14992,7 +14992,7 @@
 						},
 						"comment": "quantify solid state system",
 						"quality": "Incomplete",
-						"currency": "XPF"
+						"currency": "YER"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 4837117290.22,
@@ -15005,7 +15005,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "DKK"
+						"currency": "DJF"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 2506554805.38,
@@ -15018,7 +15018,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "MMK"
+						"currency": "MYR"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -15299,7 +15299,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "VES"
+						"currency": "XDR"
 					},
 					"assetsCoveredByTheKpiInPercent": {
 						"value": 7.49,
@@ -15324,7 +15324,7 @@
 						},
 						"comment": "reboot wireless driver",
 						"quality": "Reported",
-						"currency": "CHF"
+						"currency": "CHW"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -15677,7 +15677,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "LYD"
+						"currency": "MOP"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -15715,7 +15715,7 @@
 						},
 						"comment": "bypass mobile card",
 						"quality": "Audited",
-						"currency": "UYU"
+						"currency": "XBD"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
 						"value": null,
@@ -15760,7 +15760,7 @@
 						},
 						"comment": "input neural driver",
 						"quality": "Audited",
-						"currency": "CHF"
+						"currency": "CLF"
 					}
 				},
 				"assetUnderManagement": {
@@ -15775,7 +15775,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "TJS"
+						"currency": "UYI"
 					},
 					"assetsCoveredByTheKpiInPercent": null,
 					"assetsCoveredByTheKpiMonetaryAmount": null
@@ -16154,7 +16154,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "YER"
+						"currency": "ZAR"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 19.67,
@@ -16317,7 +16317,7 @@
 						"dataSource": null,
 						"comment": "reboot optical pixel",
 						"quality": "NoDataFound",
-						"currency": "CVE"
+						"currency": "CUP"
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -16533,7 +16533,7 @@
 						},
 						"comment": "override redundant bus",
 						"quality": null,
-						"currency": "BYN"
+						"currency": "BZD"
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 34.27,
@@ -16677,7 +16677,7 @@
 						},
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "HTG"
+						"currency": "HUF"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 1064723664.39,
@@ -16690,7 +16690,7 @@
 						},
 						"comment": "quantify digital array",
 						"quality": "NoDataFound",
-						"currency": "KWD"
+						"currency": "LUF"
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned": {
@@ -16936,7 +16936,7 @@
 						},
 						"comment": "calculate wireless matrix",
 						"quality": "NoDataFound",
-						"currency": "BAM"
+						"currency": "BBD"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
 						"value": 2020942192.03,
@@ -16949,7 +16949,7 @@
 						},
 						"comment": "navigate auxiliary array",
 						"quality": null,
-						"currency": "UZS"
+						"currency": "XCG"
 					}
 				},
 				"capexBasedAssetsForCalculationOfGreenAssetRatio": {
@@ -16977,7 +16977,7 @@
 						},
 						"comment": "parse open-source pixel",
 						"quality": "Estimated",
-						"currency": "BBD"
+						"currency": "BDT"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 6703069274.44,
@@ -16990,7 +16990,7 @@
 						},
 						"comment": "back up wireless sensor",
 						"quality": "NoDataFound",
-						"currency": "MZN"
+						"currency": "PGK"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": null,
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": {
@@ -17019,7 +17019,7 @@
 						},
 						"comment": "calculate optical array",
 						"quality": "Audited",
-						"currency": "CLP"
+						"currency": "CNY"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 8755062844.5,
@@ -17032,7 +17032,7 @@
 						},
 						"comment": "bypass solid state driver",
 						"quality": "Audited",
-						"currency": "SZL"
+						"currency": "USN"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 4591745950.61,
@@ -17045,7 +17045,7 @@
 						},
 						"comment": "parse primary system",
 						"quality": "Audited",
-						"currency": "THB"
+						"currency": "USN"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 2662421576.96,
@@ -17071,7 +17071,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "MGA"
+						"currency": "MWK"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 6123095941.45,
@@ -17084,7 +17084,7 @@
 						},
 						"comment": "hack optical transmitter",
 						"quality": "Estimated",
-						"currency": "BZD"
+						"currency": "CAD"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -17093,14 +17093,14 @@
 						"dataSource": null,
 						"comment": "quantify cross-platform circuit",
 						"quality": "Estimated",
-						"currency": "PLN"
+						"currency": "SEK"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 7974113864.96,
 						"dataSource": null,
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "HNL"
+						"currency": "HRK"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": null,
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
@@ -17114,7 +17114,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "CNY"
+						"currency": "COP"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 4906932707.1,
@@ -17127,7 +17127,7 @@
 						},
 						"comment": "transmit digital bandwidth",
 						"quality": "Audited",
-						"currency": "NAD"
+						"currency": "ZWG"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": 4074359477.95,
@@ -17140,7 +17140,7 @@
 						},
 						"comment": "parse haptic array",
 						"quality": "Incomplete",
-						"currency": "MXN"
+						"currency": "PAB"
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -17415,7 +17415,7 @@
 						},
 						"comment": "hack mobile interface",
 						"quality": "Estimated",
-						"currency": "RSD"
+						"currency": "SOS"
 					},
 					"assetsCoveredByTheKpiInPercent": null,
 					"assetsCoveredByTheKpiMonetaryAmount": {
@@ -17429,7 +17429,7 @@
 						},
 						"comment": "index 1080p system",
 						"quality": "NoDataFound",
-						"currency": "ARS"
+						"currency": "ATS"
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiTurnoverBased": {
@@ -17810,7 +17810,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "SLE"
+						"currency": "TOP"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": null,
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleNuclearActivities": {
@@ -18221,7 +18221,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "XCD"
+						"currency": "XTS"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": 79.88,
@@ -18544,7 +18544,7 @@
 						},
 						"comment": "navigate virtual monitor",
 						"quality": "Estimated",
-						"currency": "BND"
+						"currency": "BRL"
 					},
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": {
 						"value": null,
@@ -18746,14 +18746,14 @@
 						},
 						"comment": "copy bluetooth transmitter",
 						"quality": "Reported",
-						"currency": "NZD"
+						"currency": "ROL"
 					},
 					"capexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": 3791100344.62,
 						"dataSource": null,
 						"comment": "generate multi-byte panel",
 						"quality": "Incomplete",
-						"currency": "IDR"
+						"currency": "ILS"
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -19004,7 +19004,7 @@
 						},
 						"comment": "back up bluetooth pixel",
 						"quality": null,
-						"currency": "SCR"
+						"currency": "SYP"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposures": {
 						"value": 2585098426.35,
@@ -19017,7 +19017,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "PYG"
+						"currency": "SHP"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 7431606331.56,
@@ -19030,7 +19030,7 @@
 						},
 						"comment": "generate digital alarm",
 						"quality": "Reported",
-						"currency": "GYD"
+						"currency": "HKD"
 					},
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": null,
 					"turnoverBasedTotalAmountOfNonAssessedExposuresOfWhichNotAssessedConsideredNonMaterialByTheCreditInstitution": null
@@ -19060,7 +19060,7 @@
 						},
 						"comment": "compress cross-platform hard drive",
 						"quality": "Estimated",
-						"currency": "TOP"
+						"currency": "VES"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichFinancingNonMaterialActivitiesOfCounterparties": {
 						"value": 7181219030.82,
@@ -19073,7 +19073,7 @@
 						},
 						"comment": "quantify primary port",
 						"quality": null,
-						"currency": "ZMW"
+						"currency": "ZWL"
 					},
 					"capexBasedTotalAmountOfNonAssessedExposuresOfWhichExposuresFinancingCounterpartiesReportingNoTaxonomyEligibleActivities": {
 						"value": null,
@@ -19099,7 +19099,7 @@
 						},
 						"comment": "reboot back-end interface",
 						"quality": "Reported",
-						"currency": "NPR"
+						"currency": "PYG"
 					}
 				},
 				"turnoverBasedGreenAssetRatioSectorInformation": {
@@ -19114,7 +19114,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "ISK"
+						"currency": "KES"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": null,
@@ -19141,7 +19141,7 @@
 						},
 						"comment": "synthesize mobile transmitter",
 						"quality": null,
-						"currency": "SZL"
+						"currency": "USD"
 					},
 					"turnoverBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": null,
@@ -19167,7 +19167,7 @@
 						},
 						"comment": "calculate primary alarm",
 						"quality": "Audited",
-						"currency": "MRU"
+						"currency": "NGN"
 					}
 				},
 				"capexBasedGreenAssetRatioSectorInformation": {
@@ -19182,7 +19182,7 @@
 						},
 						"comment": "parse redundant interface",
 						"quality": "Incomplete",
-						"currency": "NAD"
+						"currency": "ZWG"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyEligible": {
 						"value": 4838271820.69,
@@ -19195,7 +19195,7 @@
 						},
 						"comment": "hack virtual hard drive",
 						"quality": "Incomplete",
-						"currency": "KHR"
+						"currency": "KZT"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsNuclearActivitiesTaxonomyAligned": {
 						"value": 8718467825.32,
@@ -19208,21 +19208,21 @@
 						},
 						"comment": "connect bluetooth program",
 						"quality": "NoDataFound",
-						"currency": "KES"
+						"currency": "KWD"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivities": {
 						"value": 1261702033.61,
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "USD"
+						"currency": "XBB"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyEligible": {
 						"value": 2480106825.45,
 						"dataSource": null,
 						"comment": "hack virtual application",
 						"quality": "NoDataFound",
-						"currency": "SZL"
+						"currency": "USD"
 					},
 					"capexBasedTotalAmountOfAssetsExposedTowardsFossilGasActivitiesTaxonomyAligned": {
 						"value": null,
@@ -19924,7 +19924,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "TWD"
+						"currency": "XAD"
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleActivities": {
 						"value": null,
@@ -19973,7 +19973,7 @@
 						},
 						"comment": "quantify optical pixel",
 						"quality": "Estimated",
-						"currency": "KPW"
+						"currency": "LSL"
 					},
 					"proportionOfAbsolutePremiumsOfNonAssessedActivitiesConsideredNonMaterial": null,
 					"totalOfAbsolutePremiums": {
@@ -19987,7 +19987,7 @@
 						},
 						"comment": "copy redundant bandwidth",
 						"quality": "Reported",
-						"currency": "FJD"
+						"currency": "FIM"
 					}
 				},
 				"assetUnderManagement": {
@@ -20320,7 +20320,7 @@
 						},
 						"comment": "index auxiliary bus",
 						"quality": null,
-						"currency": "XAF"
+						"currency": "XPT"
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {
 						"value": null,
@@ -20523,7 +20523,7 @@
 						},
 						"comment": "transmit solid state application",
 						"quality": "NoDataFound",
-						"currency": "YER"
+						"currency": "YUM"
 					},
 					"capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccountOfWhichCoveredByTheCapex": {
 						"value": null,
@@ -20706,7 +20706,7 @@
 						},
 						"comment": "index bluetooth firewall",
 						"quality": "Estimated",
-						"currency": "ZWL"
+						"currency": "ZWR"
 					},
 					"turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccountOfWhichCoveredByTheTurnover": null,
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible": {

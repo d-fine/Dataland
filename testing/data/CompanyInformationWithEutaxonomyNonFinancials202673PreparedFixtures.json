@@ -201,7 +201,7 @@
 					},
 					"comment": "synthesize redundant panel",
 					"quality": "Reported",
-					"currency": "HNL"
+					"currency": "HRK"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -229,7 +229,7 @@
 						},
 						"comment": "hack mobile alarm",
 						"quality": "Incomplete",
-						"currency": "MYR"
+						"currency": "PEN"
 					},
 					"relativeShareInPercent": {
 						"value": 72.63,
@@ -370,7 +370,7 @@
 								"relativeShareInPercent": 69.08,
 								"absoluteShare": {
 									"amount": 3743156264.76,
-									"currency": "CDF"
+									"currency": "CHF"
 								}
 							},
 							"relativeEligibleShareInPercent": 30.91,
@@ -390,7 +390,7 @@
 								"relativeShareInPercent": 56.47,
 								"absoluteShare": {
 									"amount": 1637389392.25,
-									"currency": "MAD"
+									"currency": "MRU"
 								}
 							},
 							"relativeEligibleShareInPercent": 87.51,
@@ -427,7 +427,7 @@
 					},
 					"comment": "synthesize auxiliary pixel",
 					"quality": "Estimated",
-					"currency": "OMR"
+					"currency": "RSD"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -455,7 +455,7 @@
 						},
 						"comment": "hack solid state array",
 						"quality": "Incomplete",
-						"currency": "OMR"
+						"currency": "RSD"
 					},
 					"relativeShareInPercent": {
 						"value": 38.9,
@@ -593,7 +593,7 @@
 								"relativeShareInPercent": 13.52,
 								"absoluteShare": {
 									"amount": 5304451337.29,
-									"currency": "UYU"
+									"currency": "XCD"
 								}
 							},
 							"relativeEligibleShareInPercent": 71.98,
@@ -682,7 +682,7 @@
 					},
 					"comment": "override auxiliary pixel",
 					"quality": "Incomplete",
-					"currency": "MAD"
+					"currency": "MTL"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -710,7 +710,7 @@
 						},
 						"comment": "connect virtual capacitor",
 						"quality": "Reported",
-						"currency": "SEK"
+						"currency": "THB"
 					},
 					"relativeShareInPercent": {
 						"value": 18.26,
@@ -849,7 +849,7 @@
 								"relativeShareInPercent": 11.36,
 								"absoluteShare": {
 									"amount": 2095242272.12,
-									"currency": "QAR"
+									"currency": "SIT"
 								}
 							},
 							"relativeEligibleShareInPercent": 95.61,
@@ -871,7 +871,7 @@
 								"relativeShareInPercent": 40.57,
 								"absoluteShare": {
 									"amount": 1227149090.9,
-									"currency": "MVR"
+									"currency": "NOK"
 								}
 							},
 							"relativeEligibleShareInPercent": 13.61,
@@ -894,7 +894,7 @@
 								"relativeShareInPercent": 21.33,
 								"absoluteShare": {
 									"amount": 1909941041.46,
-									"currency": "UGX"
+									"currency": "XBA"
 								}
 							},
 							"relativeEligibleShareInPercent": 76.29,
@@ -917,7 +917,7 @@
 								"relativeShareInPercent": 6.34,
 								"absoluteShare": {
 									"amount": 1170971192.13,
-									"currency": "TTD"
+									"currency": "VND"
 								}
 							},
 							"relativeEligibleShareInPercent": 77.09,
@@ -939,7 +939,7 @@
 								"relativeShareInPercent": 61.15,
 								"absoluteShare": {
 									"amount": 854410493.12,
-									"currency": "JPY"
+									"currency": "KRW"
 								}
 							},
 							"relativeEligibleShareInPercent": 88.91,
