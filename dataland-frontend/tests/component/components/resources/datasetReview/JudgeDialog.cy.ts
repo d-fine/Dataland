@@ -288,12 +288,6 @@ describe('JudgeDialog component tests', () => {
   // 1b. Currency data points: Original/Reviewed display and Custom form
   // ---------------------------------------------------------------------------
   describe('Currency data points', () => {
-    const currencyKpiRows: CellRow[] = kpiRows.map((row) =>
-      row.dataPointTypeId === dataPointTypeId
-        ? { ...row, uploadComponentName: 'CurrencyExtendedDataPointFormField' }
-        : row
-    );
-
     const withBaseType = (baseType: string | undefined): DatasetJudgementResponse => ({
       ...baseDatasetJudgement,
       dataPoints: {
@@ -380,18 +374,11 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-currency-field"]').should('not.exist');
     });
 
-    it('prefers the base type over the view config upload component name', () => {
-      mountJudgeDialog({ kpiRows: currencyKpiRows, datasetJudgement: withBaseType('extendedDecimal') });
+    it('does not show a currency selector for judgements created without a stored base type', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType(undefined) });
       cy.wait('@getOriginalDataPoint');
 
       cy.get('[data-test="custom-currency-field"]').should('not.exist');
-    });
-
-    it('falls back to the view config upload component name when the judgement has no base type', () => {
-      mountJudgeDialog({ kpiRows: currencyKpiRows, datasetJudgement: withBaseType(undefined) });
-      cy.wait('@getOriginalDataPoint');
-
-      cy.get('[data-test="custom-currency-field"]').should('exist');
     });
   });
 

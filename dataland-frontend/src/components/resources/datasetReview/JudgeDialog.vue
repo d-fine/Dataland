@@ -218,7 +218,7 @@ import {
   transformDataPointDetailToFormData,
   DEFAULT_CUSTOM_JSON,
   DEFAULT_CUSTOM_FORM_DATA,
-  isCurrencyDataPointType,
+  DataPointBaseType,
   type JudgementErrorResponse,
 } from '@/utils/JudgeDialogUtils.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
@@ -323,16 +323,11 @@ const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
   return datasetJudgement.value.dataPoints[currentDataPointTypeId.value] ?? null;
 });
 
-const currentUploadComponentName = computed(
-  () => props.kpiRows.find((r) => r.dataPointTypeId === currentDataPointTypeId.value)?.uploadComponentName
-);
-
 /**
  * Whether the data point currently shown in the Judge modal is a Currency-typed data point.
- * The upload component name is only a fallback for judgements created before the base type was stored.
  */
-const isCurrencyDataPoint = computed<boolean>(() =>
-  isCurrencyDataPointType(currentDatapointJudgement.value?.dataPointBaseType, currentUploadComponentName.value)
+const isCurrencyDataPoint = computed<boolean>(
+  () => currentDatapointJudgement.value?.dataPointBaseType === DataPointBaseType.ExtendedCurrency
 );
 
 const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');
