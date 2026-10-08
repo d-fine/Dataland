@@ -64,6 +64,7 @@
         :nav-index="0"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Original"
         :is-currency-data-point="isCurrencyDataPoint"
+        :is-assurance-data-point="isAssuranceDataPoint"
         section-type="original"
         @accept="onAcceptClick(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
@@ -91,6 +92,7 @@
         "
         :index-of-accepted-qa-report="indexOfAcceptedQaReport"
         :is-currency-data-point="isCurrencyDataPoint"
+        :is-assurance-data-point="isAssuranceDataPoint"
         section-type="qa"
         @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
@@ -123,6 +125,7 @@
         :can-copy-corrected="!!currentQaCorrectedData"
         :available-documents="availableDocuments"
         :is-currency-data-point="isCurrencyDataPoint"
+        :is-assurance-data-point="isAssuranceDataPoint"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Custom"
         @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
@@ -328,6 +331,13 @@ const currentDatapointJudgement = computed<DataPointJudgement | null>(() => {
  */
 const isCurrencyDataPoint = computed<boolean>(
   () => currentDatapointJudgement.value?.dataPointBaseType === DataPointBaseType.ExtendedCurrency
+);
+
+/**
+ * Whether the data point currently shown in the Judge modal is an Assurance-typed data point.
+ */
+const isAssuranceDataPoint = computed<boolean>(
+  () => currentDatapointJudgement.value?.dataPointBaseType === DataPointBaseType.AssuranceDataPoint
 );
 
 const currentDataPointId = computed(() => currentDatapointJudgement.value?.dataPointId ?? '');

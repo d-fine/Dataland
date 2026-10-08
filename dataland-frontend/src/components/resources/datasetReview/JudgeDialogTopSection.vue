@@ -130,6 +130,7 @@ const props = defineProps<{
   sectionType: 'original' | 'qa';
   currentQaReportComment?: string | null;
   isCurrencyDataPoint?: boolean;
+  isAssuranceDataPoint?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -143,6 +144,10 @@ const tableRows = computed(() => {
 
   if (props.isCurrencyDataPoint) {
     rows.push({ label: 'Currency', value: props.data?.currency });
+  }
+
+  if (props.isAssuranceDataPoint) {
+    rows.push({ label: 'Provider', value: props.data?.provider });
   }
 
   rows.push(

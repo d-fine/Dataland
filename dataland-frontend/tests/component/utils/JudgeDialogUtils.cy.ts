@@ -44,6 +44,7 @@ describe('parseFormDataToDataPointJson', () => {
     pages: '',
     comment: '',
     currency: '',
+    provider: '',
   };
 
   // Realistic base example: numeric value, quality, pages, and comment
@@ -59,6 +60,7 @@ describe('parseFormDataToDataPointJson', () => {
     pages: baseFormPages,
     comment: baseFormComment,
     currency: '',
+    provider: '',
   };
 
   const documentOption: DocumentOption = {
@@ -98,6 +100,7 @@ describe('parseFormDataToDataPointJson', () => {
       pages: '10–12',
       comment: '',
       currency: '',
+      provider: '',
     };
 
     const json = parseFormDataToDataPointJson(form, null);
@@ -118,6 +121,7 @@ describe('parseFormDataToDataPointJson', () => {
       pages: '5',
       comment: 'Verified against Annual Report 2023.',
       currency: '',
+      provider: '',
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
@@ -140,6 +144,7 @@ describe('parseFormDataToDataPointJson', () => {
       pages: '',
       comment: '',
       currency: '',
+      provider: '',
     };
 
     const json = parseFormDataToDataPointJson(form, documentOption);
@@ -160,6 +165,7 @@ describe('parseFormDataToDataPointJson', () => {
       pages: '',
       comment: '',
       currency: 'EUR',
+      provider: '',
     };
 
     const parsedWithCurrency = JSON.parse(
@@ -197,6 +203,7 @@ describe('transformDataPointDetailToFormData', () => {
       pages: '12',
       comment: 'Taken from Sustainability Report 2023, page 12.',
       currency: '',
+      provider: '',
     });
   });
 
@@ -235,6 +242,7 @@ describe('transformDataPointDetailToFormData', () => {
       pages: '',
       comment: '',
       currency: '',
+      provider: '',
     });
   });
 
@@ -255,6 +263,31 @@ describe('transformDataPointDetailToFormData', () => {
 
     expect(form.value).to.deep.equal(activities);
     expect(form.value).to.not.be.a('string');
+  });
+
+  it('includes provider in the JSON payload when set, but omits it when empty', () => {
+    const form: CustomFormData = {
+      value: 'LimitedAssurance',
+      quality: '',
+      document: '',
+      pages: '',
+      comment: '',
+      currency: '',
+      provider: 'ACME Auditors',
+    };
+
+    const parsed = JSON.parse(parseFormDataToDataPointJson(form, null)) as ParsedSingleDataPoint;
+    expect(parsed).to.deep.equal({ value: 'LimitedAssurance', provider: 'ACME Auditors' });
+
+    const parsedWithoutProvider = JSON.parse(
+      parseFormDataToDataPointJson({ ...form, provider: '' }, null)
+    ) as ParsedSingleDataPoint;
+    expect(parsedWithoutProvider).to.deep.equal({ value: 'LimitedAssurance' });
+  });
+
+  it('maps the provider of an assurance data point detail', () => {
+    const form = transformDataPointDetailToFormData({ value: 'LimitedAssurance', provider: 'ACME Auditors' });
+    expect(form.provider).to.equal('ACME Auditors');
   });
 
   it('maps a currency data point detail including its currency field', () => {
@@ -319,6 +352,7 @@ describe('parseDataPointJsonToFormData', () => {
       pages: '9',
       comment: 'Verified against ParsedReport.pdf.',
       currency: '',
+      provider: '',
     });
   });
 

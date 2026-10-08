@@ -19,4 +19,5 @@ export interface CustomFormData {
   pages: string;
   comment: string;
   currency: string;
+  provider: string;
 }

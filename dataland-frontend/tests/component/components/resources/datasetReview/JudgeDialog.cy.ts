@@ -382,6 +382,51 @@ describe('JudgeDialog component tests', () => {
     });
   });
 
+  describe('Assurance data points', () => {
+    const assuranceType = 'customEnumEuTaxonomyReportingAssurance';
+    const withBaseType = (baseType: string): DatasetJudgementResponse => ({
+      ...baseDatasetJudgement,
+      dataPoints: {
+        ...baseDatasetJudgement.dataPoints,
+        [dataPointTypeId]: { ...baseDatasetJudgement.dataPoints[dataPointTypeId], dataPointBaseType: baseType },
+      },
+    });
+
+    it('shows the provider in the Original section and a provider field in the Custom form', () => {
+      mountJudgeDialog({
+        datasetJudgement: withBaseType(assuranceType),
+        originalDataPointBody: { value: 'LimitedAssurance', provider: 'ACME Auditors', quality: 'Audited' },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Provider').should('contain.text', 'ACME Auditors');
+      });
+
+      cy.get('[data-test="custom-value-field"]').click();
+      cy.get('[data-test="custom-value-field"]').clear();
+      cy.get('[data-test="custom-value-field"]').type('ReasonableAssurance');
+      cy.get('[data-test="custom-provider-field"]').type('Other Auditors');
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        const body = interception.request.body as { customDataPoint?: string };
+        const parsed = JSON.parse(body.customDataPoint ?? '{}') as { provider?: string };
+        expect(parsed.provider).to.equal('Other Auditors');
+      });
+    });
+
+    it('does not show provider elements for non-Assurance data points', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="custom-provider-field"]').should('not.exist');
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Provider').should('not.exist');
+      });
+    });
+  });
+
   // ---------------------------------------------------------------------------
   // 2. QA verdict badge
   // ---------------------------------------------------------------------------

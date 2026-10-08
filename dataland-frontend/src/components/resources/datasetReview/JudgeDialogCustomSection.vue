@@ -93,6 +93,22 @@
                 />
               </td>
             </tr>
+            <tr v-if="isAssuranceDataPoint">
+              <th scope="row" class="headers-bg">
+                <label for="custom-provider-field">Provider</label>
+              </th>
+              <td>
+                <InputText
+                  v-model="formData.provider"
+                  size="small"
+                  fluid
+                  placeholder="Enter Provider"
+                  data-test="custom-provider-field"
+                  id="custom-provider-field"
+                  aria-label="Provider"
+                />
+              </td>
+            </tr>
             <tr>
               <th scope="row" class="headers-bg">
                 <label for="custom-quality-field">Quality</label>
@@ -257,6 +273,7 @@ const props = defineProps<{
   availableDocuments?: DocumentOption[];
   isAccepted?: boolean;
   isCurrencyDataPoint?: boolean;
+  isAssuranceDataPoint?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -416,7 +433,15 @@ watch(
   () => formData.value.quality,
   (newQuality) => {
     if (newQuality === QualityOptions.NoDataFound) {
-      formData.value = { ...formData.value, value: '', document: '', pages: '', comment: '', currency: '' };
+      formData.value = {
+        ...formData.value,
+        value: '',
+        document: '',
+        pages: '',
+        comment: '',
+        currency: '',
+        provider: '',
+      };
     }
 
     updateTextareaOverflowStates();

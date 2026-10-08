@@ -4,6 +4,7 @@ import { type ParsedSingleDataPoint, removeInferableDocumentFields, wrapDataPoin
 
 export const DataPointBaseType = {
   ExtendedCurrency: 'extendedCurrency',
+  AssuranceDataPoint: 'customEnumEuTaxonomyReportingAssurance',
 } as const;
 
 export const DEFAULT_CUSTOM_JSON = JSON.stringify(
@@ -19,6 +20,7 @@ export const DEFAULT_CUSTOM_FORM_DATA: CustomFormData = {
   pages: '',
   comment: '',
   currency: '',
+  provider: '',
 };
 
 type JudgementErrorItem = {
@@ -65,7 +67,7 @@ export function parseFormDataToDataPointJson(
   formData: CustomFormData,
   selectedDocument: DocumentOption | null
 ): string {
-  const { value, quality, comment, pages, currency } = formData;
+  const { value, quality, comment, pages, currency, provider } = formData;
 
   const documentDataSource = selectedDocument?.dataSource ?? null;
   let dataSource: ParsedSingleDataPoint['dataSource'] | null;
@@ -82,6 +84,7 @@ export function parseFormDataToDataPointJson(
     ...(quality && { quality }),
     ...(comment && { comment }),
     ...(currency && { currency }),
+    ...(provider && { provider }),
     ...(dataSource && Object.keys(dataSource).length > 0 && { dataSource }),
   };
 
@@ -121,5 +124,6 @@ export function transformDataPointDetailToFormData(detail: ParsedSingleDataPoint
     pages: toSafeDisplayString(detail.dataSource?.page),
     comment: toSafeDisplayString(detail.comment),
     currency: toSafeDisplayString(detail.currency),
+    provider: toSafeDisplayString(detail.provider),
   };
 }
