@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * Renames and removes SFDR data point types in the QA service tables to match the reworked SFDR data model
- * (7 renames, 10 deletions).
+ * (7 renames, 11 deletions).
  */
 @Suppress("ClassName")
 class V17__RenameAndDeleteSfdrDataPointTypes : BaseJavaMigration() {
@@ -41,6 +41,7 @@ class V17__RenameAndDeleteSfdrDataPointTypes : BaseJavaMigration() {
                 "extendedEnumYesNoTechnologiesExpertiseTransferPolicy",
                 "extendedEnumYesNoTransparencyDisclosurePolicy",
                 "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
+                "plainDateSfdrDataDate",
             )
 
         val tablesWithDataPointType =

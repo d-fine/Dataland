@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * Renames and removes SFDR data point types in the backend's data point metadata tables to match the reworked
- * SFDR data model (7 renames, 10 deletions). The actual data point values live in dataland-internal-storage; this
+ * SFDR data model (7 renames, 11 deletions). The actual data point values live in dataland-internal-storage; this
  * migration only keeps the backend's composition metadata (data_point_meta_information, data_point_uuid_map) in
  * sync with the renamed/deleted data point types.
  */
@@ -43,6 +43,7 @@ class V16__RenameAndDeleteSfdrDataPointTypes : BaseJavaMigration() {
                 "extendedEnumYesNoTechnologiesExpertiseTransferPolicy",
                 "extendedEnumYesNoTransparencyDisclosurePolicy",
                 "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
+                "plainDateSfdrDataDate",
             )
     }
 

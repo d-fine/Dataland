@@ -10,7 +10,8 @@ import org.json.JSONObject
 /**
  * This migration script updates all SFDR datasets and data points to match the reworked SFDR data model:
  * - renames 7 KPIs
- * - deletes 10 obsolete KPIs (incl. the applicableHighImpactClimateSectors map)
+ * - deletes 11 obsolete KPIs (incl. the applicableHighImpactClimateSectors map and general.general.dataDate)
+ * - deletes general.general.fiscalYearDeviation from the dataset blobs
  * - moves fiscalYearEnd into a new "company" subgroup together with the new mainPcafSector/companyExchangeStatus
  *   fields
  * - moves enterpriseValueInEUR/totalRevenueInEUR into the new "financial" top-level category
@@ -53,6 +54,7 @@ class V34__RenameDeleteAndAddSfdrFields : BaseJavaMigration() {
                 "extendedEnumYesNoTechnologiesExpertiseTransferPolicy",
                 "extendedEnumYesNoTransparencyDisclosurePolicy",
                 "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
+                "plainDateSfdrDataDate",
             )
 
         /**
@@ -109,6 +111,7 @@ class V34__RenameDeleteAndAddSfdrFields : BaseJavaMigration() {
         val dataset = dataTableEntity.dataJsonObject
 
         moveFiscalYearEndAndAddCompanyGroup(dataset)
+        deleteGeneralGeneralFields(dataset)
         moveFinancialFieldsToNewGroup(dataset)
         renameEnvironmentalFields(dataset)
         deleteEnvironmentalFields(dataset)
@@ -129,6 +132,16 @@ class V34__RenameDeleteAndAddSfdrFields : BaseJavaMigration() {
         val company = general.getOrJavaNull("company") as JSONObject? ?: JSONObject()
         company.put("fiscalYearEnd", fiscalYearEnd ?: JSONObject.NULL)
         general.put("company", company)
+    }
+
+    /**
+     * Removes the obsolete general.general.dataDate and general.general.fiscalYearDeviation fields.
+     */
+    private fun deleteGeneralGeneralFields(dataset: JSONObject) {
+        val general = dataset.getOrJavaNull("general") as JSONObject? ?: return
+        val generalGeneral = general.getOrJavaNull("general") as JSONObject? ?: return
+        generalGeneral.remove("dataDate")
+        generalGeneral.remove("fiscalYearDeviation")
     }
 
     /**
@@ -240,7 +253,7 @@ class V34__RenameDeleteAndAddSfdrFields : BaseJavaMigration() {
     }
 
     /**
-     * Deletes all data_point_items rows for the 10 obsolete data point types.
+     * Deletes all data_point_items rows for the 11 obsolete data point types.
      */
     private fun deleteDataPointTypes(context: Context?) {
         deletedDataPointTypes.forEach { dataPointType ->
