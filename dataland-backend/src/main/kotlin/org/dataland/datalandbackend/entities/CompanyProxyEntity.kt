@@ -4,7 +4,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import java.util.UUID
 
@@ -12,19 +11,7 @@ import java.util.UUID
  * Entity representing a company proxy relation in the database.
  */
 @Entity
-@Table(
-    name = "company_proxy_relations",
-    uniqueConstraints = [
-        UniqueConstraint(
-            columnNames = [
-                "child_company_id",
-                "parent_company_id",
-                "framework",
-                "reporting_period",
-            ],
-        ),
-    ],
-)
+@Table(name = "company_proxy_relations")
 @Suppress("LongParameterList")
 class CompanyProxyEntity(
     @Id
@@ -34,10 +21,10 @@ class CompanyProxyEntity(
     var childCompanyId: UUID,
     @Column(name = "parent_company_id", nullable = false)
     var parentCompanyId: UUID,
-    @Column(name = "framework")
-    var framework: String? = null, // null => all frameworks
-    @Column(name = "reporting_period")
-    var reportingPeriod: String? = null, // null => all periods
+    @Column(name = "valid_from_reporting_period")
+    var validFromReportingPeriod: String? = null, // null => no lower bound
+    @Column(name = "valid_to_reporting_period")
+    var validToReportingPeriod: String? = null, // null => no upper bound
     @Column(name = "upload_timestamp", nullable = false)
     var uploadTimestamp: Long,
     @Column(name = "uploader_user_id", nullable = false)
@@ -51,8 +38,8 @@ class CompanyProxyEntity(
             proxyId = proxyId.toString(),
             childCompanyId = childCompanyId.toString(),
             parentCompanyId = parentCompanyId.toString(),
-            framework = framework,
-            reportingPeriod = reportingPeriod,
+            validFromReportingPeriod = validFromReportingPeriod,
+            validToReportingPeriod = validToReportingPeriod,
             uploadTimestamp = uploadTimestamp,
             uploaderUserId = uploaderUserId,
         )

@@ -64,8 +64,10 @@ object GeneralOpenApiDescriptionsAndExamples {
         "The timestamp (epoch milliseconds) at which the proxy entry was last uploaded. Set by the system."
     const val PROXY_UPLOADER_USER_ID_DESCRIPTION =
         "The Dataland user ID of the user who last uploaded the proxy entry. Set by the system."
-    const val PROXIED_FRAMEWORKS_DESCRIPTION = "Framework for which proxying is permitted. Null means all frameworks."
-    const val PROXIED_REPORTING_PERIODS_DESCRIPTION = "Reporting period for which proxying is permitted. Null means all reporting periods."
+    const val PROXY_VALID_FROM_REPORTING_PERIOD_DESCRIPTION =
+        "First reporting period for which the proxy is valid (inclusive). Null means there is no lower bound."
+    const val PROXY_VALID_TO_REPORTING_PERIOD_DESCRIPTION =
+        "Last reporting period for which the proxy is valid (inclusive). Null means there is no upper bound."
 
     const val BULK_REQUEST_COMPANY_IDENTIFIERS_DESCRIPTION =
         "A set of identifiers for companies on Dataland. Use Dataland company IDs, " +

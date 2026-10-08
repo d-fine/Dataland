@@ -33,8 +33,8 @@ class CompanyProxyController
                 "Received request to create proxy relation for " +
                     "childCompanyId='${companyProxy.childCompanyId}', " +
                     "parentCompanyId='${companyProxy.parentCompanyId}', " +
-                    "framework='${companyProxy.framework}', " +
-                    "reportingPeriod='${companyProxy.reportingPeriod}'",
+                    "validFromReportingPeriod='${companyProxy.validFromReportingPeriod}', " +
+                    "validToReportingPeriod='${companyProxy.validToReportingPeriod}'",
             )
 
             val savedEntity =
@@ -65,8 +65,6 @@ class CompanyProxyController
         override fun searchCompanyProxies(
             childCompanyId: String?,
             parentCompanyId: String?,
-            frameworks: Set<String>?,
-            reportingPeriods: Set<String>?,
             chunkSize: Int,
             chunkIndex: Int,
         ): ResponseEntity<List<StoredCompanyProxy>> {
@@ -75,8 +73,6 @@ class CompanyProxyController
                 companyProxyManager.getCompanyProxiesByFilters(
                     childCompanyId = childCompanyId?.let { ValidationUtils.convertToUUID(it) },
                     parentCompanyId = parentCompanyId?.let { ValidationUtils.convertToUUID(it) },
-                    frameworks = frameworks,
-                    reportingPeriods = reportingPeriods,
                     chunkSize = chunkSize,
                     chunkIndex = chunkIndex,
                 ),

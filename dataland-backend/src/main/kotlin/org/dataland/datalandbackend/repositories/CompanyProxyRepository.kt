@@ -34,14 +34,6 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
     WHERE
         (:#{#searchFilter.childCompanyId} IS NULL OR c.childCompanyId = :#{#searchFilter.childCompanyId})
         AND (:#{#searchFilter.parentCompanyId} IS NULL OR c.parentCompanyId = :#{#searchFilter.parentCompanyId})
-        AND (
-            (:#{#searchFilter.frameworks.isEmpty()} = TRUE)
-            OR (c.framework IN :#{#searchFilter.frameworks})
-        )
-        AND (
-            (:#{#searchFilter.reportingPeriods.isEmpty()} = TRUE)
-            OR (c.reportingPeriod IN :#{#searchFilter.reportingPeriods})
-        )
     """,
     )
     fun findByFilters(
