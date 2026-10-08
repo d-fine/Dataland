@@ -1,8 +1,6 @@
 {
   "general": {
     "general": {
-      "dataDate": "2022-01-01",
-      "fiscalYearDeviation": {"value":"Deviation","quality":null,"comment":null,"dataSource":null},
       "referencedReports": null
     },
     "company": {

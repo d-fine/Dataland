@@ -40,12 +40,6 @@ describe('DatasetReviewComparisonTable component tests', () => {
 
   const baseSfdrData: SfdrData = {
     general: {
-      general: {
-        dataDate: '2024-01-01',
-        fiscalYearDeviation: {
-          value: 'Deviation',
-        },
-      },
       company: {
         fiscalYearEnd: {
           value: '2023-12-31',
@@ -90,52 +84,6 @@ describe('DatasetReviewComparisonTable component tests', () => {
     judgementState: DatasetJudgementState.Pending,
     qaReporters: qaReporterUsers,
     dataPoints: {
-      plainDateSfdrDataDate: {
-        dataPointType: 'plainDateSfdrDataDate',
-        dataPointId: 'data-point-id-1',
-        qaReports: [
-          {
-            dataPointId: 'data-point-id-1',
-            dataPointType: 'type-id-1',
-            qaReportId: 'qa-report-0',
-            verdict: QaReportDataPointVerdict.QaAccepted,
-            reporterUserId: qaReporter1.reporterUserId,
-            uploadTime: 1234,
-            active: true,
-            comment: 'comment',
-          },
-        ],
-        acceptedSource: AcceptedDataPointSource.Original,
-      },
-      extendedEnumFiscalYearDeviation: {
-        dataPointType: 'extendedEnumFiscalYearDeviation',
-        dataPointId: 'data-point-id-2',
-        qaReports: [
-          {
-            dataPointId: 'data-point-id-2',
-            dataPointType: 'type-id-2',
-            qaReportId: 'qa-report-1',
-            verdict: QaReportDataPointVerdict.QaAccepted,
-            reporterUserId: qaReporter1.reporterUserId,
-            uploadTime: 1233,
-            active: true,
-            comment: 'comment',
-          },
-          {
-            dataPointId: 'data-point-id-2',
-            dataPointType: 'type-id-2',
-            qaReportId: 'qa-report-2',
-            verdict: QaReportDataPointVerdict.QaRejected,
-            correctedData: JSON.stringify({ value: 'NoDeviation', quality: QualityOptions.Reported }),
-            reporterUserId: qaReporter2.reporterUserId,
-            uploadTime: 9999,
-            active: true,
-            comment: 'comment',
-          },
-        ],
-        acceptedSource: AcceptedDataPointSource.Qa,
-        reporterUserIdOfAcceptedQaReport: qaReporter2.reporterUserId,
-      },
       extendedDateFiscalYearEnd: {
         dataPointType: 'extendedDateFiscalYearEnd',
         dataPointId: 'data-point-id-3',
@@ -155,7 +103,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
             dataPointType: 'type-id-3',
             qaReportId: 'qa-report-4',
             verdict: QaReportDataPointVerdict.QaRejected,
-            correctedData: JSON.stringify({ value: '2023-11-30' }),
+            correctedData: JSON.stringify({ value: '2023-11-30', quality: QualityOptions.Reported }),
             reporterUserId: qaReporter2.reporterUserId,
             uploadTime: 9999,
             active: true,
@@ -236,30 +184,11 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
-    cy.contains('button', 'Data Date').should('be.visible');
-    cy.contains('button', 'Fiscal Year Deviation').should('be.visible');
+    cy.contains('button', 'Fiscal Year End').should('be.visible');
   });
 
   it('shows accepted and rejected icons for original and QA sources', () => {
     mountComponent();
-
-    cy.contains('button', 'Data Date')
-      .closest('tr')
-      .within(() => {
-        cy.get('td').eq(1).find('.accepted-check').should('exist');
-        cy.get('td').eq(1).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(2).find('.accepted-check').should('not.exist');
-        cy.get('td').eq(2).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(3).find('.rejected-check').should('not.exist');
-      });
-
-    cy.contains('button', 'Fiscal Year Deviation')
-      .closest('tr')
-      .within(() => {
-        cy.get('td').eq(1).find('.rejected-check').should('exist');
-        cy.get('td').eq(2).find('.rejected-check').should('not.exist');
-        cy.get('td').eq(3).find('.accepted-check').should('exist');
-      });
 
     cy.contains('button', 'Fiscal Year End')
       .closest('tr')
@@ -275,7 +204,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     mountComponent({ hideEmptyFields: true });
 
     cy.contains('button', 'Scope 2 GHG emissions').should('not.exist');
-    cy.contains('button', 'Data Date').should('be.visible');
+    cy.contains('button', 'Fiscal Year End').should('be.visible');
   });
 
   it('shows empty KPI rows when hideEmptyFields is false', () => {
@@ -321,28 +250,28 @@ describe('DatasetReviewComparisonTable component tests', () => {
 
     mountComponent({ rowClickable: true, onRowClick });
 
-    cy.contains('button', 'Data Date').should('have.class', 'kpi-link').click();
+    cy.contains('button', 'Fiscal Year End').should('have.class', 'kpi-link').click();
     cy.get('@onRowClick').should('have.been.calledOnce');
-    cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'plainDateSfdrDataDate' });
+    cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'extendedDateFiscalYearEnd' });
   });
 
   it('kpi name is not clickable when rowClickable is set to false', () => {
     mountComponent({ rowClickable: false });
-    cy.contains('button', 'Data Date').should('have.class', 'cursor-default');
+    cy.contains('button', 'Fiscal Year End').should('have.class', 'cursor-default');
   });
 
   it('QA reviewer corrected data point is clickable and opens a popup with information', () => {
     mountComponent();
 
-    cy.contains('button', 'Fiscal Year Deviation')
+    cy.contains('button', 'Fiscal Year End')
       .closest('tr')
       .within(() => {
-        cy.get('td').eq(3).find('a.link').should('contain.text', 'No Deviation').click();
+        cy.get('td').eq(3).find('a.link').should('contain.text', '2023-11-30').click();
       });
 
-    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year Deviation');
+    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year End');
     runFunctionBlockWithinPrimeVueModal(() => {
-      cy.contains('td', 'No Deviation').should('exist');
+      cy.contains('td', '2023-11-30').should('exist');
       cy.contains('td', 'Reported').should('exist');
     });
   });

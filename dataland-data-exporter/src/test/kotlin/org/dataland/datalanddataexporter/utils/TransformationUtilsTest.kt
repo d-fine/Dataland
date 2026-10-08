@@ -5,12 +5,10 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneral
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralCompany
 import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneral
-import org.dataland.datalandbackend.openApiClient.model.SfdrGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalanddataexporter.TestDataProvider
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_ID_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.COMPANY_NAME_HEADER
@@ -121,7 +119,7 @@ class TransformationUtilsTest {
     }
 
     @Test
-    fun `check that the data class to json conversion correctly converts the date`() {
+    fun `check that the data class to json conversion correctly converts the fiscal year end date`() {
         val expectedJson = ObjectMapper().readTree(minimalSfdrDataJson)
         val input =
             CompanyAssociatedDataSfdrData(
@@ -129,13 +127,7 @@ class TransformationUtilsTest {
                     SfdrData(
                         SfdrGeneral(
                             general =
-                                SfdrGeneralGeneral(
-                                    dataDate = LocalDate.parse("2022-01-01"),
-                                    fiscalYearDeviation =
-                                        ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions(
-                                            SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
-                                        ),
-                                ),
+                                SfdrGeneralGeneral(),
                             company =
                                 SfdrGeneralCompany(
                                     fiscalYearEnd = ExtendedDataPointLocalDate(LocalDate.parse("2022-01-01")),

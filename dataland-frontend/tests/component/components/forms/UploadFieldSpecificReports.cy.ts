@@ -93,6 +93,10 @@ function mountPluginAndInterceptUploads(framework: string): void {
 
   cy.intercept('**/documents/*', cy.spy().as('documentExists'));
 
+  cy.intercept('PATCH', '**/documents/*', {
+    statusCode: 200,
+  });
+
   cy.intercept('POST', `/api/data/${dataType}*`, {
     statusCode: 200,
   });
