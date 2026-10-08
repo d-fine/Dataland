@@ -3,40 +3,14 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.general.general
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGeneralGeneralFiscalYearDeviationOptions
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
-import java.time.LocalDate
 
 /**
  * The data-model for the General section
  */
 @Suppress("MaxLineLength")
 data class SfdrGeneralGeneral(
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """The year for which the data is reported.""",
-        example = """ "2007-03-05"  """,
-    )
-    val dataDate: LocalDate? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Does the fiscal year deviate from the calendar year?""",
-        example = """{
-      "value" :  "Option 1" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val fiscalYearDeviation: ExtendedDataPoint<SfdrGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,

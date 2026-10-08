@@ -1,4 +1,4 @@
-import { generateFixtureDataset, pickOneElement, removeAllUnusedReferencedReports } from '@e2e/fixtures/FixtureUtils';
+import { generateFixtureDataset, removeAllUnusedReferencedReports } from '@e2e/fixtures/FixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
   type SfdrData as SfdrQaReport,
@@ -9,7 +9,6 @@ import {
 } from '@clients/qaservice';
 import type { SfdrData } from '@clients/backend';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
-import { SfdrGeneralGeneralFiscalYearDeviationOptions } from '@clients/backend';
 
 /**
  * Generates sfdr qa report prepared fixtures by generating random sfdr-qa-reports and
@@ -69,8 +68,6 @@ export function generateSfdrLinkedQaReports(): {
   const data: SfdrData = {
     general: {
       general: {
-        dataDate: dataGenerator.guaranteedFutureDate(),
-        fiscalYearDeviation: { value: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)) },
         referencedReports: dataGenerator.reports,
       },
       company: {

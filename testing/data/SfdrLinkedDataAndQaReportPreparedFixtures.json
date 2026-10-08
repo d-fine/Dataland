@@ -2,10 +2,6 @@
 	"data": {
 		"general": {
 			"general": {
-				"dataDate": "2024-09-19",
-				"fiscalYearDeviation": {
-					"value": "NoDeviation"
-				},
 				"referencedReports": {
 					"IntegratedReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
@@ -21,51 +17,51 @@
 			},
 			"company": {
 				"fiscalYearEnd": {
-					"value": "2024-06-24"
+					"value": "2024-09-19"
 				}
 			}
 		},
 		"social": {
 			"humanRights": {
 				"numberOfReportedIncidentsOfHumanRightsViolations": {
-					"value": 3279,
+					"value": 5427,
 					"dataSource": {
-						"page": "477, 608-618",
+						"page": "298-556",
 						"fileName": null,
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "content",
+						"tagName": "synergies",
 						"publicationDate": null
 					},
-					"comment": "synthesize virtual bandwidth",
-					"quality": "Reported"
+					"comment": "copy mobile sensor",
+					"quality": "Estimated"
 				}
 			}
 		},
 		"environmental": {
 			"biodiversity": {
 				"primaryForestAndWoodedLandOfNativeSpeciesExposure": {
-					"value": "Yes",
+					"value": "No",
 					"dataSource": {
-						"page": "272, 1230-1240",
+						"page": "1106-1247",
 						"fileName": null,
-						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-						"tagName": "markets",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "systems",
 						"publicationDate": null
 					},
-					"comment": "synthesize online application",
-					"quality": "NoDataFound"
+					"comment": "back up solid state protocol",
+					"quality": "Audited"
 				},
 				"biodiversityProtectionPolicy": {
 					"value": "No",
 					"dataSource": {
-						"page": "510, 586-596",
+						"page": "693-1272",
 						"fileName": null,
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "niches",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "users",
 						"publicationDate": null
 					},
-					"comment": "back up optical matrix",
-					"quality": "NoDataFound"
+					"comment": "parse open-source alarm",
+					"quality": "Audited"
 				}
 			}
 		}

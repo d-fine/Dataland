@@ -3,7 +3,6 @@ package org.dataland.frameworktoolbox.frameworks.sfdr
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -52,26 +51,6 @@ class SfdrFramework :
 
     private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("general") {
-                edit<SingleSelectComponent>("fiscalYearDeviation") {
-                    specificationGenerator = { categoryBuilder ->
-                        categoryBuilder.addDefaultDatapointAndSpecification(
-                            this,
-                            "Enum",
-                            "extendedEnumFiscalYearDeviation",
-                        )
-                    }
-                }
-                edit<DateComponent>("dataDate") {
-                    specificationGenerator = { categoryBuilder ->
-                        categoryBuilder.addDefaultDatapointAndSpecification(
-                            this,
-                            "DateSfdr",
-                            "plainDate",
-                        )
-                    }
-                }
-            }
             edit<ComponentGroup>("company") {
                 edit<SingleSelectComponent>("mainPcafSector") {
                     specificationGenerator = { categoryBuilder ->

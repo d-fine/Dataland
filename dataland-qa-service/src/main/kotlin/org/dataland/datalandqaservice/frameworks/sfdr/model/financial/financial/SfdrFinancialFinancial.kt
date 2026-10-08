@@ -12,6 +12,8 @@ data class SfdrFinancialFinancial(
     @field:Valid()
     val grossDomesticProductGdpInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
+    val pppAdjustedGrossDomesticProductGdp: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val totalRevenueInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val bookValueOfDebtInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

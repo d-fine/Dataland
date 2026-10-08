@@ -7,7 +7,6 @@ import { pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUti
 import {
   SfdrGeneralCompanyCompanyExchangeStatusOptions,
   SfdrGeneralCompanyMainPcafSectorOptions,
-  SfdrGeneralGeneralFiscalYearDeviationOptions,
   type SfdrData,
 } from '@clients/backend';
 
@@ -39,10 +38,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
   return {
     general: {
       general: {
-        dataDate: dataGenerator.randomFutureDate(),
-        fiscalYearDeviation: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.valueOrNull(pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)))
-        ),
         referencedReports: dataGenerator.reports,
       },
       company: {
@@ -58,6 +53,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
     financial: {
       financial: {
         grossDomesticProductGdpInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        pppAdjustedGrossDomesticProductGdp: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         totalRevenueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
@@ -67,8 +63,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         enterpriseValueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
       },
       unlistedCompany: {
-        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         totalEquityInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
     },
     environmental: {

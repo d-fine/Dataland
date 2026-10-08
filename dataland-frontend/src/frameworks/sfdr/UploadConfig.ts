@@ -13,34 +13,6 @@ export const sfdrDataModel = [
         label: 'General',
         fields: [
           {
-            name: 'dataDate',
-            label: 'Data Date',
-            description: 'The year for which the data is reported.',
-
-            component: 'DateFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'fiscalYearDeviation',
-            label: 'Fiscal Year Deviation',
-            description: 'Does the fiscal year deviate from the calendar year?',
-            options: [
-              {
-                label: 'Deviation',
-                value: 'Deviation',
-              },
-              {
-                label: 'No Deviation',
-                value: 'NoDeviation',
-              },
-            ],
-
-            component: 'RadioButtonsExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'referencedReports',
             label: 'Referenced Reports',
             description: 'Please upload all relevant reports for this dataset in the PDF format.',
@@ -164,9 +136,22 @@ export const sfdrDataModel = [
           {
             name: 'grossDomesticProductGdpInEUR',
             label: 'Gross Domestic Product (GDP)',
-            description: 'Total economic activity within a country in EUR',
+            description:
+              'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
 
             unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'pppAdjustedGrossDomesticProductGdp',
+            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            description:
+              'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
+
+            unit: 'USD',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
@@ -242,9 +227,9 @@ export const sfdrDataModel = [
         label: 'Unlisted company',
         fields: [
           {
-            name: 'totalEquityAndDebtInEUR',
-            label: 'Total equity and debt',
-            description: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
+            name: 'totalEquityInEUR',
+            label: 'Total equity',
+            description: 'Total equity in EUR as listed on the balance sheet',
 
             unit: 'EUR',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -253,9 +238,9 @@ export const sfdrDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'totalEquityInEUR',
-            label: 'Total equity',
-            description: 'Total equity in EUR as listed on the balance sheet',
+            name: 'totalEquityAndDebtInEUR',
+            label: 'Total equity and debt',
+            description: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
 
             unit: 'EUR',
             component: 'BigDecimalExtendedDataPointFormField',

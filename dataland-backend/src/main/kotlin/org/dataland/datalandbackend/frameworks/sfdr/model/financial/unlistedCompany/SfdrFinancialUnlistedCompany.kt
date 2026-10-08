@@ -15,24 +15,6 @@ data class SfdrFinancialUnlistedCompany(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Sum of total equity and total debt in EUR as listed on the balance sheet""",
-        example = """{
-      "value" : 100.5, 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val totalEquityAndDebtInEUR: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:MinimumValue(minimumValue = 0)
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Total equity in EUR as listed on the balance sheet""",
         example = """{
       "value" : 100.5, 
@@ -48,4 +30,22 @@ data class SfdrFinancialUnlistedCompany(
     )
     @field:Valid()
     val totalEquityInEUR: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """Sum of total equity and total debt in EUR as listed on the balance sheet""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val totalEquityAndDebtInEUR: ExtendedDataPoint<BigDecimal?>? = null,
 )

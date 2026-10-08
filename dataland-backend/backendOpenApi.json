@@ -8779,41 +8779,6 @@
         "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
-      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
       "ExtendedDataPointYesNo": {
         "type": "object",
         "properties": {
@@ -9504,6 +9469,14 @@
               }
             ]
           },
+          "pppAdjustedGrossDomesticProductGdp": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "totalRevenueInEUR": {
             "nullable": true,
             "allOf": [
@@ -9554,7 +9527,7 @@
       "SfdrFinancialUnlistedCompany": {
         "type": "object",
         "properties": {
-          "totalEquityAndDebtInEUR": {
+          "totalEquityInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -9562,7 +9535,7 @@
               }
             ]
           },
-          "totalEquityInEUR": {
+          "totalEquityAndDebtInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -9650,20 +9623,6 @@
       "SfdrGeneralGeneral": {
         "type": "object",
         "properties": {
-          "dataDate": {
-            "type": "string",
-            "description": "The year for which the data is reported.",
-            "format": "date",
-            "nullable": true
-          },
-          "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
@@ -9679,13 +9638,6 @@
             }
           }
         }
-      },
-      "SfdrGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
       },
       "SfdrSocial": {
         "type": "object",

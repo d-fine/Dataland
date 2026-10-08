@@ -13,7 +13,6 @@ import {
   type YesNoNa,
   type SfdrGeneralCompanyCompanyExchangeStatusOptions,
   type SfdrGeneralCompanyMainPcafSectorOptions,
-  type SfdrGeneralGeneralFiscalYearDeviationOptions,
   type SfdrData,
 } from '@clients/backend';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
@@ -32,63 +31,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         label: 'General',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: 'cell',
-            label: 'Data Date',
-            explanation: 'The year for which the data is reported.',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.general?.dataDate),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-            uploadComponentName: 'DateFormField',
-            dataPointTypeId: 'plainDateSfdrDataDate',
-          },
-          {
-            type: 'cell',
-            label: 'Fiscal Year Deviation',
-            explanation: 'Does the fiscal year deviate from the calendar year?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                ((): AvailableMLDTDisplayObjectTypes => {
-                  const mappings = {
-                    Deviation: 'Deviation',
-                    NoDeviation: 'No Deviation',
-                  };
-                  return formatStringForDatatable(
-                    dataset.general?.general?.fiscalYearDeviation?.value
-                      ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation?.value, mappings)
-                      : ''
-                  );
-                })(),
-                'Fiscal Year Deviation',
-                dataset.general?.general?.fiscalYearDeviation
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                ((): AvailableMLDTDisplayObjectTypes => {
-                  const mappings = {
-                    Deviation: 'Deviation',
-                    NoDeviation: 'No Deviation',
-                  };
-                  return formatStringForDatatable(
-                    (extractDatapointValue(dataPoint) as SfdrGeneralGeneralFiscalYearDeviationOptions)
-                      ? getOriginalNameFromTechnicalName(
-                          extractDatapointValue(dataPoint) as SfdrGeneralGeneralFiscalYearDeviationOptions,
-                          mappings
-                        )
-                      : ''
-                  );
-                })(),
-                'Fiscal Year Deviation',
-                dataPoint
-              ),
-            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
-          },
-        ],
+        children: [],
       },
       {
         type: 'section',
@@ -248,7 +191,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Gross Domestic Product (GDP)',
-            explanation: 'Total economic activity within a country in EUR',
+            explanation:
+              'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -264,6 +208,30 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalGrossDomesticProductGdpInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            explanation:
+              'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp?.value,
+                  'USD'
+                ),
+                'PPP adjusted Gross Domestic Product (GDP)',
+                dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'USD'),
+                'PPP adjusted Gross Domestic Product (GDP)',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalPppAdjustedGrossDomesticProductGdp',
           },
           {
             type: 'cell',
@@ -387,26 +355,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         children: [
           {
             type: 'cell',
-            label: 'Total equity and debt',
-            explanation: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
-                'Total equity and debt',
-                dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Total equity and debt',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
-          },
-          {
-            type: 'cell',
             label: 'Total equity',
             explanation: 'Total equity in EUR as listed on the balance sheet',
             shouldDisplay: (): boolean => true,
@@ -424,6 +372,26 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
             dataPointTypeId: 'extendedDecimalTotalEquityInEUR',
+          },
+          {
+            type: 'cell',
+            label: 'Total equity and debt',
+            explanation: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
+                'Total equity and debt',
+                dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR
+              ),
+            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformationByDataPoint(
+                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
+                'Total equity and debt',
+                dataPoint
+              ),
+            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
+            dataPointTypeId: 'extendedDecimalTotalEquityAndDebtInEUR',
           },
         ],
       },

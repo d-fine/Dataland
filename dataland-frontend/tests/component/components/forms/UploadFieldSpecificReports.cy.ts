@@ -8,10 +8,6 @@ import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
-    this.fillDateFieldWithFutureDate('dataDate');
-
-    cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"][value="Deviation"]').click();
-
     cy.get('div[data-test="fiscalYearEnd"] [data-test="dataPointToggleButton"]').click();
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },

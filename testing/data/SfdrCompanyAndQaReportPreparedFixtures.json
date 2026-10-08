@@ -2,8 +2,8 @@
 	{
 		"preparedFixture": {
 			"companyInformation": {
-				"companyName": "Wisoky, Gutkowski and Hoeger",
-				"headquarters": "Lake Ashton",
+				"companyName": "Gutkowski, Hoeger and MacGyver",
+				"headquarters": "Blacksburg",
 				"headquartersPostalCode": "46024",
 				"sector": "architectures",
 				"identifiers": {
@@ -45,10 +45,6 @@
 			"t": {
 				"general": {
 					"general": {
-						"dataDate": "2025-03-01",
-						"fiscalYearDeviation": {
-							"value": "NoDeviation"
-						},
 						"referencedReports": {
 							"ESEFReport": {
 								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",

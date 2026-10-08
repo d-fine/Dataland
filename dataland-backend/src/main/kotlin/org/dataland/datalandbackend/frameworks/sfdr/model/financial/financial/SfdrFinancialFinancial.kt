@@ -15,7 +15,7 @@ data class SfdrFinancialFinancial(
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Total economic activity within a country in EUR""",
+        description = """A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15""",
         example = """{
       "value" : 100.5, 
       "quality" : "Reported",
@@ -30,6 +30,24 @@ data class SfdrFinancialFinancial(
     )
     @field:Valid()
     val grossDomesticProductGdpInEUR: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:MinimumValue(minimumValue = 0)
+    @Suppress("ktlint:standard:max-line-length")
+    @field:Schema(
+        description = """A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.""",
+        example = """{
+      "value" : 100.5, 
+      "quality" : "Reported",
+      "comment" : "The value is reported by the company."
+      "dataSource" : {
+        "page" : "5-7",
+        "tagName" : "monetaryAmount",
+        "fileName" : "AnnualReport2020.pdf",
+        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+      }
+    } """,
+    )
+    @field:Valid()
+    val pppAdjustedGrossDomesticProductGdp: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm's total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).

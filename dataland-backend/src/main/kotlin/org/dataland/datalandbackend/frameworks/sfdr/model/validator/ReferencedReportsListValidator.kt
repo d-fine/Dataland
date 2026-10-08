@@ -53,18 +53,18 @@ class ReferencedReportsListConstraintValidator :
     @Suppress("MaxLineLength", "LongMethod")
     private fun getExtendedDocumentReferences(dataset: SfdrData): List<String?> {
         return listOf(
-            dataset.general?.general?.fiscalYearDeviation?.dataSource?.fileReference,
             dataset.general?.company?.fiscalYearEnd?.dataSource?.fileReference,
             dataset.general?.company?.mainPcafSector?.dataSource?.fileReference,
             dataset.general?.company?.companyExchangeStatus?.dataSource?.fileReference,
             dataset.financial?.financial?.grossDomesticProductGdpInEUR?.dataSource?.fileReference,
+            dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp?.dataSource?.fileReference,
             dataset.financial?.financial?.totalRevenueInEUR?.dataSource?.fileReference,
             dataset.financial?.financial?.bookValueOfDebtInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.marketCapitalizationInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.minoritiesInterestInEUR?.dataSource?.fileReference,
             dataset.financial?.listedCompany?.enterpriseValueInEUR?.dataSource?.fileReference,
-            dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.dataSource?.fileReference,
             dataset.financial?.unlistedCompany?.totalEquityInEUR?.dataSource?.fileReference,
+            dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.dataSource?.fileReference,

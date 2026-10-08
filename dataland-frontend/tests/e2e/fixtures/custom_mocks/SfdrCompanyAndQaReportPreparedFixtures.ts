@@ -21,8 +21,6 @@ export function generateSFDRCompanyAndQaReports(): Array<QaReportFixtureData<Sfd
   const t: SfdrData = {
     general: {
       general: {
-        dataDate: '2025-03-01',
-        fiscalYearDeviation: { value: 'NoDeviation' },
         referencedReports: dataGenerator.reports,
       },
       company: {
