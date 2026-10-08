@@ -6,8 +6,10 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.repositories.CompanyProxyRepository
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -77,6 +79,75 @@ class CompanyProxyManagerTest
             val retrieved = companyProxyManager.getCompanyProxyById(saved.proxyId)
             assertNull(retrieved.validFromReportingPeriod)
             assertNull(retrieved.validToReportingPeriod)
+        }
+
+        private fun proxyWithPeriods(
+            from: String?,
+            to: String?,
+            child: UUID = defaultChildCompanyId,
+            parent: UUID = defaultParentCompanyId,
+        ) = CompanyProxy<UUID>(child, parent, from, to)
+
+        @Test
+        fun `addProxyRelation rejects overlapping intervals and lists the conflicting proxy`() {
+            val proxyId = companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId).proxyId
+            listOf("2025" to "2027", "2020" to "2023", "2024" to "2024", "2010" to "2039", null to null, null to "2023", "2025" to null)
+                .forEach { (from, to) ->
+                    val ex =
+                        assertThrows(InvalidInputApiException::class.java) {
+                            companyProxyManager.addProxyRelation(proxyWithPeriods(from, to), testUserId)
+                        }
+                    assertTrue(ex.message.contains(proxyId.toString()))
+                }
+        }
+
+        @Test
+        fun `addProxyRelation allows adjacent intervals and other child companies`() {
+            companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId)
+            assertDoesNotThrow { companyProxyManager.addProxyRelation(proxyWithPeriods("2026", null), testUserId) }
+            assertDoesNotThrow { companyProxyManager.addProxyRelation(proxyWithPeriods(null, "2022"), testUserId) }
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025", child = altChildCompanyId), testUserId)
+            }
+        }
+
+        @Test
+        fun `addProxyRelation rejects validFrom after validTo`() {
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.addProxyRelation(proxyWithPeriods("2025", "2023"), testUserId)
+            }
+        }
+
+        @Test
+        fun `addProxyRelation rejects a parent company that is itself a child company`() {
+            companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId)
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.addProxyRelation(
+                    proxyWithPeriods("2023", "2025", child = altChildCompanyId, parent = defaultChildCompanyId),
+                    testUserId,
+                )
+            }
+        }
+
+        @Test
+        fun `editCompanyProxy ignores itself but rejects overlap with others and invalid intervals`() {
+            val first = companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId).proxyId
+            companyProxyManager.addProxyRelation(proxyWithPeriods("2027", "2028"), testUserId)
+
+            assertDoesNotThrow { companyProxyManager.editCompanyProxy(first, proxyWithPeriods("2024", "2026"), testUserId) }
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.editCompanyProxy(first, proxyWithPeriods("2024", "2027"), testUserId)
+            }
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.editCompanyProxy(first, proxyWithPeriods("2026", "2024"), testUserId)
+            }
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.editCompanyProxy(
+                    first,
+                    proxyWithPeriods("2024", "2026", child = defaultChildCompanyId, parent = defaultChildCompanyId),
+                    testUserId,
+                )
+            }
         }
 
         private fun callFilterFunction(
