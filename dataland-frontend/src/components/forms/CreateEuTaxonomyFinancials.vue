@@ -225,7 +225,6 @@ export default defineComponent({
     return {
       frameworkTitle: 'EU Taxonomy Dataset for a Financial Company/Service',
       formId: 'createEuTaxonomyFinancialsForm',
-      dataDate: undefined as Date | undefined,
       companyAssociatedEuTaxonomyFinancialsData: {} as CompanyAssociatedDataEutaxonomyFinancialsData,
       eutaxonomyFinancialsDataModel,
       message: '',
@@ -327,7 +326,6 @@ export default defineComponent({
         );
 
         this.$emit('datasetCreated');
-        this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {
