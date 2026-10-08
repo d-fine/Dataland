@@ -60,6 +60,10 @@ object GeneralOpenApiDescriptionsAndExamples {
 
     const val CHILD_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the child company, whose data is proxied by the parent company."
     const val PARENT_COMPANY_ID_DESCRIPTION = "The Dataland company ID of the parent company, whose data is used as the proxy."
+    const val PROXY_UPLOAD_TIMESTAMP_DESCRIPTION =
+        "The timestamp (epoch milliseconds) at which the proxy entry was last uploaded. Set by the system."
+    const val PROXY_UPLOADER_USER_ID_DESCRIPTION =
+        "The Dataland user ID of the user who last uploaded the proxy entry. Set by the system."
     const val PROXIED_FRAMEWORKS_DESCRIPTION = "Framework for which proxying is permitted. Null means all frameworks."
     const val PROXIED_REPORTING_PERIODS_DESCRIPTION = "Reporting period for which proxying is permitted. Null means all reporting periods."
 

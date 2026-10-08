@@ -90,7 +90,10 @@ class CompanyProxyManager
          * @throws InvalidInputApiException if a conflicting rule already exists.
          */
         @Transactional
-        fun addProxyRelation(candidateProxy: CompanyProxy<UUID>): CompanyProxyEntity {
+        fun addProxyRelation(
+            candidateProxy: CompanyProxy<UUID>,
+            uploaderUserId: String,
+        ): CompanyProxyEntity {
             val childCompanyId = candidateProxy.childCompanyId
             val parentCompanyId = candidateProxy.parentCompanyId
 
@@ -111,6 +114,8 @@ class CompanyProxyManager
                     parentCompanyId = parentCompanyId,
                     framework = candidateProxy.framework,
                     reportingPeriod = candidateProxy.reportingPeriod,
+                    uploadTimestamp = System.currentTimeMillis(),
+                    uploaderUserId = uploaderUserId,
                 )
 
             val saved = companyProxyRepository.save(entity)
@@ -225,6 +230,7 @@ class CompanyProxyManager
         fun editCompanyProxy(
             proxyId: UUID,
             updatedCompanyProxy: CompanyProxy<UUID>,
+            uploaderUserId: String,
         ): StoredCompanyProxy {
             val existingProxiesForCompany =
                 companyProxyRepository
@@ -237,6 +243,8 @@ class CompanyProxyManager
             existing.parentCompanyId = updatedCompanyProxy.parentCompanyId
             existing.framework = updatedCompanyProxy.framework
             existing.reportingPeriod = updatedCompanyProxy.reportingPeriod
+            existing.uploadTimestamp = System.currentTimeMillis()
+            existing.uploaderUserId = uploaderUserId
 
             return companyProxyRepository.save(existing).toStoredCompanyProxy()
         }

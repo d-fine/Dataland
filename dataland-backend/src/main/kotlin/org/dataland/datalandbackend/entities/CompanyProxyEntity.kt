@@ -25,6 +25,7 @@ import java.util.UUID
         ),
     ],
 )
+@Suppress("LongParameterList")
 class CompanyProxyEntity(
     @Id
     @Column(name = "id", nullable = false)
@@ -37,6 +38,10 @@ class CompanyProxyEntity(
     var framework: String? = null, // null => all frameworks
     @Column(name = "reporting_period")
     var reportingPeriod: String? = null, // null => all periods
+    @Column(name = "upload_timestamp", nullable = false)
+    var uploadTimestamp: Long,
+    @Column(name = "uploader_user_id", nullable = false)
+    var uploaderUserId: String,
 ) {
     /**
      * Converts this CompanyProxyEntity to a StoredCompanyProxy.
@@ -48,5 +53,7 @@ class CompanyProxyEntity(
             parentCompanyId = parentCompanyId.toString(),
             framework = framework,
             reportingPeriod = reportingPeriod,
+            uploadTimestamp = uploadTimestamp,
+            uploaderUserId = uploaderUserId,
         )
 }

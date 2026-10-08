@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -36,7 +37,11 @@ class CompanyProxyController
                     "reportingPeriod='${companyProxy.reportingPeriod}'",
             )
 
-            val savedEntity = companyProxyManager.addProxyRelation(companyProxy.convertToCompanyProxyWithUUIDs())
+            val savedEntity =
+                companyProxyManager.addProxyRelation(
+                    companyProxy.convertToCompanyProxyWithUUIDs(),
+                    DatalandAuthentication.fromContext().userId,
+                )
 
             return ResponseEntity.ok(savedEntity.toStoredCompanyProxy())
         }
@@ -106,6 +111,7 @@ class CompanyProxyController
                 companyProxyManager.editCompanyProxy(
                     proxyId = ValidationUtils.convertToUUID(proxyId),
                     updatedCompanyProxy = companyProxy.convertToCompanyProxyWithUUIDs(),
+                    uploaderUserId = DatalandAuthentication.fromContext().userId,
                 ),
             )
         }

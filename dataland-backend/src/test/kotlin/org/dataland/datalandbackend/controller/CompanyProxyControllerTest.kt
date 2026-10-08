@@ -57,6 +57,8 @@ class CompanyProxyControllerTest(
         private const val COMPANY_ID_JSON_FIELD = "companyId"
         private const val JSON_PATH_CHILD_COMPANY_ID = "\$.childCompanyId"
         private const val JSON_PATH_PARENT_COMPANY_ID = "\$.parentCompanyId"
+        private const val JSON_PATH_UPLOADER_USER_ID = "\$.uploaderUserId"
+        private const val JSON_PATH_UPLOAD_TIMESTAMP = "\$.uploadTimestamp"
         private const val JSON_PATH_FRAMEWORK = "\$.framework"
         private const val JSON_PATH_REPORTING_PERIOD = "\$.reportingPeriod"
     }
@@ -214,6 +216,8 @@ class CompanyProxyControllerTest(
                 .andExpect(jsonPath(JSON_PATH_PARENT_COMPANY_ID).value(companyIdParentCompany))
                 .andExpect(jsonPath(JSON_PATH_FRAMEWORK).value("sfdr"))
                 .andExpect(jsonPath(JSON_PATH_REPORTING_PERIOD).value("2024"))
+                .andExpect(jsonPath(JSON_PATH_UPLOADER_USER_ID).value(adminUserId.toString()))
+                .andExpect(jsonPath(JSON_PATH_UPLOAD_TIMESTAMP).isNumber)
 
         val proxyId = getProxyIdFromResult(postResult)
         mockMvc
@@ -273,6 +277,7 @@ class CompanyProxyControllerTest(
         val updateRequest = CompanyProxy(companyIdChildCompany, companyIdParentCompany, "lksg", "2023")
         performProxyRequest("PUT", COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId, updateRequest)
             .andExpect(status().isOk)
+            .andExpect(jsonPath(JSON_PATH_UPLOADER_USER_ID).value(adminUserId.toString()))
         mockMvc
             .perform(
                 get(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)

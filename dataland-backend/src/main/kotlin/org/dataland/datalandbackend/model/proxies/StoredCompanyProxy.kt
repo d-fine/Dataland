@@ -14,6 +14,8 @@ import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenA
  *        Empty or null means all frameworks may be proxied.
  * @param reportingPeriod A reporting period for which proxying is allowed.
  *        Empty or null means all reporting periods may be proxied.
+ * @param uploadTimestamp The time (epoch milliseconds) of the last upload. Set by the system.
+ * @param uploaderUserId The ID of the user who last uploaded the entry. Set by the system.
  */
 data class StoredCompanyProxy(
     @field:Schema(
@@ -43,4 +45,14 @@ data class StoredCompanyProxy(
         nullable = true,
     )
     val reportingPeriod: String?,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.PROXY_UPLOAD_TIMESTAMP_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.UPLOAD_TIME_EXAMPLE,
+    )
+    val uploadTimestamp: Long,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.PROXY_UPLOADER_USER_ID_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.USER_ID_EXAMPLE,
+    )
+    val uploaderUserId: String,
 )
