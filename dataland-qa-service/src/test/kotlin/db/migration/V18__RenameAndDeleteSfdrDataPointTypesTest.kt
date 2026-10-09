@@ -8,13 +8,13 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @Suppress("ClassName")
-class V17__RenameAndDeleteSfdrDataPointTypesTest : BaseMockedFlywayMigrationTest() {
-    private val migration = V17__RenameAndDeleteSfdrDataPointTypes()
-    private val tableNames = V17__RenameAndDeleteSfdrDataPointTypes.tablesWithDataPointType
+class V18__RenameAndDeleteSfdrDataPointTypesTest : BaseMockedFlywayMigrationTest() {
+    private val migration = V18__RenameAndDeleteSfdrDataPointTypes()
+    private val tableNames = V18__RenameAndDeleteSfdrDataPointTypes.tablesWithDataPointType
 
-    private val sourceType = V17__RenameAndDeleteSfdrDataPointTypes.renameMap.keys.first()
-    private val targetType = V17__RenameAndDeleteSfdrDataPointTypes.renameMap.values.first()
-    private val deletedType = V17__RenameAndDeleteSfdrDataPointTypes.deletedDataPointTypes.first()
+    private val sourceType = V18__RenameAndDeleteSfdrDataPointTypes.renameMap.keys.first()
+    private val targetType = V18__RenameAndDeleteSfdrDataPointTypes.renameMap.values.first()
+    private val deletedType = V18__RenameAndDeleteSfdrDataPointTypes.deletedDataPointTypes.first()
 
     @Test
     fun `check that migration does not start if tables are missing`() {
@@ -67,8 +67,8 @@ class V17__RenameAndDeleteSfdrDataPointTypesTest : BaseMockedFlywayMigrationTest
         migration.migrate(mockContext)
 
         val statementsPerTable =
-            V17__RenameAndDeleteSfdrDataPointTypes.renameMap.size +
-                V17__RenameAndDeleteSfdrDataPointTypes.deletedDataPointTypes.size
+            V18__RenameAndDeleteSfdrDataPointTypes.renameMap.size +
+                V18__RenameAndDeleteSfdrDataPointTypes.deletedDataPointTypes.size
         verify(mockConnection, times(statementsPerTable * tableNames.size)).prepareStatement(any<String>())
     }
 }

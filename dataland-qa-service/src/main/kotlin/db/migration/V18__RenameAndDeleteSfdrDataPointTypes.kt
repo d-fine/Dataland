@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
  * (7 renames, 11 deletions).
  */
 @Suppress("ClassName")
-class V17__RenameAndDeleteSfdrDataPointTypes : BaseJavaMigration() {
+class V18__RenameAndDeleteSfdrDataPointTypes : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     companion object {
