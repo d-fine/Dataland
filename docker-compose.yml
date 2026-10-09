@@ -334,7 +334,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "development" ]
-    image: node:24.14.0@sha256:3a09aa6354567619221ef6c45a5051b671f953f0a1924d1f819ffb236e520e6b
+    image: node:24.14.1@sha256:80fc934952c8f1b2b4d39907af7211f8a9fff1a4c2cf673fb49099292c251cec
     networks:
       internal:
         aliases:
@@ -474,7 +474,6 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
-      DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}
@@ -771,24 +770,6 @@ services:
     healthcheck:
       <<: *healthcheck-settings
       test: [ "CMD-SHELL", "pg_isready -U email_service" ]
-    logging:
-      <<: *loki-logging
-  data-exporter:
-    restart: always
-    profiles: [ "production", "testing", "development" ]
-    networks:
-      - internal
-    image: ${DATA_EXPORTER_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_exporter_test:${DATALAND_DATA_EXPORTER_TEST_VERSION}}
-    expose:
-      - "8080"
-
-    <<: *uncritical-constants-env
-    environment:
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
-    volumes:
-      - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
     logging:
       <<: *loki-logging
   grafana:
