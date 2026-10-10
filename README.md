@@ -25,7 +25,7 @@ Follow these steps to set up the dataland development stack on your computer.
 7. After the stack has booted, you may go to `https://local-dev.dataland.com` in your browser and experience dataland. You can login with the default credentials `data_admin:password`.
 8. You can stop the development stack by running `manageLocalStack.sh --stop`.
 
-# Developer Remarks
+# Developer Remarks 
 In this section, you find information that might be useful for you as a developer.
 
 ## Add scripts to git with the executable flag
