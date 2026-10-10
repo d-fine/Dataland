@@ -50,7 +50,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
+    val numberOfReportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

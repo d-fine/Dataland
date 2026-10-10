@@ -2,7 +2,6 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.social.socialAndEmployeeMatters
 
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
@@ -21,8 +20,6 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val corruptionLegalProceedings: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val transparencyDisclosurePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    @field:Valid()
     val humanRightsDueDiligencePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val policyAgainstChildLabour: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
@@ -31,23 +28,17 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val policyAgainstDiscriminationInTheWorkplace: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val iso14001Certificate: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    @field:Valid()
     val policyAgainstBriberyAndCorruption: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val fairBusinessMarketingAdvertisingPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val technologiesExpertiseTransferPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    @field:Valid()
     val fairCompetitionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val violationOfTaxRulesAndRegulation: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val violationOfUngcPrinciplesAndOecdGuidelines: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val unGlobalCompactPrinciplesCompliancePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    val averageGrossHourlyEarningsMaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
-    val averageGrossHourlyEarningsFemaleEmployees: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
     val unadjustedGenderPayGapInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()

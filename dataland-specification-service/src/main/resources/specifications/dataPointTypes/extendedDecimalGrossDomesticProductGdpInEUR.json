@@ -1,0 +1,9 @@
+{
+  "id" : "extendedDecimalGrossDomesticProductGdpInEUR",
+  "name" : "Gross Domestic Product (GDP)",
+  "businessDefinition" : "A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : [ "min:0" ],
+  "calculationRules" : [ ]
+}

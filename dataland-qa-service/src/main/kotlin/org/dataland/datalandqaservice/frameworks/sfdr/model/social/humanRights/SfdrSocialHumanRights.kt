@@ -17,9 +17,9 @@ data class SfdrSocialHumanRights(
     @field:Valid()
     val traffickingInHumanBeingsPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val reportedChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val riskOfChildLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val reportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val riskOfReportedForcedOrCompulsoryLabourIncidents: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
 )

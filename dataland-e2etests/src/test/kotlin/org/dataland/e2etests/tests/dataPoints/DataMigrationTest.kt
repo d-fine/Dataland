@@ -4,11 +4,13 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
-import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigInteger
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.SfdrSocial
+import org.dataland.datalandbackend.openApiClient.model.SfdrSocialAntiCorruptionAndAntiBribery
 import org.dataland.datalandbackend.openApiClient.model.SfdrSocialSocialAndEmployeeMatters
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
@@ -266,8 +268,8 @@ class DataMigrationTest {
                 SfdrSocial(
                     socialAndEmployeeMatters =
                         SfdrSocialSocialAndEmployeeMatters(
-                            averageGrossHourlyEarningsFemaleEmployees =
-                                CurrencyDataPoint(
+                            rateOfAccidents =
+                                ExtendedDataPointBigDecimal(
                                     BigDecimal
                                         .valueOf(1),
                                 ),
@@ -279,10 +281,10 @@ class DataMigrationTest {
         SfdrData(
             social =
                 SfdrSocial(
-                    socialAndEmployeeMatters =
-                        SfdrSocialSocialAndEmployeeMatters(
-                            averageGrossHourlyEarningsMaleEmployees =
-                                CurrencyDataPoint(BigDecimal.valueOf(1)),
+                    antiCorruptionAndAntiBribery =
+                        SfdrSocialAntiCorruptionAndAntiBribery(
+                            numberOfReportedConvictionsOfBriberyAndCorruption =
+                                ExtendedDataPointBigInteger(1),
                         ),
                 ),
         )
@@ -303,21 +305,21 @@ class DataMigrationTest {
                 assertEquals(
                     it.data.social
                         ?.socialAndEmployeeMatters
-                        ?.averageGrossHourlyEarningsFemaleEmployees
+                        ?.rateOfAccidents
                         ?.value,
                     minimalDatasetFemale.social
                         ?.socialAndEmployeeMatters
-                        ?.averageGrossHourlyEarningsFemaleEmployees
+                        ?.rateOfAccidents
                         ?.value,
                 )
                 assertEquals(
                     it.data.social
-                        ?.socialAndEmployeeMatters
-                        ?.averageGrossHourlyEarningsMaleEmployees
+                        ?.antiCorruptionAndAntiBribery
+                        ?.numberOfReportedConvictionsOfBriberyAndCorruption
                         ?.value,
                     minimalDatasetMale.social
-                        ?.socialAndEmployeeMatters
-                        ?.averageGrossHourlyEarningsMaleEmployees
+                        ?.antiCorruptionAndAntiBribery
+                        ?.numberOfReportedConvictionsOfBriberyAndCorruption
                         ?.value,
                 )
             }

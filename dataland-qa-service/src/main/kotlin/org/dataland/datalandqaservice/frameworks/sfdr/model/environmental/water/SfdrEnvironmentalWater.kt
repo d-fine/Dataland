@@ -13,11 +13,11 @@ data class SfdrEnvironmentalWater(
     @field:Valid()
     val emissionsToWaterInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val waterConsumptionInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val waterWithdrawalInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val waterReusedInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val waterManagementPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

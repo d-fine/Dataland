@@ -50,7 +50,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
+    val waterWithdrawalInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
@@ -88,7 +88,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustain
     } """,
     )
     @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
+    val waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Existence of a policy for water management.

@@ -8,10 +8,6 @@ import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
-    this.fillDateFieldWithFutureDate('dataDate');
-
-    cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"][value="Deviation"]').click();
-
     cy.get('div[data-test="fiscalYearEnd"] [data-test="dataPointToggleButton"]').click();
     this.fillDateFieldWithFutureDate('fiscalYearEnd');
   },
@@ -96,6 +92,10 @@ function mountPluginAndInterceptUploads(framework: string): void {
   }
 
   cy.intercept('**/documents/*', cy.spy().as('documentExists'));
+
+  cy.intercept('PATCH', '**/documents/*', {
+    statusCode: 200,
+  });
 
   cy.intercept('POST', `/api/data/${dataType}*`, {
     statusCode: 200,

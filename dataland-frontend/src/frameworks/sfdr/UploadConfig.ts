@@ -13,33 +13,20 @@ export const sfdrDataModel = [
         label: 'General',
         fields: [
           {
-            name: 'dataDate',
-            label: 'Data Date',
-            description: 'The year for which the data is reported.',
+            name: 'referencedReports',
+            label: 'Referenced Reports',
+            description: 'Please upload all relevant reports for this dataset in the PDF format.',
 
-            component: 'DateFormField',
+            component: 'UploadReports',
             required: false,
             showIf: (): boolean => true,
           },
-          {
-            name: 'fiscalYearDeviation',
-            label: 'Fiscal Year Deviation',
-            description: 'Does the fiscal year deviate from the calendar year?',
-            options: [
-              {
-                label: 'Deviation',
-                value: 'Deviation',
-              },
-              {
-                label: 'No Deviation',
-                value: 'NoDeviation',
-              },
-            ],
-
-            component: 'RadioButtonsExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
+        ],
+      },
+      {
+        name: 'company',
+        label: 'Company',
+        fields: [
           {
             name: 'fiscalYearEnd',
             label: 'Fiscal Year End',
@@ -50,13 +37,216 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'referencedReports',
-            label: 'Referenced Reports',
-            description: 'Please upload all relevant reports for this dataset in the PDF format.',
+            name: 'mainPcafSector',
+            label: 'Main PCAF sector',
+            description:
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+            options: [
+              {
+                label: 'Communication Services',
+                value: 'CommunicationServices',
+              },
+              {
+                label: 'Consumer Discretionary',
+                value: 'ConsumerDiscretionary',
+              },
+              {
+                label: 'Consumer Staples',
+                value: 'ConsumerStaples',
+              },
+              {
+                label: 'Energy',
+                value: 'Energy',
+              },
+              {
+                label: 'Financials',
+                value: 'Financials',
+              },
+              {
+                label: 'Health Care',
+                value: 'HealthCare',
+              },
+              {
+                label: 'Industrials',
+                value: 'Industrials',
+              },
+              {
+                label: 'Industry',
+                value: 'Industry',
+              },
+              {
+                label: 'Information Technology',
+                value: 'InformationTechnology',
+              },
+              {
+                label: 'Materials',
+                value: 'Materials',
+              },
+              {
+                label: 'Real Estate',
+                value: 'RealEstate',
+              },
+              {
+                label: 'Sovereign',
+                value: 'Sovereign',
+              },
+              {
+                label: 'Utilities',
+                value: 'Utilities',
+              },
+            ],
 
-            component: 'UploadReports',
+            component: 'ExtendedSingleSelectFormField',
             required: false,
             showIf: (): boolean => true,
+          },
+          {
+            name: 'companyExchangeStatus',
+            label: 'Company exchange status',
+            description: '"Listed" if the company is listed on an exchange - otherwise "Unlisted"',
+            options: [
+              {
+                label: 'Listed',
+                value: 'Listed',
+              },
+              {
+                label: 'Unlisted',
+                value: 'Unlisted',
+              },
+            ],
+
+            component: 'RadioButtonsExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'financial',
+    label: 'Financial',
+    color: 'blue',
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: 'financial',
+        label: 'Financial',
+        fields: [
+          {
+            name: 'grossDomesticProductGdpInEUR',
+            label: 'Gross Domestic Product (GDP)',
+            description:
+              'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'pppAdjustedGrossDomesticProductGdp',
+            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            description:
+              'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
+
+            unit: 'USD',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'totalRevenueInEUR',
+            label: 'Total Revenue',
+            description:
+              "Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm\'s total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'bookValueOfDebtInEUR',
+            label: 'Book value of debt',
+            description:
+              'Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+        ],
+      },
+      {
+        name: 'listedCompany',
+        label: 'Listed company',
+        fields: [
+          {
+            name: 'marketCapitalizationInEUR',
+            label: 'Market capitalization',
+            description: 'Market capitalization in EUR calculated as: number of shares * price per share',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'minoritiesInterestInEUR',
+            label: 'Minorities interest',
+            description:
+              'Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'enterpriseValueInEUR',
+            label: 'Enterprise Value',
+            description:
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: 'unlistedCompany',
+        label: 'Unlisted company',
+        fields: [
+          {
+            name: 'totalEquityInEUR',
+            label: 'Total equity',
+            description: 'Total equity in EUR as listed on the balance sheet',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+          {
+            name: 'totalEquityAndDebtInEUR',
+            label: 'Total equity and debt',
+            description: 'Sum of total equity and total debt in EUR as listed on the balance sheet',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
           },
         ],
       },
@@ -220,39 +410,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'scope4GhgEmissionsInTonnes',
-            label: 'Scope 4 GHG emissions',
-            description:
-              'Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'enterpriseValueInEUR',
-            label: 'Enterprise Value',
-            description:
-              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'totalRevenueInEUR',
-            label: 'Total Revenue',
-            description:
-              "Total net or gross revenue in EUR for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services. Overall turnover is equivalent to a firm\'s total revenues over some period of time. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3",
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'carbonFootprintInTonnesPerMillionEUREnterpriseValue',
             label: 'Carbon footprint',
             description:
@@ -301,17 +458,6 @@ export const sfdrDataModel = [
             label: 'GHG intensity - scope 3',
             description:
               'Tons of scope 3 GHG emissions per million EUR revenue. Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions. See also Regulation (EU) 2022/1288, Annex I, formula (3).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 3',
-
-            unit: 'Tonnes / €M Revenue',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
-            label: 'GHG intensity - scope 4',
-            description:
-              'Tons of scope 4 GHG emissions per million EUR revenue. As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -427,16 +573,6 @@ export const sfdrDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: 'min:0',
-          },
-          {
-            name: 'applicableHighImpactClimateSectors',
-            label: 'Applicable High Impact Climate Sectors',
-            description:
-              'Sector applicable activities. See also Regulation (EU) 2022/1288, Annex I, top (9).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 6',
-
-            component: 'HighImpactClimateSectorsFormField',
-            required: false,
-            showIf: (): boolean => true,
           },
           {
             name: 'totalHighImpactClimateSectorEnergyConsumptionInGWh',
@@ -571,16 +707,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'highlyBiodiverseGrasslandExposure',
-            label: 'Highly Biodiverse Grassland Exposure',
-            description:
-              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 7',
-
-            component: 'YesNoExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'manufactureOfAgrochemicalPesticidesProducts',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             description:
@@ -591,8 +717,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'landDegradationDesertificationSoilSealingExposure',
-            label: 'Land Degradation Desertification Soil Sealing Exposure',
+            name: 'landDegradationDesertificationSoilSealing',
+            label: 'Land Degradation Desertification Soil Sealing',
             description:
               'Involvement in activities, which cause land degradation, desertification or soil sealing.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 10',
 
@@ -669,7 +795,7 @@ export const sfdrDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'waterConsumptionInCubicMeters',
+            name: 'waterWithdrawalInCubicMeters',
             label: 'Water Withdrawal',
             description:
               'Amount of water withdrawn by the company.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
@@ -693,7 +819,7 @@ export const sfdrDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'relativeWaterUsageInCubicMetersPerMillionEURRevenue',
+            name: 'waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue',
             label: 'Water Withdrawal Intensity',
             description:
               'Amount in cubic meters of water withdrawn per million EUR revenue.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 2, Adverse impact on sustainability factor 6.1',
@@ -860,16 +986,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'transparencyDisclosurePolicy',
-            label: 'Transparency Disclosure Policy',
-            description:
-              'Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
-
-            component: 'YesNoExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'humanRightsDueDiligencePolicy',
             label: 'Human Rights Due Diligence Policy',
             description:
@@ -909,15 +1025,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'iso14001Certificate',
-            label: 'ISO 14001 Certificate',
-            description: 'The whole company is ISO 14001 certified.',
-
-            component: 'YesNoExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'policyAgainstBriberyAndCorruption',
             label: 'Policy against Bribery and Corruption',
             description:
@@ -938,16 +1045,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'technologiesExpertiseTransferPolicy',
-            label: 'Technologies Expertise Transfer Policy',
-            description:
-              'Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.',
-
-            component: 'YesNoExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'fairCompetitionPolicy',
             label: 'Fair Competition Policy',
             description:
@@ -958,8 +1055,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'violationOfTaxRulesAndRegulation',
-            label: 'Violation of UNGC principles and OECD Guidelines for Multinational Enterprises',
+            name: 'violationOfUngcPrinciplesAndOecdGuidelines',
+            label: 'Violation Of UNGC Principles And OECD Guidelines',
             description:
               'Involvement in a violation of the UNGC principles or OECD Guidelines for Multinational Enterprises.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 10',
 
@@ -986,28 +1083,6 @@ export const sfdrDataModel = [
             component: 'YesNoExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-          },
-          {
-            name: 'averageGrossHourlyEarningsMaleEmployees',
-            label: 'Average Gross Hourly Earnings Male Employees',
-            description:
-              'Average gross hourly earnings of male employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
-
-            component: 'CurrencyExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'averageGrossHourlyEarningsFemaleEmployees',
-            label: 'Average Gross Hourly Earnings Female Employees',
-            description:
-              'Average gross hourly earnings of female employees\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12',
-
-            component: 'CurrencyExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
           },
           {
             name: 'unadjustedGenderPayGapInPercent',
@@ -1197,22 +1272,6 @@ export const sfdrDataModel = [
         ],
       },
       {
-        name: 'greenSecurities',
-        label: 'Green securities',
-        fields: [
-          {
-            name: 'securitiesNotCertifiedAsGreen',
-            label: 'Securities Not Certified As Green',
-            description:
-              'Possession of securities in investments that are not certified as green under a future EU legal act setting up an EU Green Bond Standard.',
-
-            component: 'YesNoExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-        ],
-      },
-      {
         name: 'humanRights',
         label: 'Human rights',
         fields: [
@@ -1247,8 +1306,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'reportedChildLabourIncidents',
-            label: 'Risk of Child Labour Incidents',
+            name: 'riskOfChildLabourIncidents',
+            label: 'Risk Of Child Labour Incidents',
             description:
               'Operations or suppliers at significant risk of incidents of child labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 12',
 
@@ -1257,8 +1316,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'reportedForcedOrCompulsoryLabourIncidents',
-            label: 'Risk of Forced Or Compulsory Labour Incidents',
+            name: 'riskOfReportedForcedOrCompulsoryLabourIncidents',
+            label: 'Risk Of Reported Forced Or Compulsory Labour Incidents',
             description:
               'Operations or suppliers at significant risk of incidents of forced or compulsory labour.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 13',
 
@@ -1295,8 +1354,8 @@ export const sfdrDataModel = [
             validation: 'integer|min:0',
           },
           {
-            name: 'reportedConvictionsOfBriberyAndCorruption',
-            label: 'Number of Reported Convictions Of Bribery and Corruption',
+            name: 'numberOfReportedConvictionsOfBriberyAndCorruption',
+            label: 'Number Of Reported Convictions Of Bribery And Corruption',
             description:
               'Number of reported convictions for violations of anti-corruption and anti-bribery laws.\nLinked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 17',
 
