@@ -130,6 +130,60 @@ class CompanyProxyManagerTest
         }
 
         @Test
+        fun `addProxyRelation allows a child company that is already a parent company`() {
+            companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId)
+            assertDoesNotThrow {
+                companyProxyManager.addProxyRelation(
+                    proxyWithPeriods("2023", "2025", child = defaultParentCompanyId, parent = altParentCompanyId),
+                    testUserId,
+                )
+            }
+        }
+
+        @Test
+        fun `addProxyRelation rejects a company as its own parent`() {
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.addProxyRelation(
+                    proxyWithPeriods("2023", "2025", child = defaultChildCompanyId, parent = defaultChildCompanyId),
+                    testUserId,
+                )
+            }
+        }
+
+        @Test
+        fun `editCompanyProxy rejects a parent that is a child of another proxy but allows a child that is a parent`() {
+            val first = companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId).proxyId
+            // swapping roles of the edited entry itself is fine
+            assertDoesNotThrow {
+                companyProxyManager.editCompanyProxy(
+                    first,
+                    proxyWithPeriods("2023", "2025", child = defaultParentCompanyId, parent = defaultChildCompanyId),
+                    testUserId,
+                )
+            }
+            companyProxyManager.addProxyRelation(
+                proxyWithPeriods("2023", "2025", child = altChildCompanyId, parent = altParentCompanyId),
+                testUserId,
+            )
+            // altParent is a parent elsewhere; becoming a child is allowed (only logs a warning)
+            assertDoesNotThrow {
+                companyProxyManager.editCompanyProxy(
+                    first,
+                    proxyWithPeriods("2023", "2025", child = altParentCompanyId, parent = defaultChildCompanyId),
+                    testUserId,
+                )
+            }
+            // altChild is a child elsewhere; becoming a parent is rejected
+            assertThrows(InvalidInputApiException::class.java) {
+                companyProxyManager.editCompanyProxy(
+                    first,
+                    proxyWithPeriods("2023", "2025", child = defaultChildCompanyId, parent = altChildCompanyId),
+                    testUserId,
+                )
+            }
+        }
+
+        @Test
         fun `editCompanyProxy ignores itself but rejects overlap with others and invalid intervals`() {
             val first = companyProxyManager.addProxyRelation(proxyWithPeriods("2023", "2025"), testUserId).proxyId
             companyProxyManager.addProxyRelation(proxyWithPeriods("2027", "2028"), testUserId)

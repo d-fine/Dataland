@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the company data proxy rule endpoints.
@@ -55,7 +54,7 @@ class CompanyProxyController
                     "proxyId='$proxyId'",
             )
             return ResponseEntity.ok(
-                companyProxyManager.getCompanyProxyById(UUID.fromString(proxyId)),
+                companyProxyManager.getCompanyProxyById(ValidationUtils.convertToUUID(proxyId)),
             )
         }
 

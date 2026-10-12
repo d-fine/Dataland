@@ -96,12 +96,7 @@ class CompanyProxyManager
                     "validToReportingPeriod='${candidateProxy.validToReportingPeriod}'",
             )
 
-            assertValidInterval(candidateProxy)
-            assertParentIsNoChild(candidateProxy)
-            logger.info("Checking for existing proxy relations to avoid duplicates...")
-
-            val existingProxies = companyProxyRepository.findAllByChildCompanyId(candidateProxy.childCompanyId)
-            assertNoConflictingProxiesExist(existingProxies, candidateProxy)
+            validateCandidate(candidateProxy, excludedProxyId = null)
 
             val entity =
                 CompanyProxyEntity(
@@ -134,12 +129,60 @@ class CompanyProxyManager
             }
         }
 
-        private fun assertParentIsNoChild(candidateProxy: CompanyProxy<UUID>) {
-            if (companyProxyRepository.existsByChildCompanyId(candidateProxy.parentCompanyId)) {
+        /**
+         * Validates all rules for a proxy that is to be created or replaced.
+         * The entry with excludedProxyId (the one being replaced) is ignored by all checks.
+         */
+        private fun validateCandidate(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            assertValidInterval(candidateProxy)
+            assertChildAndParentDiffer(candidateProxy)
+            assertParentIsNotChild(candidateProxy, excludedProxyId)
+            warnIfChildIsParent(candidateProxy, excludedProxyId)
+            val existingProxies =
+                companyProxyRepository
+                    .findAllByChildCompanyId(candidateProxy.childCompanyId)
+                    .filter { it.proxyId != excludedProxyId }
+            assertNoConflictingProxiesExist(existingProxies, candidateProxy)
+        }
+
+        private fun assertChildAndParentDiffer(candidateProxy: CompanyProxy<UUID>) {
+            if (candidateProxy.childCompanyId == candidateProxy.parentCompanyId) {
+                throw InvalidInputApiException(
+                    summary = "Child and parent company are identical",
+                    message = "A company cannot be its own proxy parent (${candidateProxy.childCompanyId}).",
+                )
+            }
+        }
+
+        private fun assertParentIsNotChild(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            val parentId = candidateProxy.parentCompanyId
+            if (companyProxyRepository.findAllByChildCompanyId(parentId).any { it.proxyId != excludedProxyId }) {
                 throw InvalidInputApiException(
                     summary = "Parent company is a child company",
-                    message =
-                        "The parent company ${candidateProxy.parentCompanyId} is itself a child company of another proxy.",
+                    message = "The parent company $parentId is itself a child company of another proxy.",
+                )
+            }
+        }
+
+        private fun warnIfChildIsParent(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            val childId = candidateProxy.childCompanyId
+            val proxiesWhereChildIsParent =
+                companyProxyRepository.findAllByParentCompanyId(childId).filter { it.proxyId != excludedProxyId }
+            if (proxiesWhereChildIsParent.isNotEmpty()) {
+                logger.warn(
+                    "The child company $childId is already the parent company in the proxies " +
+                        "${proxiesWhereChildIsParent.joinToString(", ") { it.proxyId.toString() }}. " +
+                        "These proxies should be updated to point to the ultimate parent " +
+                        "${candidateProxy.parentCompanyId}.",
                 )
             }
         }
@@ -236,15 +279,9 @@ class CompanyProxyManager
             updatedCompanyProxy: CompanyProxy<UUID>,
             uploaderUserId: String,
         ): StoredCompanyProxy {
-            assertValidInterval(updatedCompanyProxy)
-            assertParentIsNoChild(updatedCompanyProxy)
-            val existingProxiesForCompany =
-                companyProxyRepository
-                    .findAllByChildCompanyId(updatedCompanyProxy.childCompanyId)
-                    .filter { it.proxyId != proxyId }
-            assertNoConflictingProxiesExist(existingProxiesForCompany, updatedCompanyProxy)
-
             val existing = retrieveCompanyProxyEntityById(proxyId)
+            validateCandidate(updatedCompanyProxy, excludedProxyId = proxyId)
+
             existing.childCompanyId = updatedCompanyProxy.childCompanyId
             existing.parentCompanyId = updatedCompanyProxy.parentCompanyId
             existing.validFromReportingPeriod = updatedCompanyProxy.validFromReportingPeriod

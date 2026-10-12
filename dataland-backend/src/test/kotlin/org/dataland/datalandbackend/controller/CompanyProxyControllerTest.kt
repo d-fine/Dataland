@@ -344,4 +344,80 @@ class CompanyProxyControllerTest(
         performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, invalidPeriodRequest)
             .andExpect(status().isBadRequest)
     }
+
+    private fun createProxy(
+        child: String,
+        parent: String,
+        from: String?,
+        to: String?,
+    ): String =
+        getProxyIdFromResult(
+            performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(child, parent, from, to))
+                .andExpect(status().isOk),
+        )
+
+    @Test
+    fun `creating a proxy with overlapping interval for the same child returns 400`() {
+        val child = createCompany()
+        createProxy(child, createCompany(), "2023", "2025")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(child, createCompany(), "2025", null))
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `creating a proxy with validFrom after validTo returns 400`() {
+        performProxyRequest(
+            "POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(createCompany(), createCompany(), "2025", "2023"),
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `creating a proxy whose parent is already a child returns 400`() {
+        val parent = createCompany()
+        val grandParent = createCompany()
+        createProxy(parent, grandParent, "2023", "2024")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(createCompany(), parent, "2023", "2024"))
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `creating a proxy whose child is already a parent is allowed`() {
+        val parent = createCompany()
+        createProxy(createCompany(), parent, "2023", "2024")
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(parent, createCompany(), "2023", "2024"))
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `creating a proxy with identical child and parent returns 400`() {
+        val company = createCompany()
+        performProxyRequest("POST", COMPANY_PROXIES_ENDPOINT, null, CompanyProxy(company, company, "2023", "2024"))
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `put that conflicts with another proxy of the same child returns 400`() {
+        val child = createCompany()
+        val parent = createCompany()
+        createProxy(child, parent, "2023", "2024")
+        val secondId = createProxy(child, parent, "2025", "2026")
+        performProxyRequest("PUT", COMPANY_PROXIES_BY_ID_ENDPOINT, secondId, CompanyProxy(child, parent, "2024", "2026"))
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `put for an unknown proxy id returns 404`() {
+        performProxyRequest(
+            "PUT", COMPANY_PROXIES_BY_ID_ENDPOINT, UUID.randomUUID().toString(),
+            CompanyProxy(createCompany(), createCompany(), "2023", "2024"),
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `get with a malformed proxy id returns 404`() {
+        setMockUser(User.ADMIN)
+        mockMvc
+            .perform(get(COMPANY_PROXIES_BY_ID_ENDPOINT, "not-a-uuid").with(securityContext(mockSecurityContext)))
+            .andExpect(status().isNotFound)
+    }
 }

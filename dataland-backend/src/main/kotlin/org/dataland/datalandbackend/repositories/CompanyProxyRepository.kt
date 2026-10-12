@@ -22,9 +22,9 @@ interface CompanyProxyRepository : JpaRepository<CompanyProxyEntity, UUID> {
     fun findAllByChildCompanyId(childCompanyId: UUID): List<CompanyProxyEntity>
 
     /**
-     * Checks whether the given company is the child company of at least one proxy.
+     * Finds all CompanyProxyEntity objects with the given parentCompanyId.
      */
-    fun existsByChildCompanyId(childCompanyId: UUID): Boolean
+    fun findAllByParentCompanyId(parentCompanyId: UUID): List<CompanyProxyEntity>
 
     /**
      * Finds all CompanyProxyEntity objects matching the given filters.
