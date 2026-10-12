@@ -40,6 +40,8 @@ done
 
 mkdir -p ./dataland-frontend/cypress
 
+trap 'sudo chown -R "$(id -u):$(id -g)" ./dataland-frontend/cypress' EXIT
+
 docker run --rm --network host \
   -v "$(pwd)/.git:/app/.git" \
   -v "$(pwd)/dataland-frontend/cypress:/app/dataland-frontend/cypress" \
