@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.sfdr.model.general
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.sfdr.model.general.company.SfdrGeneralCompany
 import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGeneralGeneral
 
 /**
@@ -11,4 +12,6 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.general.general.SfdrGe
 data class SfdrGeneral(
     @field:Valid()
     val general: SfdrGeneralGeneral? = null,
+    @field:Valid()
+    val company: SfdrGeneralCompany? = null,
 )

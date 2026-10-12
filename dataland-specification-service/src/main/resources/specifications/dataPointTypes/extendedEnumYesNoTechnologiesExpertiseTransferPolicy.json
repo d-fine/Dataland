@@ -1,9 +1,0 @@
-{
-  "id" : "extendedEnumYesNoTechnologiesExpertiseTransferPolicy",
-  "name" : "Technologies Expertise Transfer Policy",
-  "businessDefinition" : "Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.",
-  "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : [ "sfdr" ],
-  "constraints" : null,
-  "calculationRules" : [ ]
-}

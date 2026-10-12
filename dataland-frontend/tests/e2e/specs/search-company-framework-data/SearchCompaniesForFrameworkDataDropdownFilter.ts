@@ -179,7 +179,7 @@ describe('As a user, I expect the search functionality on the /companies page to
           const urlBeforeFilterChange =
             getBaseUrl() +
             '/companies?' +
-            `input=${encodeURIComponent(demoCompanyToTestFor.companyInformation.companyName)}`;
+            `input=${encodeURIComponent(demoCompanyToTestFor.companyInformation.companyName).replaceAll('%2C', ',')}`;
           cy.url().should('eq', urlBeforeFilterChange);
           cy.get("td[class='d-bg-white w-3 d-datatable-column-left']")
             .contains(demoCompanyToTestFor.companyInformation.companyName)

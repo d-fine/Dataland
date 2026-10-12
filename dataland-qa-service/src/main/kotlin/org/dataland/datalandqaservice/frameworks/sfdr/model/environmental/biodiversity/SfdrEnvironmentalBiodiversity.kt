@@ -16,11 +16,9 @@ data class SfdrEnvironmentalBiodiversity(
     @field:Valid()
     val rareOrEndangeredEcosystemsExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val highlyBiodiverseGrasslandExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
-    @field:Valid()
     val manufactureOfAgrochemicalPesticidesProducts: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val landDegradationDesertificationSoilSealingExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
+    val landDegradationDesertificationSoilSealing: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
     val sustainableAgriculturePolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

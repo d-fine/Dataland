@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmplo
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.MaximumValue
@@ -89,23 +88,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     val corruptionLegalProceedings: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.""",
-        example = """{
-      "value" :  "Yes" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val transparencyDisclosurePolicy: ExtendedDataPoint<YesNo?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Existence of policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact.
 Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 10""",
         example = """{
@@ -177,23 +159,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     val policyAgainstDiscriminationInTheWorkplace: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """The whole company is ISO 14001 certified.""",
-        example = """{
-      "value" :  "Yes" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val iso14001Certificate: ExtendedDataPoint<YesNo?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.
 Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustainability factor 15""",
         example = """{
@@ -229,23 +194,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 3, Adverse impact on sustain
     val fairBusinessMarketingAdvertisingPolicy: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
-        description = """Existence of policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise.""",
-        example = """{
-      "value" :  "Yes" , 
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company."
-      "dataSource" : {
-        "page" : "5-7",
-        "tagName" : "monetaryAmount",
-        "fileName" : "AnnualReport2020.pdf",
-        "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-      }
-    } """,
-    )
-    @field:Valid()
-    val technologiesExpertiseTransferPolicy: ExtendedDataPoint<YesNo?>? = null,
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
         description = """Existence of policies and procedures in place related to fair competition and anti-competitive cartels.""",
         example = """{
       "value" :  "Yes" , 
@@ -278,7 +226,7 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     } """,
     )
     @field:Valid()
-    val violationOfTaxRulesAndRegulation: ExtendedDataPoint<YesNo?>? = null,
+    val violationOfUngcPrinciplesAndOecdGuidelines: ExtendedDataPoint<YesNo?>? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises.
@@ -315,42 +263,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     )
     @field:Valid()
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
-    @field:MinimumValue(minimumValue = 0)
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Average gross hourly earnings of male employees
-Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12""",
-        example = """{
-      "value" : 100.5,
-      "currency" : "USD",
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company.",
-      "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "monetaryAmount",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    } """,
-    )
-    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
-    @field:MinimumValue(minimumValue = 0)
-    @Suppress("ktlint:standard:max-line-length")
-    @field:Schema(
-        description = """Average gross hourly earnings of female employees
-Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 12""",
-        example = """{
-      "value" : 100.5,
-      "currency" : "USD",
-      "quality" : "Reported",
-      "comment" : "The value is reported by the company.",
-      "dataSource" : {
-      "page" : "5-7",
-      "tagName" : "monetaryAmount",
-      "fileName" : "AnnualReport2020.pdf",
-      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
-    } """,
-    )
-    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(
         description = """(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).
