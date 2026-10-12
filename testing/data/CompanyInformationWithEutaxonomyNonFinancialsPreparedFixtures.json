@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-alpha",
-			"headquarters": "Lake Dillon",
+			"headquarters": "Lake Devon",
 			"headquartersPostalCode": "35074-7098",
 			"sector": null,
 			"identifiers": {
@@ -26,11 +26,11 @@
 			},
 			"countryCode": "NI",
 			"companyContactDetails": [
-				"Tito.Wilderman@example.com",
-				"Jamar_Ankunding36@example.com",
-				"Chet.Parker39@example.com",
-				"Tristin64@example.com",
-				"Easton_Carter@example.com"
+				"Taurean.Wilderman@example.com",
+				"Jazmyne_Ankunding36@example.com",
+				"Chris.Parker39@example.com",
+				"Walker64@example.com",
+				"Effie_Carter@example.com"
 			],
 			"companyAlternativeNames": [
 				"Feil, Champlin and Hauck",
@@ -1846,7 +1846,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-beta",
-			"headquarters": "Port Gradystead",
+			"headquarters": "Port Gregorystead",
 			"headquartersPostalCode": "27693",
 			"sector": "systems",
 			"identifiers": {
@@ -1865,7 +1865,7 @@
 			},
 			"countryCode": "CZ",
 			"companyContactDetails": [
-				"Beryl_Aufderhar@example.com"
+				"Camille_Aufderhar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Larkin - Lemke"
@@ -3806,7 +3806,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-gamma",
-			"headquarters": "Fort Kristinafurt",
+			"headquarters": "Fort Lavernefurt",
 			"headquartersPostalCode": "44080-5045",
 			"sector": "synergies",
 			"identifiers": {
@@ -3830,8 +3830,8 @@
 			},
 			"countryCode": "CF",
 			"companyContactDetails": [
-				"Nadine.Jenkins58@example.com",
-				"Augustus31@example.com"
+				"Olive.Jenkins58@example.com",
+				"Annabel31@example.com"
 			],
 			"companyAlternativeNames": [
 				"Abshire, Stracke and D'Amore"
@@ -5741,7 +5741,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForIncompleteReferencedReport",
-			"headquarters": "South Aimeeworth",
+			"headquarters": "South Aftonworth",
 			"headquartersPostalCode": "76586-3306",
 			"sector": "ROI",
 			"identifiers": {

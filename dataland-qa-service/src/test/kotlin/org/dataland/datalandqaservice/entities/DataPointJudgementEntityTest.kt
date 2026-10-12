@@ -2,6 +2,7 @@ package org.dataland.datalandqaservice.entities
 
 import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.utils.PreApprovalServiceTestUtils
 import org.junit.jupiter.api.Test

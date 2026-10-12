@@ -23,7 +23,7 @@
 			},
 			"countryCode": "UA",
 			"companyContactDetails": [
-				"Hassan28@example.com"
+				"Homer28@example.com"
 			],
 			"companyAlternativeNames": [
 				"Buckridge, Hettinger and Rosenbaum",
@@ -241,7 +241,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Goldner Group",
-			"headquarters": "Fort Floridastad",
+			"headquarters": "Fort Elyssastad",
 			"headquartersPostalCode": "28228-6044",
 			"sector": "supply-chains",
 			"identifiers": {
@@ -266,8 +266,8 @@
 			},
 			"countryCode": "SK",
 			"companyContactDetails": [
-				"Brian_Nicolas@example.com",
-				"Alisha_Aufderhar@example.com"
+				"Bernardo_Nicolas@example.com",
+				"Angela_Aufderhar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Hagenes, Kassulke and Pfannerstill"
@@ -772,9 +772,9 @@
 			},
 			"countryCode": "VG",
 			"companyContactDetails": [
-				"Milan70@example.com",
-				"Camilla83@example.com",
-				"Antonietta_Hessel@example.com"
+				"Makenna70@example.com",
+				"Camylle83@example.com",
+				"Beth_Hessel@example.com"
 			],
 			"companyAlternativeNames": [
 				"Prosacco - Price"
@@ -984,7 +984,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Cartwright, Mraz and Kreiger",
-			"headquarters": "Fletafort",
+			"headquarters": "Fayfort",
 			"headquartersPostalCode": "83372-5503",
 			"sector": "users",
 			"identifiers": {
@@ -1006,10 +1006,10 @@
 			},
 			"countryCode": "GB",
 			"companyContactDetails": [
-				"Foster.Sporer44@example.com",
-				"Herta74@example.com",
-				"Bryce80@example.com",
-				"Ibrahim6@example.com"
+				"Fred.Sporer44@example.com",
+				"Gust74@example.com",
+				"Bryan80@example.com",
+				"Israel6@example.com"
 			],
 			"companyAlternativeNames": [
 				"Berge - Corwin",
@@ -1217,7 +1217,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Schmitt and Sons",
-			"headquarters": "Fort Toneychester",
+			"headquarters": "Fort Theodorachester",
 			"headquartersPostalCode": "77006-9524",
 			"sector": null,
 			"identifiers": {
@@ -1241,9 +1241,9 @@
 			},
 			"countryCode": "NC",
 			"companyContactDetails": [
-				"Madelyn38@example.com",
-				"Andreane_Reynolds22@example.com",
-				"Jayce.Bins@example.com"
+				"Lucile38@example.com",
+				"Ashley_Reynolds22@example.com",
+				"Jimmy.Bins@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Public Limited Company (PLC)",
@@ -1458,7 +1458,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Rodriguez LLC",
-			"headquarters": "Port Rosalyn",
+			"headquarters": "Port Robbie",
 			"headquartersPostalCode": "15152-2792",
 			"sector": "markets",
 			"identifiers": {
@@ -1478,10 +1478,10 @@
 			},
 			"countryCode": "KP",
 			"companyContactDetails": [
-				"Belle.Sawayn@example.com",
-				"Layla73@example.com",
-				"Wilbert.Boyle@example.com",
-				"Vita37@example.com"
+				"Bridget.Sawayn@example.com",
+				"Linda73@example.com",
+				"Wendell.Boyle@example.com",
+				"Webster37@example.com"
 			],
 			"companyAlternativeNames": [
 				"Considine and Sons",
@@ -1678,7 +1678,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Douglas, Goyette and Buckridge",
-			"headquarters": "South Davinbury",
+			"headquarters": "South Darrylbury",
 			"headquartersPostalCode": "14110-1109",
 			"sector": "niches",
 			"identifiers": {
@@ -1703,10 +1703,10 @@
 			},
 			"countryCode": "BQ",
 			"companyContactDetails": [
-				"Haylee72@example.com",
-				"Josefina11@example.com",
-				"Katrine65@example.com",
-				"Anissa_Kunze@example.com"
+				"Inez72@example.com",
+				"June11@example.com",
+				"Kristen65@example.com",
+				"Beatrice_Kunze@example.com"
 			],
 			"companyAlternativeNames": [
 				"Kiehn, O'Reilly-Pfeffer and Corwin",
@@ -1970,9 +1970,9 @@
 			},
 			"countryCode": "GE",
 			"companyContactDetails": [
-				"Ettie_Crona@example.com",
-				"Pedro_Bailey@example.com",
-				"Mozell.Morar@example.com"
+				"Frances_Crona@example.com",
+				"Odessa_Bailey@example.com",
+				"Maximus.Morar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bernier - Ryan",
@@ -2224,7 +2224,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Langosh and Sons",
-			"headquarters": "New Teagan",
+			"headquarters": "New Ulices",
 			"headquartersPostalCode": "10814-5165",
 			"sector": "channels",
 			"identifiers": {
