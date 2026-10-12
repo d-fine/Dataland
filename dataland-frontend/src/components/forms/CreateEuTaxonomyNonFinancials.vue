@@ -232,7 +232,6 @@ export default defineComponent({
   data() {
     return {
       formId: 'createEuTaxonomyNonFinancialsForm',
-      dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
       eutaxonomyNonFinancialsDataModel,
       message: '',
@@ -333,7 +332,6 @@ export default defineComponent({
         );
 
         this.$emit('datasetCreated');
-        this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {

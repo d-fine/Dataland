@@ -4,7 +4,6 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.social
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.antiCorruptionAndAntiBribery
     .SfdrSocialAntiCorruptionAndAntiBribery
-import org.dataland.datalandqaservice.frameworks.sfdr.model.social.greenSecurities.SfdrSocialGreenSecurities
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.humanRights.SfdrSocialHumanRights
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.socialAndEmployeeMatters
     .SfdrSocialSocialAndEmployeeMatters
@@ -15,8 +14,6 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.social.socialAndEmpl
 data class SfdrSocial(
     @field:Valid()
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
-    @field:Valid()
-    val greenSecurities: SfdrSocialGreenSecurities? = null,
     @field:Valid()
     val humanRights: SfdrSocialHumanRights? = null,
     @field:Valid()

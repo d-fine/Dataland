@@ -1,4 +1,0 @@
-FROM scratch AS builder
-
-WORKDIR /app
-COPY ./dataland-data-exporter/build/libs/*.jar ./dataland-data-exporter/build/libs/

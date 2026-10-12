@@ -68,4 +68,7 @@ data class DataPointJudgement(
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_BASE_TYPE_EXAMPLE,
     )
     val dataPointBaseType: String? = null,
+    @field:Schema(description = "ID of the exact QA report accepted by the reviewer, if applicable.")
+    val acceptedQaReportId: String? = null,
+    val acceptedQaReport: DataPointQaReport? = null,
 )

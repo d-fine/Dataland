@@ -3,7 +3,7 @@
   "name" : "Total equity and debt",
   "businessDefinition" : "Sum of total equity and total debt in EUR as listed on the balance sheet",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "pcaf" ],
+  "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
   "calculationRules" : [ ]
 }

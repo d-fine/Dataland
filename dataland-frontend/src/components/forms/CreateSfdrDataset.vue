@@ -15,7 +15,30 @@
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfFiscalYearEnd" />
+            <div class="uploadFormSection grid">
+              <div class="col-3 p-3 topicLabel">
+                <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
+              </div>
+              <div class="col-9 form-field formFields uploaded-files">
+                <UploadFormHeader
+                  :label="'Reporting Period'"
+                  :description="'The reporting period the dataset belongs to (e.g. a fiscal year).'"
+                  :is-required="true"
+                />
+                <DatePicker
+                  data-test="reportingPeriod"
+                  v-model="reportingPeriod"
+                  :updateModelType="'date'"
+                  inputId="icon"
+                  :showIcon="true"
+                  view="year"
+                  dateFormat="yy"
+                  validation="required"
+                />
+
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
+              </div>
+            </div>
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -106,6 +129,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import Tag from 'primevue/tag';
+import { type DocumentMetaInfo, DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import DatePicker from 'primevue/datepicker';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
@@ -135,7 +160,6 @@ import MostImportantProductsFormField from '@/components/forms/parts/fields/Most
 import { type Subcategory } from '@/utils/GenericFrameworkTypes';
 import ProcurementCategoriesFormField from '@/components/forms/parts/fields/ProcurementCategoriesFormField.vue';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
-import HighImpactClimateSectorsFormField from '@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import IntegerExtendedDataPointFormField from '@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue';
 import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
@@ -165,6 +189,7 @@ export default defineComponent({
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
+    DatePicker,
     SuccessMessage,
     FailMessage,
     FormKit,
@@ -185,7 +210,6 @@ export default defineComponent({
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
-    HighImpactClimateSectorsFormField,
     IntegerExtendedDataPointFormField,
     BigDecimalExtendedDataPointFormField,
     CurrencyExtendedDataPointFormField,
@@ -204,7 +228,7 @@ export default defineComponent({
   data() {
     return {
       formId: 'createSFDRForm',
-      dataDate: undefined as Date | undefined,
+      reportingPeriod: undefined as undefined | Date,
       companyAssociatedSfdrData: {} as CompanyAssociatedDataSfdrData,
       sfdrDataModel,
       message: '',
@@ -221,18 +245,11 @@ export default defineComponent({
     };
   },
   computed: {
-    yearOfFiscalYearEnd: {
-      get(): string {
-        const currentDate = this.companyAssociatedSfdrData.data?.general?.general?.fiscalYearEnd?.value;
-        if (typeof currentDate !== 'string') {
-          return '';
-        }
-        const currentDateSegments = currentDate.split('-');
-        return currentDateSegments[0] ?? new Date().getFullYear().toString();
-      },
-      set() {
-        // IGNORED
-      },
+    reportingPeriodYear(): number {
+      if (this.reportingPeriod) {
+        return this.reportingPeriod.getFullYear();
+      }
+      return 0;
     },
     namesOfAllCompanyReportsForTheDataset(): string[] {
       return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
@@ -246,6 +263,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  created() {
+    if (this.reportingPeriod === undefined) {
+      this.reportingPeriod = new Date();
+    }
   },
   methods: {
     /**
@@ -274,7 +296,21 @@ export default defineComponent({
           );
         }
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
-        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
+        const referencedReports = this.companyAssociatedSfdrData.data?.general?.general?.referencedReports;
+        const documentMetaInfoByReference = new Map<string, DocumentMetaInfo>(
+          documentsToUpload.map((documentToUpload) => [
+            documentToUpload.fileReference,
+            {
+              documentName: documentToUpload.fileNameWithoutSuffix,
+              documentCategory: DocumentMetaInfoDocumentCategoryEnum.Other,
+              companyIds: [this.companyID] as unknown as Set<string>,
+              publicationDate:
+                referencedReports?.[documentToUpload.fileNameWithoutSuffix]?.publicationDate ?? undefined,
+              reportingPeriod: this.reportingPeriodYear.toString(),
+            },
+          ])
+        );
+        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise), documentMetaInfoByReference);
 
         const sfdrDataControllerApi = this.buildSfdrDataApi();
 
@@ -289,7 +325,6 @@ export default defineComponent({
         );
 
         this.$emit('datasetCreated');
-        this.dataDate = undefined;
         this.message = 'Upload successfully executed.';
         this.uploadSucceded = true;
       } catch (error) {

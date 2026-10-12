@@ -21,7 +21,6 @@ include(
     "dataland-framework-toolbox",
     "dataland-community-manager",
     "dataland-email-service",
-    "dataland-data-exporter",
     "dataland-specification-lib",
     "dataland-specification-service",
     "dataland-user-service",

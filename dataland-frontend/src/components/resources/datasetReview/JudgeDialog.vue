@@ -88,7 +88,7 @@
         :nav-label="currentQaReporterLabel"
         :is-accepted="
           currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Qa &&
-          currentDatapointJudgement?.reporterUserIdOfAcceptedQaReport === currentQaReport?.reporterUserId
+          currentDatapointJudgement?.acceptedQaReportId === currentQaReport?.qaReportId
         "
         :index-of-accepted-qa-report="indexOfAcceptedQaReport"
         :is-currency-data-point="isCurrencyDataPoint"
@@ -376,7 +376,11 @@ const originalData = computed<ParsedSingleDataPoint | null>(() => {
 const allQaReports = computed<DataPointQaReport[]>(() => {
   const judgementMetaData = currentDatapointJudgement.value;
   if (!judgementMetaData?.qaReports) return [];
-  return judgementMetaData.qaReports;
+  const accepted =
+    judgementMetaData.acceptedSource === AcceptedDataPointSource.Qa ? judgementMetaData.acceptedQaReport : undefined;
+  return accepted && !judgementMetaData.qaReports.some((report) => report.qaReportId === accepted.qaReportId)
+    ? [...judgementMetaData.qaReports, accepted]
+    : judgementMetaData.qaReports;
 });
 
 const verdictBadge = computed<{ label: string; background: string; color: string } | null>(() => {
@@ -422,7 +426,7 @@ const indexOfAcceptedQaReport = computed(() => {
   const reports = allQaReports.value;
   if (!reports.length) return -1;
 
-  return reports.findIndex((r) => r.reporterUserId === judgement.reporterUserIdOfAcceptedQaReport);
+  return reports.findIndex((r) => r.qaReportId === judgement.acceptedQaReportId);
 });
 
 const currentQaReportIndex = ref<number>(0);
@@ -655,7 +659,7 @@ function afterSuccessfulPatch(): void {
  * navigating on success and logging on error.
  *
  * @param acceptedSource - The accepted data point source.
- * @param reporterUserIdOfAcceptedQaReport - The reporter user ID of the accepted QA report, if applicable.
+ * @param acceptedQaReportId - The selected QA report ID, if applicable.
  * @param customDataPoint - The custom data point JSON string, if applicable.
  * @param reasonForCustomDataPoint - The reason for creating a custom data point, if applicable.
  * @param errorLogMessage - Message logged when the patch fails.
@@ -663,7 +667,7 @@ function afterSuccessfulPatch(): void {
  */
 function patchCurrentDatapoint(
   acceptedSource: AcceptedDataPointSource,
-  reporterUserIdOfAcceptedQaReport: string | undefined,
+  acceptedQaReportId: string | undefined,
   customDataPoint: string | undefined,
   reasonForCustomDataPoint: string | undefined,
   errorLogMessage: string
@@ -672,7 +676,7 @@ function patchCurrentDatapoint(
     {
       judgementId: props.datasetReviewId,
       dataPointTypeId: currentDataPointTypeId.value,
-      details: { acceptedSource, reporterUserIdOfAcceptedQaReport, customDataPoint, reasonForCustomDataPoint },
+      details: { acceptedSource, acceptedQaReportId, customDataPoint, reasonForCustomDataPoint },
     },
     {
       onSuccess: () => {
@@ -808,10 +812,10 @@ function acceptQaReportDatapoint(): void {
   if (!currentDataPointTypeId.value || !currentQaReport.value) return;
   patchCurrentDatapoint(
     AcceptedDataPointSource.Qa,
-    currentQaReport.value.reporterUserId,
+    currentQaReport.value.qaReportId,
     undefined,
     undefined,
-    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and reporterUserId: ${currentQaReport.value.reporterUserId}`
+    `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and qaReportId: ${currentQaReport.value.qaReportId}`
   );
 }
 

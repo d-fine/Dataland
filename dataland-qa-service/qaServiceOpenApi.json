@@ -4760,6 +4760,13 @@
             "type": "string",
             "description": "The id of the base type of this data point type, as defined in the specification service. Null for judgements that were created before the base type was stored.",
             "example": "extendedCurrency"
+          },
+          "acceptedQaReportId": {
+            "type": "string",
+            "description": "ID of the exact QA report accepted by the reviewer, if applicable."
+          },
+          "acceptedQaReport": {
+            "$ref": "#/components/schemas/DataPointQaReport"
           }
         },
         "description": "Map with details for all datapoints in the dataset. The key is the datapoint type."
@@ -4820,8 +4827,7 @@
             "description": "Contains suggested data corrections for the rejected data point.",
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           }
-        },
-        "description": "List of QA reports associated with this data point, including details about the reporter company."
+        }
       },
       "DatasetJudgementResponse": {
         "required": [
@@ -5140,14 +5146,66 @@
           }
         }
       },
-      "ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+      "ExtendedDataPointSfdrGeneralCompanyCompanyExchangeStatusOptions": {
         "type": "object",
         "properties": {
           "value": {
             "type": "string",
             "enum": [
-              "Deviation",
-              "NoDeviation"
+              "Listed",
+              "Unlisted"
+            ]
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        },
+        "description": "Contains suggested data corrections for the rejected data point.",
+        "example": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "program neural circuit",
+          "dataSource": {
+            "page": "1026",
+            "tagName": "web services",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": "2024-01-07"
+          }
+        }
+      },
+      "ExtendedDataPointSfdrGeneralCompanyMainPcafSectorOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "CommunicationServices",
+              "ConsumerDiscretionary",
+              "ConsumerStaples",
+              "Energy",
+              "Financials",
+              "HealthCare",
+              "Industrials",
+              "Industry",
+              "InformationTechnology",
+              "Materials",
+              "RealEstate",
+              "Sovereign",
+              "Utilities"
             ]
           },
           "quality": {
@@ -5326,7 +5384,7 @@
           }
         }
       },
-      "QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions": {
+      "QaReportDataPointExtendedDataPointSfdrGeneralCompanyCompanyExchangeStatusOptions": {
         "required": [
           "comment",
           "verdict"
@@ -5342,7 +5400,27 @@
             "$ref": "#/components/schemas/QaReportDataPointVerdict"
           },
           "correctedData": {
-            "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
+            "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralCompanyCompanyExchangeStatusOptions"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointSfdrGeneralCompanyMainPcafSectorOptions": {
+        "required": [
+          "comment",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "A comment explaining the verdict.",
+            "example": "The data point is correct and hence accepted."
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointSfdrGeneralCompanyMainPcafSectorOptions"
           }
         }
       },
@@ -5371,6 +5449,9 @@
         "properties": {
           "general": {
             "$ref": "#/components/schemas/SfdrGeneral"
+          },
+          "financial": {
+            "$ref": "#/components/schemas/SfdrFinancial"
           },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
@@ -5415,13 +5496,10 @@
           "rareOrEndangeredEcosystemsExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "highlyBiodiverseGrasslandExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
           "manufactureOfAgrochemicalPesticidesProducts": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "landDegradationDesertificationSoilSealingExposure": {
+          "landDegradationDesertificationSoilSealing": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "sustainableAgriculturePolicy": {
@@ -5478,12 +5556,6 @@
           },
           "relativeNonRenewableEnergyConsumptionInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "applicableHighImpactClimateSectors": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/SfdrHighImpactClimateSectorEnergyConsumption"
-            }
           },
           "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -5553,15 +5625,6 @@
           "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "scope4GhgEmissionsInTonnes": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "enterpriseValueInEUR": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "totalRevenueInEUR": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "carbonFootprintInTonnesPerMillionEUREnterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
@@ -5575,9 +5638,6 @@
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "fossilFuelSectorExposure": {
@@ -5608,13 +5668,13 @@
           "emissionsToWaterInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "waterConsumptionInCubicMeters": {
+          "waterWithdrawalInCubicMeters": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "waterReusedInCubicMeters": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+          "waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "waterManagementPolicy": {
@@ -5625,33 +5685,81 @@
           }
         }
       },
+      "SfdrFinancial": {
+        "type": "object",
+        "properties": {
+          "financial": {
+            "$ref": "#/components/schemas/SfdrFinancialFinancial"
+          },
+          "listedCompany": {
+            "$ref": "#/components/schemas/SfdrFinancialListedCompany"
+          },
+          "unlistedCompany": {
+            "$ref": "#/components/schemas/SfdrFinancialUnlistedCompany"
+          }
+        }
+      },
+      "SfdrFinancialFinancial": {
+        "type": "object",
+        "properties": {
+          "grossDomesticProductGdpInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "pppAdjustedGrossDomesticProductGdp": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "totalRevenueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "bookValueOfDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "SfdrFinancialListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "minoritiesInterestInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "enterpriseValueInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
+      "SfdrFinancialUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "totalEquityAndDebtInEUR": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          }
+        }
+      },
       "SfdrGeneral": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
+          "company": {
+            "$ref": "#/components/schemas/SfdrGeneralCompany"
           }
         }
       },
-      "SfdrGeneralGeneral": {
+      "SfdrGeneralCompany": {
         "type": "object",
         "properties": {
-          "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointSfdrGeneralGeneralFiscalYearDeviationOptions"
-          },
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          }
-        }
-      },
-      "SfdrHighImpactClimateSectorEnergyConsumption": {
-        "type": "object",
-        "properties": {
-          "highImpactClimateSectorEnergyConsumptionInGWh": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "mainPcafSector": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointSfdrGeneralCompanyMainPcafSectorOptions"
+          },
+          "companyExchangeStatus": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointSfdrGeneralCompanyCompanyExchangeStatusOptions"
           }
         }
       },
@@ -5660,9 +5768,6 @@
         "properties": {
           "socialAndEmployeeMatters": {
             "$ref": "#/components/schemas/SfdrSocialSocialAndEmployeeMatters"
-          },
-          "greenSecurities": {
-            "$ref": "#/components/schemas/SfdrSocialGreenSecurities"
           },
           "humanRights": {
             "$ref": "#/components/schemas/SfdrSocialHumanRights"
@@ -5678,19 +5783,11 @@
           "casesOfInsufficientActionAgainstBriberyAndCorruption": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
-          "reportedConvictionsOfBriberyAndCorruption": {
+          "numberOfReportedConvictionsOfBriberyAndCorruption": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
           "totalAmountOfReportedFinesOfBriberyAndCorruption": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          }
-        }
-      },
-      "SfdrSocialGreenSecurities": {
-        "type": "object",
-        "properties": {
-          "securitiesNotCertifiedAsGreen": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -5706,10 +5803,10 @@
           "traffickingInHumanBeingsPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "reportedChildLabourIncidents": {
+          "riskOfChildLabourIncidents": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "reportedForcedOrCompulsoryLabourIncidents": {
+          "riskOfReportedForcedOrCompulsoryLabourIncidents": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "numberOfReportedIncidentsOfHumanRightsViolations": {
@@ -5732,9 +5829,6 @@
           "corruptionLegalProceedings": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "transparencyDisclosurePolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
           "humanRightsDueDiligencePolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
@@ -5747,22 +5841,16 @@
           "policyAgainstDiscriminationInTheWorkplace": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "iso14001Certificate": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
           "policyAgainstBriberyAndCorruption": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "fairBusinessMarketingAdvertisingPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "technologiesExpertiseTransferPolicy": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
           "fairCompetitionPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "violationOfTaxRulesAndRegulation": {
+          "violationOfUngcPrinciplesAndOecdGuidelines": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
           "unGlobalCompactPrinciplesCompliancePolicy": {
@@ -5770,12 +5858,6 @@
           },
           "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "averageGrossHourlyEarningsMaleEmployees": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
-          },
-          "averageGrossHourlyEarningsFemaleEmployees": {
-            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "unadjustedGenderPayGapInPercent": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
@@ -10619,6 +10701,10 @@
             "type": "string",
             "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
             "example": "The original value was incorrect and the QA report claimed there was no data found."
+          },
+          "acceptedQaReportId": {
+            "type": "string",
+            "description": "ID of the QA report whose correction is being accepted."
           }
         }
       },

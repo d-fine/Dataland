@@ -53,6 +53,8 @@ class DataPointJudgementEntity(
     var preApprovalCheckResults: PreApprovalCheckResults? = null,
     @Column(name = "data_point_base_type", columnDefinition = "TEXT", nullable = true)
     val dataPointBaseType: String? = null,
+    @Column(name = "accepted_qa_report_id")
+    var acceptedQaReportId: String? = null,
 ) {
     /**
      * Converts this entity to its API response DTO.
@@ -64,6 +66,8 @@ class DataPointJudgementEntity(
             qaReports = latestQaReportsByReviewer().map { it.toApiModel() },
             acceptedSource = acceptedSource,
             reporterUserIdOfAcceptedQaReport = reporterUserIdOfAcceptedQaReport,
+            acceptedQaReportId = acceptedQaReportId,
+            acceptedQaReport = qaReports.find { it.qaReportId == acceptedQaReportId }?.toApiModel(),
             customValue = customValue,
             reasonForCustomDataPoint = reasonForCustomDataPoint,
             preApprovalCheckResults = preApprovalCheckResults,

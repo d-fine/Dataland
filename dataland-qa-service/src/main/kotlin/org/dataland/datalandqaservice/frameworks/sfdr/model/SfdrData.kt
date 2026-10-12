@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.SfdrEnvironmental
+import org.dataland.datalandqaservice.frameworks.sfdr.model.financial.SfdrFinancial
 import org.dataland.datalandqaservice.frameworks.sfdr.model.general.SfdrGeneral
 import org.dataland.datalandqaservice.frameworks.sfdr.model.social.SfdrSocial
 
@@ -12,6 +13,8 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.social.SfdrSocial
 data class SfdrData(
     @field:Valid()
     val general: SfdrGeneral? = null,
+    @field:Valid()
+    val financial: SfdrFinancial? = null,
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
     @field:Valid()

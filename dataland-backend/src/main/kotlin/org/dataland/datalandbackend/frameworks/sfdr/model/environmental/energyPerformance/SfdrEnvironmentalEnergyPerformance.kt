@@ -3,10 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.environmental.energyP
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector
-import org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
-import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import org.dataland.datalandbackend.validator.MinimumValue
 import java.math.BigDecimal
 
@@ -129,8 +126,6 @@ Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability in
     )
     @field:Valid()
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:Schema(example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE)
-    val applicableHighImpactClimateSectors: Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
     @field:MinimumValue(minimumValue = 0)
     @Suppress("ktlint:standard:max-line-length")
     @field:Schema(

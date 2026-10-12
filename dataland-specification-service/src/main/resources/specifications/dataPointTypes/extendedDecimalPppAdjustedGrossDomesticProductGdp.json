@@ -1,0 +1,9 @@
+{
+  "id" : "extendedDecimalPppAdjustedGrossDomesticProductGdp",
+  "name" : "PPP adjusted Gross Domestic Product (GDP)",
+  "businessDefinition" : "A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : [ "min:0" ],
+  "calculationRules" : [ ]
+}

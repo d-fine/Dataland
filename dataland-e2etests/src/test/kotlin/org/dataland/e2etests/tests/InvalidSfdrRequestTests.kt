@@ -110,7 +110,7 @@ class InvalidSfdrRequestTests {
             (errorForInvalidInput.response as ClientError<*>)
                 .body!!
                 .toString()
-                .contains("reportedConvictionsOfBriberyAndCorruption"),
+                .contains("numberOfReportedConvictionsOfBriberyAndCorruption"),
         )
     }
 

@@ -29,8 +29,8 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DatasetJudgementTest {
     private val testDataProvider =
-        FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
-    private val dummyDataset = testDataProvider.getTData(1).first()
+        FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java)
+    private val dummyDataset = testDataProvider.getByCompanyName("Sfdr-dataset-with-no-null-fields").t
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
     private val dataPointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
@@ -77,9 +77,7 @@ class DatasetJudgementTest {
     private fun postQaReport(
         dataPointId: String,
         qaReport: QaReportDataPointString,
-    ) = QaService.dataPointQaReportControllerApi
-        .postQaReport(dataPointId, qaReport)
-        .reporterUserId
+    ) = QaService.dataPointQaReportControllerApi.postQaReport(dataPointId, qaReport).qaReportId
 
     private data class DatasetAndJudgementAndDataPointIds(
         val datasetId: String,
@@ -94,8 +92,8 @@ class DatasetJudgementTest {
         val dataPointId1 = dataPoints.getValue(dataPointType1)
         val dataPointId2 = dataPoints.getValue(dataPointType2)
         val dataPointId3 = dataPoints.getValue(dataPointType3)
-        val reporterUserId1 = postQaReport(dataPointId1, dummyQaReport1)
-        val reporterUserId2 = postQaReport(dataPointId2, dummyQaReport2)
+        val qaReportId1 = postQaReport(dataPointId1, dummyQaReport1)
+        val qaReportId2 = postQaReport(dataPointId2, dummyQaReport2)
 
         return GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val datasetJudgementId =
@@ -106,7 +104,7 @@ class DatasetJudgementTest {
             data class PatchOperation(
                 val dataPointType: String,
                 val acceptedSource: AcceptedDataPointSource,
-                val reporterUserIdOfAcceptedQaReport: String? = null,
+                val acceptedQaReportId: String? = null,
                 val customDataPoint: String? = null,
                 val reasonForCustomDataPoint: String? = null,
             )
@@ -114,10 +112,10 @@ class DatasetJudgementTest {
 
             val patchOperations =
                 listOf(
-                    PatchOperation(dataPointType1, AcceptedDataPointSource.Qa, reporterUserId1),
-                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
+                    PatchOperation(dataPointType1, AcceptedDataPointSource.Qa, qaReportId1),
+                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, qaReportId2),
                     PatchOperation(dataPointType1, AcceptedDataPointSource.Original),
-                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, reporterUserId2),
+                    PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, qaReportId2),
                     PatchOperation(dataPointType3, AcceptedDataPointSource.Custom, null, customDataPoint, customDataPointReason),
                 ) +
                     dataPoints
@@ -133,9 +131,10 @@ class DatasetJudgementTest {
                     it.dataPointType,
                     JudgementDetailsPatch(
                         it.acceptedSource,
-                        it.reporterUserIdOfAcceptedQaReport,
+                        null,
                         it.customDataPoint,
                         it.reasonForCustomDataPoint,
+                        it.acceptedQaReportId,
                     ),
                 )
             }

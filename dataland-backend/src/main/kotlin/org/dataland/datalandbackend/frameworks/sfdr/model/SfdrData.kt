@@ -4,6 +4,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.sfdr.model.environmental.SfdrEnvironmental
+import org.dataland.datalandbackend.frameworks.sfdr.model.financial.SfdrFinancial
 import org.dataland.datalandbackend.frameworks.sfdr.model.general.SfdrGeneral
 import org.dataland.datalandbackend.frameworks.sfdr.model.social.SfdrSocial
 import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedReportsListValidator
@@ -17,6 +18,8 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedRe
 data class SfdrData(
     @field:Valid()
     val general: SfdrGeneral? = null,
+    @field:Valid()
+    val financial: SfdrFinancial? = null,
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
     @field:Valid()
