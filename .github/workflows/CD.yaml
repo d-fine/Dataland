@@ -42,35 +42,6 @@ jobs:
           vars: ${{ toJSON(vars) }}
   rebuild-docker-images:
     uses: ./.github/workflows/RebuildDockerImages.yaml
-  upload-dataland-frontend-client:
-    runs-on: ubuntu-latest
-    needs:
-      - rebuild-docker-images
-    steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          task: "upload-dataland-frontend-client"
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - name: Extract Frontend Client from E2Etest Image
-        run: |
-          mkdir -p ./dataland-frontend/ 
-          docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
-      - name: Store generated frontend dependencies for use by cypress
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
-        with:
-          name: frontendDependencies
-          path: |
-            ./dataland-frontend/build/clients/
-            ./dataland-frontend/build/shared-elements
   merge-artefacts:
     runs-on: ubuntu-latest
     needs:
@@ -211,13 +182,14 @@ jobs:
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - deploy-to-server-with-latest-built-images
-      - upload-dataland-frontend-client
+      - rebuild-docker-images
     strategy:
       fail-fast: false
       matrix:
         testGroup: [ 1,2,3,4,5,6 ]
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -248,11 +220,6 @@ jobs:
             echo "Error: Failed to login to ghcr.io after 3 attempts."
             exit 1
           fi
-      - name: Download frontend dependencies
-        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
-        with:
-          name: frontendDependencies
-          path: ./dataland-frontend/build/
       - name: Install UPower to disable warning messages
         run: sudo apt update && sudo apt install upower
       - name: Setup SSH tunnel to admin NGINX
@@ -267,8 +234,9 @@ jobs:
           TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: check deployment
-        run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ vars.TARGETSERVER_URL }}"
+        run: ./testing/execute_e2e_tests_against_remote.sh
         env:
+          TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
           ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com,dev3.dataland.com,clone.dataland.com"
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
