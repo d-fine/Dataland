@@ -2,12 +2,12 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.general
 
 import jakarta.validation.Valid
-import org.dataland.datalandqaservice.frameworks.sfdr.model.general.general.SfdrGeneralGeneral
+import org.dataland.datalandqaservice.frameworks.sfdr.model.general.company.SfdrGeneralCompany
 
 /**
  * The QA-model for the General section
  */
 data class SfdrGeneral(
     @field:Valid()
-    val general: SfdrGeneralGeneral? = null,
+    val company: SfdrGeneralCompany? = null,
 )

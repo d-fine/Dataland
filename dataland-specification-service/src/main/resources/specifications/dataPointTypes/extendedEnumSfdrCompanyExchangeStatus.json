@@ -1,0 +1,9 @@
+{
+  "id" : "extendedEnumSfdrCompanyExchangeStatus",
+  "name" : "Company exchange status",
+  "businessDefinition" : "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
+  "dataPointBaseTypeId" : "extendedEnumSfdrCompanyExchangeStatus",
+  "frameworkOwnership" : [ "sfdr" ],
+  "constraints" : null,
+  "calculationRules" : [ ]
+}

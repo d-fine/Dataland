@@ -3,7 +3,7 @@
   "name" : "Market capitalization",
   "businessDefinition" : "Market capitalization in EUR calculated as: number of shares * price per share",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "pcaf" ],
+  "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
   "calculationRules" : [ ]
 }

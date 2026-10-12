@@ -29,8 +29,8 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DatasetJudgementTest {
     private val testDataProvider =
-        FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
-    private val dummyDataset = testDataProvider.getTData(1).first()
+        FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java)
+    private val dummyDataset = testDataProvider.getByCompanyName("Sfdr-dataset-with-no-null-fields").t
     private val dummyReportingPeriod = "2026"
     private val apiAccessor = ApiAccessor()
     private val dataPointType1 = "extendedDecimalScope1GhgEmissionsInTonnes"
