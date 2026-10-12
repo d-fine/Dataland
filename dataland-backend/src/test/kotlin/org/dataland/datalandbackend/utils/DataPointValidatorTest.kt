@@ -44,6 +44,9 @@ class DataPointValidatorTest {
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
     private val currencyDataPointWithUnknownProperty = "./dataPointValidation/currencyDataPointWithUnknownProperty.json"
     private val currencyDataPointWithBrokenEnum = "./dataPointValidation/currencyDataPointWithBrokenEnum.json"
+    private val currencyDataPointWithNullCurrency = "./dataPointValidation/currencyDataPointWithNullCurrency.json"
+    private val currencyDataPointWithNullValue = "./dataPointValidation/currencyDataPointWithNullValue.json"
+    private val currencyDataPointWithInvalidCurrency = "./dataPointValidation/currencyDataPointWithInvalidCurrency.json"
     private val activityDataPoint = "./dataPointValidation/activityDataPoint.json"
 
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
@@ -71,6 +74,27 @@ class DataPointValidatorTest {
     fun `check that invalid inputs are rejected`() {
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateConsistency(getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that a currency data point with a value but no currency is rejected`() {
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithNullCurrency), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that a currency data point with a currency but no value is rejected`() {
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithNullValue), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that a currency data point with an unknown currency code is rejected`() {
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithInvalidCurrency), validationClass, correlationId)
         }
     }
 

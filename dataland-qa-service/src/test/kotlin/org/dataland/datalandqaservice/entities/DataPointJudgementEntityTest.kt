@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.utils.PreApprovalServiceTestUtils
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -38,19 +39,10 @@ class DataPointJudgementEntityTest {
         val reporterBOnlyReport = buildQaReport(reporterB, uploadTime = 150L, verdict = QaReportDataPointVerdict.QaAccepted)
 
         val entity =
-            DataPointJudgementEntity(
+            PreApprovalServiceTestUtils.buildDataPointJudgementEntity(
+                qaReports = listOf(reporterAOldestRejected, reporterALatestAccepted, reporterAMiddleRejected, reporterBOnlyReport),
                 dataPointType = dataPointType,
                 dataPointId = dataPointId,
-                qaReports =
-                    mutableListOf(
-                        reporterAOldestRejected,
-                        reporterALatestAccepted,
-                        reporterAMiddleRejected,
-                        reporterBOnlyReport,
-                    ),
-                acceptedSource = null,
-                reporterUserIdOfAcceptedQaReport = null,
-                customValue = null,
             )
 
         val resultingQaReports = entity.toDataPointJudgementDetails().qaReports

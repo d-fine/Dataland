@@ -59,11 +59,11 @@
 					"shareOfTemporaryWorkers": "Greater50",
 					"annualTotalRevenue": {
 						"amount": 5019734207.38,
-						"currency": "MOP"
+						"currency": "MZN"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1143382641.36,
-						"currency": "KHR"
+						"currency": "LAK"
 					}
 				},
 				"productionSpecific": {
@@ -881,7 +881,7 @@
 					"shareOfTemporaryWorkers": "Between10And25",
 					"annualTotalRevenue": {
 						"amount": 610819475.57,
-						"currency": "STN"
+						"currency": "TZS"
 					},
 					"fixedAndWorkingCapital": null
 				},
@@ -1770,7 +1770,7 @@
 					"shareOfTemporaryWorkers": null,
 					"annualTotalRevenue": {
 						"amount": null,
-						"currency": "KYD"
+						"currency": "LYD"
 					},
 					"fixedAndWorkingCapital": null
 				},
@@ -2595,11 +2595,11 @@
 					"shareOfTemporaryWorkers": "Greater50",
 					"annualTotalRevenue": {
 						"amount": 1664105025.14,
-						"currency": "RON"
+						"currency": "SKK"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1725015461.88,
-						"currency": "LAK"
+						"currency": "MGA"
 					}
 				},
 				"productionSpecific": {
@@ -3551,7 +3551,7 @@
 					"shareOfTemporaryWorkers": null,
 					"annualTotalRevenue": {
 						"amount": 1436636578.17,
-						"currency": "CVE"
+						"currency": "CUP"
 					},
 					"fixedAndWorkingCapital": null
 				},
@@ -4368,11 +4368,11 @@
 					"shareOfTemporaryWorkers": "Smaller10",
 					"annualTotalRevenue": {
 						"amount": 3069038151.16,
-						"currency": "BBD"
+						"currency": "BDT"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 6814842360,
-						"currency": "AUD"
+						"currency": "AWG"
 					}
 				},
 				"productionSpecific": {
@@ -5253,11 +5253,11 @@
 					"shareOfTemporaryWorkers": "Between25And50",
 					"annualTotalRevenue": {
 						"amount": 7997827532.91,
-						"currency": "TWD"
+						"currency": "XAD"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 5697337134.44,
-						"currency": "JPY"
+						"currency": "KRW"
 					}
 				},
 				"productionSpecific": {
@@ -6169,11 +6169,11 @@
 					"shareOfTemporaryWorkers": "Between10And25",
 					"annualTotalRevenue": {
 						"amount": 9533714904,
-						"currency": "UYU"
+						"currency": "XBD"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 8583528630.19,
-						"currency": "BMD"
+						"currency": "BND"
 					}
 				},
 				"productionSpecific": {
@@ -6983,11 +6983,11 @@
 					"shareOfTemporaryWorkers": "Between25And50",
 					"annualTotalRevenue": {
 						"amount": 5604994190.45,
-						"currency": "OMR"
+						"currency": "RSD"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": null,
-						"currency": "BIF"
+						"currency": "BMD"
 					}
 				},
 				"productionSpecific": {
@@ -7874,11 +7874,11 @@
 					"shareOfTemporaryWorkers": "Between25And50",
 					"annualTotalRevenue": {
 						"amount": 1506178936.75,
-						"currency": "KWD"
+						"currency": "LUF"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1707614641.82,
-						"currency": "SRD"
+						"currency": "TTD"
 					}
 				},
 				"productionSpecific": {

@@ -21,6 +21,10 @@ import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
+    private companion object {
+        const val DUMMY_BASE_TYPE_ID = "extendedCurrency"
+    }
+
     private fun assertMatches(
         entity: DatasetJudgementEntity,
         response: DatasetJudgementResponse,
@@ -166,9 +170,17 @@ class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
         )
         assertEquals(1, result.dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]?.qaReports?.size)
         assertEquals("Dummy User", result.qaJudgeUserName)
+        assertEquals(
+            DUMMY_BASE_TYPE_ID,
+            result.dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]?.dataPointBaseType,
+        )
     }
 
     private fun stubsForPostDatasetJudgement() {
+        doReturn(DUMMY_BASE_TYPE_ID)
+            .whenever(datasetJudgementSupportService)
+            .resolveBaseTypeId(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE)
+
         doReturn(mapOf(mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE to mockDatasetJudgementEntityForTest.dummyDatapointId))
             .whenever(datasetJudgementSupportService)
             .getContainedDataPoints(any())

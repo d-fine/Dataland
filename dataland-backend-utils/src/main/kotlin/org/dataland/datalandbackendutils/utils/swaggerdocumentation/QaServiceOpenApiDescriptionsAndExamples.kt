@@ -109,6 +109,11 @@ object QaServiceOpenApiDescriptionsAndExamples {
         "{ \"areAllQaReportsAccepted\": true, \"dataPointEligible\": true, " +
             "\"passesRandomSampling\": true, \"passesSignificanceCheck\": true }"
 
+    const val DATA_POINT_BASE_TYPE_DESCRIPTION =
+        "The id of the base type of this data point type, as defined in the specification service. " +
+            "Null for judgements that were created before the base type was stored."
+    const val DATA_POINT_BASE_TYPE_EXAMPLE = "extendedCurrency"
+
     const val PRE_APPROVAL_EXEMPT_FIELDS_DESCRIPTION =
         "Map of framework to the set of data point type identifiers that are exempt from automatic pre-approval " +
             "for that framework. Exempt fields must always be reviewed manually, regardless of their QA report verdicts."
