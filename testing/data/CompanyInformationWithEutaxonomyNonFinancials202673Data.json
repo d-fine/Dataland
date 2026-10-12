@@ -517,7 +517,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Kris, Littel and Hintz",
-			"headquarters": "South Clementfurt",
+			"headquarters": "South Chloefurt",
 			"headquartersPostalCode": "57918",
 			"sector": "smart contracts",
 			"identifiers": {
@@ -542,10 +542,10 @@
 			},
 			"countryCode": "NC",
 			"companyContactDetails": [
-				"Felix55@example.com",
-				"Alena.Luettgen@example.com",
-				"Domenic27@example.com",
-				"Belinda1@example.com"
+				"Ewell55@example.com",
+				"Alexa.Luettgen@example.com",
+				"Ebba27@example.com",
+				"Annabell1@example.com"
 			],
 			"companyAlternativeNames": [
 				"Breitenberg LLC",
@@ -1230,9 +1230,9 @@
 			},
 			"countryCode": "PG",
 			"companyContactDetails": [
-				"Yesenia27@example.com",
-				"Nina_Borer@example.com",
-				"Ara54@example.com"
+				"Van27@example.com",
+				"Moriah_Borer@example.com",
+				"Aniyah54@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
@@ -1959,7 +1959,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Veum - Stokes",
-			"headquarters": "Shanelborough",
+			"headquarters": "Sageborough",
 			"headquartersPostalCode": null,
 			"sector": null,
 			"identifiers": {
@@ -1983,7 +1983,7 @@
 			},
 			"countryCode": "VE",
 			"companyContactDetails": [
-				"Timmothy_Predovic@example.com"
+				"Skylar_Predovic@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bosco Group",
@@ -2521,7 +2521,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Labadie, Fadel-Considine and Predovic",
-			"headquarters": "Montestead",
+			"headquarters": "Milliestead",
 			"headquartersPostalCode": "32931-3348",
 			"sector": null,
 			"identifiers": {
@@ -3221,7 +3221,7 @@
 			},
 			"countryCode": "OM",
 			"companyContactDetails": [
-				"Devin.McGlynn80@example.com"
+				"Deondre.McGlynn80@example.com"
 			],
 			"companyAlternativeNames": [
 				"Borer - Schumm",
@@ -4015,7 +4015,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Volkman - Price",
-			"headquarters": "North Victorbury",
+			"headquarters": "North Virgilbury",
 			"headquartersPostalCode": null,
 			"sector": null,
 			"identifiers": {
@@ -4041,8 +4041,8 @@
 			},
 			"countryCode": "VC",
 			"companyContactDetails": [
-				"Nicole_Smitham75@example.com",
-				"Cecile_Luettgen46@example.com"
+				"Monica_Smitham75@example.com",
+				"Casey_Luettgen46@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
@@ -4765,7 +4765,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Walsh - Moen",
-			"headquarters": "Lake Patcester",
+			"headquarters": "Lake Presleycester",
 			"headquartersPostalCode": "44576-7462",
 			"sector": null,
 			"identifiers": {
@@ -4783,8 +4783,8 @@
 			},
 			"countryCode": "CH",
 			"companyContactDetails": [
-				"Johanna_Jerde@example.com",
-				"Jordane68@example.com"
+				"Jeannette_Jerde@example.com",
+				"Jedidiah68@example.com"
 			],
 			"companyAlternativeNames": [
 				"Volkman - Stark"
@@ -5558,8 +5558,8 @@
 			},
 			"countryCode": "AQ",
 			"companyContactDetails": [
-				"Dylan_Wolff@example.com",
-				"Vivianne96@example.com"
+				"Duane_Wolff@example.com",
+				"Webster96@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Sole Trader",
@@ -6291,7 +6291,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Veum and Sons",
-			"headquarters": "Lake Austin",
+			"headquarters": "Lake Axel",
 			"headquartersPostalCode": null,
 			"sector": "partnerships",
 			"identifiers": {
@@ -6314,7 +6314,7 @@
 			},
 			"countryCode": "GM",
 			"companyContactDetails": [
-				"Jaden73@example.com"
+				"Jennie73@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bartell and Sons",

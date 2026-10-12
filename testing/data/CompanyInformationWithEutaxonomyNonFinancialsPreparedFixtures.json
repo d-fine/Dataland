@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-alpha",
-			"headquarters": "Lake Devon",
+			"headquarters": "Lake Dillon",
 			"headquartersPostalCode": "35074-7098",
 			"sector": null,
 			"identifiers": {
@@ -26,11 +26,11 @@
 			},
 			"countryCode": "NI",
 			"companyContactDetails": [
-				"Taurean.Wilderman@example.com",
-				"Jazmyne_Ankunding36@example.com",
-				"Chris.Parker39@example.com",
-				"Walker64@example.com",
-				"Effie_Carter@example.com"
+				"Tito.Wilderman@example.com",
+				"Jamar_Ankunding36@example.com",
+				"Chet.Parker39@example.com",
+				"Tristin64@example.com",
+				"Easton_Carter@example.com"
 			],
 			"companyAlternativeNames": [
 				"Feil, Champlin and Hauck",
@@ -1846,7 +1846,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-beta",
-			"headquarters": "Port Gregorystead",
+			"headquarters": "Port Gradystead",
 			"headquartersPostalCode": "27693",
 			"sector": "systems",
 			"identifiers": {
@@ -1865,7 +1865,7 @@
 			},
 			"countryCode": "CZ",
 			"companyContactDetails": [
-				"Camille_Aufderhar@example.com"
+				"Beryl_Aufderhar@example.com"
 			],
 			"companyAlternativeNames": [
 				"Larkin - Lemke"
@@ -3806,7 +3806,7 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials-gamma",
-			"headquarters": "Fort Lavernefurt",
+			"headquarters": "Fort Kristinafurt",
 			"headquartersPostalCode": "44080-5045",
 			"sector": "synergies",
 			"identifiers": {
@@ -3830,8 +3830,8 @@
 			},
 			"countryCode": "CF",
 			"companyContactDetails": [
-				"Olive.Jenkins58@example.com",
-				"Annabel31@example.com"
+				"Nadine.Jenkins58@example.com",
+				"Augustus31@example.com"
 			],
 			"companyAlternativeNames": [
 				"Abshire, Stracke and D'Amore"
@@ -5741,7 +5741,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForIncompleteReferencedReport",
-			"headquarters": "South Aftonworth",
+			"headquarters": "South Aimeeworth",
 			"headquartersPostalCode": "76586-3306",
 			"sector": "ROI",
 			"identifiers": {

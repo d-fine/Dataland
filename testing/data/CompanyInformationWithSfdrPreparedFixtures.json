@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "companyWithOneFilledSfdrSubcategory",
-			"headquarters": "South Gailside",
+			"headquarters": "South Euniceside",
 			"headquartersPostalCode": "41605-0274",
 			"sector": "technologies",
 			"identifiers": {
@@ -21,8 +21,8 @@
 			},
 			"countryCode": "LK",
 			"companyContactDetails": [
-				"Katelin.Raynor@example.com",
-				"Lela.West27@example.com"
+				"Jordi.Raynor@example.com",
+				"Kylie.West27@example.com"
 			],
 			"companyAlternativeNames": [
 				"Abshire-Franey, McClure and Rowe",
@@ -221,7 +221,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForBrokenFileReference",
-			"headquarters": "Mayratown",
+			"headquarters": "Morristown",
 			"headquartersPostalCode": "23929",
 			"sector": "convergence",
 			"identifiers": {
@@ -241,9 +241,9 @@
 			},
 			"countryCode": "SI",
 			"companyContactDetails": [
-				"Johnpaul68@example.com",
-				"Gaston83@example.com",
-				"Sara16@example.com"
+				"Katharina68@example.com",
+				"Ira83@example.com",
+				"Ruth16@example.com"
 			],
 			"companyAlternativeNames": [
 				"Carter - Hoppe"
@@ -1617,7 +1617,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForIncompleteReferencedReport",
-			"headquarters": "Fort Brennon",
+			"headquarters": "Fort Blair",
 			"headquartersPostalCode": "33732-5321",
 			"sector": "networks",
 			"identifiers": {
@@ -1637,10 +1637,10 @@
 			},
 			"countryCode": "TV",
 			"companyContactDetails": [
-				"Wallace.Abernathy@example.com",
-				"Chauncey.Lockman2@example.com",
-				"Doyle31@example.com",
-				"Benjamin10@example.com"
+				"Warren.Abernathy@example.com",
+				"Cathy.Lockman2@example.com",
+				"Dominic31@example.com",
+				"Ben10@example.com"
 			],
 			"companyAlternativeNames": [
 				"Johnson - MacGyver",
@@ -3030,10 +3030,10 @@
 			},
 			"countryCode": "GQ",
 			"companyContactDetails": [
-				"Sigurd_Stoltenberg41@example.com",
-				"Sunny_Lubowitz84@example.com",
-				"Nigel32@example.com",
-				"Wendell41@example.com"
+				"Shyanne_Stoltenberg41@example.com",
+				"Shea_Lubowitz84@example.com",
+				"Orval32@example.com",
+				"Wilbur41@example.com"
 			],
 			"companyAlternativeNames": [
 				"Spencer - Boyer"
@@ -3064,7 +3064,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Sfdr-dataset-with-no-null-fields",
-			"headquarters": "New Winifred",
+			"headquarters": "New Zelda",
 			"headquartersPostalCode": "88953-0563",
 			"sector": "convergence",
 			"identifiers": {
@@ -3089,11 +3089,11 @@
 			},
 			"countryCode": "NU",
 			"companyContactDetails": [
-				"Matilda.Roob-Kreiger@example.com",
-				"Danielle_Goldner@example.com",
-				"Luz.Hermann94@example.com",
-				"Raul43@example.com",
-				"Shany_Botsford-Shanahan@example.com"
+				"Mikel.Roob-Kreiger@example.com",
+				"Cierra_Goldner@example.com",
+				"Lindsay.Hermann94@example.com",
+				"Pedro43@example.com",
+				"Shayna_Botsford-Shanahan@example.com"
 			],
 			"companyAlternativeNames": [
 				"Buckridge Group",
@@ -5883,10 +5883,10 @@
 			},
 			"countryCode": "CM",
 			"companyContactDetails": [
-				"Michale94@example.com",
-				"Louis.Emard@example.com",
-				"Paulette80@example.com",
-				"Neil.Jenkins@example.com"
+				"Melany94@example.com",
+				"Ladarius.Emard@example.com",
+				"Ofelia80@example.com",
+				"Milton.Jenkins@example.com"
 			],
 			"companyAlternativeNames": [
 				"Bergstrom and Sons",
@@ -7262,7 +7262,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Sfdr-dataset-with-invalid-negative-long-input",
-			"headquarters": "North Ofelia",
+			"headquarters": "North Pat",
 			"headquartersPostalCode": "74769-3722",
 			"sector": "experiences",
 			"identifiers": {
@@ -7282,10 +7282,10 @@
 			},
 			"countryCode": "CN",
 			"companyContactDetails": [
-				"Eldridge23@example.com",
-				"Rosalia.Gleichner47@example.com",
-				"Percival_Zemlak@example.com",
-				"Michael.Bradtke-Kerluke@example.com"
+				"Elisha23@example.com",
+				"Rudy.Gleichner47@example.com",
+				"Providenci_Zemlak@example.com",
+				"Marquise.Bradtke-Kerluke@example.com"
 			],
 			"companyAlternativeNames": [
 				"Auer - Pouros",
@@ -8687,7 +8687,7 @@
 			},
 			"countryCode": "IR",
 			"companyContactDetails": [
-				"Courtney77@example.com"
+				"Consuelo77@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": "Limited Liability Partnership (LLP)",
@@ -10054,7 +10054,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Sfdr-dataset-with-invalid-percentage-input",
-			"headquarters": "West Aniyaside",
+			"headquarters": "West Ariside",
 			"headquartersPostalCode": "44065-3773",
 			"sector": "experiences",
 			"identifiers": {
@@ -10077,10 +10077,10 @@
 			},
 			"countryCode": "TG",
 			"companyContactDetails": [
-				"Karl_Jacobi@example.com",
+				"Josh_Jacobi@example.com",
 				"Adam_Beer-Shields12@example.com",
-				"Alan.Keebler@example.com",
-				"Lesley_Marquardt@example.com"
+				"Adolphus.Keebler@example.com",
+				"Lamar_Marquardt@example.com"
 			],
 			"companyAlternativeNames": [
 				"Hammes, Lehner and Cruickshank",
@@ -11452,7 +11452,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Sfdr-dataset-with-two-invalid-inputs",
-			"headquarters": "New Alvera",
+			"headquarters": "New Alverta",
 			"headquartersPostalCode": "19495",
 			"sector": "content",
 			"identifiers": {
@@ -11473,10 +11473,10 @@
 			},
 			"countryCode": "GP",
 			"companyContactDetails": [
-				"Veronica73@example.com",
-				"Roel38@example.com",
-				"Florida.Anderson9@example.com",
-				"Bessie_Conroy@example.com"
+				"Vickie73@example.com",
+				"Rowland38@example.com",
+				"Fletcher.Anderson9@example.com",
+				"Antonetta_Conroy@example.com"
 			],
 			"companyAlternativeNames": [
 				"Cronin, Stiedemann and Kuhn",
@@ -12872,8 +12872,8 @@
 			},
 			"countryCode": "FO",
 			"companyContactDetails": [
-				"Verdie49@example.com",
-				"Donnie7@example.com"
+				"Vinnie49@example.com",
+				"Dino7@example.com"
 			],
 			"companyAlternativeNames": [
 				"Durgan - Schultz",
@@ -14207,7 +14207,7 @@
 	{
 		"companyInformation": {
 			"companyName": "test company with lei and existing child",
-			"headquarters": "Lake Paolo",
+			"headquarters": "Lake Pink",
 			"headquartersPostalCode": "46234",
 			"sector": null,
 			"identifiers": {
@@ -14229,10 +14229,10 @@
 			},
 			"countryCode": "VE",
 			"companyContactDetails": [
-				"Salvatore.Balistreri38@example.com",
-				"Tia.Jacobs58@example.com",
-				"Elna65@example.com",
-				"Guadalupe_Bailey@example.com"
+				"Rufus.Balistreri38@example.com",
+				"Skye.Jacobs58@example.com",
+				"Elian65@example.com",
+				"Hellen_Bailey@example.com"
 			],
 			"companyAlternativeNames": [
 				"Hammes - Kunze",
@@ -15603,7 +15603,7 @@
 	{
 		"companyInformation": {
 			"companyName": "test company with parent lei and existing parent",
-			"headquarters": "New Samview",
+			"headquarters": "New Russview",
 			"headquartersPostalCode": "17036-7967",
 			"sector": "solutions",
 			"identifiers": {
@@ -15623,11 +15623,11 @@
 			},
 			"countryCode": "TZ",
 			"companyContactDetails": [
-				"Aurelia33@example.com",
-				"Irving43@example.com",
-				"Kathy52@example.com",
-				"Sienna71@example.com",
-				"Carlton_Fay56@example.com"
+				"August33@example.com",
+				"Howard43@example.com",
+				"Kamille52@example.com",
+				"Sammy71@example.com",
+				"Carl_Fay56@example.com"
 			],
 			"companyAlternativeNames": [
 				"Daniel, Adams and Legros",
@@ -17003,7 +17003,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Schmitt and Sons - FAKE IDENTIFIER FOR TEST = ABS",
-			"headquarters": "Nathanshire",
+			"headquarters": "Michaelshire",
 			"headquartersPostalCode": "34385",
 			"sector": "platforms",
 			"identifiers": {
@@ -17025,7 +17025,7 @@
 			},
 			"countryCode": "PT",
 			"companyContactDetails": [
-				"Hugo93@example.com"
+				"Hilario93@example.com"
 			],
 			"companyAlternativeNames": [
 				"Grimes Group",
@@ -18402,7 +18402,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Littel, Prohaska and Luettgen - FAKE IDENTIFIER FOR TEST = ABS",
-			"headquarters": "Fort Sadieside",
+			"headquarters": "Fort Roseside",
 			"headquartersPostalCode": "44775",
 			"sector": "markets",
 			"identifiers": {
@@ -19798,7 +19798,7 @@
 	{
 		"companyInformation": {
 			"companyName": "Predovic, Mraz and Baumbach - FAKE IDENTIFIER FOR TEST = ABS",
-			"headquarters": "Sigridbury",
+			"headquarters": "Shyannbury",
 			"headquartersPostalCode": "99255",
 			"sector": null,
 			"identifiers": {
@@ -19817,9 +19817,9 @@
 			},
 			"countryCode": "VA",
 			"companyContactDetails": [
-				"Dale_Corkery@example.com",
-				"Caroline6@example.com",
-				"Cesar_Upton94@example.com"
+				"Dalton_Corkery@example.com",
+				"Breana6@example.com",
+				"Celestino_Upton94@example.com"
 			],
 			"companyAlternativeNames": [
 				"Predovic - Stiedemann"

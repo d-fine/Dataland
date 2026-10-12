@@ -2,7 +2,7 @@
 	{
 		"companyInformation": {
 			"companyName": "lksg-all-fields",
-			"headquarters": "Tyronetown",
+			"headquarters": "Vernontown",
 			"headquartersPostalCode": "82239",
 			"sector": "users",
 			"identifiers": {
@@ -29,10 +29,10 @@
 			},
 			"countryCode": "BR",
 			"companyContactDetails": [
-				"Jeanette.Krajcik20@example.com",
-				"Marco72@example.com",
-				"Rossie.Huels45@example.com",
-				"Gwen_White@example.com"
+				"Iris.Krajcik20@example.com",
+				"Linwood72@example.com",
+				"Rylan.Huels45@example.com",
+				"Genesis_White@example.com"
 			],
 			"companyAlternativeNames": [
 				"Murray and Sons",
@@ -107,9 +107,9 @@
 						{
 							"nameOfProductionSite": "Jaskolski LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Darian Valley 89190",
+								"streetAndHouseNumber": "Daphney Valley 89190",
 								"postalCode": "22740-1179",
-								"city": "Melodyborough",
+								"city": "Marisaborough",
 								"state": "Alaska",
 								"country": "MO"
 							},
@@ -1095,7 +1095,7 @@
 			},
 			"countryCode": "GT",
 			"companyContactDetails": [
-				"Carroll.Beier63@example.com"
+				"Carlton.Beier63@example.com"
 			],
 			"companyAlternativeNames": [
 				"Lang and Sons",
@@ -1134,9 +1134,9 @@
 						{
 							"nameOfProductionSite": "Wilderman, Schumm and Ratke",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Magdalen View 43678",
+								"streetAndHouseNumber": "Manuela View 43678",
 								"postalCode": "09422",
-								"city": "New Germaineshire",
+								"city": "New Gwenshire",
 								"state": "Iowa",
 								"country": "VC"
 							},
@@ -1153,7 +1153,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "Heath Road 2865",
 								"postalCode": "16152-9769",
-								"city": "New Deontaeland",
+								"city": "New Dianneland",
 								"state": "Tennessee",
 								"country": "MQ"
 							},
@@ -1993,7 +1993,7 @@
 	{
 		"companyInformation": {
 			"companyName": "lksg-with-nulls-and-no-child-labor-under-18",
-			"headquarters": "West Marie",
+			"headquarters": "West Madilyn",
 			"headquartersPostalCode": "45300-4716",
 			"sector": "communities",
 			"identifiers": {
@@ -2083,7 +2083,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "Sycamore Close 4029",
 								"postalCode": "62305",
-								"city": "Malachiton",
+								"city": "Marioton",
 								"state": "Pennsylvania",
 								"country": "MH"
 							},
@@ -2854,7 +2854,7 @@
 	{
 		"companyInformation": {
 			"companyName": "lksg-with-procurement-categories",
-			"headquarters": "Lake Pansyworth",
+			"headquarters": "Lake Pinkworth",
 			"headquartersPostalCode": null,
 			"sector": "architectures",
 			"identifiers": {
@@ -2875,11 +2875,11 @@
 			},
 			"countryCode": "PL",
 			"companyContactDetails": [
-				"Shawna_Hudson@example.com",
-				"Aubrey46@example.com",
-				"Shaniya.Green34@example.com",
-				"Cassandra.Shields@example.com",
-				"Ed90@example.com"
+				"Sallie_Hudson@example.com",
+				"Austin46@example.com",
+				"Spencer.Green34@example.com",
+				"Brielle.Shields@example.com",
+				"Easton90@example.com"
 			],
 			"companyAlternativeNames": [
 				"Conn and Sons",
@@ -2947,7 +2947,7 @@
 						{
 							"nameOfProductionSite": "Donnelly LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Benny Mount 58907",
+								"streetAndHouseNumber": "Benton Mount 58907",
 								"postalCode": "59184",
 								"city": "Grimesfort",
 								"state": "Pennsylvania",
@@ -2964,9 +2964,9 @@
 						{
 							"nameOfProductionSite": "Lind LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Hertha Cape 25351",
+								"streetAndHouseNumber": "Gus Cape 25351",
 								"postalCode": "66059",
-								"city": "Mckaylaboro",
+								"city": "Maybellboro",
 								"state": "Michigan",
 								"country": "DM"
 							},
@@ -2980,9 +2980,9 @@
 						{
 							"nameOfProductionSite": "Schroeder Inc",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cecelia Gateway 75597",
+								"streetAndHouseNumber": "Caleigh Gateway 75597",
 								"postalCode": "95351",
-								"city": "Dedricbury",
+								"city": "Delilahbury",
 								"state": "Iowa",
 								"country": "ST"
 							},
@@ -3010,7 +3010,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "Mante Plain 252",
 								"postalCode": "18899-5600",
-								"city": "New Aliside",
+								"city": "New Ambroseside",
 								"state": "Iowa",
 								"country": "SI"
 							},
@@ -3931,10 +3931,10 @@
 			},
 			"countryCode": "SJ",
 			"companyContactDetails": [
-				"Thomas88@example.com",
-				"Laney32@example.com",
-				"Nathan22@example.com",
-				"Marcella.McDermott30@example.com"
+				"Tom88@example.com",
+				"Lila32@example.com",
+				"Micheal22@example.com",
+				"Luisa.McDermott30@example.com"
 			],
 			"companyAlternativeNames": [
 				"Rodriguez, Towne and Prosacco"
@@ -4738,10 +4738,10 @@
 			},
 			"countryCode": "CM",
 			"companyContactDetails": [
-				"Kelsi.Vandervort91@example.com",
-				"Allen_Ondricka16@example.com",
-				"Fred59@example.com",
-				"Vernon.McLaughlin@example.com"
+				"Julian.Vandervort91@example.com",
+				"Alfred_Ondricka16@example.com",
+				"Forrest59@example.com",
+				"Vince.McLaughlin@example.com"
 			],
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
@@ -4780,7 +4780,7 @@
 	{
 		"companyInformation": {
 			"companyName": "six-lksg-data-sets-in-different-years",
-			"headquarters": "West Fred",
+			"headquarters": "West Forrest",
 			"headquartersPostalCode": "17429",
 			"sector": null,
 			"identifiers": {
@@ -4801,10 +4801,10 @@
 			"countryCode": "TF",
 			"companyContactDetails": [
 				"Tami_Larson39@example.com",
-				"Judah.Tremblay24@example.com",
-				"Jasmine.Batz63@example.com",
-				"Jada92@example.com",
-				"Myrl12@example.com"
+				"Kendall.Tremblay24@example.com",
+				"Imogene.Batz63@example.com",
+				"Jenna92@example.com",
+				"Mona12@example.com"
 			],
 			"companyAlternativeNames": [
 				"Romaguera LLC"
@@ -4850,7 +4850,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "South Road 5044",
 								"postalCode": "30426-8932",
-								"city": "West Cary",
+								"city": "West Carter",
 								"state": null,
 								"country": "UA"
 							},
@@ -4880,7 +4880,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
 								"postalCode": null,
-								"city": "Armandofort",
+								"city": "Arnoldfort",
 								"state": "Pennsylvania",
 								"country": "UM"
 							},
@@ -4897,7 +4897,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
 								"postalCode": "86001",
-								"city": "New Alex",
+								"city": "New Albert",
 								"state": "Georgia",
 								"country": "DK"
 							},
@@ -5650,7 +5650,7 @@
 	{
 		"companyInformation": {
 			"companyName": "one-lksg-data-set-with-two-production-sites",
-			"headquarters": "New Gabrielstead",
+			"headquarters": "New Frederikstead",
 			"headquartersPostalCode": "39708-7583",
 			"sector": "schemas",
 			"identifiers": {
@@ -5719,7 +5719,7 @@
 						{
 							"nameOfProductionSite": "Rau, Macejkovic-Wuckert and Berge",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ernesto Hills 235",
+								"streetAndHouseNumber": "Ernest Hills 235",
 								"postalCode": "23265-0764",
 								"city": "Gleichnershire",
 								"state": "Maryland",
@@ -5738,7 +5738,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "Gottlieb Springs 12188",
 								"postalCode": "32218",
-								"city": "South Tremaine",
+								"city": "South Triston",
 								"state": "Tennessee",
 								"country": "CH"
 							},
@@ -6486,7 +6486,7 @@
 	{
 		"companyInformation": {
 			"companyName": "lksg-with-subcontracting-countries",
-			"headquarters": "North Winifred",
+			"headquarters": "North Zena",
 			"headquartersPostalCode": "14208",
 			"sector": "e-commerce",
 			"identifiers": {
@@ -6510,10 +6510,10 @@
 			"countryCode": "BT",
 			"companyContactDetails": [
 				"Benny78@example.com",
-				"Ken_Marks79@example.com",
-				"Gideon1@example.com",
-				"Geneva86@example.com",
-				"Ruby.Brown@example.com"
+				"Judah_Marks79@example.com",
+				"Garth1@example.com",
+				"Evelyn86@example.com",
+				"Rosa.Brown@example.com"
 			],
 			"companyAlternativeNames": [
 				"Osinski Inc"
@@ -7551,9 +7551,9 @@
 						{
 							"nameOfProductionSite": "Hahn, Steuber and Toy",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ray Walk 218",
+								"streetAndHouseNumber": "Pete Walk 218",
 								"postalCode": "09777",
-								"city": "Mittiefort",
+								"city": "Newellfort",
 								"state": "Oklahoma",
 								"country": "GQ"
 							},
@@ -8437,7 +8437,7 @@
 	{
 		"companyInformation": {
 			"companyName": "LkSG-date-2023-04-18",
-			"headquarters": "Lake Thereseland",
+			"headquarters": "Lake Taraland",
 			"headquartersPostalCode": "00025-6414",
 			"sector": "technologies",
 			"identifiers": {
@@ -8458,8 +8458,8 @@
 			},
 			"countryCode": "UM",
 			"companyContactDetails": [
-				"Erling_Harris@example.com",
-				"Garfield26@example.com"
+				"Enrique_Harris@example.com",
+				"Hollis26@example.com"
 			],
 			"companyAlternativeNames": [
 				"Dibbert, McClure and Price",
@@ -8550,9 +8550,9 @@
 						{
 							"nameOfProductionSite": "Kuhlman, Welch-Kulas and Hintz",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Albert Viaduct 9498",
+								"streetAndHouseNumber": "Ahmad Viaduct 9498",
 								"postalCode": "23657-7584",
-								"city": "North Jeffry",
+								"city": "North Jules",
 								"state": "Connecticut",
 								"country": "MT"
 							},
@@ -9403,11 +9403,11 @@
 			},
 			"countryCode": "KE",
 			"companyContactDetails": [
-				"Henriette40@example.com",
-				"Wanda.Pfannerstill@example.com",
-				"Shaun.Veum@example.com",
-				"Marian_Sauer96@example.com",
-				"Charley.Predovic@example.com"
+				"Guillermo40@example.com",
+				"Yasmeen.Pfannerstill@example.com",
+				"Shawn.Veum@example.com",
+				"Madaline_Sauer96@example.com",
+				"Chandler.Predovic@example.com"
 			],
 			"companyAlternativeNames": [
 				"Greenholt-Sipes Inc",
@@ -9473,9 +9473,9 @@
 						{
 							"nameOfProductionSite": "Bogisich, Welch and Powlowski",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cary Walk 90559",
+								"streetAndHouseNumber": "Carter Walk 90559",
 								"postalCode": "92210-9319",
-								"city": "North Mateoville",
+								"city": "North Morganville",
 								"state": "Arkansas",
 								"country": "GL"
 							},
@@ -9486,9 +9486,9 @@
 						{
 							"nameOfProductionSite": "Bauch, Bogan and Conroy",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Inez Center 81704",
+								"streetAndHouseNumber": "Harriet Center 81704",
 								"postalCode": null,
-								"city": "Latoyafurt",
+								"city": "Kiarrafurt",
 								"state": "Arkansas",
 								"country": "FK"
 							},
@@ -9499,7 +9499,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "O'Keefe Pass 77405",
 								"postalCode": "03751-0303",
-								"city": "Port Ike",
+								"city": "Port Helmer",
 								"state": "Washington",
 								"country": "PW"
 							},
@@ -9529,7 +9529,7 @@
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": "S 4th Street 8331",
 								"postalCode": null,
-								"city": "Clairfort",
+								"city": "Chelseyfort",
 								"state": "Connecticut",
 								"country": "GN"
 							},
@@ -10294,7 +10294,7 @@
 	{
 		"companyInformation": {
 			"companyName": "LkSG-date-2022-07-30",
-			"headquarters": "Zackboro",
+			"headquarters": "Wymanboro",
 			"headquartersPostalCode": "95263-3501",
 			"sector": "supply-chains",
 			"identifiers": {
@@ -10316,11 +10316,11 @@
 			},
 			"countryCode": "SO",
 			"companyContactDetails": [
-				"Peggie7@example.com",
-				"Blanche38@example.com",
-				"Cristal_Mante@example.com",
-				"Rowland21@example.com",
-				"Danny.Gutkowski73@example.com"
+				"Rashad7@example.com",
+				"Audrey38@example.com",
+				"Darien_Mante@example.com",
+				"Salvatore21@example.com",
+				"Daren.Gutkowski73@example.com"
 			],
 			"companyAlternativeNames": [
 				"Daniel, Jakubowski-Reichert and Breitenberg",
@@ -10388,9 +10388,9 @@
 						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Martha Ferry 334",
+								"streetAndHouseNumber": "Malika Ferry 334",
 								"postalCode": "54903",
-								"city": "Fort Carriechester",
+								"city": "Fort Bridgetchester",
 								"state": "Utah",
 								"country": "NI"
 							},
@@ -10402,9 +10402,9 @@
 						{
 							"nameOfProductionSite": "Turcotte - O'Connell-Schuppe",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ellis Drives 6439",
+								"streetAndHouseNumber": "Elmer Drives 6439",
 								"postalCode": "09521",
-								"city": "South Reneechester",
+								"city": "South Pollychester",
 								"state": "Iowa",
 								"country": "ZM"
 							},

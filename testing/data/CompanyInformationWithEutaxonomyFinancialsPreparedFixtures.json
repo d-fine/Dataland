@@ -26,10 +26,10 @@
 			},
 			"countryCode": "CR",
 			"companyContactDetails": [
-				"Lulu95@example.com",
-				"Verna_West@example.com",
-				"Kenny.Kemmer-Ratke87@example.com",
-				"Sister32@example.com"
+				"Madonna95@example.com",
+				"Verona_West@example.com",
+				"Julian.Kemmer-Ratke87@example.com",
+				"Sylvester32@example.com"
 			],
 			"companyAlternativeNames": [
 				"Becker - Heathcote",
@@ -2969,7 +2969,7 @@
 			},
 			"countryCode": "NA",
 			"companyContactDetails": [
-				"Chadrick.Becker@example.com"
+				"Clyde.Becker@example.com"
 			],
 			"companyAlternativeNames": [
 				"Murray Inc",
@@ -3407,7 +3407,7 @@
 	{
 		"companyInformation": {
 			"companyName": "TestForIncompleteReferencedReport",
-			"headquarters": "North Tyson",
+			"headquarters": "North Teagan",
 			"headquartersPostalCode": "90055-8353",
 			"sector": "paradigms",
 			"identifiers": {
@@ -6331,7 +6331,7 @@
 	{
 		"companyInformation": {
 			"companyName": "minimalistic-all-field-types-dataset-for-blanket-test",
-			"headquarters": "West Juliastead",
+			"headquarters": "West Jodiestead",
 			"headquartersPostalCode": "71436-5453",
 			"sector": "mindshare",
 			"identifiers": {
