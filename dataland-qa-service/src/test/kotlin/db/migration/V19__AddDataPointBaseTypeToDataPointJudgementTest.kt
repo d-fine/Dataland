@@ -16,8 +16,8 @@ import java.sql.ResultSet
 import java.sql.Statement
 
 @Suppress("ClassName")
-class V17__AddDataPointBaseTypeToDataPointJudgementTest {
-    private val migration = V17__AddDataPointBaseTypeToDataPointJudgement()
+class V19__AddDataPointBaseTypeToDataPointJudgementTest {
+    private val migration = V19__AddDataPointBaseTypeToDataPointJudgement()
     private val mockContext = mock<Context>()
     private val mockConnection = mock<Connection>()
     private val mockMetaData = mock<DatabaseMetaData>()
@@ -25,8 +25,8 @@ class V17__AddDataPointBaseTypeToDataPointJudgementTest {
     private val mockTablesResultSet = mock<ResultSet>()
     private val mockColumnsResultSet = mock<ResultSet>()
 
-    private val table = V17__AddDataPointBaseTypeToDataPointJudgement.DATA_POINT_JUDGEMENT_TABLE
-    private val column = V17__AddDataPointBaseTypeToDataPointJudgement.DATA_POINT_BASE_TYPE_COLUMN
+    private val table = V19__AddDataPointBaseTypeToDataPointJudgement.DATA_POINT_JUDGEMENT_TABLE
+    private val column = V19__AddDataPointBaseTypeToDataPointJudgement.DATA_POINT_BASE_TYPE_COLUMN
 
     @BeforeEach
     fun setup() {

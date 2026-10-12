@@ -8,7 +8,7 @@ import org.flywaydb.core.api.migration.Context
  * Existing rows are intentionally left null.
  */
 @Suppress("ClassName")
-class V17__AddDataPointBaseTypeToDataPointJudgement : BaseJavaMigration() {
+class V19__AddDataPointBaseTypeToDataPointJudgement : BaseJavaMigration() {
     companion object {
         const val DATA_POINT_JUDGEMENT_TABLE = "dataset_judgement_entity_data_point_judgement"
         const val DATA_POINT_BASE_TYPE_COLUMN = "data_point_base_type"
