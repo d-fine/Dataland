@@ -101,7 +101,7 @@
           "company-proxy-controller"
         ],
         "summary": "Replace proxy entry for a proxy id.",
-        "description": "Replaces proxy rule defined for the given proxy id. If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
+        "description": "Replaces proxy rule defined for the given proxy id. A null validFromReportingPeriod or validToReportingPeriod means the validity is unbounded in that direction.",
         "operationId": "putCompanyProxy",
         "parameters": [
           {
@@ -3181,9 +3181,9 @@
         "operationId": "searchCompanyProxies",
         "parameters": [
           {
-            "name": "proxiedCompanyId",
+            "name": "childCompanyId",
             "in": "query",
-            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "description": "The Dataland company ID of the child company, whose data is proxied by the parent company.",
             "required": false,
             "schema": {
               "type": "string"
@@ -3191,48 +3191,14 @@
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
           {
-            "name": "proxyCompanyId",
+            "name": "parentCompanyId",
             "in": "query",
-            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "description": "The Dataland company ID of the parent company, whose data is used as the proxy.",
             "required": false,
             "schema": {
               "type": "string"
             },
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
-          },
-          {
-            "name": "frameworks",
-            "in": "query",
-            "description": "The associated reporting framework or data point type (as applicable).",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "sfdr",
-              "eutaxonomy-financials"
-            ]
-          },
-          {
-            "name": "reportingPeriods",
-            "in": "query",
-            "description": "The relevant reporting periods (e.g. fiscal years).",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "example": [
-              "2023",
-              "2024"
-            ]
           },
           {
             "name": "chunkSize",
@@ -3319,7 +3285,7 @@
           "company-proxy-controller"
         ],
         "summary": "Create a proxy.",
-        "description": "Creates a proxy describing which data of one company may be substituted by data of another company. If framework or reportingPeriod are null, the proxy applies to all frameworks or all reporting periods respectively.",
+        "description": "Creates a proxy describing which data of one company may be substituted by data of another company for all frameworks. A null validFromReportingPeriod or validToReportingPeriod means the validity is unbounded in that direction.",
         "operationId": "postCompanyProxy",
         "requestBody": {
           "content": {
@@ -8018,30 +7984,30 @@
     "schemas": {
       "CompanyProxyString": {
         "required": [
-          "proxiedCompanyId",
-          "proxyCompanyId"
+          "childCompanyId",
+          "parentCompanyId"
         ],
         "type": "object",
         "properties": {
-          "proxiedCompanyId": {
+          "childCompanyId": {
             "type": "string",
-            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "description": "The Dataland company ID of the child company, whose data is proxied by the parent company.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
-          "proxyCompanyId": {
+          "parentCompanyId": {
             "type": "string",
-            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "description": "The Dataland company ID of the parent company, whose data is used as the proxy.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
-          "framework": {
+          "validFromReportingPeriod": {
             "type": "string",
-            "description": "Framework for which proxying is permitted. Null means all frameworks.",
+            "description": "First reporting period for which the proxy is valid (inclusive). Null means there is no lower bound.",
             "nullable": true,
-            "example": "sfdr"
+            "example": "2023"
           },
-          "reportingPeriod": {
+          "validToReportingPeriod": {
             "type": "string",
-            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "description": "Last reporting period for which the proxy is valid (inclusive). Null means there is no upper bound.",
             "nullable": true,
             "example": "2023"
           }
@@ -8049,9 +8015,11 @@
       },
       "StoredCompanyProxy": {
         "required": [
-          "proxiedCompanyId",
-          "proxyCompanyId",
-          "proxyId"
+          "childCompanyId",
+          "parentCompanyId",
+          "proxyId",
+          "uploadTimestamp",
+          "uploaderUserId"
         ],
         "type": "object",
         "properties": {
@@ -8060,27 +8028,38 @@
             "description": "The unique identifier of the company proxy relation.",
             "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           },
-          "proxiedCompanyId": {
+          "childCompanyId": {
             "type": "string",
-            "description": "The Dataland company ID of the company whose data is being proxied.",
+            "description": "The Dataland company ID of the child company, whose data is proxied by the parent company.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
-          "proxyCompanyId": {
+          "parentCompanyId": {
             "type": "string",
-            "description": "The Dataland company ID of the company whose data is used as the proxy.",
+            "description": "The Dataland company ID of the parent company, whose data is used as the proxy.",
             "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
           },
-          "framework": {
+          "validFromReportingPeriod": {
             "type": "string",
-            "description": "Framework for which proxying is permitted. Null means all frameworks.",
-            "nullable": true,
-            "example": "sfdr"
-          },
-          "reportingPeriod": {
-            "type": "string",
-            "description": "Reporting period for which proxying is permitted. Null means all reporting periods.",
+            "description": "First reporting period for which the proxy is valid (inclusive). Null means there is no lower bound.",
             "nullable": true,
             "example": "2023"
+          },
+          "validToReportingPeriod": {
+            "type": "string",
+            "description": "Last reporting period for which the proxy is valid (inclusive). Null means there is no upper bound.",
+            "nullable": true,
+            "example": "2023"
+          },
+          "uploadTimestamp": {
+            "type": "integer",
+            "description": "The timestamp (epoch milliseconds) at which the proxy entry was last uploaded. Set by the system.",
+            "format": "int64",
+            "example": 1751291891271
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "description": "The Dataland user ID of the user who last uploaded the proxy entry. Set by the system.",
+            "example": "1e63a842-1e65-43ed-b78a-5e7cec155c28"
           }
         }
       },
