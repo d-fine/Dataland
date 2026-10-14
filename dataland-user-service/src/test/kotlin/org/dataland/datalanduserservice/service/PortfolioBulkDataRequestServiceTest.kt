@@ -44,9 +44,8 @@ class PortfolioBulkDataRequestServiceTest {
         private const val COMPANY_ID_2 = "Company id 2"
         private const val COMPANY_ID = "Company id"
         private val TIMESTAMP = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-        private const val EUTAXONOMY_FINANCIALS = "eutaxonomy-financials"
-        private const val EUTAXONOMY_NON_FINANCIALS = "eutaxonomy-non-financials"
-        private const val NUCLEAR_AND_GAS = "nuclear-and-gas"
+        private const val EUTAXONOMY_FINANCIALS_2026_73 = "eutaxonomy-financials-2026-73"
+        private const val EUTAXONOMY_NON_FINANCIALS_2026_73 = "eutaxonomy-non-financials-2026-73"
         private const val SFDR = "sfdr"
         private const val EUTAXONOMY = "eutaxonomy"
 
@@ -163,8 +162,8 @@ class PortfolioBulkDataRequestServiceTest {
         val expected =
             listOf(
                 Triple(setOf(COMPANY_ID_1), setOf(SFDR), setOf("2024")),
-                Triple(setOf(COMPANY_ID_1), setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS), setOf("2024")),
-                Triple(setOf(COMPANY_ID_2), setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS), setOf("2023")),
+                Triple(setOf(COMPANY_ID_1), setOf(EUTAXONOMY_FINANCIALS_2026_73), setOf("2024")),
+                Triple(setOf(COMPANY_ID_2), setOf(EUTAXONOMY_NON_FINANCIALS_2026_73), setOf("2023")),
                 Triple(setOf(COMPANY_ID_2), setOf(SFDR), setOf("2023")),
             )
         expected.forEach { (ids, types, periods) ->
@@ -199,7 +198,7 @@ class PortfolioBulkDataRequestServiceTest {
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
                 companyIdentifiers == setOf(nonFinancialCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS_2026_73) &&
                     reportingPeriods == setOf("2024")
             },
             eq(USER_ID),
@@ -207,7 +206,7 @@ class PortfolioBulkDataRequestServiceTest {
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
                 companyIdentifiers == setOf(financialCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS_2026_73) &&
                     reportingPeriods == setOf("2024")
             },
             eq(USER_ID),
@@ -215,7 +214,7 @@ class PortfolioBulkDataRequestServiceTest {
         verify(mockRequestApi).postBulkDataRequest(
             argThat<BulkDataRequest> {
                 companyIdentifiers == setOf(noSectorCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_FINANCIALS, EUTAXONOMY_NON_FINANCIALS, NUCLEAR_AND_GAS) &&
+                    dataTypes == setOf(EUTAXONOMY_FINANCIALS_2026_73, EUTAXONOMY_NON_FINANCIALS_2026_73) &&
                     reportingPeriods == setOf("2024")
             },
             eq(USER_ID),
