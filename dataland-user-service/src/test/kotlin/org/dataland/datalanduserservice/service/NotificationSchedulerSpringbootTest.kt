@@ -55,6 +55,7 @@ class NotificationSchedulerSpringbootTest
             const val PORTFOLIO_ALL_FRAMEWORKS = "Portfolioname 1"
             const val PORTFOLIO_ONLY_EUTAXO = "Taxonomy only"
             const val PORTFOLIO_ONLY_COMPANY3 = "NoNotificationExpected"
+            const val NEW_EUTAXO_FINANCIALS = "EU Taxonomy for financial companies 2026/73"
 
             private fun createNotificationFrequencyToPortfolioMap(
                 portfolioName: String,
@@ -110,6 +111,13 @@ class NotificationSchedulerSpringbootTest
                         NotificationEventType.UpdatedEvent,
                         companyIdsfdrAndEuTaxo,
                         DataTypeEnum.eutaxonomyMinusFinancials,
+                        "2024",
+                    ),
+                    NotificationEventEntity(
+                        UUID.randomUUID(),
+                        NotificationEventType.AvailableEvent,
+                        companyIdsfdrAndEuTaxo,
+                        DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73,
                         "2024",
                     ),
                     NotificationEventEntity(
@@ -193,10 +201,26 @@ class NotificationSchedulerSpringbootTest
             val (emailWithOnlyEuTaxo, emailWithAllFrameworks) = capturedBodies.sortedBy { it.length }
 
             val emailKeywords1 =
-                listOf(PORTFOLIO_ALL_FRAMEWORKS, "SFDR", "EU Taxonomy for financial companies", "2024", "2025", "company1", "company2")
+                listOf(
+                    PORTFOLIO_ALL_FRAMEWORKS,
+                    "SFDR",
+                    "EU Taxonomy for financial companies",
+                    NEW_EUTAXO_FINANCIALS,
+                    "2024",
+                    "2025",
+                    "company1",
+                    "company2",
+                )
             val emailKeywordsBlacklist1 = listOf(PORTFOLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
             val emailKeywords2 =
-                listOf(PORTFOLIO_ONLY_EUTAXO, "EU Taxonomy for financial companies", "2024", "\"nonSourceableData\":[]", "company1")
+                listOf(
+                    PORTFOLIO_ONLY_EUTAXO,
+                    "EU Taxonomy for financial companies",
+                    NEW_EUTAXO_FINANCIALS,
+                    "2024",
+                    "\"nonSourceableData\":[]",
+                    "company1",
+                )
             val emailKeywordsBlacklist2 = listOf(PORTFOLIO_ALL_FRAMEWORKS, PORTFOLIO_ONLY_COMPANY3, "SFDR", "2025", "company2", "company3")
 
             emailKeywords1.forEach { assertTrue(it in emailWithAllFrameworks, "Expected '$it' to be in '$emailWithAllFrameworks'") }
