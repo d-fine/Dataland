@@ -25,7 +25,7 @@ class CompanyProxyController
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * POST /company-data-proxy-relation
+         * POST /company-proxies
          */
         override fun postCompanyProxy(companyProxy: CompanyProxy<String>): ResponseEntity<StoredCompanyProxy> {
             logger.info(
@@ -46,7 +46,7 @@ class CompanyProxyController
         }
 
         /**
-         * GET /company-data-proxy-relation
+         * GET /company-proxies/{proxyId}
          */
         override fun getCompanyProxyById(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info(
@@ -59,7 +59,7 @@ class CompanyProxyController
         }
 
         /**
-         * GET /company-proxies/company-proxy
+         * GET /company-proxies
          */
         override fun searchCompanyProxies(
             childCompanyId: String?,
@@ -79,7 +79,7 @@ class CompanyProxyController
         }
 
         /**
-         * DELETE /company-proxies/company-proxy
+         * DELETE /company-proxies/{proxyId}
          */
         override fun deleteCompanyProxy(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info("Received request to delete proxy rule with proxyId='$proxyId'")
@@ -92,14 +92,14 @@ class CompanyProxyController
         }
 
         /**
-         * PUT /company-proxies/company-proxy
+         * PUT /company-proxies/{proxyId}
          */
         override fun putCompanyProxy(
             proxyId: String,
             companyProxy: CompanyProxy<String>,
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
-                "Received request to update proxy rule for " +
+                "Received request to update proxy rule with proxyId='$proxyId' for " +
                     "childCompanyId = '${companyProxy.childCompanyId}', parentCompanyId = '${companyProxy.parentCompanyId}'",
             )
             return ResponseEntity.ok(

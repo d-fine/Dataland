@@ -240,7 +240,7 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "No proxy found for the specified company pair.",
+                description = "No proxy found for the specified company proxy id.",
                 content = [Content(mediaType = "application/json")],
             ),
         ],

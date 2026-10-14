@@ -413,6 +413,106 @@ class CompanyProxyControllerTest(
         ).andExpect(status().isNotFound)
     }
 
+    private fun searchProxies(
+        child: String? = null,
+        parent: String? = null,
+        chunkSize: Int? = null,
+        chunkIndex: Int? = null,
+        user: User = User.ADMIN,
+    ): ResultActions {
+        setMockUser(user)
+        val builder = get(COMPANY_PROXIES_ENDPOINT)
+        child?.let { builder.param("childCompanyId", it) }
+        parent?.let { builder.param("parentCompanyId", it) }
+        chunkSize?.let { builder.param("chunkSize", it.toString()) }
+        chunkIndex?.let { builder.param("chunkIndex", it.toString()) }
+        return mockMvc.perform(builder.with(securityContext(mockSecurityContext)))
+    }
+
+    @Test
+    fun `search proxies by child company id returns only matching proxies`() {
+        val child = createCompany()
+        val parent = createCompany()
+        val matchingId = createProxy(child, parent, "2023", "2024")
+        createProxy(createCompany(), parent, "2023", "2024")
+        searchProxies(child = child)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(1))
+            .andExpect(jsonPath("$[0].proxyId").value(matchingId))
+            .andExpect(jsonPath("$[0].childCompanyId").value(child))
+            .andExpect(jsonPath("$[0].parentCompanyId").value(parent))
+            .andExpect(jsonPath("$[0].validFromReportingPeriod").value("2023"))
+            .andExpect(jsonPath("$[0].validToReportingPeriod").value("2024"))
+    }
+
+    @Test
+    fun `search proxies by parent company id returns all proxies of that parent`() {
+        val parent = createCompany()
+        val firstId = createProxy(createCompany(), parent, "2023", "2024")
+        val secondId = createProxy(createCompany(), parent, "2023", "2024")
+        createProxy(createCompany(), createCompany(), "2023", "2024")
+        searchProxies(parent = parent)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(2))
+            .andExpect(jsonPath("$[*].proxyId").value(org.hamcrest.Matchers.containsInAnyOrder(firstId, secondId)))
+    }
+
+    @Test
+    fun `search proxies with child and parent filter combines both filters`() {
+        val child = createCompany()
+        val parent = createCompany()
+        val matchingId = createProxy(child, parent, "2023", "2024")
+        createProxy(child, createCompany(), "2025", "2026")
+        searchProxies(child = child, parent = parent)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(1))
+            .andExpect(jsonPath("$[0].proxyId").value(matchingId))
+    }
+
+    @Test
+    fun `search proxies without filters includes created proxies`() {
+        val proxyId = createProxy(createCompany(), createCompany(), "2023", "2024")
+        searchProxies()
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$[*].proxyId").value(org.hamcrest.Matchers.hasItem(proxyId)))
+    }
+
+    @Test
+    fun `search proxies returns empty list if nothing matches`() {
+        searchProxies(child = createCompany())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(0))
+    }
+
+    @Test
+    fun `search proxies respects chunkSize and chunkIndex`() {
+        val child = createCompany()
+        val parent = createCompany()
+        createProxy(child, parent, "2021", "2022")
+        createProxy(child, parent, "2023", "2024")
+        createProxy(child, parent, "2025", "2026")
+        searchProxies(child = child, chunkSize = 2, chunkIndex = 0)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(2))
+        searchProxies(child = child, chunkSize = 2, chunkIndex = 1)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(1))
+        searchProxies(child = child, chunkSize = 2, chunkIndex = 2)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(0))
+    }
+
+    @Test
+    fun `trying to search proxies as a non admin user results in a 403`() {
+        searchProxies(user = User.UPLOADER).andExpect(status().isForbidden)
+    }
+
+    @Test
+    fun `search proxies with a malformed company id returns 400`() {
+        searchProxies(child = "not-a-uuid").andExpect(status().isBadRequest)
+        searchProxies(parent = "not-a-uuid").andExpect(status().isBadRequest)
+    }
+
     @Test
     fun `get with a malformed proxy id returns 404`() {
         setMockUser(User.ADMIN)
