@@ -45,4 +45,52 @@ describe('Component test for the portfolio details base component (non-sourceabi
     cy.get(bananaEutaxonomyFinancialsCell).should('contain.text', '2023');
     cy.get(bananaEutaxonomyFinancialsCell).find('.non-sourceable-year').should('not.exist');
   });
+
+  describe('Proxied column', () => {
+    const apricotId = '55211efc-5502-430e-89b5-afed16a44407';
+    const bananaId = '6d9fe2f5-b46d-4e87-8ad4-45361584889a';
+    const externalId = 'external-company-id';
+
+    /**
+     * Mounts the component with the given portfolio.
+     * @param portfolio the portfolio returned by the backend
+     */
+    function mountWith(portfolio: EnrichedPortfolio): void {
+      cy.intercept('**/users/portfolios/*/enriched-portfolio', portfolio).as('getEnrichedPortfolio');
+      cy.intercept('POST', '/api/non-sourceable/search/grouped', {});
+      //@ts-ignore
+      cy.mountWithPlugins(PortfolioDetailsBase, {
+        keycloak: minimalKeycloakMock({}),
+        props: { portfolioId: portfolio.portfolioId },
+      });
+      cy.wait('@getEnrichedPortfolio');
+    }
+
+    it('Hides the column if there are no proxy replacements', () => {
+      mountWith({ ...portfolioFixture, proxyCompanyReplacements: [] });
+      cy.get('table').should('be.visible');
+      cy.get('th').contains('Proxied').should('not.exist');
+    });
+
+    it('Shows grouped proxied names, linking only companies in the portfolio', () => {
+      cy.intercept('GET', `**/companies/${externalId}/info`, { companyName: 'External Corp' }).as('getInfo');
+      mountWith({
+        ...portfolioFixture,
+        proxyCompanyReplacements: [
+          { proxyCompanyId: apricotId, proxiedCompanyId: bananaId, userId: 'u', timestamp: 1 },
+          { proxyCompanyId: apricotId, proxiedCompanyId: externalId, userId: 'u', timestamp: 1 },
+        ],
+      } as EnrichedPortfolio);
+      cy.wait('@getInfo');
+      cy.get('th').contains('Proxied').should('exist');
+      const cell = 'table tr:first-child td:nth-child(2)';
+      cy.get(cell).should('contain.text', 'Banana LLC').and('contain.text', 'External Corp');
+      cy.get(cell)
+        .find('[data-test="proxied-company-link"]')
+        .should('have.length', 1)
+        .and('contain.text', 'Banana LLC');
+      cy.get(cell).find('[data-test="proxied-company-text"]').should('have.text', 'External Corp');
+      cy.get('table tr:nth-child(2) td:nth-child(2)').should('have.text', '');
+    });
+  });
 });

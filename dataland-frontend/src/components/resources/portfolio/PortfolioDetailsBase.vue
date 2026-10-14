@@ -73,6 +73,15 @@
           </template>
         </Column>
 
+        <Column v-if="showProxiedColumn" header="Proxied" style="width: 15%">
+          <template #body="portfolioEntry">
+            <PortfolioProxiedCompaniesCell
+              :companies="getProxiedCompanies(portfolioEntry.data.companyId)"
+              @navigate="(companyId: string) => router.push(`/companies/${companyId}`)"
+            />
+          </template>
+        </Column>
+
         <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="countryFilterOverlay">
@@ -181,6 +190,9 @@ import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts
 import PortfolioReportingPeriodsCell, {
   type ReportingPeriodEntry,
 } from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
+import PortfolioProxiedCompaniesCell, {
+  type ProxiedCompany,
+} from '@/components/resources/portfolio/PortfolioProxiedCompaniesCell.vue';
 import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
 
 /**
@@ -320,6 +332,26 @@ const reportingPeriodEntriesByCompanyAndFramework = computed<
   }
   return result;
 });
+const externalProxiedCompanyNames = ref<Map<string, string>>(new Map());
+const showProxiedColumn = computed(() => (enrichedPortfolio.value?.proxyCompanyReplacements?.length ?? 0) > 0);
+const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => {
+  const portfolioNames = new Map(
+    (enrichedPortfolio.value?.entries ?? []).map((entry) => [entry.companyId, entry.companyName])
+  );
+  const result = new Map<string, ProxiedCompany[]>();
+  for (const replacement of enrichedPortfolio.value?.proxyCompanyReplacements ?? []) {
+    const portfolioName = portfolioNames.get(replacement.proxiedCompanyId);
+    const companyName = portfolioName ?? externalProxiedCompanyNames.value.get(replacement.proxiedCompanyId);
+    if (companyName === undefined) continue;
+    const list = result.get(replacement.proxyCompanyId) ?? [];
+    if (!list.some((company) => company.companyId === replacement.proxiedCompanyId)) {
+      list.push({ companyId: replacement.proxiedCompanyId, companyName, linkable: portfolioName !== undefined });
+    }
+    result.set(replacement.proxyCompanyId, list);
+  }
+  for (const list of result.values()) list.sort((a, b) => a.companyName.localeCompare(b.companyName));
+  return result;
+});
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
@@ -435,6 +467,39 @@ function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, framew
 }
 
 /**
+ * Returns the companies proxied by the given company (empty if it is not used as a proxy).
+ * @param companyId the id of the proxy company
+ */
+function getProxiedCompanies(companyId: string): ProxiedCompany[] {
+  return proxiedCompaniesByProxyId.value.get(companyId) ?? [];
+}
+
+/**
+ * Fetches the names of proxied companies that are not part of the portfolio entries.
+ * @param portfolio the loaded portfolio
+ */
+async function loadExternalProxiedCompanyNames(portfolio: EnrichedPortfolio): Promise<void> {
+  const portfolioIds = new Set(portfolio.entries.map((entry) => entry.companyId));
+  const missingIds = new Set(
+    (portfolio.proxyCompanyReplacements ?? [])
+      .map((replacement) => replacement.proxiedCompanyId)
+      .filter((id) => !portfolioIds.has(id))
+  );
+  const names = new Map<string, string>();
+  await Promise.all(
+    Array.from(missingIds).map(async (id) => {
+      try {
+        const response = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(id);
+        names.set(id, response.data.companyName);
+      } catch (error) {
+        console.error(error);
+      }
+    })
+  );
+  externalProxiedCompanyNames.value = names;
+}
+
+/**
  * (Re-)loads a portfolio
  */
 function loadPortfolio(): void {
@@ -447,6 +512,7 @@ function loadPortfolio(): void {
       portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
       reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
       isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
+      void loadExternalProxiedCompanyNames(enrichedPortfolio.value);
     })
     .catch((error) => {
       console.error(error);
