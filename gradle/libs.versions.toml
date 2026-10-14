@@ -101,7 +101,7 @@ spring-context = { group = "org.springframework", name = "spring-context", versi
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
 # PostgreSQL
-postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.13" }
+postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.14" }
 
 # H2
 h2 = { group = "com.h2database", name = "h2", version = "2.5.252" }
@@ -125,7 +125,7 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-modul
 
 # Commons
 commons-io = { group = "commons-io", name = "commons-io", version = "2.22.0" }
-commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.22.1" }
+commons-codec = { group = "commons-codec", name = "commons-codec", version = "1.23.0" }
 commons-text = { group = "org.apache.commons", name = "commons-text", version = "1.15.0" }
 
 # PDFBox

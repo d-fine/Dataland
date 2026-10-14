@@ -121,9 +121,12 @@ export class Generator {
   }
 
   guaranteedCurrencyDataPoint(min: number = 0, max: number = 1e10): CurrencyDataPoint {
-    const localCurrency = generateCurrencyCode();
     const value = generateCurrencyValue(min, max);
-    return this.generateCurrencyExtendedDataPoint(this.valueOrNull(value), localCurrency);
+    // The value and currency fields must either both be set or both be unset, so the "null or not"
+    // decision is made once and applied to both fields together instead of independently.
+    const isValueNull = this.valueOrNull(value) === null;
+    const currency = isValueNull ? null : generateCurrencyCode();
+    return this.generateCurrencyExtendedDataPoint(isValueNull ? null : value, currency);
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {
@@ -205,7 +208,7 @@ export class Generator {
    * @param currency the currency of the datapoint
    * @returns the generated datapoint
    */
-  generateCurrencyExtendedDataPoint(value: number | null, currency: string): CurrencyDataPoint {
+  generateCurrencyExtendedDataPoint(value: number | null, currency: string | null): CurrencyDataPoint {
     const datapoint = this.generateExtendedDataPoint(value);
     return {
       ...datapoint,

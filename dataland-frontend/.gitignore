@@ -35,3 +35,4 @@ mock-server
 
 # Astro website build output (copied by Gradle copyAstroWebsite task)
 public/
+src/generated/

@@ -3,8 +3,6 @@ package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.energ
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
-import org.dataland.datalandqaservice.frameworks.sfdr.custom.HighImpactClimateSector
-import org.dataland.datalandqaservice.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
@@ -23,7 +21,6 @@ data class SfdrEnvironmentalEnergyPerformance(
     val nonRenewableEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val relativeNonRenewableEnergyConsumptionInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    val applicableHighImpactClimateSectors: Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
     @field:Valid()
     val totalHighImpactClimateSectorEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()

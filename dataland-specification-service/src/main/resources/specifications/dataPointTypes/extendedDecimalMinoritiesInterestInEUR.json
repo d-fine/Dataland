@@ -3,7 +3,7 @@
   "name" : "Minorities interest",
   "businessDefinition" : "Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "pcaf" ],
+  "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : [ "min:0" ],
   "calculationRules" : [ ]
 }

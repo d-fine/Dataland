@@ -3,10 +3,29 @@
   "schema" : {
     "general" : {
       "general" : {
-        "dataDate" : "DATA_DATE",
-        "fiscalYearDeviation" : "FISCAL_YEAR_DEVIATION",
-        "fiscalYearEnd" : "FISCAL_YEAR_END",
         "referencedReports" : "REFERENCED_REPORTS"
+      },
+      "company" : {
+        "fiscalYearEnd" : "FISCAL_YEAR_END",
+        "mainPcafSector" : "MAIN_PCAF_SECTOR",
+        "companyExchangeStatus" : "COMPANY_EXCHANGE_STATUS"
+      }
+    },
+    "financial" : {
+      "financial" : {
+        "grossDomesticProductGdpInEUR" : "GDP_IN_EUR",
+        "pppAdjustedGrossDomesticProductGdp" : "PPP_ADJUSTED_GDP_IN_USD",
+        "totalRevenueInEUR" : "TOTAL_REVENUE_IN_EUR",
+        "bookValueOfDebtInEUR" : "BOOK_VALUE_OF_DEBT_IN_EUR"
+      },
+      "listedCompany" : {
+        "marketCapitalizationInEUR" : "MARKET_CAPITALIZATION_IN_EUR",
+        "minoritiesInterestInEUR" : "MINORITIES_INTEREST_IN_EUR",
+        "enterpriseValueInEUR" : "ENTERPRISE_VALUE_IN_EUR"
+      },
+      "unlistedCompany" : {
+        "totalEquityInEUR" : "TOTAL_EQUITY_IN_EUR",
+        "totalEquityAndDebtInEUR" : "TOTAL_EQUITY_AND_DEBT_IN_EUR"
       }
     },
     "environmental" : {
@@ -24,15 +43,11 @@
         "scope1And2And3GhgEmissionsInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_IN_T",
         "scope1And2And3GhgEmissionsLocationBasedInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_LOCATION_IN_T",
         "scope1And2And3GhgEmissionsMarketBasedInTonnes" : "SCOPE_1_2_3_GHG_EMISSIONS_MARKET_IN_T",
-        "scope4GhgEmissionsInTonnes" : "SCOPE_4_GHG_EMISSIONS_IN_T",
-        "enterpriseValueInEUR" : "ENTERPRISE_VALUE_IN_EUR",
-        "totalRevenueInEUR" : "TOTAL_REVENUE_IN_EUR",
         "carbonFootprintInTonnesPerMillionEUREnterpriseValue" : "CARBON_FOOTPRINT_IN_T_PER_MIO_EUR_ENTERPRISE_VALUE",
         "ghgIntensityInTonnesPerMillionEURRevenue" : "GHG_INTENSITY_IN_T_PER_MIO_EUR_REVENUE",
         "ghgIntensityScope1InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_1_IN_T_PER_MIO_EUR_REVENUE",
         "ghgIntensityScope2InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_2_IN_T_PER_MIO_EUR_REVENUE",
         "ghgIntensityScope3InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_3_IN_T_PER_MIO_EUR_REVENUE",
-        "ghgIntensityScope4InTonnesPerMillionEURRevenue" : "GHG_INTENSITY_SCOPE_4_IN_T_PER_MIO_EUR_REVENUE",
         "fossilFuelSectorExposure" : "FOSSIL_FUEL_SECTOR_EXPOSURE",
         "financedScope1AndScope2Emissions" : "FINANCED_SCOPE_1_2_EMISSIONS_IN_T",
         "financedScope3Emissions" : "FINANCED_SCOPE_3_EMISSIONS_IN_T"
@@ -44,7 +59,6 @@
         "relativeNonRenewableEnergyProductionInPercent" : "REL_NON_RENEWABLE_ENERGY_PROD_PCT",
         "nonRenewableEnergyConsumptionInGWh" : "NON_RENEWABLE_ENERGY_CONS_IN_GWH",
         "relativeNonRenewableEnergyConsumptionInPercent" : "REL_NON_RENEWABLE_ENERGY_CONS_PCT",
-        "applicableHighImpactClimateSectors" : "APPLICABLE_HIGH_IMPACT_CLIMATE_SECTORS",
         "totalHighImpactClimateSectorEnergyConsumptionInGWh" : "TOTAL_HIGH_IMPACT_CLIMATE_SECTOR_ENERGY_CONS_IN_GWH",
         "nonRenewableEnergyConsumptionFossilFuelsInGWh" : "NON_RENEWABLE_ENERGY_CONS_FOSSIL_FUELS_IN_GWH",
         "nonRenewableEnergyConsumptionCrudeOilInGWh" : "NON_RENEWABLE_ENERGY_CONS_CRUDE_OIL_IN_GWH",
@@ -58,9 +72,8 @@
         "primaryForestAndWoodedLandOfNativeSpeciesExposure" : "PRIMARY_FOREST_AND_WOODED_LAND_OF_NATIVE_SPECIES_EXPOSURE",
         "protectedAreasExposure" : "PROTECTED_AREAS_EXPOSURE",
         "rareOrEndangeredEcosystemsExposure" : "RARE_OR_ENDANGERED_ECOSYSTEMS_EXPOSURE",
-        "highlyBiodiverseGrasslandExposure" : "HIGHLY_BIODIVERSE_GRASSLAND_EXPOSURE",
         "manufactureOfAgrochemicalPesticidesProducts" : "MANUFACTURE_OF_AGROCHEMICAL_PESTICIDES_PRODUCTS",
-        "landDegradationDesertificationSoilSealingExposure" : "LAND_DEGRADATION_DESERTIFICATION_SOIL_SEALING_EXPOSURE",
+        "landDegradationDesertificationSoilSealing" : "LAND_DEGRADATION_DESERTIFICATION_SOIL_SEALING",
         "sustainableAgriculturePolicy" : "SUSTAINABLE_AGRICULTURE_POLICY",
         "sustainableOceansAndSeasPolicy" : "SUSTAINABLE_OCEANS_AND_SEAS_POLICY",
         "threatenedSpeciesExposure" : "THREATENED_SPECIES_EXPOSURE",
@@ -69,9 +82,9 @@
       },
       "water" : {
         "emissionsToWaterInTonnes" : "EMISSIONS_TO_WATER_IN_T",
-        "waterConsumptionInCubicMeters" : "WATER_CONS_IN_M3",
+        "waterWithdrawalInCubicMeters" : "WATER_WITHDRAWAL_IN_M3",
         "waterReusedInCubicMeters" : "WATER_REUSED_IN_M3",
-        "relativeWaterUsageInCubicMetersPerMillionEURRevenue" : "REL_WATER_USAGE_IN_M3_PER_MIO_EUR_REVENUE",
+        "waterWithdrawalIntensityInCubicMetersPerMillionEURRevenue" : "REL_WATER_WITHDRAWAL_INTENSITY_IN_M3_PER_MIO_EUR_REVENUE",
         "waterManagementPolicy" : "WATER_MANAGEMENT_POLICY",
         "highWaterStressAreaExposure" : "HIGH_WATER_STRESS_AREA_EXPOSURE"
       },
@@ -92,21 +105,16 @@
         "iloCoreLabourStandards" : "ILO_CORE_LABOUR_STANDARDS",
         "environmentalPolicy" : "ENVIRONMENTAL_POLICY",
         "corruptionLegalProceedings" : "CORRUPTION_LEGAL_PROCEEDINGS",
-        "transparencyDisclosurePolicy" : "TRANSPARENCY_DISCLOSURE_POLICY",
         "humanRightsDueDiligencePolicy" : "HUMAN_RIGHTS_DUE_DILIGENCE_POLICY",
         "policyAgainstChildLabour" : "POLICY_AGAINST_CHILD_LABOUR",
         "policyAgainstForcedLabour" : "POLICY_AGAINST_FORCED_LABOUR",
         "policyAgainstDiscriminationInTheWorkplace" : "POLICY_AGAINST_DISCRIMINATION_IN_THE_WORKPLACE",
-        "iso14001Certificate" : "ISO_14001_CERTIFICATE",
         "policyAgainstBriberyAndCorruption" : "POLICY_AGAINST_BRIBERY_AND_CORRUPTION",
         "fairBusinessMarketingAdvertisingPolicy" : "FAIR_BUSINESS_MARKETING_ADVERTISING_POLICY",
-        "technologiesExpertiseTransferPolicy" : "TECHNOLOGIES_EXPERTISE_TRANSFER_POLICY",
         "fairCompetitionPolicy" : "FAIR_COMPETITION_POLICY",
-        "violationOfTaxRulesAndRegulation" : "VIOLATION_OF_TAX_RULES_AND_REGULATION",
+        "violationOfUngcPrinciplesAndOecdGuidelines" : "VIOLATION_OF_UNGC_PRINCIPLES_AND_OECD_GUIDELINES",
         "unGlobalCompactPrinciplesCompliancePolicy" : "UNGC_PRINCIPLES_COMPLIANCE_POLICY",
         "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling" : "OECD_GUIDELINES_GRIEVANCE_HANDLING",
-        "averageGrossHourlyEarningsMaleEmployees" : "AVG_GROSS_HOURLY_EARNINGS_MALE_EMPLOYEES",
-        "averageGrossHourlyEarningsFemaleEmployees" : "AVG_GROSS_HOURLY_EARNINGS_FEMALE_EMPLOYEES",
         "unadjustedGenderPayGapInPercent" : "UNADJUSTED_GENDER_PAY_GAP_PCT",
         "femaleBoardMembersSupervisoryBoard" : "FEMALE_BOARD_MEMBERS_SUPERVISORY_BOARD",
         "femaleBoardMembersBoardOfDirectors" : "FEMALE_BOARD_MEMBERS_BOARD_OF_DIRECTORS",
@@ -125,20 +133,17 @@
         "sanctionedIncidentsOfDiscrimination" : "SANCTIONED_INCIDENTS_OF_DISCRIMINATION",
         "excessiveCeoPayRatio" : "EXCESSIVE_CEO_PAY_RATIO"
       },
-      "greenSecurities" : {
-        "securitiesNotCertifiedAsGreen" : "SECURITIES_NOT_CERTIFIED_AS_GREEN"
-      },
       "humanRights" : {
         "humanRightsPolicy" : "HUMAN_RIGHTS_POLICY",
         "humanRightsDueDiligence" : "HUMAN_RIGHTS_DUE_DILIGENCE",
         "traffickingInHumanBeingsPolicy" : "TRAFFICKING_IN_HUMAN_BEINGS_POLICY",
-        "reportedChildLabourIncidents" : "REPORTED_CHILD_LABOUR_INCIDENTS",
-        "reportedForcedOrCompulsoryLabourIncidents" : "REPORTED_FORCED_OR_COMPULSORY_LABOUR_INCIDENTS",
+        "riskOfChildLabourIncidents" : "RISK_OF_CHILD_LABOUR_INCIDENTS",
+        "riskOfReportedForcedOrCompulsoryLabourIncidents" : "RISK_OF_REPORTED_FORCED_OR_COMPULSORY_LABOUR_INCIDENTS",
         "numberOfReportedIncidentsOfHumanRightsViolations" : "NO_OF_REPORTED_INCIDENTS_OF_HUMAN_RIGHTS_VIOLATIONS"
       },
       "antiCorruptionAndAntiBribery" : {
         "casesOfInsufficientActionAgainstBriberyAndCorruption" : "CASES_OF_INSUFFICIENT_ACTION_AGAINST_BRIBERY_AND_CORRUPTION",
-        "reportedConvictionsOfBriberyAndCorruption" : "REPORTED_CONVICTIONS_OF_BRIBERY_AND_CORRUPTION",
+        "numberOfReportedConvictionsOfBriberyAndCorruption" : "NUMBER_OF_REPORTED_CONVICTIONS_OF_BRIBERY_AND_CORRUPTION",
         "totalAmountOfReportedFinesOfBriberyAndCorruption" : "TOTAL_AMOUNT_OF_REPORTED_FINES_OF_BRIBERY_AND_CORRUPTION"
       }
     }

@@ -57,7 +57,6 @@ export default defineConfig({
       '@formkit/vue',
       '@vue/test-utils',
       'axios',
-      'currency-codes/data',
       'cypress/vue',
       'dompurify',
       'i18n-iso-countries',

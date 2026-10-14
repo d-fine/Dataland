@@ -20,6 +20,8 @@ import java.util.UUID
  * @property acceptedSource which source was accepted for this data point
  * @property customValue the custom value accepted for this data point, if applicable
  * @property reasonForCustomDataPoint an explanation for why a custom datapoint was needed
+ * @property dataPointBaseType the id of the base type of the data point type (e.g. "extendedCurrency"); null for
+ * judgements created before this property was stored
  */
 data class DataPointJudgement(
     @field:Schema(
@@ -61,6 +63,11 @@ data class DataPointJudgement(
         example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_EXAMPLE,
     )
     val preApprovalCheckResults: PreApprovalCheckResults?,
+    @field:Schema(
+        description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_BASE_TYPE_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_BASE_TYPE_EXAMPLE,
+    )
+    val dataPointBaseType: String? = null,
     @field:Schema(description = "ID of the exact QA report accepted by the reviewer, if applicable.")
     val acceptedQaReportId: String? = null,
     val acceptedQaReport: DataPointQaReport? = null,
