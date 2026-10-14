@@ -146,7 +146,7 @@
             "description": "Only Dataland admins may modify company proxies."
           },
           "404": {
-            "description": "No proxy found for the specified company pair.",
+            "description": "No proxy found for the specified company proxy id.",
             "content": {
               "application/json": {}
             }
