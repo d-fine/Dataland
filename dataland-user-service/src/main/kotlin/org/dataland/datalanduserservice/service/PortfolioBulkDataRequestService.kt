@@ -125,23 +125,20 @@ class PortfolioBulkDataRequestService
                 when (groupKey.sector) {
                     SectorType.FINANCIALS -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                            DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73.value,
                         )
                     }
 
                     SectorType.NONFINANCIALS -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value,
                         )
                     }
 
                     else -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
-                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
+                            DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73.value,
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value,
                         )
                     }
                 }
