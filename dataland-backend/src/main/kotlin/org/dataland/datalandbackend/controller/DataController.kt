@@ -190,6 +190,7 @@ open class DataController<T>(
                         exportFileType = exportRequestData.fileFormat,
                         keepValueFieldsOnly = keepValueFieldsOnly,
                         includeAliases = includeAliases,
+                        proxiedCompanyIdsByProxyCompanyId = exportRequestData.proxiedCompanyIdsByProxyCompanyId,
                     ),
                 )
             },
@@ -213,6 +214,7 @@ open class DataController<T>(
                         exportFileType = exportRequestData.fileFormat,
                         keepValueFieldsOnly = keepValueFieldsOnly,
                         includeAliases = includeAliases,
+                        proxiedCompanyIdsByProxyCompanyId = exportRequestData.proxiedCompanyIdsByProxyCompanyId,
                     ),
                 )
             },

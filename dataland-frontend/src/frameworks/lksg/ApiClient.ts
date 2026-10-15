@@ -46,10 +46,11 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedLksgDataByDimensions(
-      { reportingPeriods, companyIds, fileFormat },
+      { reportingPeriods, companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options
@@ -61,10 +62,11 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportLatestJobCompanyAssociatedLksgDataByDimensions(
-      { companyIds, fileFormat },
+      { companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options

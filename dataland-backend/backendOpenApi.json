@@ -10039,6 +10039,19 @@
           },
           "fileFormat": {
             "$ref": "#/components/schemas/ExportFileType"
+          },
+          "proxiedCompanyIdsByProxyCompanyId": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export.",
+              "items": {
+                "type": "string",
+                "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export."
+              }
+            },
+            "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export.",
+            "nullable": true
           }
         }
       },
@@ -10086,6 +10099,19 @@
           },
           "fileFormat": {
             "$ref": "#/components/schemas/ExportFileType"
+          },
+          "proxiedCompanyIdsByProxyCompanyId": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export.",
+              "items": {
+                "type": "string",
+                "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export."
+              }
+            },
+            "description": "Maps the ID of a proxy company to the IDs of the companies it proxies. Used to fill the \u0027Proxied\u0027 column of the export.",
+            "nullable": true
           }
         }
       },

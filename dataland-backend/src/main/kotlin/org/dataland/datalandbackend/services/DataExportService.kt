@@ -78,7 +78,13 @@ open class DataExportService<T>(
         clazz: Class<out T>,
         exportOptions: ExportOptions,
     ) {
-        val portfolioData = buildCompanyExportData(dataDimensionsWithDataStrings, nonSourceableGapDimensions, clazz)
+        val portfolioData =
+            buildCompanyExportData(
+                dataDimensionsWithDataStrings,
+                nonSourceableGapDimensions,
+                clazz,
+                exportOptions.proxiedCompanyIdsByProxyCompanyId,
+            )
 
         newExportJob.fileToExport = buildStreamFromPortfolioExportData(portfolioData, exportOptions)
         newExportJob.progressState = ExportJobProgressState.Success
@@ -288,16 +294,30 @@ open class DataExportService<T>(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
         nonSourceableGapDimensions: Set<BasicDataDimensions>,
         clazz: Class<out T>,
+        proxiedCompanyIdsByProxyCompanyId: Map<String, List<String>>,
     ): List<SingleCompanyExportData<T>> {
         val allCompanyIds =
             (
                 dataDimensionsWithDataStrings.keys.map { it.companyId } +
                     nonSourceableGapDimensions.map { it.companyId }
             ).distinct()
-        val basicCompanyInformation = companyQueryManager.getBasicCompanyInformationByIds(allCompanyIds)
+        val relevantProxiedCompanyIds =
+            allCompanyIds.flatMap { proxiedCompanyIdsByProxyCompanyId[it] ?: emptyList() }.distinct()
+        val basicCompanyInformation =
+            companyQueryManager.getBasicCompanyInformationByIds((allCompanyIds + relevantProxiedCompanyIds).distinct())
+        val proxiedNamesByProxyCompanyId =
+            allCompanyIds.associateWith { proxyCompanyId ->
+                (proxiedCompanyIdsByProxyCompanyId[proxyCompanyId] ?: emptyList())
+                    .distinct()
+                    .mapNotNull { basicCompanyInformation[it]?.companyName }
+                    .sorted()
+                    .joinToString(", ")
+            }
 
-        val availableRows = buildRowsForAvailableData(dataDimensionsWithDataStrings, clazz, basicCompanyInformation)
-        val nonSourceableRows = buildRowsForNonSourceableGaps(nonSourceableGapDimensions, basicCompanyInformation)
+        val availableRows =
+            buildRowsForAvailableData(dataDimensionsWithDataStrings, clazz, basicCompanyInformation, proxiedNamesByProxyCompanyId)
+        val nonSourceableRows =
+            buildRowsForNonSourceableGaps(nonSourceableGapDimensions, basicCompanyInformation, proxiedNamesByProxyCompanyId)
 
         return (availableRows + nonSourceableRows).sortedBy { it.companyName }
     }
@@ -309,6 +329,7 @@ open class DataExportService<T>(
         dataDimensionsWithDataStrings: Map<BasicDatasetDimensions, String>,
         clazz: Class<out T>,
         basicCompanyInformation: Map<String, BasicCompanyInformation?>,
+        proxiedNamesByProxyCompanyId: Map<String, String>,
     ): List<SingleCompanyExportData<T>> =
         dataDimensionsWithDataStrings.map {
             SingleCompanyExportData(
@@ -316,6 +337,7 @@ open class DataExportService<T>(
                 companyLei = basicCompanyInformation[it.key.companyId]?.lei ?: "",
                 reportingPeriod = it.key.reportingPeriod,
                 availability = ExportAvailability.AVAILABLE,
+                proxied = proxiedNamesByProxyCompanyId[it.key.companyId] ?: "",
                 data = defaultObjectMapper.readValue(it.value, clazz),
             )
         }
@@ -327,6 +349,7 @@ open class DataExportService<T>(
     private fun buildRowsForNonSourceableGaps(
         nonSourceableGapDimensions: Set<BasicDataDimensions>,
         basicCompanyInformation: Map<String, BasicCompanyInformation?>,
+        proxiedNamesByProxyCompanyId: Map<String, String>,
     ): List<SingleCompanyExportData<T>> =
         nonSourceableGapDimensions.map {
             SingleCompanyExportData(
@@ -334,6 +357,7 @@ open class DataExportService<T>(
                 companyLei = basicCompanyInformation[it.companyId]?.lei ?: "",
                 reportingPeriod = it.reportingPeriod,
                 availability = ExportAvailability.NON_SOURCEABLE,
+                proxied = proxiedNamesByProxyCompanyId[it.companyId] ?: "",
                 data = null,
             )
         }

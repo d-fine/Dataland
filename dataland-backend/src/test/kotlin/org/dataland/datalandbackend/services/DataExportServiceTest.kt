@@ -71,6 +71,33 @@ class DataExportServiceTest {
         objectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
 
     @Test
+    fun `check that proxied column is exported with the proxied company names`() {
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(lksgCompanyExportTestData.copy(proxied = "Alpha Corp, Beta Corp")),
+                ExportOptions(DataType.valueOf("lksg"), ExportFileType.CSV, keepValueFieldsOnly = true, includeAliases = true),
+            )
+        val lines = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8).lines()
+        val headers = lines[0].split(",")
+        val proxiedIndex = headers.indexOf("PROXIED")
+
+        Assertions.assertTrue(proxiedIndex >= 0)
+        Assertions.assertTrue(lines[1].contains("\"Alpha Corp, Beta Corp\""))
+    }
+
+    @Test
+    fun `check that empty proxied column is still exported when no proxies exist`() {
+        val csvStream =
+            dataExportService.buildStreamFromPortfolioExportData(
+                listOf(lksgCompanyExportTestData),
+                ExportOptions(DataType.valueOf("lksg"), ExportFileType.CSV, keepValueFieldsOnly = true, includeAliases = false),
+            )
+        val headerLine = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8).lines()[0]
+
+        Assertions.assertTrue(headerLine.split(",").contains("proxied"))
+    }
+
+    @Test
     fun `minimal test for writing excel file`() {
         // Define constants for headers
         val header1 = "Header 1"

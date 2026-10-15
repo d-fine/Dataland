@@ -577,6 +577,19 @@ function getCompanyIds(): string[] {
 }
 
 /**
+ * Groups the proxied company IDs by the ID of the proxy company, as expected by the export endpoints
+ * @returns map from proxy company ID to the IDs of the companies it proxies
+ */
+function getProxiedCompanyIdsByProxyCompanyId(): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  for (const replacement of enrichedPortfolio.value?.proxyCompanyReplacements ?? []) {
+    const proxiedIds = (result[replacement.proxyCompanyId] ??= []);
+    if (!proxiedIds.includes(replacement.proxiedCompanyId)) proxiedIds.push(replacement.proxiedCompanyId);
+  }
+  return result;
+}
+
+/**
  * Download the dataset from the selected reporting period as a file in the selected format
  * @param selectedYears selected reporting year
  * @param selectedFileType selected export file type
@@ -606,6 +619,7 @@ async function handleDatasetDownload(
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
     const companyIds = getCompanyIds();
+    const proxiedCompanyIdsByProxyCompanyId = getProxiedCompanyIdsByProxyCompanyId();
 
     let exportJobId: string;
     if (latestOnly) {
@@ -614,7 +628,8 @@ async function handleDatasetDownload(
           companyIds,
           exportFileType,
           keepValuesOnly,
-          includeAlias
+          includeAlias,
+          proxiedCompanyIdsByProxyCompanyId
         )
       ).data.id;
     } else {
@@ -624,7 +639,8 @@ async function handleDatasetDownload(
           companyIds,
           exportFileType,
           keepValuesOnly,
-          includeAlias
+          includeAlias,
+          proxiedCompanyIdsByProxyCompanyId
         )
       ).data.id;
     }

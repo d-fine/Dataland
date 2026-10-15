@@ -52,6 +52,37 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
     }
 
     @Test
+    fun `check that latest export fills the proxied column with the names of proxied companies`() {
+        mockCompanyInformationLookupForTwoCompanies()
+        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
+            .doReturn(
+                listOf(
+                    PlainDataAndDimensions(
+                        dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD),
+                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                    ),
+                ),
+            )
+        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
+            .doReturn(emptySet())
+
+        val exportJob = newExportJob()
+        dataExportService.startLatestExportJob(
+            listOf(nonSourceableTestCompanyId),
+            exportJob,
+            LksgData::class.java,
+            lksgExportOptions.copy(
+                proxiedCompanyIdsByProxyCompanyId = mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId)),
+            ),
+        )
+
+        val exportedRows = readExportedRows(exportJob)
+
+        Assertions.assertEquals(1, exportedRows.size)
+        Assertions.assertEquals(secondTestCompanyInfo.companyName, exportedRows.first().proxied)
+    }
+
+    @Test
     fun `check that latest export marks a company with no dataset but an active non-sourceability entry as non-sourceable`() {
         mockCompanyInformationLookup()
         whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))

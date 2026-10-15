@@ -19,7 +19,9 @@ class DataExportUtils private constructor() {
                 "companyLei" to "COMPANY_LEI",
                 "reportingPeriod" to "REPORTING_PERIOD",
                 "availability" to "AVAILABILITY",
+                PROXIED_FIELD to "PROXIED",
             )
+        const val PROXIED_FIELD = "proxied"
         const val DATA = "data"
         const val VALUE = "value"
         private const val ALIAS_EXPORT = "aliasExport"
@@ -135,7 +137,7 @@ class DataExportUtils private constructor() {
                     .flatMap { it.entries }
                     .filterNot { it.value.isNullOrBlank() }
                     .map { it.key }
-                    .toSet()
+                    .toSet() + PROXIED_FIELD
 
             csvData.forEach { dataset ->
                 nonEmptyFields.forEach { headerField ->

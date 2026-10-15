@@ -32,4 +32,11 @@ data class ExportRequestData(
         description = BackendOpenApiDescriptionsAndExamples.FILE_FORMAT_DESCRIPTION,
     )
     override val fileFormat: ExportFileType,
+    @field:Schema(
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+        description =
+            "Maps the ID of a proxy company to the IDs of the companies it proxies. " +
+                "Used to fill the 'Proxied' column of the export.",
+    )
+    override val proxiedCompanyIdsByProxyCompanyId: Map<String, List<String>> = emptyMap(),
 ) : ExportRequestData
