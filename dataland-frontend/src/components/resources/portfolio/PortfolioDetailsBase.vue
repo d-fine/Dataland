@@ -73,11 +73,27 @@
           </template>
         </Column>
 
-        <Column v-if="showProxiedColumn" header="Proxied" style="width: 15%">
+        <Column
+          v-if="showProxiedColumn"
+          :sortable="true"
+          field="proxiedCompaniesText"
+          header="Proxied"
+          :showFilterMatchModes="false"
+          style="width: 15%"
+        >
           <template #body="portfolioEntry">
             <PortfolioProxiedCompaniesCell
               :companies="getProxiedCompanies(portfolioEntry.data.companyId)"
               @navigate="(companyId: string) => router.push(`/companies/${companyId}`)"
+            />
+          </template>
+          <template #filter="{ filterModel, filterCallback }">
+            <InputText
+              v-model="filterModel.value"
+              type="text"
+              @input="filterCallback()"
+              placeholder="Filter by proxied company"
+              :data-test="'proxiedCompaniesFilterValue'"
             />
           </template>
         </Column>
@@ -232,6 +248,7 @@ class PortfolioEntryPrepared {
   readonly sector?: string;
   readonly country: string;
   readonly companyCockpitRef: string;
+  proxiedCompaniesText = '';
   readonly frameworkHyphenatedNamesToDataRef: Map<string, string | undefined>;
   readonly sfdrAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
@@ -294,6 +311,7 @@ let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  proxiedCompaniesText: { value: null, matchMode: FilterMatchMode.CONTAINS },
   country: { value: [] as string[], matchMode: FilterMatchMode.IN },
   sector: { value: [] as string[], matchMode: FilterMatchMode.IN },
   sfdrAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
@@ -341,8 +359,10 @@ const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => 
   const result = new Map<string, ProxiedCompany[]>();
   for (const replacement of enrichedPortfolio.value?.proxyCompanyReplacements ?? []) {
     const portfolioName = portfolioNames.get(replacement.proxiedCompanyId);
-    const companyName = portfolioName ?? externalProxiedCompanyNames.value.get(replacement.proxiedCompanyId);
-    if (companyName === undefined) continue;
+    const companyName =
+      portfolioName ??
+      externalProxiedCompanyNames.value.get(replacement.proxiedCompanyId) ??
+      replacement.proxiedCompanyId;
     const list = result.get(replacement.proxyCompanyId) ?? [];
     if (!list.some((company) => company.companyId === replacement.proxiedCompanyId)) {
       list.push({ companyId: replacement.proxiedCompanyId, companyName, linkable: portfolioName !== undefined });
@@ -351,6 +371,13 @@ const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => 
   }
   for (const list of result.values()) list.sort((a, b) => a.companyName.localeCompare(b.companyName));
   return result;
+});
+watch([proxiedCompaniesByProxyId, portfolioEntriesToDisplay], () => {
+  for (const entry of portfolioEntriesToDisplay.value) {
+    entry.proxiedCompaniesText = (proxiedCompaniesByProxyId.value.get(entry.companyId) ?? [])
+      .map((company) => company.companyName)
+      .join(', ');
+  }
 });
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
