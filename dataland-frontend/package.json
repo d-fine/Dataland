@@ -35,7 +35,6 @@
     "@tanstack/vue-query": "^5.103.2",
     "@vueuse/core": "^15.0.0",
     "axios": "^1.16.1",
-    "currency-codes": "^2.2.0",
     "cypress-recurse": "^1.37.2",
     "i18n-iso-countries": "^7.14.0",
     "keycloak-js": "^26.2.4",

@@ -4756,6 +4756,11 @@
           "preApprovalCheckResults": {
             "$ref": "#/components/schemas/PreApprovalCheckResults"
           },
+          "dataPointBaseType": {
+            "type": "string",
+            "description": "The id of the base type of this data point type, as defined in the specification service. Null for judgements that were created before the base type was stored.",
+            "example": "extendedCurrency"
+          },
           "acceptedQaReportId": {
             "type": "string",
             "description": "ID of the exact QA report accepted by the reviewer, if applicable."

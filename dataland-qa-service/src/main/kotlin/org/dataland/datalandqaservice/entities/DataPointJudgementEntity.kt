@@ -51,6 +51,8 @@ class DataPointJudgementEntity(
     @Column(columnDefinition = "TEXT", nullable = true)
     @Convert(converter = PreApprovalCheckResultsConverter::class)
     var preApprovalCheckResults: PreApprovalCheckResults? = null,
+    @Column(name = "data_point_base_type", columnDefinition = "TEXT", nullable = true)
+    val dataPointBaseType: String? = null,
     @Column(name = "accepted_qa_report_id")
     var acceptedQaReportId: String? = null,
 ) {
@@ -69,6 +71,7 @@ class DataPointJudgementEntity(
             customValue = customValue,
             reasonForCustomDataPoint = reasonForCustomDataPoint,
             preApprovalCheckResults = preApprovalCheckResults,
+            dataPointBaseType = dataPointBaseType,
         )
 
     /**

@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
+import org.dataland.datalandbackend.validator.ValidCurrencyCode
 import java.math.BigDecimal
 
 /**
@@ -16,5 +17,6 @@ data class CurrencyDataPoint(
     override val comment: String? = null,
     @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
+    @field:ValidCurrencyCode
     val currency: String? = null,
 ) : ExtendedDataPoint<BigDecimal>
