@@ -36,7 +36,7 @@ class SecurityUtilsService(
      * Returns true if and only if the currently authenticated user is asking for him/herself
      */
     fun isUserRequestingForOwnId(userIdRequester: String?): Boolean {
-        val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
+        val userIdAuthenticated = SecurityContextHolder.getContext().authentication?.name
         return userIdAuthenticated == userIdRequester
     }
 
@@ -69,7 +69,7 @@ class SecurityUtilsService(
      */
     @Transactional(readOnly = true)
     fun isUserMemberOfTheCompany(companyId: UUID?): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name
+        val userId = SecurityContextHolder.getContext().authentication?.name
         if (companyId == null || userId == null) return false
         return companyRoleAssignmentRepository
             .getCompanyRoleAssignmentsByProvidedParameters(
@@ -83,7 +83,7 @@ class SecurityUtilsService(
      */
     @Transactional(readOnly = true)
     fun isUserOwnerOrAdminOfTheCompany(companyId: UUID?): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name
+        val userId = SecurityContextHolder.getContext().authentication?.name
         if (companyId == null || userId == null) return false
         return companyRoleAssignmentRepository.findByCompanyIdAndUserIdAndCompanyRoleIsIn(
             companyId = companyId.toString(),
@@ -105,7 +105,7 @@ class SecurityUtilsService(
         companyRoleAfterModification: CompanyRole?,
         userIdOfRoleToChange: String,
     ): Boolean {
-        val userId = SecurityContextHolder.getContext().authentication.name
+        val userId = SecurityContextHolder.getContext().authentication?.name
         if (userId == null) return false
         val userCompanyRole =
             companyRoleAssignmentRepository

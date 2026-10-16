@@ -61,7 +61,7 @@ java.sourceCompatibility = jvmVersion
 
 plugins {
     alias(libs.plugins.com.github.jk1.dependency.license.report)
-    alias(libs.plugins.io.gitlab.arturbosch.detekt)
+    alias(libs.plugins.dev.detekt)
     alias(libs.plugins.com.github.node.gradle.node) apply false
     alias(libs.plugins.org.springframework.boot) apply false
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
@@ -309,15 +309,6 @@ detekt {
     detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
     detektFileTree.exclude("**/dataland-loki/data/**")
     source.setFrom(detektFileTree)
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(true)
-    }
 }
 
 ktlint {

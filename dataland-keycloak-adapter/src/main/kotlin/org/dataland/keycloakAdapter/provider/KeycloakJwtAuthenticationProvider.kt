@@ -36,11 +36,11 @@ class KeycloakJwtAuthenticationProvider(
             jwtDecoder.decode(bearer.token)
         } catch (ex: BadJwtException) {
             logger.trace("Authentication failed as the JWT was invalid", ex)
-            throw InvalidBearerTokenException(ex.message, ex)
+            throw InvalidBearerTokenException(ex.message ?: "No message provided.", ex)
         } catch (ex: JwtException) {
             logger.trace("Internal JWT handling exception", ex)
             throw AuthenticationServiceException(ex.message, ex)
         }
 
-    override fun supports(authentication: Class<*>?): Boolean = BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
+    override fun supports(authentication: Class<*>): Boolean = BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
 }

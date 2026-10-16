@@ -3,7 +3,7 @@
 [plugins]
 
 com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "3.1.4" }
-io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dev-detekt = { id = "dev.detekt", version.ref = "detekt" }
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 org-springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.2.0" }
@@ -20,7 +20,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "2.0.21"
+kotlin = "2.4.10"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.23.0"
@@ -34,9 +34,9 @@ itext = "9.8.0"
 tika = "4.1.0"
 poi = "5.5.1"
 jodconverter = "4.4.11"
-spring-boot = "3.5.16"
-spring-framework = "6.2.19"
-detekt = "1.23.8"
+spring-boot = "4.1.1"
+spring-framework = "7.0.9"
+detekt = "2.0.0-alpha.6"
 bouncy-castle = "1.70"
 testcontainers = "1.21.4"
 
@@ -45,7 +45,7 @@ testcontainers = "1.21.4"
 # Gradle
 gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.8.1" }
 # Detekt
-detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
+detekt-cli = { group = "dev.detekt", name = "detekt-cli", version.ref = "detekt" }
 
 # Kotlin
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
@@ -95,7 +95,7 @@ spring-security-crypto = { module = "org.springframework.security:spring-securit
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 
 # Spring-related
-spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.3.4" }
+spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.4" }
 springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }

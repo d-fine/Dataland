@@ -49,7 +49,7 @@ class ApiKeyManager
 
         private val apiKeyUtility = ApiKeyUtility()
 
-        private fun getAuthentication(): Authentication = SecurityContextHolder.getContext().authentication
+        private fun getAuthentication(): Authentication = SecurityContextHolder.getContext().authentication!!
 
         private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
             if (daysValid != null) {
