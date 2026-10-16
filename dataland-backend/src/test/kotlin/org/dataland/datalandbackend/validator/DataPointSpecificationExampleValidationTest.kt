@@ -19,6 +19,7 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJson
 import org.dataland.datalandbackendutils.utils.JsonComparator.compareJsonStrings
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -56,7 +57,6 @@ class DataPointSpecificationExampleValidationTest
     @Autowired
     constructor(
         private val dataPointValidator: DataPointValidator,
-        private val objectMapper: ObjectMapper,
         private val dataPointManager: DataPointManager,
         private val companyAlterationManager: CompanyAlterationManager,
         private val companyQueryManager: CompanyQueryManager,
@@ -125,7 +125,7 @@ class DataPointSpecificationExampleValidationTest
             ignored: String,
             file: File,
         ) {
-            val fileContents = objectMapper.readTree(file)
+            val fileContents = defaultObjectMapper.readTree(file)
             val validatedBy = fileContents["validatedBy"].asText()
             val example = fileContents["example"].toString()
             assertDoesNotThrow {
@@ -139,7 +139,7 @@ class DataPointSpecificationExampleValidationTest
             ignored: String,
             file: File,
         ) {
-            val fileContents = objectMapper.readTree(file)
+            val fileContents = defaultObjectMapper.readTree(file)
             val schema = fileContents["schema"]
             val example = fileContents["example"]
             val validatedBy = fileContents["validatedBy"].asText()
@@ -147,11 +147,11 @@ class DataPointSpecificationExampleValidationTest
             requireNotNull(schema) { "Schema is missing in ${file.name}" }
             requireNotNull(example) { "Example is missing in ${file.name}" }
 
-            val generated = buildJsonFromSchemaWithExample(schema, example, objectMapper)
+            val generated = buildJsonFromSchemaWithExample(schema, example, defaultObjectMapper)
 
             assertDoesNotThrow {
                 dataPointValidator.validateConsistency(
-                    objectMapper.writeValueAsString(generated),
+                    defaultObjectMapper.writeValueAsString(generated),
                     validatedBy,
                     "correlationId",
                 )
@@ -223,7 +223,7 @@ class DataPointSpecificationExampleValidationTest
             dataPointBaseTypeId: String,
             file: File,
         ) {
-            val fileContents = objectMapper.readTree(file)
+            val fileContents = defaultObjectMapper.readTree(file)
             val validatedByRef = fileContents["validatedBy"].asText()
 
             doReturn(true).whenever(companyRoleChecker).canUserBypassQa(any())
@@ -231,7 +231,7 @@ class DataPointSpecificationExampleValidationTest
 
             val uploadedDataPoint =
                 UploadedDataPoint(
-                    dataPoint = objectMapper.writeValueAsString(fileContents["example"]),
+                    dataPoint = defaultObjectMapper.writeValueAsString(fileContents["example"]),
                     dataPointType = dataPointBaseTypeId,
                     companyId = companyIdOfPostedCompany,
                     reportingPeriod = "2025",

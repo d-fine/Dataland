@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component
 
 /**
  * The class holds methods which are used in handling data requests
- *  @param objectMapper object mapper used for converting data classes to strings and vice versa
  *  @param companyQueryManager service for managing company data
  *  @param metaDataManager service for managing metadata
  */
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component
 @Component("DataManagerUtils")
 class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -131,7 +129,7 @@ class DataManagerUtils(
             handleStorageClientException(e, dataId, correlationId)
         }
         logger.info("Received Dataset of length ${dataAsString.length}. Correlation ID: $correlationId")
-        val dataAsStorableDataset = objectMapper.readValue(dataAsString, StorableDataset::class.java)
+        val dataAsStorableDataset = defaultObjectMapper.readValue(dataAsString, StorableDataset::class.java)
         dataAsStorableDataset.requireConsistencyWith(dataMetaInformation)
         return dataAsStorableDataset
     }

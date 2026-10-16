@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -16,6 +15,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -52,7 +52,6 @@ internal class MetaDataControllerTest
     @Suppress("LongParameterList")
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val companyManager: CompanyAlterationManager,
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val metaDataController: MetaDataController,
@@ -74,7 +73,7 @@ internal class MetaDataControllerTest
         private val defaultReportingPeriod = "2023"
         private val defaultDataType = DataType.of(SfdrData::class.java)
 
-        val testDataProvider = TestDataProvider(objectMapper)
+        val testDataProvider = TestDataProvider(defaultObjectMapper)
         private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
         private final val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
         private final val expectedSetOfRolesForReviewer = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_REVIEWER)

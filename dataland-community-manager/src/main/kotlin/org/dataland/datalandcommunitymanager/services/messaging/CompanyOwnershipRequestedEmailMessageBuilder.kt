@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -16,12 +16,10 @@ import org.springframework.stereotype.Component
 /**
  * A class that manages generating email messages for company ownership requests
  * @param cloudEventMessageHandler service for managing CloudEvents messages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
  */
 @Component
 class CompanyOwnershipRequestedEmailMessageBuilder(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     /**
      * Function that generates the message object for company ownership request mails
@@ -54,7 +52,7 @@ class CompanyOwnershipRequestedEmailMessageBuilder(
         val message =
             EmailMessage(internalEmailContentTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList())
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
+            defaultObjectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,
             correlationId,
             ExchangeName.SEND_EMAIL,

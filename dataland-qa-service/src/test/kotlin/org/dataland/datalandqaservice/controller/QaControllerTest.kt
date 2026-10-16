@@ -1,11 +1,11 @@
 package org.dataland.datalandqaservice.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -52,7 +52,6 @@ import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
 class QaControllerTest(
     @Autowired private val qaController: QaController,
     @Autowired private val dataPointQaReviewManager: DataPointQaReviewManager,
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataPointQaReviewRepository: DataPointQaReviewRepository,
 ) {
     @MockitoBean
@@ -156,7 +155,7 @@ class QaControllerTest(
         updatedQaStatus: BackendUtilsQaStatus,
         currentlyActiveDataId: String,
     ): String =
-        objectMapper.writeValueAsString(
+        defaultObjectMapper.writeValueAsString(
             QaStatusChangeMessage(
                 dataId = dataId,
                 updatedQaStatus = updatedQaStatus,

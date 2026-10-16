@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -12,6 +11,7 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -27,11 +27,10 @@ import kotlin.random.Random
 )
 @DefaultMocks
 class DataMetaInformationManagerFilterTest(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
 ) : BaseIntegrationTest() {
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider(defaultObjectMapper)
     private val defaultDataType = DataType.of(SfdrData::class.java)
     private val defaultReportingPeriod = "2023"
     private val uploaderUserId = "uploader-user-id"

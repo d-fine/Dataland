@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
@@ -11,6 +10,7 @@ import okio.BufferedSource
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -47,7 +47,6 @@ import java.util.UUID
 @DefaultMocks
 class CompanyProxyControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
         private const val COMPANY_PROXIES_ENDPOINT = "/company-proxies"
@@ -159,7 +158,7 @@ class CompanyProxyControllerTest(
                     ),
                 "countryCode" to "DE",
             )
-        val companyRequestJson = objectMapper.writeValueAsString(companyRequest)
+        val companyRequestJson = defaultObjectMapper.writeValueAsString(companyRequest)
         val result =
             mockMvc
                 .perform(
@@ -169,7 +168,7 @@ class CompanyProxyControllerTest(
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
                 .andReturn()
-        return objectMapper
+        return defaultObjectMapper
             .readTree(result.response.contentAsString)
             .get(COMPANY_ID_JSON_FIELD)
             .asText()
@@ -183,7 +182,7 @@ class CompanyProxyControllerTest(
         user: User = User.ADMIN,
     ): ResultActions {
         setMockUser(user)
-        val req = objectMapper.writeValueAsString(requestBody)
+        val req = defaultObjectMapper.writeValueAsString(requestBody)
         val builder =
             when (method) {
                 "POST" -> post(endpoint)
@@ -199,7 +198,7 @@ class CompanyProxyControllerTest(
     }
 
     private fun getProxyIdFromResult(result: ResultActions): String =
-        objectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
+        defaultObjectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
 
     @Test
     fun `create proxy then get by id returns correct data`() {
