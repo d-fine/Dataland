@@ -1,4 +1,4 @@
-import { zxcvbn, zxcvbnOptions, debounce } from "@zxcvbn-ts/core";
+import { debounce, ZxcvbnFactory } from "@zxcvbn-ts/core";
 import {
   adjacencyGraphs,
   dictionary as commonDictionary,
@@ -6,7 +6,7 @@ import {
 import { translations, dictionary } from "@zxcvbn-ts/language-en";
 import { InputField } from "./utils/InputField";
 
-zxcvbnOptions.setOptions({
+const zxcvbn = new ZxcvbnFactory({
   translations: translations,
   graphs: adjacencyGraphs,
   dictionary: {
@@ -59,16 +59,16 @@ function evaluatePasswordSecurity(): boolean {
     return false;
   }
 
-  const zxvbnEvaluation = zxcvbn(passwordField.inputField.value);
+  const zxcvbnEvaluation = zxcvbn.check(passwordField.inputField.value);
   updatePasswordStrengthIndicator(
-    `d-password-strength-${zxvbnEvaluation.score}`,
+    `d-password-strength-${zxcvbnEvaluation.score}`,
   );
-  if (zxvbnEvaluation.score <= 1) {
+  if (zxcvbnEvaluation.score <= 1) {
     let response = "This password is too insecure. ";
-    if (zxvbnEvaluation.feedback.warning)
-      response += `${zxvbnEvaluation.feedback.warning} `;
-    if (zxvbnEvaluation.feedback.suggestions.length > 0)
-      response += zxvbnEvaluation.feedback.suggestions[0];
+    if (zxcvbnEvaluation.feedback.warning)
+      response += `${zxcvbnEvaluation.feedback.warning} `;
+    if (zxcvbnEvaluation.feedback.suggestions.length > 0)
+      response += zxcvbnEvaluation.feedback.suggestions[0];
     passwordField.overrideFieldErrorMessage(response);
     return false;
   }
