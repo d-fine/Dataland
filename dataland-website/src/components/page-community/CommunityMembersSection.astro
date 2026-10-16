@@ -38,25 +38,23 @@ const logoImageBaseClass = 'block max-h-full max-w-full object-contain';
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
 
     <div class={logosGridClass}>
-      {
-        logos.map((logo) => (
-          <div class:list={[logoCardBaseClass, logo.gridContainerClassName]}>
-            <div class={logoStageClass}>
-              <div class:list={[logoFrameBaseClass, logo.imageFrameClassName]}>
-                <img
-                  src={logo.imagePath}
-                  alt={logo.name}
-                  class:list={[logoImageBaseClass, logo.className]}
-                  style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
-                  loading="lazy"
-                  width="160"
-                  height="64"
-                />
-              </div>
+      {logos.map((logo) => (
+        <div class:list={[logoCardBaseClass, logo.gridContainerClassName]}>
+          <div class={logoStageClass}>
+            <div class:list={[logoFrameBaseClass, logo.imageFrameClassName]}>
+              <img
+                src={logo.imagePath}
+                alt={logo.name}
+                class:list={[logoImageBaseClass, logo.className]}
+                style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
+                loading="lazy"
+                width="160"
+                height="64"
+              />
             </div>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   </div>
 </section>

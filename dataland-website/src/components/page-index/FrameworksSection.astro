@@ -47,23 +47,21 @@ const ctaWrapClass = 'flex justify-center';
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} tone="light" class={sectionHeaderClass} />
     <div class={gridClass}>
-      {
-        frameworks.map((fw) => (
-          <InfoCard variant="glass" title={fw.title} titleClass={infoCardTitleClass} class={infoCardClass}>
-            <div slot="before" class={topAccentClass} aria-hidden="true" />
-            {fw.subtitle ? (
-              <div class={taggedContentClass}>
-                <p class={subtitleClass}>{fw.subtitle}</p>
-                <p class={descriptionClass}>{fw.description}</p>
-              </div>
-            ) : (
-              <div class={plainContentClass}>
-                <p class={descriptionClass}>{fw.description}</p>
-              </div>
-            )}
-          </InfoCard>
-        ))
-      }
+      {frameworks.map((fw) => (
+        <InfoCard variant="glass" title={fw.title} titleClass={infoCardTitleClass} class={infoCardClass}>
+          <div slot="before" class={topAccentClass} aria-hidden="true" />
+          {fw.subtitle ? (
+            <div class={taggedContentClass}>
+              <p class={subtitleClass}>{fw.subtitle}</p>
+              <p class={descriptionClass}>{fw.description}</p>
+            </div>
+          ) : (
+            <div class={plainContentClass}>
+              <p class={descriptionClass}>{fw.description}</p>
+            </div>
+          )}
+        </InfoCard>
+      ))}
     </div>
     <div class={ctaWrapClass}>
       <ArrowLink href="/product#customer-stories">{content.cta} &rarr;</ArrowLink>

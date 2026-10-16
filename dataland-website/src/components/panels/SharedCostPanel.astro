@@ -67,7 +67,9 @@ const classes = {
           <h3 class={classes.title}>{title}</h3>
           <p class={classes.intro}>{intro}</p>
           <div class={classes.items}>
-            {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
+            {items.map((item) => (
+              <PricingFeatureItem title={item.title} text={item.text} />
+            ))}
           </div>
         </div>
         <p class={classes.footnote}>{footnote}</p>
@@ -86,14 +88,12 @@ const classes = {
                 </tr>
               </thead>
               <tbody>
-                {
-                  rows.map((row, idx) => (
-                    <tr class:list={[classes.bodyRow, idx === rows.length - 1 && classes.lastBodyRow]}>
-                      <td class={classes.bodyCell}>{row.members}</td>
-                      <td class={classes.bodyCell}>{row.cost}</td>
-                    </tr>
-                  ))
-                }
+                {rows.map((row, idx) => (
+                  <tr class:list={[classes.bodyRow, idx === rows.length - 1 && classes.lastBodyRow]}>
+                    <td class={classes.bodyCell}>{row.members}</td>
+                    <td class={classes.bodyCell}>{row.cost}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <p class={classes.highlight}>{highlight}</p>

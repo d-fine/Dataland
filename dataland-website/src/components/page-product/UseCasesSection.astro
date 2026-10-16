@@ -63,45 +63,41 @@ const applicationGridClass = 'grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={useCasesWrapClass}>
       <div class={cardsGridClass}>
-        {
-          useCases.map((uc) => (
-            <CardShell class={useCaseCardClass} accentTop={true}>
-              <div class={useCaseHeaderClass}>
-                <img
-                  src={uc.icon}
-                  alt=""
-                  aria-hidden="true"
-                  width="88"
-                  height="88"
-                  loading="lazy"
-                  class:list={[
-                    useCaseIconBaseClass,
-                    uc.icon === '/static/product/use_cases/img_use_case_portfolio_monitoring.png' && portfolioIconClass,
-                    uc.icon === '/static/product/use_cases/img_use_case_complement.png' && complementIconClass,
-                    uc.icon === '/static/product/use_cases/img_use_case_format_update.png' && formatUpdateIconClass,
-                  ]}
-                />
-                <h3 class={useCaseTitleClass}>
-                  {(uc.titleLines ?? [uc.title]).map((line) => (
-                    <span class={useCaseTitleLineClass}>{line}</span>
-                  ))}
-                </h3>
-              </div>
-              <div class={useCaseDescriptionWrapClass}>
-                <p class={useCaseDescriptionClass}>{uc.description}</p>
-              </div>
-            </CardShell>
-          ))
-        }
+        {useCases.map((uc) => (
+          <CardShell class={useCaseCardClass} accentTop={true}>
+            <div class={useCaseHeaderClass}>
+              <img
+                src={uc.icon}
+                alt=""
+                aria-hidden="true"
+                width="88"
+                height="88"
+                loading="lazy"
+                class:list={[
+                  useCaseIconBaseClass,
+                  uc.icon === '/static/product/use_cases/img_use_case_portfolio_monitoring.png' && portfolioIconClass,
+                  uc.icon === '/static/product/use_cases/img_use_case_complement.png' && complementIconClass,
+                  uc.icon === '/static/product/use_cases/img_use_case_format_update.png' && formatUpdateIconClass,
+                ]}
+              />
+              <h3 class={useCaseTitleClass}>
+                {(uc.titleLines ?? [uc.title]).map((line) => (
+                  <span class={useCaseTitleLineClass}>{line}</span>
+                ))}
+              </h3>
+            </div>
+            <div class={useCaseDescriptionWrapClass}>
+              <p class={useCaseDescriptionClass}>{uc.description}</p>
+            </div>
+          </CardShell>
+        ))}
       </div>
       <div class={supportWrapClass}>
         <p class={supportTextClass}>{content.supportText}</p>
         <div class={applicationGridClass}>
-          {
-            applicationAreas.map((area) => (
-              <ApplicationAreaCard icon={area.icon} titleLines={[...area.titleLines] as [string, string]} />
-            ))
-          }
+          {applicationAreas.map((area) => (
+            <ApplicationAreaCard icon={area.icon} titleLines={[...area.titleLines] as [string, string]} />
+          ))}
         </div>
       </div>
     </div>

@@ -88,14 +88,12 @@ const apiLinkDotClass = 'w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shri
           <p class={cardTextClass}>{content.apiReferenceDescription}</p>
         </div>
         <div class={apiLinksGridClass}>
-          {
-            apiLinks.map((doc) => (
-              <a href={doc.url} target="_blank" rel="noopener noreferrer" class={apiLinkClass} data-test="api-link">
-                <span class={apiLinkDotClass} aria-hidden="true" />
-                {doc.label}
-              </a>
-            ))
-          }
+          {apiLinks.map((doc) => (
+            <a href={doc.url} target="_blank" rel="noopener noreferrer" class={apiLinkClass} data-test="api-link">
+              <span class={apiLinkDotClass} aria-hidden="true" />
+              {doc.label}
+            </a>
+          ))}
         </div>
       </CardShell>
     </div>
