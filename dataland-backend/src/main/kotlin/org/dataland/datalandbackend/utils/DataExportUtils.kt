@@ -16,10 +16,10 @@ class DataExportUtils private constructor() {
         val STATIC_ALIASES =
             mapOf(
                 "companyName" to "COMPANY_NAME",
+                PROXIED_FIELD to "PROXIED",
                 "companyLei" to "COMPANY_LEI",
                 "reportingPeriod" to "REPORTING_PERIOD",
                 "availability" to "AVAILABILITY",
-                PROXIED_FIELD to "PROXIED",
             )
         const val PROXIED_FIELD = "proxied"
         const val DATA = "data"
