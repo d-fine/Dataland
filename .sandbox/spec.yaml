@@ -9,18 +9,44 @@ sandbox:
 permissions:
   network:
     allow:
-      - "packages.adoptium.net:443"
-      - "fnm.vercel.app:443"
-      - "opencode.ai:443"
-      - "download.cypress.io:443"
-      - "cdn.cypress.io:443"
+      # Access for Copilot
+      - "api.githubcopilot.com:443"
+
+        # Plain HTTP (apt)
+      - archive.ubuntu.com
+      - security.ubuntu.com
+
+      # HTTPS (CONNECT tunnels, port 443)
+      - github.com:443
+      - release-assets.githubusercontent.com:443
+      - pkg-containers.githubusercontent.com:443
+      - ghcr.io:443
+      - download.docker.com:443
+      - production.cloudfront.docker.com:443
+      - registry-1.docker.io:443 
+      - auth.docker.io:443
+      - fnm.vercel.app:443
+      - nodejs.org:443
+      - registry.npmjs.org:443
+      - packages.adoptium.net:443
+      - services.gradle.org:443
+      - plugins.gradle.org:443
+      - plugins-artifacts.gradle.org:443
+      - repo.gradle.org:443
+      - repo.maven.apache.org:443
+     
+      - download.cypress.io:443
+      - cdn.cypress.io:443
+      
+      - r3---sn-4g5lznlr.gvt1.com:443
+      - redirector.gvt1.com:443
       - "local-dev.dataland.com:443"
-      - "raw.githubusercontent.com:443"
-      - "github.com:443"
+
+      # IntelliJ setup
+
       - "download-cdn.jetbrains.com:443"
       - "download.jetbrains.com:443"
       - "resources.jetbrains.com:443"
-      - "deb.debian.org:443"
 
 agentInstructions:
   filename: AGENTS.md
