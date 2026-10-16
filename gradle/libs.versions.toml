@@ -12,7 +12,7 @@ org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring"
 org-sonarqube = { id = "org.sonarqube", version = "7.5.0.8588" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "4.0.1" }
-org-openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.26.0" }
 io-github-ben-manes-versions = { id = "io.github.ben-manes.versions", version = "0.66.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -96,7 +96,7 @@ spring-security-web = { module = "org.springframework.security:spring-security-w
 
 # Spring-related
 spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.3.4" }
-springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.16" }
+springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
