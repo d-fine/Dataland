@@ -30,10 +30,10 @@ open class ExportStreamBuilder(
     companion object {
         private const val HEADER_ROW_INDEX = 0
         private const val COMPANY_NAME_POSITION = -5
-        private const val COMPANY_LEI_POSITION = -4
-        private const val REPORTING_PERIOD_POSITION = -3
-        private const val AVAILABILITY_POSITION = -2
-        private const val PROXIED_POSITION = -1
+        private const val PROXIED_POSITION = -4
+        private const val COMPANY_LEI_POSITION = -3
+        private const val REPORTING_PERIOD_POSITION = -2
+        private const val AVAILABILITY_POSITION = -1
         private const val FIXED_COLUMN_WIDTH = 30
         private const val BUFFER = 15
         private const val CONVERT_CHARACTER_WIDTH_TO_EXCEL_UNITS = 256
