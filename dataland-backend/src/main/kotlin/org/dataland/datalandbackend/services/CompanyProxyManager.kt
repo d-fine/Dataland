@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyProxyEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.CompanyProxyFilter
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
@@ -19,9 +18,8 @@ import java.util.UUID
 /**
  * Manager for creating and querying company data proxy rules.
  *
- * A rule describes which data of a proxied company can be substituted
- * by data of a proxy company, optionally restricted by frameworks and
- * reporting periods.
+ * A rule describes which data of a child company can be substituted
+ * by data of a parent company during a range of reporting periods.
  */
 @Service
 class CompanyProxyManager
@@ -58,23 +56,16 @@ class CompanyProxyManager
          */
         @Transactional(readOnly = true)
         fun getCompanyProxiesByFilters(
-            proxiedCompanyId: UUID?,
-            proxyCompanyId: UUID?,
-            frameworks: Set<String>?,
-            reportingPeriods: Set<String>?,
+            childCompanyId: UUID?,
+            parentCompanyId: UUID?,
             chunkSize: Int = 100,
             chunkIndex: Int = 0,
         ): List<StoredCompanyProxy> {
-            val frameworksSet = frameworks ?: emptySet()
-            val reportingPeriodsSet = reportingPeriods ?: emptySet()
-
             val page =
                 companyProxyRepository.findByFilters(
                     CompanyProxyFilter(
-                        proxiedCompanyId = proxiedCompanyId,
-                        proxyCompanyId = proxyCompanyId,
-                        frameworks = frameworksSet,
-                        reportingPeriods = reportingPeriodsSet,
+                        childCompanyId = childCompanyId,
+                        parentCompanyId = parentCompanyId,
                     ),
                     pageable = PageRequest.of(chunkIndex, chunkSize),
                 )
@@ -87,39 +78,113 @@ class CompanyProxyManager
          *
          * Checks for existing conflicting rules to avoid duplicates.
          *
-         * @throws InvalidInputApiException if a conflicting rule already exists.
+         * @throws InvalidInputApiException if the validity interval is invalid, the parent company is itself
+         * a child company, or a conflicting rule already exists.
          */
         @Transactional
-        fun addProxyRelation(candidateProxy: CompanyProxy<UUID>): CompanyProxyEntity {
-            val proxiedCompanyId = candidateProxy.proxiedCompanyId
-            val proxyCompanyId = candidateProxy.proxyCompanyId
+        fun addProxyRelation(
+            candidateProxy: CompanyProxy<UUID>,
+            uploaderUserId: String,
+        ): CompanyProxyEntity {
+            val childCompanyId = candidateProxy.childCompanyId
+            val parentCompanyId = candidateProxy.parentCompanyId
 
             logger.info(
-                "Adding proxy relation for proxiedCompanyId=$proxiedCompanyId, " +
-                    "proxyCompanyId=$proxyCompanyId, " +
-                    "framework='${candidateProxy.framework}', " +
-                    "reportingPeriod='${candidateProxy.reportingPeriod}'",
+                "Adding proxy relation for childCompanyId=$childCompanyId, " +
+                    "parentCompanyId=$parentCompanyId, " +
+                    "validFromReportingPeriod='${candidateProxy.validFromReportingPeriod}', " +
+                    "validToReportingPeriod='${candidateProxy.validToReportingPeriod}'",
             )
-            logger.info("Checking for existing proxy relations to avoid duplicates...")
 
-            val existingProxies = companyProxyRepository.findAllByProxiedCompanyId(candidateProxy.proxiedCompanyId)
-            assertNoConflictingProxiesExist(existingProxies, candidateProxy)
+            validateCandidate(candidateProxy, excludedProxyId = null)
 
             val entity =
                 CompanyProxyEntity(
-                    proxiedCompanyId = proxiedCompanyId,
-                    proxyCompanyId = proxyCompanyId,
-                    framework = candidateProxy.framework,
-                    reportingPeriod = candidateProxy.reportingPeriod,
+                    childCompanyId = childCompanyId,
+                    parentCompanyId = parentCompanyId,
+                    validFromReportingPeriod = candidateProxy.validFromReportingPeriod,
+                    validToReportingPeriod = candidateProxy.validToReportingPeriod,
+                    uploadTimestamp = System.currentTimeMillis(),
+                    uploaderUserId = uploaderUserId,
                 )
 
             val saved = companyProxyRepository.save(entity)
             logger.info(
-                "Saved proxy rule with id=${saved.proxyId} for proxiedCompanyId=$proxiedCompanyId, " +
-                    "proxyCompanyId=$proxyCompanyId",
+                "Saved proxy rule with id=${saved.proxyId} for childCompanyId=$childCompanyId, " +
+                    "parentCompanyId=$parentCompanyId",
             )
 
             return saved
+        }
+
+        private fun assertValidInterval(candidateProxy: CompanyProxy<UUID>) {
+            val (from, to) = getReportingPeriodInterval(candidateProxy)
+            if (from > to) {
+                throw InvalidInputApiException(
+                    summary = "Invalid validity interval",
+                    message =
+                        "validFromReportingPeriod (${candidateProxy.validFromReportingPeriod}) must not be " +
+                            "after validToReportingPeriod (${candidateProxy.validToReportingPeriod}).",
+                )
+            }
+        }
+
+        /**
+         * Validates all rules for a proxy that is to be created or replaced.
+         * The entry with excludedProxyId (the one being replaced) is ignored by all checks.
+         */
+        private fun validateCandidate(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            assertValidInterval(candidateProxy)
+            assertChildAndParentDiffer(candidateProxy)
+            assertParentIsNotChild(candidateProxy, excludedProxyId)
+            warnIfChildIsParent(candidateProxy, excludedProxyId)
+            val existingProxies =
+                companyProxyRepository
+                    .findAllByChildCompanyId(candidateProxy.childCompanyId)
+                    .filter { it.proxyId != excludedProxyId }
+            assertNoConflictingProxiesExist(existingProxies, candidateProxy)
+        }
+
+        private fun assertChildAndParentDiffer(candidateProxy: CompanyProxy<UUID>) {
+            if (candidateProxy.childCompanyId == candidateProxy.parentCompanyId) {
+                throw InvalidInputApiException(
+                    summary = "Child and parent company are identical",
+                    message = "A company cannot be its own proxy parent (${candidateProxy.childCompanyId}).",
+                )
+            }
+        }
+
+        private fun assertParentIsNotChild(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            val parentId = candidateProxy.parentCompanyId
+            if (companyProxyRepository.findAllByChildCompanyId(parentId).any { it.proxyId != excludedProxyId }) {
+                throw InvalidInputApiException(
+                    summary = "Parent company is a child company",
+                    message = "The parent company $parentId is itself a child company of another proxy.",
+                )
+            }
+        }
+
+        private fun warnIfChildIsParent(
+            candidateProxy: CompanyProxy<UUID>,
+            excludedProxyId: UUID?,
+        ) {
+            val childId = candidateProxy.childCompanyId
+            val proxiesWhereChildIsParent =
+                companyProxyRepository.findAllByParentCompanyId(childId).filter { it.proxyId != excludedProxyId }
+            if (proxiesWhereChildIsParent.isNotEmpty()) {
+                logger.warn(
+                    "The child company $childId is already the parent company in the proxies " +
+                        "${proxiesWhereChildIsParent.joinToString(", ") { it.proxyId.toString() }}. " +
+                        "These proxies should be updated to point to the ultimate parent " +
+                        "${candidateProxy.parentCompanyId}.",
+                )
+            }
         }
 
         private fun assertNoConflictingProxiesExist(
@@ -144,48 +209,33 @@ class CompanyProxyManager
             existingProxies: List<CompanyProxyEntity>,
             candidateProxy: CompanyProxy<UUID>,
         ): List<CompanyProxyEntity> {
-            val candidateCombinations = getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(candidateProxy)
-            val conflictingExistingProxies = mutableListOf<CompanyProxyEntity>()
+            val (candidateFrom, candidateTo) = getReportingPeriodInterval(candidateProxy)
 
-            existingProxies.forEach { existingProxy ->
-                val expandedExistingCombinations =
-                    getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
-                        CompanyProxy(
-                            proxiedCompanyId = existingProxy.proxiedCompanyId,
-                            proxyCompanyId = existingProxy.proxyCompanyId,
-                            framework = existingProxy.framework,
-                            reportingPeriod = existingProxy.reportingPeriod,
-                        ),
-                    )
-                if (candidateCombinations.intersect(expandedExistingCombinations).isNotEmpty()) {
-                    conflictingExistingProxies.add(existingProxy)
-                }
+            return existingProxies.filter { existingProxy ->
+                val (existingFrom, existingTo) =
+                    getReportingPeriodInterval(existingProxy.validFromReportingPeriod, existingProxy.validToReportingPeriod)
+                candidateFrom <= existingTo && existingFrom <= candidateTo
             }
-
-            return conflictingExistingProxies
         }
 
+        private fun getReportingPeriodInterval(companyProxy: CompanyProxy<UUID>): Pair<Int, Int> =
+            getReportingPeriodInterval(companyProxy.validFromReportingPeriod, companyProxy.validToReportingPeriod)
+
         /**
-         * Get all possible combinations of framework and reporting period for a proxy entry.
-         * If either is null ("all"), all valid combinations are returned accordingly.
+         * Get the numeric validity interval of a proxy entry.
+         * A null validFrom is treated as the minimum and a null validTo as the maximum valid reporting period.
          */
-        private fun getAllFrameworkAndReportingPeriodCombinationsForAProxyEntry(
-            companyProxy: CompanyProxy<UUID>,
-        ): Set<Pair<String, String>> {
-            val allReportingPeriods = (ValidationUtils.REPORTING_PERIOD_MINIMUM..ValidationUtils.REPORTING_PERIOD_MAXIMUM).toList()
-            val reportingPeriods = if (companyProxy.reportingPeriod == null) allReportingPeriods else listOf(companyProxy.reportingPeriod)
-            val frameworks = if (companyProxy.framework == null) DataType.values else listOf(companyProxy.framework)
-
-            return reportingPeriods
-                .flatMap { reportingPeriod ->
-                    frameworks.map { framework ->
-                        Pair(framework.toString(), reportingPeriod.toString())
-                    }
-                }.toSet()
-        }
+        private fun getReportingPeriodInterval(
+            validFromReportingPeriod: String?,
+            validToReportingPeriod: String?,
+        ): Pair<Int, Int> =
+            Pair(
+                validFromReportingPeriod?.toInt() ?: ValidationUtils.REPORTING_PERIOD_MINIMUM,
+                validToReportingPeriod?.toInt() ?: ValidationUtils.REPORTING_PERIOD_MAXIMUM,
+            )
 
         /**
-         * Deletes all proxy rules for a given (proxiedCompanyId, proxyCompanyId) pair.
+         * Deletes all proxy rules for a given (childCompanyId, parentCompanyId) pair.
          *
          * If no rules exist for this pair, a ResourceNotFoundApiException is thrown.
          */
@@ -203,9 +253,10 @@ class CompanyProxyManager
 
             logger.info(
                 "Deleting proxy rule with id=$proxyId " +
-                    "(proxiedCompanyId=${existing.proxiedCompanyId}, " +
-                    "proxyCompanyId=${existing.proxyCompanyId}, " +
-                    "framework=${existing.framework}, reportingPeriod=${existing.reportingPeriod})",
+                    "(childCompanyId=${existing.childCompanyId}, " +
+                    "parentCompanyId=${existing.parentCompanyId}, " +
+                    "validFromReportingPeriod=${existing.validFromReportingPeriod}, " +
+                    "validToReportingPeriod=${existing.validToReportingPeriod})",
             )
 
             companyProxyRepository.delete(existing)
@@ -219,24 +270,24 @@ class CompanyProxyManager
          *
          * Checks for existing conflicting rules to avoid duplicates.
          *
-         * @throws InvalidInputApiException if a conflicting rule already exists.
+         * @throws InvalidInputApiException if the validity interval is invalid, the parent company is itself
+         * a child company, or a conflicting rule already exists.
          */
         @Transactional
         fun editCompanyProxy(
             proxyId: UUID,
             updatedCompanyProxy: CompanyProxy<UUID>,
+            uploaderUserId: String,
         ): StoredCompanyProxy {
-            val existingProxiesForCompany =
-                companyProxyRepository
-                    .findAllByProxiedCompanyId(updatedCompanyProxy.proxiedCompanyId)
-                    .filter { it.proxyId != proxyId }
-            assertNoConflictingProxiesExist(existingProxiesForCompany, updatedCompanyProxy)
-
             val existing = retrieveCompanyProxyEntityById(proxyId)
-            existing.proxiedCompanyId = updatedCompanyProxy.proxiedCompanyId
-            existing.proxyCompanyId = updatedCompanyProxy.proxyCompanyId
-            existing.framework = updatedCompanyProxy.framework
-            existing.reportingPeriod = updatedCompanyProxy.reportingPeriod
+            validateCandidate(updatedCompanyProxy, excludedProxyId = proxyId)
+
+            existing.childCompanyId = updatedCompanyProxy.childCompanyId
+            existing.parentCompanyId = updatedCompanyProxy.parentCompanyId
+            existing.validFromReportingPeriod = updatedCompanyProxy.validFromReportingPeriod
+            existing.validToReportingPeriod = updatedCompanyProxy.validToReportingPeriod
+            existing.uploadTimestamp = System.currentTimeMillis()
+            existing.uploaderUserId = uploaderUserId
 
             return companyProxyRepository.save(existing).toStoredCompanyProxy()
         }
