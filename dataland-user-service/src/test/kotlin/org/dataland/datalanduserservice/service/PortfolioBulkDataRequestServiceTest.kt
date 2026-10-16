@@ -154,6 +154,21 @@ class PortfolioBulkDataRequestServiceTest {
         sharedUserIds = emptySet(),
     )
 
+    private fun verifyBulkDataRequestPosted(
+        expectedCompanyIds: Set<String>,
+        expectedDataTypes: Set<String>,
+        expectedReportingPeriods: Set<String>,
+    ) {
+        verify(mockRequestApi).postBulkDataRequest(
+            argThat<BulkDataRequest> {
+                companyIdentifiers == expectedCompanyIds &&
+                    dataTypes == expectedDataTypes &&
+                    reportingPeriods == expectedReportingPeriods
+            },
+            eq(USER_ID),
+        )
+    }
+
     @Test
     fun `does not post request if portfolio is not monitored`() {
         stubCompanyApi(COMPANY_ID_1, 0, SectorType.FINANCIALS.name)
@@ -185,12 +200,7 @@ class PortfolioBulkDataRequestServiceTest {
                 Triple(setOf(COMPANY_ID_2), setOf(SFDR), setOf("2023")),
             )
         expected.forEach { (ids, types, periods) ->
-            verify(mockRequestApi).postBulkDataRequest(
-                argThat<BulkDataRequest> {
-                    companyIdentifiers == ids && dataTypes == types && reportingPeriods == periods
-                },
-                eq(USER_ID),
-            )
+            verifyBulkDataRequestPosted(ids, types, periods)
         }
         verifyNoMoreInteractions(mockRequestApi)
     }
@@ -213,29 +223,12 @@ class PortfolioBulkDataRequestServiceTest {
 
         service.createBulkDataRequestsForAllMonitoredPortfolios()
 
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(nonFinancialCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_NON_FINANCIALS_2026_73) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
-        )
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(financialCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_FINANCIALS_2026_73) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
-        )
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(noSectorCompanyId) &&
-                    dataTypes == setOf(EUTAXONOMY_FINANCIALS_2026_73, EUTAXONOMY_NON_FINANCIALS_2026_73) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
+        verifyBulkDataRequestPosted(setOf(nonFinancialCompanyId), setOf(EUTAXONOMY_NON_FINANCIALS_2026_73), setOf("2024"))
+        verifyBulkDataRequestPosted(setOf(financialCompanyId), setOf(EUTAXONOMY_FINANCIALS_2026_73), setOf("2024"))
+        verifyBulkDataRequestPosted(
+            setOf(noSectorCompanyId),
+            setOf(EUTAXONOMY_FINANCIALS_2026_73, EUTAXONOMY_NON_FINANCIALS_2026_73),
+            setOf("2024"),
         )
         verifyNoMoreInteractions(mockRequestApi)
     }
@@ -251,14 +244,7 @@ class PortfolioBulkDataRequestServiceTest {
             )
         stubPortfolioRepo(listOf(portfolioEntity))
         service.createBulkDataRequestsForAllMonitoredPortfolios()
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(COMPANY_ID) &&
-                    dataTypes == setOf(SFDR) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
-        )
+        verifyBulkDataRequestPosted(setOf(COMPANY_ID), setOf(SFDR), setOf("2024"))
         verifyNoMoreInteractions(mockRequestApi)
     }
 
@@ -284,22 +270,8 @@ class PortfolioBulkDataRequestServiceTest {
 
         service.createBulkDataRequestsForAllMonitoredPortfolios()
 
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(companyIdWithRecentFye, companyIdWithDistantFye) &&
-                    dataTypes == setOf(SFDR) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
-        )
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(companyIdWithRecentFye) &&
-                    dataTypes == setOf(SFDR) &&
-                    reportingPeriods == setOf("2023")
-            },
-            eq(USER_ID),
-        )
+        verifyBulkDataRequestPosted(setOf(companyIdWithRecentFye, companyIdWithDistantFye), setOf(SFDR), setOf("2024"))
+        verifyBulkDataRequestPosted(setOf(companyIdWithRecentFye), setOf(SFDR), setOf("2023"))
         verifyNoMoreInteractions(mockRequestApi)
     }
 
@@ -325,14 +297,7 @@ class PortfolioBulkDataRequestServiceTest {
 
         service.createBulkDataRequestsForAllMonitoredPortfolios()
 
-        verify(mockRequestApi).postBulkDataRequest(
-            argThat<BulkDataRequest> {
-                companyIdentifiers == setOf(companyIdWithRecentFye) &&
-                    dataTypes == setOf(SFDR) &&
-                    reportingPeriods == setOf("2024")
-            },
-            eq(USER_ID),
-        )
+        verifyBulkDataRequestPosted(setOf(companyIdWithRecentFye), setOf(SFDR), setOf("2024"))
         verifyNoMoreInteractions(mockRequestApi)
     }
 

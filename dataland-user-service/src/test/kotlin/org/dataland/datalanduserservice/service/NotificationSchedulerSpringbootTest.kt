@@ -57,6 +57,31 @@ class NotificationSchedulerSpringbootTest
             const val PORTFOLIO_ONLY_COMPANY3 = "NoNotificationExpected"
             const val NEW_EUTAXO_FINANCIALS = "EU Taxonomy for financial companies 2026/73"
 
+            val ALL_FRAMEWORKS_EMAIL_KEYWORDS =
+                listOf(
+                    PORTFOLIO_ALL_FRAMEWORKS,
+                    "SFDR",
+                    "EU Taxonomy for financial companies",
+                    NEW_EUTAXO_FINANCIALS,
+                    "2024",
+                    "2025",
+                    "company1",
+                    "company2",
+                )
+            val ALL_FRAMEWORKS_EMAIL_BLACKLIST =
+                listOf(PORTFOLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
+            val ONLY_EUTAXO_EMAIL_KEYWORDS =
+                listOf(
+                    PORTFOLIO_ONLY_EUTAXO,
+                    "EU Taxonomy for financial companies",
+                    NEW_EUTAXO_FINANCIALS,
+                    "2024",
+                    "\"nonSourceableData\":[]",
+                    "company1",
+                )
+            val ONLY_EUTAXO_EMAIL_BLACKLIST =
+                listOf(PORTFOLIO_ALL_FRAMEWORKS, PORTFOLIO_ONLY_COMPANY3, "SFDR", "2025", "company2", "company3")
+
             private fun createNotificationFrequencyToPortfolioMap(
                 portfolioName: String,
                 companyIds: Set<String>,
@@ -145,6 +170,9 @@ class NotificationSchedulerSpringbootTest
         @BeforeEach
         fun setUpBeforeEach() {
             reset(mockCloudEventMessageHandler)
+            mockCompany(companyIdsfdrAndEuTaxo, "company1")
+            mockCompany(companyIdOnlySfdr, "company2")
+            mockCompany(companyIdNoNotifications, "company3")
         }
 
         fun eMailSchedulerParameters(): Stream<TestArgument> =
@@ -168,19 +196,35 @@ class NotificationSchedulerSpringbootTest
 
         @ParameterizedTest
         @MethodSource("eMailSchedulerParameters")
-        fun `test scheduledWeeklyEmailSending does create the expected messages`(ta: TestArgument) {
-            whenever(mockCompanyApi.getCompanyById(eq(companyIdsfdrAndEuTaxo.toString()))).thenReturn(
-                StoredCompany("", CompanyInformation(companyName = "company1", "", mapOf(), ""), listOf()),
-            )
-            whenever(mockCompanyApi.getCompanyById(eq(companyIdOnlySfdr.toString()))).thenReturn(
-                StoredCompany("", CompanyInformation(companyName = "company2", "", mapOf(), ""), listOf()),
-            )
-            whenever(mockCompanyApi.getCompanyById(eq(companyIdNoNotifications.toString()))).thenReturn(
-                StoredCompany("", CompanyInformation(companyName = "company3", "", mapOf(), ""), listOf()),
-            )
-
+        fun `test scheduled email sending creates the expected messages`(ta: TestArgument) {
             ta.function.call(notificationScheduler)
 
+            val bodies = captureSentEmailBodies()
+            bodies.forEach {
+                assertTrue(
+                    it.contains(ta.notificationFrequency.name),
+                    "Expected email body to contain notification frequency '${ta.notificationFrequency.name}'. Actual body: $it",
+                )
+            }
+
+            val (emailWithOnlyEuTaxo, emailWithAllFrameworks) = bodies.sortedBy { it.length }
+
+            assertContainsAll(emailWithAllFrameworks, ALL_FRAMEWORKS_EMAIL_KEYWORDS)
+            assertContainsNone(emailWithAllFrameworks, ALL_FRAMEWORKS_EMAIL_BLACKLIST)
+            assertContainsAll(emailWithOnlyEuTaxo, ONLY_EUTAXO_EMAIL_KEYWORDS)
+            assertContainsNone(emailWithOnlyEuTaxo, ONLY_EUTAXO_EMAIL_BLACKLIST)
+        }
+
+        private fun mockCompany(
+            id: UUID,
+            name: String,
+        ) {
+            whenever(mockCompanyApi.getCompanyById(eq(id.toString()))).thenReturn(
+                StoredCompany("", CompanyInformation(companyName = name, "", mapOf(), ""), listOf()),
+            )
+        }
+
+        private fun captureSentEmailBodies(): List<String> {
             val bodyCaptor = argumentCaptor<String>()
             verify(mockCloudEventMessageHandler, times(2)).buildCEMessageAndSendToQueue(
                 bodyCaptor.capture(),
@@ -189,47 +233,16 @@ class NotificationSchedulerSpringbootTest
                 any<String>(),
                 any<String>(),
             )
-
-            val capturedBodies = bodyCaptor.allValues
-            capturedBodies.forEach {
-                assertTrue(
-                    it.contains(ta.notificationFrequency.name),
-                    "Expected email body to contain notification frequency '${ta.notificationFrequency.name}'. Actual body: $it",
-                )
-            }
-
-            val (emailWithOnlyEuTaxo, emailWithAllFrameworks) = capturedBodies.sortedBy { it.length }
-
-            val emailKeywords1 =
-                listOf(
-                    PORTFOLIO_ALL_FRAMEWORKS,
-                    "SFDR",
-                    "EU Taxonomy for financial companies",
-                    NEW_EUTAXO_FINANCIALS,
-                    "2024",
-                    "2025",
-                    "company1",
-                    "company2",
-                )
-            val emailKeywordsBlacklist1 = listOf(PORTFOLIO_ONLY_EUTAXO, PORTFOLIO_ONLY_COMPANY3, "company3", "\"nonSourceableData\":[]")
-            val emailKeywords2 =
-                listOf(
-                    PORTFOLIO_ONLY_EUTAXO,
-                    "EU Taxonomy for financial companies",
-                    NEW_EUTAXO_FINANCIALS,
-                    "2024",
-                    "\"nonSourceableData\":[]",
-                    "company1",
-                )
-            val emailKeywordsBlacklist2 = listOf(PORTFOLIO_ALL_FRAMEWORKS, PORTFOLIO_ONLY_COMPANY3, "SFDR", "2025", "company2", "company3")
-
-            emailKeywords1.forEach { assertTrue(it in emailWithAllFrameworks, "Expected '$it' to be in '$emailWithAllFrameworks'") }
-            emailKeywordsBlacklist1.forEach {
-                assertTrue(it !in emailWithAllFrameworks, "Expected '$it' to not be in '$emailWithAllFrameworks'")
-            }
-            emailKeywords2.forEach { assertTrue(it in emailWithOnlyEuTaxo, "Expected '$it' to be in '$emailWithOnlyEuTaxo'") }
-            emailKeywordsBlacklist2.forEach {
-                assertTrue(it !in emailWithOnlyEuTaxo, "Expected '$it' to not be in '$emailWithAllFrameworks'")
-            }
+            return bodyCaptor.allValues
         }
+
+        private fun assertContainsAll(
+            body: String,
+            keywords: List<String>,
+        ) = keywords.forEach { assertTrue(it in body, "Expected '$it' to be in '$body'") }
+
+        private fun assertContainsNone(
+            body: String,
+            keywords: List<String>,
+        ) = keywords.forEach { assertTrue(it !in body, "Expected '$it' to not be in '$body'") }
     }
