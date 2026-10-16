@@ -47,7 +47,7 @@ class PortfolioBulkDataRequestService
          * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 0 2 * * *")
+        @Scheduled(cron = "0 */30 * * * *") // every 30 minutes for testing; change to "0 0 2 * * *" for production (2:00 a.m. daily))
         fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
