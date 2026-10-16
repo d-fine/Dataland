@@ -144,6 +144,8 @@ class NotificationScheduler
                 val frameworksWithoutEuTaxo = (frameworks - "eutaxonomy").map { DataTypeEnum.valueOf(it) }
                 return frameworksWithoutEuTaxo +
                     listOf(
+                        DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73,
+                        DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73,
                         DataTypeEnum.eutaxonomyMinusFinancials,
                         DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
                         DataTypeEnum.nuclearMinusAndMinusGas,
