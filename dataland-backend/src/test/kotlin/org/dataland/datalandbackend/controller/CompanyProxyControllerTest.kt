@@ -13,6 +13,8 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -203,6 +205,9 @@ class CompanyProxyControllerTest(
     private fun getProxyIdFromResult(result: ResultActions): String =
         objectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
 
+    private fun getProxyIdsFromSearchResult(result: ResultActions): List<String> =
+        objectMapper.readTree(result.andReturn().response.contentAsString).map { it["proxyId"].asText() }
+
     private fun createProxy(
         child: String,
         parent: String,
@@ -345,14 +350,15 @@ class CompanyProxyControllerTest(
         val firstId = createProxy(createCompany(), parent)
         val secondId = createProxy(createCompany(), parent)
         createProxy(createCompany(), createCompany())
-        searchProxies(parent = parent)
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.length()").value(2))
-            .andExpect(jsonPath("$[*].proxyId").value(org.hamcrest.Matchers.containsInAnyOrder(firstId, secondId)))
+        val result =
+            searchProxies(parent = parent)
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.length()").value(2))
+        assertEquals(setOf(firstId, secondId), getProxyIdsFromSearchResult(result).toSet())
     }
 
     @Test
-    fun `search proxies with child and parent filter combines both filters and empty result is returned if nothing matches`() {
+    fun `search proxies with child and parent filter combines both filters`() {
         val child = createCompany()
         val parent = createCompany()
         val matchingId = createProxy(child, parent)
@@ -361,15 +367,20 @@ class CompanyProxyControllerTest(
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.length()").value(1))
             .andExpect(jsonPath("$[0].proxyId").value(matchingId))
-        searchProxies(child = createCompany()).andExpect(status().isOk).andExpect(jsonPath("$.length()").value(0))
+    }
+
+    @Test
+    fun `search proxies returns empty list if nothing matches`() {
+        searchProxies(child = createCompany())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.length()").value(0))
     }
 
     @Test
     fun `search proxies without filters includes created proxies`() {
         val proxyId = createProxy(createCompany(), createCompany())
-        searchProxies()
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$[*].proxyId").value(org.hamcrest.Matchers.hasItem(proxyId)))
+        val result = searchProxies().andExpect(status().isOk)
+        assertTrue(proxyId in getProxyIdsFromSearchResult(result))
     }
 
     @Test
