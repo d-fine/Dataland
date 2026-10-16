@@ -13,7 +13,7 @@ org-sonarqube = { id = "org.sonarqube", version = "7.5.0.8588" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "4.0.1" }
 org-openapi-generator = { id = "org.openapi.generator", version = "7.18.0" }
-io-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.66.0" }
+io-github-ben-manes-versions = { id = "io.github.ben-manes.versions", version = "0.66.0" }
 org-jetbrains-kotlin-plugin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
@@ -29,9 +29,9 @@ log4j = "2.26.1"
 jackson = "2.22.3"
 logback = "1.6.5"
 flyway = "11.20.3"
-cloudevents = "5.0.0"
-itext = "9.7.1"
-tika = "4.0.0"
+cloudevents = "5.1.0"
+itext = "9.8.0"
+tika = "4.1.0"
 poi = "5.5.1"
 jodconverter = "4.4.11"
 spring-boot = "3.5.16"
@@ -43,7 +43,7 @@ testcontainers = "1.21.4"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.7.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.8.1" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
@@ -134,7 +134,7 @@ pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.3.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.4.0" }
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
