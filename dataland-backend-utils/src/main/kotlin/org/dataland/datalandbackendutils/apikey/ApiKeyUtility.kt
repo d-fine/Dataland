@@ -112,7 +112,7 @@ class ApiKeyUtility {
     /**
      * Encodes a secret to a storable format
      */
-    fun encodeSecret(secret: String): String = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(secret)
+    fun encodeSecret(secret: String): String = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(secret)!!
 
     /**
      * converts a ParsedApiKey Object (with secret and userId) to an API-Key in the correct parseable format.

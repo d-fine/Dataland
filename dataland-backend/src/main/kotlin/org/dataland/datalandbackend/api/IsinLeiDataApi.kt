@@ -46,7 +46,7 @@ interface IsinLeiDataApi {
     fun postIsinLeiMapping(
         @Valid @RequestBody
         isinLeiMappingData: List<IsinLeiMappingData>,
-    ): ResponseEntity<Map<String?, String?>?>
+    ): ResponseEntity<Map<String, String>>
 
     /**
      * A method to retrieve all ISINs registered for a given [lei]. If no ISINs are registered for the LEI, an empty list is returned.

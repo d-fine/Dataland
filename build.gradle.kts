@@ -21,7 +21,7 @@ allprojects {
 subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "io.github.ben-manes.versions")
     apply(plugin = "com.github.jk1.dependency-license-report")
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
@@ -61,7 +61,7 @@ java.sourceCompatibility = jvmVersion
 
 plugins {
     alias(libs.plugins.com.github.jk1.dependency.license.report)
-    alias(libs.plugins.io.gitlab.arturbosch.detekt)
+    alias(libs.plugins.dev.detekt)
     alias(libs.plugins.com.github.node.gradle.node) apply false
     alias(libs.plugins.org.springframework.boot) apply false
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
@@ -72,7 +72,7 @@ plugins {
     alias(libs.plugins.org.springdoc.openapi.gradle.plugin) apply false
     alias(libs.plugins.com.gorylenko.gradle.git.properties) apply false
     alias(libs.plugins.org.openapi.generator) apply false
-    alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.io.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
@@ -309,15 +309,6 @@ detekt {
     detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
     detektFileTree.exclude("**/dataland-loki/data/**")
     source.setFrom(detektFileTree)
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(true)
-    }
 }
 
 ktlint {
