@@ -21,7 +21,7 @@ allprojects {
 subprojects {
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "io.github.ben-manes.versions")
+    apply(plugin = "com.github.ben-manes.versions")
     apply(plugin = "com.github.jk1.dependency-license-report")
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
@@ -72,7 +72,7 @@ plugins {
     alias(libs.plugins.org.springdoc.openapi.gradle.plugin) apply false
     alias(libs.plugins.com.gorylenko.gradle.git.properties) apply false
     alias(libs.plugins.org.openapi.generator) apply false
-    alias(libs.plugins.io.github.ben.manes.versions)
+    alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
