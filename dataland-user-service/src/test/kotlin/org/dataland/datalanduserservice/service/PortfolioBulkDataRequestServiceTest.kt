@@ -381,6 +381,33 @@ class PortfolioBulkDataRequestServiceTest {
         }
 
         @Test
+        fun `failing eutaxonomy request does not prevent sfdr request of same portfolio and is logged with context`() {
+            stubCompanyApi("both-company", 0, SectorType.FINANCIALS.name)
+            val portfolio =
+                buildMonitoredPortfolioEntity(
+                    companyIds = setOf("both-company"),
+                    frameworks = setOf(EUTAXONOMY, SFDR),
+                    portfolioName = "both",
+                    portfolioId = UUID.randomUUID(),
+                    userId = "both-user",
+                )
+            stubPortfolioRepo(listOf(portfolio))
+            whenever(
+                mockRequestApi.postBulkDataRequest(
+                    argThat<BulkDataRequest> { dataTypes.contains(EUTAXONOMY_FINANCIALS_2026_73) },
+                    any(),
+                ),
+            ).thenThrow(IllegalStateException("data sourcing down"))
+
+            val exception = runJobExpectingFailure()
+
+            verify(mockRequestApi).postBulkDataRequest(argThat<BulkDataRequest> { dataTypes == setOf(SFDR) }, any())
+            assertFailures(exception, portfolio to PortfolioRequestFailure.Stage.POST_REQUESTS)
+            val detail = logAppender.list.first { it.level == Level.ERROR }.formattedMessage
+            assertTrue(detail.contains("eutaxonomy") && detail.contains("reportingPeriod="), detail)
+        }
+
+        @Test
         fun `does not throw or log an error if all portfolios are processed successfully`() {
             stubPortfolioRepo(listOf(monitoredSfdrPortfolio("only")))
 

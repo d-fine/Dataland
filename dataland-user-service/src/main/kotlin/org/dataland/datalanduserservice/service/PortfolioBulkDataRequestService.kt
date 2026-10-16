@@ -121,7 +121,7 @@ class PortfolioBulkDataRequestService
         ) = PortfolioRequestFailure(portfolioId.toString(), userId, stage, cause)
 
         /**
-         * Posts the bulk data requests for one portfolio. A failure is recorded and not propagated.
+         * Posts the bulk data requests for one portfolio. Failures are recorded and not propagated.
          */
         @Suppress("TooGenericExceptionCaught")
         private fun postBulkDataRequestSafely(
@@ -129,7 +129,7 @@ class PortfolioBulkDataRequestService
             failures: MutableList<PortfolioRequestFailure>,
         ) {
             try {
-                postBulkDataRequest(portfolio.toBasePortfolio())
+                postBulkDataRequest(portfolio.toBasePortfolio(), failures)
             } catch (e: Exception) {
                 logger.error("Posting bulk data requests failed for portfolio ${portfolio.portfolioId} (user ${portfolio.userId}).", e)
                 failures.add(portfolio.toFailure(PortfolioRequestFailure.Stage.POST_REQUESTS, e))
@@ -141,20 +141,65 @@ class PortfolioBulkDataRequestService
          *
          * For each unique combination of sector and reporting period among the portfolio's company IDs,
          * posts one or more bulk data requests using the appropriate frameworks.
-         * Does nothing if the provided portfolio is not monitored.
+         * A failing request is logged with its context and recorded in [failures]; the remaining requests of the
+         * portfolio are still posted.
          *
          * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
+         * @param failures The list to which a failure is added for each request that could not be posted.
          */
-        private fun postBulkDataRequest(basePortfolio: BasePortfolio) {
+        private fun postBulkDataRequest(
+            basePortfolio: BasePortfolio,
+            failures: MutableList<PortfolioRequestFailure>,
+        ) {
             val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.identifiers)
+            var attempted = 0
+            val failuresBefore = failures.size
 
             groupedCompanyIds.forEach { (key, companyIds) ->
+                val companyIdSet = companyIds.toSet()
                 if ("eutaxonomy" in basePortfolio.monitoredFrameworks) {
-                    postEutaxonomyBulkRequest(basePortfolio, key, companyIds.toSet())
+                    attempted++
+                    postSafely(basePortfolio, "eutaxonomy", key, companyIdSet.size, failures) {
+                        postEutaxonomyBulkRequest(basePortfolio, key, companyIdSet)
+                    }
                 }
                 if ("sfdr" in basePortfolio.monitoredFrameworks) {
-                    postSfdrBulkRequest(basePortfolio, key.reportingPeriod, companyIds.toSet())
+                    attempted++
+                    postSafely(basePortfolio, "sfdr", key, companyIdSet.size, failures) {
+                        postSfdrBulkRequest(basePortfolio, key.reportingPeriod, companyIdSet)
+                    }
                 }
+            }
+            logger.debug(
+                "Posted ${attempted - (failures.size - failuresBefore)}/$attempted bulk data requests " +
+                    "for portfolio ${basePortfolio.portfolioId} (user ${basePortfolio.userId}).",
+            )
+        }
+
+        /**
+         * Executes a single bulk request. A failure is logged with its context and recorded, not propagated.
+         */
+        @Suppress("TooGenericExceptionCaught", "LongParameterList")
+        private fun postSafely(
+            portfolio: BasePortfolio,
+            framework: String,
+            key: ReportingPeriodAndSector,
+            companyCount: Int,
+            failures: MutableList<PortfolioRequestFailure>,
+            post: () -> Unit,
+        ) {
+            try {
+                post()
+            } catch (e: Exception) {
+                logger.error(
+                    "Posting $framework bulk data request failed for portfolio ${portfolio.portfolioId} " +
+                        "(user ${portfolio.userId}): reportingPeriod=${key.reportingPeriod}, " +
+                        "sector=${key.sector}, companies=$companyCount.",
+                    e,
+                )
+                failures.add(
+                    PortfolioRequestFailure(portfolio.portfolioId, portfolio.userId, PortfolioRequestFailure.Stage.POST_REQUESTS, e),
+                )
             }
         }
 
