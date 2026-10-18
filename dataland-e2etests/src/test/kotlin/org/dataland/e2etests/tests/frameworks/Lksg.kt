@@ -118,7 +118,7 @@ class Lksg {
         for (i in complaintRisksIdentifiedRisks.indices) {
             complaintRisksIdentifiedRisksSorted.add(
                 complaintRisksIdentifiedRisks[i].copy(
-                    complaintRisksIdentifiedRisks[i].riskPositions.sorted(),
+                    riskPositions = complaintRisksIdentifiedRisks[i].riskPositions.sorted().toSet(),
                 ),
             )
         }
@@ -146,7 +146,7 @@ class Lksg {
                                 specificProcurement =
                                     fixedDataset.general.productionSpecific
                                         ?.specificProcurement
-                                        ?.sorted(),
+                                        ?.sorted()?.toSet(),
                             ),
                     ),
                 governance =
@@ -197,7 +197,7 @@ class Lksg {
                                     specificProcurement =
                                         sortedDataset.general.productionSpecific
                                             ?.specificProcurement
-                                            ?.sorted(),
+                                            ?.sorted()?.toSet(),
                                 ),
                         ),
                     governance =
