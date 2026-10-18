@@ -88,12 +88,12 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
+        sectionBuilder.identifier
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+                fixtureExpression = "pickSubsetOfElements(Object.values($enumName))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values($enumName)))",
                 nullable = isNullable,
             ),
             imports =
@@ -102,6 +102,7 @@ open class MultiSelectComponent(
                         "pickSubsetOfElements",
                         "@e2e/fixtures/FixtureUtils",
                     ),
+                    TypeScriptImport(enumName, "@clients/backend"),
                 ),
         )
     }

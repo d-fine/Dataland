@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { type CompanyInformation } from '@clients/backend';
 import { valueOrNull } from '@e2e/utils/FakeFixtureUtils';
-import { pickSubsetOfElements, pickOneOrNoElement, pickOneElement, generateArray } from '@e2e/fixtures/FixtureUtils';
+import { pickElements, pickOneOrNoElement, pickOneElement, generateArray } from '@e2e/fixtures/FixtureUtils';
 
 const legalForms = [
   'Public Limited Company (PLC)',
@@ -21,7 +21,7 @@ const legalForms = [
 function getRandomIdentifiers(): { [p: string]: string[] } {
   const identifiers: { [p: string]: string[] } = {};
   identifiers['Lei'] = pickOneOrNoElement([faker.string.alphanumeric(20)]);
-  identifiers['Isin'] = pickSubsetOfElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 1, 2);
+  identifiers['Isin'] = pickElements([faker.string.alphanumeric(12), faker.string.alphanumeric(12)], 1, 2);
   identifiers['PermId'] = pickOneOrNoElement([faker.string.alphanumeric(10)]);
   identifiers['Ticker'] = pickOneOrNoElement([faker.string.alphanumeric(7)]);
   identifiers['Duns'] = pickOneOrNoElement([faker.string.alphanumeric(9)]);

@@ -146,7 +146,8 @@ class Lksg {
                                 specificProcurement =
                                     fixedDataset.general.productionSpecific
                                         ?.specificProcurement
-                                        ?.sorted()?.toSet(),
+                                        ?.sorted()
+                                        ?.toSet(),
                             ),
                     ),
                 governance =
@@ -197,7 +198,8 @@ class Lksg {
                                     specificProcurement =
                                         sortedDataset.general.productionSpecific
                                             ?.specificProcurement
-                                            ?.sorted()?.toSet(),
+                                            ?.sorted()
+                                            ?.toSet(),
                                 ),
                         ),
                     governance =

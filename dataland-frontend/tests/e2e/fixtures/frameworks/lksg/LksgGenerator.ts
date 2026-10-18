@@ -12,7 +12,7 @@ import { generateAddress } from '@e2e/fixtures/common/AddressFixtures';
 import { faker } from '@faker-js/faker';
 import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 import { generateIso2CountryCode } from '@e2e/fixtures/common/CountryFixtures';
-import { generateArray, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import { generateArray, pickElements, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -83,7 +83,7 @@ export class LksgGenerator extends Generator {
    */
   generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
     return {
-      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0],
+      riskPosition: pickElements(Object.values(RiskPositionType), 1, 1)[0],
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };

@@ -3,8 +3,9 @@ import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
 import { LksgGenerator } from '@e2e/fixtures/frameworks/lksg/LksgGenerator.ts';
-import { pickSubsetOfElements, pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
+import { pickElements, pickSubsetOfElements, pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import {
+  SpecificProcurementOptions,
   LksgGeneralProductionspecificMarketOptions,
   LksgGeneralMasterdataShareOfTemporaryWorkersOptions,
   type LksgData,
@@ -60,14 +61,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         numberOfProductionSites: dataGenerator.randomFloat(),
         listOfProductionSites: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
         market: dataGenerator.valueOrNull(pickOneElement(Object.values(LksgGeneralProductionspecificMarketOptions))),
-        specificProcurement: dataGenerator.valueOrNull(
-          pickSubsetOfElements([
-            'ShortLivedAndChangingBusinessRelationships',
-            'HighPricePressure',
-            'TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers',
-            'NoneOfTheAbove',
-          ])
-        ),
+        specificProcurement: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(SpecificProcurementOptions))),
       },
       productionSpecificOwnOperations: {
         mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateLksgProduct(), 0, 10),
@@ -156,14 +150,12 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         ),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
         highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrNull(
-          pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
+          pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
         ),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
+        highRiskCountries: dataGenerator.valueOrNull(pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrNull(
-          pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
-        ),
+        highRiskCountriesProcurementName: dataGenerator.valueOrNull(pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
       },
     },
     social: {
