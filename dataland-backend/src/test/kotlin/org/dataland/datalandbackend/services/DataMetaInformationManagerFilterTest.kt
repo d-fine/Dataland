@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -30,7 +29,7 @@ class DataMetaInformationManagerFilterTest(
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
 ) : BaseIntegrationTest() {
-    private val testDataProvider = TestDataProvider(defaultObjectMapper)
+    private val testDataProvider = TestDataProvider()
     private val defaultDataType = DataType.of(SfdrData::class.java)
     private val defaultReportingPeriod = "2023"
     private val uploaderUserId = "uploader-user-id"

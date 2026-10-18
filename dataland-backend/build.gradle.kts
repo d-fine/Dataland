@@ -61,6 +61,8 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
+    testImplementation("org.springframework.boot:spring-boot-webmvc-test:4.1.1")
     kapt(Spring.boot.configurationProcessor)
     implementation("org.apache.poi:poi:5.5.1")
     implementation("org.apache.poi:poi-ooxml:5.5.1")

@@ -15,7 +15,6 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.TestPostgresContainer
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,7 +71,7 @@ internal class MetaDataControllerTest
         private val defaultReportingPeriod = "2023"
         private val defaultDataType = DataType.of(SfdrData::class.java)
 
-        val testDataProvider = TestDataProvider(defaultObjectMapper)
+        val testDataProvider = TestDataProvider()
         private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
         private final val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
         private final val expectedSetOfRolesForReviewer = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_REVIEWER)

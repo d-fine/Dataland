@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.NullNode
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
@@ -20,16 +19,14 @@ import org.dataland.datalandbackend.services.TEST_CATEGORY
 import org.dataland.datalandbackend.services.TEST_DATA_POINT_NAME
 import org.dataland.datalandbackend.services.TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET
 import org.dataland.datalandbackend.services.VALUE_STRING
-import org.springframework.beans.factory.annotation.Autowired
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import java.io.File
 import java.time.Instant
 
-class TestDataProvider(
-    @Autowired var objectMapper: ObjectMapper,
-) {
+class TestDataProvider {
     private val jsonFile = File("./build/resources/test/CompanyInformationWithLksgData.json")
     private val testCompanyInformationWithLksgData =
-        objectMapper.readValue(
+        defaultObjectMapper.readValue(
             jsonFile,
             object : TypeReference<List<CompanyInformationWithData<LksgData>>>() {},
         )
@@ -88,12 +85,12 @@ class TestDataProvider(
      * Creates a test JSON with a data point that has only a quality field. The value field is null.
      */
     fun createTestJsonWithQualityNullValue(): JsonNode {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPoint = objectMapper.createObjectNode()
+        val testPoint = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPoint)
 
         testPoint.set<JsonNode>(VALUE_STRING, NullNode.instance)
@@ -106,12 +103,12 @@ class TestDataProvider(
      * Creates a test JSON with a data point that has both a non-null value and quality field
      */
     fun createTestJsonWithBothValueAndQuality(): JsonNode {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPoint = objectMapper.createObjectNode()
+        val testPoint = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPoint)
 
         testPoint.put(VALUE_STRING, "42")
@@ -124,12 +121,12 @@ class TestDataProvider(
      * Creates a test JSON with a large decimal value
      */
     fun createTestJsonWithLargeDecimal(): JsonNode {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPoint = objectMapper.createObjectNode()
+        val testPoint = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPoint)
 
         // Set both value and quality fields
@@ -143,18 +140,18 @@ class TestDataProvider(
      * Creates a test JSON with a data point that has both a value and quality field
      */
     fun createTestJsonWithTwoDataPoints(): JsonNode {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPointA = objectMapper.createObjectNode()
+        val testPointA = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET, testPointA)
 
         testPointA.put(VALUE_STRING, "123")
         testPointA.put(QUALITY_STRING, QualityOptions.Reported.toString())
 
-        val testPointB = objectMapper.createObjectNode()
+        val testPointB = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPointB)
 
         testPointB.put(VALUE_STRING, "42")
@@ -167,15 +164,15 @@ class TestDataProvider(
      * Creates a test JSON with a data point that has a non primitive type
      */
     fun createTestJsonNonPrimitiveValue(): JsonNode {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPoint = objectMapper.createObjectNode()
+        val testPoint = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPoint)
 
-        val nonPrimitiveValue = objectMapper.createObjectNode()
+        val nonPrimitiveValue = defaultObjectMapper.createObjectNode()
         testPoint.set<JsonNode>(VALUE_STRING, nonPrimitiveValue)
         testPoint.put(QUALITY_STRING, QualityOptions.Reported.toString())
         nonPrimitiveValue.put("attribute1", 123)
@@ -188,12 +185,12 @@ class TestDataProvider(
      * Creates a test specification
      */
     fun createTestSpecification(): String {
-        val root = objectMapper.createObjectNode()
+        val root = defaultObjectMapper.createObjectNode()
 
-        val testField = objectMapper.createObjectNode()
+        val testField = defaultObjectMapper.createObjectNode()
         root.set<JsonNode>(TEST_CATEGORY, testField)
 
-        val testPoint1 = objectMapper.createObjectNode()
+        val testPoint1 = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME, testPoint1)
 
         testPoint1.put("id", "testId1")
@@ -201,7 +198,7 @@ class TestDataProvider(
         testPoint1.put("aliasExport", TEST_ALIAS_1)
         // make sure that the data point that would be alphabetically first is not the first one in the specification
         // to check, that the order is indeed according to the specification
-        val testPoint2 = objectMapper.createObjectNode()
+        val testPoint2 = defaultObjectMapper.createObjectNode()
         testField.set<JsonNode>(TEST_DATA_POINT_NAME_FIRST_IN_ALPHABET, testPoint2)
 
         testPoint2.put("id", "testId2")

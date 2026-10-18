@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.model.NonSourceabilityLifecycleEvent
 import org.dataland.datalandqaservice.entities.NonSourceableQaReviewInformationEntity
@@ -28,7 +28,6 @@ class NonSourceabilityEventListenerTest {
 
     private val repository: NonSourceableQaReviewRepository = mock()
     private lateinit var listener: NonSourceabilityEventListener
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
 
     @BeforeEach
     fun setUp() {
@@ -107,7 +106,7 @@ class NonSourceabilityEventListenerTest {
 
     @Test
     fun `onNonSourceabilitySubmission throws reject exception for unexpected message type`() {
-        val payload = objectMapper.writeValueAsString(event())
+        val payload = defaultObjectMapper.writeValueAsString(event())
         assertThrows<MessageQueueRejectException> {
             listener.onNonSourceabilitySubmission(payload, "unexpectedMessageType")
         }

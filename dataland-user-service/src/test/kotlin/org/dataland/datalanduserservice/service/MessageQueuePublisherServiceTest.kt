@@ -36,7 +36,6 @@ class MessageQueuePublisherServiceTest {
     private val testUserId = "test-user-id"
     private val userRoles = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
     private val testCorrelationId = "test-correlation-id"
-    private val objectMapper = defaultObjectMapper
 
     private fun resetSecurityContext() {
         val mockAuthentication =
@@ -88,7 +87,7 @@ class MessageQueuePublisherServiceTest {
         )
 
         verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(portfolioPayload),
+            defaultObjectMapper.writeValueAsString(portfolioPayload),
             MessageType.PORTFOLIO_UPDATE,
             testCorrelationId,
             ExchangeName.USER_SERVICE_EVENTS,
@@ -140,7 +139,7 @@ class MessageQueuePublisherServiceTest {
         )
 
         verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
+            defaultObjectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,
             testCorrelationId,
             ExchangeName.SEND_EMAIL,

@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
@@ -30,6 +28,7 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions
@@ -55,7 +54,6 @@ import java.util.UUID
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DefaultMocks
 internal class DataControllerTest {
-    private val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
     private val mockSecurityContext: SecurityContext = mock<SecurityContext>()
     private val mockDataManager: DataManager = mock<DataManager>()
     private val mockDataMetaInformationManager: DataMetaInformationManager = mock<DataMetaInformationManager>()
@@ -73,12 +71,12 @@ internal class DataControllerTest {
             mockNonSourceabilityInformationManager,
         )
 
-    private final val testDataProvider = TestDataProvider(objectMapper)
+    private final val testDataProvider = TestDataProvider()
 
     private final val testDataType = DataType.valueOf("lksg")
     private final val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
     private final val someEuTaxoData = testDataProvider.getLksgDataset()
-    private val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
+    private val someEuTaxoDataAsString = defaultObjectMapper.writeValueAsString(someEuTaxoData)!!
 
     private final val testUserId = "testuser"
     private final val otherUserId = "otheruser"

@@ -1,6 +1,6 @@
 package db.migration.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -15,7 +15,6 @@ fun getDataPointTableEntitiesWithRespectToDataType(
     context: Context?,
     dataPointType: String,
 ): List<DataPointTableEntity> {
-    val objectMapper = ObjectMapper()
     val preparedStatement =
         context!!.connection.prepareStatement(
             "SELECT * from public.data_point_items WHERE data_point_type = ?",
@@ -30,7 +29,7 @@ fun getDataPointTableEntitiesWithRespectToDataType(
                 getQueryResultSet.getString("data_point_id"),
                 getQueryResultSet.getString("company_id"),
                 JSONObject(
-                    objectMapper.readValue(
+                    defaultObjectMapper.readValue(
                         getQueryResultSet.getString("data"), String::class.java,
                     ),
                 ),

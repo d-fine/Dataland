@@ -1,6 +1,5 @@
 package org.dataland.datalandbackendutils.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -12,24 +11,21 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
-@SpringBootTest(classes = [ObjectMapper::class, OkHttpClient::class])
+@SpringBootTest(classes = [OkHttpClient::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KeycloakTokenManagerTest {
-    @Mock lateinit var httpClient: OkHttpClient
-
-    @Autowired lateinit var objectMapper: ObjectMapper
+    @field:MockitoBean lateinit var httpClient: OkHttpClient
 
     lateinit var keycloakTokenManager: KeycloakTokenManager
 
     @BeforeAll
     fun setup() {
-        keycloakTokenManager = KeycloakTokenManager(objectMapper, httpClient, "http://keycloak", "client", "secret")
+        keycloakTokenManager = KeycloakTokenManager(httpClient, "http://keycloak", "client", "secret")
     }
 
     @Test

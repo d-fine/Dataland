@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -8,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
@@ -37,8 +37,6 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaReviewManagerTest {
-    private val objectMapper = jacksonObjectMapper()
-
     private val mockQaReviewRepository: QaReviewRepository = mock<QaReviewRepository>()
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
@@ -83,7 +81,7 @@ class QaReviewManagerTest {
                 mockCompanyDataControllerApi,
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
-                objectMapper,
+                defaultObjectMapper,
                 mockDataPointQaReviewManager,
                 mockQaReviewQueryService,
             )

@@ -14,7 +14,6 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -42,7 +41,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
     @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
 ) : BaseIntegrationTest() {
-    private val testDataProvider = TestDataProvider(defaultObjectMapper)
+    private val testDataProvider = TestDataProvider()
     private lateinit var companyReportingPeriod2023: StoredCompanyEntity
     private lateinit var companyReportingPeriod2024: StoredCompanyEntity
     private lateinit var companyReportingPeriodBoth: StoredCompanyEntity
