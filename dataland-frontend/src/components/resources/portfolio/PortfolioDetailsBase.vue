@@ -217,7 +217,7 @@ function mergeReportingPeriods(
 class PortfolioEntryPrepared {
   readonly companyId: string;
   readonly companyName: string;
-  readonly sector?: string;
+  readonly sector: string | null | undefined;
   readonly country: string;
   readonly companyCockpitRef: string;
   readonly frameworkHyphenatedNamesToDataRef: Map<string, string | undefined>;

@@ -59,11 +59,11 @@
 					"shareOfTemporaryWorkers": "Greater50",
 					"annualTotalRevenue": {
 						"amount": 5019734207.38,
-						"currency": "MZN"
+						"currency": "MZM"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1143382641.36,
-						"currency": "LAK"
+						"currency": "KZT"
 					}
 				},
 				"productionSpecific": {
@@ -83,11 +83,7 @@
 					"numberOfProductionSites": 43016.47,
 					"listOfProductionSites": null,
 					"market": "National",
-					"specificProcurement": [
-						"ShortLivedAndChangingBusinessRelationships",
-						"NoneOfTheAbove",
-						"TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -881,7 +877,7 @@
 					"shareOfTemporaryWorkers": "Between10And25",
 					"annualTotalRevenue": {
 						"amount": 610819475.57,
-						"currency": "TZS"
+						"currency": "TWD"
 					},
 					"fixedAndWorkingCapital": null
 				},
@@ -976,9 +972,7 @@
 						}
 					],
 					"market": null,
-					"specificProcurement": [
-						"NoneOfTheAbove"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -1123,40 +1117,19 @@
 					"complaintsNumber": null,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"DisregardForOccupationalHealthOrSafety",
-								"UnequalTreatmentOfEmployment"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "lifetime value",
 							"measuresTaken": "Yes",
 							"listedMeasures": "web services"
 						},
 						{
-							"riskPositions": [
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"UnequalTreatmentOfEmployment",
-								"Slavery",
-								"WithholdingAdequateWages",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"DisregardForOccupationalHealthOrSafety",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"DisregardForFreedomOfAssociation",
-								"ExportImportOfHazardousWaste"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "channels",
 							"measuresTaken": "Yes",
 							"listedMeasures": "supply-chains"
 						},
 						{
-							"riskPositions": [
-								"UseOfMercuryOrMercuryWaste",
-								"ExportImportOfHazardousWaste",
-								"DisregardForFreedomOfAssociation",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ChildLabor"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "synergies",
 							"measuresTaken": "No",
 							"listedMeasures": null
@@ -1770,7 +1743,7 @@
 					"shareOfTemporaryWorkers": null,
 					"annualTotalRevenue": {
 						"amount": null,
-						"currency": "LYD"
+						"currency": "LVL"
 					},
 					"fixedAndWorkingCapital": null
 				},
@@ -1814,9 +1787,7 @@
 						}
 					],
 					"market": "International",
-					"specificProcurement": [
-						"NoneOfTheAbove"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [],
@@ -1868,18 +1839,7 @@
 					"complaintsNumber": null,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"WithholdingAdequateWages",
-								"ExportImportOfHazardousWaste",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ChildLabor",
-								"ForcedLabor",
-								"UseOfMercuryOrMercuryWaste",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"Slavery",
-								"UnequalTreatmentOfEmployment"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "lifetime value",
 							"measuresTaken": "No",
 							"listedMeasures": "systems"
@@ -2595,11 +2555,11 @@
 					"shareOfTemporaryWorkers": "Greater50",
 					"annualTotalRevenue": {
 						"amount": 1664105025.14,
-						"currency": "SKK"
+						"currency": "SIT"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1725015461.88,
-						"currency": "MGA"
+						"currency": "MDL"
 					}
 				},
 				"productionSpecific": {
@@ -2692,9 +2652,7 @@
 						}
 					],
 					"market": null,
-					"specificProcurement": [
-						"HighPricePressure"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -2837,69 +2795,25 @@
 					"complaintsNumber": 85000.53,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"DisregardForFreedomOfAssociation",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ExportImportOfHazardousWaste",
-								"ChildLabor",
-								"DisregardForOccupationalHealthOrSafety",
-								"ForcedLabor",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"UnequalTreatmentOfEmployment",
-								"WithholdingAdequateWages",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "deliverables",
 							"measuresTaken": "No",
 							"listedMeasures": null
 						},
 						{
-							"riskPositions": [
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ForcedLabor",
-								"UseOfMercuryOrMercuryWaste",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"DisregardForFreedomOfAssociation",
-								"Slavery",
-								"DisregardForOccupationalHealthOrSafety",
-								"ExportImportOfHazardousWaste"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "ROI",
 							"measuresTaken": "Yes",
 							"listedMeasures": "blockchains"
 						},
 						{
-							"riskPositions": [
-								"WithholdingAdequateWages",
-								"UnequalTreatmentOfEmployment",
-								"DisregardForOccupationalHealthOrSafety",
-								"UseOfMercuryOrMercuryWaste",
-								"ForcedLabor",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"ExportImportOfHazardousWaste",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ChildLabor",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "methodologies",
 							"measuresTaken": "Yes",
 							"listedMeasures": null
 						},
 						{
-							"riskPositions": [
-								"DisregardForOccupationalHealthOrSafety",
-								"ChildLabor",
-								"ForcedLabor",
-								"ExportImportOfHazardousWaste",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"DisregardForFreedomOfAssociation",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "models",
 							"measuresTaken": "Yes",
 							"listedMeasures": "web services"
@@ -3593,9 +3507,7 @@
 						}
 					],
 					"market": "International",
-					"specificProcurement": [
-						"NoneOfTheAbove"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": null,
@@ -3686,15 +3598,7 @@
 					"complaintsNumber": 54050.65,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"WithholdingAdequateWages",
-								"UseOfMercuryOrMercuryWaste",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"Slavery"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "partnerships",
 							"measuresTaken": "No",
 							"listedMeasures": null
@@ -4604,16 +4508,7 @@
 					"complaintsNumber": 15956.33,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"WithholdingAdequateWages",
-								"UnequalTreatmentOfEmployment",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"DisregardForOccupationalHealthOrSafety",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"UseOfMercuryOrMercuryWaste",
-								"ExportImportOfHazardousWaste"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "AI",
 							"measuresTaken": "Yes",
 							"listedMeasures": null
@@ -5253,7 +5148,7 @@
 					"shareOfTemporaryWorkers": "Between25And50",
 					"annualTotalRevenue": {
 						"amount": 7997827532.91,
-						"currency": "XAD"
+						"currency": "WST"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 5697337134.44,
@@ -5314,11 +5209,7 @@
 						}
 					],
 					"market": null,
-					"specificProcurement": [
-						"HighPricePressure",
-						"TightlyTimedOrShortTermAdjustedDeliveryDeadlinesAndConditionsWithSuppliers",
-						"ShortLivedAndChangingBusinessRelationships"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -5462,9 +5353,7 @@
 					"complaintsNumber": 18065.11,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"Slavery"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "AI",
 							"measuresTaken": "No",
 							"listedMeasures": "metrics"
@@ -6185,10 +6074,7 @@
 					"numberOfProductionSites": 60418.02,
 					"listOfProductionSites": [],
 					"market": "International",
-					"specificProcurement": [
-						"HighPricePressure",
-						"NoneOfTheAbove"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -6306,42 +6192,19 @@
 					"complaintsNumber": 83433.77,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"ChildLabor",
-								"DisregardForFreedomOfAssociation",
-								"ExportImportOfHazardousWaste",
-								"DisregardForOccupationalHealthOrSafety",
-								"WithholdingAdequateWages",
-								"Slavery",
-								"UseOfMercuryOrMercuryWaste",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ForcedLabor",
-								"UnequalTreatmentOfEmployment"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "paradigms",
 							"measuresTaken": "Yes",
 							"listedMeasures": null
 						},
 						{
-							"riskPositions": [
-								"UseOfMercuryOrMercuryWaste",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"ForcedLabor"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "solutions",
 							"measuresTaken": "Yes",
 							"listedMeasures": "paradigms"
 						},
 						{
-							"riskPositions": [
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"WithholdingAdequateWages",
-								"ProductionAndUseOfPersistentOrganicPollutants"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "mindshare",
 							"measuresTaken": "No",
 							"listedMeasures": "supply-chains"
@@ -6983,7 +6846,7 @@
 					"shareOfTemporaryWorkers": "Between25And50",
 					"annualTotalRevenue": {
 						"amount": 5604994190.45,
-						"currency": "RSD"
+						"currency": "RON"
 					},
 					"fixedAndWorkingCapital": {
 						"amount": null,
@@ -7089,11 +6952,7 @@
 						}
 					],
 					"market": null,
-					"specificProcurement": [
-						"NoneOfTheAbove",
-						"ShortLivedAndChangingBusinessRelationships",
-						"HighPricePressure"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [
@@ -7216,32 +7075,13 @@
 					"complaintsNumber": 92022.57,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"Slavery",
-								"ChildLabor",
-								"ForcedLabor",
-								"UseOfMercuryOrMercuryWaste",
-								"WithholdingAdequateWages",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ProductionAndUseOfPersistentOrganicPollutants",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "relationships",
 							"measuresTaken": "Yes",
 							"listedMeasures": "users"
 						},
 						{
-							"riskPositions": [
-								"ForcedLabor",
-								"WithholdingAdequateWages",
-								"DisregardForOccupationalHealthOrSafety",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"Slavery",
-								"ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
-								"ChildLabor",
-								"ExportImportOfHazardousWaste"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "mindshare",
 							"measuresTaken": "Yes",
 							"listedMeasures": "supply-chains"
@@ -7878,7 +7718,7 @@
 					},
 					"fixedAndWorkingCapital": {
 						"amount": 1707614641.82,
-						"currency": "TTD"
+						"currency": "TRY"
 					}
 				},
 				"productionSpecific": {
@@ -7911,10 +7751,7 @@
 					"numberOfProductionSites": 64243.21,
 					"listOfProductionSites": [],
 					"market": null,
-					"specificProcurement": [
-						"ShortLivedAndChangingBusinessRelationships",
-						"NoneOfTheAbove"
-					]
+					"specificProcurement": {}
 				},
 				"productionSpecificOwnOperations": {
 					"mostImportantProducts": [],
@@ -7972,18 +7809,7 @@
 					"complaintsNumber": 42544.64,
 					"complaintsRiskPosition": [
 						{
-							"riskPositions": [
-								"UnequalTreatmentOfEmployment",
-								"DisregardForOccupationalHealthOrSafety",
-								"Slavery",
-								"UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
-								"DisregardForFreedomOfAssociation",
-								"ExportImportOfHazardousWaste",
-								"ForcedLabor",
-								"UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
-								"WithholdingAdequateWages",
-								"ChildLabor"
-							],
+							"riskPositions": {},
 							"specifiedComplaint": "initiatives",
 							"measuresTaken": "No",
 							"listedMeasures": "relationships"

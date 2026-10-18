@@ -519,8 +519,8 @@ function openFrameworkFilterDropdown(event: FocusEvent): void {
  * @returns the label of the review button
  */
 async function getReviewStatus(
-  reviewerUserId: string | undefined,
-  reviewerUserName: string | undefined
+  reviewerUserId: string | undefined | null,
+  reviewerUserName: string | undefined | null
 ): Promise<string> {
   const keycloak = await assertDefined(getKeycloakPromise)();
   const keycloakUserId = keycloak.idTokenParsed?.sub;
