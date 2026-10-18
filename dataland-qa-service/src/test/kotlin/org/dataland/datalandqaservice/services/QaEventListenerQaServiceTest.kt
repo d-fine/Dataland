@@ -43,7 +43,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
 
@@ -86,7 +86,6 @@ class QaEventListenerQaServiceTest(
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
-                defaultObjectMapper,
                 mockQaReviewManager,
                 mockQaReviewQueryService,
                 mockDataPointQaReviewManager,

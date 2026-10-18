@@ -58,6 +58,8 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
+    testImplementation("org.springframework.boot:spring-boot-webmvc-test:4.1.1")
     testImplementation(libs.mockito.kotlin)
 }
 

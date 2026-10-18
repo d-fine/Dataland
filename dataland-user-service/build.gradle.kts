@@ -56,6 +56,8 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Spring.security.spring_security_test)
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
+    testImplementation("org.springframework.boot:spring-boot-webmvc-test:4.1.1")
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
     kapt(Spring.boot.configurationProcessor)

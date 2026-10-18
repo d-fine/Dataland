@@ -47,6 +47,7 @@ dependencies {
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
     implementation(libs.flyway)
     implementation(libs.flyway.core)
 }

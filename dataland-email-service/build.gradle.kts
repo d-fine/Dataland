@@ -49,6 +49,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(libs.mockito.kotlin)
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)

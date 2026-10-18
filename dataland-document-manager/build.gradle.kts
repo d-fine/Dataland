@@ -69,6 +69,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation("org.springframework.boot:spring-boot-jdbc-test:4.1.1")
 }
 
 openApi {
