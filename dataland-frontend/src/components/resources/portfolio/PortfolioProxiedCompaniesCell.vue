@@ -1,14 +1,14 @@
 <template>
   <span data-test="proxied-companies-cell">
     <template v-for="(company, index) in companies" :key="company.companyId">
-      <Button
+      <a
         v-if="company.linkable"
-        :label="company.companyName"
-        variant="link"
+        :href="`/companies/${company.companyId}`"
+        class="proxied-company-link"
         data-test="proxied-company-link"
-        @click="$emit('navigate', company.companyId)"
-        :pt="buttonPt"
-      />
+        @click.prevent="$emit('navigate', company.companyId)"
+        >{{ company.companyName }}</a
+      >
       <span v-else data-test="proxied-company-text">{{ company.companyName }}</span
       ><template v-if="index < companies.length - 1">, </template>
     </template>
@@ -16,8 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import Button from 'primevue/button';
-
 /**
  * A company proxied by the company of the table row. Companies that are not part of the portfolio
  * are not linkable.
@@ -35,13 +33,16 @@ defineProps<{
 defineEmits<{
   navigate: [companyId: string];
 }>();
-
-const buttonPt = {
-  label: {
-    style: 'font-weight: normal; text-align: left;',
-  },
-  root: {
-    style: 'padding: 0;',
-  },
-};
 </script>
+
+<style scoped>
+.proxied-company-link {
+  color: var(--p-primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.proxied-company-link:hover {
+  text-decoration: underline;
+}
+</style>
