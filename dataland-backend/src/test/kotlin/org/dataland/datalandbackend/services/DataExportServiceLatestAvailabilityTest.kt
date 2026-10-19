@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.PlainDataAndDimensions
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportAvailability
+import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.junit.jupiter.api.Assertions
@@ -55,29 +56,8 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
     @Test
     fun `check that latest export fills the proxied column with the names of proxied companies`() {
         mockCompanyInformationLookupForTwoCompanies()
-        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
-            .doReturn(
-                listOf(
-                    PlainDataAndDimensions(
-                        dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD),
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
-                    ),
-                ),
-            )
-        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
-            .doReturn(emptySet())
 
-        val exportJob = newExportJob()
-        dataExportService.startLatestExportJob(
-            listOf(nonSourceableTestCompanyId),
-            exportJob,
-            LksgData::class.java,
-            lksgExportOptions.copy(
-                proxiedCompanyIdsByProxyCompanyId = mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId)),
-            ),
-        )
-
-        val exportedRows = readExportedRows(exportJob)
+        val exportedRows = exportLatestWithProxies(mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId)))
 
         Assertions.assertEquals(1, exportedRows.size)
         Assertions.assertEquals(secondTestCompanyInfo.companyName, exportedRows.first().proxied)
@@ -95,6 +75,14 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                     commaCompanyId to commaCompanyInfo,
                 ),
             )
+
+        val exportedRows =
+            exportLatestWithProxies(mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId, commaCompanyId)))
+
+        Assertions.assertEquals("Acme, Inc. | second test company", exportedRows.first().proxied)
+    }
+
+    private fun exportLatestWithProxies(proxies: Map<String, List<String>>): List<SingleCompanyExportData<LksgData>> {
         whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
             .doReturn(
                 listOf(
@@ -106,19 +94,14 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             )
         whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
             .doReturn(emptySet())
-
         val exportJob = newExportJob()
         dataExportService.startLatestExportJob(
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            lksgExportOptions.copy(
-                proxiedCompanyIdsByProxyCompanyId =
-                    mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId, commaCompanyId)),
-            ),
+            lksgExportOptions.copy(proxiedCompanyIdsByProxyCompanyId = proxies),
         )
-
-        Assertions.assertEquals("Acme, Inc. | second test company", readExportedRows(exportJob).first().proxied)
+        return readExportedRows(exportJob)
     }
 
     @Test
