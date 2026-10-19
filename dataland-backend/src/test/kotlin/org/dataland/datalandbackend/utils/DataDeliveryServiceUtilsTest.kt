@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
-import org.dataland.datalandbackendutils.utils.DataPointUtils.objectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoEntity
 import org.dataland.documentmanager.openApiClient.model.DocumentType
@@ -186,7 +186,7 @@ class DataDeliveryServiceUtilsTest {
 
         val result = dataDeliveryServiceUtils.enhanceDataPoints(mapOf("id" to dataPoint), emptyMap())
 
-        val resultJson = objectMapper.readTree(result.allStoredDataPoints.getValue("id").dataPoint)
+        val resultJson = defaultObjectMapper.readTree(result.allStoredDataPoints.getValue("id").dataPoint)
         val dataSource = resultJson.path("dataSource")
         assertTrue(dataSource.has("fileName"))
         assertTrue(dataSource.path("fileName").isNull)

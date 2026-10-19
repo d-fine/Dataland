@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
@@ -81,7 +80,6 @@ class QaReviewManagerTest {
                 mockCompanyDataControllerApi,
                 mockMetaDataControllerApi,
                 mockCloudEventMessageHandler,
-                defaultObjectMapper,
                 mockDataPointQaReviewManager,
                 mockQaReviewQueryService,
             )

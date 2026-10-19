@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.export.ExportAvailability
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ListDataDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -81,7 +82,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
         mockCompanyInformationLookup()
         val dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
         whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(dimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
+            .doReturn(mapOf(dimensions to defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
         whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
             .doReturn(emptySet())
 
@@ -109,7 +110,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
         mockCompanyInformationLookup()
         val dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
         whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(dimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
+            .doReturn(mapOf(dimensions to defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
 
         val exportJob = newExportJob()
         dataExportService.startExportJob(
@@ -134,7 +135,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
         val availableDimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", availablePeriod)
 
         whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(availableDimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
+            .doReturn(mapOf(availableDimensions to defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
         whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
             .doReturn(setOf(BasicDataDimensions(nonSourceableTestCompanyId, "lksg", nonSourceablePeriod)))
 
@@ -198,7 +199,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
         mockCompanyInformationLookupForTwoCompanies()
         val availableDimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD)
         whenever(mockDatasetStorageService.getDatasetData(any(), any()))
-            .doReturn(mapOf(availableDimensions to objectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
+            .doReturn(mapOf(availableDimensions to defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset())))
         whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
             .doReturn(setOf(BasicDataDimensions(secondTestCompanyId, "lksg", TEST_REPORTING_PERIOD)))
 
