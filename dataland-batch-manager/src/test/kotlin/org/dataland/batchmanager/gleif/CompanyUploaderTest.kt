@@ -1,7 +1,6 @@
 package org.dataland.batchmanager.gleif
 
 import ch.qos.logback.classic.Logger
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.dataland.batchmanager.service.TestLogAppender
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
@@ -64,7 +63,7 @@ class CompanyUploaderTest {
     @BeforeEach
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
+        companyUploader = CompanyUploader(mockCompanyDataControllerApi)
     }
 
     @BeforeEach
