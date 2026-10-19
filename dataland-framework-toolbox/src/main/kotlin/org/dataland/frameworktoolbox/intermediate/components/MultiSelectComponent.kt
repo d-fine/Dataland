@@ -92,18 +92,11 @@ open class MultiSelectComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements(Object.values($enumName))",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values($enumName)))",
+                fixtureExpression = "dataGenerator.generateLksgSpecificProcurement()",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateLksgSpecificProcurement())",
                 nullable = isNullable,
             ),
-            imports =
-                setOf(
-                    TypeScriptImport(
-                        "pickSubsetOfElements",
-                        "@e2e/fixtures/FixtureUtils",
-                    ),
-                    TypeScriptImport(enumName, "@clients/backend"),
-                ),
+            imports = setOf(),
         )
     }
 

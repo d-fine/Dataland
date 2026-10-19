@@ -61,7 +61,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         numberOfProductionSites: dataGenerator.randomFloat(),
         listOfProductionSites: dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5),
         market: dataGenerator.valueOrNull(pickOneElement(Object.values(LksgGeneralProductionspecificMarketOptions))),
-        specificProcurement: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(SpecificProcurementOptions))),
+        specificProcurement: dataGenerator.valueOrNull(dataGenerator.generateLksgSpecificProcurement()),
       },
       productionSpecificOwnOperations: {
         mostImportantProducts: dataGenerator.randomArray(() => dataGenerator.generateLksgProduct(), 0, 10),
