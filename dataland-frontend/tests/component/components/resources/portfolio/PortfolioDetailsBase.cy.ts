@@ -46,7 +46,7 @@ describe('Component test for the portfolio details base component (non-sourceabi
     cy.get(bananaEutaxonomyFinancialsCell).find('.non-sourceable-year').should('not.exist');
   });
 
-  describe('Proxied column', () => {
+  describe('Proxy for column', () => {
     const apricotId = '55211efc-5502-430e-89b5-afed16a44407';
     const bananaId = '6d9fe2f5-b46d-4e87-8ad4-45361584889a';
     const externalId = 'external-company-id';
@@ -69,7 +69,7 @@ describe('Component test for the portfolio details base component (non-sourceabi
     it('Hides the column if there are no proxy replacements', () => {
       mountWith({ ...portfolioFixture, proxyCompanyReplacements: [] });
       cy.get('table').should('be.visible');
-      cy.get('th').contains('Proxied').should('not.exist');
+      cy.get('th').contains('Proxy for').should('not.exist');
     });
 
     it('Shows grouped proxied names, linking only companies in the portfolio', () => {
@@ -82,7 +82,7 @@ describe('Component test for the portfolio details base component (non-sourceabi
         ],
       } as EnrichedPortfolio);
       cy.wait('@getInfo');
-      cy.get('th').contains('Proxied').should('exist');
+      cy.get('th').contains('Proxy for').should('exist');
       const cell = 'table tr:first-child td:nth-child(2)';
       cy.get(cell).should('contain.text', 'Banana LLC').and('contain.text', 'External Corp');
       cy.get(cell)

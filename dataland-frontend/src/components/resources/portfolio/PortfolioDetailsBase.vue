@@ -77,7 +77,7 @@
           v-if="showProxiedColumn"
           :sortable="true"
           field="proxiedCompaniesText"
-          header="Proxied"
+          header="Proxy for"
           :showFilterMatchModes="false"
           style="width: 15%"
         >

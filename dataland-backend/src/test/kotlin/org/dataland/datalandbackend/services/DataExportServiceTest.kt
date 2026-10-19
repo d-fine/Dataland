@@ -79,7 +79,7 @@ class DataExportServiceTest {
             )
         val lines = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8).lines()
         val headers = lines[0].split(",")
-        val proxiedIndex = headers.indexOf("PROXIED")
+        val proxiedIndex = headers.indexOf("PROXY_FOR")
 
         Assertions.assertTrue(proxiedIndex >= 0)
         Assertions.assertTrue(lines[1].contains("\"Alpha Corp, Beta Corp\""))

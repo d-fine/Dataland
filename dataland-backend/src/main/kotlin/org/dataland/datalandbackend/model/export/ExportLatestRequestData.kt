@@ -27,7 +27,7 @@ data class ExportLatestRequestData(
         requiredMode = Schema.RequiredMode.NOT_REQUIRED,
         description =
             "Maps the ID of a proxy company to the IDs of the companies it proxies. " +
-                "Used to fill the 'Proxied' column of the export.",
+                "Used to fill the 'PROXY_FOR' column of the export.",
     )
     override val proxiedCompanyIdsByProxyCompanyId: Map<String, List<String>> = emptyMap(),
 ) : ExportLatestRequestData
