@@ -54,7 +54,6 @@ class DataDeliveryServiceUtilsTest {
         uploaderId = "test-uploader-id",
         uploadTime = 0,
         qaStatus = QaStatus.Accepted,
-        isViewableByUser = true,
         documentName = name,
         publicationDate = date,
     )
