@@ -40,17 +40,26 @@ describe('Component test for the portfolio proxied companies cell', () => {
     });
   });
 
-  it('Truncates a long list and shows the full list in the tooltip', () => {
+  it('Shows all companies of a long list as clickable links without truncation or tooltip', () => {
     const companies: ProxiedCompany[] = Array.from({ length: 6 }, (_, i) => ({
       companyId: `id${i}`,
       companyName: `Company number ${i}`,
-      linkable: false,
+      linkable: true,
     }));
     const fullText = companies.map((c) => c.companyName).join(', ');
     expect(fullText.length).to.be.greaterThan(60);
-    mountComponent(companies);
-    cy.get('[data-test="proxied-companies-cell"]').should('contain.text', '…').and('not.contain.text', 'number 5');
-    cy.get('[data-test="proxied-companies-cell"]').trigger('mouseenter', 'center');
-    cy.get('.p-tooltip').should('be.visible').and('contain.text', fullText);
+    mountComponent(companies).then(({ wrapper }) => {
+      cy.get('[data-test="proxied-companies-cell"]').should('contain.text', 'Company number 5');
+      cy.get('[data-test="proxied-companies-cell"]').should('not.contain.text', '…');
+      cy.get('[data-test="proxied-company-link"]').should('have.length', 6);
+      cy.get('[data-test="proxied-companies-cell"]').trigger('mouseenter', 'center');
+      cy.get('.p-tooltip').should('not.exist');
+      cy.get('[data-test="proxied-company-link"]')
+        .last()
+        .click()
+        .then(() => {
+          expect(wrapper.emitted().navigate[0]).to.deep.equal(['id5']);
+        });
+    });
   });
 });
