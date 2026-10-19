@@ -1144,7 +1144,6 @@
           "companyIds",
           "documentId",
           "documentType",
-          "isViewableByUser",
           "qaStatus",
           "uploadTime",
           "uploaderId"
@@ -1214,9 +1213,6 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
-          },
-          "isViewableByUser": {
-            "type": "boolean"
           }
         }
       },
