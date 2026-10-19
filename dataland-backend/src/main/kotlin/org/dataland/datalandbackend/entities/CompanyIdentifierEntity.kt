@@ -28,7 +28,7 @@ data class CompanyIdentifierEntity(
     @Enumerated(EnumType.STRING)
     @Column(name = "identifier_type")
     val identifierType: IdentifierType,
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id")
     @JsonBackReference
     var company: StoredCompanyEntity,
