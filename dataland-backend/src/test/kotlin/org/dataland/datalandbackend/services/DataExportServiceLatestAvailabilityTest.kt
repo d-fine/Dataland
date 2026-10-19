@@ -14,6 +14,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.UUID
 
 /**
  * Tests for the availability / non-sourceability behavior of [DataExportService] for the "latest" export path
@@ -80,6 +81,44 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
 
         Assertions.assertEquals(1, exportedRows.size)
         Assertions.assertEquals(secondTestCompanyInfo.companyName, exportedRows.first().proxied)
+    }
+
+    @Test
+    fun `check that proxied company names containing commas stay distinguishable`() {
+        val commaCompanyId = UUID.randomUUID().toString()
+        val commaCompanyInfo = secondTestCompanyInfo.copy(companyId = commaCompanyId, companyName = "Acme, Inc.")
+        whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))
+            .doReturn(
+                mapOf(
+                    nonSourceableTestCompanyId to nonSourceableTestCompanyInfo,
+                    secondTestCompanyId to secondTestCompanyInfo,
+                    commaCompanyId to commaCompanyInfo,
+                ),
+            )
+        whenever(mockDatasetStorageService.getLatestAvailableData(any(), any(), any()))
+            .doReturn(
+                listOf(
+                    PlainDataAndDimensions(
+                        dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD),
+                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                    ),
+                ),
+            )
+        whenever(mockNonSourceabilityInformationManager.searchActiveNonSourceableDimensions(any()))
+            .doReturn(emptySet())
+
+        val exportJob = newExportJob()
+        dataExportService.startLatestExportJob(
+            listOf(nonSourceableTestCompanyId),
+            exportJob,
+            LksgData::class.java,
+            lksgExportOptions.copy(
+                proxiedCompanyIdsByProxyCompanyId =
+                    mapOf(nonSourceableTestCompanyId to listOf(secondTestCompanyId, commaCompanyId)),
+            ),
+        )
+
+        Assertions.assertEquals("Acme, Inc. | second test company", readExportedRows(exportJob).first().proxied)
     }
 
     @Test

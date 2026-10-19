@@ -22,6 +22,7 @@ class DataExportUtils private constructor() {
                 "availability" to "AVAILABILITY",
             )
         const val PROXIED_FIELD = "proxied"
+        const val PROXIED_NAMES_SEPARATOR = " | "
         const val DATA = "data"
         const val VALUE = "value"
         private const val ALIAS_EXPORT = "aliasExport"

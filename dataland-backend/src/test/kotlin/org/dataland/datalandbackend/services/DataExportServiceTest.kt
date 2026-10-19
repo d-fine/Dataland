@@ -74,7 +74,7 @@ class DataExportServiceTest {
     fun `check that proxied column is exported with the proxied company names`() {
         val csvStream =
             dataExportService.buildStreamFromPortfolioExportData(
-                listOf(lksgCompanyExportTestData.copy(proxied = "Alpha Corp, Beta Corp")),
+                listOf(lksgCompanyExportTestData.copy(proxied = "Alpha Corp | Beta Corp")),
                 ExportOptions(DataType.valueOf("lksg"), ExportFileType.CSV, keepValueFieldsOnly = true, includeAliases = true),
             )
         val lines = String(csvStream.inputStream.readAllBytes(), Charsets.UTF_8).lines()
@@ -82,7 +82,7 @@ class DataExportServiceTest {
         val proxiedIndex = headers.indexOf("PROXY_FOR")
 
         Assertions.assertTrue(proxiedIndex >= 0)
-        Assertions.assertTrue(lines[1].contains("\"Alpha Corp, Beta Corp\""))
+        Assertions.assertTrue(lines[1].contains("Alpha Corp | Beta Corp"))
     }
 
     @Test

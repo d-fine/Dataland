@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.export.ExportJob
 import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
+import org.dataland.datalandbackend.utils.DataExportUtils
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ListDataDimensions
@@ -311,7 +312,7 @@ open class DataExportService<T>(
                     .distinct()
                     .mapNotNull { basicCompanyInformation[it]?.companyName }
                     .sorted()
-                    .joinToString(", ")
+                    .joinToString(DataExportUtils.PROXIED_NAMES_SEPARATOR)
             }
 
         val availableRows =
