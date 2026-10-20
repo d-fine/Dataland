@@ -80,6 +80,8 @@ slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.20" }
 # Spring
 spring-boot = { group = "org.springframework.boot", name = "spring-boot", version.ref = "spring-boot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
+spring-boot-jackson2 = { module = "org.springframework.boot:spring-boot-jackson2" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
