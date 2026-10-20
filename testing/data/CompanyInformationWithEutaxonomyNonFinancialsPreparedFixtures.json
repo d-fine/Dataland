@@ -661,7 +661,7 @@
 								"relativeShareInPercent": 35.8,
 								"absoluteShare": {
 									"amount": 7981789650.5,
-									"currency": "USD"
+									"currency": "USN"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 13.37,
@@ -754,7 +754,7 @@
 						},
 						"comment": "program back-end application",
 						"quality": "NoDataFound",
-						"currency": "UYU"
+						"currency": "UZS"
 					}
 				},
 				"eligibleShare": {
@@ -808,7 +808,7 @@
 						},
 						"comment": "program 1080p circuit",
 						"quality": "NoDataFound",
-						"currency": "PKR"
+						"currency": "PLN"
 					}
 				},
 				"nonAlignedActivities": {
@@ -822,7 +822,7 @@
 								"relativeShareInPercent": 91.76,
 								"absoluteShare": {
 									"amount": 2132310095.58,
-									"currency": "UAH"
+									"currency": "UGX"
 								}
 							}
 						},
@@ -836,7 +836,7 @@
 								"relativeShareInPercent": 53.49,
 								"absoluteShare": {
 									"amount": 6354277262.36,
-									"currency": "GIP"
+									"currency": "GMD"
 								}
 							}
 						}
@@ -875,7 +875,7 @@
 						},
 						"comment": "generate bluetooth bandwidth",
 						"quality": "NoDataFound",
-						"currency": "PTE"
+						"currency": "PYG"
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -1190,7 +1190,7 @@
 								"relativeShareInPercent": 18.2,
 								"absoluteShare": {
 									"amount": 5218161291.17,
-									"currency": "VEF"
+									"currency": "VES"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 76.25,
@@ -1224,7 +1224,7 @@
 								"relativeShareInPercent": 17.37,
 								"absoluteShare": {
 									"amount": 7662199160.82,
-									"currency": "TZS"
+									"currency": "UAH"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 70.2,
@@ -1254,7 +1254,7 @@
 								"relativeShareInPercent": 85.02,
 								"absoluteShare": {
 									"amount": 5109237941.82,
-									"currency": "SZL"
+									"currency": "THB"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 96.89,
@@ -1373,7 +1373,7 @@
 								"relativeShareInPercent": 83.99,
 								"absoluteShare": {
 									"amount": 812063506.73,
-									"currency": "MXN"
+									"currency": "MXV"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 78.36,
@@ -1701,7 +1701,7 @@
 								"relativeShareInPercent": 47.25,
 								"absoluteShare": {
 									"amount": 7731532293.1,
-									"currency": "SDD"
+									"currency": "SDG"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 82.24,
@@ -1729,7 +1729,7 @@
 								"relativeShareInPercent": 35.18,
 								"absoluteShare": {
 									"amount": 5952895124.56,
-									"currency": "SCR"
+									"currency": "SDD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 61.32,
@@ -2029,7 +2029,7 @@
 					},
 					"comment": "hack virtual hard drive",
 					"quality": "Reported",
-					"currency": "ROL"
+					"currency": "RON"
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -2082,7 +2082,7 @@
 						},
 						"comment": "program virtual panel",
 						"quality": "Estimated",
-						"currency": "MZM"
+						"currency": "MZN"
 					}
 				},
 				"nonAlignedShare": {
@@ -2126,7 +2126,7 @@
 								"relativeShareInPercent": 78.25,
 								"absoluteShare": {
 									"amount": 6754029077.44,
-									"currency": "STN"
+									"currency": "SVC"
 								}
 							}
 						}
@@ -2507,7 +2507,7 @@
 								"relativeShareInPercent": 26.9,
 								"absoluteShare": {
 									"amount": 3968795313.59,
-									"currency": "NPR"
+									"currency": "NZD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 4.05,
@@ -2535,7 +2535,7 @@
 								"relativeShareInPercent": 57.71,
 								"absoluteShare": {
 									"amount": 8844200055.47,
-									"currency": "MXN"
+									"currency": "MXV"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 9.27,
@@ -2563,7 +2563,7 @@
 								"relativeShareInPercent": 99.38,
 								"absoluteShare": {
 									"amount": 2869366453.53,
-									"currency": "SRD"
+									"currency": "SRG"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 56.53,
@@ -2620,7 +2620,7 @@
 								"relativeShareInPercent": 99.63,
 								"absoluteShare": {
 									"amount": 7776382857.33,
-									"currency": "MGF"
+									"currency": "MKD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 99.89,
@@ -2678,7 +2678,7 @@
 								"relativeShareInPercent": 79.31,
 								"absoluteShare": {
 									"amount": 7613499481.05,
-									"currency": "JPY"
+									"currency": "KES"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 64.99,
@@ -2745,7 +2745,7 @@
 					},
 					"comment": "back up solid state bandwidth",
 					"quality": "Reported",
-					"currency": "SKK"
+					"currency": "SLE"
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -2825,7 +2825,7 @@
 						},
 						"comment": "transmit mobile sensor",
 						"quality": "Audited",
-						"currency": "SHP"
+						"currency": "SIT"
 					}
 				},
 				"nonAlignedActivities": {
@@ -3192,7 +3192,7 @@
 								"relativeShareInPercent": 62.69,
 								"absoluteShare": {
 									"amount": 7003812890.24,
-									"currency": "IRR"
+									"currency": "ISK"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 24.75,
@@ -3220,7 +3220,7 @@
 								"relativeShareInPercent": 61.35,
 								"absoluteShare": {
 									"amount": 5197472542.54,
-									"currency": "KYD"
+									"currency": "KZT"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 43.26,
@@ -3340,7 +3340,7 @@
 						},
 						"comment": "connect multi-byte hard drive",
 						"quality": "Incomplete",
-						"currency": "THB"
+						"currency": "TJS"
 					}
 				},
 				"nonAlignedShare": {
@@ -3381,7 +3381,7 @@
 								"relativeShareInPercent": 2.12,
 								"absoluteShare": {
 									"amount": 8705304754.47,
-									"currency": "KRW"
+									"currency": "KWD"
 								}
 							}
 						},
@@ -3433,7 +3433,7 @@
 						},
 						"comment": "input haptic sensor",
 						"quality": "Incomplete",
-						"currency": "MZM"
+						"currency": "MZN"
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -3575,7 +3575,7 @@
 								"relativeShareInPercent": 24.18,
 								"absoluteShare": {
 									"amount": 5765446223.99,
-									"currency": "UYI"
+									"currency": "UYU"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 10.91,
@@ -3631,7 +3631,7 @@
 								"relativeShareInPercent": 29.57,
 								"absoluteShare": {
 									"amount": 9199128711.47,
-									"currency": "PLN"
+									"currency": "PTE"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 93.63,
@@ -3995,7 +3995,7 @@
 					},
 					"comment": "program bluetooth capacitor",
 					"quality": "Estimated",
-					"currency": "STN"
+					"currency": "SVC"
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -4075,7 +4075,7 @@
 						},
 						"comment": "copy digital driver",
 						"quality": "Incomplete",
-						"currency": "GRD"
+						"currency": "GTQ"
 					}
 				},
 				"nonAlignedActivities": {
@@ -4114,7 +4114,7 @@
 						},
 						"comment": "parse 1080p bandwidth",
 						"quality": "Incomplete",
-						"currency": "NLG"
+						"currency": "NOK"
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -4456,7 +4456,7 @@
 								"relativeShareInPercent": 64.18,
 								"absoluteShare": {
 									"amount": 2014133000.56,
-									"currency": "SOS"
+									"currency": "SRD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 85.99,
@@ -4664,7 +4664,7 @@
 						},
 						"comment": "override multi-byte matrix",
 						"quality": "Incomplete",
-						"currency": "SGD"
+						"currency": "SHP"
 					}
 				},
 				"eligibleShare": {
@@ -4801,7 +4801,7 @@
 						},
 						"comment": "input auxiliary driver",
 						"quality": "Estimated",
-						"currency": "MKD"
+						"currency": "MMK"
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -5115,7 +5115,7 @@
 								"relativeShareInPercent": 61.92,
 								"absoluteShare": {
 									"amount": 2548176759.5,
-									"currency": "USS"
+									"currency": "UYI"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 87.39,
@@ -5295,7 +5295,7 @@
 								"relativeShareInPercent": 81.54,
 								"absoluteShare": {
 									"amount": 3445876085.69,
-									"currency": "MUR"
+									"currency": "MVR"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 76.8,
@@ -5391,7 +5391,7 @@
 					},
 					"comment": "reboot cross-platform system",
 					"quality": "Audited",
-					"currency": "SDG"
+					"currency": "SEK"
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -5417,7 +5417,7 @@
 						},
 						"comment": "input virtual array",
 						"quality": "Incomplete",
-						"currency": "SEK"
+						"currency": "SGD"
 					}
 				},
 				"eligibleShare": {
@@ -5444,7 +5444,7 @@
 						},
 						"comment": "index bluetooth alarm",
 						"quality": "Audited",
-						"currency": "TMM"
+						"currency": "TMT"
 					}
 				},
 				"nonAlignedShare": {
@@ -5624,7 +5624,7 @@
 								"relativeShareInPercent": 7.69,
 								"absoluteShare": {
 									"amount": 8925235306.16,
-									"currency": "PEN"
+									"currency": "PGK"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 97.98,
@@ -5652,7 +5652,7 @@
 								"relativeShareInPercent": 26.73,
 								"absoluteShare": {
 									"amount": 8156495799.93,
-									"currency": "TND"
+									"currency": "TOP"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 1.92,
@@ -5940,7 +5940,7 @@
 						},
 						"comment": "synthesize haptic firewall",
 						"quality": "Audited",
-						"currency": "STN"
+						"currency": "SVC"
 					}
 				},
 				"eligibleShare": {
@@ -6474,7 +6474,7 @@
 								"relativeShareInPercent": 63.57,
 								"absoluteShare": {
 									"amount": 3959493645.93,
-									"currency": "VES"
+									"currency": "VND"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 44.87,
@@ -6500,7 +6500,7 @@
 								"relativeShareInPercent": 19.52,
 								"absoluteShare": {
 									"amount": 8462793563.34,
-									"currency": "PLN"
+									"currency": "PTE"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 71.66,
@@ -6528,7 +6528,7 @@
 								"relativeShareInPercent": 93.97,
 								"absoluteShare": {
 									"amount": 907059465.03,
-									"currency": "SAR"
+									"currency": "SBD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 46.2,
@@ -7029,7 +7029,7 @@
 								"relativeShareInPercent": 37.33,
 								"absoluteShare": {
 									"amount": 8273719578.58,
-									"currency": "DEM"
+									"currency": "DJF"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 12.14,
@@ -7113,7 +7113,7 @@
 								"relativeShareInPercent": 48.31,
 								"absoluteShare": {
 									"amount": 721290306.03,
-									"currency": "CNY"
+									"currency": "COP"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 2.26,
@@ -7265,7 +7265,7 @@
 					},
 					"comment": "compress auxiliary panel",
 					"quality": "Reported",
-					"currency": "GYD"
+					"currency": "HKD"
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -7291,7 +7291,7 @@
 						},
 						"comment": "override digital bandwidth",
 						"quality": "Reported",
-						"currency": "MKD"
+						"currency": "MMK"
 					}
 				},
 				"eligibleShare": {
@@ -7345,7 +7345,7 @@
 						},
 						"comment": "quantify virtual feed",
 						"quality": "NoDataFound",
-						"currency": "UYI"
+						"currency": "UYU"
 					}
 				},
 				"nonAlignedActivities": {
@@ -7360,7 +7360,7 @@
 								"relativeShareInPercent": 11.53,
 								"absoluteShare": {
 									"amount": 2668346749.54,
-									"currency": "MTL"
+									"currency": "MUR"
 								}
 							}
 						}
@@ -7399,7 +7399,7 @@
 						},
 						"comment": "back up primary protocol",
 						"quality": "NoDataFound",
-						"currency": "IDR"
+						"currency": "IEP"
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -7485,7 +7485,7 @@
 								"relativeShareInPercent": 75.77,
 								"absoluteShare": {
 									"amount": 4665777381.58,
-									"currency": "NAD"
+									"currency": "NGN"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 29.05,
@@ -7511,7 +7511,7 @@
 								"relativeShareInPercent": 57.68,
 								"absoluteShare": {
 									"amount": 1154256061.78,
-									"currency": "DOP"
+									"currency": "DZD"
 								}
 							},
 							"substantialContributionToClimateChangeMitigationInPercent": 15.75,

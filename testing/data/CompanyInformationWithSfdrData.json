@@ -1047,7 +1047,7 @@
 						},
 						"comment": "copy online circuit",
 						"quality": null,
-						"currency": "NZD"
+						"currency": "OMR"
 					}
 				}
 			}
@@ -7329,7 +7329,7 @@
 						},
 						"comment": "navigate redundant system",
 						"quality": "Audited",
-						"currency": "VES"
+						"currency": "VND"
 					}
 				}
 			}
@@ -9533,7 +9533,7 @@
 						},
 						"comment": "back up neural hard drive",
 						"quality": "Reported",
-						"currency": "UYU"
+						"currency": "UZS"
 					}
 				}
 			}

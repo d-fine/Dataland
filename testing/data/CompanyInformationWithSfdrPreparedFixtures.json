@@ -8652,7 +8652,7 @@
 						},
 						"comment": "transmit wireless system",
 						"quality": "Audited",
-						"currency": "TTD"
+						"currency": "TWD"
 					}
 				}
 			}
@@ -10044,7 +10044,7 @@
 						},
 						"comment": "synthesize bluetooth card",
 						"quality": "Incomplete",
-						"currency": "VND"
+						"currency": "VUV"
 					}
 				}
 			}
@@ -14197,7 +14197,7 @@
 						},
 						"comment": "calculate online interface",
 						"quality": "Incomplete",
-						"currency": "GMD"
+						"currency": "GNF"
 					}
 				}
 			}
@@ -19788,7 +19788,7 @@
 						},
 						"comment": "connect back-end pixel",
 						"quality": "Audited",
-						"currency": "MMK"
+						"currency": "MNT"
 					}
 				}
 			}
