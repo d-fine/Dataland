@@ -60,7 +60,12 @@ class ${frameworkDataType.shortenedQualifier}Controller
         return super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
     }
 
-    @Operation(operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}")
+    @Operation(
+        operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}",
+        summary = "Upload new dataset.",
+        description = "The uploaded data is added to the data store, the generated data id is returned. " +
+            "Document references must contain only the file ID.",
+    )
     override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>,
             bypassQa: Boolean

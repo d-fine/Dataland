@@ -56,7 +56,13 @@ class NuclearAndGasDataController
             companyId: String,
         ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-        @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
+        @Operation(
+            operationId = "postCompanyAssociatedNuclearAndGasData",
+            summary = "Upload new dataset.",
+            description =
+                "The uploaded data is added to the data store, the generated data id is returned. " +
+                    "Document references must contain only the file ID.",
+        )
         override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,
             bypassQa: Boolean,

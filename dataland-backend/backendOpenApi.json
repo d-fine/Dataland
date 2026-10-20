@@ -1050,6 +1050,8 @@
         "tags": [
           "sfdr-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedSfdrData",
         "parameters": [
           {
@@ -1284,6 +1286,8 @@
         "tags": [
           "pcaf-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedPcafData",
         "parameters": [
           {
@@ -1518,6 +1522,8 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedNuclearAndGasData",
         "parameters": [
           {
@@ -1752,6 +1758,8 @@
         "tags": [
           "lksg-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedLksgData",
         "parameters": [
           {
@@ -1986,6 +1994,8 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
           {
@@ -2220,6 +2230,8 @@
         "tags": [
           "eutaxonomy-non-financials-202673-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedEutaxonomyNonFinancials202673Data",
         "parameters": [
           {
@@ -2454,6 +2466,8 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedEutaxonomyFinancialsData",
         "parameters": [
           {
@@ -2688,6 +2702,8 @@
         "tags": [
           "eutaxonomy-financials-202673-data-controller"
         ],
+        "summary": "Upload new dataset.",
+        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID.",
         "operationId": "postCompanyAssociatedEutaxonomyFinancials202673Data",
         "parameters": [
           {

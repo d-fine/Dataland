@@ -56,7 +56,13 @@ class LksgDataController
             companyId: String,
         ): ResponseEntity<CompanyAssociatedData<LksgData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-        @Operation(operationId = "postCompanyAssociatedLksgData")
+        @Operation(
+            operationId = "postCompanyAssociatedLksgData",
+            summary = "Upload new dataset.",
+            description =
+                "The uploaded data is added to the data store, the generated data id is returned. " +
+                    "Document references must contain only the file ID.",
+        )
         override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<LksgData>,
             bypassQa: Boolean,
