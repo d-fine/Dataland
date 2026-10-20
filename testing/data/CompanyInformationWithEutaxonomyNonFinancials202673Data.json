@@ -785,7 +785,7 @@
 								"relativeShareInPercent": 89,
 								"absoluteShare": {
 									"amount": 9400800794.64,
-									"currency": "MTL"
+									"currency": "MUR"
 								}
 							},
 							"relativeEligibleShareInPercent": 77.06,
@@ -805,7 +805,7 @@
 								"relativeShareInPercent": 42.99,
 								"absoluteShare": {
 									"amount": 6077811593.43,
-									"currency": "MXV"
+									"currency": "MYR"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -825,7 +825,7 @@
 								"relativeShareInPercent": 70.37,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "MRO"
+									"currency": "MRU"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -907,7 +907,7 @@
 								"relativeShareInPercent": 17.93,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "KHR"
+									"currency": "KMF"
 								}
 							},
 							"relativeEligibleShareInPercent": 72.47,
@@ -1343,7 +1343,7 @@
 					},
 					"comment": "calculate virtual interface",
 					"quality": "Audited",
-					"currency": "STD"
+					"currency": "STN"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -1538,7 +1538,7 @@
 					},
 					"comment": "override haptic panel",
 					"quality": "NoDataFound",
-					"currency": "GMD"
+					"currency": "GNF"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -1844,7 +1844,7 @@
 								"relativeShareInPercent": 3.06,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "SDD"
+									"currency": "SDG"
 								}
 							},
 							"relativeEligibleShareInPercent": 59.23,
@@ -1867,7 +1867,7 @@
 								"relativeShareInPercent": 9.92,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "HRK"
+									"currency": "HTG"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -1889,7 +1889,7 @@
 								"relativeShareInPercent": 90.41,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "NIO"
+									"currency": "NLG"
 								}
 							},
 							"relativeEligibleShareInPercent": 94.98,
@@ -2138,7 +2138,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "TTD"
+						"currency": "TWD"
 					},
 					"relativeShareInPercent": null
 				},
@@ -2236,7 +2236,7 @@
 					},
 					"comment": "reboot virtual hard drive",
 					"quality": "Audited",
-					"currency": "PGK"
+					"currency": "PHP"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -2774,7 +2774,7 @@
 					},
 					"comment": "hack neural program",
 					"quality": "Estimated",
-					"currency": "RUR"
+					"currency": "RWF"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": null
@@ -2919,7 +2919,7 @@
 								"relativeShareInPercent": null,
 								"absoluteShare": {
 									"amount": 6494265667.98,
-									"currency": "RUR"
+									"currency": "RWF"
 								}
 							},
 							"relativeEligibleShareInPercent": 9.41,
@@ -2941,7 +2941,7 @@
 								"relativeShareInPercent": null,
 								"absoluteShare": {
 									"amount": 5627137735.11,
-									"currency": "LBP"
+									"currency": "LKR"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -2963,7 +2963,7 @@
 								"relativeShareInPercent": 55.7,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "SDD"
+									"currency": "SDG"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -3007,7 +3007,7 @@
 								"relativeShareInPercent": null,
 								"absoluteShare": {
 									"amount": 8922071813.53,
-									"currency": "MOP"
+									"currency": "MRO"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -3527,7 +3527,7 @@
 								"relativeShareInPercent": 8.24,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "SGD"
+									"currency": "SHP"
 								}
 							},
 							"relativeEligibleShareInPercent": 73.27,
@@ -3669,7 +3669,7 @@
 						},
 						"comment": "copy 1080p capacitor",
 						"quality": "Incomplete",
-						"currency": "MRU"
+						"currency": "MTL"
 					},
 					"relativeShareInPercent": {
 						"value": 81.18,
@@ -3759,7 +3759,7 @@
 								"relativeShareInPercent": 6.42,
 								"absoluteShare": {
 									"amount": 9407637567.34,
-									"currency": "OMR"
+									"currency": "PAB"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -4181,7 +4181,7 @@
 					},
 					"comment": "index online bus",
 					"quality": "NoDataFound",
-					"currency": "UYI"
+					"currency": "UYU"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -4341,7 +4341,7 @@
 								"relativeShareInPercent": 78.75,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "MDL"
+									"currency": "MGA"
 								}
 							},
 							"relativeEligibleShareInPercent": null,
@@ -4552,7 +4552,7 @@
 								"relativeShareInPercent": 3.56,
 								"absoluteShare": {
 									"amount": 1974327995.5,
-									"currency": "OMR"
+									"currency": "PAB"
 								}
 							},
 							"relativeEligibleShareInPercent": 90.19,
@@ -4617,7 +4617,7 @@
 								"relativeShareInPercent": 0.76,
 								"absoluteShare": {
 									"amount": null,
-									"currency": "USN"
+									"currency": "USS"
 								}
 							},
 							"relativeEligibleShareInPercent": 25.42,
@@ -4654,7 +4654,7 @@
 					},
 					"comment": "bypass primary driver",
 					"quality": "NoDataFound",
-					"currency": "ETB"
+					"currency": "EUR"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": null
@@ -5958,7 +5958,7 @@
 								"relativeShareInPercent": 98.65,
 								"absoluteShare": {
 									"amount": 489302804.53,
-									"currency": "LUF"
+									"currency": "LVL"
 								}
 							},
 							"relativeEligibleShareInPercent": 78.87,
@@ -6442,7 +6442,7 @@
 					},
 					"comment": "program bluetooth bandwidth",
 					"quality": "Reported",
-					"currency": "DJF"
+					"currency": "DKK"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -6601,7 +6601,7 @@
 					},
 					"comment": "reboot auxiliary microchip",
 					"quality": null,
-					"currency": "MUR"
+					"currency": "MVR"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -6815,7 +6815,7 @@
 					"dataSource": null,
 					"comment": "connect haptic alarm",
 					"quality": "Estimated",
-					"currency": "KZT"
+					"currency": "LAK"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -6983,7 +6983,7 @@
 								"relativeShareInPercent": null,
 								"absoluteShare": {
 									"amount": 2172947005.75,
-									"currency": "GHC"
+									"currency": "GHS"
 								}
 							},
 							"relativeEligibleShareInPercent": null,

@@ -229,7 +229,7 @@
 						},
 						"comment": "hack mobile alarm",
 						"quality": "Incomplete",
-						"currency": "PAB"
+						"currency": "PEN"
 					},
 					"relativeShareInPercent": {
 						"value": 72.63,
@@ -390,7 +390,7 @@
 								"relativeShareInPercent": 56.47,
 								"absoluteShare": {
 									"amount": 1637389392.25,
-									"currency": "MRO"
+									"currency": "MRU"
 								}
 							},
 							"relativeEligibleShareInPercent": 87.51,
@@ -427,7 +427,7 @@
 					},
 					"comment": "synthesize auxiliary pixel",
 					"quality": "Estimated",
-					"currency": "RON"
+					"currency": "RSD"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -623,7 +623,7 @@
 								"relativeShareInPercent": 98.41,
 								"absoluteShare": {
 									"amount": 7023112842.42,
-									"currency": "GWP"
+									"currency": "GYD"
 								}
 							},
 							"relativeEligibleShareInPercent": 38.44,
@@ -682,7 +682,7 @@
 					},
 					"comment": "override auxiliary pixel",
 					"quality": "Incomplete",
-					"currency": "MRU"
+					"currency": "MTL"
 				},
 				"eligibleShare": {
 					"relativeShareInPercent": {
@@ -939,7 +939,7 @@
 								"relativeShareInPercent": 61.15,
 								"absoluteShare": {
 									"amount": 854410493.12,
-									"currency": "KPW"
+									"currency": "KRW"
 								}
 							},
 							"relativeEligibleShareInPercent": 88.91,
