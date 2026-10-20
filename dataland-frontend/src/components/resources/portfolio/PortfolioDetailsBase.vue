@@ -17,7 +17,7 @@
           :monitored-tag-attributes="monitoredTagAttributes"
           :reset-filters="resetFilters"
           :open-download="openDownloadModal"
-          :reload="loadPortfolio"
+          :reload="reload"
         />
       </div>
 
@@ -172,18 +172,23 @@
         </Column>
       </DataTable>
     </div>
-    <slot name="dialogs" :is-monitored="isMonitored" :reload="loadPortfolio" />
+    <slot name="dialogs" :is-monitored="isMonitored" :reload="reload" />
   </div>
 </template>
 
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { useQueryClient, useQueries } from '@tanstack/vue-query';
+import { useApiClient } from '@/utils/useApiClient.ts';
+import { useGetEnrichedPortfolioQuery } from '@/api-queries/user-service/portfolio/useGetEnrichedPortfolioQuery.ts';
+import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys.ts';
+import { getCompanyInformationQueryOptions } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
 import { PORTFOLIO_OVERVIEW_FRAMEWORKS, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
+import type { EnrichedPortfolioEntry } from '@clients/userservice';
 import { type BasicDataDimensions, type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
@@ -193,7 +198,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, ref, toRef } from 'vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
@@ -300,14 +305,9 @@ const props = withDefaults(
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const countryOptions = ref<string[]>([]);
-const sectorOptions = ref<string[]>([]);
-const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
-let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -321,12 +321,14 @@ const filters = ref({
   nuclearAndGasAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
 });
 
-const enrichedPortfolio = ref<EnrichedPortfolio>();
-const portfolioEntriesToDisplay = ref<PortfolioEntryPrepared[]>([]);
-const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const isLoading = ref(true);
-const isError = ref(false);
-const isMonitored = ref<boolean>(false);
+const queryClient = useQueryClient();
+const apiClient = useApiClient();
+const {
+  data: enrichedPortfolio,
+  isPending: isLoading,
+  isError,
+} = useGetEnrichedPortfolioQuery(toRef(props, 'portfolioId'));
+const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false);
 const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
 const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
 const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery(
@@ -350,7 +352,27 @@ const reportingPeriodEntriesByCompanyAndFramework = computed<
   }
   return result;
 });
-const externalProxiedCompanyNames = ref<Map<string, string>>(new Map());
+const missingProxiedCompanyIds = computed<string[]>(() => {
+  const portfolioIds = new Set((enrichedPortfolio.value?.entries ?? []).map((entry) => entry.companyId));
+  return Array.from(
+    new Set(
+      (enrichedPortfolio.value?.proxyCompanyReplacements ?? [])
+        .map((replacement) => replacement.proxiedCompanyId)
+        .filter((id) => !portfolioIds.has(id))
+    )
+  );
+});
+const externalProxiedCompanyNames = useQueries({
+  queries: computed(() => missingProxiedCompanyIds.value.map((id) => getCompanyInformationQueryOptions(id, apiClient))),
+  combine: (results) => {
+    const names = new Map<string, string>();
+    results.forEach((result, index) => {
+      const id = missingProxiedCompanyIds.value[index];
+      if (id && result.data) names.set(id, result.data.companyName);
+    });
+    return names;
+  },
+});
 const showProxiedColumn = computed(() => (enrichedPortfolio.value?.proxyCompanyReplacements?.length ?? 0) > 0);
 const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => {
   const portfolioNames = new Map(
@@ -372,13 +394,20 @@ const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => 
   for (const list of result.values()) list.sort((a, b) => a.companyName.localeCompare(b.companyName));
   return result;
 });
-watch([proxiedCompaniesByProxyId, portfolioEntriesToDisplay], () => {
-  for (const entry of portfolioEntriesToDisplay.value) {
-    entry.proxiedCompaniesText = (proxiedCompaniesByProxyId.value.get(entry.companyId) ?? [])
+const portfolioEntriesToDisplay = computed<PortfolioEntryPrepared[]>(() =>
+  (enrichedPortfolio.value?.entries ?? []).map((item) => {
+    const prepared = new PortfolioEntryPrepared(item);
+    prepared.proxiedCompaniesText = (proxiedCompaniesByProxyId.value.get(item.companyId) ?? [])
       .map((company) => company.companyName)
       .join(', ');
-  }
-});
+    return prepared;
+  })
+);
+const reportingPeriodsPerFramework = computed(() =>
+  enrichedPortfolio.value
+    ? groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value)
+    : new Map<string, string[]>()
+);
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
@@ -387,33 +416,41 @@ const monitoredTagAttributes = computed(() => ({
 
 const resolvedEmptyText = computed(() => props.emptyText);
 
-onMounted(() => {
-  loadPortfolio();
-});
+const countryOptions = computed<string[]>(() =>
+  Array.from(
+    new Set(
+      portfolioEntriesToDisplay.value
+        .map((entry) => entry.country)
+        .filter((country): country is string => typeof country === 'string')
+    )
+  ).sort()
+);
 
-watch(enrichedPortfolio, () => {
-  const entries = portfolioEntriesToDisplay.value || [];
+const sectorOptions = computed<string[]>(() =>
+  Array.from(
+    new Set(
+      portfolioEntriesToDisplay.value
+        .map((entry) => entry.sector)
+        .filter((sector): sector is string => typeof sector === 'string')
+    )
+  ).sort()
+);
 
-  countryOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
-  ).sort();
-
-  sectorOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
-  ).sort();
-
+const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
+  const options = new Map<string, string[]>();
   for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
-    reportingPeriodOptions.value.set(
+    options.set(
       framework,
       Array.from(
         new Set(
-          entries
+          portfolioEntriesToDisplay.value
             .map((entry) => getAvailableReportingPeriods(entry, framework))
             .filter((period): period is string => typeof period === 'string')
         )
       ).sort()
     );
   }
+  return options;
 });
 
 /**
@@ -502,52 +539,10 @@ function getProxiedCompanies(companyId: string): ProxiedCompany[] {
 }
 
 /**
- * Fetches the names of proxied companies that are not part of the portfolio entries.
- * @param portfolio the loaded portfolio
+ * Invalidates the cached portfolio so that it is refetched.
  */
-async function loadExternalProxiedCompanyNames(portfolio: EnrichedPortfolio): Promise<void> {
-  const portfolioIds = new Set(portfolio.entries.map((entry) => entry.companyId));
-  const missingIds = new Set(
-    (portfolio.proxyCompanyReplacements ?? [])
-      .map((replacement) => replacement.proxiedCompanyId)
-      .filter((id) => !portfolioIds.has(id))
-  );
-  const names = new Map<string, string>();
-  await Promise.all(
-    Array.from(missingIds).map(async (id) => {
-      try {
-        const response = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(id);
-        names.set(id, response.data.companyName);
-      } catch (error) {
-        console.error(error);
-      }
-    })
-  );
-  externalProxiedCompanyNames.value = names;
-}
-
-/**
- * (Re-)loads a portfolio
- */
-function loadPortfolio(): void {
-  isLoading.value = true;
-  isError.value = false;
-  apiClientProvider.apiClients.portfolioController
-    .getEnrichedPortfolio(props.portfolioId)
-    .then((response) => {
-      enrichedPortfolio.value = response.data;
-      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
-      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
-      void loadExternalProxiedCompanyNames(enrichedPortfolio.value);
-    })
-    .catch((error) => {
-      console.error(error);
-      isError.value = true;
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
+function reload(): void {
+  void queryClient.invalidateQueries({ queryKey: portfolioKeys.enriched(props.portfolioId) });
 }
 
 /**
@@ -572,8 +567,7 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts company IDs from the selected portfolio
  */
 function getCompanyIds(): string[] {
-  portfolioCompanies.value = getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []);
-  return portfolioCompanies.value.map((company) => company.companyId);
+  return getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []).map((company) => company.companyId);
 }
 
 /**
@@ -690,7 +684,7 @@ function openDownloadModal(): void {
       },
     },
     data: {
-      reportingPeriodsPerFramework,
+      reportingPeriodsPerFramework: reportingPeriodsPerFramework.value,
       isDownloading,
       downloadErrors,
     },

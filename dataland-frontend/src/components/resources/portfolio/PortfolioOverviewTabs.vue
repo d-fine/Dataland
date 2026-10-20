@@ -16,10 +16,10 @@
       <slot name="actions" />
     </div>
     <TabPanels>
-      <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId">
+      <TabPanel v-for="portfolio in portfolioNames" :key="portfolio.portfolioId" :value="portfolio.portfolioId" lazy>
         <slot name="panel" :portfolio="portfolio" />
       </TabPanel>
-      <TabPanel value="no-portfolios-available">
+      <TabPanel value="no-portfolios-available" lazy>
         <slot name="empty">
           <h1 v-if="!portfolioNames || portfolioNames.length === 0">No Portfolios available.</h1>
         </slot>
