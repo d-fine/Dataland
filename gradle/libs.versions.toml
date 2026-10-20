@@ -29,7 +29,7 @@ log4j = "2.26.1"
 jackson = "2.22.3"
 logback = "1.6.5"
 flyway = "11.20.3"
-cloudevents = "5.0.0"
+cloudevents = "5.1.0"
 itext = "9.7.1"
 tika = "4.0.0"
 poi = "5.5.1"
@@ -43,7 +43,7 @@ testcontainers = "1.21.4"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.7.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.8.1" }
 # Detekt
 detekt-cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-cli", version.ref = "detekt" }
 
@@ -134,7 +134,7 @@ pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version = "3.0.8" }
 # Mockito
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.3.0" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "6.4.0" }
 
 # JUnit
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }

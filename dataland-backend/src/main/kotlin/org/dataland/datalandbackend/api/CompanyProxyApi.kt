@@ -31,20 +31,20 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface CompanyProxyApi {
     /**
-     * Creates a proxy rule for a given (proxiedCompanyId, proxyCompanyId) pair.
+     * Creates a proxy rule for a given (childCompanyId, parentCompanyId) pair.
      *
      * The submitted resource defines which data of one company may be substituted by
      * the corresponding data of another company.
      *
-     * If the framework or reportingPeriod are null, the proxy applies to all frameworks
-     * or all reporting periods respectively.
+     * The proxy applies to all frameworks. A null validFromReportingPeriod or validToReportingPeriod
+     * means the validity is unbounded in that direction.
      */
     @Operation(
         summary = "Create a proxy.",
         description =
             "Creates a proxy describing which data of one company may be substituted " +
-                "by data of another company. If framework or reportingPeriod are null, " +
-                "the proxy applies to all frameworks or all reporting periods respectively.",
+                "by data of another company for all frameworks. A null validFromReportingPeriod or " +
+                "validToReportingPeriod means the validity is unbounded in that direction.",
     )
     @ApiResponses(
         value = [
@@ -141,34 +141,20 @@ interface CompanyProxyApi {
     fun searchCompanyProxies(
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.CHILD_COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         @CompanyExists
-        proxiedCompanyId: String?,
+        childCompanyId: String?,
         @RequestParam
         @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+            description = GeneralOpenApiDescriptionsAndExamples.PARENT_COMPANY_ID_DESCRIPTION,
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = false,
         )
         @CompanyExists
-        proxyCompanyId: String?,
-        @RequestParam
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPES_FRAMEWORK_EXAMPLE,
-            required = false,
-        )
-        frameworks: Set<String>?,
-        @RequestParam
-        @Parameter(
-            description = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_DESCRIPTION,
-            example = GeneralOpenApiDescriptionsAndExamples.GENERAL_REPORTING_PERIODS_EXAMPLE,
-            required = false,
-        )
-        reportingPeriods: Set<String>?,
+        parentCompanyId: String?,
         @RequestParam(defaultValue = "100")
         @Parameter(
             description = GeneralOpenApiDescriptionsAndExamples.CHUNK_SIZE_DESCRIPTION,
@@ -234,7 +220,7 @@ interface CompanyProxyApi {
         summary = "Replace proxy entry for a proxy id.",
         description =
             "Replaces proxy rule defined for the given proxy id." +
-                " If the frameworks or reportingPeriods are empty or null, the proxy applies to all of them.",
+                " A null validFromReportingPeriod or validToReportingPeriod means the validity is unbounded in that direction.",
     )
     @ApiResponses(
         value = [
@@ -254,7 +240,7 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "No proxy found for the specified company pair.",
+                description = "No proxy found for the specified company proxy id.",
                 content = [Content(mediaType = "application/json")],
             ),
         ],
