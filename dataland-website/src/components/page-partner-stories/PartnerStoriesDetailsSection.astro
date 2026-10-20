@@ -17,12 +17,10 @@ const articleClass = 'scroll-mt-24';
 
 <section class={sectionClass} aria-label={ariaLabel}>
   <div class={sectionInnerClass}>
-    {
-      stories.map((story) => (
-        <article id={story.slug} class={articleClass}>
-          <PartnerDetailCard story={story} useCaseIconByKey={useCaseIconByKey} />
-        </article>
-      ))
-    }
+    {stories.map((story) => (
+      <article id={story.slug} class={articleClass}>
+        <PartnerDetailCard story={story} useCaseIconByKey={useCaseIconByKey} />
+      </article>
+    ))}
   </div>
 </section>

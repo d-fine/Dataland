@@ -26,7 +26,9 @@ const gridClass = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3';
     <SectionHeader title={content.title} intro={content.intro} class={headerClass} />
 
     <div class={gridClass}>
-      {items.map((item) => <NewsCard item={item} />)}
+      {items.map((item) => (
+        <NewsCard item={item} />
+      ))}
     </div>
   </div>
 </section>

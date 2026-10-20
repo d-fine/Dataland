@@ -85,35 +85,33 @@ const iconClass = {
 
     <!-- Desktop navigation with hover dropdowns -->
     <nav class={layoutClass.desktopNav} aria-label="Main navigation">
-      {
-        HEADER_NAV_GROUPS.map(({ href, label, sections }) => (
-          <div class={linkClass.navGroup}>
-            <a
-              href={href}
-              class:list={[linkClass.navBase, isActive(href) ? linkClass.navActive : linkClass.navInactive]}
-              aria-current={isActive(href) ? 'page' : undefined}
-              aria-haspopup="true"
-            >
-              <span class={linkClass.navLabel}>
-                {label}
-                <svg class={iconClass.chevron} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d={icons.chevron} clip-rule="evenodd" />
-                </svg>
-              </span>
-            </a>
+      {HEADER_NAV_GROUPS.map(({ href, label, sections }) => (
+        <div class={linkClass.navGroup}>
+          <a
+            href={href}
+            class:list={[linkClass.navBase, isActive(href) ? linkClass.navActive : linkClass.navInactive]}
+            aria-current={isActive(href) ? 'page' : undefined}
+            aria-haspopup="true"
+          >
+            <span class={linkClass.navLabel}>
+              {label}
+              <svg class={iconClass.chevron} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d={icons.chevron} clip-rule="evenodd" />
+              </svg>
+            </span>
+          </a>
 
-            <div class={linkClass.dropdownWrap}>
-              <div class={linkClass.dropdownPanel}>
-                {sections.map(({ href: sectionHref, label: sectionLabel }) => (
-                  <a href={sectionHref} class={linkClass.dropdownLink}>
-                    {sectionLabel}
-                  </a>
-                ))}
-              </div>
+          <div class={linkClass.dropdownWrap}>
+            <div class={linkClass.dropdownPanel}>
+              {sections.map(({ href: sectionHref, label: sectionLabel }) => (
+                <a href={sectionHref} class={linkClass.dropdownLink}>
+                  {sectionLabel}
+                </a>
+              ))}
             </div>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </nav>
 
     <!-- Desktop account and platform actions -->
@@ -161,7 +159,9 @@ const iconClass = {
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        {icons.menu.map((line) => <line {...line} />)}
+        {icons.menu.map((line) => (
+          <line {...line} />
+        ))}
       </svg>
     </button>
   </div>
@@ -183,19 +183,19 @@ const iconClass = {
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          {icons.close.map((line) => <line {...line} />)}
+          {icons.close.map((line) => (
+            <line {...line} />
+          ))}
         </svg>
       </button>
     </div>
 
     <div class={layoutClass.mobileLinks}>
-      {
-        HEADER_MOBILE_LINKS.map(({ href, label }) => (
-          <a href={href} class={linkClass.mobile}>
-            {label}
-          </a>
-        ))
-      }
+      {HEADER_MOBILE_LINKS.map(({ href, label }) => (
+        <a href={href} class={linkClass.mobile}>
+          {label}
+        </a>
+      ))}
 
       <a href={HEADER_ACTIONS.login.href} data-test={HEADER_ACTIONS.login.testId + '-mobile'} class={linkClass.mobile}>
         {HEADER_ACTIONS.login.label}

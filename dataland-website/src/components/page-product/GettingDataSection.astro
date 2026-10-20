@@ -47,23 +47,21 @@ const checkMark = '\u2713';
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={gridClass}>
-      {
-        blocks.map((block, index) => (
-          <CardShell as="article" variant={index === 0 ? 'warm' : 'cool'} class={cardClass}>
-            <h3 class={titleClass}>{block.title}</h3>
-            <div class={accentBarWrapClass} aria-hidden="true">
-              <div class={accentBarClass} />
-            </div>
-            <p class={textClass}>{block.text}</p>
-            {block.highlights.map((highlight) => (
-              <span class={highlightRowClass}>
-                <span class={highlightCheckClass}>{checkMark}</span>
-                {highlight}
-              </span>
-            ))}
-          </CardShell>
-        ))
-      }
+      {blocks.map((block, index) => (
+        <CardShell as="article" variant={index === 0 ? 'warm' : 'cool'} class={cardClass}>
+          <h3 class={titleClass}>{block.title}</h3>
+          <div class={accentBarWrapClass} aria-hidden="true">
+            <div class={accentBarClass} />
+          </div>
+          <p class={textClass}>{block.text}</p>
+          {block.highlights.map((highlight) => (
+            <span class={highlightRowClass}>
+              <span class={highlightCheckClass}>{checkMark}</span>
+              {highlight}
+            </span>
+          ))}
+        </CardShell>
+      ))}
     </div>
   </div>
 </section>
