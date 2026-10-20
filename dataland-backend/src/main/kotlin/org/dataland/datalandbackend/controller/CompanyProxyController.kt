@@ -5,11 +5,11 @@ import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the company data proxy rule endpoints.
@@ -25,24 +25,28 @@ class CompanyProxyController
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * POST /company-data-proxy-relation
+         * POST /company-proxies
          */
         override fun postCompanyProxy(companyProxy: CompanyProxy<String>): ResponseEntity<StoredCompanyProxy> {
             logger.info(
                 "Received request to create proxy relation for " +
-                    "proxiedCompanyId='${companyProxy.proxiedCompanyId}', " +
-                    "proxyCompanyId='${companyProxy.proxyCompanyId}', " +
-                    "framework='${companyProxy.framework}', " +
-                    "reportingPeriod='${companyProxy.reportingPeriod}'",
+                    "childCompanyId='${companyProxy.childCompanyId}', " +
+                    "parentCompanyId='${companyProxy.parentCompanyId}', " +
+                    "validFromReportingPeriod='${companyProxy.validFromReportingPeriod}', " +
+                    "validToReportingPeriod='${companyProxy.validToReportingPeriod}'",
             )
 
-            val savedEntity = companyProxyManager.addProxyRelation(companyProxy.convertToCompanyProxyWithUUIDs())
+            val savedEntity =
+                companyProxyManager.addProxyRelation(
+                    companyProxy.convertToCompanyProxyWithUUIDs(),
+                    DatalandAuthentication.fromContext().userId,
+                )
 
             return ResponseEntity.ok(savedEntity.toStoredCompanyProxy())
         }
 
         /**
-         * GET /company-data-proxy-relation
+         * GET /company-proxies/{proxyId}
          */
         override fun getCompanyProxyById(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info(
@@ -50,28 +54,24 @@ class CompanyProxyController
                     "proxyId='$proxyId'",
             )
             return ResponseEntity.ok(
-                companyProxyManager.getCompanyProxyById(UUID.fromString(proxyId)),
+                companyProxyManager.getCompanyProxyById(ValidationUtils.convertToUUID(proxyId)),
             )
         }
 
         /**
-         * GET /company-proxies/company-proxy
+         * GET /company-proxies
          */
         override fun searchCompanyProxies(
-            proxiedCompanyId: String?,
-            proxyCompanyId: String?,
-            frameworks: Set<String>?,
-            reportingPeriods: Set<String>?,
+            childCompanyId: String?,
+            parentCompanyId: String?,
             chunkSize: Int,
             chunkIndex: Int,
         ): ResponseEntity<List<StoredCompanyProxy>> {
             logger.info("Received request to get all company proxies")
             return ResponseEntity.ok(
                 companyProxyManager.getCompanyProxiesByFilters(
-                    proxiedCompanyId = proxiedCompanyId?.let { ValidationUtils.convertToUUID(it) },
-                    proxyCompanyId = proxyCompanyId?.let { ValidationUtils.convertToUUID(it) },
-                    frameworks = frameworks,
-                    reportingPeriods = reportingPeriods,
+                    childCompanyId = childCompanyId?.let { ValidationUtils.convertToUUID(it) },
+                    parentCompanyId = parentCompanyId?.let { ValidationUtils.convertToUUID(it) },
                     chunkSize = chunkSize,
                     chunkIndex = chunkIndex,
                 ),
@@ -79,7 +79,7 @@ class CompanyProxyController
         }
 
         /**
-         * DELETE /company-proxies/company-proxy
+         * DELETE /company-proxies/{proxyId}
          */
         override fun deleteCompanyProxy(proxyId: String): ResponseEntity<StoredCompanyProxy> {
             logger.info("Received request to delete proxy rule with proxyId='$proxyId'")
@@ -92,20 +92,21 @@ class CompanyProxyController
         }
 
         /**
-         * PUT /company-proxies/company-proxy
+         * PUT /company-proxies/{proxyId}
          */
         override fun putCompanyProxy(
             proxyId: String,
             companyProxy: CompanyProxy<String>,
         ): ResponseEntity<StoredCompanyProxy> {
             logger.info(
-                "Received request to update proxy rule for " +
-                    "proxiedCompanyId = '${companyProxy.proxiedCompanyId}', proxyCompanyId = '${companyProxy.proxyCompanyId}'",
+                "Received request to update proxy rule with proxyId='$proxyId' for " +
+                    "childCompanyId = '${companyProxy.childCompanyId}', parentCompanyId = '${companyProxy.parentCompanyId}'",
             )
             return ResponseEntity.ok(
                 companyProxyManager.editCompanyProxy(
                     proxyId = ValidationUtils.convertToUUID(proxyId),
                     updatedCompanyProxy = companyProxy.convertToCompanyProxyWithUUIDs(),
+                    uploaderUserId = DatalandAuthentication.fromContext().userId,
                 ),
             )
         }
