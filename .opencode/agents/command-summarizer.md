@@ -2,7 +2,6 @@
 name: command-summarizer
 mode: subagent
 description: Executes bash commands with extensive stdout logs, summarizes the output, and returns only the summary.
-model: github-copilot/gpt-5.4-mini
 permission:
   edit: deny
   bash: allow
