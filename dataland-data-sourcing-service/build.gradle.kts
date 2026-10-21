@@ -61,7 +61,7 @@ dependencies {
     testImplementation(project(":dataland-backend-utils", "testArtifacts"))
     testImplementation(libs.testcontainers.junit.jupiter)
     testImplementation(libs.testcontainers.postgresql)
-    testImplementation("org.springframework.boot:spring-boot-webmvc-test:4.1.1")
+    testImplementation(libs.spring.boot.webmvc.test)
 }
 
 openApi {
