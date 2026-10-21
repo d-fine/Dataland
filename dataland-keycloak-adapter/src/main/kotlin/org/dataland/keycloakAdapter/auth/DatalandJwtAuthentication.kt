@@ -22,10 +22,11 @@ class DatalandJwtAuthentication(
     val lastName: String
         get() = jwt.getClaimAsString("family_name") ?: ""
 
-    override fun getAuthorities(): List<GrantedAuthority> {
-        val realmRoles = jwt.getClaimAsMap("realm_access")?.get("roles") as? Collection<*>
-        return realmRoles?.filterIsInstance<String>()?.map { SimpleGrantedAuthority(it) } ?: listOf()
-    }
+    override fun getAuthorities(): List<GrantedAuthority> =
+        when (val realmRoles = jwt.getClaimAsMap("realm_access")?.get("roles")) {
+            is Iterable<*> -> realmRoles.filterIsInstance<String>().map { SimpleGrantedAuthority(it) }
+            else -> emptyList()
+        }
 
     override fun getCredentials(): String = jwt.tokenValue
 
