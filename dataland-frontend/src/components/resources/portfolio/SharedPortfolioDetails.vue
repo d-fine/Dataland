@@ -7,7 +7,7 @@
       <Button @click="openRemoveModal()" data-test="remove-portfolio" label="REMOVE PORTFOLIO" icon="pi pi-times" />
       <Button @click="openDownload" data-test="download-portfolio" label="DOWNLOAD PORTFOLIO" icon="pi pi-download" />
       <Tag v-bind="monitoredTagAttributes" data-test="is-monitored-tag" />
-      <Tag :value="`Shared by ${ownerEmail ?? ''}`" icon="pi pi-share-alt" severity="info" data-test="shared-by-tag" />
+      <Tag v-bind="sharedByTagAttributes" severity="info" data-test="shared-by-tag" />
       <Button
         class="reset-button-align-right"
         data-test="reset-filter"
@@ -32,24 +32,33 @@
 import PortfolioDetailsBase from '@/components/resources/portfolio/PortfolioDetailsBase.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { inject, onMounted, ref } from 'vue';
+import { computed, ref, toRef } from 'vue';
 import PortfolioRemoveSharing from '@/components/resources/portfolio/PortfolioRemoveSharing.vue';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { type PortfolioUserAccessRight, PortfolioUserAccessRightPortfolioAccessRoleEnum } from '@clients/userservice';
+import { useGetPortfolioAccessRightsQuery } from '@/api-queries/user-service/portfolio/useGetPortfolioAccessRightsQuery.ts';
 
 const props = defineProps<{
   portfolioId: string;
 }>();
 
-const emit = defineEmits(['update:portfolio-overview']);
+const portfolioIdRef = toRef(props, 'portfolioId');
+const { data: accessRights, isLoading, isError } = useGetPortfolioAccessRightsQuery(portfolioIdRef);
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const emit = defineEmits(['update:portfolio-overview']);
 
 const isRemoveDialogVisible = ref(false);
 const ownerEmail = ref<string | null>(null);
+
+const owner = accessRights.value?.find(
+  (user: PortfolioUserAccessRight) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner
+);
+ownerEmail.value = owner?.userEmail ?? null;
+
+const sharedByTagAttributes = computed(() => {
+  if (isLoading.value) return { value: 'Loading owner…', icon: 'pi pi-spin pi-spinner' };
+  if (isError.value || !ownerEmail.value) return { value: 'Shared with you', icon: 'pi pi-share-alt' };
+  return { value: `Shared by ${ownerEmail.value}`, icon: 'pi pi-share-alt' };
+});
 
 /**
  * Opens the remove dialog for the current portfolio.
@@ -66,26 +75,6 @@ function onRemoveSharing(reload: () => void): void {
   reload();
   emit('update:portfolio-overview');
 }
-
-/**
- * Loads the email of the portfolio owner.
- */
-async function loadOwnerEmail(): Promise<void> {
-  try {
-    const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(props.portfolioId);
-    const owner = response.data.find(
-      (user: PortfolioUserAccessRight) =>
-        user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner
-    );
-    ownerEmail.value = owner?.userEmail ?? null;
-  } catch (error) {
-    console.error('Error loading portfolio access rights:', error);
-  }
-}
-
-onMounted(() => {
-  void loadOwnerEmail();
-});
 </script>
 
 <style scoped>

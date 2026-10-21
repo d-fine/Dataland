@@ -4,8 +4,6 @@ import { useApiClient } from '@/utils/useApiClient.ts';
 import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys.ts';
 import type { EnrichedPortfolio } from '@clients/userservice';
 
-const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
-
 /**
  * Vue Query hook that fetches an enriched portfolio for a given portfolio id.
  *
@@ -22,7 +20,6 @@ export function useGetEnrichedPortfolioQuery(
   return useQuery<EnrichedPortfolio, Error>({
     queryKey,
     enabled,
-    staleTime: FIVE_MINUTES_IN_MS,
     queryFn: async () => {
       if (!portfolioId.value) {
         throw new Error('portfolioId is undefined');
