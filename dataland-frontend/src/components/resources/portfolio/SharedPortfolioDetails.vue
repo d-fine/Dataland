@@ -47,12 +47,14 @@ const { data: accessRights, isLoading, isError } = useGetPortfolioAccessRightsQu
 const emit = defineEmits(['update:portfolio-overview']);
 
 const isRemoveDialogVisible = ref(false);
-const ownerEmail = ref<string | null>(null);
 
-const owner = accessRights.value?.find(
-  (user: PortfolioUserAccessRight) => user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner
+const ownerEmail = computed(
+  () =>
+    accessRights.value?.find(
+      (user: PortfolioUserAccessRight) =>
+        user.portfolioAccessRole === PortfolioUserAccessRightPortfolioAccessRoleEnum.Owner
+    )?.userEmail ?? null
 );
-ownerEmail.value = owner?.userEmail ?? null;
 
 const sharedByTagAttributes = computed(() => {
   if (isLoading.value) return { value: 'Loading owner…', icon: 'pi pi-spin pi-spinner' };
