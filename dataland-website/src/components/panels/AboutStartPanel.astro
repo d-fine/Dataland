@@ -84,23 +84,21 @@ const actions: PanelAction[] = [
   </div>
 
   <div class={classes.actions}>
-    {
-      actions.map(({ href, label, className, iconMarkup }) => (
-        <a href={href} class={className}>
-          <svg
-            class={classes.icon}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            set:html={iconMarkup}
-          />
-          {label}
-        </a>
-      ))
-    }
+    {actions.map(({ href, label, className, iconMarkup }) => (
+      <a href={href} class={className}>
+        <svg
+          class={classes.icon}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          set:html={iconMarkup}
+        />
+        {label}
+      </a>
+    ))}
   </div>
 </div>

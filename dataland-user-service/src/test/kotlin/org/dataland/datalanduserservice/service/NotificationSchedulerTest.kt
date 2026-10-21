@@ -92,6 +92,13 @@ class NotificationSchedulerTest {
                     DataTypeEnum.eutaxonomyMinusFinancials,
                     "2024",
                 ),
+                NotificationEventEntity(
+                    UUID.randomUUID(),
+                    NotificationEventType.AvailableEvent,
+                    companyIdSfdrAndEuTaxo,
+                    DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73,
+                    "2024",
+                ),
             )
     }
 

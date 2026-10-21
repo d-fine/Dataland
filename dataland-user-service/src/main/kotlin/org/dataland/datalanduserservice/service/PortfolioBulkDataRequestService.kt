@@ -3,9 +3,13 @@ package org.dataland.datalanduserservice.service
 import org.dataland.dataSourcingService.openApiClient.api.RequestControllerApi
 import org.dataland.dataSourcingService.openApiClient.model.BulkDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.exceptions.BulkDataRequestJobFailedException
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.PortfolioRequestFailure
 import org.dataland.datalanduserservice.model.ReportingPeriodAndSector
 import org.dataland.datalanduserservice.model.SectorType
+import org.dataland.datalanduserservice.model.TimeWindowThreshold
 import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,10 +38,16 @@ class PortfolioBulkDataRequestService
          *  updates company reporting periods and sector information based on each threshold,
          *  and then publishes appropriate Bulk Data Requests for each portfolio.
          *
+         * Failures are isolated: an error for one time window group or one portfolio is recorded and does not prevent
+         * the remaining portfolios from being processed. Posting several requests for one portfolio is not atomic, so
+         * requests posted before a failure remain; the next nightly run posts them again.
+         * After all portfolios were attempted, an error summary is logged and a [BulkDataRequestJobFailedException]
+         * is thrown if any failure occurred.
+         *
          * @see postBulkDataRequest
          */
         @Suppress("UnusedPrivateMember") // Detekt does not recognize the scheduled execution of this function
-        @Scheduled(cron = "0 0 2 * * *")
+        @Scheduled(cron = "0 0 2 * * *") // Every day at 2:00 a.m. server time
         fun createBulkDataRequestsForAllMonitoredPortfolios() {
             logger.info("BulkDataRequest scheduled job started.")
 
@@ -45,27 +55,85 @@ class PortfolioBulkDataRequestService
             logger.info("Found ${allMonitoredPortfolios.size} monitored portfolios for processing.")
             companyReportingInfoService.resetData()
 
-            val portfoliosByTimeWindow =
-                allMonitoredPortfolios
-                    .groupBy { it.timeWindowThreshold }
-                    .filterKeys { it != null }
-            portfoliosByTimeWindow.forEach { (timeWindowThreshold, portfolios) ->
-                timeWindowThreshold?.let { threshold ->
-                    val companyIds = portfolios.flatMap { it.companyIds }.toSet()
-                    logger
-                        .info(
-                            "Updating company reporting info for ${companyIds.size} unique company IDs" +
-                                " across all portfolios with time window threshold $threshold.",
-                        )
-                    companyReportingInfoService.updateCompanies(companyIds, threshold)
-
-                    logger.info("Company reporting info update completed.")
-                    portfolios.forEach {
-                        postBulkDataRequest(it.toBasePortfolio())
+            val failures = mutableListOf<PortfolioRequestFailure>()
+            allMonitoredPortfolios
+                .groupBy { it.timeWindowThreshold }
+                .forEach { (timeWindowThreshold, portfolios) ->
+                    if (timeWindowThreshold != null && updateCompaniesSafely(timeWindowThreshold, portfolios, failures)) {
+                        portfolios.forEach { postBulkDataRequestSafely(it, failures) }
                     }
                 }
+
+            if (failures.isNotEmpty()) {
+                logger.error(
+                    "BulkDataRequest scheduled job finished with ${failures.size} failure(s) among " +
+                        "${allMonitoredPortfolios.size} portfolios: " +
+                        failures.joinToString { "${it.portfolioId} (user ${it.userId}, ${it.stage}: ${it.cause.message})" },
+                )
+                throw BulkDataRequestJobFailedException(failures)
             }
             logger.info("BulkDataRequest scheduled job completed: processed ${allMonitoredPortfolios.size} portfolios.")
+        }
+
+        /**
+         * Updates the company reporting info for all companies of the given portfolios.
+         * If this fails, a failure is recorded for every portfolio of the group.
+         *
+         * @return true if the update succeeded and the portfolios can be processed, false otherwise
+         */
+        @Suppress("TooGenericExceptionCaught")
+        private fun updateCompaniesSafely(
+            threshold: TimeWindowThreshold,
+            portfolios: List<PortfolioEntity>,
+            failures: MutableList<PortfolioRequestFailure>,
+        ): Boolean {
+            val companyIds = portfolios.flatMap { it.companyIds }.toSet()
+            logger.info(
+                "Updating company reporting info for ${companyIds.size} unique company IDs" +
+                    " across all portfolios with time window threshold $threshold.",
+            )
+            return try {
+                companyReportingInfoService.updateCompanies(companyIds, threshold)
+                logger.info("Company reporting info update completed.")
+                true
+            } catch (exception: Exception) {
+                logger.error(
+                    "Updating company reporting info failed for time window threshold $threshold. " +
+                        "Skipping ${portfolios.size} portfolio(s).",
+                    exception,
+                )
+                portfolios.forEach {
+                    failures.add(it.toFailure(PortfolioRequestFailure.Stage.UPDATE_COMPANIES, exception))
+                }
+                false
+            }
+        }
+
+        /**
+         * Creates a [PortfolioRequestFailure] for the given portfolio, stage, and cause.
+         * @param stage the processing stage in which the failure occurred
+         * @param cause the exception that was thrown
+         * @return a [PortfolioRequestFailure] instance representing the failure
+         */
+        private fun PortfolioEntity.toFailure(
+            stage: PortfolioRequestFailure.Stage,
+            cause: Exception,
+        ) = PortfolioRequestFailure(portfolioId.toString(), userId, stage, cause)
+
+        /**
+         * Posts the bulk data requests for one portfolio. Failures are recorded and not propagated.
+         */
+        @Suppress("TooGenericExceptionCaught")
+        private fun postBulkDataRequestSafely(
+            portfolio: PortfolioEntity,
+            failures: MutableList<PortfolioRequestFailure>,
+        ) {
+            try {
+                postBulkDataRequest(portfolio.toBasePortfolio(), failures)
+            } catch (e: Exception) {
+                logger.error("Posting bulk data requests failed for portfolio ${portfolio.portfolioId} (user ${portfolio.userId}).", e)
+                failures.add(portfolio.toFailure(PortfolioRequestFailure.Stage.POST_REQUESTS, e))
+            }
         }
 
         /**
@@ -73,20 +141,65 @@ class PortfolioBulkDataRequestService
          *
          * For each unique combination of sector and reporting period among the portfolio's company IDs,
          * posts one or more bulk data requests using the appropriate frameworks.
-         * Does nothing if the provided portfolio is not monitored.
+         * A failing request is logged with its context and recorded in [failures]; the remaining requests of the
+         * portfolio are still posted.
          *
          * @param basePortfolio The BasePortfolio for which to publish bulk data requests.
+         * @param failures The list to which a failure is added for each request that could not be posted.
          */
-        private fun postBulkDataRequest(basePortfolio: BasePortfolio) {
+        private fun postBulkDataRequest(
+            basePortfolio: BasePortfolio,
+            failures: MutableList<PortfolioRequestFailure>,
+        ) {
             val groupedCompanyIds = groupCompanyIdsBySectorAndReportingPeriod(basePortfolio.identifiers)
+            var attempted = 0
+            val failuresBefore = failures.size
 
             groupedCompanyIds.forEach { (key, companyIds) ->
+                val companyIdSet = companyIds.toSet()
                 if ("eutaxonomy" in basePortfolio.monitoredFrameworks) {
-                    postEutaxonomyBulkRequest(basePortfolio, key, companyIds.toSet())
+                    attempted++
+                    postSafely(basePortfolio, "eutaxonomy", key, companyIdSet.size, failures) {
+                        postEutaxonomyBulkRequest(basePortfolio, key, companyIdSet)
+                    }
                 }
                 if ("sfdr" in basePortfolio.monitoredFrameworks) {
-                    postSfdrBulkRequest(basePortfolio, key.reportingPeriod, companyIds.toSet())
+                    attempted++
+                    postSafely(basePortfolio, "sfdr", key, companyIdSet.size, failures) {
+                        postSfdrBulkRequest(basePortfolio, key.reportingPeriod, companyIdSet)
+                    }
                 }
+            }
+            logger.debug(
+                "Posted ${attempted - (failures.size - failuresBefore)}/$attempted bulk data requests " +
+                    "for portfolio ${basePortfolio.portfolioId} (user ${basePortfolio.userId}).",
+            )
+        }
+
+        /**
+         * Executes a single bulk request. A failure is logged with its context and recorded, not propagated.
+         */
+        @Suppress("TooGenericExceptionCaught", "LongParameterList")
+        private fun postSafely(
+            portfolio: BasePortfolio,
+            framework: String,
+            key: ReportingPeriodAndSector,
+            companyCount: Int,
+            failures: MutableList<PortfolioRequestFailure>,
+            post: () -> Unit,
+        ) {
+            try {
+                post()
+            } catch (e: Exception) {
+                logger.error(
+                    "Posting $framework bulk data request failed for portfolio ${portfolio.portfolioId} " +
+                        "(user ${portfolio.userId}): reportingPeriod=${key.reportingPeriod}, " +
+                        "sector=${key.sector}, companies=$companyCount.",
+                    e,
+                )
+                failures.add(
+                    PortfolioRequestFailure(portfolio.portfolioId, portfolio.userId, PortfolioRequestFailure.Stage.POST_REQUESTS, e),
+                )
             }
         }
 
@@ -125,23 +238,20 @@ class PortfolioBulkDataRequestService
                 when (groupKey.sector) {
                     SectorType.FINANCIALS -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                            DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73.value,
                         )
                     }
 
                     SectorType.NONFINANCIALS -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value,
                         )
                     }
 
                     else -> {
                         setOf(
-                            DataTypeEnum.eutaxonomyMinusFinancials.value,
-                            DataTypeEnum.nuclearMinusAndMinusGas.value,
-                            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value,
+                            DataTypeEnum.eutaxonomyMinusFinancialsMinus2026Minus73.value,
+                            DataTypeEnum.eutaxonomyMinusNonMinusFinancialsMinus2026Minus73.value,
                         )
                     }
                 }

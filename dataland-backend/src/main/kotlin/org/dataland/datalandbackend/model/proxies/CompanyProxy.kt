@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.model.proxies
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import org.dataland.datalandbackend.validator.DataTypeIsValid
 import org.dataland.datalandbackendutils.utils.ValidationUtils.convertToUUID
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
@@ -14,42 +13,42 @@ import java.util.UUID
  * --- API model ---
  * Class defining the proxying rules between two companies.
  *
- * @param proxiedCompanyId The company whose data may be substituted.
- * @param proxyCompanyId The company whose data may serve as a proxy.
- * @param framework The framework for which proxying is allowed.
- *        Empty or null means all frameworks may be proxied.
- * @param reportingPeriod A reporting period for which proxying is allowed.
- *        Empty or null means all reporting periods may be proxied.
+ * @param childCompanyId The company whose data may be substituted.
+ * @param parentCompanyId The company whose data may serve as a proxy.
+ * @param validFromReportingPeriod First reporting period for which the proxy is valid.
+ *        Null means there is no lower bound.
+ * @param validToReportingPeriod Last reporting period for which the proxy is valid.
+ *        Null means there is no upper bound.
  */
 data class CompanyProxy<IdType>(
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.CHILD_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     @field:CompanyExists
-    val proxiedCompanyId: IdType,
+    val childCompanyId: IdType,
     @field:JsonProperty(required = true)
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXY_COMPANY_ID_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.PARENT_COMPANY_ID_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
     )
     @field:CompanyExists
-    val proxyCompanyId: IdType,
+    val parentCompanyId: IdType,
     @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_FRAMEWORKS_DESCRIPTION,
-        example = GeneralOpenApiDescriptionsAndExamples.DATA_TYPE_FRAMEWORK_EXAMPLE,
-        nullable = true,
-    )
-    @field:DataTypeIsValid
-    val framework: String?,
-    @field:Schema(
-        description = GeneralOpenApiDescriptionsAndExamples.PROXIED_REPORTING_PERIODS_DESCRIPTION,
+        description = GeneralOpenApiDescriptionsAndExamples.PROXY_VALID_FROM_REPORTING_PERIOD_DESCRIPTION,
         example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
         nullable = true,
     )
     @field:ReportingPeriodIsValid
-    val reportingPeriod: String?,
+    val validFromReportingPeriod: String?,
+    @field:Schema(
+        description = GeneralOpenApiDescriptionsAndExamples.PROXY_VALID_TO_REPORTING_PERIOD_DESCRIPTION,
+        example = GeneralOpenApiDescriptionsAndExamples.REPORTING_PERIOD_EXAMPLE,
+        nullable = true,
+    )
+    @field:ReportingPeriodIsValid
+    val validToReportingPeriod: String?,
 ) {
     /**
      * Converts this CompanyProxy with generic ID type to a CompanyProxy with UUIDs.
@@ -57,9 +56,9 @@ data class CompanyProxy<IdType>(
     @JsonIgnore
     fun convertToCompanyProxyWithUUIDs(): CompanyProxy<UUID> =
         CompanyProxy(
-            proxiedCompanyId = convertToUUID(this.proxiedCompanyId.toString()),
-            proxyCompanyId = convertToUUID(this.proxyCompanyId.toString()),
-            framework = this.framework,
-            reportingPeriod = this.reportingPeriod,
+            childCompanyId = convertToUUID(this.childCompanyId.toString()),
+            parentCompanyId = convertToUUID(this.parentCompanyId.toString()),
+            validFromReportingPeriod = this.validFromReportingPeriod,
+            validToReportingPeriod = this.validToReportingPeriod,
         )
 }
