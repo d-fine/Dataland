@@ -39,6 +39,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -70,6 +71,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
@@ -95,6 +97,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -121,6 +124,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         verify(mockNonSourceabilityInformationManager, never()).searchActiveNonSourceableDimensions(any())
@@ -148,6 +152,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -184,6 +189,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Success, exportJob.progressState)
@@ -212,6 +218,7 @@ class DataExportServiceDimensionAvailabilityTest : DataExportServiceAvailability
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Success, exportJob.progressState)

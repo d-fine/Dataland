@@ -45,6 +45,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -99,7 +100,8 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             listOf(nonSourceableTestCompanyId),
             exportJob,
             LksgData::class.java,
-            lksgExportOptions.copy(proxiedCompanyIdsByProxyCompanyId = proxies),
+            lksgExportOptions,
+            proxies,
         )
         return readExportedRows(exportJob)
     }
@@ -121,6 +123,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -147,6 +150,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Failure, exportJob.progressState)
@@ -176,6 +180,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -215,6 +220,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -259,6 +265,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         val exportedRows = readExportedRows(exportJob)
@@ -292,6 +299,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         verify(mockNonSourceabilityInformationManager).searchActiveNonSourceableDimensions(any())
@@ -316,6 +324,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Success, exportJob.progressState)
@@ -347,6 +356,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
             exportJob,
             LksgData::class.java,
             lksgExportOptions,
+            emptyMap(),
         )
 
         Assertions.assertEquals(ExportJobProgressState.Success, exportJob.progressState)

@@ -14,6 +14,4 @@ data class ExportOptions(
     val keepValueFieldsOnly: Boolean,
     /** If true, human-readable names are used if available */
     val includeAliases: Boolean,
-    /** Maps the ID of a proxy company to the IDs of the companies it proxies */
-    val proxiedCompanyIdsByProxyCompanyId: Map<String, List<String>> = emptyMap(),
 )
