@@ -49,7 +49,10 @@ class ApiKeyManager
 
         private val apiKeyUtility = ApiKeyUtility()
 
-        private fun getAuthentication(): Authentication = SecurityContextHolder.getContext().authentication!!
+        private fun getAuthentication(): Authentication =
+            checkNotNull(SecurityContextHolder.getContext().authentication) {
+                "No authentication found in the security context."
+            }
 
         private fun checkIfDaysValidValueIsValid(daysValid: Int?) {
             if (daysValid != null) {
@@ -195,7 +198,7 @@ class ApiKeyManager
             val revokementProcessSuccessful: Boolean
             val revokementProcessMessage: String
 
-            val keycloakUserId = getAuthentication().name!!
+            val keycloakUserId = getKeycloakUserId()
             val apiKeyEntityOptional = apiKeyRepository.findById(keycloakUserId)
             if (apiKeyEntityOptional.isEmpty) {
                 revokementProcessSuccessful = false
