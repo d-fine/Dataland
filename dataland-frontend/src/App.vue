@@ -8,6 +8,7 @@
     <router-view />
   </component>
   <TheFooter />
+  <VueQueryDevtools />
 </template>
 
 <script lang="ts">
@@ -32,6 +33,7 @@ import { useRoute } from 'vue-router';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheFooter from '@dataland/shared-elements/footer';
 import { useDialog } from 'primevue/usedialog';
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
 
 const smallScreenBreakpoint = 768;
 const windowWidth = ref<number>();
@@ -40,7 +42,7 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, DynamicDialog, AuthenticationWrapper, TheFooter },
+  components: { TheHeader, DynamicDialog, AuthenticationWrapper, TheFooter, VueQueryDevtools },
 
   data() {
     return {
