@@ -34,6 +34,13 @@
 - When changing user-facing behavior, run the most relevant Cypress component or E2E tests.
 - If the change depends on backend API contracts, regenerate clients with `./gradlew :dataland-frontend:generateClients` from the repo root.
 
+# Data Fetching (TanStack Query)
+
+- TanStack Query is the standard for API calls and server state in this package. Follow `src/api-queries/AGENTS.md`.
+- Strict rule for `.vue` files: never call API clients directly (`useApiClient()`, `getApiClients`, controllers, `axios`). Use an existing hook from `src/api-queries/` or add one following its conventions.
+- Many existing components still use direct API calls. This is legacy; do not copy that pattern, even if the surrounding code does.
+- When modifying a component that still uses direct API calls, do not refactor it unasked. If your change touched its data loading, recommend the migration to TanStack Query once in your final summary.
+
 # Package-Specific Rules
 
 - Do not introduce new `@ts-nocheck` directives in modified files.
