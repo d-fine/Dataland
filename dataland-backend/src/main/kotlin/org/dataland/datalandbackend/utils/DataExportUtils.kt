@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 
 class DataExportUtils private constructor() {
     companion object {
+        const val PROXIED_FIELD = "proxied"
         val STATIC_ALIASES =
             mapOf(
                 "companyName" to "COMPANY_NAME",
@@ -21,7 +22,6 @@ class DataExportUtils private constructor() {
                 "reportingPeriod" to "REPORTING_PERIOD",
                 "availability" to "AVAILABILITY",
             )
-        const val PROXIED_FIELD = "proxied"
         const val PROXIED_NAMES_SEPARATOR = " | "
         const val DATA = "data"
         const val VALUE = "value"
