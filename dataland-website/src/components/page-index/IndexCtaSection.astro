@@ -31,8 +31,12 @@ const secondaryButtonClass = 'btn btn--white';
   <div class={sectionInnerClass}>
     <CtaBand title={content.title}>
       <div class:list={[buttonRowClass, 'btn-group-equal']} data-equal-buttons>
-        <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>
-        <a href="/register" class={primaryButtonClass}>{content.buttons.try}</a>
+        <a href="/about#contact" class={secondaryButtonClass}>
+          {content.buttons.contact}
+        </a>
+        <a href="/register" class={primaryButtonClass}>
+          {content.buttons.try}
+        </a>
       </div>
     </CtaBand>
   </div>

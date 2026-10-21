@@ -51,29 +51,27 @@ const cardTextClass = 'm-0 text-[0.95rem] leading-relaxed text-white/90';
     </div>
 
     <div class={gridClass}>
-      {
-        stories.map((story) => (
-          <CardShell as="a" href={story.link} variant="glass" accentTop={true} class={cardClass}>
-            <div class={logoStageClass}>
-              <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
-                <img
-                  src={story.logo}
-                  alt=""
-                  class:list={['h-20 w-full object-contain object-center', story.logoClassName]}
-                  loading="lazy"
-                  width="320"
-                  height="120"
-                />
-              </div>
+      {stories.map((story) => (
+        <CardShell as="a" href={story.link} variant="glass" accentTop={true} class={cardClass}>
+          <div class={logoStageClass}>
+            <div class:list={story.darkLogoFrame ? 'rounded-[0.35rem] bg-[#111111] px-3 py-[0.45rem]' : undefined}>
+              <img
+                src={story.logo}
+                alt=""
+                class:list={['h-20 w-full object-contain object-center', story.logoClassName]}
+                loading="lazy"
+                width="320"
+                height="120"
+              />
             </div>
+          </div>
 
-            <div class={cardBodyClass}>
-              <h2 class={cardTitleClass}>{story.title}</h2>
-              <p class={cardTextClass}>{story.text}</p>
-            </div>
-          </CardShell>
-        ))
-      }
+          <div class={cardBodyClass}>
+            <h2 class={cardTitleClass}>{story.title}</h2>
+            <p class={cardTextClass}>{story.text}</p>
+          </div>
+        </CardShell>
+      ))}
     </div>
   </div>
 </section>

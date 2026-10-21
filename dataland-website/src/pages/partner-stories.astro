@@ -42,14 +42,12 @@ const PARTNER_USE_CASE_ICON_BY_KEY: Record<string, string> = {
     useCaseIconByKey={PARTNER_USE_CASE_ICON_BY_KEY}
   />
 
-  {
-    integrationMattersSection && (
-      <PartnerStoriesMattersSection
-        ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
-        section={integrationMattersSection}
-        closingPrompt={closingPrompt}
-        contactLabel={PARTNER_STORIES_PAGE_CONTENT.cta.contact}
-      />
-    )
-  }
+  {integrationMattersSection && (
+    <PartnerStoriesMattersSection
+      ariaLabel={PARTNER_STORIES_PAGE_CONTENT.sections.mattersAriaLabel}
+      section={integrationMattersSection}
+      closingPrompt={closingPrompt}
+      contactLabel={PARTNER_STORIES_PAGE_CONTENT.cta.contact}
+    />
+  )}
 </Base>

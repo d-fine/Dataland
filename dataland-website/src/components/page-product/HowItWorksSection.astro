@@ -54,40 +54,38 @@ const rightTitleClass = 'card-title text-[var(--color-primary)]';
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={gridClass}>
-      {
-        blocks.map((block, index) => (
-          <CardShell as="article" variant="warm" accentTop={true} class={cardClass}>
-            <div class={iconWrapClass}>
-              <img
-                src={
-                  index === 0
-                    ? '/static/images/img_icon_desktop.png'
-                    : index === 1
-                      ? '/static/images/img_icon_api.png'
-                      : '/static/images/img_icon_partner.png'
-                }
-                alt=""
-                aria-hidden="true"
-                width="176"
-                height="176"
-                class:list={[iconBaseClass, index === 1 ? largeIconClass : regularIconClass]}
-                loading="lazy"
-              />
-            </div>
-            <div class={leftBlockClass}>
-              <h3 class={leftTitleClass}>{block.leftTitle}</h3>
-              <p class={bodyTextClass}>{block.leftText}</p>
-            </div>
-            <div class={accentBarWrapClass} aria-hidden="true">
-              <div class={accentBarClass} />
-            </div>
-            <div class={rightBlockClass}>
-              <h3 class={rightTitleClass}>{block.rightTitle}</h3>
-              <p class={bodyTextClass}>{block.rightText}</p>
-            </div>
-          </CardShell>
-        ))
-      }
+      {blocks.map((block, index) => (
+        <CardShell as="article" variant="warm" accentTop={true} class={cardClass}>
+          <div class={iconWrapClass}>
+            <img
+              src={
+                index === 0
+                  ? '/static/images/img_icon_desktop.png'
+                  : index === 1
+                    ? '/static/images/img_icon_api.png'
+                    : '/static/images/img_icon_partner.png'
+              }
+              alt=""
+              aria-hidden="true"
+              width="176"
+              height="176"
+              class:list={[iconBaseClass, index === 1 ? largeIconClass : regularIconClass]}
+              loading="lazy"
+            />
+          </div>
+          <div class={leftBlockClass}>
+            <h3 class={leftTitleClass}>{block.leftTitle}</h3>
+            <p class={bodyTextClass}>{block.leftText}</p>
+          </div>
+          <div class={accentBarWrapClass} aria-hidden="true">
+            <div class={accentBarClass} />
+          </div>
+          <div class={rightBlockClass}>
+            <h3 class={rightTitleClass}>{block.rightTitle}</h3>
+            <p class={bodyTextClass}>{block.rightText}</p>
+          </div>
+        </CardShell>
+      ))}
     </div>
   </div>
 </section>
