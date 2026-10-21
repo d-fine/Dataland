@@ -180,8 +180,8 @@ const documentControllerApi = apiClientProvider.apiClients.documentController;
 const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const metaDataPatch = ref<{
-  documentName?: string | null | undefined;
-  documentCategory?: DocumentMetaInfoDocumentCategoryEnum | null | undefined;
+  documentName: string | null | undefined;
+  documentCategory: DocumentMetaInfoDocumentCategoryEnum | null | undefined;
   publicationDate?: Date | null;
   reportingPeriod?: Date | null;
 }>({
