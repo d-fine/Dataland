@@ -29,19 +29,17 @@ const storiesGridClass = 'grid grid-cols-1 gap-6 md:grid-cols-3';
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={storiesGridClass}>
-      {
-        stories.map((story) => (
-          <LogoSummaryCard
-            href={story.link}
-            title={story.title}
-            logo={story.logo}
-            logoClassName={story.logoClassName}
-            primaryTag={story.primaryTag}
-            secondaryTags={story.secondaryTags}
-            linkLabel={content.readMore}
-          />
-        ))
-      }
+      {stories.map((story) => (
+        <LogoSummaryCard
+          href={story.link}
+          title={story.title}
+          logo={story.logo}
+          logoClassName={story.logoClassName}
+          primaryTag={story.primaryTag}
+          secondaryTags={story.secondaryTags}
+          linkLabel={content.readMore}
+        />
+      ))}
     </div>
   </div>
 </section>

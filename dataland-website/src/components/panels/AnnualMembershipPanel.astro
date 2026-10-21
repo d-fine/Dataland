@@ -50,24 +50,24 @@ const arrowClasses = [
         <span class={classes.price}>{price}</span>
         <div class={classes.arrowsWrap} aria-hidden="true">
           <div class={classes.arrowsRow}>
-            {
-              arrowClasses.map((arrowClass) => (
-                <img
-                  src="/static/images/arrow_right_orange_simple.svg"
-                  alt=""
-                  width="30"
-                  height="45"
-                  class={arrowClass}
-                />
-              ))
-            }
+            {arrowClasses.map((arrowClass) => (
+              <img
+                src="/static/images/arrow_right_orange_simple.svg"
+                alt=""
+                width="30"
+                height="45"
+                class={arrowClass}
+              />
+            ))}
           </div>
         </div>
       </div>
       <div class={classes.rightColumn}>
         <p class={classes.intro}>{intro}</p>
         <div class={classes.items}>
-          {items.map((item) => <PricingFeatureItem title={item.title} text={item.text} />)}
+          {items.map((item) => (
+            <PricingFeatureItem title={item.title} text={item.text} />
+          ))}
         </div>
       </div>
     </div>

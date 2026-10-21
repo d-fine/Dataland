@@ -42,29 +42,27 @@ const logoImageBaseClass =
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
     <div class={marqueeClass}>
       <div class={trackClass}>
-        {
-          membersCarousel.map((logo, index) => (
-            <a
-              href={logo.category === 'partner' ? '/dataland-community#partners' : '/dataland-community#our-members'}
-              class:list={[logoLinkBaseClass, logo.carouselContainerClassName]}
-              aria-label={`See ${logo.name} on the community page`}
-            >
-              <div class={logoFrameWrapClass}>
-                <div class:list={[logoFrameClass, logo.imageFrameClassName]}>
-                  <img
-                    src={logo.imagePath}
-                    alt={logo.name}
-                    class:list={[logoImageBaseClass, logo.className]}
-                    style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
-                    loading={index < logos.length ? 'eager' : 'lazy'}
-                    width="176"
-                    height="80"
-                  />
-                </div>
+        {membersCarousel.map((logo, index) => (
+          <a
+            href={logo.category === 'partner' ? '/dataland-community#partners' : '/dataland-community#our-members'}
+            class:list={[logoLinkBaseClass, logo.carouselContainerClassName]}
+            aria-label={`See ${logo.name} on the community page`}
+          >
+            <div class={logoFrameWrapClass}>
+              <div class:list={[logoFrameClass, logo.imageFrameClassName]}>
+                <img
+                  src={logo.imagePath}
+                  alt={logo.name}
+                  class:list={[logoImageBaseClass, logo.className]}
+                  style={`transform: scale(${logo.scale ?? 1}); transform-origin: center;`}
+                  loading={index < logos.length ? 'eager' : 'lazy'}
+                  width="176"
+                  height="80"
+                />
               </div>
-            </a>
-          ))
-        }
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </div>
