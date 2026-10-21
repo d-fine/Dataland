@@ -1,4 +1,9 @@
-import { type ReferencedDocuments, generateArray, pickOneElement, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
+import {
+  type ReferencedDocuments,
+  generateArray,
+  pickOneElement,
+  pickSubsetOfElements,
+} from '@e2e/fixtures/FixtureUtils';
 import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,

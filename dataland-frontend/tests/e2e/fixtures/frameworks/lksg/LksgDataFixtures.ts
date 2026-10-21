@@ -154,7 +154,9 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
         highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrNull(pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
+        highRiskCountriesProcurementName: dataGenerator.valueOrNull(
+          pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
+        ),
       },
     },
     social: {

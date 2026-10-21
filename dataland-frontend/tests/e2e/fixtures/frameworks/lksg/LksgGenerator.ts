@@ -100,7 +100,9 @@ export class LksgGenerator extends Generator {
   }
 
   generateLksgSpecificProcurement(): Set<SpecificProcurementOptions> {
-    return pickSubsetOfElements(Object.values(SpecificProcurementOptions)) as unknown as Set<SpecificProcurementOptions>;
+    return pickSubsetOfElements(
+      Object.values(SpecificProcurementOptions)
+    ) as unknown as Set<SpecificProcurementOptions>;
   }
   /**
    * Generates a random array of goods or services
