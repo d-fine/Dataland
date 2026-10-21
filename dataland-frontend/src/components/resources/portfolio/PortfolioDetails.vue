@@ -68,49 +68,49 @@ import SharePortfolioDialog from '@/components/resources/portfolio/SharePortfoli
 import SuccessDialog from '@/components/general/SuccessDialog.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { useDialog } from 'primevue/usedialog';
 import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { type EnrichedPortfolio } from '@clients/userservice';
+import { useGetInheritedRolesQuery } from '@/api-queries/community-manager/inherited-roles/useGetInheritedRolesQuery.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const emit = defineEmits(['update:portfolio-overview']);
 
 const props = defineProps<{
   portfolioId: string;
 }>();
 
-const isUserDatalandMemberOrAdmin = ref(false);
 const isSuccessDialogVisible = ref(false);
 
+const keycloakUserId = ref<string | undefined>(undefined);
+const isUserAdmin = ref(false);
+
+const { data: inheritedRolesMap } = useGetInheritedRolesQuery(keycloakUserId);
+
+const isUserDatalandMemberOrAdmin = computed(
+  () =>
+    isUserAdmin.value ||
+    Object.values(inheritedRolesMap.value ?? {})
+      .flat()
+      .includes('DatalandMember')
+);
+
 onMounted(() => {
-  void checkDatalandMembershipOrAdminRights();
+  void loadKeycloakUserInfo();
 });
 
 /**
- * Checks whether the logged-in User is Dataland member or Admin
+ * Reads the logged-in user's id and admin role from Keycloak.
  */
-async function checkDatalandMembershipOrAdminRights(): Promise<void> {
+async function loadKeycloakUserInfo(): Promise<void> {
   const keycloak = await assertDefined(getKeycloakPromise)();
-  const keycloakUserId = keycloak.idTokenParsed?.sub;
-
-  if (keycloakUserId === undefined) {
-    isUserDatalandMemberOrAdmin.value = false;
-    return;
-  }
-
-  const response = await apiClientProvider.apiClients.inheritedRolesController.getInheritedRoles(keycloakUserId);
-  const inheritedRolesMap = response.data;
-
-  isUserDatalandMemberOrAdmin.value =
-    Object.values(inheritedRolesMap).flat().includes('DatalandMember') ||
-    (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise));
+  keycloakUserId.value = keycloak.idTokenParsed?.sub;
+  isUserAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
 }
 
 /**
