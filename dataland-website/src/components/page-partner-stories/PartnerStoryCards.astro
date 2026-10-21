@@ -23,20 +23,18 @@ const {
     <SectionHeader title={title} intro={intro} class="mx-auto max-w-[760px]" />
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-      {
-        stories.map((story) => (
-          <LogoSummaryCard
-            href={story.link}
-            title={story.title}
-            text={story.text}
-            logo={story.logo}
-            logoClassName={story.logoClassName}
-            darkLogoFrame={story.darkLogoFrame}
-            linkLabel="Read more"
-            bodyClass="gap-6"
-          />
-        ))
-      }
+      {stories.map((story) => (
+        <LogoSummaryCard
+          href={story.link}
+          title={story.title}
+          text={story.text}
+          logo={story.logo}
+          logoClassName={story.logoClassName}
+          darkLogoFrame={story.darkLogoFrame}
+          linkLabel="Read more"
+          bodyClass="gap-6"
+        />
+      ))}
     </div>
   </div>
 </section>

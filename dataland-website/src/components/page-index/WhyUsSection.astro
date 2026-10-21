@@ -68,40 +68,44 @@ const secondaryButtonClass = 'btn btn--white';
     <SectionHeader title={content.title} intro={content.intro} class={sectionHeaderClass} />
 
     <div class={pairsListClass}>
-      {
-        pairs.map((pair) => (
-          <div class={pairCardClass}>
-            <div class={problemLabelWrapClass}>
-              <span class={problemLabelClass}>Common Problems</span>
-            </div>
-            <div class={problemTitleWrapClass}>
-              <h3 class={problemTitleClass}>{pair.problemTitle}</h3>
-            </div>
-            <div class={problemTextWrapClass}>
-              <p class={bodyTextClass}>{pair.problemText}</p>
-            </div>
-            <div class={arrowWrapClass} aria-hidden="true">
-              <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
-            </div>
-            <div class={mobileDividerClass} aria-hidden="true" />
-            <div class={solutionLabelWrapClass}>
-              <span class={solutionLabelClass}>Dataland Solution</span>
-            </div>
-            <div class={solutionTitleWrapClass}>
-              <h3 class={solutionTitleClass}>{pair.solutionTitle}</h3>
-            </div>
-            <div class={solutionTextWrapClass}>
-              <p class={bodyTextClass}>{pair.solutionText}</p>
-            </div>
+      {pairs.map((pair) => (
+        <div class={pairCardClass}>
+          <div class={problemLabelWrapClass}>
+            <span class={problemLabelClass}>Common Problems</span>
           </div>
-        ))
-      }
+          <div class={problemTitleWrapClass}>
+            <h3 class={problemTitleClass}>{pair.problemTitle}</h3>
+          </div>
+          <div class={problemTextWrapClass}>
+            <p class={bodyTextClass}>{pair.problemText}</p>
+          </div>
+          <div class={arrowWrapClass} aria-hidden="true">
+            <img src="/static/images/arrow_right_orange_simple.svg" alt="" width="42" height="42" />
+          </div>
+          <div class={mobileDividerClass} aria-hidden="true" />
+          <div class={solutionLabelWrapClass}>
+            <span class={solutionLabelClass}>Dataland Solution</span>
+          </div>
+          <div class={solutionTitleWrapClass}>
+            <h3 class={solutionTitleClass}>{pair.solutionTitle}</h3>
+          </div>
+          <div class={solutionTextWrapClass}>
+            <p class={bodyTextClass}>{pair.solutionText}</p>
+          </div>
+        </div>
+      ))}
     </div>
 
     <div class:list={[ctaRowClass, 'btn-group-equal']} data-equal-buttons>
-      <a href="/product#features" class={primaryButtonClass}>{content.buttons.features}</a>
-      <a href="/product#use-cases" class={secondaryButtonClass}>{content.buttons.useCases}</a>
-      <a href="/about#contact" class={secondaryButtonClass}>{content.buttons.contact}</a>
+      <a href="/product#features" class={primaryButtonClass}>
+        {content.buttons.features}
+      </a>
+      <a href="/product#use-cases" class={secondaryButtonClass}>
+        {content.buttons.useCases}
+      </a>
+      <a href="/about#contact" class={secondaryButtonClass}>
+        {content.buttons.contact}
+      </a>
     </div>
   </div>
 </section>

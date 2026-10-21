@@ -38,16 +38,14 @@ const textClass = 'card-text m-0 text-white/92';
   <div class={sectionInnerClass}>
     <SectionHeader title={content.title} intro={content.intro} tone="light" class={sectionHeaderClass} />
     <div class={gridClass}>
-      {
-        cards.map((card) => (
-          <InfoCard variant="glass" title={card.title} titleClass={infoCardTitleClass} class={infoCardClass}>
-            <div slot="before" class={topAccentClass} aria-hidden="true" />
-            <div class={textWrapClass}>
-              <p class={textClass}>{card.text}</p>
-            </div>
-          </InfoCard>
-        ))
-      }
+      {cards.map((card) => (
+        <InfoCard variant="glass" title={card.title} titleClass={infoCardTitleClass} class={infoCardClass}>
+          <div slot="before" class={topAccentClass} aria-hidden="true" />
+          <div class={textWrapClass}>
+            <p class={textClass}>{card.text}</p>
+          </div>
+        </InfoCard>
+      ))}
     </div>
   </div>
 </section>
