@@ -113,14 +113,14 @@ open class Iso2CountryCodesMultiSelectComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickElements($formattedString))",
+                fixtureExpression = "pickSubsetOfElements($formattedString)",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
                 nullable = isNullable,
             ),
             imports =
                 setOf(
                     TypeScriptImport(
-                        "pickElements",
+                        "pickSubsetOfElements",
                         "@e2e/fixtures/FixtureUtils",
                     ),
                 ),

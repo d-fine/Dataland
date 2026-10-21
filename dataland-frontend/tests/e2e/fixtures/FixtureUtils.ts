@@ -106,27 +106,16 @@ export function pickOneElement<T>(inputArray: T[]): T {
  * @returns an empty array or an array containing single element of the given array
  */
 export function pickOneOrNoElement<T>(inputArray: T[]): T[] {
-  return pickElements(inputArray, 0, 1);
+  return pickSubsetOfElements(inputArray, 0, 1);
 }
 
 /**
- * Picks a subset of elements from the given array and returns it preserving the type
+ * Picks a subset of elements from the given array and returns it
  * @param inputArray the array containing all available values to choose from
  * @param min the minimal number of elements returned
  * @param max the maximal number of elements returned
  * @returns an array containing a subset of elements from the given array
  */
-export function pickSubsetOfElements<T>(inputArray: T[], min = 1, max = inputArray.length): Set<T> {
-  return new Set<T>(pickElements(inputArray, min, max));
-}
-
-/**
- * Picks a random number of elements from the given array and returns it
- * @param inputArray the array containing all available values to choose from
- * @param min the minimal number of elements returned
- * @param max the maximal number of elements returned
- * @returns an array containing a subset of elements from the given array
- */
-export function pickElements<T>(inputArray: T[], min = 1, max = inputArray.length): T[] {
+export function pickSubsetOfElements<T>(inputArray: T[], min = 1, max = inputArray.length): T[] {
   return faker.helpers.arrayElements(inputArray, { min: min, max: max });
 }

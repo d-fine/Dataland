@@ -3,7 +3,7 @@ import { DEFAULT_PROBABILITY } from '@e2e/utils/FakeFixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures.ts';
 import { LksgGenerator } from '@e2e/fixtures/frameworks/lksg/LksgGenerator.ts';
-import { pickElements, pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
+import { pickSubsetOfElements, pickOneElement, generateFixtureDataset } from '@e2e/fixtures/FixtureUtils';
 import {
   LksgGeneralProductionspecificMarketOptions,
   LksgGeneralMasterdataShareOfTemporaryWorkersOptions,
@@ -149,12 +149,12 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
         ),
         highRiskCountriesRawMaterials: dataGenerator.randomYesNo(),
         highRiskCountriesRawMaterialsLocation: dataGenerator.valueOrNull(
-          pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
+          pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])
         ),
         highRiskCountriesActivity: dataGenerator.randomYesNo(),
-        highRiskCountries: dataGenerator.valueOrNull(pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
+        highRiskCountries: dataGenerator.valueOrNull(pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
         highRiskCountriesProcurement: dataGenerator.randomYesNo(),
-        highRiskCountriesProcurementName: dataGenerator.valueOrNull(pickElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
+        highRiskCountriesProcurementName: dataGenerator.valueOrNull(pickSubsetOfElements(['DE', 'AL', 'AZ', 'GB', 'US', 'DK'])),
       },
     },
     social: {

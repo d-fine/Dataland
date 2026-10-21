@@ -13,7 +13,7 @@ import { generateAddress } from '@e2e/fixtures/common/AddressFixtures';
 import { faker } from '@faker-js/faker';
 import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
 import { generateIso2CountryCode } from '@e2e/fixtures/common/CountryFixtures';
-import { generateArray, pickElements } from '@e2e/fixtures/FixtureUtils';
+import { generateArray, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
 export class LksgGenerator extends Generator {
   generateLksgProduct(): LksgProduct {
     return {
@@ -84,7 +84,7 @@ export class LksgGenerator extends Generator {
    */
   generateLksgRiskOrViolationAssessment(): LksgRiskOrViolationAssessment {
     return {
-      riskPosition: pickElements(Object.values(RiskPositionType), 1, 1)[0],
+      riskPosition: pickSubsetOfElements(Object.values(RiskPositionType), 1, 1)[0],
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };
@@ -92,7 +92,7 @@ export class LksgGenerator extends Generator {
 
   generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
     return {
-      riskPositions: pickElements(Object.values(RiskPositionType)) as unknown as Set<RiskPositionType>,
+      riskPositions: pickSubsetOfElements(Object.values(RiskPositionType)) as unknown as Set<RiskPositionType>,
       specifiedComplaint: this.guaranteedShortString(),
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
@@ -100,7 +100,7 @@ export class LksgGenerator extends Generator {
   }
 
   generateLksgSpecificProcurement(): Set<SpecificProcurementOptions> {
-    return pickElements(Object.values(SpecificProcurementOptions)) as unknown as Set<SpecificProcurementOptions>;
+    return pickSubsetOfElements(Object.values(SpecificProcurementOptions)) as unknown as Set<SpecificProcurementOptions>;
   }
   /**
    * Generates a random array of goods or services

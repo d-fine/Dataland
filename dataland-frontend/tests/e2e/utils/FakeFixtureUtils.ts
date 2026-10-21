@@ -1,4 +1,4 @@
-import { type ReferencedDocuments, generateArray, pickOneElement, pickElements } from '@e2e/fixtures/FixtureUtils';
+import { type ReferencedDocuments, generateArray, pickOneElement, pickSubsetOfElements } from '@e2e/fixtures/FixtureUtils';
 import { generateYesNo, generateYesNoNa } from '@e2e/fixtures/common/YesNoFixtures';
 import {
   type AmountWithCurrency,
@@ -161,7 +161,7 @@ export class Generator {
    * @returns a random non-empty set of reports
    */
   generateReferencedReports(): ReferencedDocuments {
-    const availableReportNames = pickElements(possibleReports, 1, 2);
+    const availableReportNames = pickSubsetOfElements(possibleReports, 1, 2);
     const fixtureDocumentIds = getAllFakeFixtureDocumentIds();
 
     const referencedReports: ReferencedDocuments = {};
