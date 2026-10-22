@@ -56,7 +56,13 @@ class PcafDataController
             companyId: String,
         ): ResponseEntity<CompanyAssociatedData<PcafData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-        @Operation(operationId = "postCompanyAssociatedPcafData")
+        @Operation(
+            operationId = "postCompanyAssociatedPcafData",
+            summary = "Upload new dataset.",
+            description =
+                "The uploaded data is added to the data store, the generated data id is returned. " +
+                    "Document references must contain only the file ID, no additional document metadata.",
+        )
         override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<PcafData>,
             bypassQa: Boolean,
