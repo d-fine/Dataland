@@ -33,8 +33,6 @@ class PortfolioUpdateSummaryEmailBuilder
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val companyApi: CompanyDataControllerApi,
     ) {
-        private val objectMapper = defaultObjectMapper
-
         private fun buildExceptionMessageDueToCompanyNotFound(companyId: String) = "Dataland does not know the company ID $companyId"
 
         /**
@@ -53,7 +51,7 @@ class PortfolioUpdateSummaryEmailBuilder
             val receiver = listOf(EmailRecipient.UserId(userId.toString()))
             val message = EmailMessage(emailContent, receiver, emptyList(), emptyList())
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
+                defaultObjectMapper.writeValueAsString(message),
                 MessageType.SEND_EMAIL,
                 correlationId = UUID.randomUUID().toString(),
                 ExchangeName.SEND_EMAIL,

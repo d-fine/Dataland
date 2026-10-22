@@ -1,8 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
+import jakarta.persistence.ConstraintMode
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.ForeignKey
 import jakarta.persistence.Id
 import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
@@ -37,7 +39,13 @@ class DataPointJudgementEntity(
      * of any dataset judgement's lifecycle.
      */
     @OneToMany
-    @JoinColumn(name = "data_point_id", referencedColumnName = "data_point_id", insertable = false, updatable = false)
+    @JoinColumn(
+        name = "data_point_id",
+        referencedColumnName = "data_point_id",
+        insertable = false,
+        updatable = false,
+        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT),
+    )
     val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,

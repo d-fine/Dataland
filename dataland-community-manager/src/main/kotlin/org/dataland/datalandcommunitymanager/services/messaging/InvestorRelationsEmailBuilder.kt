@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.utils.CompanyInfoService
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
@@ -29,7 +29,6 @@ class InvestorRelationsEmailBuilder
     constructor(
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val companyInfoService: CompanyInfoService,
-        private val objectMapper: ObjectMapper,
     ) {
         /**
          * Sends both external and internal Investor Relationships notification emails based on the specified parameters.
@@ -182,7 +181,7 @@ class InvestorRelationsEmailBuilder
         ) {
             val message = EmailMessage(typedEmailContent, receiver, cc, emptyList())
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message),
+                defaultObjectMapper.writeValueAsString(message),
                 MessageType.SEND_EMAIL,
                 correlationId,
                 ExchangeName.SEND_EMAIL,

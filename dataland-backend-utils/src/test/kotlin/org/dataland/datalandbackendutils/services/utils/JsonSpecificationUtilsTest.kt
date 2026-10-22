@@ -1,18 +1,17 @@
 package org.dataland.datalandbackendutils.services.utils
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class JsonSpecificationUtilsTest {
-    private val objectMapper = jacksonObjectMapper()
     private val demoSpecification =
-        objectMapper.readValue<ObjectNode>(
+        defaultObjectMapper.readValue<ObjectNode>(
             """
         {
             "field": {
@@ -38,16 +37,16 @@ class JsonSpecificationUtilsTest {
 
     private val demoValueMap =
         mapOf(
-            "field1" to objectMapper.readTree("""{"value": "field1"}"""),
-            "groupfield" to objectMapper.readTree("12"),
-            "subgroupfield" to objectMapper.readTree("\"test\""),
+            "field1" to defaultObjectMapper.readTree("""{"value": "field1"}"""),
+            "groupfield" to defaultObjectMapper.readTree("12"),
+            "subgroupfield" to defaultObjectMapper.readTree("\"test\""),
         )
 
     @Test
     fun `hydration should work for a simple specification`() {
         val hydrated = JsonSpecificationUtils.hydrateJsonSpecification(demoSpecification) { demoValueMap[it] }
         val expected =
-            objectMapper.readTree(
+            defaultObjectMapper.readTree(
                 """
                 {
                     "field": {"value": "field1"},
@@ -68,7 +67,7 @@ class JsonSpecificationUtilsTest {
                 if (it == "subgroupfield") null else demoValueMap[it]
             }
         val expected =
-            objectMapper.readTree(
+            defaultObjectMapper.readTree(
                 """
                 {
                     "field": {"value": "field1"},
@@ -102,7 +101,7 @@ class JsonSpecificationUtilsTest {
     @Test
     fun `dehydration should fail on unexpected inputs`() {
         val unexpectedInput =
-            objectMapper.readTree(
+            defaultObjectMapper.readTree(
                 """
                 {
                     "unexpectedGreeting": "Hello!"

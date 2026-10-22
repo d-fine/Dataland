@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.services.utils.BaseFlywayMigrationTest
-import org.junit.Assert.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired

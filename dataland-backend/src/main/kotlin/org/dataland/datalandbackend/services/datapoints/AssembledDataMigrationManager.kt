@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
@@ -10,6 +9,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.messages.data.CopyQaStatusFromDataset
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +27,6 @@ class AssembledDataMigrationManager
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val storedDataManager: DataManager,
         private val assembledDataManager: AssembledDataManager,
-        private val objectMapper: ObjectMapper,
         private val dataControllerProviderService: DataControllerProviderService,
         private val messageQueuePublications: MessageQueuePublications,
     ) {
@@ -71,7 +70,7 @@ class AssembledDataMigrationManager
             expectedData: String,
             correlationId: String,
         ) {
-            val expectedDataAsJson = objectMapper.readTree(expectedData)
+            val expectedDataAsJson = defaultObjectMapper.readTree(expectedData)
             val assembledDataController =
                 dataControllerProviderService.getAssembledDataControllerForFramework(
                     DataType.valueOf(dataMetaInfo.dataType),
@@ -82,7 +81,7 @@ class AssembledDataMigrationManager
                 )
 
             // objectMapper.valueToTree does not work as it uses inconsistent floating point representation
-            val actualDataAsJson = objectMapper.readTree(objectMapper.writeValueAsString(retrievedData.body?.data))
+            val actualDataAsJson = defaultObjectMapper.readTree(defaultObjectMapper.writeValueAsString(retrievedData.body?.data))
 
             val differences =
                 JsonComparator

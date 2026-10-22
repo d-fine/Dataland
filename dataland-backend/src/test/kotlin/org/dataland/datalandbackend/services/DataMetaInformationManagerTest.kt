@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
@@ -15,7 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -25,9 +24,8 @@ import org.springframework.dao.DataIntegrityViolationException
 class DataMetaInformationManagerTest(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyManager: CompanyAlterationManager,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
 
     @Test
     fun `check that an exception is thrown when non existing company id is provided in meta data search`() {

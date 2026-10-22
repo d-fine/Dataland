@@ -1066,11 +1066,13 @@
             "type": "string",
             "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
             "format": "date",
+            "nullable": true,
             "example": "2024-02-13"
           },
           "reportingPeriod": {
             "type": "string",
             "description": "The relevant reporting period (e.g. a fiscal year).",
+            "nullable": true,
             "example": "2023"
           }
         }
@@ -1090,11 +1092,13 @@
           "documentName": {
             "type": "string",
             "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "nullable": true,
             "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
             "description": "The Dataland document category to which the document belongs.",
+            "nullable": true,
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -1106,6 +1110,7 @@
             "uniqueItems": true,
             "type": "array",
             "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "nullable": true,
             "example": [
               "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
               "1e63a842-1e65-43ed-b78a-5e7cec155c28"
@@ -1123,11 +1128,13 @@
             "type": "string",
             "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
             "format": "date",
+            "nullable": true,
             "example": "2024-02-13"
           },
           "reportingPeriod": {
             "type": "string",
             "description": "The relevant reporting period (e.g. a fiscal year).",
+            "nullable": true,
             "example": "2023"
           }
         }
@@ -1137,7 +1144,6 @@
           "companyIds",
           "documentId",
           "documentType",
-          "isViewableByUser",
           "qaStatus",
           "uploadTime",
           "uploaderId"
@@ -1155,11 +1161,13 @@
           "documentName": {
             "type": "string",
             "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "nullable": true,
             "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
             "description": "The Dataland document category to which the document belongs.",
+            "nullable": true,
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -1194,18 +1202,17 @@
             "type": "string",
             "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
             "format": "date",
+            "nullable": true,
             "example": "2024-02-13"
           },
           "reportingPeriod": {
             "type": "string",
             "description": "The relevant reporting period (e.g. a fiscal year).",
+            "nullable": true,
             "example": "2023"
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
-          },
-          "isViewableByUser": {
-            "type": "boolean"
           }
         }
       },
@@ -1234,11 +1241,13 @@
           "documentName": {
             "type": "string",
             "description": "Name under which the document is saved on Dataland. Does not need to coincide with the name of the uploaded file nor include the file type suffix (such as \u0027.pdf\u0027).",
+            "nullable": true,
             "example": "Company_X_Annual_Report_2024"
           },
           "documentCategory": {
             "type": "string",
             "description": "The Dataland document category to which the document belongs.",
+            "nullable": true,
             "enum": [
               "AnnualReport",
               "SustainabilityReport",
@@ -1250,6 +1259,7 @@
             "uniqueItems": true,
             "type": "array",
             "description": "The set of Dataland company IDs of the companies using this document as a referenced report.",
+            "nullable": true,
             "example": [
               "c9710c7b-9cd6-446b-85b0-3773d2aceb48",
               "1e63a842-1e65-43ed-b78a-5e7cec155c28"
@@ -1262,11 +1272,13 @@
             "type": "string",
             "description": "The date on which this document was published by the responsible company, specified in format \u0027yyyy-MM-dd\u0027.",
             "format": "date",
+            "nullable": true,
             "example": "2024-02-13"
           },
           "reportingPeriod": {
             "type": "string",
             "description": "The relevant reporting period (e.g. a fiscal year).",
+            "nullable": true,
             "example": "2023"
           }
         },
@@ -1305,7 +1317,8 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         }
       },

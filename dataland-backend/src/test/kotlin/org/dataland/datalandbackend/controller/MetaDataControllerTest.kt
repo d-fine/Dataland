@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +50,6 @@ internal class MetaDataControllerTest
     @Suppress("LongParameterList")
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val companyManager: CompanyAlterationManager,
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val metaDataController: MetaDataController,
@@ -74,7 +71,7 @@ internal class MetaDataControllerTest
         private val defaultReportingPeriod = "2023"
         private val defaultDataType = DataType.of(SfdrData::class.java)
 
-        val testDataProvider = TestDataProvider(objectMapper)
+        val testDataProvider = TestDataProvider()
         private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
         private final val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
         private final val expectedSetOfRolesForReviewer = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_REVIEWER)

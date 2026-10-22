@@ -205,10 +205,11 @@ async function validateAndAddUser(email: string, byInputText: boolean): Promise<
 
     const user = {
       email,
+      userId: response.data.id,
+      firstName: response.data.firstName ?? '',
+      lastName: response.data.lastName ?? '',
       name: `${response.data.firstName || ''} ${response.data.lastName || ''}`.trim() || email,
       initials: generateInitials(`${response.data.firstName || ''} ${response.data.lastName || ''}`.trim() || email),
-      ...response.data,
-      userId: response.data.id,
     };
 
     const alreadySelected =
@@ -313,8 +314,8 @@ async function getSuggestedUsers(): Promise<User[]> {
     suggestedUsers.push({
       email: keycloakUser.email || '',
       userId: keycloakUser.id,
-      firstName: keycloakUser.firstName,
-      lastName: keycloakUser.lastName,
+      firstName: keycloakUser.firstName ?? '',
+      lastName: keycloakUser.lastName ?? '',
       name: name,
       initials: generateInitials(name),
     });

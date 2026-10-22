@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Request
@@ -10,6 +9,7 @@ import okio.Buffer
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -24,8 +24,8 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
@@ -49,7 +49,6 @@ import java.util.UUID
 @DefaultMocks
 class CompanyProxyControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
         private const val COMPANY_PROXIES_ENDPOINT = "/company-proxies"
@@ -150,11 +149,11 @@ class CompanyProxyControllerTest(
                 .perform(
                     post(COMPANIES_ENDPOINT)
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(companyRequest))
+                        .content(defaultObjectMapper.writeValueAsString(companyRequest))
                         .with(securityContext(mockSecurityContext)),
                 ).andExpect(status().isOk)
                 .andReturn()
-        return objectMapper.readTree(result.response.contentAsString).get(COMPANY_ID_JSON_FIELD).asText()
+        return defaultObjectMapper.readTree(result.response.contentAsString).get(COMPANY_ID_JSON_FIELD).asText()
     }
 
     private fun perform(
@@ -175,7 +174,7 @@ class CompanyProxyControllerTest(
         perform(
             post(COMPANY_PROXIES_ENDPOINT)
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(CompanyProxy(child, parent, from, to))),
+                .content(defaultObjectMapper.writeValueAsString(CompanyProxy(child, parent, from, to))),
             user,
         )
 
@@ -189,7 +188,7 @@ class CompanyProxyControllerTest(
         perform(
             put(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId)
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(CompanyProxy(child, parent, from, to))),
+                .content(defaultObjectMapper.writeValueAsString(CompanyProxy(child, parent, from, to))),
         )
 
     private fun getProxy(
@@ -203,10 +202,10 @@ class CompanyProxyControllerTest(
     ): ResultActions = perform(delete(COMPANY_PROXIES_BY_ID_ENDPOINT, proxyId), user)
 
     private fun getProxyIdFromResult(result: ResultActions): String =
-        objectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
+        defaultObjectMapper.readTree(result.andReturn().response.contentAsString)["proxyId"].asText()
 
     private fun getProxyIdsFromSearchResult(result: ResultActions): List<String> =
-        objectMapper.readTree(result.andReturn().response.contentAsString).map { it["proxyId"].asText() }
+        defaultObjectMapper.readTree(result.andReturn().response.contentAsString).map { it["proxyId"].asText() }
 
     private fun createProxy(
         child: String,

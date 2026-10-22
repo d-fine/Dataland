@@ -1,6 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.resilience4j.ratelimiter.RateLimiter
 import io.github.resilience4j.ratelimiter.RateLimiter.waitForPermission
 import io.github.resilience4j.ratelimiter.RateLimiterConfig
@@ -13,6 +12,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbatchmanager.model.ExternalCompanyInformation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +27,6 @@ import java.time.Duration
 @Service
 class CompanyUploader(
     @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     companion object {
         const val MAX_RETRIES = 3
@@ -77,7 +76,7 @@ class CompanyUploader(
         val exceptionResponse = exception.response!! as ClientError<*>
         val exceptionBodyString = exceptionResponse.body.toString()
 
-        val errorResponseBody = objectMapper.readTree(exceptionBodyString)
+        val errorResponseBody = defaultObjectMapper.readTree(exceptionBodyString)
         val firstError = errorResponseBody["errors"]?.get(0)
         if (firstError?.get("errorType")?.textValue() != "duplicate-company-identifier") return null to null
 
