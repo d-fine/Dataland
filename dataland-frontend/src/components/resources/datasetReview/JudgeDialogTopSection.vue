@@ -80,7 +80,7 @@
       class="p-3 mb-2 border-round border-2 bg-gray-100 border-gray-300 mt-2"
       v-if="currentQaReportComment"
     >
-      <span class="font-bold" scope="row">Qa Comment:</span>
+      <span class="font-bold">Qa Comment:</span>
       <div>
         <div class="flex align-items-center gap-1" style="min-width: 0">
           <span

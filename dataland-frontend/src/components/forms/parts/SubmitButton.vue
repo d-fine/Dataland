@@ -51,7 +51,12 @@ export default defineComponent({
 
 .button-disabled {
   opacity: 0.4;
-  background: var(--btn-primary-bg) !important;
-  border: 0 !important;
+  --p-button-primary-border-color: transparent;
+  --p-button-primary-hover-background: var(--p-button-primary-background);
+  --p-button-primary-active-background: var(--p-button-primary-background);
+  --p-button-primary-hover-border-color: transparent;
+  --p-button-primary-active-border-color: transparent;
+  --p-button-primary-hover-color: var(--p-button-primary-color);
+  --p-button-primary-active-color: var(--p-button-primary-color);
 }
 </style>
