@@ -189,7 +189,7 @@ import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { EnrichedPortfolioEntry } from '@clients/userservice';
-import { type BasicDataDimensions, type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -215,32 +215,10 @@ import PortfolioProxiedCompaniesCell, {
   type ProxiedCompany,
 } from '@/components/resources/portfolio/PortfolioProxiedCompaniesCell.vue';
 import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
-
-/**
- * Merges the (comma-separated) string of available reporting periods for a framework (which, for the purposes of
- * bulk download and the period filter, may already include non-sourceable periods as "resolved") with the
- * independently-fetched non-sourceable reporting periods for that same framework, and returns a single,
- * ascendingly sorted list where each entry is marked whether it is non-sourceable.
- *
- * Note: whether a year is non-sourceable is determined solely by membership in `nonSourceableDimensionsForFramework`
- * (the dedicated non-sourceability query), not by exclusion from `availableReportingPeriodsCsv` - the latter may
- * already contain non-sourceable years merged in, and must not be used to decide the strikethrough status.
- * @param availableReportingPeriodsCsv the comma-separated string of available reporting periods
- * @param nonSourceableDimensionsForFramework the set of non-sourceable data dimensions for this company/framework
- */
-function mergeReportingPeriods(
-  availableReportingPeriodsCsv: string | undefined,
-  nonSourceableDimensionsForFramework: Set<BasicDataDimensions> | undefined
-): ReportingPeriodEntry[] {
-  const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
-  const nonSourceableYears = new Set(
-    Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod)
-  );
-  const allYears = new Set([...realYears, ...nonSourceableYears]);
-  return Array.from(allYears)
-    .sort()
-    .map((year) => ({ year, nonSourceable: nonSourceableYears.has(year) }));
-}
+import {
+  calculateReportingPeriodEntriesByCompanyAndFramework,
+  groupProxiedCompaniesByProxyId,
+} from '@/utils/PortfolioUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -335,23 +313,12 @@ const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimension
   nonSourceabilityRequest,
   { enabled: computed(() => portfolioCompanyIds.value.length > 0) }
 );
-const reportingPeriodEntriesByCompanyAndFramework = computed<
-  Record<string, Partial<Record<string, ReportingPeriodEntry[]>>>
->(() => {
-  const result: Record<string, Partial<Record<string, ReportingPeriodEntry[]>>> = {};
-  for (const entry of enrichedPortfolio.value?.entries ?? []) {
-    const perFramework: Partial<Record<string, ReportingPeriodEntry[]>> = {};
-    for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
-      const nonSourceableForFramework = nonSourceableDimensionsGrouped.value?.[entry.companyId]?.[framework];
-      perFramework[framework] = mergeReportingPeriods(
-        entry.availableReportingPeriods[framework],
-        nonSourceableForFramework
-      );
-    }
-    result[entry.companyId] = perFramework;
-  }
-  return result;
-});
+const reportingPeriodEntriesByCompanyAndFramework = computed(() =>
+  calculateReportingPeriodEntriesByCompanyAndFramework(
+    enrichedPortfolio.value?.entries ?? [],
+    nonSourceableDimensionsGrouped.value
+  )
+);
 const missingProxiedCompanyIds = computed<string[]>(() => {
   const portfolioIds = new Set((enrichedPortfolio.value?.entries ?? []).map((entry) => entry.companyId));
   return Array.from(
@@ -374,26 +341,9 @@ const externalProxiedCompanyNames = useQueries({
   },
 });
 const showProxiedColumn = computed(() => (enrichedPortfolio.value?.proxyCompanyReplacements?.length ?? 0) > 0);
-const proxiedCompaniesByProxyId = computed<Map<string, ProxiedCompany[]>>(() => {
-  const portfolioNames = new Map(
-    (enrichedPortfolio.value?.entries ?? []).map((entry) => [entry.companyId, entry.companyName])
-  );
-  const result = new Map<string, ProxiedCompany[]>();
-  for (const replacement of enrichedPortfolio.value?.proxyCompanyReplacements ?? []) {
-    const portfolioName = portfolioNames.get(replacement.proxiedCompanyId);
-    const companyName =
-      portfolioName ??
-      externalProxiedCompanyNames.value.get(replacement.proxiedCompanyId) ??
-      replacement.proxiedCompanyId;
-    const list = result.get(replacement.proxyCompanyId) ?? [];
-    if (!list.some((company) => company.companyId === replacement.proxiedCompanyId)) {
-      list.push({ companyId: replacement.proxiedCompanyId, companyName, linkable: portfolioName !== undefined });
-    }
-    result.set(replacement.proxyCompanyId, list);
-  }
-  for (const list of result.values()) list.sort((a, b) => a.companyName.localeCompare(b.companyName));
-  return result;
-});
+const proxiedCompaniesByProxyId = computed(() =>
+  groupProxiedCompaniesByProxyId(enrichedPortfolio.value, externalProxiedCompanyNames.value)
+);
 const portfolioEntriesToDisplay = computed<PortfolioEntryPrepared[]>(() =>
   (enrichedPortfolio.value?.entries ?? []).map((item) => {
     const prepared = new PortfolioEntryPrepared(item);
