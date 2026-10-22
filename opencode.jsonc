@@ -3,7 +3,13 @@
   "enabled_providers": [
     "github-copilot"
   ],
+
   "model": "github-copilot/claude-sonnet-5.5",
+  "agent": {
+    "command-summarizer": {
+      "model": "github-copilot/claude-haiku-5.5"
+    }
+  },
   // Load only the root shared guidance globally; package-specific AGENTS.md files are referenced from there.
   "instructions": [
     "AGENTS.md"
