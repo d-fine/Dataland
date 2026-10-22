@@ -5,7 +5,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.internal.EMPTY_REQUEST
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -58,7 +57,7 @@ class MalformedRawRequestTests {
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
         assertTrue(responseBodyString.contains("which is a non-nullable type"))
         assertEquals(400, response.code)
     }
@@ -89,7 +88,7 @@ class MalformedRawRequestTests {
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
         assertTrue(responseBodyString.contains("Unrecognized field"))
         assertEquals(400, response.code)
     }
@@ -107,7 +106,7 @@ class MalformedRawRequestTests {
             Request
                 .Builder()
                 .url(endpointUrl)
-                .put(EMPTY_REQUEST)
+                .put(ByteArray(0).toRequestBody())
                 .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
                 .build()
 
@@ -128,12 +127,12 @@ class MalformedRawRequestTests {
             Request
                 .Builder()
                 .url(endpointUrl)
-                .method("LINK", EMPTY_REQUEST)
+                .method("LINK", ByteArray(0).toRequestBody())
                 .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
         assertTrue(responseBodyString.contains("request-rejected"))
         assertEquals(400, response.code)
     }
@@ -156,7 +155,7 @@ class MalformedRawRequestTests {
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
         val containsStackTrace = responseBodyString.contains("\"stackTrace\"")
         val shouldContainStackTrace = (System.getenv("EXPECT_STACKTRACE") ?: "false") == "true"
         assertEquals(shouldContainStackTrace, containsStackTrace)
@@ -182,7 +181,7 @@ class MalformedRawRequestTests {
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
         assertTrue(responseBodyString.contains("invalid-input"))
         assertEquals(400, response.code)
     }
@@ -210,7 +209,7 @@ class MalformedRawRequestTests {
                 .build()
 
         val response = client.newCall(request).execute()
-        val responseBodyString = response.body!!.string()
+        val responseBodyString = response.body.string()
 
         assertEquals(400, response.code)
         assertTrue(

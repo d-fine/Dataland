@@ -1,8 +1,8 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -30,7 +30,6 @@ class NonSourceabilityQaReviewManager
     constructor(
         private val repository: NonSourceableQaReviewRepository,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
-        private val objectMapper: ObjectMapper,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -134,7 +133,7 @@ class NonSourceabilityQaReviewManager
                     MessageType.NON_SOURCEABILITY_QA_REJECTED
                 }
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(event),
+                defaultObjectMapper.writeValueAsString(event),
                 messageType,
                 entity.nonSourceabilityId,
                 ExchangeName.QA_SERVICE_NON_SOURCEABILITY_DECISIONS,

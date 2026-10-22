@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.pdfbox)
     implementation(Spring.boot.web)
+    implementation(libs.spring.boot.jackson2)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
@@ -62,6 +63,7 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation(libs.spring.boot.starter.flyway)
     implementation(libs.flyway.core)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
@@ -69,6 +71,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.spring.boot.jdbc.test)
 }
 
 openApi {

@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -21,13 +21,11 @@ import org.springframework.stereotype.Service
 /**
  * Component that bundles the message queue interactions of the data point manager
  * @param cloudEventMessageHandler cloud event message handler used for sending messages to the message queue
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
 */
 
 @Service
 class MessageQueuePublications(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -78,7 +76,7 @@ class MessageQueuePublications(
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     DataPointUploadedPayload(
                         dataPointId = dataPointMetaInformation.dataPointId,
                         companyId = companyInformation.companyId,
@@ -133,7 +131,7 @@ class MessageQueuePublications(
                 "Correlation ID: '$correlationId'.",
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId = dataId, uploaderUserId = uploaderUserId)),
+            body = defaultObjectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId = dataId, uploaderUserId = uploaderUserId)),
             type = MessageType.METAINFO_UPDATED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
@@ -172,7 +170,7 @@ class MessageQueuePublications(
     ) {
         logger.info("Publish message that dataset with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            body = defaultObjectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
             type = MessageType.DELETE_DATA,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
@@ -192,7 +190,7 @@ class MessageQueuePublications(
                 "Correlation ID: '$correlationId'.",
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            body = defaultObjectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
             type = MessageType.DATA_MIGRATED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
@@ -215,7 +213,7 @@ class MessageQueuePublications(
     ) {
         logger.info("Publish message that dataset with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            body = defaultObjectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
             type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,

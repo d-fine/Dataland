@@ -21,7 +21,7 @@ object MessageQueueUtils {
         try {
             return method()
         } catch (e: Exception) {
-            throw MessageQueueRejectException(e.message, e)
+            throw MessageQueueRejectException(e.message ?: "No message provided.", e)
         }
     }
 

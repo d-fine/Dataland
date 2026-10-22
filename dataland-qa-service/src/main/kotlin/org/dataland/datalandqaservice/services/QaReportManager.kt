@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 class QaReportManager(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired override val qaReportRepository: QaReportRepository,
     @Autowired override val qaReportSecurityPolicy: QaReportSecurityPolicy,
     @Autowired private val datalandBackendAccessor: DatalandBackendAccessor,
@@ -46,7 +46,7 @@ class QaReportManager(
             .save(
                 QaReportEntity(
                     qaReportId = IdUtils.generateUUID(),
-                    qaReport = objectMapper.writeValueAsString(report),
+                    qaReport = defaultObjectMapper.writeValueAsString(report),
                     dataId = dataId,
                     dataType = dataType,
                     reporterUserId = reporterUserId,

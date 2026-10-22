@@ -42,7 +42,7 @@ class DataPointManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder, dataDeliveryService,
+            companyQueryManager, companyRoleChecker, logMessageBuilder, dataDeliveryService,
         )
 
     private val correlationId = "test-correlation-id"

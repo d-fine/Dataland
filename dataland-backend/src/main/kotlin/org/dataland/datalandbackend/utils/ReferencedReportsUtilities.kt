@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.springframework.stereotype.Service
 
@@ -28,8 +28,6 @@ class ReferencedReportsUtilities {
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
 
-    private val objectMapper = JsonUtils.defaultObjectMapper
-
     /**
      * Parses the referenced reports from a JSON leaf.
      */
@@ -37,7 +35,7 @@ class ReferencedReportsUtilities {
         if (referencedReportsLeaf == null) {
             return emptyMap()
         }
-        return objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
+        return defaultObjectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
     }
 
     /**
@@ -100,7 +98,7 @@ class ReferencedReportsUtilities {
         content: String,
         allCompanyReports: MutableList<CompanyReport>,
     ) {
-        val contentNode = objectMapper.readTree(content)
+        val contentNode = defaultObjectMapper.readTree(content)
         if (contentNode.contains(DATA_SOURCE_FIELD)) {
             val foundReport = getCompanyReportFromDataSource(content)
             if (foundReport != null) {
@@ -112,7 +110,7 @@ class ReferencedReportsUtilities {
                 .asSequence()
                 .map { fieldName -> fieldName to contentNode[fieldName] }
                 .forEach { (_, value) ->
-                    getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(value), allCompanyReports)
+                    getAllCompanyReportsFromDataSource(defaultObjectMapper.writeValueAsString(value), allCompanyReports)
                 }
         }
     }
@@ -123,14 +121,14 @@ class ReferencedReportsUtilities {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPoint)[DATA_SOURCE_FIELD]
+        val dataSource = defaultObjectMapper.readTree(dataPoint)[DATA_SOURCE_FIELD]
 
         if (dataSource == null || dataSource.isNull) {
             return null
         }
 
         return try {
-            objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
+            defaultObjectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
         } catch (ignore: Exception) {
             null
         }
@@ -239,6 +237,6 @@ class ReferencedReportsUtilities {
         val insertLocation = targetPath.split(".").dropLast(1).joinToString(".")
         val insertName = targetPath.split(".").last()
         val parentNode = navigateToNode(inputJsonNode, insertLocation)
-        (parentNode as ObjectNode).set<JsonNode>(insertName, objectMapper.valueToTree(IdWithRef(REFERENCED_REPORTS_ID, "dummy")))
+        (parentNode as ObjectNode).set<JsonNode>(insertName, defaultObjectMapper.valueToTree(IdWithRef(REFERENCED_REPORTS_ID, "dummy")))
     }
 }

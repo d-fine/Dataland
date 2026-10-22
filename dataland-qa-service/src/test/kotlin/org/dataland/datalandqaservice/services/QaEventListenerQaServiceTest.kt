@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
@@ -8,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -43,7 +43,7 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
 
@@ -54,7 +54,6 @@ import java.util.UUID
     properties = ["spring.profiles.active=nodb"],
 )
 class QaEventListenerQaServiceTest(
-    @Autowired val objectMapper: ObjectMapper,
     @Autowired val testQaReviewRepository: QaReviewRepository,
 ) {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock<CloudEventMessageHandler>()
@@ -87,7 +86,6 @@ class QaEventListenerQaServiceTest(
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
-                objectMapper,
                 mockQaReviewManager,
                 mockQaReviewQueryService,
                 mockDataPointQaReviewManager,
@@ -104,17 +102,17 @@ class QaEventListenerQaServiceTest(
     private fun getDataUploadPayload(
         dataId: String,
         bypassQa: Boolean,
-    ): String = objectMapper.writeValueAsString(DataUploadedPayload(dataId, bypassQa))
+    ): String = defaultObjectMapper.writeValueAsString(DataUploadedPayload(dataId, bypassQa))
 
     private fun getDataMetaInfoPatchPayload(
         dataId: String,
         uploaderUserId: String?,
-    ): String = objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId, uploaderUserId))
+    ): String = defaultObjectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId, uploaderUserId))
 
     private fun getManualQaRequestedMessage(
         resourceId: String,
         bypassQa: Boolean,
-    ): String = objectMapper.writeValueAsString(ManualQaRequestedMessage(resourceId, bypassQa))
+    ): String = defaultObjectMapper.writeValueAsString(ManualQaRequestedMessage(resourceId, bypassQa))
 
     @Test
     fun `check that an exception is thrown in reading out message from data stored queue when dataId is empty`() {
@@ -236,7 +234,7 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check that an exception is thrown in reading out message from document stored queue when documentId is empty`() {
-        val noIdPayload = objectMapper.writeValueAsString(ManualQaRequestedMessage("", false))
+        val noIdPayload = defaultObjectMapper.writeValueAsString(ManualQaRequestedMessage("", false))
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService.assureQualityOfDocument(
@@ -255,7 +253,7 @@ class QaEventListenerQaServiceTest(
         val dataUploadedPayload = getDataUploadPayload(dataId, bypassQa = true)
 
         val acceptedStoredCompanyJson = "json/services/StoredCompanyAccepted.json"
-        val acceptedStoredCompany = objectMapper.readValue<StoredCompany>(getJsonString(acceptedStoredCompanyJson))
+        val acceptedStoredCompany = defaultObjectMapper.readValue<StoredCompany>(getJsonString(acceptedStoredCompanyJson))
         val acceptedDataMetaInformation: DataMetaInformation = acceptedStoredCompany.dataRegisteredByDataland[0]
         val acceptedDataId = acceptedDataMetaInformation.dataId
 
@@ -276,7 +274,7 @@ class QaEventListenerQaServiceTest(
     }
 
     private fun getJsonString(resourceFile: String): String =
-        objectMapper
+        defaultObjectMapper
             .readTree(
                 this.javaClass.classLoader.getResourceAsStream(resourceFile)
                     ?: throw IllegalArgumentException("Could not load the resource file"),

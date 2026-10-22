@@ -53,12 +53,12 @@ class DiagnosticManager {
             "⚠\uFE0F There are ${failingDiagnostics.size} failing diagnostic entries:",
         )
 
-        failingDiagnostics.forEachIndexed { i, it ->
-            failingDiagnosticMessageSummary.appendLine("${i + 1}:  $it")
-            if (it.type.canBeSuppressed) {
+        failingDiagnostics.forEachIndexed { i, failingDiagnostic ->
+            failingDiagnosticMessageSummary.appendLine("${i + 1}:  $failingDiagnostic")
+            if (failingDiagnostic.type.canBeSuppressed) {
                 failingDiagnosticMessageSummary.appendLine(
                     "\t You may suppress this diagnostic (with a good justification) by calling " +
-                        "`Diagnostic.suppress(\"${it.id}\")` BEFORE the diagnostic is logged",
+                        "`Diagnostic.suppress(\"${failingDiagnostic.id}\")` BEFORE the diagnostic is logged",
                 )
             }
         }

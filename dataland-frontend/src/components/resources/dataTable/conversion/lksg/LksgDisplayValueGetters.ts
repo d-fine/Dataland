@@ -356,7 +356,7 @@ function convertLksGrievanceMechanismsForDisplay(
 ): LksgGrievanceMechanismsDisplayFormat[] {
   return input.map((item) => {
     const humanizedItem: LksgGrievanceMechanismsDisplayFormat = {
-      riskPositions: item.riskPositions.map((riskPosition) => humanizeStringOrNumber(riskPosition)),
+      riskPositions: Array.from(item.riskPositions).map((riskPosition) => humanizeStringOrNumber(riskPosition)),
       specifiedComplaint: item.specifiedComplaint,
       measuresTaken: humanizeStringOrNumber(item.measuresTaken),
       listedMeasures: item.listedMeasures,

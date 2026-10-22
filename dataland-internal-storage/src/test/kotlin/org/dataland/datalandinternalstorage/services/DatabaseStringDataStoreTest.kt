@@ -1,9 +1,8 @@
 package org.dataland.datalandinternalstorage.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -38,7 +37,6 @@ class DatabaseStringDataStoreTest {
         mock(TemporarilyCachedDataControllerApi::class.java)
     private lateinit var databaseStringDataStore: DatabaseStringDataStore
     private lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
-    private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     private val dataId = UUID.randomUUID().toString()
     private val dummyData = "{some dummy data}"
@@ -52,7 +50,6 @@ class DatabaseStringDataStoreTest {
                 mockDataPointItemRepository,
                 mockCloudEventMessageHandler,
                 mockTemporarilyCachedDataControllerApi,
-                objectMapper,
             )
         spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }
@@ -71,7 +68,7 @@ class DatabaseStringDataStoreTest {
         val message = Message(dummyData.toByteArray(), messageProperties)
 
         val dataUploadedPayload =
-            objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = false))
+            defaultObjectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = false))
 
         `when`(mockTemporarilyCachedDataControllerApi.getReceivedPublicData(dataId)).thenReturn(dummyData)
 
@@ -86,7 +83,7 @@ class DatabaseStringDataStoreTest {
         verify(mockTemporarilyCachedDataControllerApi, times(1)).getReceivedPublicData(dataId)
         verify(mockDataItemRepository, times(1)).save(any())
         verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(DataIdPayload(dataId)),
+            defaultObjectMapper.writeValueAsString(DataIdPayload(dataId)),
             MessageType.DATA_STORED,
             correlationId,
             ExchangeName.ITEM_STORED,
@@ -103,7 +100,7 @@ class DatabaseStringDataStoreTest {
         val message = Message(dummyData.toByteArray(), messageProperties)
 
         val dataPatchPayload =
-            objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId, uploaderUserId))
+            defaultObjectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId, uploaderUserId))
 
         `when`(mockTemporarilyCachedDataControllerApi.getReceivedPublicData(dataId)).thenReturn(dummyData)
 
@@ -118,7 +115,7 @@ class DatabaseStringDataStoreTest {
         verify(mockTemporarilyCachedDataControllerApi, times(1)).getReceivedPublicData(dataId)
         verify(mockDataItemRepository, times(1)).save(any())
         verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(DataIdPayload(dataId)),
+            defaultObjectMapper.writeValueAsString(DataIdPayload(dataId)),
             MessageType.DATA_STORED,
             correlationId,
             ExchangeName.ITEM_STORED,
