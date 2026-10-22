@@ -21,7 +21,7 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
  */
 function instantiateVueApp(): void {
   const app = createApp(App);
-  const queryClient = new QueryClient(); // Standard query client (stale time: 5 minutes)
+  const queryClient = new QueryClient();
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({

@@ -355,9 +355,12 @@ const {
   isPending: isOriginalPending,
   isError: isOriginalError,
   error: originalError,
-} = useGetDataPointByIdQuery(currentDataPointId, {
-  enabled: isOriginalQueryEnabled,
-});
+} = useGetDataPointByIdQuery(
+  { dataPointId: currentDataPointId },
+  {
+    enabled: isOriginalQueryEnabled,
+  }
+);
 
 const isOriginalLoading = computed(() => isOriginalQueryEnabled.value && isOriginalPending.value);
 const isOriginalLoadingError = computed(() => isOriginalQueryEnabled.value && isOriginalError.value);
