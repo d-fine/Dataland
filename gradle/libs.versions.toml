@@ -21,19 +21,19 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 [versions]
 
 kotlin = "2.4.10"
-okhttp3 = "4.12.0"
+okhttp3 = "5.5.0"
 moshi = "1.15.2"
 mockito = "5.24.0"
 junit-jupiter = "6.1.3"
 log4j = "2.26.1"
-jackson = "2.22.3"
+jackson = "2.22.4"
 logback = "1.6.5"
 flyway = "13.10.3"
 cloudevents = "5.1.0"
 itext = "9.8.0"
 tika = "4.1.0"
 poi = "5.5.1"
-jodconverter = "4.4.11"
+jodconverter = "5.1.1"
 spring-boot = "4.1.1"
 spring-framework = "7.0.9"
 detekt = "2.0.0-alpha.6"
@@ -43,7 +43,7 @@ testcontainers = "1.21.4"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.8.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.8.2" }
 # Detekt
 detekt-cli = { group = "dev.detekt", name = "detekt-cli", version.ref = "detekt" }
 
