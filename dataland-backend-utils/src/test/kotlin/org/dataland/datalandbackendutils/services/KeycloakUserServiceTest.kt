@@ -1,6 +1,5 @@
 package org.dataland.datalandbackendutils.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -20,7 +19,6 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 
 class KeycloakUserServiceTest {
-    private val objectMapper = ObjectMapper()
     private val mockOkHttpClient = mock<OkHttpClient>()
     private val mockCall = mock<Call>()
     private lateinit var keycloakUserService: KeycloakUserService
@@ -31,7 +29,7 @@ class KeycloakUserServiceTest {
     fun setUp() {
         reset(mockOkHttpClient, mockCall)
 
-        keycloakUserService = KeycloakUserService(objectMapper, mockOkHttpClient, keycloakBaseUrl)
+        keycloakUserService = KeycloakUserService(mockOkHttpClient, keycloakBaseUrl)
     }
 
     private val firstUser = KeycloakUserInfo("test@example.com", "1", "John", "Doe")

@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandcommunitymanager.services.messaging.CompanyOwnershipAcceptedEmailMessageBuilder
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -20,7 +20,6 @@ import org.mockito.Mockito.mock
 import java.util.UUID
 
 class CompanyOwnershipAcceptedEmailMessageSenderTest {
-    private val objectMapper = jacksonObjectMapper()
     private val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
     private val companyName = "Test Inc."
     private val correlationId = UUID.randomUUID().toString()
@@ -39,7 +38,6 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
         val companyOwnershipAcceptedEmailMessageBuilder =
             CompanyOwnershipAcceptedEmailMessageBuilder(
                 cloudEventMessageHandlerMock,
-                objectMapper,
             )
 
         companyOwnershipAcceptedEmailMessageBuilder
@@ -62,7 +60,7 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                     ArgumentMatchers.anyString(),
                 ),
             ).then {
-                val emailMessage = objectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
+                val emailMessage = defaultObjectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
                 val arg2 = it.getArgument<String>(1)
                 val arg3 = it.getArgument<String>(2)
                 val arg4 = it.getArgument<String>(3)

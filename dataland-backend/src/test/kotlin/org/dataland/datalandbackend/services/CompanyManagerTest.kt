@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.StoredCompany
@@ -17,7 +16,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
 
@@ -28,11 +27,10 @@ import java.util.UUID
 class CompanyManagerTest
     @Autowired
     constructor(
-        objectMapper: ObjectMapper,
         private val testCompanyAlterationManager: CompanyAlterationManager,
         private val testCompanyQueryManager: CompanyQueryManager,
     ) {
-        private val testDataProvider = TestDataProvider(objectMapper)
+        private val testDataProvider = TestDataProvider()
         private val testCompanyList = testDataProvider.getCompanyInformation(4)
         private val resultLimit = 100
 

@@ -1084,6 +1084,7 @@
           "email": {
             "type": "string",
             "description": "The email address of the Dataland user in question.",
+            "nullable": true,
             "example": "test@example.com"
           },
           "id": {
@@ -1094,11 +1095,13 @@
           "firstName": {
             "type": "string",
             "description": "The first name of the Dataland user in question.",
+            "nullable": true,
             "example": "Jane"
           },
           "lastName": {
             "type": "string",
             "description": "The last name of the Dataland user in question.",
+            "nullable": true,
             "example": "Doe"
           }
         }
@@ -1187,11 +1190,13 @@
           "firstName": {
             "type": "string",
             "description": "The first name of the user in the company role assignment.",
+            "nullable": true,
             "example": "Jane"
           },
           "lastName": {
             "type": "string",
             "description": "The last name of the user in the company role assignment.",
+            "nullable": true,
             "example": "Doe"
           }
         }
@@ -1229,7 +1234,8 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         }
       },

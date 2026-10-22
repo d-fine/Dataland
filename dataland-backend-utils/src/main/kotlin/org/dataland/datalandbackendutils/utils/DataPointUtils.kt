@@ -1,18 +1,15 @@
 package org.dataland.datalandbackendutils.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 
 object DataPointUtils {
-    val objectMapper = ObjectMapper()
-
     /**
      * Retrieves the data point types in a framework schema
      * @param schema of a framework
      * @return a set of all data point types
      */
     fun getDataPointTypes(schema: String): Set<String> {
-        val frameworkTemplate = jacksonObjectMapper().readTree(schema)
+        val frameworkTemplate = defaultObjectMapper.readTree(schema)
         return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
     }
 
@@ -21,12 +18,12 @@ object DataPointUtils {
      * associated extended data point format (in which only the value field is set).
      */
     fun convertToExtendedFormat(plainData: String): String {
-        val onceSerialized = objectMapper.readValue(plainData, String::class.java)
-        val plainValue = objectMapper.readValue(onceSerialized, String::class.java)
+        val onceSerialized = defaultObjectMapper.readValue(plainData, String::class.java)
+        val plainValue = defaultObjectMapper.readValue(onceSerialized, String::class.java)
         val extendedObject =
-            objectMapper.createObjectNode().apply {
+            defaultObjectMapper.createObjectNode().apply {
                 put("value", plainValue)
             }
-        return objectMapper.writeValueAsString(objectMapper.writeValueAsString(extendedObject))
+        return defaultObjectMapper.writeValueAsString(defaultObjectMapper.writeValueAsString(extendedObject))
     }
 }

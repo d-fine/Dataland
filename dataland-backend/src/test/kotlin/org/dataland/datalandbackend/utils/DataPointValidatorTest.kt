@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
@@ -26,12 +26,11 @@ import org.mockito.kotlin.whenever
 import java.time.LocalDate
 
 class DataPointValidatorTest {
-    private val objectMapper = JsonUtils.defaultObjectMapper
     private val specificationClient = mock<SpecificationControllerApi>()
     private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
     private val dataPointValidator =
         DataPointValidator(
-            objectMapper, specificationClient, referencedReportsUtilities,
+            specificationClient, referencedReportsUtilities,
             Validation
                 .buildDefaultValidatorFactory()
                 .validator,
@@ -52,7 +51,7 @@ class DataPointValidatorTest {
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
     private fun getJsonNode(resourceFile: String): JsonNode =
-        objectMapper
+        defaultObjectMapper
             .readTree(
                 this.javaClass.classLoader.getResourceAsStream(resourceFile)
                     ?: throw IllegalArgumentException("Could not load the resource file"),
@@ -145,7 +144,7 @@ class DataPointValidatorTest {
             assertThrows<InvalidInputApiException> {
                 dataPointValidator.validateDataPoint(dataPointId, getJsonString(currencyDataPoint), correlationId)
             }
-        assertTrue(exception.message!!.contains(dataPointId))
+        assertTrue(exception.message.contains(dataPointId))
 
         verify(referencedReportsUtilities).validateDataSourcesDoNotContainInferableFields(
             any(),

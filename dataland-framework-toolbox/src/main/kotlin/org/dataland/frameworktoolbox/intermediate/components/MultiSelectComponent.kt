@@ -88,21 +88,15 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
+        sectionBuilder.identifier
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements($formattedString)",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+                fixtureExpression = "dataGenerator.generateLksgSpecificProcurement()",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateLksgSpecificProcurement())",
                 nullable = isNullable,
             ),
-            imports =
-                setOf(
-                    TypeScriptImport(
-                        "pickSubsetOfElements",
-                        "@e2e/fixtures/FixtureUtils",
-                    ),
-                ),
+            imports = setOf(),
         )
     }
 

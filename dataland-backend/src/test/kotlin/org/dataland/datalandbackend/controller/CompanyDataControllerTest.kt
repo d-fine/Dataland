@@ -192,7 +192,7 @@ internal class CompanyDataControllerTest(
     @Test
     fun `getCompanies should fail validation when searchString is too short`() {
         val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
-        val parameters = arrayOf("aa", 100)
+        val parameters = Pair<String?, Number>("aa", 100).toList().toTypedArray()
 
         val violations =
             validator.forExecutables().validateParameters(
@@ -209,7 +209,7 @@ internal class CompanyDataControllerTest(
     @Test
     fun `getCompanies should pass validation when searchString is long enough`() {
         val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
-        val parameters = arrayOf("aaa", 100)
+        val parameters = Pair<String?, Number>("aaa", 100).toList().toTypedArray()
 
         val violations =
             validator.forExecutables().validateParameters(
@@ -224,7 +224,8 @@ internal class CompanyDataControllerTest(
     @Test
     fun `getCompanies should pass validation when searchString null or empty`() {
         val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
-        val parametersList = arrayOf(arrayOf("", 100), arrayOf(null, 100))
+        val parametersList =
+            arrayOf(Pair<String?, Number>("", 100).toList().toTypedArray(), Pair<String?, Number>(null, 100).toList().toTypedArray())
 
         for (parameters in parametersList) {
             val violations =

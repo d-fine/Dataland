@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
+    implementation(libs.spring.boot.jackson2)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
@@ -49,6 +50,7 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.jackson.kotlin)
     implementation(libs.flyway)
+    implementation(libs.spring.boot.starter.flyway)
     implementation(libs.flyway.core)
     implementation(Spring.boot.security)
     implementation(libs.json)
@@ -58,6 +60,9 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.spring.boot.jdbc.test)
+    testImplementation(libs.spring.boot.webmvc.test)
+    testImplementation(libs.spring.boot.security.test)
     testImplementation(libs.mockito.kotlin)
 }
 

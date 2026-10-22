@@ -34,7 +34,7 @@ export function convertUnixTimeInMsToDateString(unixTimeInMs: number): string {
  * @param date the date
  * @returns a more user-friendly date string representing the given date
  */
-export function dateStringFormatter(date?: string): string {
+export function dateStringFormatter(date?: string | null): string {
   if (date == undefined) {
     return '';
   } else {

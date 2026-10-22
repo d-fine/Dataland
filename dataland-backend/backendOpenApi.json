@@ -11879,6 +11879,7 @@
             ]
           },
           "specificProcurement": {
+            "uniqueItems": true,
             "type": "array",
             "description": "Does your company have one of the specific procurement models?",
             "nullable": true,
@@ -12555,6 +12556,7 @@
         "type": "object",
         "properties": {
           "riskPositions": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RiskPositionType"
@@ -21319,7 +21321,8 @@
             "type": "number"
           },
           "metaInformation": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         }
       },
