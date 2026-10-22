@@ -85,6 +85,12 @@
 - Use PrimeVue default styling where possible. Add scoped styling only when necessary.
 - If you touch frontend files, do not introduce new `@ts-nocheck` usage in the modified files.
 
+## Frontend Data Fetching (applies even if the task does not mention it)
+
+- Every backend call from `dataland-frontend` (loading, displaying, saving, updating or deleting server data) goes through a TanStack Query hook in `dataland-frontend/src/api-queries/`. API clients may not be used anywhere else, including `.ts` composables and utils.
+- Before planning: search `src/api-queries/` for a hook wrapping the needed client method and reuse it. If none exists, read `dataland-frontend/src/api-queries/AGENTS.md` and create one.
+- Existing components and utils that call clients directly are legacy. Never copy them, and don't ask subagents for them as examples.
+
 # Testing Expectations
 
 - There are three test levels in the repo:

@@ -16,7 +16,7 @@ Process:
 5. Ask clarifying questions before editing if any part of the component behavior, surrounding context, or expected output is ambiguous.
 6. After approval, refactor the component to Vue 3 Composition API using `<script setup lang="ts">`.
 7. Preserve the existing functionality and keep the refactor scoped to the API migration only.
-8. Use `PortfolioOverview.vue` as the reference for style and formatting.
+8. Use `PortfolioOverview.vue` as the reference for style and formatting only. Its direct `ApiClientProvider` usage is legacy; do not copy it. Keep existing data loading as-is, and if the component calls API clients directly, recommend migrating to TanStack Query hooks (`src/api-queries/AGENTS.md`) in your summary.
 9. Run `npm run format` in `dataland-frontend` and fix any resulting issues in the modified files.
 10. Save all changes to disk.
 
