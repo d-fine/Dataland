@@ -2,6 +2,7 @@ import BigDecimalExtendedDataPointFormField from '@/components/resources/dataTab
 import YesNoExtendedDataPointFormField from '@/components/resources/dataTable/modals/YesNoExtendedDataPointFormField.vue';
 import PercentageExtendedDataPointFormField from '@/components/resources/dataTable/modals/PercentageExtendedDataPointFormField.vue';
 import CurrencyExtendedDataPointFormField from '@/components/resources/dataTable/modals/CurrencyExtendedDataPointFormField.vue';
+import EligibleOrAlignedActivitiesFormField from '@/components/resources/dataTable/modals/EligibleOrAlignedActivitiesFormField.vue';
 import type { Component } from 'vue';
 
 export const componentDictionary: Record<string, Component> = {
@@ -9,4 +10,5 @@ export const componentDictionary: Record<string, Component> = {
   YesNoExtendedDataPointFormField,
   PercentageExtendedDataPointFormField,
   CurrencyExtendedDataPointFormField,
+  EligibleOrAlignedActivitiesFormField,
 };

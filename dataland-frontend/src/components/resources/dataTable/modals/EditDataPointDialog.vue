@@ -49,7 +49,20 @@ const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageVal
  */
 const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
-const extendedDataPointObject: ExtendedDataPointType = {
+const modalData = dataPoint?.displayValue?.modalOptions?.data;
+const listDataPointObject: ExtendedDataPointType | undefined = modalData
+  ? {
+      value: modalData.listOfRowContents ?? [],
+      quality: modalData.dataPointDisplay?.quality ?? '',
+      comment: modalData.dataPointDisplay?.comment ?? '',
+      dataSource: {
+        fileReference: modalData.dataPointDisplay?.dataSource?.fileReference ?? '',
+        page: modalData.dataPointDisplay?.dataSource?.page ?? '',
+      },
+    }
+  : undefined;
+
+const scalarDataPointObject: ExtendedDataPointType = {
   value: ((): string | undefined => {
     const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
     return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
@@ -67,6 +80,8 @@ const extendedDataPointObject: ExtendedDataPointType = {
     page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
   },
 };
+
+const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? scalarDataPointObject;
 
 provide('companyId', companyId);
 

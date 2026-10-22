@@ -245,6 +245,9 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     props: {
       modal: true,
       header: 'Edit Data Point',
+      style:
+        cellOrSectionConfig.uploadComponentName === 'EligibleOrAlignedActivitiesFormField' ? { width: '90vw' } : {},
+      contentStyle: { overflow: 'auto' },
       pt: {
         title: {
           style: {
