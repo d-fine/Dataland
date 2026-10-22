@@ -147,16 +147,10 @@ class DocumentController(
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<DocumentMetaInfoResponse>> {
-        if (chunkSize <= 0) {
+        if (chunkSize <= 0 || chunkIndex < 0) {
             throw InvalidInputApiException(
-                summary = "Invalid chunk size.",
-                message = "Chunk size must be positive.",
-            )
-        }
-        if (chunkIndex < 0) {
-            throw InvalidInputApiException(
-                summary = "Invalid chunk index.",
-                message = "Chunk index must be non-negative.",
+                summary = "Invalid chunk parameters.",
+                message = "Chunk parameters must be positive but were size: $chunkSize and index: $chunkIndex.",
             )
         }
         val documentMetaInformationSearchFilter =

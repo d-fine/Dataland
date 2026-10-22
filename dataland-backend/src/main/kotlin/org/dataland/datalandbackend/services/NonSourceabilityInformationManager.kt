@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceabilityInformationEntity
 import org.dataland.datalandbackend.model.DataDimensionQuery
 import org.dataland.datalandbackend.model.DataType
@@ -11,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -33,7 +33,6 @@ class NonSourceabilityInformationManager(
     @Autowired private val nonSourceabilityDataRepository: NonSourceabilityDataRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -328,7 +327,7 @@ class NonSourceabilityInformationManager(
             )
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(event),
+            body = defaultObjectMapper.writeValueAsString(event),
             type = if (bypassQa) MessageType.NON_SOURCEABILITY_AUTO_ACCEPTED else MessageType.NON_SOURCEABILITY_CREATED,
             correlationId = event.nonSourceabilityId,
             exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,

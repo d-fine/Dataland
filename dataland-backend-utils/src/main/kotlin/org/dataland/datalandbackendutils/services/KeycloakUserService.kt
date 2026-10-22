@@ -2,13 +2,12 @@ package org.dataland.datalandbackendutils.services
 
 import com.fasterxml.jackson.core.JacksonException
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackendutils.model.KeycloakRoleRepresentation
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service
 @Service("KeycloakUserService")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakUserService(
-    @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
 ) {
@@ -54,7 +52,7 @@ class KeycloakUserService(
 
         try {
             val user =
-                objectMapper.readValue(
+                defaultObjectMapper.readValue(
                     response,
                     KeycloakUserInfo::class.java,
                 )
@@ -117,7 +115,9 @@ class KeycloakUserService(
         val response = getKeycloakResponse(url)
 
         try {
-            return objectMapper.readValue(response, object : TypeReference<List<KeycloakRoleRepresentation>>() {}).map { it.roleName }
+            return defaultObjectMapper.readValue(response, object : TypeReference<List<KeycloakRoleRepresentation>>() {}).map {
+                it.roleName
+            }
         } catch (e: JacksonException) {
             logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
             return emptyList()
@@ -136,7 +136,7 @@ class KeycloakUserService(
     private fun extractUsers(response: String): List<KeycloakUserInfo> {
         try {
             val listOfUsers: List<KeycloakUserInfo> =
-                objectMapper.readValue(
+                defaultObjectMapper.readValue(
                     response,
                     object : TypeReference<List<KeycloakUserInfo>>() {},
                 )

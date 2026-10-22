@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -35,7 +34,6 @@ import java.util.UUID
 @DefaultMocks
 @Suppress("LongParameterList")
 class CompanyDataControllerReportingPeriodFilterTest(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyBaseManager: CompanyBaseManager,
@@ -43,7 +41,7 @@ class CompanyDataControllerReportingPeriodFilterTest(
     @Autowired private val dataAvailabilityChecker: DataAvailabilityChecker,
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
 ) : BaseIntegrationTest() {
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
     private lateinit var companyReportingPeriod2023: StoredCompanyEntity
     private lateinit var companyReportingPeriod2024: StoredCompanyEntity
     private lateinit var companyReportingPeriodBoth: StoredCompanyEntity

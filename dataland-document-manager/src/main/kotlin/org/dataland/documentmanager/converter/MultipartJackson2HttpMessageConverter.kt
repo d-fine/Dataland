@@ -1,8 +1,7 @@
 package org.dataland.documentmanager.converter
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.documentmanager.controller.DocumentController
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter
 import org.springframework.stereotype.Component
@@ -14,9 +13,8 @@ import java.lang.reflect.Type
  * The issue in the Swagger-Ui GitHub repo is still open. There is a Dataland-backlog item to follow up on this.
  */
 @Component
-class MultipartJackson2HttpMessageConverter(
-    @Autowired private val objectMapper: ObjectMapper,
-) : AbstractJackson2HttpMessageConverter(objectMapper, MediaType("application", "octet-stream")) {
+class MultipartJackson2HttpMessageConverter :
+    AbstractJackson2HttpMessageConverter(defaultObjectMapper, MediaType("application", "octet-stream")) {
     override fun canWrite(mediaType: MediaType?): Boolean = false
 
     override fun canRead(

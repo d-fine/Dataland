@@ -1,8 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.treeToValue
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
@@ -24,7 +24,6 @@ class AssembledDataMigrationManager
         private val assembledQaReportManager: AssembledDatasetQaReportManager,
         private val qaReportRepository: QaReportRepository,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
-        private val objectMapper: ObjectMapper,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -63,14 +62,14 @@ class AssembledDataMigrationManager
             correlationId: String,
         ) {
             val datapointReportIds = dehydrateAndSaveDataPointQaReports(qaReport, correlationId)
-            qaReport.qaReport = objectMapper.writeValueAsString(datapointReportIds)
+            qaReport.qaReport = defaultObjectMapper.writeValueAsString(datapointReportIds)
         }
 
         private fun dehydrateAndSaveDataPointQaReports(
             qaReport: QaReportEntity,
             correlationId: String,
         ): MutableList<String> {
-            val report = objectMapper.readTree(qaReport.qaReport) as ObjectNode
+            val report = defaultObjectMapper.readTree(qaReport.qaReport) as ObjectNode
             val (associatedDataPoints, decomposedQaReport) =
                 assembledQaReportManager.splitQaReportIntoDataPoints(
                     qaReport.dataType, qaReport.dataId, report,
@@ -88,12 +87,12 @@ class AssembledDataMigrationManager
             val dataPointQaReportIds = mutableListOf<String>()
             for ((dataPointType, dataPointReport) in decomposedQaReport) {
                 val dataPointId = associatedDataPoints[dataPointType] ?: continue
-                val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
+                val parsedQaReport = defaultObjectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
                 val translatedQaReport =
                     QaReportDataPoint<String?>(
                         comment = parsedQaReport.comment,
                         verdict = parsedQaReport.verdict,
-                        correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
+                        correctedData = defaultObjectMapper.writeValueAsString(parsedQaReport.correctedData),
                     )
                 val savedQaReport =
                     dataPointQaReportRepository

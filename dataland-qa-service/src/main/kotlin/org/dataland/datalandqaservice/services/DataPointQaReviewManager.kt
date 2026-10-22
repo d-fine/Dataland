@@ -1,10 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.DataPointUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -32,11 +32,9 @@ import java.time.Instant
 @Service
 class DataPointQaReviewManager
     @Autowired
-    @Suppress("LongParameterList")
     constructor(
         private val dataPointQaReviewRepository: DataPointQaReviewRepository,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
-        private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
         private val qaReviewRepository: QaReviewRepository,
         private val specificationClient: SpecificationControllerApi,
@@ -296,7 +294,7 @@ class DataPointQaReviewManager
                         " (correlationId: $correlationId).",
                 )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    body = objectMapper.writeValueAsString(qaStatusChangeMessage),
+                    body = defaultObjectMapper.writeValueAsString(qaStatusChangeMessage),
                     type = MessageType.QA_STATUS_UPDATED,
                     correlationId = correlationId,
                     exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,

@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -10,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
@@ -38,7 +38,6 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus as BackendQaSta
 class QaReviewManagerQaChangeTest(
     @Autowired private val qaReviewManager: QaReviewManager,
     @Autowired private val qaReviewRepository: QaReviewRepository,
-    @Autowired private val objectMapper: ObjectMapper,
 ) : BaseIntegrationTest() {
     @MockitoBean
     lateinit var metaDataControllerApi: MetaDataControllerApi
@@ -119,7 +118,7 @@ class QaReviewManagerQaChangeTest(
             any(),
         )
 
-        val message2 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
+        val message2 = defaultObjectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
         assert(message2.currentlyActiveDataId == null)
     }
 
@@ -141,7 +140,7 @@ class QaReviewManagerQaChangeTest(
             any(),
         )
 
-        val message3 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.thirdValue)
+        val message3 = defaultObjectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.thirdValue)
         assert(message3.currentlyActiveDataId == dataId2)
     }
 
@@ -163,7 +162,7 @@ class QaReviewManagerQaChangeTest(
             any(),
         )
 
-        val message3 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.thirdValue)
+        val message3 = defaultObjectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.thirdValue)
         assert(message3.currentlyActiveDataId == dataId1)
     }
 
@@ -184,8 +183,8 @@ class QaReviewManagerQaChangeTest(
             any(),
         )
 
-        val message1 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.firstValue)
-        val message2 = objectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
+        val message1 = defaultObjectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.firstValue)
+        val message2 = defaultObjectMapper.readValue<QaStatusChangeMessage>(messageBodyCaptor.secondValue)
         assert(message1.isUpdate == false)
         assert(message2.isUpdate == true)
     }

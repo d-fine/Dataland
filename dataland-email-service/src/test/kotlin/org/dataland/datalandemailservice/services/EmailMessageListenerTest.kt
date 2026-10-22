@@ -1,6 +1,6 @@
 package org.dataland.datalandemailservice.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.email.EmailSender
@@ -29,7 +29,6 @@ private const val EMAIL_ADDRESS_GENERAL_ADDITIONAL_BCC = "general_additional_bcc
 
 class EmailMessageListenerTest {
     private val mockEmailSender = mock<EmailSender>()
-    private val objectMapper = jacksonObjectMapper()
     private val mockEmailContactService = mock<EmailContactService>()
     private val mockEmailSubscriptionTracker = mock<EmailSubscriptionTracker>()
     private val dummyProxyPrimaryUrl = "abc.example.com"
@@ -113,7 +112,7 @@ class EmailMessageListenerTest {
     fun `test that correct portfolio changes summary email is sent to correct contacts`() {
         val typedEmailContent = testData.portfolioChangesSummaryEmailContent
         val keywords = testData.portfolioChangesSummaryKeywords
-        val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
+        val jsonString = defaultObjectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
         doNothing().whenever(mockEmailSender).sendEmail(any())
 
         val emailMessageListener =

@@ -2,13 +2,12 @@ package org.dataland.datalandbackendutils.services
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -24,7 +23,6 @@ import java.util.Base64
 @Service("KeycloakTokenManager")
 @ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakTokenManager(
-    @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
     @Value("\${dataland.keycloak.client-id}") private val clientId: String,
@@ -76,7 +74,7 @@ class KeycloakTokenManager(
                 .build()
         val response = httpClient.newCall(request).execute()
         val parsedResponseBody =
-            objectMapper.readValue(
+            defaultObjectMapper.readValue(
                 response.body!!.string(),
                 KeycloakAccessTokenResponse::class.java,
             )

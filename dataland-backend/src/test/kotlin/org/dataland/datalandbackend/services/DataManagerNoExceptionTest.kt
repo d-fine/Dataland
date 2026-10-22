@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
@@ -12,6 +11,7 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -27,7 +27,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
@@ -42,18 +42,15 @@ import java.util.UUID
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @DefaultMocks
-@Suppress("LongParameterList")
 class DataManagerNoExceptionTest
     @Autowired
     constructor(
-        objectMapper: ObjectMapper,
         dataMetaInformationManager: DataMetaInformationManager,
         companyQueryManager: CompanyQueryManager,
         dataManagerUtils: DataManagerUtils,
         nonSourceabilityInformationManager: NonSourceabilityInformationManager,
         val companyAlterationManager: CompanyAlterationManager,
     ) : DataManagerTest(
-            objectMapper = objectMapper,
             dataMetaInformationManager = dataMetaInformationManager,
             companyQueryManager = companyQueryManager,
             dataManagerUtils = dataManagerUtils,
@@ -98,7 +95,7 @@ class DataManagerNoExceptionTest
                     storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
                 )
             val messageWithEmptyCurrentlyActiveDataId =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         dataId = dataId,
                         updatedQaStatus = QaStatus.Accepted,
@@ -151,7 +148,7 @@ class DataManagerNoExceptionTest
             createNewDataMetaInformationWithQaStatus(dataId, QaStatus.Pending)
 
             val messageWithChangedQAStatus =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         dataId, newQaStatus,
                         dataId,
@@ -187,7 +184,7 @@ class DataManagerNoExceptionTest
             createNewDataMetaInformationWithQaStatus(newDataId, QaStatus.Accepted)
 
             val messageWithChangedQAStatus =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         oldDataId, QaStatus.Rejected, newDataId,
                         BasicDataDimensions(

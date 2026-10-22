@@ -8,6 +8,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
+import org.junit.jupiter.params.support.ParameterDeclarations
 import java.util.UUID
 import java.util.stream.Stream
 
@@ -112,7 +113,10 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "Link-TitleB",
         )
 
-    override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments> =
+    override fun provideArguments(
+        parameters: ParameterDeclarations,
+        context: ExtensionContext,
+    ): Stream<out Arguments> =
         Stream.of(
             Arguments.of(companyOwnershipClaimApprovedEmailContent, companyOwnershipClaimApprovedKeywords),
             Arguments.of(datasetUploadedClaimCompanyOwnershipEmailContent, datasetUploadedClaimCompanyOwnershipKeywords),

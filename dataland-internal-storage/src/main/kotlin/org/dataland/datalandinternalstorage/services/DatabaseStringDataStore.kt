@@ -1,8 +1,8 @@
 package org.dataland.datalandinternalstorage.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
@@ -49,7 +49,6 @@ class DatabaseStringDataStore(
     @Autowired private var dataPointItemRepository: DataPointItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
-    @Autowired var objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -115,7 +114,7 @@ class DatabaseStringDataStore(
             MessageQueueUtils.validateDataId(dataId)
             val data = retrieveData(dataId, correlationId)
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+            storeDataItemWithoutTransaction(DataItem(dataId, defaultObjectMapper.writeValueAsString(data)))
             publishStorageEvent(dataId, correlationId)
         }
     }
@@ -199,7 +198,7 @@ class DatabaseStringDataStore(
             for ((dataId, correlationId) in allDataAndCorrelationIds) {
                 MessageQueueUtils.validateDataId(dataId)
                 val dataPointString = allContents[dataId]
-                val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
+                val storableDataPoint = defaultObjectMapper.readValue(dataPointString, StorableDataPoint::class.java)
                 logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
                 allStoredDataPoints.add(
                     DataPointItem(
@@ -207,7 +206,7 @@ class DatabaseStringDataStore(
                         companyId = storableDataPoint.companyId,
                         reportingPeriod = storableDataPoint.reportingPeriod,
                         dataPointType = storableDataPoint.dataPointType,
-                        dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
+                        dataPoint = defaultObjectMapper.writeValueAsString(storableDataPoint.dataPoint),
                     ),
                 )
                 publishStorageEvent(dataId, correlationId)
@@ -229,7 +228,7 @@ class DatabaseStringDataStore(
         correlationId: String,
     ) {
         logger.info("Publishing storage event for data ID $dataId to the message queue. CorrelationId: $correlationId")
-        val payload = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId))
+        val payload = defaultObjectMapper.writeValueAsString(DataIdPayload(dataId = dataId))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
@@ -263,7 +262,7 @@ class DatabaseStringDataStore(
                 "No data points with the IDs: $missingIdentifiers could be found in the data store.",
             )
         }
-        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
+        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(defaultObjectMapper) }
     }
 
     /**

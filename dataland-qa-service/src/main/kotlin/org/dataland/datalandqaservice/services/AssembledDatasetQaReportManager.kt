@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Service
 class AssembledDatasetQaReportManager
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         override val qaReportRepository: QaReportRepository,
         override val qaReportSecurityPolicy: QaReportSecurityPolicy,
         private val datalandBackendAccessor: DatalandBackendAccessor,
@@ -64,7 +64,7 @@ class AssembledDatasetQaReportManager
                 qaReportRepository.save(
                     QaReportEntity(
                         qaReportId = generateUUID(),
-                        qaReport = objectMapper.writeValueAsString(dataPointQaReportIds),
+                        qaReport = defaultObjectMapper.writeValueAsString(dataPointQaReportIds),
                         dataId = dataId,
                         dataType = dataType,
                         reporterUserId = reporterUserId,
@@ -96,12 +96,12 @@ class AssembledDatasetQaReportManager
             val dataPointQaReportIds = mutableListOf<String>()
             for ((dataPointType, dataPointReport) in decomposedQaReport) {
                 val dataPointId = requireNotNull(associatedDataPoints[dataPointType])
-                val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
+                val parsedQaReport = defaultObjectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
                 val translatedQaReport =
                     QaReportDataPoint<String?>(
                         comment = parsedQaReport.comment,
                         verdict = parsedQaReport.verdict,
-                        correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
+                        correctedData = defaultObjectMapper.writeValueAsString(parsedQaReport.correctedData),
                     )
 
                 dataPointQaReportIds.add(
@@ -119,7 +119,7 @@ class AssembledDatasetQaReportManager
 
         private fun getFrameworkSpecification(dataType: String): ObjectNode {
             val specification =
-                objectMapper.readTree(
+                defaultObjectMapper.readTree(
                     specificationControllerApi.getFrameworkSpecification(dataType).schema,
                 ) as ObjectNode
             return specification
@@ -140,7 +140,7 @@ class AssembledDatasetQaReportManager
                     ?: throw IllegalStateException("The dataset with id $dataId is not a composition of data points")
             val decomposedQaReport =
                 JsonSpecificationUtils.dehydrateJsonSpecification(
-                    specification, objectMapper.valueToTree(report),
+                    specification, defaultObjectMapper.valueToTree(report),
                 )
             return Pair(associatedDataPoints, decomposedQaReport)
         }
@@ -151,7 +151,7 @@ class AssembledDatasetQaReportManager
             statusToSet: Boolean,
         ): QaReportEntity {
             qaReportEntity.active = statusToSet
-            val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
+            val dataPointQaReportIdList = defaultObjectMapper.readValue<List<String>>(qaReportEntity.qaReport)
             dataPointQaReportRepository.findAllById(dataPointQaReportIdList).forEach {
                 it.active = statusToSet
             }

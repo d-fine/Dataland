@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRoleAssignment
@@ -51,12 +51,10 @@ class CompanyRolesManagerTest {
     private val mockKeycloakUserService = mock<KeycloakUserService>()
     private val mockCompanyRightsManager = mock<CompanyRightsManager>()
 
-    private val objectMapper = JsonUtils.defaultObjectMapper
-
     private val filePathToTestFixtures = "./src/test/resources/companyRolesManager"
 
     private val dummyKeycloakUserInfo =
-        objectMapper
+        defaultObjectMapper
             .readValue<KeycloakUserInfo>(File("$filePathToTestFixtures/dummyKeycloakUserInfo.json"))
     private val testUserId = dummyKeycloakUserInfo.userId
     private val testEmail = dummyKeycloakUserInfo.email
@@ -66,7 +64,7 @@ class CompanyRolesManagerTest {
     private val nonExistingUserId = "non-existing-user-id"
 
     private val dummyCompanyRoleAssignmentEntity =
-        objectMapper.readValue<CompanyRoleAssignmentEntity>(
+        defaultObjectMapper.readValue<CompanyRoleAssignmentEntity>(
             File("$filePathToTestFixtures/dummyCompanyRoleAssignmentEntity.json"),
         )
     private val existingCompanyId = dummyCompanyRoleAssignmentEntity.companyId
@@ -78,12 +76,12 @@ class CompanyRolesManagerTest {
         listOf(dummyCompanyRoleAssignmentEntity)
 
     private val existingCompanyRoleAssignmentId =
-        objectMapper.readValue<CompanyRoleAssignmentId>(
+        defaultObjectMapper.readValue<CompanyRoleAssignmentId>(
             File("$filePathToTestFixtures/existingCompanyRoleAssignmentId.json"),
         )
 
     private val nonExistingCompanyRoleAssignmentId =
-        objectMapper.readValue<CompanyRoleAssignmentId>(
+        defaultObjectMapper.readValue<CompanyRoleAssignmentId>(
             File("$filePathToTestFixtures/nonExistingCompanyRoleAssignmentId.json"),
         )
 

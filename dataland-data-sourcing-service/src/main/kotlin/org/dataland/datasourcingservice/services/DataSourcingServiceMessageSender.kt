@@ -1,6 +1,6 @@
 package org.dataland.datasourcingservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -19,7 +19,6 @@ import java.util.UUID
 @Service("DataSourcingServiceMessageSender")
 class DataSourcingServiceMessageSender(
     private val cloudEventMessageHandler: CloudEventMessageHandler,
-    private val objectMapper: ObjectMapper,
 ) {
     /**
      * Sends a RabbitMQ message to the accounting service after a request had its state changed to Processing.
@@ -37,7 +36,7 @@ class DataSourcingServiceMessageSender(
                 requestedFramework = requestEntity.dataType,
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(requestSetToProcessingMessage),
+            body = defaultObjectMapper.writeValueAsString(requestSetToProcessingMessage),
             type = MessageType.REQUEST_SET_TO_PROCESSING,
             correlationId = UUID.randomUUID().toString(),
             exchange = ExchangeName.DATA_SOURCING_SERVICE_REQUEST_EVENTS,
@@ -73,7 +72,7 @@ class DataSourcingServiceMessageSender(
                 userIdsAssociatedRequestsForSameTriple = userIdsAssociatedRequestsForSameTriple.map { it.toString() },
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(requestSetToWithdrawnMessage),
+            body = defaultObjectMapper.writeValueAsString(requestSetToWithdrawnMessage),
             type = MessageType.REQUEST_SET_TO_WITHDRAWN,
             correlationId = UUID.randomUUID().toString(),
             exchange = ExchangeName.DATA_SOURCING_SERVICE_REQUEST_EVENTS,

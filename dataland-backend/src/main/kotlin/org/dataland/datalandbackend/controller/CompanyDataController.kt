@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import jakarta.persistence.EntityNotFoundException
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -148,7 +149,7 @@ class CompanyDataController
                     companyIdentifierManager.getCompanyIdByIdentifier(identifierType, identifier)
                 logger.info("Retrieved company ID: $companyId")
                 return ResponseEntity.ok(CompanyId(companyId))
-            } catch (e: JpaObjectRetrievalFailureException) {
+            } catch (e: EntityNotFoundException) {
                 logger.info(CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier))
                 throw ResourceNotFoundApiException(
                     CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,

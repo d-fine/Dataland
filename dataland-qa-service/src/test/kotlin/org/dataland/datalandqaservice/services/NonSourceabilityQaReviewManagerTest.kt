@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -30,12 +29,11 @@ class NonSourceabilityQaReviewManagerTest {
 
     private val repository: NonSourceableQaReviewRepository = mock()
     private val cloudEventMessageHandler: CloudEventMessageHandler = mock()
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
     private lateinit var manager: NonSourceabilityQaReviewManager
 
     @BeforeEach
     fun setUp() {
-        manager = NonSourceabilityQaReviewManager(repository, cloudEventMessageHandler, objectMapper)
+        manager = NonSourceabilityQaReviewManager(repository, cloudEventMessageHandler)
     }
 
     private fun entity(

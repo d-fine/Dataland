@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -27,11 +26,10 @@ import kotlin.random.Random
 )
 @DefaultMocks
 class DataMetaInformationManagerFilterTest(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
 ) : BaseIntegrationTest() {
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
     private val defaultDataType = DataType.of(SfdrData::class.java)
     private val defaultReportingPeriod = "2023"
     private val uploaderUserId = "uploader-user-id"
