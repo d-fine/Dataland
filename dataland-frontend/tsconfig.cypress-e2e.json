@@ -4,6 +4,9 @@
   "include": ["tests/sharedUtils/**/*", "tests/e2e/**/*", "build/clients/**/*", "src/types/**/*"],
   "compilerOptions": {
     "isolatedModules": false,
+    // Cypress's webpack preprocessor (tsconfig-paths) only applies "paths" if baseUrl is set
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "types": ["cypress", "node"],
     // Setting the following to true breaks the imports of the auto-generated clients
     "verbatimModuleSyntax": false,
