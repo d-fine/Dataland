@@ -21,7 +21,7 @@
           >
             {{ !isExpiryDateValid ? 'Please select expiration date' : 'Expiration' }}
           </label>
-          <Dropdown
+          <PrimeSelect
             id="expiryTime"
             v-model="expiryTimeDropdown"
             :options="days"
@@ -79,7 +79,7 @@
 <script lang="ts">
 import PrimeButton from 'primevue/button';
 import { defineComponent, type PropType } from 'vue';
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
+import PrimeSelect, { type SelectChangeEvent } from 'primevue/select';
 import DatePicker from 'primevue/datepicker';
 import { calculateExpiryDateAsDateString, calculateDaysFromNow } from '@/utils/DataFormatUtils';
 import UserRolesBadges from '@/components/resources/apiKey/UserRolesBadges.vue';
@@ -90,7 +90,7 @@ import { MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY } from '@/DatalandSe
 export default defineComponent({
   name: 'CreateApiKeyCard',
   emits: ['cancelCreate', 'generateApiKey'],
-  components: { PrimeButton, Dropdown, DatePicker, UserRolesBadges },
+  components: { PrimeButton, PrimeSelect, DatePicker, UserRolesBadges },
   props: {
     userRoles: {
       type: Array as PropType<string[]>,
@@ -120,7 +120,7 @@ export default defineComponent({
      * Updates the local expiry date based on the selected value or the value of the date time selector if "custom" was selected
      * @param event the selection event
      */
-    setExpiryTimeDays(event: DropdownChangeEvent) {
+    setExpiryTimeDays(event: SelectChangeEvent) {
       if (event.value === 'noExpiry') {
         this.expiryTimeDays = null;
       } else if (event.value === 'custom') {

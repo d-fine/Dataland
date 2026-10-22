@@ -111,9 +111,6 @@ export const DatalandPreset = definePreset(Aura, {
           background: '{surface.0}',
           color: '{surface.900}',
           borderColor: '{surface.200}',
-          extend: {
-            hoverBorderColor: '{surface.800}',
-          },
         },
         formField: {
           filledHoverBackground: '{surface.100}',
@@ -230,7 +227,7 @@ export const DatalandPreset = definePreset(Aura, {
       tab: {
         borderColor: '{surface.0}',
         borderWidth: '0 0 2px 0',
-        hoverBorderColor: '{content.hoverBorderColor}',
+        hoverBorderColor: '{surface.800}',
         margin: '0 1.25rem',
         padding: '1.25rem 0',
       },
