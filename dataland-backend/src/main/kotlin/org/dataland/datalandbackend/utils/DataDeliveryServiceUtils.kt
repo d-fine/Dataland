@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.DataPointId
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoEntity
 import org.slf4j.LoggerFactory
@@ -29,7 +29,6 @@ class DataDeliveryServiceUtils(
     private val documentControllerApi: DocumentControllerApi,
 ) {
     private val referencedReportsUtilities = ReferencedReportsUtilities()
-    private val objectMapper = JsonUtils.defaultObjectMapper
 
     // Temporary timing logs for investigating enhanceDataPoints performance - remove once done.
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -172,9 +171,9 @@ class DataDeliveryServiceUtils(
 
         val (result, durationMs) =
             withTiming {
-                val dataPointJson = objectMapper.readTree(dataPoint.dataPoint)
+                val dataPointJson = defaultObjectMapper.readTree(dataPoint.dataPoint)
                 enhanceDataSources(dataPointJson, documentMetaInfo)
-                dataPoint.copy(dataPoint = objectMapper.writeValueAsString(dataPointJson))
+                dataPoint.copy(dataPoint = defaultObjectMapper.writeValueAsString(dataPointJson))
             }
         logger.info(
             "[TIMING] enhanceDataPoint (companyId=${dataPoint.companyId}, " +

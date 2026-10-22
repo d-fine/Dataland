@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.services.NonSourceabilityInformationManager
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.services.utils.BaseIntegrationTest
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -23,8 +23,8 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
@@ -61,8 +61,6 @@ class NonSourceabilityControllerTest(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val nonSourceabilityInformationManager: NonSourceabilityInformationManager,
 ) : BaseIntegrationTest() {
-    private val objectMapper = JsonUtils.defaultObjectMapper
-
     private lateinit var storedCompany: StoredCompanyEntity
     private val adminRoles = DatalandRealmRole.entries.toSet()
     private val dataType = DataType("sfdr")
@@ -151,10 +149,10 @@ class NonSourceabilityControllerTest(
                     .with(securityContext(mockSecurityContext)),
             )
 
-    private fun readSearchResponse(responseBody: String): Set<BasicDataDimensions> = objectMapper.readValue(responseBody)
+    private fun readSearchResponse(responseBody: String): Set<BasicDataDimensions> = defaultObjectMapper.readValue(responseBody)
 
     private fun readGroupedSearchResponse(responseBody: String): Map<String, Map<String, Set<BasicDataDimensions>>> =
-        objectMapper.readValue(responseBody)
+        defaultObjectMapper.readValue(responseBody)
 
     @Test
     fun `search returns the active non-sourceable triple matching filters`() {

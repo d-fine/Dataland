@@ -1,8 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.AssembledDatasetMigrationApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
@@ -23,7 +23,6 @@ class AssembledDataMigrationController
     constructor(
         private val metaDataControllerApi: MetaDataControllerApi,
         private val qaReportRepository: QaReportRepository,
-        private val objectMapper: ObjectMapper,
     ) : AssembledDatasetMigrationApi {
         override fun forceUploadStoredQaReport(
             dataId: String,
@@ -35,7 +34,7 @@ class AssembledDataMigrationController
                     .save(
                         QaReportEntity(
                             qaReportId = IdUtils.generateUUID(),
-                            qaReport = objectMapper.writeValueAsString(data),
+                            qaReport = defaultObjectMapper.writeValueAsString(data),
                             dataId = dataId,
                             dataType = dataMetaInfo.dataType.value,
                             reporterUserId = DatalandAuthentication.fromContext().userId,

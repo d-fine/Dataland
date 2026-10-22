@@ -1,10 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -33,7 +33,6 @@ class QaReviewManager
         val companyDataControllerApi: CompanyDataControllerApi,
         val metaDataControllerApi: MetaDataControllerApi,
         var cloudEventMessageHandler: CloudEventMessageHandler,
-        var objectMapper: ObjectMapper,
         val dataPointQaReviewManager: DataPointQaReviewManager,
         val qaReviewQueryService: QaReviewQueryService,
     ) {
@@ -167,7 +166,7 @@ class QaReviewManager
                 )
 
             logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
-            val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
+            val messageBody = defaultObjectMapper.writeValueAsString(qaStatusChangeMessage)
 
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 messageBody, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,

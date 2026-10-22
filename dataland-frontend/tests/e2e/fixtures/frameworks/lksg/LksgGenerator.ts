@@ -6,6 +6,7 @@ import {
   type LksgProductionSite,
   type LksgRiskOrViolationAssessment,
   RiskPositionType,
+  SpecificProcurementOptions,
 } from '@clients/backend';
 import { ProcurementCategoryType } from '@/api-models/ProcurementCategoryType';
 import { generateAddress } from '@e2e/fixtures/common/AddressFixtures';
@@ -91,13 +92,18 @@ export class LksgGenerator extends Generator {
 
   generateLksgGrievanceMechanismAssessment(): LksgGrievanceAssessmentMechanism {
     return {
-      riskPositions: pickSubsetOfElements(Object.values(RiskPositionType)),
+      riskPositions: pickSubsetOfElements(Object.values(RiskPositionType)) as unknown as Set<RiskPositionType>,
       specifiedComplaint: this.guaranteedShortString(),
       measuresTaken: this.guaranteedYesNo(),
       listedMeasures: this.randomShortString(),
     };
   }
 
+  generateLksgSpecificProcurement(): Set<SpecificProcurementOptions> {
+    return pickSubsetOfElements(
+      Object.values(SpecificProcurementOptions)
+    ) as unknown as Set<SpecificProcurementOptions>;
+  }
   /**
    * Generates a random array of goods or services
    * @returns random array of goods or services

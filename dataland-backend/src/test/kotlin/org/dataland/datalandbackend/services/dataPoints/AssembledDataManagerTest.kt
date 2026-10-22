@@ -98,7 +98,7 @@ class AssembledDataManagerTest {
     private lateinit var dataPointManager: DataPointManager
     private lateinit var spyDataPointManager: DataPointManager
 
-    private val testDataProvider = TestDataProvider(defaultObjectMapper)
+    private val testDataProvider = TestDataProvider()
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
@@ -201,7 +201,7 @@ class AssembledDataManagerTest {
         dataPointManager =
             DataPointManager(
                 dataManager, metaDataManager, messageQueuePublications, dataPointValidator,
-                companyQueryManager, companyRoleChecker, defaultObjectMapper, logMessageBuilder,
+                companyQueryManager, companyRoleChecker, logMessageBuilder,
                 dataDeliveryService,
             )
         spyDataPointManager = spy(dataPointManager)

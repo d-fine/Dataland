@@ -11,5 +11,5 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 class DataTypeEnumConverter : AttributeConverter<DataTypeEnum, String> {
     override fun convertToDatabaseColumn(dataType: DataTypeEnum): String = dataType.value
 
-    override fun convertToEntityAttribute(dataTypeAsString: String): DataTypeEnum? = DataTypeEnum.decode(dataTypeAsString)
+    override fun convertToEntityAttribute(dataTypeAsString: String): DataTypeEnum? = DataTypeEnum.decodeOrNull(dataTypeAsString)
 }

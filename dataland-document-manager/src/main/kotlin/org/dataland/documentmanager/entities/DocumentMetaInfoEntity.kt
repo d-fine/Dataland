@@ -106,6 +106,7 @@ data class DocumentMetaInfoEntity(
     /**
      * Check whether user has the right to view this document meta information.
      */
+    @Schema(hidden = true)
     fun isViewableByUser(): Boolean {
         val viewingUser =
             try {

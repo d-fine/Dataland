@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
@@ -13,6 +12,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
@@ -36,7 +36,6 @@ class DataPointManager
         private val dataPointValidator: DataPointValidator,
         private val companyQueryManager: CompanyQueryManager,
         private val companyRoleChecker: CompanyRoleChecker,
-        private val objectMapper: ObjectMapper,
         private val logMessageBuilder: LogMessageBuilder,
         private val dataDeliveryService: DataDeliveryService,
     ) {
@@ -74,7 +73,7 @@ class DataPointManager
 
             val dataPointMetaInformation =
                 storeDataPoint(
-                    uploadedDataPoint = uploadedDataPoint.copy(dataPoint = objectMapper.writeValueAsString(castedDataPointObject)),
+                    uploadedDataPoint = uploadedDataPoint.copy(dataPoint = defaultObjectMapper.writeValueAsString(castedDataPointObject)),
                     dataPointId = dataPointId,
                     uploaderUserId = uploaderUserId,
                     correlationId = correlationId,
@@ -108,7 +107,7 @@ class DataPointManager
             val dataPointMetaInformationEntity =
                 uploadedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
-            dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
+            dataManager.storeDataInTemporaryStorage(dataPointId, defaultObjectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
             return dataPointMetaInformationEntity.toApiModel()
         }
@@ -140,7 +139,7 @@ class DataPointManager
             for (dataPointId in dataPointIds) {
                 val cachedDataPoint = dataManager.getDataFromCache(dataPointId)
                 if (cachedDataPoint != null) {
-                    cachedDataPoints[dataPointId] = objectMapper.readValue(cachedDataPoint)
+                    cachedDataPoints[dataPointId] = defaultObjectMapper.readValue(cachedDataPoint)
                 } else {
                     remainingDataPointIds.add(dataPointId)
                 }

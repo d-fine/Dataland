@@ -175,6 +175,6 @@ class NotificationEventListener(
      * @throws MessageQueueRejectException when dataType cannot be decoded
      */
     private fun decodeDataType(dataTypeCandidate: String): DataTypeEnum =
-        DataTypeEnum.decode(dataTypeCandidate)
+        DataTypeEnum.decodeOrNull(dataTypeCandidate)
             ?: throw MessageQueueRejectException("Framework name could not be understood.")
 }

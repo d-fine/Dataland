@@ -2,13 +2,13 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Class for validating data points
- * @param objectMapper the object mapper to use for JSON operations
  * @param specificationClient the specification client to use for fetching specifications
  */
 
@@ -26,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap
 class DataPointValidator
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val validator: Validator,
@@ -79,7 +77,7 @@ class DataPointValidator
             if (dataPoint.isBlank()) return
             val violations =
                 referencedReportsUtilities.validateDataSourcesDoNotContainInferableFields(
-                    objectMapper.readTree(dataPoint),
+                    defaultObjectMapper.readTree(dataPoint),
                     dataPointType,
                 )
             if (violations.isNotEmpty()) {
@@ -159,7 +157,7 @@ class DataPointValidator
 
             val observedDocumentReferences = mutableSetOf<String>()
             datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
+                val dataPoint = defaultObjectMapper.writeValueAsString(dataPointJsonLeaf.content)
                 if (dataPoint.isEmpty()) return@forEach
                 validateDataPoint(dataPointType, dataPoint, correlationId)
 
@@ -228,8 +226,8 @@ class DataPointValidator
         ): Any {
             val errorMsgContext = "Validation failed for data point."
             try {
-                val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
-                return objectMapper.readValue(jsonData, typeFactory)
+                val typeFactory = defaultObjectMapper.typeFactory.constructFromCanonical(className)
+                return defaultObjectMapper.readValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(

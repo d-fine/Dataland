@@ -1,12 +1,12 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetJudgementEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
@@ -30,7 +30,6 @@ class DatasetJudgementSupportService
         private val specificationControllerApi: SpecificationControllerApi,
         private val dataPointQaReportRepository: DataPointQaReportRepository,
         private val datasetJudgementRepository: DatasetJudgementRepository,
-        private val objectMapper: ObjectMapper,
     ) {
         private val baseTypeIdCache = ConcurrentHashMap<String, String>()
 
@@ -150,7 +149,7 @@ class DatasetJudgementSupportService
          */
         fun getDataPointValueNode(dataPointId: String): JsonNode? {
             val dataPointJson = dataPointControllerApi.getDataPoint(dataPointId).dataPoint
-            val rootNode = objectMapper.readTree(dataPointJson)
+            val rootNode = defaultObjectMapper.readTree(dataPointJson)
             val valueNode = rootNode["value"] ?: return null
             return if (valueNode.isNull) null else valueNode
         }
