@@ -1,5 +1,5 @@
 <template>
-  <DataTable :value="rows" scrollable scrollHeight="60vh" data-test="activities-edit-table">
+  <DataTable :value="rows" scrollable scrollHeight="60vh" class="inline-edit-table" data-test="activities-edit-table">
     <Column header="Activity" frozen style="min-width: 22rem">
       <template #body="{ index }">
         <Select
@@ -230,6 +230,33 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>
 
 <style scoped>
+.inline-edit-table :deep(.p-datatable-tbody > tr > td) {
+  padding: 0.25rem 0.5rem;
+}
+
+.inline-edit-table :deep(.p-select),
+.inline-edit-table :deep(.p-multiselect),
+.inline-edit-table :deep(.p-inputnumber-input) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.inline-edit-table :deep(.p-select:not(.p-disabled):hover),
+.inline-edit-table :deep(.p-select.p-focus),
+.inline-edit-table :deep(.p-multiselect:not(.p-disabled):hover),
+.inline-edit-table :deep(.p-multiselect.p-focus),
+.inline-edit-table :deep(.p-inputnumber-input:hover),
+.inline-edit-table :deep(.p-inputnumber-input:focus) {
+  background: var(--p-surface-100);
+  border-color: transparent;
+  border-radius: var(--p-border-radius-md, 6px);
+}
+
+.inline-edit-table :deep(.p-disabled) {
+  opacity: 0.6;
+}
+
 .add-row {
   display: flex;
   align-items: center;
