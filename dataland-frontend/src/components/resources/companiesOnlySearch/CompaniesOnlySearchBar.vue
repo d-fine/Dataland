@@ -16,7 +16,7 @@
         panel-class="d-framework-searchbar-panel"
         append-to="self"
         @complete="searchCompanyName($event)"
-        @item-select="$emit('selectCompany', $event.value)"
+        @option-select="$emit('selectCompany', $event.value)"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
         :pt="mergedPassThrough"
