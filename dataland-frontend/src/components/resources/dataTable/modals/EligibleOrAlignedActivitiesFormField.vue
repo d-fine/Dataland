@@ -253,6 +253,11 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
   border-radius: var(--p-border-radius-md, 6px);
 }
 
+.inline-edit-table :deep(.p-datatable-frozen-column) {
+  background: var(--p-surface-0, #fff);
+  z-index: 2;
+}
+
 .inline-edit-table :deep(.p-disabled) {
   opacity: 0.6;
 }
