@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportAvailability
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -32,7 +33,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = dimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )
@@ -146,7 +147,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = realDataDimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )
@@ -185,7 +186,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = realDataDimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )
@@ -226,7 +227,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = dimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )
@@ -281,7 +282,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = availableDimensions,
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )

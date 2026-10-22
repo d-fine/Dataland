@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -9,7 +8,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 
 open class DataManagerTest(
-    val objectMapper: ObjectMapper,
     val dataMetaInformationManager: DataMetaInformationManager,
     val companyQueryManager: CompanyQueryManager,
     val dataManagerUtils: DataManagerUtils,
@@ -17,7 +15,7 @@ open class DataManagerTest(
 ) {
     val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
     val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
-    val testDataProvider = TestDataProvider(objectMapper)
+    val testDataProvider = TestDataProvider()
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
     lateinit var messageQueueListenerForDataManager: MessageQueueListenerForDataManager

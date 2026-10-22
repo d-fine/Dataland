@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
+    implementation(libs.spring.boot.jackson2)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.amqp)
     implementation(Spring.boot.data.jpa)

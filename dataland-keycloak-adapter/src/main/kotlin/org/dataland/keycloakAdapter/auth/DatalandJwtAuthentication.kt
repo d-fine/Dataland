@@ -11,10 +11,10 @@ class DatalandJwtAuthentication(
     private val jwt: Jwt,
 ) : DatalandAuthentication() {
     override val userId: String
-        get() = jwt.subject
+        get() = checkNotNull(jwt.subject) { "JWT is missing the 'sub' claim." }
 
     val username: String
-        get() = jwt.getClaimAsString("preferred_username")
+        get() = checkNotNull(jwt.getClaimAsString("preferred_username")) { "JWT is missing the 'preferred_username' claim." }
 
     val firstName: String
         get() = jwt.getClaimAsString("given_name") ?: ""
@@ -22,10 +22,11 @@ class DatalandJwtAuthentication(
     val lastName: String
         get() = jwt.getClaimAsString("family_name") ?: ""
 
-    override fun getAuthorities(): List<GrantedAuthority> {
-        val realmRoles = jwt.getClaimAsMap("realm_access")["roles"] as Collection<*>?
-        return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
-    }
+    override fun getAuthorities(): List<GrantedAuthority> =
+        when (val realmRoles = jwt.getClaimAsMap("realm_access")?.get("roles")) {
+            is Iterable<*> -> realmRoles.filterIsInstance<String>().map { SimpleGrantedAuthority(it) }
+            else -> emptyList()
+        }
 
     override fun getCredentials(): String = jwt.tokenValue
 

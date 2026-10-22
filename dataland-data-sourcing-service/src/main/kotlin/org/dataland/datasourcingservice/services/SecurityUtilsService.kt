@@ -30,7 +30,7 @@ class SecurityUtilsService
         @Transactional(readOnly = true)
         fun isUserAskingForOwnRequest(requestId: String): Boolean {
             val userIdOfRequest = requestRepository.findById(UUID.fromString(requestId)).getOrNull()?.userId ?: return false
-            val userIdRequester = UUID.fromString(SecurityContextHolder.getContext().authentication.name)
+            val userIdRequester = UUID.fromString(SecurityContextHolder.getContext().authentication?.name)
             return userIdOfRequest == userIdRequester
         }
 

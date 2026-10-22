@@ -1,10 +1,8 @@
 package org.dataland.e2etests.utils
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackendutils.utils.JsonComparator
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.text.SimpleDateFormat
 
 /**
  * Function to assert that two objects are equal, ignoring the given keys.
@@ -40,9 +38,8 @@ object DataPointTestUtils {
                 "{\"comment\":\"\",\"verdict\":\"QaNotAttempted\",\"correctedData\":{\"value\":null," +
                     "\"quality\":null,\"comment\":null,\"dataSource\":null,\"currency\":null}}",
             )
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
-        val updatedInput = replaceAllByNull(objectMapper.writeValueAsString(qaReport), replacement)
-        return objectMapper.readValue(updatedInput, org.dataland.datalandqaservice.openApiClient.model.SfdrData::class.java)
+        val updatedInput = replaceAllByNull(defaultObjectMapper.writeValueAsString(qaReport), replacement)
+        return defaultObjectMapper.readValue(updatedInput, org.dataland.datalandqaservice.openApiClient.model.SfdrData::class.java)
     }
 
     private fun replaceAllByNull(

@@ -31,9 +31,9 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 
 @SpringBootTest(
@@ -47,7 +47,7 @@ class DataSourcingQueryManagerTest
         private val dataSourcingRepository: DataSourcingRepository,
         private val derivedRightsUtilsComponent: DerivedRightsUtilsComponent,
     ) : BaseIntegrationTest() {
-        @MockBean
+        @MockitoBean
         lateinit var companyRolesControllerApi: CompanyRolesControllerApi
         private val dataBaseCreationUtils = DataBaseCreationUtils(dataSourcingRepository = dataSourcingRepository)
         private lateinit var dataSourcingEntities: List<DataSourcingEntity>

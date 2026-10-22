@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeResolvedSchema
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -23,7 +23,6 @@ import org.mockito.kotlin.whenever
  * (JSON/CSV/Excel) building tests.
  */
 class DataExportServiceColumnOrderingTest {
-    private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDatasetAssembler = mock<DatasetAssembler>()
     private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
@@ -38,7 +37,7 @@ class DataExportServiceColumnOrderingTest {
             mockNonSourceabilityInformationManager,
         )
 
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
 
     private val portfolioDataTwoCompanies =
         listOf(
@@ -48,7 +47,7 @@ class DataExportServiceColumnOrderingTest {
                 reportingPeriod = TEST_REPORTING_PERIOD,
                 availability = ExportAvailability.AVAILABLE,
                 data =
-                    objectMapper.treeToValue(
+                    defaultObjectMapper.treeToValue(
                         testDataProvider.createTestJsonWithBothValueAndQuality(),
                         Any::class.java,
                     ),
@@ -59,7 +58,7 @@ class DataExportServiceColumnOrderingTest {
                 reportingPeriod = TEST_REPORTING_PERIOD,
                 availability = ExportAvailability.AVAILABLE,
                 data =
-                    objectMapper.treeToValue(
+                    defaultObjectMapper.treeToValue(
                         testDataProvider.createTestJsonWithTwoDataPoints(),
                         Any::class.java,
                     ),
@@ -71,7 +70,7 @@ class DataExportServiceColumnOrderingTest {
      */
     private fun setupTestSchema() {
         val resolvedSchemaJson: JsonNode =
-            objectMapper.readTree(
+            defaultObjectMapper.readTree(
                 """
                 {
                   "$TEST_CATEGORY": {
@@ -88,7 +87,7 @@ class DataExportServiceColumnOrderingTest {
         doReturn(baseTypeSchema)
             .whenever(mockSpecificationService)
             .getResolvedFrameworkSpecification("sfdr")
-        doReturn(objectMapper.readTree(testDataProvider.createTestSpecification()))
+        doReturn(defaultObjectMapper.readTree(testDataProvider.createTestSpecification()))
             .whenever(mockDatasetAssembler)
             .getFrameworkTemplate("sfdr")
         doReturn(true).whenever(mockSpecificationService).isAssembledFramework("sfdr")
@@ -153,7 +152,7 @@ class DataExportServiceColumnOrderingTest {
                         reportingPeriod = TEST_REPORTING_PERIOD,
                         availability = ExportAvailability.AVAILABLE,
                         data =
-                            objectMapper.treeToValue(
+                            defaultObjectMapper.treeToValue(
                                 testDataProvider.createTestJsonWithBothValueAndQuality(),
                                 Any::class.java,
                             ),
@@ -164,7 +163,7 @@ class DataExportServiceColumnOrderingTest {
                         reportingPeriod = TEST_REPORTING_PERIOD,
                         availability = ExportAvailability.AVAILABLE,
                         data =
-                            objectMapper.treeToValue(
+                            defaultObjectMapper.treeToValue(
                                 testDataProvider.createTestJsonWithTwoDataPoints(),
                                 Any::class.java,
                             ),
@@ -202,7 +201,7 @@ class DataExportServiceColumnOrderingTest {
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
                         availability = ExportAvailability.AVAILABLE,
-                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                        data = defaultObjectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
                 ExportOptions(

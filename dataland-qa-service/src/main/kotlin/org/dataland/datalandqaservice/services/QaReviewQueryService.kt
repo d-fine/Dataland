@@ -168,7 +168,7 @@ class QaReviewQueryService
             )
             val searchFilter =
                 QaSearchFilter(
-                    dataTypes = DataTypeEnum.decode(dataType)?.let { setOf(it) },
+                    dataTypes = DataTypeEnum.decodeOrNull(dataType)?.let { setOf(it) },
                     companyIds = setOf(companyId),
                     reportingPeriods = setOf(reportingPeriod),
                     qaStatuses = setOf(QaStatus.Accepted),

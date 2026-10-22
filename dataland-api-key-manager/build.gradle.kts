@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.logback.core)
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
+    implementation(libs.spring.boot.jackson2)
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
@@ -47,7 +48,9 @@ dependencies {
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
+    testImplementation(libs.spring.boot.jdbc.test)
     implementation(libs.flyway)
+    implementation(libs.spring.boot.starter.flyway)
     implementation(libs.flyway.core)
 }
 

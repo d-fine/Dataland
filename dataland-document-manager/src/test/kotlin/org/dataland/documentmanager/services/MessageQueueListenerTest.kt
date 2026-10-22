@@ -1,11 +1,11 @@
 package org.dataland.documentmanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
@@ -23,7 +23,7 @@ import org.mockito.Mockito.`when`
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.util.Optional
@@ -34,7 +34,6 @@ import java.util.UUID
 @Transactional
 class MessageQueueListenerTest(
     @Autowired val inMemoryDocumentStore: InMemoryDocumentStore,
-    @Autowired private var objectMapper: ObjectMapper,
 ) {
     lateinit var mockDocumentMetaInfoRepository: DocumentMetaInfoRepository
     lateinit var messageQueueListener: MessageQueueListener
@@ -52,7 +51,7 @@ class MessageQueueListenerTest(
     @Test
     fun `check that an exception is thrown in updating of meta data when documentId is empty`() {
         val messageWithEmptyDocumentID =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 QaStatusChangeMessage(
                     dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
@@ -72,7 +71,7 @@ class MessageQueueListenerTest(
     fun `check that updating meta data after QA works for an existing document`() {
         val documentId = "abc"
         val message =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 QaStatusChangeMessage(
                     dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,

@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
@@ -12,6 +11,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -31,7 +31,7 @@ import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.core.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
@@ -46,11 +46,9 @@ import java.util.UUID
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 @DefaultMocks
-@Suppress("LongParameterList")
 class DataManagerExceptionTest
     @Autowired
     constructor(
-        objectMapper: ObjectMapper,
         dataMetaInformationManager: DataMetaInformationManager,
         companyQueryManager: CompanyQueryManager,
         dataManagerUtils: DataManagerUtils,
@@ -58,7 +56,6 @@ class DataManagerExceptionTest
         val companyAlterationManager: CompanyAlterationManager,
         val cloudEventsMessageHandler: CloudEventMessageHandler,
     ) : DataManagerTest(
-            objectMapper = objectMapper,
             dataMetaInformationManager = dataMetaInformationManager,
             companyQueryManager = companyQueryManager,
             dataManagerUtils = dataManagerUtils,
@@ -72,7 +69,7 @@ class DataManagerExceptionTest
         private fun getSingleDataStoredMessage(dataId: String): List<Message> =
             listOf(
                 cloudEventsMessageHandler.buildCEMessage(
-                    objectMapper.writeValueAsString(DataIdPayload(dataId)),
+                    defaultObjectMapper.writeValueAsString(DataIdPayload(dataId)),
                     MessageType.DATA_STORED, "",
                 ),
             )
@@ -123,7 +120,7 @@ class DataManagerExceptionTest
             val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
             val expectedDataTypeName = euTaxonomyNonFinancialDataset.dataType.name
             `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-                objectMapper.writeValueAsString(euTaxonomyNonFinancialDataset.copy(dataType = DataType("eutaxonomy-financials"))),
+                defaultObjectMapper.writeValueAsString(euTaxonomyNonFinancialDataset.copy(dataType = DataType("eutaxonomy-financials"))),
             )
             messageQueueListenerForDataManager.removeStoredItemsFromTemporaryStore(
                 getSingleDataStoredMessage(dataId),
@@ -167,7 +164,7 @@ class DataManagerExceptionTest
         }
 
         private fun buildReturnOfMockDataSelect(storableDatasetForNonFinancials: StorableDataset): String =
-            objectMapper.writeValueAsString(
+            defaultObjectMapper.writeValueAsString(
                 storableDatasetForNonFinancials.copy(
                     uploaderUserId = "NOT_WHATS_EXPECTED",
                 ),
@@ -233,7 +230,7 @@ class DataManagerExceptionTest
         fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
             val changedQaStatusDataId = UUID.randomUUID().toString()
             val messageWithChangedQAStatus =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         changedQaStatusDataId,
                         QaStatus.Accepted,
@@ -263,7 +260,7 @@ class DataManagerExceptionTest
         @Test
         fun `test that AmqpRejectAndDontRequeueException is thrown if the data id for changed QA status is empty`() {
             val messageWithEmptyDataIDs =
-                objectMapper.writeValueAsString(
+                defaultObjectMapper.writeValueAsString(
                     QaStatusChangeMessage(
                         dataId = "",
                         updatedQaStatus = QaStatus.Accepted,

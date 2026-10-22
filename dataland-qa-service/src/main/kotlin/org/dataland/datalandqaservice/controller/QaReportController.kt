@@ -1,6 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.QaReportApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
@@ -17,7 +17,6 @@ import java.time.Instant
  * A REST controller for the QA report API.
  */
 open class QaReportController<QaReportType>(
-    private val objectMapper: ObjectMapper,
     private val qaReportManager: DatasetQaReportService,
     private val qaReportSecurityPolicy: QaReportSecurityPolicy,
     private val clazz: Class<QaReportType>,
@@ -52,7 +51,7 @@ open class QaReportController<QaReportType>(
         val user = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId, dataId))
         qaReportSecurityPolicy.ensureUserCanViewQaReportForDataId(dataId, user)
-        val reportApiModel = qaReportManager.getQaReportById(dataId, dataType, qaReportId, objectMapper, clazz)
+        val reportApiModel = qaReportManager.getQaReportById(dataId, dataType, qaReportId, defaultObjectMapper, clazz)
         return ResponseEntity.ok(reportApiModel)
     }
 
@@ -86,7 +85,7 @@ open class QaReportController<QaReportType>(
                 dataType = dataType,
                 reporterUserId = reporterUserId,
                 showInactive = showInactive ?: false,
-                objectMapper = objectMapper,
+                objectMapper = defaultObjectMapper,
                 clazz = clazz,
             )
 

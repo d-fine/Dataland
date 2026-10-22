@@ -1,8 +1,8 @@
 package org.dataland.datalandqaservice.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -45,11 +45,9 @@ import org.springframework.stereotype.Component
  */
 @Component
 class QaEventListenerQaService
-    @Suppress("LongParameterList")
     @Autowired
     constructor(
         private val cloudEventMessageHandler: CloudEventMessageHandler,
-        private val objectMapper: ObjectMapper,
         private val qaReviewManager: QaReviewManager,
         private val qaReviewQueryService: QaReviewQueryService,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
@@ -171,7 +169,7 @@ class QaEventListenerQaService
                 )
                 // this function misuses QaStatusChangeMessage originally made for datasets not documents.
                 val messageToSend =
-                    objectMapper.writeValueAsString(
+                    defaultObjectMapper.writeValueAsString(
                         QaStatusChangeMessage(
                             documentId,
                             QaStatus.Accepted,

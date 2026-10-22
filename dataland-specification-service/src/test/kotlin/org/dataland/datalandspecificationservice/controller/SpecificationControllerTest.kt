@@ -1,7 +1,7 @@
 package org.dataland.datalandspecificationservice.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandspecificationservice.DatalandSpecificationService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,13 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest
 )
 class SpecificationControllerTest(
     @Autowired val specificationController: SpecificationController,
-    @Autowired val objectMapper: ObjectMapper,
 ) {
     @Test
     fun `retrieving a framework specification should return a DTO with correct refs and alias in schema`() {
         val response = specificationController.getFrameworkSpecification("test-framework")
         assert(response.statusCode.is2xxSuccessful)
-        val schema = objectMapper.readTree(response.body!!.schema)
+        val schema = defaultObjectMapper.readTree(response.body!!.schema)
         assert(
             schema
                 .path("test1")
