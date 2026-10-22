@@ -36,10 +36,9 @@
 
 # Data Fetching (TanStack Query)
 
-- TanStack Query is the standard for API calls and server state in this package. Follow `src/api-queries/AGENTS.md`.
-- Strict rule for `.vue` files: never call API clients directly (`useApiClient()`, `getApiClients`, controllers, `axios`). Use an existing hook from `src/api-queries/` or add one following its conventions.
-- Many existing components still use direct API calls. This is legacy; do not copy that pattern, even if the surrounding code does.
-- When modifying a component that still uses direct API calls, do not refactor it unasked. If your change touched its data loading, recommend the migration to TanStack Query once in your final summary.
+- API clients may only be used inside `src/api-queries/` (see the root `AGENTS.md` and `src/api-queries/AGENTS.md`).
+- ESLint enforces this; legacy files are exempt via `legacyDirectApiClientFiles` in `eslint.config.mjs`. Only remove entries from that list, never add any.
+- Do not refactor legacy components unasked. If your change touched their data loading, recommend the migration once in your final summary.
 
 # Package-Specific Rules
 

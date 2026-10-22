@@ -61,3 +61,7 @@ export const dataPointKeys = {
 ## 7. Documentation
 
 - Every exported hook has a short TSDoc describing the endpoint, parameters, and (for mutations) what is invalidated.
+
+## 8. Tests
+
+- `cy.mountWithPlugins(Component, { keycloak: minimalKeycloakMock({}) })` already installs `VueQueryPlugin` and provides `apiClientProvider`. Stub endpoints with `cy.intercept`; do not mock hooks.
