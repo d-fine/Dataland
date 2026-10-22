@@ -168,7 +168,7 @@ import { EU_TAXONOMY_FRAMEWORK_FAMILY } from '@/utils/FrameworkFamilies.ts';
 import { useDatasetJudgementQuery } from '@/api-queries/qa-service/dataset-judgement/useDatasetJudgementQuery.ts';
 import { useDataMetaInfoQuery } from '@/api-queries/backend/meta-data/useDataMetaInfoQuery.ts';
 import { useSetDatasetJudgementStateMutation } from '@/api-queries/qa-service/dataset-judgement/useSetDatasetJudgementStateMutation.ts';
-import { useSetJudgeForDatasetJudgement } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgement.ts';
+import { useSetJudgeForDatasetJudgementMutation } from '@/api-queries/qa-service/dataset-judgement/useSetJudgeForDatasetJudgementMutation.ts';
 import { useAcceptAllRemainingOriginalDataPointsMutation } from '@/api-queries/qa-service/dataset-judgement/useAcceptAllRemainingOriginalDataPointsMutation.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
@@ -394,8 +394,7 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
   kpiRows.value = rows;
 }
 
-const { mutate: assignToMeMutation, isPending: isAssigningToMe } =
-  useSetJudgeForDatasetJudgement(datasetJudgementIdRef);
+const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetJudgeForDatasetJudgementMutation();
 
 const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetJudgementStateMutation(
   datasetJudgementIdRef,
@@ -427,15 +426,18 @@ const assignToMe = (): void => {
     `Are you sure you want to assign this dataset review to yourself?
               If there is already a user assigned, they will be unassigned.`,
     () => {
-      assignToMeMutation(undefined, {
-        onSuccess: () => {
-          confirmationModal.value.visible = false;
-          confirmationModal.value.errorMessage = '';
-        },
-        onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself: ' + error.message;
-        },
-      });
+      assignToMeMutation(
+        { datasetJudgementId: props.datasetJudgementId },
+        {
+          onSuccess: () => {
+            confirmationModal.value.visible = false;
+            confirmationModal.value.errorMessage = '';
+          },
+          onError: (error) => {
+            confirmationModal.value.errorMessage = 'Failed to assign dataset review to yourself: ' + error.message;
+          },
+        }
+      );
     }
   );
 };
