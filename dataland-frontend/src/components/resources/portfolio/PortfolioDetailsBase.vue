@@ -51,7 +51,7 @@
               :label="portfolioEntry.data.companyName"
               variant="link"
               data-test="view-company-button"
-              @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
+              @click="navigateToCompany(portfolioEntry.data.companyId)"
               :pt="{
                 label: {
                   style: 'font-weight: normal; text-align: left;',
@@ -84,7 +84,7 @@
           <template #body="portfolioEntry">
             <PortfolioProxiedCompaniesCell
               :companies="getProxiedCompanies(portfolioEntry.data.companyId)"
-              @navigate="(companyId: string) => router.push(`/companies/${companyId}`)"
+              @navigate="navigateToCompany"
             />
           </template>
           <template #filter="{ filterModel, filterCallback }">
@@ -486,6 +486,14 @@ function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, framew
  */
 function getProxiedCompanies(companyId: string): ProxiedCompany[] {
   return proxiedCompaniesByProxyId.value.get(companyId) ?? [];
+}
+
+/**
+ * Navigates to the company cockpit of the given company.
+ * @param companyId the id of the company to navigate to
+ */
+function navigateToCompany(companyId: string): void {
+  void router.push(`/companies/${companyId}`);
 }
 
 /**
