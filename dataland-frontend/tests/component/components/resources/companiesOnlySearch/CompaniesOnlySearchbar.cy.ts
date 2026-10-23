@@ -57,4 +57,22 @@ describe('Component test for companies search bar', () => {
     validateSearchStringWarning(false);
     validateAutocompletePanel(false);
   });
+
+  it('Emits selectCompany with the selected company when a suggestion is clicked', () => {
+    const mockSearchResults: CompanyIdAndName[] = [
+      { companyName: 'abc123', companyId: crypto.randomUUID() },
+      { companyName: 'abc456', companyId: crypto.randomUUID() },
+    ];
+    cy.intercept(`**/companies/names?searchString=abc&resultLimit=100`, mockSearchResults).as('searchForAbc');
+
+    getMountingFunction({ keycloak: minimalKeycloakMock() })(CompaniesOnlySearchBar).then(({ wrapper }) => {
+      typeIntoSearchBar('abc');
+      cy.wait('@searchForAbc');
+      cy.get('.p-autocomplete-option').first().click();
+      cy.wrap(wrapper).should((vueWrapper) => {
+        expect(vueWrapper.emitted('selectCompany')).to.have.length(1);
+        expect(vueWrapper.emitted('selectCompany')![0]).to.deep.equal([mockSearchResults[0]]);
+      });
+    });
+  });
 });

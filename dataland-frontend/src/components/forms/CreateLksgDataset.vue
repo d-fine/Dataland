@@ -37,31 +37,27 @@
                     </div>
 
                     <div class="col-9 formFields">
-                      <FormKit
-                        v-for="field in subcategory.fields"
-                        :key="field.name"
-                        type="group"
-                        :name="subcategory.name"
-                      >
-                        <component
-                          v-if="field.showIf(companyAssociatedLksgData.data)"
-                          :is="getComponentByName(field.component)"
-                          :label="field.label"
-                          :placeholder="field.placeholder"
-                          :description="field.description"
-                          :name="field.name"
-                          :options="field.options"
-                          :required="field.required"
-                          :validation="field.validation"
-                          :validation-label="field.validationLabel"
-                          :data-test="field.name"
-                          :shouldDisableCheckboxes="true"
-                          @field-specific-documents-updated="
-                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
-                          :ref="field.name"
-                        />
-                      </FormKit>
+                      <FormKit type="group" :name="subcategory.name"
+                        ><template v-for="field in subcategory.fields" :key="field.name">
+                          <component
+                            v-if="field.showIf(companyAssociatedLksgData.data)"
+                            :is="getComponentByName(field.component)"
+                            :label="field.label"
+                            :placeholder="field.placeholder"
+                            :description="field.description"
+                            :name="field.name"
+                            :options="field.options"
+                            :required="field.required"
+                            :validation="field.validation"
+                            :validation-label="field.validationLabel"
+                            :data-test="field.name"
+                            :shouldDisableCheckboxes="true"
+                            @field-specific-documents-updated="
+                              updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                            "
+                            :ref="field.name"
+                          /> </template
+                      ></FormKit>
                     </div>
                   </template>
                 </div>
