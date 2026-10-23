@@ -17,7 +17,7 @@
           :monitored-tag-attributes="monitoredTagAttributes"
           :reset-filters="resetFilters"
           :open-download="openDownloadModal"
-          :reload="loadPortfolio"
+          :reload="reload"
         />
       </div>
 
@@ -51,7 +51,7 @@
               :label="portfolioEntry.data.companyName"
               variant="link"
               data-test="view-company-button"
-              @click="router.push(`/companies/${portfolioEntry.data.companyId}`)"
+              @click="navigateToCompany(portfolioEntry.data.companyId)"
               :pt="{
                 label: {
                   style: 'font-weight: normal; text-align: left;',
@@ -69,6 +69,31 @@
               @input="filterCallback()"
               placeholder="Filter by company name"
               :data-test="'companyNameFilterValue'"
+            />
+          </template>
+        </Column>
+
+        <Column
+          v-if="showProxiedColumn"
+          :sortable="true"
+          field="proxiedCompaniesText"
+          header="Proxy for"
+          :showFilterMatchModes="false"
+          style="width: 15%"
+        >
+          <template #body="portfolioEntry">
+            <PortfolioProxiedCompaniesCell
+              :companies="getProxiedCompanies(portfolioEntry.data.companyId)"
+              @navigate="navigateToCompany"
+            />
+          </template>
+          <template #filter="{ filterModel, filterCallback }">
+            <InputText
+              v-model="filterModel.value"
+              type="text"
+              @input="filterCallback()"
+              placeholder="Filter by proxied company"
+              :data-test="'proxiedCompaniesFilterValue'"
             />
           </template>
         </Column>
@@ -147,19 +172,24 @@
         </Column>
       </DataTable>
     </div>
-    <slot name="dialogs" :is-monitored="isMonitored" :reload="loadPortfolio" />
+    <slot name="dialogs" :is-monitored="isMonitored" :reload="reload" />
   </div>
 </template>
 
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
+import { useQueryClient, useQueries } from '@tanstack/vue-query';
+import { useApiClient } from '@/utils/useApiClient.ts';
+import { useGetEnrichedPortfolioQuery } from '@/api-queries/user-service/portfolio/useGetEnrichedPortfolioQuery.ts';
+import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys.ts';
+import { getCompanyInformationQueryOptions } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
 import { PORTFOLIO_OVERVIEW_FRAMEWORKS, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { EnrichedPortfolio, EnrichedPortfolioEntry } from '@clients/userservice';
-import { type BasicDataDimensions, type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
+import type { EnrichedPortfolioEntry } from '@clients/userservice';
+import { type CompanyIdAndName, DataTypeEnum, ExportFileType } from '@clients/backend';
 import { FilterMatchMode } from '@primevue/core/api';
 import type Keycloak from 'keycloak-js';
 import Button from 'primevue/button';
@@ -168,7 +198,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, ref, toRef } from 'vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
@@ -181,33 +211,14 @@ import { pollExportJobStatus, prepareDownloadFile } from '@/utils/ExportUtils.ts
 import PortfolioReportingPeriodsCell, {
   type ReportingPeriodEntry,
 } from '@/components/resources/portfolio/PortfolioReportingPeriodsCell.vue';
+import PortfolioProxiedCompaniesCell, {
+  type ProxiedCompany,
+} from '@/components/resources/portfolio/PortfolioProxiedCompaniesCell.vue';
 import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
-
-/**
- * Merges the (comma-separated) string of available reporting periods for a framework (which, for the purposes of
- * bulk download and the period filter, may already include non-sourceable periods as "resolved") with the
- * independently-fetched non-sourceable reporting periods for that same framework, and returns a single,
- * ascendingly sorted list where each entry is marked whether it is non-sourceable.
- *
- * Note: whether a year is non-sourceable is determined solely by membership in `nonSourceableDimensionsForFramework`
- * (the dedicated non-sourceability query), not by exclusion from `availableReportingPeriodsCsv` - the latter may
- * already contain non-sourceable years merged in, and must not be used to decide the strikethrough status.
- * @param availableReportingPeriodsCsv the comma-separated string of available reporting periods
- * @param nonSourceableDimensionsForFramework the set of non-sourceable data dimensions for this company/framework
- */
-function mergeReportingPeriods(
-  availableReportingPeriodsCsv: string | undefined,
-  nonSourceableDimensionsForFramework: Set<BasicDataDimensions> | undefined
-): ReportingPeriodEntry[] {
-  const realYears = availableReportingPeriodsCsv ? availableReportingPeriodsCsv.split(', ') : [];
-  const nonSourceableYears = new Set(
-    Array.from(nonSourceableDimensionsForFramework ?? []).map((dim) => dim.reportingPeriod)
-  );
-  const allYears = new Set([...realYears, ...nonSourceableYears]);
-  return Array.from(allYears)
-    .sort()
-    .map((year) => ({ year, nonSourceable: nonSourceableYears.has(year) }));
-}
+import {
+  calculateReportingPeriodEntriesByCompanyAndFramework,
+  groupProxiedCompaniesByProxyId,
+} from '@/utils/PortfolioUtils.ts';
 
 /**
  * This class prepares raw `EnrichedPortfolioEntry` data for use in UI components
@@ -220,6 +231,7 @@ class PortfolioEntryPrepared {
   readonly sector: string | null | undefined;
   readonly country: string;
   readonly companyCockpitRef: string;
+  proxiedCompaniesText = '';
   readonly frameworkHyphenatedNamesToDataRef: Map<string, string | undefined>;
   readonly sfdrAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
@@ -271,17 +283,13 @@ const props = withDefaults(
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const countryOptions = ref<string[]>([]);
-const sectorOptions = ref<string[]>([]);
-const reportingPeriodOptions = ref<Map<string, string[]>>(new Map<string, string[]>());
 const isDownloading = ref(false);
 const downloadErrors = ref('');
-let reportingPeriodsPerFramework: Map<string, string[]>;
 
 const filters = ref({
   companyName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  proxiedCompaniesText: { value: null, matchMode: FilterMatchMode.CONTAINS },
   country: { value: [] as string[], matchMode: FilterMatchMode.IN },
   sector: { value: [] as string[], matchMode: FilterMatchMode.IN },
   sfdrAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
@@ -291,35 +299,65 @@ const filters = ref({
   nuclearAndGasAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
 });
 
-const enrichedPortfolio = ref<EnrichedPortfolio>();
-const portfolioEntriesToDisplay = ref<PortfolioEntryPrepared[]>([]);
-const portfolioCompanies = ref<CompanyIdAndName[]>([]);
-const isLoading = ref(true);
-const isError = ref(false);
-const isMonitored = ref<boolean>(false);
+const queryClient = useQueryClient();
+const apiClient = useApiClient();
+const {
+  data: enrichedPortfolio,
+  isPending: isLoading,
+  isError,
+} = useGetEnrichedPortfolioQuery(toRef(props, 'portfolioId'));
+const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false);
 const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
 const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
 const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery(
   nonSourceabilityRequest,
   { enabled: computed(() => portfolioCompanyIds.value.length > 0) }
 );
-const reportingPeriodEntriesByCompanyAndFramework = computed<
-  Record<string, Partial<Record<string, ReportingPeriodEntry[]>>>
->(() => {
-  const result: Record<string, Partial<Record<string, ReportingPeriodEntry[]>>> = {};
-  for (const entry of enrichedPortfolio.value?.entries ?? []) {
-    const perFramework: Partial<Record<string, ReportingPeriodEntry[]>> = {};
-    for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
-      const nonSourceableForFramework = nonSourceableDimensionsGrouped.value?.[entry.companyId]?.[framework];
-      perFramework[framework] = mergeReportingPeriods(
-        entry.availableReportingPeriods[framework],
-        nonSourceableForFramework
-      );
-    }
-    result[entry.companyId] = perFramework;
-  }
-  return result;
+const reportingPeriodEntriesByCompanyAndFramework = computed(() =>
+  calculateReportingPeriodEntriesByCompanyAndFramework(
+    enrichedPortfolio.value?.entries ?? [],
+    nonSourceableDimensionsGrouped.value
+  )
+);
+const missingProxiedCompanyIds = computed<string[]>(() => {
+  const portfolioIds = new Set((enrichedPortfolio.value?.entries ?? []).map((entry) => entry.companyId));
+  return Array.from(
+    new Set(
+      (enrichedPortfolio.value?.proxyCompanyReplacements ?? [])
+        .map((replacement) => replacement.proxiedCompanyId)
+        .filter((id) => !portfolioIds.has(id))
+    )
+  );
 });
+const externalProxiedCompanyNames = useQueries({
+  queries: computed(() => missingProxiedCompanyIds.value.map((id) => getCompanyInformationQueryOptions(id, apiClient))),
+  combine: (results) => {
+    const names = new Map<string, string>();
+    results.forEach((result, index) => {
+      const id = missingProxiedCompanyIds.value[index];
+      if (id && result.data) names.set(id, result.data.companyName);
+    });
+    return names;
+  },
+});
+const showProxiedColumn = computed(() => (enrichedPortfolio.value?.proxyCompanyReplacements?.length ?? 0) > 0);
+const proxiedCompaniesByProxyId = computed(() =>
+  groupProxiedCompaniesByProxyId(enrichedPortfolio.value, externalProxiedCompanyNames.value)
+);
+const portfolioEntriesToDisplay = computed<PortfolioEntryPrepared[]>(() =>
+  (enrichedPortfolio.value?.entries ?? []).map((item) => {
+    const prepared = new PortfolioEntryPrepared(item);
+    prepared.proxiedCompaniesText = (proxiedCompaniesByProxyId.value.get(item.companyId) ?? [])
+      .map((company) => company.companyName)
+      .join(', ');
+    return prepared;
+  })
+);
+const reportingPeriodsPerFramework = computed(() =>
+  enrichedPortfolio.value
+    ? groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value)
+    : new Map<string, string[]>()
+);
 const monitoredTagAttributes = computed(() => ({
   value: isMonitored.value ? 'Portfolio actively monitored' : 'Portfolio not actively monitored',
   icon: isMonitored.value ? 'pi pi-check-circle' : 'pi pi-times-circle',
@@ -328,33 +366,41 @@ const monitoredTagAttributes = computed(() => ({
 
 const resolvedEmptyText = computed(() => props.emptyText);
 
-onMounted(() => {
-  loadPortfolio();
-});
+const countryOptions = computed<string[]>(() =>
+  Array.from(
+    new Set(
+      portfolioEntriesToDisplay.value
+        .map((entry) => entry.country)
+        .filter((country): country is string => typeof country === 'string')
+    )
+  ).sort()
+);
 
-watch(enrichedPortfolio, () => {
-  const entries = portfolioEntriesToDisplay.value || [];
+const sectorOptions = computed<string[]>(() =>
+  Array.from(
+    new Set(
+      portfolioEntriesToDisplay.value
+        .map((entry) => entry.sector)
+        .filter((sector): sector is string => typeof sector === 'string')
+    )
+  ).sort()
+);
 
-  countryOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.country).filter((country): country is string => typeof country === 'string'))
-  ).sort();
-
-  sectorOptions.value = Array.from(
-    new Set(entries.map((entry) => entry.sector).filter((sector): sector is string => typeof sector === 'string'))
-  ).sort();
-
+const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
+  const options = new Map<string, string[]>();
   for (const framework of PORTFOLIO_OVERVIEW_FRAMEWORKS) {
-    reportingPeriodOptions.value.set(
+    options.set(
       framework,
       Array.from(
         new Set(
-          entries
+          portfolioEntriesToDisplay.value
             .map((entry) => getAvailableReportingPeriods(entry, framework))
             .filter((period): period is string => typeof period === 'string')
         )
       ).sort()
     );
   }
+  return options;
 });
 
 /**
@@ -435,26 +481,26 @@ function hasClickableLink(portfolioEntryPrepared: PortfolioEntryPrepared, framew
 }
 
 /**
- * (Re-)loads a portfolio
+ * Returns the companies proxied by the given company (empty if it is not used as a proxy).
+ * @param companyId the id of the proxy company
  */
-function loadPortfolio(): void {
-  isLoading.value = true;
-  isError.value = false;
-  apiClientProvider.apiClients.portfolioController
-    .getEnrichedPortfolio(props.portfolioId)
-    .then((response) => {
-      enrichedPortfolio.value = response.data;
-      portfolioEntriesToDisplay.value = enrichedPortfolio.value.entries.map((item) => new PortfolioEntryPrepared(item));
-      reportingPeriodsPerFramework = groupAllReportingPeriodsByFrameworkForPortfolio(enrichedPortfolio.value);
-      isMonitored.value = enrichedPortfolio.value?.isMonitored ?? false;
-    })
-    .catch((error) => {
-      console.error(error);
-      isError.value = true;
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
+function getProxiedCompanies(companyId: string): ProxiedCompany[] {
+  return proxiedCompaniesByProxyId.value.get(companyId) ?? [];
+}
+
+/**
+ * Navigates to the company cockpit of the given company.
+ * @param companyId the id of the company to navigate to
+ */
+function navigateToCompany(companyId: string): void {
+  void router.push(`/companies/${companyId}`);
+}
+
+/**
+ * Invalidates the cached portfolio so that it is refetched.
+ */
+function reload(): void {
+  void queryClient.invalidateQueries({ queryKey: portfolioKeys.enriched(props.portfolioId) });
 }
 
 /**
@@ -479,8 +525,20 @@ function getUniqueSortedCompanies(entries: CompanyIdAndName[]): CompanyIdAndName
  * Extracts company IDs from the selected portfolio
  */
 function getCompanyIds(): string[] {
-  portfolioCompanies.value = getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []);
-  return portfolioCompanies.value.map((company) => company.companyId);
+  return getUniqueSortedCompanies(enrichedPortfolio.value?.entries ?? []).map((company) => company.companyId);
+}
+
+/**
+ * Groups the proxied company IDs by the ID of the proxy company, as expected by the export endpoints
+ * @returns map from proxy company ID to the IDs of the companies it proxies
+ */
+function getProxiedCompanyIdsByProxyCompanyId(): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  for (const replacement of enrichedPortfolio.value?.proxyCompanyReplacements ?? []) {
+    const proxiedIds = (result[replacement.proxyCompanyId] ??= []);
+    if (!proxiedIds.includes(replacement.proxiedCompanyId)) proxiedIds.push(replacement.proxiedCompanyId);
+  }
+  return result;
 }
 
 /**
@@ -513,6 +571,7 @@ async function handleDatasetDownload(
     if (!exportFileType) throw new Error('ExportFileType undefined.');
 
     const companyIds = getCompanyIds();
+    const proxiedCompanyIdsByProxyCompanyId = getProxiedCompanyIdsByProxyCompanyId();
 
     let exportJobId: string;
     if (latestOnly) {
@@ -521,7 +580,8 @@ async function handleDatasetDownload(
           companyIds,
           exportFileType,
           keepValuesOnly,
-          includeAlias
+          includeAlias,
+          proxiedCompanyIdsByProxyCompanyId
         )
       ).data.id;
     } else {
@@ -531,7 +591,8 @@ async function handleDatasetDownload(
           companyIds,
           exportFileType,
           keepValuesOnly,
-          includeAlias
+          includeAlias,
+          proxiedCompanyIdsByProxyCompanyId
         )
       ).data.id;
     }
@@ -581,7 +642,7 @@ function openDownloadModal(): void {
       },
     },
     data: {
-      reportingPeriodsPerFramework,
+      reportingPeriodsPerFramework: reportingPeriodsPerFramework.value,
       isDownloading,
       downloadErrors,
     },

@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
 import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.ProxyCompanyReplacement
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -119,5 +120,47 @@ class PortfolioEnrichmentServiceTest {
 
         val entry = enrichedPortfolio.entries.first { it.companyId == testCompanyId }
         Assertions.assertTrue(entry.availableReportingPeriods.isEmpty())
+    }
+
+    @Test
+    fun `check that proxyCompanyReplacements of a portfolio are passed on to the enriched portfolio`() {
+        mockCompanyValidation()
+        whenever(mockDataAvailabilityControllerApi.searchViewableDimensions(any())).doReturn(emptyList())
+        whenever(mockNonSourceabilityControllerApi.searchNonSourceableDimensions(any())).doReturn(emptySet())
+        val replacement =
+            ProxyCompanyReplacement(
+                userId = "test-user-id",
+                timestamp = 1L,
+                proxiedCompanyId = "proxied-company-id",
+                proxyCompanyId = testCompanyId,
+            )
+
+        val enrichedPortfolio =
+            portfolioEnrichmentService.getEnrichedPortfolio(
+                testPortfolio().copy(proxyCompanyReplacements = listOf(replacement)),
+            )
+
+        Assertions.assertEquals(listOf(replacement), enrichedPortfolio.proxyCompanyReplacements)
+    }
+
+    @Test
+    fun `check that proxyCompanyReplacements survive the roundtrip through the portfolio entity`() {
+        val replacement =
+            ProxyCompanyReplacement(
+                userId = "test-user-id",
+                timestamp = 1L,
+                proxiedCompanyId = "proxied-company-id",
+                proxyCompanyId = testCompanyId,
+            )
+
+        val roundTripped =
+            testPortfolio()
+                .copy(
+                    portfolioId = "00000000-0000-0000-0000-000000000001",
+                    proxyCompanyReplacements = listOf(replacement),
+                ).toPortfolioEntity()
+                .toBasePortfolio()
+
+        Assertions.assertEquals(listOf(replacement), roundTripped.proxyCompanyReplacements)
     }
 }
