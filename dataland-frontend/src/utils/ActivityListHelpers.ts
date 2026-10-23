@@ -1,6 +1,8 @@
 import { activityTree, type ActivityNode } from '@/components/forms/parts/elements/derived/ActivityTree';
 
-export type ActivityField = { path: string; header: string };
+export type ActivityField = { path: string; header: string; type: 'percent' | 'yesno' };
+
+export type ActivityFieldGroup = { key: string; label: string; fields: ActivityField[] };
 
 export type ActivityRow = {
   activityName?: string;
@@ -61,24 +63,10 @@ export function deleteRow(rows: ActivityRow[], index: number): void {
 }
 
 /**
- * Appends a row (empty unless an activity is given).
+ * Appends a row for the given activity, prefilled with all NACE codes allowed for it.
  * @param rows the live list of rows
- * @param activityName optional api name of the activity
+ * @param activityName api name of the activity
  */
-export function addRow(rows: ActivityRow[], activityName?: string): void {
-  rows.push({ activityName, naceCodes: [], share: null });
-}
-
-/**
- * Changes the activity of a row and keeps only NACE codes valid for the new activity.
- * @param rows the live list of rows
- * @param index the row index
- * @param activityName the new api name of the activity
- */
-export function changeActivity(rows: ActivityRow[], index: number, activityName: string | undefined): void {
-  const row = rows[index];
-  if (!row) return;
-  row.activityName = activityName;
-  const allowed = getNaceCodesForActivity(activityName);
-  row.naceCodes = (row.naceCodes ?? []).filter((code) => allowed.includes(code));
+export function addRow(rows: ActivityRow[], activityName: string): void {
+  rows.push({ activityName, naceCodes: getNaceCodesForActivity(activityName), share: null });
 }

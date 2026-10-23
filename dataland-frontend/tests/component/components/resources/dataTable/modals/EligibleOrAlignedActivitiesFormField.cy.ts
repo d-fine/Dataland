@@ -26,24 +26,31 @@ function mountComponent(value: object[] = activities): void {
 }
 
 describe('Component test for EligibleOrAlignedActivitiesFormField', () => {
-  it('renders all existing activities and the add controls', () => {
+  it('renders existing activities as read-only text with their NACE codes', () => {
     mountComponent();
-    cy.get('[data-test="activity-select"]').should('have.length', 2);
+    cy.get('[data-test="activity-name"]').should('have.length', 2);
+    cy.get('[data-test="activity-name"]').first().should('have.text', 'Afforestation');
+    cy.get('[data-test="nace-codes"]').first().should('contain.text', 'A2');
+    cy.get('[data-test="activity-select"]').should('not.exist');
+    cy.get('[data-test="nace-select"]').should('not.exist');
     cy.get('[data-test="currency-select"]').should('have.length', 2);
   });
 
-  it('removes a row via the trash icon and appends an empty row via add', () => {
+  it('removes a row via the trash icon and adds a row with prefilled NACE codes via the select', () => {
     mountComponent();
     cy.get('[data-test="delete-activity"]').first().click();
-    cy.get('[data-test="activity-select"]').should('have.length', 1);
-    cy.get('[data-test="add-activity"]').click();
-    cy.get('[data-test="activity-select"]').should('have.length', 2);
-    cy.get('[data-test="nace-select"]').last().should('have.class', 'p-disabled');
+    cy.get('[data-test="activity-name"]').should('have.length', 1);
+    cy.get('[data-test="add-activity-select"]').click();
+    cy.get('.p-select-option').first().click();
+    cy.get('[data-test="activity-name"]').should('have.length', 2);
+    cy.get('[data-test="nace-codes"]').last().find('li').should('have.length.greaterThan', 0);
   });
 
-  it('blocks saving when an activity is missing', () => {
-    mountComponent([...activities, {}]);
-    cy.get('@component').its('isPageValid').should('equal', false);
+  it('shows quality, data source and the documents link in the footer toolbar', () => {
+    mountComponent();
+    cy.get('[data-test="quality-select"]').should('exist');
+    cy.get('[data-test="document-select"]').should('exist');
+    cy.get('[data-test="go-to-documents-link"]').should('have.attr', 'target', '_blank');
   });
 
   it('returns the list in the api body', () => {

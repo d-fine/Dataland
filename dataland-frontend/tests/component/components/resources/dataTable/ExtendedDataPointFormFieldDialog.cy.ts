@@ -118,4 +118,12 @@ describe('As a user I want to have displayed the associated documents for the co
     cy.get('[data-test="document-select"] .p-select-label').should('not.contain', mockDocuments[1].documentName);
     cy.get('[data-test="page-number-input"]').should('have.value', '');
   });
+
+  it('opens the documents page in a new tab so that unsaved changes are not lost', () => {
+    mountDialog();
+    cy.get('[data-test="go-to-documents-link"]')
+      .should('have.attr', 'href', `/companies/${dummyCompanyId}/documents`)
+      .and('have.attr', 'target', '_blank')
+      .and('have.attr', 'rel', 'noopener noreferrer');
+  });
 });

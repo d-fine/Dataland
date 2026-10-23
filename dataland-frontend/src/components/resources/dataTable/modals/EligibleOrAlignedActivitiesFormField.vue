@@ -2,9 +2,8 @@
   <ActivitiesEditTable
     ref="tableRef"
     :extendedDataPointObject="props.extendedDataPointObject"
-    amountHeader="Aligned amount"
-    :percentFields="percentFields"
-    :yesNoFields="yesNoFields"
+    amountHeader="Aligned Amount"
+    :groups="groups"
   />
 </template>
 
@@ -12,21 +11,27 @@
 import { computed, ref } from 'vue';
 import ActivitiesEditTable from '@/components/resources/dataTable/modals/ActivitiesEditTable.vue';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
-import type { ActivityField } from '@/utils/ActivityListHelpers.ts';
-import { substantialContributionPercentFields } from '@/components/resources/dataTable/modals/ActivityFieldDefinitions.ts';
+import type { ActivityFieldGroup } from '@/utils/ActivityListHelpers.ts';
+import {
+  enablingAndTransitionalGroups,
+  substantialContributionGroup,
+} from '@/components/resources/dataTable/modals/ActivityFieldDefinitions.ts';
 
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
 }>();
 
-const percentFields: ActivityField[] = [
-  { path: 'share.relativeShareInPercent', header: 'Aligned share (%)' },
-  { path: 'relativeEligibleShareInPercent', header: 'Eligible share (%)' },
-  ...substantialContributionPercentFields,
-];
-const yesNoFields: ActivityField[] = [
-  { path: 'enablingActivity', header: 'Enabling activity' },
-  { path: 'transitionalActivity', header: 'Transitional activity' },
+const groups: ActivityFieldGroup[] = [
+  {
+    key: 'share',
+    label: '',
+    fields: [
+      { path: 'share.relativeShareInPercent', header: 'Aligned Share (%)', type: 'percent' },
+      { path: 'relativeEligibleShareInPercent', header: 'Eligible Share (%)', type: 'percent' },
+    ],
+  },
+  substantialContributionGroup,
+  ...enablingAndTransitionalGroups,
 ];
 
 const tableRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageValid: boolean }>();

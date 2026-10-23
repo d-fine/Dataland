@@ -21,38 +21,29 @@ function mountComponent(extendedDataPointObject: object): void {
 }
 
 describe('Component test for AlignedActivitiesFormField', () => {
-  it('renders existing activities and the aligned columns', () => {
-    mountComponent({
-      value: [{ activityName: 'Afforestation', naceCodes: ['A2'], share: { relativeShareInPercent: 10 } }],
-      quality: 'Reported',
-      comment: '',
-    });
-    cy.get('[data-test="activity-select"]').should('have.length', 1);
+  const row = { activityName: 'Afforestation', naceCodes: ['A2'], share: { relativeShareInPercent: 10 } };
+
+  it('renders the activity read-only and the expected columns', () => {
+    mountComponent({ value: [row], quality: 'Reported', comment: '' });
+    cy.get('[data-test="activity-name"]').should('have.text', 'Afforestation');
+    cy.get('[data-test="activity-select"]').should('not.exist');
     cy.get('[data-test="percent-share.relativeShareInPercent"]').should('exist');
     cy.get('[data-test="yesno-minimumSafeguards"]').should('exist');
     cy.get('[data-test="yesno-dnshToClimateChangeMitigation"]').should('exist');
     cy.get('[data-test="percent-substantialContributionToClimateChangeMitigationInPercent"]').should('exist');
   });
 
-  it('adds and deletes rows and blocks saving without an activity', () => {
-    mountComponent({
-      value: [{ activityName: 'Afforestation', naceCodes: ['A2'], share: { relativeShareInPercent: 10 } }],
-      quality: 'Reported',
-      comment: '',
-    });
-    cy.get('[data-test="add-activity"]').click();
-    cy.get('[data-test="activity-select"]').should('have.length', 2);
-    cy.get('@component').its('isPageValid').should('equal', false);
+  it('adds a row via the select and deletes rows', () => {
+    mountComponent({ value: [row], quality: 'Reported', comment: '' });
+    cy.get('[data-test="add-activity-select"]').click();
+    cy.get('.p-select-option').first().click();
+    cy.get('[data-test="activity-name"]').should('have.length', 2);
     cy.get('[data-test="delete-activity"]').last().click();
-    cy.get('@component').its('isPageValid').should('equal', true);
+    cy.get('[data-test="activity-name"]').should('have.length', 1);
   });
 
   it('returns the list in the api body', () => {
-    mountComponent({
-      value: [{ activityName: 'Afforestation', naceCodes: ['A2'], share: { relativeShareInPercent: 10 } }],
-      quality: 'Reported',
-      comment: '',
-    });
+    mountComponent({ value: [row], quality: 'Reported', comment: '' });
     cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
       const body = JSON.parse(component.buildApiBodyWithExtendedInfo());
       expect(body.value).to.have.length(1);

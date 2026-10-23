@@ -1,39 +1,52 @@
 <template>
-  <DataTable :value="rows" scrollable scrollHeight="60vh" class="inline-edit-table" data-test="activities-edit-table">
-    <Column header="Activity" frozen style="min-width: 22rem">
-      <template #body="{ index }">
-        <Select
-          :modelValue="rows[index]!.activityName"
-          :options="activityOptions"
-          optionLabel="label"
-          optionValue="value"
-          filter
-          placeholder="Select activity"
-          fluid
-          data-test="activity-select"
-          @update:modelValue="(v: string | undefined) => changeActivity(rows, index, v)"
+  <DataTable
+    :value="rows"
+    scrollable
+    scrollHeight="60vh"
+    class="activities-data-table"
+    data-test="activities-edit-table"
+  >
+    <ColumnGroup type="header">
+      <Row>
+        <Column header="" frozen alignFrozen="left" :colspan="2" class="frozen-row-header border-right" />
+        <Column header="" class="group-row-header" />
+        <Column
+          v-for="group of props.groups"
+          :key="group.key"
+          :header="group.label"
+          :colspan="group.fields.length"
+          class="group-row-header"
         />
+        <Column header="" frozen alignFrozen="right" class="group-row-header" />
+      </Row>
+      <Row>
+        <Column header="Activity" frozen alignFrozen="left" class="frozen-row-header" />
+        <Column header="NACE Code(s)" frozen alignFrozen="left" class="frozen-row-header border-right" />
+        <Column :header="props.amountHeader" class="non-frozen-header" />
+        <Column
+          v-for="field of allFields"
+          :key="field.path"
+          :header="field.header"
+          :class="['non-frozen-header', field.type === 'percent' ? 'col-percentage' : '']"
+        />
+        <Column header="" frozen alignFrozen="right" class="non-frozen-header" />
+      </Row>
+    </ColumnGroup>
+    <Column field="activityName" frozen alignFrozen="left" bodyClass="headers-bg col-activity" class="col-activity">
+      <template #body="{ data }">
+        <span data-test="activity-name">{{ humanizedActivityName(data.activityName) }}</span>
       </template>
     </Column>
-    <Column header="NACE codes" style="min-width: 18rem">
-      <template #body="{ index }">
-        <MultiSelect
-          :modelValue="rows[index]!.naceCodes ?? []"
-          :options="naceOptions(rows[index]!.activityName)"
-          optionLabel="label"
-          optionValue="value"
-          :disabled="!rows[index]!.activityName"
-          display="chip"
-          placeholder="Select NACE codes"
-          fluid
-          data-test="nace-select"
-          @update:modelValue="(v: string[]) => updateCell(rows, index, 'naceCodes', v)"
-        />
+    <Column field="naceCodes" frozen alignFrozen="left" bodyClass="headers-bg col-nace-codes" class="col-nace-codes">
+      <template #body="{ data }">
+        <ul class="unstyled-ul-list" data-test="nace-codes">
+          <li v-for="code of data.naceCodes ?? []" :key="code">{{ code }}</li>
+        </ul>
       </template>
     </Column>
-    <Column :header="props.amountHeader" style="min-width: 20rem">
+    <Column bodyClass="col-value" class="col-value">
       <template #body="{ index }">
-        <div style="display: flex; gap: 0.5rem">
+        <div class="amount-cell">
           <InputNumber
             :modelValue="rows[index]!.share?.absoluteShare?.amount ?? null"
             :maxFractionDigits="2"
@@ -49,16 +62,22 @@
             filter
             showClear
             placeholder="Currency"
-            style="width: 9rem"
+            fluid
             data-test="currency-select"
             @update:modelValue="(v: string | null) => updateCell(rows, index, 'share.absoluteShare.currency', v)"
           />
         </div>
       </template>
     </Column>
-    <Column v-for="field in props.percentFields" :key="field.path" :header="field.header" style="min-width: 11rem">
+    <Column
+      v-for="field of allFields"
+      :key="field.path"
+      bodyClass="col-value"
+      :class="field.type === 'percent' ? 'col-percentage' : 'col-value'"
+    >
       <template #body="{ index }">
         <InputNumber
+          v-if="field.type === 'percent'"
           :modelValue="getPercent(rows[index]!, field.path)"
           suffix="%"
           :min="0"
@@ -68,11 +87,8 @@
           :data-test="'percent-' + field.path"
           @update:modelValue="(v: number | null) => updateCell(rows, index, field.path, v)"
         />
-      </template>
-    </Column>
-    <Column v-for="field in props.yesNoFields" :key="field.path" :header="field.header" style="min-width: 9rem">
-      <template #body="{ index }">
         <Select
+          v-else
           :modelValue="(rows[index]![field.path] as string | null | undefined) ?? null"
           :options="yesNoOptions"
           showClear
@@ -82,7 +98,7 @@
         />
       </template>
     </Column>
-    <Column header="" frozen alignFrozen="right" style="min-width: 4rem">
+    <Column frozen alignFrozen="right">
       <template #body="{ index }">
         <PrimeButton
           icon="pi pi-trash"
@@ -95,25 +111,27 @@
       </template>
     </Column>
   </DataTable>
-  <div class="add-row">
-    <PrimeButton label="+ Add activity" link data-test="add-activity" @click="addRow(rows)" />
-    <Select
-      v-model="activityToAdd"
-      :options="activityOptions"
-      optionLabel="label"
-      optionValue="value"
-      filter
-      placeholder="Search and add activity"
-      style="min-width: 22rem"
-      data-test="add-activity-select"
-      @update:modelValue="onAddSelected"
-    />
-  </div>
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
+    inline
     v-model:selectedDocumentMeta="selectedDocumentMeta"
     :extendedDataPointObject="props.extendedDataPointObject"
-  />
+    class="edit-footer"
+  >
+    <template #toolbar-start>
+      <Select
+        v-model="activityToAdd"
+        :options="activityOptions"
+        optionLabel="label"
+        optionValue="value"
+        filter
+        placeholder="+ Add activity"
+        style="width: 18em"
+        data-test="add-activity-select"
+        @update:modelValue="onAddSelected"
+      />
+    </template>
+  </ExtendedDataPointFormFieldDialog>
 </template>
 
 <script setup lang="ts">
@@ -121,7 +139,8 @@ import { computed, ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Select from 'primevue/select';
-import MultiSelect from 'primevue/multiselect';
+import ColumnGroup from 'primevue/columngroup';
+import Row from 'primevue/row';
 import InputNumber from 'primevue/inputnumber';
 import PrimeButton from 'primevue/button';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -132,23 +151,19 @@ import {
   type ExtendedDataPointType,
 } from '@/components/resources/dataTable/conversion/Utils.ts';
 import { ActivityName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames.ts';
-import { convertSingleNaceCode } from '@/utils/NaceCodeConverter.ts';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets.ts';
 import {
-  type ActivityField,
+  type ActivityFieldGroup,
   type ActivityRow,
   addRow,
-  changeActivity,
   deleteRow,
-  getNaceCodesForActivity,
   updateCell,
 } from '@/utils/ActivityListHelpers.ts';
 
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
   amountHeader: string;
-  percentFields: ActivityField[];
-  yesNoFields: ActivityField[];
+  groups: ActivityFieldGroup[];
 }>();
 
 const rows = ref<ActivityRow[]>(JSON.parse(JSON.stringify(props.extendedDataPointObject.value ?? [])));
@@ -159,6 +174,15 @@ const activityToAdd = ref<string | undefined>(undefined);
 const activityOptions = Object.entries(ActivityName).map(([value, label]) => ({ value, label }));
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((a, b) => a.label.localeCompare(b.label));
 const yesNoOptions = ['Yes', 'No'];
+const allFields = computed(() => props.groups.flatMap((group) => group.fields));
+
+/**
+ * @param apiName the api name of the activity
+ * @returns the humanized activity name (falls back to the api name)
+ */
+function humanizedActivityName(apiName: string | undefined): string {
+  return apiName ? ((ActivityName as Record<string, string>)[apiName] ?? apiName) : '';
+}
 
 /**
  * @param row the row
@@ -174,14 +198,6 @@ function getPercent(row: ActivityRow, path: string): number | null {
 }
 
 /**
- * @param activityName the selected activity
- * @returns NACE options valid for the activity
- */
-function naceOptions(activityName: string | undefined): { value: string; label: string }[] {
-  return getNaceCodesForActivity(activityName).map((code) => ({ value: code, label: convertSingleNaceCode(code) }));
-}
-
-/**
  * Appends a row for the activity selected in the add dropdown.
  * @param name the selected activity api name
  */
@@ -191,10 +207,12 @@ function onAddSelected(name: string | undefined): void {
 }
 
 const percentValid = (row: ActivityRow): boolean =>
-  props.percentFields.every(({ path }) => {
-    const value = getPercent(row, path);
-    return value === null || (value >= 0 && value <= 100);
-  });
+  allFields.value
+    .filter((field) => field.type === 'percent')
+    .every(({ path }) => {
+      const value = getPercent(row, path);
+      return value === null || (value >= 0 && value <= 100);
+    });
 
 const isPageValid = computed<boolean>(
   () =>
@@ -213,42 +231,33 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>
 
 <style scoped>
-.inline-edit-table :deep(.p-datatable-tbody > tr > td) {
-  padding: 0.25rem 0.5rem;
+.activities-data-table :deep(.p-inputnumber-input),
+.activities-data-table :deep(.p-select) {
+  width: 100%;
 }
 
-.inline-edit-table :deep(.p-select),
-.inline-edit-table :deep(.p-multiselect),
-.inline-edit-table :deep(.p-inputnumber-input) {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
+.activities-data-table :deep(.p-datatable-tbody > tr > td) {
+  vertical-align: top;
+  padding: 0.5rem;
 }
 
-.inline-edit-table :deep(.p-select:not(.p-disabled):hover),
-.inline-edit-table :deep(.p-select.p-focus),
-.inline-edit-table :deep(.p-multiselect:not(.p-disabled):hover),
-.inline-edit-table :deep(.p-multiselect.p-focus),
-.inline-edit-table :deep(.p-inputnumber-input:hover),
-.inline-edit-table :deep(.p-inputnumber-input:focus) {
-  background: var(--p-surface-100);
-  border-color: transparent;
-  border-radius: var(--p-border-radius-md, 6px);
+.activities-data-table :deep(.p-datatable-frozen-column) {
+  background: var(--tables-headers-bg);
 }
 
-.inline-edit-table :deep(.p-datatable-frozen-column) {
-  background: var(--p-surface-0, #fff);
-  z-index: 2;
-}
-
-.inline-edit-table :deep(.p-disabled) {
-  opacity: 0.6;
-}
-
-.add-row {
+.amount-cell {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+ul.unstyled-ul-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.edit-footer {
   margin: var(--spacing-md) 0;
 }
 </style>
