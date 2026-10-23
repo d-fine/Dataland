@@ -87,7 +87,13 @@ function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
     const min = Number($input.attr('min'));
     const max = Number($input.attr('max'));
     const targetValue = side === 'left' ? min + value - 1 : max - (value - 1);
-    cy.wrap($input).invoke('val', targetValue).trigger('input', { force: true });
+    // The native range input of PrimeVue's slider is visually hidden and therefore not actionable for Cypress,
+    // so the value is set and the input event is dispatched directly on the DOM element.
+    cy.wrap($input)
+      .invoke('val', targetValue)
+      .then(($el) => {
+        $el[0].dispatchEvent(new Event('input', { bubbles: true }));
+      });
   });
 }
 type ReviewQueueElementOptions = {
