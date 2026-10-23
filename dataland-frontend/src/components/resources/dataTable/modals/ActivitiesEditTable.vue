@@ -129,7 +129,7 @@
         optionValue="value"
         filter
         placeholder="+ Add activity"
-        style="width: 18em"
+        style="width: 14em"
         data-test="add-activity-select"
         @update:modelValue="onAddSelected"
       />
