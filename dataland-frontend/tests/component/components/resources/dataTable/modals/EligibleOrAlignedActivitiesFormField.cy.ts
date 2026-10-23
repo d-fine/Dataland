@@ -1,4 +1,4 @@
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
+import { mountEditFormField } from '@ct/testUtils/MountEditFormField.ts';
 import EligibleOrAlignedActivitiesFormField from '@/components/resources/dataTable/modals/EligibleOrAlignedActivitiesFormField.vue';
 
 const activities = [
@@ -7,22 +7,10 @@ const activities = [
 ];
 
 /**
- * Mounts the component with the given activities
  * @param value the initial activities
  */
 function mountComponent(value: object[] = activities): void {
-  //@ts-ignore
-  cy.intercept('GET', '**/documents/**', { statusCode: 200, body: [] });
-  //@ts-ignore
-  cy.mountWithPlugins(EligibleOrAlignedActivitiesFormField, {
-    keycloak: minimalKeycloakMock({}),
-    global: {
-      provide: { companyId: 'company-id', getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})) },
-    },
-    props: { extendedDataPointObject: { value, quality: 'Reported', comment: '' } },
-  }).then((mounted: { wrapper: { vm: unknown } }) => {
-    cy.wrap(mounted.wrapper.vm).as('component');
-  });
+  mountEditFormField(EligibleOrAlignedActivitiesFormField, { value, quality: 'Reported', comment: '' });
 }
 
 describe('Component test for EligibleOrAlignedActivitiesFormField', () => {

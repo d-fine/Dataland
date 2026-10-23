@@ -50,7 +50,7 @@ export function updateCell(rows: ActivityRow[], index: number, path: string, val
     if (target[key] == null || typeof target[key] !== 'object') target[key] = {};
     target = target[key] as Record<string, unknown>;
   }
-  target[keys[keys.length - 1]] = normalized;
+  target[keys.at(-1)!] = normalized;
 }
 
 /**

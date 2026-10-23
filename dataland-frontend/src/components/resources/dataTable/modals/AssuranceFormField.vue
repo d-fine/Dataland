@@ -8,10 +8,19 @@
     showClear
     placeholder="Select assurance level"
     fluid
+    inputId="assurance-select"
+    aria-label="Assurance level"
     data-test="assurance-select"
   />
   <h4>Provider</h4>
-  <InputText v-model="provider" placeholder="Insert provider" fluid data-test="assurance-provider-input" />
+  <InputText
+    v-model="provider"
+    placeholder="Insert provider"
+    fluid
+    id="assurance-provider"
+    aria-label="Assurance provider"
+    data-test="assurance-provider-input"
+  />
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"

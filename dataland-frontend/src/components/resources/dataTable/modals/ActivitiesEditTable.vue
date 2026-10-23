@@ -52,6 +52,8 @@
             :maxFractionDigits="2"
             fluid
             class="amount-input"
+            :inputId="`amount-${index}`"
+            :aria-label="`${props.amountHeader} for ${humanizedActivityName(rows[index]!.activityName)}`"
             data-test="amount-input"
             @update:modelValue="(v: number | null) => updateCell(rows, index, 'share.absoluteShare.amount', v)"
           />
@@ -64,6 +66,8 @@
             showClear
             placeholder="Cur."
             class="currency-select"
+            :inputId="`currency-${index}`"
+            :aria-label="`Currency for ${humanizedActivityName(rows[index]!.activityName)}`"
             data-test="currency-select"
             @update:modelValue="(v: string | null) => updateCell(rows, index, 'share.absoluteShare.currency', v)"
           >
@@ -87,6 +91,8 @@
           :max="100"
           :maxFractionDigits="2"
           fluid
+          :inputId="`${field.path}-${index}`"
+          :aria-label="`${field.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
           :data-test="'percent-' + field.path"
           @update:modelValue="(v: number | null) => updateCell(rows, index, field.path, v)"
         />
@@ -96,6 +102,8 @@
           :options="yesNoOptions"
           showClear
           fluid
+          :inputId="`${field.path}-${index}`"
+          :aria-label="`${field.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
           :data-test="'yesno-' + field.path"
           @update:modelValue="(v: string | null) => updateCell(rows, index, field.path, v)"
         />
@@ -130,6 +138,8 @@
         filter
         placeholder="+ Add activity"
         style="width: 14em"
+        inputId="add-activity-select"
+        aria-label="Add activity"
         data-test="add-activity-select"
         @update:modelValue="onAddSelected"
       />
@@ -138,7 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Select from 'primevue/select';
@@ -169,7 +179,7 @@ const props = defineProps<{
   groups: ActivityFieldGroup[];
 }>();
 
-const rows = ref<ActivityRow[]>(JSON.parse(JSON.stringify(props.extendedDataPointObject.value ?? [])));
+const rows = ref<ActivityRow[]>(structuredClone(toRaw((props.extendedDataPointObject.value ?? []) as ActivityRow[])));
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
 const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 const activityToAdd = ref<string | undefined>(undefined);
