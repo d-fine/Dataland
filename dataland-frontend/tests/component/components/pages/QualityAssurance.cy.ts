@@ -91,8 +91,8 @@ function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
     // so the value is set and the input event is dispatched directly on the DOM element.
     cy.wrap($input)
       .invoke('val', targetValue)
-      .then(($el) => {
-        $el[0].dispatchEvent(new Event('input', { bubbles: true }));
+      .then(() => {
+        $input[0]?.dispatchEvent(new Event('input', { bubbles: true }));
       });
   });
 }
