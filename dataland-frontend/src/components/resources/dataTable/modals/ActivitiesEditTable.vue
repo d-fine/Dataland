@@ -22,7 +22,7 @@
       <Row>
         <Column header="Activity" frozen alignFrozen="left" class="frozen-row-header" />
         <Column header="NACE Code(s)" frozen alignFrozen="left" class="frozen-row-header border-right" />
-        <Column :header="props.amountHeader" class="non-frozen-header" />
+        <Column :header="props.amountHeader" class="non-frozen-header col-amount" />
         <Column
           v-for="field of allFields"
           :key="field.path"
@@ -44,13 +44,14 @@
         </ul>
       </template>
     </Column>
-    <Column bodyClass="col-value" class="col-value">
+    <Column bodyClass="col-amount" class="col-amount">
       <template #body="{ index }">
         <div class="amount-cell">
           <InputNumber
             :modelValue="rows[index]!.share?.absoluteShare?.amount ?? null"
             :maxFractionDigits="2"
             fluid
+            class="amount-input"
             data-test="amount-input"
             @update:modelValue="(v: number | null) => updateCell(rows, index, 'share.absoluteShare.amount', v)"
           />
@@ -61,11 +62,13 @@
             optionValue="value"
             filter
             showClear
-            placeholder="Currency"
-            fluid
+            placeholder="Cur."
+            class="currency-select"
             data-test="currency-select"
             @update:modelValue="(v: string | null) => updateCell(rows, index, 'share.absoluteShare.currency', v)"
-          />
+          >
+            <template #value="{ value, placeholder }">{{ value ?? placeholder }}</template>
+          </Select>
         </div>
       </template>
     </Column>
@@ -243,12 +246,33 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 
 .activities-data-table :deep(.p-datatable-frozen-column) {
   background: var(--tables-headers-bg);
+  z-index: 2;
+}
+
+.activities-data-table :deep(.p-datatable-thead > tr > th.p-datatable-frozen-column) {
+  z-index: 3;
+}
+
+.activities-data-table :deep(.col-amount) {
+  width: 17rem;
+  min-width: 17rem;
 }
 
 .amount-cell {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 0.25rem;
+}
+
+.amount-cell .amount-input {
+  flex: 1 1 auto;
+  min-width: 6rem;
+}
+
+.amount-cell .currency-select {
+  flex: 0 0 7rem;
+  width: 7rem;
 }
 
 ul.unstyled-ul-list {
