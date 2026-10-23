@@ -26,7 +26,7 @@ export function mergeReportingPeriods(
   );
   const allYears = new Set([...realYears, ...nonSourceableYears]);
   return Array.from(allYears)
-    .sort()
+    .sort((a, b) => a.localeCompare(b))
     .map((year) => ({ year, nonSourceable: nonSourceableYears.has(year) }));
 }
 
