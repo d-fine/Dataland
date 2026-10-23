@@ -1,62 +1,94 @@
 <template>
-  <h4>Quality</h4>
-  <Select
-    :placeholder="'Select Quality'"
-    v-model="chosenQuality"
-    :options="qualityOptionsList ?? []"
-    optionLabel="label"
-    optionValue="value"
-    data-test="quality-select"
-    inputId="quality-select"
-    aria-label="Quality"
-    fluid
-  />
-  <h4>Data Source</h4>
-  <div class="data-source-wrapper">
-    <Select
-      :placeholder="'Select Document'"
-      v-model="selectedDocument"
-      :options="availableDocuments ?? []"
-      optionLabel="label"
-      optionValue="value"
-      data-test="document-select"
-      style="width: 17em"
-      inputId="document-select"
-      aria-label="Data Source"
-      fluid
-    />
-    <InputText
-      v-model="insertedPage"
-      placeholder="Page(s)"
-      data-test="page-number-input"
-      style="width: 8em"
-      :disabled="!selectedDocument"
-      :invalid="!isPageValid"
-    />
-  </div>
-  <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
-    {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
-  </small>
-  <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
-    <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
-    <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
-    <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
-    <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
-  </div>
+  <div :class="{ 'inline-layout': props.inline }">
+    <div class="inline-toolbar">
+      <slot name="toolbar-start" />
+      <div v-if="!props.hideQualityAndComment" class="field-group">
+        <h4 v-if="!props.inline">Quality</h4>
+        <Select
+          :placeholder="'Select Quality'"
+          v-model="chosenQuality"
+          :options="qualityOptionsList ?? []"
+          optionLabel="label"
+          optionValue="value"
+          data-test="quality-select"
+          inputId="quality-select"
+          aria-label="Quality"
+          :style="props.inline ? 'width: 10em' : undefined"
+          :fluid="!props.inline"
+        />
+      </div>
+      <div class="field-group">
+        <h4 v-if="!props.inline">Data Source</h4>
+        <div class="data-source-wrapper">
+          <Select
+            :placeholder="'Select Document'"
+            v-model="selectedDocument"
+            :options="availableDocuments ?? []"
+            optionLabel="label"
+            optionValue="value"
+            data-test="document-select"
+            :style="props.inline ? 'width: 14em' : 'width: 17em'"
+            inputId="document-select"
+            aria-label="Data Source"
+            fluid
+          />
+          <InputText
+            v-model="insertedPage"
+            placeholder="Page(s)"
+            data-test="page-number-input"
+            :style="props.inline ? 'width: 6em' : 'width: 8em'"
+            :disabled="!selectedDocument"
+            :invalid="!isPageValid"
+          />
+          <PrimeButton
+            v-if="props.inline"
+            label="Go to documents page"
+            variant="link"
+            as="a"
+            :href="`/companies/${companyId}/documents`"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-test="go-to-documents-link"
+          />
+        </div>
+      </div>
+    </div>
+    <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
+      {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
+    </small>
+    <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
+      <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
+      <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
+      <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
+      <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
+    </div>
 
-  <PrimeButton label="Go to documents page" variant="link" as="a" :href="`/companies/${companyId}/documents`" />
+    <PrimeButton
+      v-if="!props.inline"
+      label="Go to documents page"
+      variant="link"
+      as="a"
+      :href="`/companies/${companyId}/documents`"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-test="go-to-documents-link"
+    />
 
-  <h4>Comment</h4>
-  <Textarea
-    :placeholder="'Insert comment'"
-    v-model="insertedComment"
-    data-test="comment-textarea"
-    id="comment-input"
-    aria-label="Comment"
-    rows="5"
-    :draggable="false"
-    fluid
-  />
+    <template v-if="!props.hideQualityAndComment">
+      <h4 v-if="!props.inline">Comment</h4>
+      <Textarea
+        :placeholder="'Insert comment'"
+        v-model="insertedComment"
+        data-test="comment-textarea"
+        id="comment-input"
+        aria-label="Comment"
+        :rows="props.inline ? 2 : 5"
+        :draggable="false"
+        fluid
+        :style="props.inline ? 'margin-top: var(--spacing-xs)' : undefined"
+      />
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -83,6 +115,8 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const props = defineProps<{
   extendedDataPointObject?: ExtendedDataPointType;
+  hideQualityAndComment?: boolean;
+  inline?: boolean;
 }>();
 
 const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);
@@ -179,6 +213,18 @@ function setSelectedDocument(docId: string | null): void {
 </script>
 
 <style scoped>
+.inline-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.inline-layout .field-group {
+  display: flex;
+  align-items: center;
+}
+
 .data-source-wrapper {
   display: flex;
   align-items: center;

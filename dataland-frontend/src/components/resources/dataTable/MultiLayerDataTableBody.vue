@@ -232,6 +232,12 @@ onMounted(() => {
   expandSectionsOnPageLoad();
 });
 
+const activityComponentNames = new Set([
+  'EligibleOrAlignedActivitiesFormField',
+  'AlignedActivitiesFormField',
+  'NonAlignedActivitiesFormField',
+]);
+
 /**
  * Opens a modal dialog for editing a data point.
  */
@@ -245,6 +251,8 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     props: {
       modal: true,
       header: 'Edit Data Point',
+      style: activityComponentNames.has(cellOrSectionConfig.uploadComponentName ?? '') ? { width: '90vw' } : {},
+      contentStyle: { overflow: 'auto' },
       pt: {
         title: {
           style: {

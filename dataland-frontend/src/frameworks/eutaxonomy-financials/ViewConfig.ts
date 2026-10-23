@@ -183,7 +183,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
-            uploadComponentName: 'AssuranceFormField',
+            uploadComponentName: 'Non-editable',
             dataPointTypeId: 'assurance',
           },
         ],
