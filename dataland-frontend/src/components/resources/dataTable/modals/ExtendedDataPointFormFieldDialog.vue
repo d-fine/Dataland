@@ -1,6 +1,7 @@
 <template>
-  <h4>Quality</h4>
+  <h4 v-if="!props.hideQualityAndComment">Quality</h4>
   <Select
+    v-if="!props.hideQualityAndComment"
     :placeholder="'Select Quality'"
     v-model="chosenQuality"
     :options="qualityOptionsList ?? []"
@@ -46,8 +47,9 @@
 
   <PrimeButton label="Go to documents page" variant="link" as="a" :href="`/companies/${companyId}/documents`" />
 
-  <h4>Comment</h4>
+  <h4 v-if="!props.hideQualityAndComment">Comment</h4>
   <Textarea
+    v-if="!props.hideQualityAndComment"
     :placeholder="'Insert comment'"
     v-model="insertedComment"
     data-test="comment-textarea"
@@ -83,6 +85,7 @@ const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise
 
 const props = defineProps<{
   extendedDataPointObject?: ExtendedDataPointType;
+  hideQualityAndComment?: boolean;
 }>();
 
 const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);

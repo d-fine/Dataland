@@ -1,5 +1,7 @@
 import { activityTree, type ActivityNode } from '@/components/forms/parts/elements/derived/ActivityTree';
 
+export type ActivityField = { path: string; header: string };
+
 export type ActivityRow = {
   activityName?: string;
   naceCodes?: string[] | null;
