@@ -17,6 +17,7 @@ set +o allexport
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_e2etests ./dataland-e2etests/Dockerfile "" \
        ./dataland-e2etests/ ./dataland-frontend/ ./testing/ \
+       ./dataland-backend-utils/ ./dataland-sharedElements/ ./dataland-website/ \
        ./dataland-backend/backendOpenApi.json  ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
        ./dataland-document-manager/documentManagerOpenApi.json  ./dataland-qa-service/qaServiceOpenApi.json \
        ./dataland-community-manager/communityManagerOpenApi.json ./dataland-user-service/userServiceOpenApi.json \
