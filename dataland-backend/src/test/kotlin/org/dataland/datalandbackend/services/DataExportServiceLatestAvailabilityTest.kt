@@ -90,7 +90,7 @@ class DataExportServiceLatestAvailabilityTest : DataExportServiceAvailabilityTes
                 listOf(
                     PlainDataAndDimensions(
                         dimensions = BasicDatasetDimensions(nonSourceableTestCompanyId, "lksg", TEST_REPORTING_PERIOD),
-                        data = objectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
+                        data = defaultObjectMapper.writeValueAsString(testDataProvider.getLksgDataset()),
                     ),
                 ),
             )
