@@ -42,8 +42,6 @@ open class ExportStreamBuilder(
         private const val MAX_EXCEL_CELL_LENGTH = 32767
     }
 
-    private val objectMapper = defaultObjectMapper
-
     /**
      * Create a ByteStream to be used for export from a list of SingleCompanyExportData.
      *
@@ -218,7 +216,7 @@ open class ExportStreamBuilder(
     private fun buildJsonStreamFromPortfolioAsJsonData(portfolioExportRows: List<JsonNode>): InputStreamResource {
         val outputStream = ByteArrayOutputStream()
 
-        objectMapper
+        defaultObjectMapper
             .writerFor(List::class.java)
             .writeValue(outputStream, portfolioExportRows)
         return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
@@ -230,13 +228,13 @@ open class ExportStreamBuilder(
      * @return The JSON node representation of the data
      */
     private fun <T> convertDataToJson(singleCompanyExportData: SingleCompanyExportData<T>): JsonNode {
-        val singleCompanyExportDataJson = objectMapper.writeValueAsString(singleCompanyExportData)
-        return objectMapper.readTree(singleCompanyExportDataJson)
+        val singleCompanyExportDataJson = defaultObjectMapper.writeValueAsString(singleCompanyExportData)
+        return defaultObjectMapper.readTree(singleCompanyExportDataJson)
     }
 
     private fun getResolvedSchemaNode(framework: String): JsonNode? {
         val resolvedSchemaDto = specificationService.getResolvedFrameworkSpecification(framework)
-        return objectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
+        return defaultObjectMapper.valueToTree(resolvedSchemaDto.resolvedSchema)
     }
 
     /**

@@ -1,12 +1,11 @@
 package org.dataland.datalandbackendutils.configurations
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.dataland.datalandbackendutils.model.ErrorResponse
-import org.springframework.beans.factory.annotation.Autowired
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -22,8 +21,6 @@ import org.springframework.security.web.firewall.RequestRejectedHandler
 class RequestRejectedExceptionHandler(
     @Value("\${dataland.expose-error-stack-trace-to-api:false}")
     private val trace: Boolean,
-    @Autowired
-    private val objectMapper: ObjectMapper,
 ) : RequestRejectedHandler {
     override fun handle(
         request: HttpServletRequest,
@@ -43,7 +40,7 @@ class RequestRejectedExceptionHandler(
                         ),
                     ),
             )
-        val responseString = objectMapper.writeValueAsString(responseObject)
+        val responseString = defaultObjectMapper.writeValueAsString(responseObject)
         val printWriter = response.writer
         response.contentType = "application/json"
         response.characterEncoding = "UTF-8"

@@ -23,11 +23,9 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
 class ${frameworkDataType.shortenedQualifier}QaReportController(
-@Autowired objectMapper: ObjectMapper,
 @Autowired qaReportManager: ${frameworkQaReportManagerDataType.shortenedQualifier},
 @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<${frameworkDataType.shortenedQualifier}>(
-objectMapper = objectMapper,
 qaReportManager = qaReportManager,
 qaReportSecurityPolicy = qaReportSecurityPolicy,
 clazz = ${frameworkDataType.shortenedQualifier}::class.java,

@@ -33,12 +33,14 @@ class CompanyIdentifierManager(
         identifier: String,
     ) {
         if (identifierType != IdentifierType.Isin) {
-            companyIdentifierRepository.getReferenceById(
-                CompanyIdentifierEntityId(
-                    identifier,
-                    identifierType,
-                ),
-            )
+            companyIdentifierRepository
+                .findById(CompanyIdentifierEntityId(identifier, identifierType))
+                .orElseThrow {
+                    ResourceNotFoundApiException(
+                        CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                        CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
+                    )
+                }
         } else {
             isinLeiRepository.findByIsin(identifier)
                 ?: throw ResourceNotFoundApiException(
@@ -61,11 +63,20 @@ class CompanyIdentifierManager(
         identifier: String,
     ): String {
         if (identifierType != IdentifierType.Isin) {
-            return companyIdentifierRepository
-                .getReferenceById(
-                    CompanyIdentifierEntityId(identifier, identifierType),
-                ).company!!
-                .companyId
+            val companyIdentifier =
+                companyIdentifierRepository
+                    .findById(CompanyIdentifierEntityId(identifier, identifierType))
+                    .orElseThrow {
+                        ResourceNotFoundApiException(
+                            summary = CompanyIdentifierUtils.COMPANY_IDENTIFIER_NOT_FOUND_SUMMARY,
+                            message = CompanyIdentifierUtils.companyIdentifierNotFoundMessage(identifierType, identifier),
+                        )
+                    }
+            return companyIdentifier.company?.companyId
+                ?: throw ResourceNotFoundApiException(
+                    summary = CompanyIdentifierUtils.COMPANY_IDENTIFIER_WITHOUT_COMPANY_SUMMARY,
+                    message = CompanyIdentifierUtils.companyIdentifierWithoutCompanyMessage(identifierType, identifier),
+                )
         }
         val repositoryResponse = isinLeiRepository.findByIsin(identifier)
 

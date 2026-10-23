@@ -22,17 +22,15 @@ const linkWrapClass = 'mt-10 flex';
 <section class={sectionClass} aria-label="Testimonial videos">
   <div class={sectionInnerClass}>
     <div class={gridClass}>
-      {
-        testimonials.map((t) => (
-          <div class={cardClass}>
-            <YouTubeEmbed videoId={t.youtubeId} title={`${t.author} - ${t.affiliation}`} />
-            <div class={metaWrapClass}>
-              <p class={authorClass}>{t.author}</p>
-              <p class={affiliationClass}>{t.affiliation}</p>
-            </div>
+      {testimonials.map((t) => (
+        <div class={cardClass}>
+          <YouTubeEmbed videoId={t.youtubeId} title={`${t.author} - ${t.affiliation}`} />
+          <div class={metaWrapClass}>
+            <p class={authorClass}>{t.author}</p>
+            <p class={affiliationClass}>{t.affiliation}</p>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
     <div class={linkWrapClass}>
       <ArrowLink href="/">&larr; Back to Main</ArrowLink>

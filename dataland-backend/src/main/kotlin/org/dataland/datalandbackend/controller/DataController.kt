@@ -314,22 +314,8 @@ open class DataController<T>(
     override fun getLatestAvailableCompanyAssociatedData(identifier: String): ResponseEntity<CompanyAssociatedData<T>> {
         val correlationId = IdUtils.generateUUID()
         logger.info(logMessageBuilder.getLatestCompanyAssociatedDataMessage(identifier, correlationId))
-        val companyIds =
-            companyQueryManager.validateCompanyIdentifiers(listOf(identifier)).mapNotNull {
-                it.companyInformation?.companyId
-            }
-        if (companyIds.size > 1) {
-            throw InvalidInputApiException(
-                summary = "Multiple companies found for identifier $identifier.",
-                message = "The provided identifier: $identifier is ambiguous and matches multiple companies.",
-            )
-        }
-        val companyId =
-            companyIds.firstOrNull() ?: throw ResourceNotFoundApiException(
-                summary = "Company with identifier $identifier not found.",
-                message = "No company matches the provided identifier: $identifier.",
-            )
 
+        val companyId = getCompanyId(identifier)
         val latestData =
             datasetStorageService
                 .getLatestAvailableData(
@@ -347,6 +333,23 @@ open class DataController<T>(
                 reportingPeriod = latestData.dimensions.reportingPeriod,
                 data = defaultObjectMapper.readValue(latestData.data, clazz),
             ),
+        )
+    }
+
+    private fun getCompanyId(identifier: String): String {
+        val companyIds =
+            companyQueryManager.validateCompanyIdentifiers(listOf(identifier)).mapNotNull {
+                it.companyInformation?.companyId
+            }
+        if (companyIds.size > 1) {
+            throw InvalidInputApiException(
+                summary = "Multiple companies found for identifier $identifier.",
+                message = "The provided identifier: $identifier is ambiguous and matches multiple companies.",
+            )
+        }
+        return companyIds.firstOrNull() ?: throw ResourceNotFoundApiException(
+            summary = "Company with identifier $identifier not found.",
+            message = "No company matches the provided identifier: $identifier.",
         )
     }
 }

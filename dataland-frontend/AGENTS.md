@@ -34,6 +34,12 @@
 - When changing user-facing behavior, run the most relevant Cypress component or E2E tests.
 - If the change depends on backend API contracts, regenerate clients with `./gradlew :dataland-frontend:generateClients` from the repo root.
 
+# Data Fetching (TanStack Query)
+
+- API clients may only be used inside `src/api-queries/` (see the root `AGENTS.md` and `src/api-queries/AGENTS.md`).
+- ESLint enforces this; legacy files are exempt via `legacyDirectApiClientFiles` in `eslint.config.mjs`. Only remove entries from that list, never add any.
+- Do not refactor legacy components unasked. If your change touched their data loading, recommend the migration once in your final summary.
+
 # Package-Specific Rules
 
 - Do not introduce new `@ts-nocheck` directives in modified files.

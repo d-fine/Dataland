@@ -24,7 +24,7 @@ data class UploadCategoryBuilder(
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : UploadConfigElement {
     override val imports: Set<TypeScriptImport>
-        get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
+        get() = children.foldRight(setOf()) { child, acc -> acc + child.imports }
 
     override fun traverse(lambda: Consumer<UploadConfigElement>) {
         lambda.accept(this)

@@ -36,7 +36,7 @@ const sanitizedMarkdown = computed(() => {
 
 <style>
 .markdown-content p {
-  margin-block-start: 0 !important;
-  margin-block-end: 0 !important;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 </style>

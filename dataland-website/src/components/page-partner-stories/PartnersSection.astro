@@ -24,23 +24,21 @@ const {
   <div class="max-w-[1200px] mx-auto flex flex-col gap-8">
     <SectionHeader title={title} />
     <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
-      {
-        partners.map((partner) => (
-          <LogoCard
-            as={partner.url ? 'a' : 'div'}
-            href={partner.url}
-            target={partner.url ? '_blank' : undefined}
-            rel={partner.url ? 'noopener noreferrer' : undefined}
-            tone="light"
-            accentTop={showTopAccent}
-            class="motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
-            logoFrameClass={partner.imageFrameClassName}
-            logoSrc={partner.imagePath}
-            logoAlt={partner.name}
-            scale={partner.scale ?? 1}
-          />
-        ))
-      }
+      {partners.map((partner) => (
+        <LogoCard
+          as={partner.url ? 'a' : 'div'}
+          href={partner.url}
+          target={partner.url ? '_blank' : undefined}
+          rel={partner.url ? 'noopener noreferrer' : undefined}
+          tone="light"
+          accentTop={showTopAccent}
+          class="motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          logoFrameClass={partner.imageFrameClassName}
+          logoSrc={partner.imagePath}
+          logoAlt={partner.name}
+          scale={partner.scale ?? 1}
+        />
+      ))}
     </div>
   </div>
 </section>

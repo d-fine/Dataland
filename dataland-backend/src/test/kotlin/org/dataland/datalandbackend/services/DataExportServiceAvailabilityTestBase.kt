@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.model.export.SingleCompanyExportData
 import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
-import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -23,7 +23,6 @@ import java.util.UUID
  * [DataExportServiceDimensionAvailabilityTest] and [DataExportServiceLatestAvailabilityTest].
  */
 abstract class DataExportServiceAvailabilityTestBase {
-    protected val objectMapper = JsonUtils.defaultObjectMapper
     protected val mockDatasetAssembler = mock<DatasetAssembler>()
     protected val mockSpecificationService = mock<SpecificationService>()
     protected val mockCompanyQueryManager = mock<CompanyQueryManager>()
@@ -38,7 +37,7 @@ abstract class DataExportServiceAvailabilityTestBase {
             mockNonSourceabilityInformationManager,
         )
 
-    protected val testDataProvider = TestDataProvider(objectMapper)
+    protected val testDataProvider = TestDataProvider()
 
     protected val nonSourceableTestCompanyId = UUID.randomUUID().toString()
     protected val nonSourceableTestCompanyInfo =
@@ -69,7 +68,7 @@ abstract class DataExportServiceAvailabilityTestBase {
         )
 
     protected fun readExportedRows(exportJob: ExportJob): List<SingleCompanyExportData<LksgData>> =
-        objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(exportJob.fileToExport!!.inputStream)
+        defaultObjectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(exportJob.fileToExport!!.inputStream)
 
     protected fun mockCompanyInformationLookup() {
         whenever(mockCompanyQueryManager.getBasicCompanyInformationByIds(any()))

@@ -58,7 +58,13 @@ class EutaxonomyFinancials202673DataController
             super
                 .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
 
-        @Operation(operationId = "postCompanyAssociatedEutaxonomyFinancials202673Data")
+        @Operation(
+            operationId = "postCompanyAssociatedEutaxonomyFinancials202673Data",
+            summary = "Upload new dataset.",
+            description =
+                "The uploaded data is added to the data store, the generated data id is returned. " +
+                    "Document references must contain only the file ID, no additional document metadata.",
+        )
         override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<EutaxonomyFinancials202673Data>,
             bypassQa: Boolean,

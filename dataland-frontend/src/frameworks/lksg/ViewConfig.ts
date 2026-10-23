@@ -276,7 +276,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 NoneOfTheAbove: 'None of the above',
               };
               return formatListOfStringsForDatatable(
-                dataset.general?.productionSpecific?.specificProcurement?.map((it) =>
+                Array.from(dataset.general?.productionSpecific?.specificProcurement ?? []).map((it) =>
                   getOriginalNameFromTechnicalName(it, mappings)
                 ),
                 'Specific Procurement'

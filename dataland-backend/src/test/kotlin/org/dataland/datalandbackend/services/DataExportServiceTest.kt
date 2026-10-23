@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.services.datapoints.DatasetAssembler
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -41,7 +42,6 @@ const val QUALITY_STRING = "quality"
  * tests covering schema-driven column ordering and alias renaming.
  */
 class DataExportServiceTest {
-    private val objectMapper = JsonUtils.defaultObjectMapper
     private val mockDatasetAssembler = mock<DatasetAssembler>()
     private val mockSpecificationService = mock<SpecificationService>()
     private val mockCompanyQueryManager = mock<CompanyQueryManager>()
@@ -56,7 +56,7 @@ class DataExportServiceTest {
             mockNonSourceabilityInformationManager,
         )
 
-    private val testDataProvider = TestDataProvider(objectMapper)
+    private val testDataProvider = TestDataProvider()
 
     private val lksgCompanyExportTestData =
         SingleCompanyExportData(
@@ -68,7 +68,7 @@ class DataExportServiceTest {
         )
 
     private val companyExportDataLksgTestData =
-        objectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
+        defaultObjectMapper.readValue<SingleCompanyExportData<LksgData>>(File("./src/test/resources/dataExport/lksgDataInput.json"))
 
     @Test
     fun `check that proxied column is exported with the proxied company names`() {
@@ -134,7 +134,7 @@ class DataExportServiceTest {
                     includeAliases = false,
                 ),
             )
-        val exportedJsonObject = objectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
+        val exportedJsonObject = defaultObjectMapper.readValue<List<SingleCompanyExportData<LksgData>>>(jsonStream.inputStream)
 
         Assertions.assertEquals(listOf(lksgCompanyExportTestData), exportedJsonObject)
     }
@@ -198,7 +198,7 @@ class DataExportServiceTest {
                 companyLei = TEST_COMPANY_LEI,
                 reportingPeriod = TEST_REPORTING_PERIOD,
                 availability = ExportAvailability.AVAILABLE,
-                data = objectMapper.treeToValue(testJson, Any::class.java),
+                data = defaultObjectMapper.treeToValue(testJson, Any::class.java),
             )
 
         val csvStream =
@@ -240,7 +240,7 @@ class DataExportServiceTest {
                 companyLei = TEST_COMPANY_LEI,
                 reportingPeriod = TEST_REPORTING_PERIOD,
                 availability = ExportAvailability.AVAILABLE,
-                data = objectMapper.treeToValue(testJson, Any::class.java),
+                data = defaultObjectMapper.treeToValue(testJson, Any::class.java),
             )
 
         val csvStream =
@@ -281,7 +281,7 @@ class DataExportServiceTest {
                         companyLei = TEST_COMPANY_LEI,
                         reportingPeriod = TEST_REPORTING_PERIOD,
                         availability = ExportAvailability.AVAILABLE,
-                        data = objectMapper.treeToValue(testJson, Any::class.java),
+                        data = defaultObjectMapper.treeToValue(testJson, Any::class.java),
                     ),
                 ),
                 ExportOptions(

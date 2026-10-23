@@ -69,7 +69,7 @@ class DataSourcingValidator
          */
         private fun validateDataTypes(dataTypes: List<String>): List<Boolean> =
             dataTypes.map { dataType ->
-                DataTypeEnum.decode(dataType) != null
+                DataTypeEnum.decodeOrNull(dataType) != null
             }
 
         /**
@@ -107,7 +107,7 @@ class DataSourcingValidator
             if (!ValidationUtils.isReportingPeriod(singleRequest.reportingPeriod)) {
                 errorsForDataTypeAndReportingPeriod.add("The reporting period ${singleRequest.reportingPeriod} is invalid.")
             }
-            DataTypeEnum.decode(singleRequest.dataType)
+            DataTypeEnum.decodeOrNull(singleRequest.dataType)
                 ?: errorsForDataTypeAndReportingPeriod.add("The data type ${singleRequest.dataType} is invalid.")
 
             val validatedCompanyId =

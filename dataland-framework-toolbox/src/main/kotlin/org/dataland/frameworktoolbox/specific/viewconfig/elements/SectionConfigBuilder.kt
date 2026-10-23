@@ -22,7 +22,7 @@ data class SectionConfigBuilder(
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : ViewConfigElement {
     override val imports: Set<TypeScriptImport>
-        get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
+        get() = children.foldRight(setOf()) { child, acc -> acc + child.imports }
 
     /**
      * Adds a new subsection to this section

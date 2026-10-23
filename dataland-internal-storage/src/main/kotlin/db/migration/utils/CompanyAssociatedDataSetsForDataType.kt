@@ -1,6 +1,6 @@
 package db.migration.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -14,7 +14,6 @@ fun getCompanyAssociatedDatasetsForDataType(
     context: Context?,
     dataType: String,
 ): List<DataTableEntity> {
-    val objectMapper = ObjectMapper()
     val preparedStatement =
         context!!.connection.prepareStatement(
             "SELECT * from data_items " +
@@ -28,7 +27,7 @@ fun getCompanyAssociatedDatasetsForDataType(
             DataTableEntity(
                 getQueryResultSet.getString("data_id"),
                 JSONObject(
-                    objectMapper.readValue(
+                    defaultObjectMapper.readValue(
                         getQueryResultSet.getString("data"), String::class.java,
                     ),
                 ),

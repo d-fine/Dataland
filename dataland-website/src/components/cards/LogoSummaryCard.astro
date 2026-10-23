@@ -66,16 +66,14 @@ const hasTags = Boolean(primaryTag) || secondaryTags.length > 0;
     </div>
   </div>
   <div class:list={[hasTags ? classes.body : classes.bodyNoTags, bodyClass]}>
-    {
-      hasTags && (
-        <div class={classes.tagsRow}>
-          {primaryTag && <span class={classes.primaryTag}>{primaryTag}</span>}
-          {secondaryTags.map((tag) => (
-            <span class={classes.secondaryTag}>{tag}</span>
-          ))}
-        </div>
-      )
-    }
+    {hasTags && (
+      <div class={classes.tagsRow}>
+        {primaryTag && <span class={classes.primaryTag}>{primaryTag}</span>}
+        {secondaryTags.map((tag) => (
+          <span class={classes.secondaryTag}>{tag}</span>
+        ))}
+      </div>
+    )}
     <div class={classes.textWrap}>
       <h3 class:list={[classes.title, titleClass]}>{title}</h3>
       {text && <p class={classes.text}>{text}</p>}
