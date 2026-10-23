@@ -13,13 +13,16 @@ import org.dataland.datalandbackendutils.utils.JsonUtils
 
 class DataExportUtils private constructor() {
     companion object {
+        const val PROXIED_FIELD = "proxied"
         val STATIC_ALIASES =
             mapOf(
                 "companyName" to "COMPANY_NAME",
+                PROXIED_FIELD to "PROXY_FOR",
                 "companyLei" to "COMPANY_LEI",
                 "reportingPeriod" to "REPORTING_PERIOD",
                 "availability" to "AVAILABILITY",
             )
+        const val PROXIED_NAMES_SEPARATOR = " | "
         const val DATA = "data"
         const val VALUE = "value"
         private const val ALIAS_EXPORT = "aliasExport"
@@ -135,7 +138,7 @@ class DataExportUtils private constructor() {
                     .flatMap { it.entries }
                     .filterNot { it.value.isNullOrBlank() }
                     .map { it.key }
-                    .toSet()
+                    .toSet() + PROXIED_FIELD
 
             csvData.forEach { dataset ->
                 nonEmptyFields.forEach { headerField ->

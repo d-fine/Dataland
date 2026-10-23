@@ -46,10 +46,11 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedPcafDataByDimensions(
-      { reportingPeriods, companyIds, fileFormat },
+      { reportingPeriods, companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options
@@ -61,10 +62,11 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportLatestJobCompanyAssociatedPcafDataByDimensions(
-      { companyIds, fileFormat },
+      { companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options

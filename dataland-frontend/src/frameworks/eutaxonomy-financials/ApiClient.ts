@@ -54,10 +54,11 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-      { reportingPeriods, companyIds, fileFormat },
+      { reportingPeriods, companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options
@@ -69,10 +70,11 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportLatestJobCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
-      { companyIds, fileFormat },
+      { companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options

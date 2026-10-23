@@ -8,4 +8,5 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 interface ExportLatestRequestData {
     val companyIds: List<String>
     val fileFormat: ExportFileType
+    val proxiedCompanyIdsByProxyCompanyId: Map<String, List<String>>
 }

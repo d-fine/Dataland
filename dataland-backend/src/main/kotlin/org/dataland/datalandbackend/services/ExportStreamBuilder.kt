@@ -29,7 +29,8 @@ open class ExportStreamBuilder(
 ) {
     companion object {
         private const val HEADER_ROW_INDEX = 0
-        private const val COMPANY_NAME_POSITION = -4
+        private const val COMPANY_NAME_POSITION = -5
+        private const val PROXIED_POSITION = -4
         private const val COMPANY_LEI_POSITION = -3
         private const val REPORTING_PERIOD_POSITION = -2
         private const val AVAILABILITY_POSITION = -1
@@ -296,7 +297,7 @@ open class ExportStreamBuilder(
                 .flatMap { it.entries }
                 .filterNot { it.value.isNullOrBlank() }
                 .map { it.key }
-                .toSet()
+                .toSet() + listOfNotNull(readableHeaders[DataExportUtils.PROXIED_FIELD])
 
         val filteredReadableHeaders = readableHeaders.filterValues { it in usedReadableHeaders }
 
@@ -319,6 +320,7 @@ open class ExportStreamBuilder(
                         it.startsWith("companyLei") -> COMPANY_LEI_POSITION
                         it.startsWith("reportingPeriod") -> REPORTING_PERIOD_POSITION
                         it.startsWith("availability") -> AVAILABILITY_POSITION
+                        it == DataExportUtils.PROXIED_FIELD -> PROXIED_POSITION
                         else -> 0
                     }
                 }.then(naturalOrder()),
