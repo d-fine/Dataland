@@ -46,8 +46,9 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
      fileFormat: ExportFileType,
      keepValueFieldsOnly?: boolean,
      includeAliases?: boolean,
+     proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
      options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
-    return this.openApiDataController.postExportJobCompanyAssociated${frameworkBaseName}DataByDimensions({reportingPeriods, companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
+    return this.openApiDataController.postExportJobCompanyAssociated${frameworkBaseName}DataByDimensions({reportingPeriods, companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId}, keepValueFieldsOnly, includeAliases, options);
   }
 
   postExportLatestJobCompanyAssociatedDataByDimensions(
@@ -55,8 +56,9 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
      fileFormat: ExportFileType,
      keepValueFieldsOnly?: boolean,
      includeAliases?: boolean,
+     proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
      options?: AxiosRequestConfig): AxiosPromise<ExportJobInfo> {
-    return this.openApiDataController.postExportLatestJobCompanyAssociated${frameworkBaseName}DataByDimensions({companyIds, fileFormat}, keepValueFieldsOnly, includeAliases, options);
+    return this.openApiDataController.postExportLatestJobCompanyAssociated${frameworkBaseName}DataByDimensions({companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId}, keepValueFieldsOnly, includeAliases, options);
   }
 
   getCompanyAssociatedDataByDimensions(

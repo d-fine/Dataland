@@ -38,6 +38,7 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo>;
 

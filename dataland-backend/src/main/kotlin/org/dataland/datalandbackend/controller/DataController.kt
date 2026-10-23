@@ -191,6 +191,7 @@ open class DataController<T>(
                         keepValueFieldsOnly = keepValueFieldsOnly,
                         includeAliases = includeAliases,
                     ),
+                    exportRequestData.proxiedCompanyIdsByProxyCompanyId,
                 )
             },
         )
@@ -214,6 +215,7 @@ open class DataController<T>(
                         keepValueFieldsOnly = keepValueFieldsOnly,
                         includeAliases = includeAliases,
                     ),
+                    exportRequestData.proxiedCompanyIdsByProxyCompanyId,
                 )
             },
         )

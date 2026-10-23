@@ -54,10 +54,11 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportJobCompanyAssociatedNuclearAndGasDataByDimensions(
-      { reportingPeriods, companyIds, fileFormat },
+      { reportingPeriods, companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options
@@ -69,10 +70,11 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     fileFormat: ExportFileType,
     keepValueFieldsOnly?: boolean,
     includeAliases?: boolean,
+    proxiedCompanyIdsByProxyCompanyId?: Record<string, string[]>,
     options?: AxiosRequestConfig
   ): AxiosPromise<ExportJobInfo> {
     return this.openApiDataController.postExportLatestJobCompanyAssociatedNuclearAndGasDataByDimensions(
-      { companyIds, fileFormat },
+      { companyIds, fileFormat, proxiedCompanyIdsByProxyCompanyId },
       keepValueFieldsOnly,
       includeAliases,
       options

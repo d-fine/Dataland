@@ -1,8 +1,30 @@
 import { type Ref, computed } from 'vue';
 import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
+import type { ApiClientProvider } from '@/services/ApiClients.ts';
 import { companyDataKeys } from '@/api-queries/backend/company-data/companyDataKeys.ts';
 import type { CompanyInformation } from '@clients/backend';
+
+/**
+ * Builds the query options (key and fetch function) for loading company information by id.
+ * Shared between the single query hook and multi-query usages (e.g. useQueries).
+ *
+ * @param {string} companyId - The id of the company.
+ * @param {ApiClientProvider} apiClientProvider - The provider used to access the backend clients.
+ * @returns the query options
+ */
+export function getCompanyInformationQueryOptions(
+  companyId: string,
+  apiClientProvider: ApiClientProvider
+): { queryKey: ReturnType<typeof companyDataKeys.byCompanyId>; queryFn: () => Promise<CompanyInformation> } {
+  return {
+    queryKey: companyDataKeys.byCompanyId(companyId),
+    queryFn: async (): Promise<CompanyInformation> => {
+      const response = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(companyId);
+      return response.data;
+    },
+  };
+}
 
 /**
  * Vue Query hook that fetches stored company information for a given company id.
@@ -24,8 +46,7 @@ export function useGetCompanyInformationByIdInfoQuery(
       if (!companyId.value) {
         throw new Error('companyId is undefined');
       }
-      const response = await apiClientProvider.backendClients.companyDataController.getCompanyInfo(companyId.value);
-      return response.data;
+      return getCompanyInformationQueryOptions(companyId.value, apiClientProvider).queryFn();
     },
   });
 }
