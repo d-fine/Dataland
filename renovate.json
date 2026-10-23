@@ -17,6 +17,7 @@
     "before 6am every weekday",
     "every weekend"
   ],
+  "timezone": "Europe/Berlin",
   "packageRules": [
     {
       "groupName": "digest-bundle",
