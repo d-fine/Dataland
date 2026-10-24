@@ -74,7 +74,7 @@
     "npm-check-updates": "^23.1.1",
     "otplib": "^13.5.0",
     "prettier": "^3.9.10",
-    "sass": "^1.105.1",
+    "sass": "^1.106.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.3",
