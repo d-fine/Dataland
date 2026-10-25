@@ -2,7 +2,7 @@
   <DynamicDialog />
   <component
     v-if="route.meta.requiresAuthentication !== undefined"
-    :is="route.meta.requiresAuthentication ? AuthenticationWrapper : 'div'"
+    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
   >
     <TheHeader />
     <router-view />
@@ -11,8 +11,8 @@
   <VueQueryDevtools />
 </template>
 
-<script setup lang="ts">
-import { computed, onBeforeMount, onMounted, onUnmounted, provide, ref, watch } from 'vue';
+<script lang="ts">
+import { type Component, computed, defineComponent, ref } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
 import Keycloak from 'keycloak-js';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
@@ -40,147 +40,181 @@ const windowWidth = ref<number>();
 const storeWindowWidth = (): void => {
   windowWidth.value = globalThis.innerWidth;
 };
+export default defineComponent({
+  name: 'app',
+  components: {
+    TheHeader,
+    DynamicDialog,
+    AuthenticationWrapper,
+    TheFooter,
+    // Cast needed: its inferred props type references the non-exported DevtoolsOptions (TS2883)
+    VueQueryDevtools: VueQueryDevtools as Component,
+  },
 
-const route = useRoute();
-const dialog = useDialog();
+  data() {
+    return {
+      keycloakPromise: undefined as undefined | Promise<Keycloak>,
+      resolvedKeycloakPromise: undefined as undefined | Keycloak,
+      keycloakAuthenticated: false,
+      functionIdOfSessionSetInterval: undefined as number | undefined,
 
-const keycloakPromise = ref<Promise<Keycloak>>();
-const resolvedKeycloakPromise = ref<Keycloak>();
-const keycloakAuthenticated = ref(false);
-const functionIdOfSessionSetInterval = ref<number>();
-const apiClientProvider = ref<ApiClientProvider>();
-const companyRoleAssignments = ref<Array<CompanyRoleAssignmentExtended>>();
+      apiClientProvider: undefined as ApiClientProvider | undefined,
 
-const currentRefreshTokenInSharedStore = computed(() => useSharedSessionStateStore().refreshToken);
+      companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
+    };
+  },
 
-watch(currentRefreshTokenInSharedStore, (newRefreshToken) => {
-  if (resolvedKeycloakPromise.value && newRefreshToken) {
-    resolvedKeycloakPromise.value.refreshToken = newRefreshToken;
-    if (functionIdOfSessionSetInterval.value) {
-      clearInterval(functionIdOfSessionSetInterval.value);
-    }
-    functionIdOfSessionSetInterval.value = startSessionSetIntervalFunctionAndReturnItsId(
-      resolvedKeycloakPromise.value,
-      openSessionWarningModal
-    );
-  }
-});
+  setup() {
+    const route = useRoute();
+    const dialog = useDialog();
+    return { route, dialog };
+  },
 
-provide('getKeycloakPromise', (): Promise<Keycloak> => {
-  if (keycloakPromise.value) return keycloakPromise.value;
-  throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
-});
-provide(
-  'companyRoleAssignments',
-  computed(() => companyRoleAssignments.value)
-);
-provide(
-  'authenticated',
-  computed(() => keycloakAuthenticated.value)
-);
-provide(
-  'apiClientProvider',
-  computed(() => apiClientProvider.value)
-);
-provide(
-  'useMobileView',
-  computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint)
-);
-
-onBeforeMount(() => {
-  processUserAuthentication();
-});
-onMounted(() => {
-  globalThis.addEventListener('resize', storeWindowWidth);
-});
-onUnmounted(() => {
-  globalThis.removeEventListener('resize', storeWindowWidth);
-});
-
-/**
- * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
- */
-function processUserAuthentication(): void {
-  keycloakPromise.value = initKeycloak();
-  const provider = new ApiClientProvider(keycloakPromise.value);
-  apiClientProvider.value = provider;
-  keycloakPromise.value
-    .then((keycloak) => handleResolvedKeycloakPromise(keycloak, provider))
-    .catch((e) => console.log(e));
-}
-
-/**
- * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
- * @returns a promise which resolves to the Keycloak adaptor object
- */
-function initKeycloak(): Promise<Keycloak> {
-  const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
-  keycloak.onAuthLogout = handleAuthLogout;
-  return keycloak
-    .init({
-      onLoad: 'check-sso',
-      silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
-      pkceMethod: 'S256',
-    })
-    .then((authenticated) => {
-      keycloakAuthenticated.value = authenticated;
-    })
-    .catch((error) => {
-      console.log('Error in init Keycloak ', error);
-      keycloakAuthenticated.value = false;
-    })
-    .then((): Keycloak => keycloak);
-}
-
-/**
- * Executes actions based on the resolved Keycloak-login-status of the current user
- * @param resolved contains the login-status of the current user
- * @param provider to trigger a request to the backend of Dataland for getting the users company roles
- */
-function handleResolvedKeycloakPromise(resolved: Keycloak, provider: ApiClientProvider): void {
-  resolvedKeycloakPromise.value = resolved;
-  if (resolved.authenticated) {
-    localStorage.setItem('dataland_authenticated', 'true');
-    void updateTokenAndItsExpiryTimestampAndStoreBoth(resolved, true);
-    void setCompanyRolesForUser(resolved, provider);
-  } else {
-    localStorage.removeItem('dataland_authenticated');
-  }
-}
-
-/**
- * Fetches the company roles of the current user and stores it in a variable.
- * @param resolved contains the login-status of the current user
- * @param provider to trigger a request to the backend of Dataland for getting the users company roles
- */
-async function setCompanyRolesForUser(resolved: Keycloak, provider: ApiClientProvider): Promise<void> {
-  companyRoleAssignments.value = await getCompanyRoleAssignmentsForCurrentUser(resolved, provider);
-}
-
-/**
- * Executed as callback when the user is logged out. Redirects the user to the Astro website at /.
- */
-function handleAuthLogout(): void {
-  localStorage.removeItem('dataland_authenticated');
-  logoutAndRedirectToUri(resolvedKeycloakPromise.value as Keycloak, '?externalLogout=true');
-}
-
-/**
- * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
- * If the refresh button is clicked soon enough, the session is refreshed.
- * Else the text changes and tells the user that the session was closed.
- */
-function openSessionWarningModal(): void {
-  dialog.open(SessionDialog, {
-    props: {
-      modal: true,
-      closable: false,
-      closeOnEscape: false,
-      showHeader: false,
+  computed: {
+    currentRefreshTokenInSharedStore() {
+      return useSharedSessionStateStore().refreshToken;
     },
-    data: {
-      sessionDialogMode: SessionDialogMode.SessionWarning,
+  },
+
+  watch: {
+    currentRefreshTokenInSharedStore(newRefreshToken: string) {
+      if (this.resolvedKeycloakPromise && newRefreshToken) {
+        this.resolvedKeycloakPromise.refreshToken = newRefreshToken;
+        if (this.functionIdOfSessionSetInterval) {
+          clearInterval(this.functionIdOfSessionSetInterval);
+        }
+        const openSessionWarningModalBound = this.openSessionWarningModal.bind(this);
+        this.functionIdOfSessionSetInterval = startSessionSetIntervalFunctionAndReturnItsId(
+          this.resolvedKeycloakPromise,
+          openSessionWarningModalBound
+        );
+      }
     },
-  });
-}
+  },
+
+  provide() {
+    return {
+      getKeycloakPromise: (): Promise<Keycloak> => {
+        if (this.keycloakPromise) return this.keycloakPromise;
+        throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
+      },
+      companyRoleAssignments: computed(() => {
+        return this.companyRoleAssignments;
+      }),
+      authenticated: computed(() => {
+        return this.keycloakAuthenticated;
+      }),
+      apiClientProvider: computed(() => {
+        return this.apiClientProvider;
+      }),
+      useMobileView: computed(() => (windowWidth?.value ?? globalThis.innerWidth) <= smallScreenBreakpoint),
+    };
+  },
+
+  created() {
+    this.processUserAuthentication();
+  },
+
+  mounted() {
+    globalThis.addEventListener('resize', storeWindowWidth);
+  },
+  unmounted() {
+    globalThis.removeEventListener('resize', storeWindowWidth);
+  },
+
+  methods: {
+    /**
+     * Sets up the whole authentication status of the user when starting the Dataland Frontend App.
+     */
+    processUserAuthentication() {
+      this.keycloakPromise = this.initKeycloak();
+      if (this.keycloakPromise !== undefined) {
+        const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
+        this.apiClientProvider = apiClientProvider;
+        this.keycloakPromise
+          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
+          .catch((e) => console.log(e));
+      }
+    },
+    /**
+     * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
+     * @returns a promise which resolves to the Keycloak adaptor object
+     */
+    initKeycloak(): Promise<Keycloak> {
+      const keycloak = new Keycloak(KEYCLOAK_INIT_OPTIONS);
+      keycloak.onAuthLogout = this.handleAuthLogout.bind(this);
+      return keycloak
+        .init({
+          onLoad: 'check-sso',
+          silentCheckSsoRedirectUri: globalThis.location.origin + '/static/silent-check-sso.html',
+          pkceMethod: 'S256',
+        })
+        .then((authenticated) => {
+          this.keycloakAuthenticated = authenticated;
+        })
+        .catch((error) => {
+          console.log('Error in init Keycloak ', error);
+          this.keycloakAuthenticated = false;
+        })
+        .then((): Keycloak => {
+          return keycloak;
+        });
+    },
+
+    /**
+     * Executes actions based on the resolved Keycloak-login-status of the current user
+     * @param resolvedKeycloakPromise contains the login-status of the current user
+     * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
+     */
+    handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      this.resolvedKeycloakPromise = resolvedKeycloakPromise;
+      if (this.resolvedKeycloakPromise.authenticated) {
+        localStorage.setItem('dataland_authenticated', 'true');
+        void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
+        void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
+      } else {
+        localStorage.removeItem('dataland_authenticated');
+      }
+    },
+
+    /**
+     * Fetches the company roles of the current user and stores it in a variable.
+     * @param resolvedKeycloakPromise contains the login-status of the current user
+     * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
+     */
+    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
+        resolvedKeycloakPromise,
+        apiClientProvider
+      );
+    },
+
+    /**
+     * Executed as callback when the user is logged out. Redirects the user to the Astro website at /.
+     */
+    handleAuthLogout() {
+      localStorage.removeItem('dataland_authenticated');
+      logoutAndRedirectToUri(this.resolvedKeycloakPromise as Keycloak, '?externalLogout=true');
+    },
+
+    /**
+     * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
+     * If the refresh button is clicked soon enough, the session is refreshed.
+     * Else the text changes and tells the user that the session was closed.
+     */
+    openSessionWarningModal(): void {
+      this.dialog.open(SessionDialog, {
+        props: {
+          modal: true,
+          closable: false,
+          closeOnEscape: false,
+          showHeader: false,
+        },
+        data: {
+          sessionDialogMode: SessionDialogMode.SessionWarning,
+        },
+      });
+    },
+  },
+});
 </script>
