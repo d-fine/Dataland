@@ -8,10 +8,14 @@
 
 - Install dependencies: `npm install`
 - Verify the package builds: `npm run build`
+- Typecheck: `npm run typecheck`
+- Lint: `npm run lintci` (auto-fix: `npm run lint`)
+- Format check: `npm run formatci` (auto-fix: `npm run format`)
+- Maintenance: `npm run updatepackages`, `npm run updatepackagelock`, `npm run fixvulnerabilites`, `npm run checkdependencies`
 
 # Verification
 
-- Always run `npm run build` after changing shared elements.
+- Always run `npm run build`, `npm run lintci`, `npm run formatci` after changing shared elements.
 - There is no dedicated CI job for this package; verify it through the affected consumers.
 - Also run the relevant checks in each consumer affected by the change:
   - `dataland-frontend`: `npm --prefix ../dataland-frontend run lint`, `npm --prefix ../dataland-frontend run typecheck`, `npm --prefix ../dataland-frontend run build`
