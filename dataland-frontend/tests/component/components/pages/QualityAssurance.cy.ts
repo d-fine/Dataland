@@ -75,26 +75,23 @@ function getFirstElementInColumn(columnName: string): Cypress.Chainable<JQuery> 
 }
 
 /**
- * Moves the slider handle in the priority filter by a certain value, by setting the native range input of the handle.
+ * Moves the slider handle in the priority filter by a certain value.
  * This is used to set the priority filter to a certain value, since there is no input field to type the value into.
  * @param side
  * @param value
  */
 function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
-  const handleSelector = '[data-test="priority-slider"] .p-slider-handle input';
-  const handle = side === 'left' ? cy.get(handleSelector).first() : cy.get(handleSelector).last();
-  handle.then(($input) => {
-    const min = Number($input.attr('min'));
-    const max = Number($input.attr('max'));
-    const targetValue = side === 'left' ? min + value - 1 : max - (value - 1);
-    // The native range input of PrimeVue's slider is visually hidden and therefore not actionable for Cypress,
-    // so the value is set and the input event is dispatched directly on the DOM element.
-    cy.wrap($input)
-      .invoke('val', targetValue)
-      .then(() => {
-        $input[0]?.dispatchEvent(new Event('input', { bubbles: true }));
-      });
-  });
+  if (side === 'left') {
+    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').first().as('leftHandle');
+    for (let i = 0; i < value - 1; i++) {
+      cy.get('@leftHandle').focus().type('{rightarrow}');
+    }
+  } else {
+    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').last().as('rightHandle');
+    for (let i = 0; i < value - 1; i++) {
+      cy.get('@rightHandle').focus().type('{leftarrow}');
+    }
+  }
 }
 type ReviewQueueElementOptions = {
   dataId: string;
