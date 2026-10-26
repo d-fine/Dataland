@@ -84,6 +84,7 @@ const scalarDataPointObject: ExtendedDataPointType = {
 const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? scalarDataPointObject;
 
 provide('companyId', companyId);
+provide('activityKpiType', modalData?.kpiType);
 
 /**
  * Updates the data point with the current API body.

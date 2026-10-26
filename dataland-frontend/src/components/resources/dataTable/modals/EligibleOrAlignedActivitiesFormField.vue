@@ -1,10 +1,5 @@
 <template>
-  <ActivitiesEditTable
-    ref="tableRef"
-    :extendedDataPointObject="props.extendedDataPointObject"
-    amountHeader="Aligned Amount"
-    :groups="groups"
-  />
+  <ActivitiesEditTable ref="tableRef" :extendedDataPointObject="props.extendedDataPointObject" :groups="groups" />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +9,7 @@ import type { ExtendedDataPointType } from '@/components/resources/dataTable/con
 import type { ActivityFieldGroup } from '@/utils/ActivityListHelpers.ts';
 import {
   enablingAndTransitionalGroups,
+  kpiGroupForEligibleOrAligned,
   substantialContributionGroup,
 } from '@/components/resources/dataTable/modals/ActivityFieldDefinitions.ts';
 
@@ -22,14 +18,7 @@ const props = defineProps<{
 }>();
 
 const groups: ActivityFieldGroup[] = [
-  {
-    key: 'share',
-    label: '',
-    fields: [
-      { path: 'share.relativeShareInPercent', header: 'Aligned Share (%)', type: 'percent' },
-      { path: 'relativeEligibleShareInPercent', header: 'Eligible Share (%)', type: 'percent' },
-    ],
-  },
+  kpiGroupForEligibleOrAligned,
   substantialContributionGroup,
   ...enablingAndTransitionalGroups,
 ];

@@ -1,6 +1,14 @@
 import { activityTree, type ActivityNode } from '@/components/forms/parts/elements/derived/ActivityTree';
 
-export type ActivityField = { path: string; header: string; type: 'percent' | 'yesno' };
+export type KpiType = 'revenue' | 'capex' | 'opex';
+
+export const kpiTypeLabels: Record<KpiType, string> = { revenue: 'Revenue', capex: 'CapEx', opex: 'OpEx' };
+
+/**
+ * A single editable column of an activity row. The header may contain the placeholder `{kpi}`, which is replaced by
+ * the label of the KPI type (Revenue, CapEx, OpEx) so that the headers match the ones of the view modal.
+ */
+export type ActivityField = { path: string; header: string; type: 'amount' | 'percent' | 'yesno' };
 
 export type ActivityFieldGroup = { key: string; label: string; fields: ActivityField[] };
 

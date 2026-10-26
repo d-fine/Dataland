@@ -1,15 +1,20 @@
 <template>
   <DataTable
     :value="rows"
-    scrollable
-    scrollHeight="60vh"
-    class="activities-data-table"
+    :scrollable="!props.flat"
+    class="activities-data-table activities-edit-table"
     data-test="activities-edit-table"
   >
-    <ColumnGroup type="header">
+    <ColumnGroup v-if="!props.flat" type="header">
       <Row>
-        <Column header="" frozen alignFrozen="left" :colspan="2" class="frozen-row-header border-right" />
-        <Column header="" class="group-row-header" />
+        <Column
+          header=""
+          :frozen="true"
+          alignFrozen="left"
+          :colspan="2"
+          class="frozen-row-header border-right"
+          style="background-color: #fff"
+        />
         <Column
           v-for="group of props.groups"
           :key="group.key"
@@ -17,43 +22,50 @@
           :colspan="group.fields.length"
           class="group-row-header"
         />
-        <Column header="" frozen alignFrozen="right" class="group-row-header" />
+        <Column header="" :frozen="true" alignFrozen="right" class="col-actions" style="background-color: #fff" />
       </Row>
       <Row>
-        <Column header="Activity" frozen alignFrozen="left" class="frozen-row-header" />
-        <Column header="NACE Code(s)" frozen alignFrozen="left" class="frozen-row-header border-right" />
-        <Column :header="props.amountHeader" class="non-frozen-header col-amount" />
+        <Column header="Activity" :frozen="true" alignFrozen="left" class="frozen-row-header" />
+        <Column header="NACE Code(s)" :frozen="true" alignFrozen="left" class="frozen-row-header border-right" />
         <Column
-          v-for="field of allFields"
-          :key="field.path"
-          :header="field.header"
-          :class="['non-frozen-header', field.type === 'percent' ? 'col-percentage' : '']"
+          v-for="col of columns"
+          :key="col.path"
+          :header="col.header"
+          :class="groupColumnCssClasses(col, 'non-frozen-header')"
         />
-        <Column header="" frozen alignFrozen="right" class="non-frozen-header" />
+        <Column header="" :frozen="true" alignFrozen="right" class="col-actions" style="background-color: #fff" />
       </Row>
     </ColumnGroup>
-    <Column field="activityName" frozen alignFrozen="left" bodyClass="headers-bg col-activity" class="col-activity">
+
+    <Column
+      field="activityName"
+      header="Activity"
+      :frozen="!props.flat"
+      alignFrozen="left"
+      v-bind="activityColumnProps"
+    >
       <template #body="{ data }">
         <span data-test="activity-name">{{ humanizedActivityName(data.activityName) }}</span>
       </template>
     </Column>
-    <Column field="naceCodes" frozen alignFrozen="left" bodyClass="headers-bg col-nace-codes" class="col-nace-codes">
+    <Column field="naceCodes" header="NACE Code(s)" :frozen="!props.flat" alignFrozen="left" v-bind="naceColumnProps">
       <template #body="{ data }">
-        <ul class="unstyled-ul-list" data-test="nace-codes">
+        <ul :class="{ 'unstyled-ul-list': props.flat }" data-test="nace-codes">
           <li v-for="code of data.naceCodes ?? []" :key="code">{{ code }}</li>
         </ul>
       </template>
     </Column>
-    <Column bodyClass="col-amount" class="col-amount">
+
+    <Column v-for="col of columns" :key="col.path" :header="col.header" v-bind="mainColumnProps(col)">
       <template #body="{ index }">
-        <div class="amount-cell">
+        <div v-if="col.type === 'amount'" class="amount-cell">
           <InputNumber
             :modelValue="rows[index]!.share?.absoluteShare?.amount ?? null"
             :maxFractionDigits="2"
             fluid
             class="amount-input"
             :inputId="`amount-${index}`"
-            :aria-label="`${props.amountHeader} for ${humanizedActivityName(rows[index]!.activityName)}`"
+            :aria-label="`${col.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
             data-test="amount-input"
             @update:modelValue="(v: number | null) => updateCell(rows, index, 'share.absoluteShare.amount', v)"
           />
@@ -63,7 +75,6 @@
             optionLabel="label"
             optionValue="value"
             filter
-            showClear
             placeholder="Cur."
             class="currency-select"
             :inputId="`currency-${index}`"
@@ -74,47 +85,47 @@
             <template #value="{ value, placeholder }">{{ value ?? placeholder }}</template>
           </Select>
         </div>
-      </template>
-    </Column>
-    <Column
-      v-for="field of allFields"
-      :key="field.path"
-      bodyClass="col-value"
-      :class="field.type === 'percent' ? 'col-percentage' : 'col-value'"
-    >
-      <template #body="{ index }">
         <InputNumber
-          v-if="field.type === 'percent'"
-          :modelValue="getPercent(rows[index]!, field.path)"
-          suffix="%"
+          v-else-if="col.type === 'percent'"
+          :modelValue="getNumber(rows[index]!, col.path)"
+          suffix=" %"
           :min="0"
           :max="100"
           :maxFractionDigits="2"
           fluid
-          :inputId="`${field.path}-${index}`"
-          :aria-label="`${field.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
-          :data-test="'percent-' + field.path"
-          @update:modelValue="(v: number | null) => updateCell(rows, index, field.path, v)"
+          :inputId="`${col.path}-${index}`"
+          :aria-label="`${col.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
+          :data-test="'percent-' + col.path"
+          @update:modelValue="(v: number | null) => updateCell(rows, index, col.path, v)"
         />
         <Select
           v-else
-          :modelValue="(rows[index]![field.path] as string | null | undefined) ?? null"
+          :modelValue="(rows[index]![col.path] as string | null | undefined) ?? null"
           :options="yesNoOptions"
           showClear
           fluid
-          :inputId="`${field.path}-${index}`"
-          :aria-label="`${field.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
-          :data-test="'yesno-' + field.path"
-          @update:modelValue="(v: string | null) => updateCell(rows, index, field.path, v)"
+          :inputId="`${col.path}-${index}`"
+          :aria-label="`${col.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
+          :data-test="'yesno-' + col.path"
+          @update:modelValue="(v: string | null) => updateCell(rows, index, col.path, v)"
         />
       </template>
     </Column>
-    <Column frozen alignFrozen="right">
+
+    <Column
+      header=""
+      :frozen="!props.flat"
+      alignFrozen="right"
+      class="col-actions"
+      :headerClass="props.flat ? 'horizontal-headers-size border-bottom' : ''"
+      :bodyClass="props.flat ? 'border-bottom' : ''"
+    >
       <template #body="{ index }">
         <PrimeButton
           icon="pi pi-trash"
           severity="danger"
           text
+          rounded
           aria-label="Delete activity"
           data-test="delete-activity"
           @click="deleteRow(rows, index)"
@@ -137,7 +148,9 @@
         optionValue="value"
         filter
         placeholder="+ Add activity"
-        style="width: 14em"
+        class="add-activity-select"
+        :overlayStyle="{ width: '300px' }"
+        overlayClass="add-activity-overlay"
         inputId="add-activity-select"
         aria-label="Add activity"
         data-test="add-activity-select"
@@ -148,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRaw } from 'vue';
+import { computed, inject, ref, toRaw } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Select from 'primevue/select';
@@ -166,18 +179,27 @@ import {
 import { ActivityName } from '@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames.ts';
 import { DropdownDatasetIdentifier, getDataset } from '@/utils/PremadeDropdownDatasets.ts';
 import {
+  type ActivityField,
   type ActivityFieldGroup,
   type ActivityRow,
   addRow,
   deleteRow,
+  type KpiType,
+  kpiTypeLabels,
   updateCell,
 } from '@/utils/ActivityListHelpers.ts';
 
+type EditColumn = ActivityField & { groupIndex: number };
+
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
-  amountHeader: string;
   groups: ActivityFieldGroup[];
+  /** Renders the table without group header row and frozen columns, like the non-aligned activities view modal. */
+  flat?: boolean;
 }>();
+
+const kpiType = inject<KpiType | undefined>('activityKpiType', undefined) ?? 'revenue';
+const kpiLabel = kpiTypeLabels[kpiType] ?? kpiTypeLabels.revenue;
 
 const rows = ref<ActivityRow[]>(structuredClone(toRaw((props.extendedDataPointObject.value ?? []) as ActivityRow[])));
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
@@ -187,7 +209,54 @@ const activityToAdd = ref<string | undefined>(undefined);
 const activityOptions = Object.entries(ActivityName).map(([value, label]) => ({ value, label }));
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((a, b) => a.label.localeCompare(b.label));
 const yesNoOptions = ['Yes', 'No'];
-const allFields = computed(() => props.groups.flatMap((group) => group.fields));
+
+const columns = computed<EditColumn[]>(() =>
+  props.groups.flatMap((group) =>
+    group.fields.map((field, groupIndex) => ({
+      ...field,
+      header: field.header.replaceAll('{kpi}', kpiLabel),
+      groupIndex,
+    }))
+  )
+);
+
+const activityColumnProps = computed(() =>
+  props.flat
+    ? { headerClass: 'col-activity headers-bg border-bottom', bodyClass: 'col-activity headers-bg border-bottom' }
+    : { class: 'col-activity', bodyClass: 'headers-bg', headerClass: 'horizontal-headers-size' }
+);
+
+const naceColumnProps = computed(() =>
+  props.flat
+    ? { headerClass: 'col-nace-codes headers-bg border-bottom', bodyClass: 'col-nace-codes headers-bg border-bottom' }
+    : { class: 'col-nace-codes', bodyClass: 'headers-bg', headerClass: 'horizontal-headers-size' }
+);
+
+/**
+ * @param col the column definition
+ * @returns the css bindings of a main column, matching the ones of the view modal
+ */
+function mainColumnProps(col: EditColumn): Record<string, string> {
+  const widthClass = col.type === 'amount' ? 'col-amount' : '';
+  if (props.flat) {
+    const classes = `horizontal-headers-size border-bottom ${widthClass}`;
+    return { headerClass: classes, bodyClass: classes };
+  }
+  return {
+    class: groupColumnCssClasses(col, widthClass),
+    bodyClass: col.type === 'amount' ? '' : 'col-value',
+    headerClass: 'horizontal-headers-size',
+  };
+}
+
+/**
+ * @param col the column definition
+ * @param additionalClasses additional classes to add
+ * @returns the classes of the column, adding a left border to the first column of each group
+ */
+function groupColumnCssClasses(col: EditColumn, additionalClasses = ''): string {
+  return col.groupIndex === 0 ? `first-group-column ${additionalClasses}` : additionalClasses;
+}
 
 /**
  * @param apiName the api name of the activity
@@ -202,7 +271,7 @@ function humanizedActivityName(apiName: string | undefined): string {
  * @param path dot separated path
  * @returns the numeric value at the path or null
  */
-function getPercent(row: ActivityRow, path: string): number | null {
+function getNumber(row: ActivityRow, path: string): number | null {
   let current: unknown = row;
   for (const key of path.split('.')) {
     current = (current as Record<string, unknown> | null | undefined)?.[key];
@@ -220,10 +289,10 @@ function onAddSelected(name: string | undefined): void {
 }
 
 const percentValid = (row: ActivityRow): boolean =>
-  allFields.value
-    .filter((field) => field.type === 'percent')
+  columns.value
+    .filter((col) => col.type === 'percent')
     .every(({ path }) => {
-      const value = getPercent(row, path);
+      const value = getNumber(row, path);
       return value === null || (value >= 0 && value <= 100);
     });
 
@@ -244,33 +313,30 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>
 
 <style scoped>
-.activities-data-table :deep(.p-inputnumber-input),
-.activities-data-table :deep(.p-select) {
-  width: 100%;
-}
-
-.activities-data-table :deep(.p-datatable-tbody > tr > td) {
-  vertical-align: top;
-  padding: 0.5rem;
-}
-
-.activities-data-table :deep(.p-datatable-frozen-column) {
-  background: var(--tables-headers-bg);
+.activities-edit-table :deep(.p-datatable-frozen-column) {
   z-index: 2;
 }
 
-.activities-data-table :deep(.p-datatable-thead > tr > th.p-datatable-frozen-column) {
+.activities-edit-table :deep(.p-datatable-thead > tr > th.p-datatable-frozen-column) {
   z-index: 3;
 }
 
-.activities-data-table :deep(.col-amount) {
-  width: 17rem;
-  min-width: 17rem;
+.activities-edit-table :deep(.p-datatable-tbody > tr > td.col-actions) {
+  background-color: #fff;
+  width: 3.5rem;
+  min-width: 3.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  text-align: center;
+}
+
+.activities-edit-table :deep(.col-amount) {
+  width: 20rem;
+  min-width: 20rem;
 }
 
 .amount-cell {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 0.25rem;
 }
@@ -280,18 +346,42 @@ defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
   min-width: 6rem;
 }
 
+.amount-cell .amount-input :deep(.p-inputnumber-input) {
+  width: 100%;
+}
+
 .amount-cell .currency-select {
-  flex: 0 0 7rem;
-  width: 7rem;
+  flex: 0 0 6.5rem;
+  width: 6.5rem;
 }
 
 ul.unstyled-ul-list {
   padding: 0;
   margin: 0;
-  list-style: none;
+
+  li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+}
+
+.add-activity-select {
+  width: 300px;
+}
+
+.add-activity-select :deep(.p-select-label) {
+  text-align: left;
 }
 
 .edit-footer {
   margin: var(--spacing-md) 0;
+}
+</style>
+
+<style>
+/* The overlay is teleported to the body, so it cannot be styled with scoped styles. */
+.add-activity-overlay .p-select-option {
+  white-space: normal;
 }
 </style>

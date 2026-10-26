@@ -24,6 +24,26 @@ describe('Component test for EligibleOrAlignedActivitiesFormField', () => {
     cy.get('[data-test="currency-select"]').should('have.length', 2);
   });
 
+  it('uses the same column headers as the view modal for the provided KPI type', () => {
+    mountEditFormField(
+      EligibleOrAlignedActivitiesFormField,
+      { value: activities, quality: 'Reported', comment: '' },
+      { activityKpiType: 'capex' }
+    );
+    cy.get('[data-test="activities-edit-table"] thead th').then(($headers) => {
+      const headerTexts = [...$headers].map((header) => header.innerText.trim());
+      expect(headerTexts).to.include.members([
+        'Activity',
+        'NACE Code(s)',
+        'Aligned CapEx',
+        'Aligned CapEx (%)',
+        'Eligible CapEx (%)',
+        'Substantial Contribution Criteria',
+        'Climate Change Mitigation',
+      ]);
+    });
+  });
+
   it('removes a row via the trash icon and adds a row with prefilled NACE codes via the select', () => {
     mountComponent();
     cy.get('[data-test="delete-activity"]').first().click();
