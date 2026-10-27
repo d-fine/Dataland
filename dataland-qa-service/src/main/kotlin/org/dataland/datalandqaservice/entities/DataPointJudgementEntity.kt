@@ -52,7 +52,7 @@ class DataPointJudgementEntity(
     @Column(columnDefinition = "TEXT", nullable = true)
     var customValue: String?,
     @Column(columnDefinition = "TEXT", nullable = true)
-    var reasonForCustomDataPoint: String? = null,
+    var reviewerComment: String? = null,
     @JoinColumn(name = "dataset_judgement_id")
     @ManyToOne
     var datasetJudgement: DatasetJudgementEntity? = null,
@@ -77,7 +77,7 @@ class DataPointJudgementEntity(
             acceptedQaReportId = acceptedQaReportId,
             acceptedQaReport = qaReports.find { it.qaReportId == acceptedQaReportId }?.toApiModel(),
             customValue = customValue,
-            reasonForCustomDataPoint = reasonForCustomDataPoint,
+            reviewerComment = reviewerComment,
             preApprovalCheckResults = preApprovalCheckResults,
             dataPointBaseType = dataPointBaseType,
         )
