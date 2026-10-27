@@ -317,9 +317,11 @@ function onAddSelected(name: string | undefined): void {
 
 /**
  * Opens the add activity dropdown, so that a first activity can be added to an empty list.
+ * The opening is deferred until the current click has finished propagating. Otherwise the outside-click handler of
+ * the dropdown, which is registered while the click is still bubbling, would close the overlay again immediately.
  */
 function openAddActivitySelect(): void {
-  addActivitySelectRef.value?.show(true);
+  setTimeout(() => addActivitySelectRef.value?.show(true), 0);
 }
 
 const percentValid = (row: ActivityRow): boolean =>
