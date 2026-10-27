@@ -132,6 +132,18 @@
         />
       </template>
     </Column>
+    <template #empty>
+      <div class="empty-activities" data-test="empty-activities">
+        <span>No activities have been added yet.</span>
+        <PrimeButton
+          label="Add first activity"
+          icon="pi pi-plus"
+          size="small"
+          data-test="add-first-activity-button"
+          @click="openAddActivitySelect"
+        />
+      </div>
+    </template>
   </DataTable>
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
@@ -142,6 +154,7 @@
   >
     <template #toolbar-start>
       <Select
+        ref="addActivitySelectRef"
         v-model="activityToAdd"
         :options="activityOptions"
         optionLabel="label"
@@ -205,6 +218,7 @@ const rows = ref<ActivityRow[]>(structuredClone(toRaw((props.extendedDataPointOb
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
 const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 const activityToAdd = ref<string | undefined>(undefined);
+const addActivitySelectRef = ref<{ show: (isFocus?: boolean) => void }>();
 
 const activityOptions = Object.entries(ActivityName).map(([value, label]) => ({ value, label }));
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((a, b) => a.label.localeCompare(b.label));
@@ -286,6 +300,13 @@ function getNumber(row: ActivityRow, path: string): number | null {
 function onAddSelected(name: string | undefined): void {
   if (name) addRow(rows.value, name);
   activityToAdd.value = undefined;
+}
+
+/**
+ * Opens the add activity dropdown, so that a first activity can be added to an empty list.
+ */
+function openAddActivitySelect(): void {
+  addActivitySelectRef.value?.show(true);
 }
 
 const percentValid = (row: ActivityRow): boolean =>
@@ -372,6 +393,15 @@ ul.unstyled-ul-list {
 
 .add-activity-select :deep(.p-select-label) {
   text-align: left;
+}
+
+.empty-activities {
+  position: sticky;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: fit-content;
 }
 
 .edit-footer {

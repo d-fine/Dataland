@@ -56,6 +56,16 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       cy.get('[data-test="activity-name"]').should('have.length', 1);
     });
 
+    it('offers a button to add the first activity when the list is empty', () => {
+      mountEditFormField(component, { ...dataPoint, value: [] });
+      cy.get('[data-test="activity-name"]').should('not.exist');
+      cy.get('[data-test="empty-activities"]').should('contain.text', 'No activities have been added yet.');
+      cy.get('[data-test="add-first-activity-button"]').click();
+      cy.get('.add-activity-overlay .p-select-option').first().click();
+      cy.get('[data-test="activity-name"]').should('have.length', 1);
+      cy.get('[data-test="empty-activities"]').should('not.exist');
+    });
+
     it('returns the list in the api body', () => {
       mountEditFormField(component, dataPoint);
       cy.get('@component').then((instance: { buildApiBodyWithExtendedInfo: () => string }) => {
