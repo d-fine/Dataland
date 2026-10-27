@@ -20,7 +20,7 @@
       :disabled="disabled"
       :name="name"
       v-bind:model-value="selectedOption"
-      @update:model-value="handleFormKitInputChange($event)"
+      @update:model-value="handleFormKitInputChange($event as string | undefined)"
       :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
       :validation-label="validationLabel"
       :validation="validation"

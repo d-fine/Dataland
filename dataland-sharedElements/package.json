@@ -17,12 +17,29 @@
     "vue": "^3.5.32"
   },
   "scripts": {
-    "build": "vue-tsc --noEmit"
+    "build": "vue-tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
+    "format": "prettier --write .",
+    "formatci": "prettier --check .",
+    "lint": "eslint . --fix",
+    "lintci": "eslint . --max-warnings 0 --no-fix",
+    "updatepackages": "npm-check-updates -u",
+    "updatepackagelock": "npm update --save --include=dev && npm audit fix",
+    "fixvulnerabilites": "npm audit fix",
+    "checkdependencies": "depcheck --ignores='eslint-plugin-*,@vue/eslint-config-*'"
   },
   "devDependencies": {
-    "vue": "^3.5.32",
-    "typescript": "^6.0.0",
-    "vue-tsc": "^3.3.5",
-    "@vue/compiler-sfc": "3.5.44"
+    "@vue/compiler-sfc": "3.5.44",
+    "@vue/eslint-config-prettier": "10.2.0",
+    "@vue/eslint-config-typescript": "14.9.0",
+    "depcheck": "1.4.7",
+    "eslint": "^10.13.0",
+    "eslint-plugin-jsdoc": "^64.5.4",
+    "eslint-plugin-vue": "^10.11.1",
+    "npm-check-updates": "^23.1.1",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3",
+    "vue": "^3.5.44",
+    "vue-tsc": "^3.3.13"
   }
 }

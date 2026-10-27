@@ -7,7 +7,7 @@ project_root="$(pwd)"
 install_base_packages() {
 	echo "Installing basic packages"
 	sudo apt-get update
-	sudo apt-get -y install unzip curl wget apt-transport-https gpg vim
+	sudo apt-get -y install unzip curl wget apt-transport-https gpg vim libreoffice
 }
 
 install_java() {
@@ -35,7 +35,7 @@ install_cypress_prerequisites() {
 	echo "Install node and npm"
 	curl -o- https://fnm.vercel.app/install | bash
 	source_bashrc
-	fnm install 24
+	fnm install 26
 	npm install -g npm
 }
 
