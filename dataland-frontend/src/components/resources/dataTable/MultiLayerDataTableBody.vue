@@ -131,6 +131,7 @@ import Tooltip from 'primevue/tooltip';
 import { computed, inject, nextTick, onMounted, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
+import { activityComponentNames } from '@/utils/ActivityListHelpers.ts';
 import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 
@@ -231,12 +232,6 @@ const props = defineProps<{
 onMounted(() => {
   expandSectionsOnPageLoad();
 });
-
-const activityComponentNames = new Set([
-  'EligibleOrAlignedActivitiesFormField',
-  'AlignedActivitiesFormField',
-  'NonAlignedActivitiesFormField',
-]);
 
 /**
  * Opens a modal dialog for editing a data point.

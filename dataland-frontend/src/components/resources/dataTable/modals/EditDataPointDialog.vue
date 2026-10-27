@@ -26,7 +26,7 @@ import { componentDictionary } from '@/components/resources/dataTable/EditDataPo
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
-import { kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
+import { activityComponentNames, kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -51,17 +51,18 @@ const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageVal
 const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
 const modalData = dataPoint?.displayValue?.modalOptions?.data;
-const listDataPointObject: ExtendedDataPointType | undefined = modalData
-  ? {
-      value: modalData.listOfRowContents ?? [],
-      quality: modalData.dataPointDisplay?.quality ?? '',
-      comment: modalData.dataPointDisplay?.comment ?? '',
-      dataSource: {
-        fileReference: modalData.dataPointDisplay?.dataSource?.fileReference ?? '',
-        page: modalData.dataPointDisplay?.dataSource?.page ?? '',
-      },
-    }
-  : undefined;
+const listDataPointObject: ExtendedDataPointType | undefined =
+  modalData || activityComponentNames.has(uploadComponentName ?? '')
+    ? {
+        value: modalData?.listOfRowContents ?? [],
+        quality: modalData?.dataPointDisplay?.quality ?? '',
+        comment: modalData?.dataPointDisplay?.comment ?? '',
+        dataSource: {
+          fileReference: modalData?.dataPointDisplay?.dataSource?.fileReference ?? '',
+          page: modalData?.dataPointDisplay?.dataSource?.page ?? '',
+        },
+      }
+    : undefined;
 
 const scalarDataPointObject: ExtendedDataPointType = {
   value: ((): string | undefined => {

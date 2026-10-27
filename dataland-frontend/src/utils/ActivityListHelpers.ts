@@ -4,6 +4,12 @@ export type KpiType = 'revenue' | 'capex' | 'opex';
 
 export const kpiTypeLabels: Record<KpiType, string> = { revenue: 'Revenue', capex: 'CapEx', opex: 'OpEx' };
 
+export const activityComponentNames = new Set([
+  'EligibleOrAlignedActivitiesFormField',
+  'AlignedActivitiesFormField',
+  'NonAlignedActivitiesFormField',
+]);
+
 const activitiesDataPointTypeIdKpiRegex = /ActivitiesComponent(Revenue|Capex|Opex)/;
 
 /**
