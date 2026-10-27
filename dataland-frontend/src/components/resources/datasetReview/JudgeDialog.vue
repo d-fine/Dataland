@@ -40,7 +40,7 @@
       style="
         display: grid;
         grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
-        grid-template-rows: auto 1px auto;
+        grid-template-rows: auto 1px auto auto;
         column-gap: var(--spacing-lg);
         row-gap: var(--spacing-lg);
         flex: 1;
@@ -66,7 +66,7 @@
         :is-currency-data-point="isCurrencyDataPoint"
         :is-assurance-data-point="isAssuranceDataPoint"
         section-type="original"
-        @accept="onAcceptClick(AcceptedDataPointSource.Original)"
+        @accept="executeAccept(AcceptedDataPointSource.Original)"
         @show-popover="showPopover"
         @hide-popover="hidePopover"
       />
@@ -94,7 +94,7 @@
         :is-currency-data-point="isCurrencyDataPoint"
         :is-assurance-data-point="isAssuranceDataPoint"
         section-type="qa"
-        @accept="onAcceptClick(AcceptedDataPointSource.Qa)"
+        @accept="executeAccept(AcceptedDataPointSource.Qa)"
         @prev="goToPreviousReport"
         @next="goToNextReport"
         @show-popover="showPopover"
@@ -119,7 +119,6 @@
         v-model:edit-mode-enabled="editModeEnabled"
         v-model:json="customJson"
         v-model:form-data="customFormData"
-        v-model:reason-for-custom-data-point="reasonForCustomDataPoint"
         :accept-disabled="isPatching"
         :can-copy-original="!!originalData"
         :can-copy-corrected="!!currentQaCorrectedData"
@@ -127,7 +126,7 @@
         :is-currency-data-point="isCurrencyDataPoint"
         :is-assurance-data-point="isAssuranceDataPoint"
         :is-accepted="currentDatapointJudgement?.acceptedSource === AcceptedDataPointSource.Custom"
-        @accept="onAcceptClick(AcceptedDataPointSource.Custom)"
+        @accept="executeAccept(AcceptedDataPointSource.Custom)"
         @copy-original="copyOriginalToCustom"
         @copy-corrected="copyCorrectedToCustom"
       />
@@ -143,6 +142,24 @@
         :options="nextDataPointOptions"
         @go-to="navigateToDataPoint(selectedNextDataPointTypeId)"
       />
+
+      <!-- Bottom row: Reviewer comment, independent of the accepted source -->
+      <div style="grid-column: 1 / 4; grid-row: 4">
+        <label
+          for="reviewer-comment-field"
+          style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xxs)"
+        >
+          Reviewer comment (internal only)
+        </label>
+        <Textarea
+          id="reviewer-comment-field"
+          v-model="reviewerComment"
+          size="small"
+          data-test="reviewer-comment-field"
+          placeholder="Reviewer comment (optional, internal only)"
+          style="width: 100%; height: 4rem; resize: none"
+        />
+      </div>
 
       <!-- spacer for cookie button at the bottom-->
       <div class="pt-4"></div>
@@ -189,25 +206,13 @@
     :show-cancel-button="false"
     confirm-label="OK"
   />
-  <PopupConfirmationModal
-    v-model:visible="isReasonWarningModalVisible"
-    header="Reason will be discarded"
-    message="You have entered a reason for a custom data point, but you're accepting a different source. The reason will be cleared if you proceed."
-    :error-message="undefined"
-    :is-loading="false"
-    :is-success="false"
-    @confirm="proceedWithNonCustomAccept"
-    @cancel="cancelReasonWarningModal"
-    :dismissable-mask="false"
-    :show-cancel-button="true"
-    confirm-label="Proceed"
-  />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import PrimeDrawer from 'primevue/drawer';
 import Popover from 'primevue/popover';
+import Textarea from 'primevue/textarea';
 
 import PopupConfirmationModal from '@/components/resources/popups/PopupConfirmationModal.vue';
 import JudgeDialogTopSection from '@/components/resources/datasetReview/JudgeDialogTopSection.vue';
@@ -510,11 +515,7 @@ function goToNextReport(): void {
 const editModeEnabled = ref<boolean>(false);
 const customJson = ref<string>(DEFAULT_CUSTOM_JSON);
 const customFormData = ref<CustomFormData>({ ...DEFAULT_CUSTOM_FORM_DATA });
-const reasonForCustomDataPoint = ref<string>('');
-
-// Warning modal state for when a reason has been entered but a non-Custom source is accepted
-const isReasonWarningModalVisible = ref<boolean>(false);
-const pendingAcceptedSource = ref<AcceptedDataPointSource | null>(null);
+const reviewerComment = ref<string>('');
 
 /**
  * Copies the original data point values into the custom section
@@ -664,7 +665,6 @@ function afterSuccessfulPatch(): void {
  * @param acceptedSource - The accepted data point source.
  * @param acceptedQaReportId - The selected QA report ID, if applicable.
  * @param customDataPoint - The custom data point JSON string, if applicable.
- * @param reasonForCustomDataPoint - The reason for creating a custom data point, if applicable.
  * @param errorLogMessage - Message logged when the patch fails.
  * @returns Nothing.
  */
@@ -672,14 +672,13 @@ function patchCurrentDatapoint(
   acceptedSource: AcceptedDataPointSource,
   acceptedQaReportId: string | undefined,
   customDataPoint: string | undefined,
-  reasonForCustomDataPoint: string | undefined,
   errorLogMessage: string
 ): void {
   patchJudgementDetail(
     {
       judgementId: props.datasetReviewId,
       dataPointTypeId: currentDataPointTypeId.value,
-      details: { acceptedSource, acceptedQaReportId, customDataPoint, reasonForCustomDataPoint },
+      details: { acceptedSource, acceptedQaReportId, customDataPoint, reviewerComment: reviewerComment.value.trim() },
     },
     {
       onSuccess: () => {
@@ -727,50 +726,8 @@ function patchCurrentDatapoint(
 }
 
 /**
- * Central handler for accepting a data point from a given source
- * (original / QA / custom).
- *
- * When a non-Custom source is selected but a reason for a custom data point has
- * been entered, the Judge is asked to confirm before proceeding, since the reason
- * will be discarded.
- *
- * @param acceptedSource - The selected data point source to accept.
- * @returns Nothing.
- */
-function onAcceptClick(acceptedSource: AcceptedDataPointSource): void {
-  if (acceptedSource !== AcceptedDataPointSource.Custom && reasonForCustomDataPoint.value.trim().length > 0) {
-    pendingAcceptedSource.value = acceptedSource;
-    isReasonWarningModalVisible.value = true;
-    return;
-  }
-  executeAccept(acceptedSource);
-}
-
-/**
- * Called when the Judge confirms they want to proceed after the reason-warning modal.
- * Clears the reason and executes the pending acceptance.
- *
- * @returns Nothing.
- */
-function proceedWithNonCustomAccept(): void {
-  isReasonWarningModalVisible.value = false;
-  reasonForCustomDataPoint.value = '';
-  if (pendingAcceptedSource.value !== null) {
-    executeAccept(pendingAcceptedSource.value);
-    pendingAcceptedSource.value = null;
-  }
-}
-
-/**
- * Resets the state when the warning modal is closed by clicking "Cancel".
- */
-function cancelReasonWarningModal(): void {
-  isReasonWarningModalVisible.value = false;
-  pendingAcceptedSource.value = null;
-}
-
-/**
- * Executes the accept action for the given source without any warnings.
+ * Central handler for accepting a data point from a given source (original / QA / custom).
+ * The reviewer comment is sent along independent of the accepted source.
  *
  * @param acceptedSource - The selected data point source to accept.
  * @returns Nothing.
@@ -800,7 +757,6 @@ function acceptOriginalDatapoint(): void {
     AcceptedDataPointSource.Original,
     undefined,
     undefined,
-    undefined,
     `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Original.`
   );
 }
@@ -816,7 +772,6 @@ function acceptQaReportDatapoint(): void {
   patchCurrentDatapoint(
     AcceptedDataPointSource.Qa,
     currentQaReport.value.qaReportId,
-    undefined,
     undefined,
     `Error in patching datasetJudgement object for dataPointId: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Qa and qaReportId: ${currentQaReport.value.qaReportId}`
   );
@@ -839,12 +794,10 @@ function acceptCustomDatapoint(): void {
     editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
     originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
   );
-  const reason = reasonForCustomDataPoint.value.trim() || undefined;
   patchCurrentDatapoint(
     AcceptedDataPointSource.Custom,
     undefined,
     customDataPointJson,
-    reason,
     `Error in patching datasetJudgement object for dataPointType: ${currentDataPointTypeId.value} with AcceptedDataPointSource.Custom.`
   );
 }
@@ -859,13 +812,14 @@ function resetStateForCurrentDataPoint(): void {
 }
 
 /**
- * Initializes the custom form / JSON for the currently selected data point
+ * Initializes the reviewer comment and the custom form / JSON for the currently selected data point
  * based on previously accepted custom judgement, if present.
  *
  * @param judgementMetaData - The current data point judgement metadata.
  * @returns Nothing.
  */
 function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement | null): void {
+  reviewerComment.value = judgementMetaData?.reviewerComment ?? '';
   if (judgementMetaData?.acceptedSource === AcceptedDataPointSource.Custom && judgementMetaData.customValue) {
     const parsed = parseDataPointJsonToFormData(judgementMetaData.customValue);
     if (parsed !== null) {
@@ -874,14 +828,12 @@ function setCustomFormForCurrentDataPoint(judgementMetaData: DataPointJudgement 
       customFormData.value = parsed;
       const wrapped = wrapDataPointJson(judgementMetaData.customValue);
       customJson.value = wrapped === null ? judgementMetaData.customValue : JSON.stringify(wrapped, null, 2);
-      reasonForCustomDataPoint.value = judgementMetaData.reasonForCustomDataPoint ?? '';
       return;
     }
     console.error('Failed to parse previously accepted custom data point JSON');
   }
   customJson.value = DEFAULT_CUSTOM_JSON;
   customFormData.value = { ...DEFAULT_CUSTOM_FORM_DATA };
-  reasonForCustomDataPoint.value = '';
 }
 
 watch(currentDatapointJudgement, setCustomFormForCurrentDataPoint, { immediate: true });
