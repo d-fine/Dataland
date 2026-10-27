@@ -64,26 +64,38 @@ const listDataPointObject: ExtendedDataPointType | undefined =
       }
     : undefined;
 
-const scalarDataPointObject: ExtendedDataPointType = {
-  value: ((): string | undefined => {
-    const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
-  })(),
-  quality: ((): string | undefined => {
-    const valueOrPotentialQuality =
-      unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return valueOrPotentialQuality && Object.values(QualityOptions).includes(valueOrPotentialQuality)
-      ? valueOrPotentialQuality
-      : unref(dataPoint?.displayValue?.quality ?? '');
-  })(),
-  comment: unref(dataPoint?.displayValue?.comment ?? ''),
-  dataSource: {
-    fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
-    page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
-  },
-};
+/**
+ * @returns the inner display value as trimmed string (empty if it is not a string)
+ */
+function innerDisplayText(): string {
+  const inner = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '');
+  return typeof inner === 'string' ? inner.trim() : '';
+}
 
-const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? scalarDataPointObject;
+/**
+ * @returns the extended data point object for scalar data points
+ */
+function buildScalarDataPointObject(): ExtendedDataPointType {
+  return {
+    value: ((): string | undefined => {
+      const value = innerDisplayText() || undefined;
+      return value && !(Object.values(QualityOptions) as string[]).includes(value) ? value : undefined;
+    })(),
+    quality: ((): string | undefined => {
+      const valueOrPotentialQuality = innerDisplayText() || undefined;
+      return valueOrPotentialQuality && (Object.values(QualityOptions) as string[]).includes(valueOrPotentialQuality)
+        ? valueOrPotentialQuality
+        : unref(dataPoint?.displayValue?.quality ?? '');
+    })(),
+    comment: unref(dataPoint?.displayValue?.comment ?? ''),
+    dataSource: {
+      fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
+      page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
+    },
+  };
+}
+
+const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? buildScalarDataPointObject();
 
 provide('companyId', companyId);
 // For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
