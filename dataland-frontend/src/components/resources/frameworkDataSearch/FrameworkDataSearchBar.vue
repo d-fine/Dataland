@@ -21,7 +21,7 @@
           @keydown="noteThatAKeyWasPressed"
           @keydown.down="getCurrentFocusedOptionIndex"
           @keydown.up="getCurrentFocusedOptionIndex"
-          @item-select="handleItemSelect"
+          @option-select="handleItemSelect"
           @keyup.enter="executeSearchIfNoItemFocused"
           @focus="setCurrentFocusedOptionIndexToDefault"
         >

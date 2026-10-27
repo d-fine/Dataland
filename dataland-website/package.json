@@ -21,12 +21,12 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/mdx": "^8.1.0",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/mdx": "^8.1.1",
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vue": "^7.1.0",
+    "@astrojs/vue": "^7.1.2",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "astro": "^7.4.0",
+    "astro": "^7.4.2",
     "typescript": "^6.0.3",
     "vue": "^3.5.44"
   },
