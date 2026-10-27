@@ -64,6 +64,8 @@
             :maxFractionDigits="2"
             fluid
             class="amount-input"
+            :invalid="currencyWithoutAmount(rows[index]!)"
+            v-tooltip.top="currencyWithoutAmount(rows[index]!) ? absoluteShareHint : ''"
             :inputId="`amount-${index}`"
             :aria-label="`${col.header} for ${humanizedActivityName(rows[index]!.activityName)}`"
             data-test="amount-input"
@@ -77,6 +79,8 @@
             filter
             placeholder="Cur."
             class="currency-select"
+            :invalid="amountWithoutCurrency(rows[index]!)"
+            v-tooltip.top="amountWithoutCurrency(rows[index]!) ? absoluteShareHint : ''"
             :inputId="`currency-${index}`"
             :aria-label="`Currency for ${humanizedActivityName(rows[index]!.activityName)}`"
             data-test="currency-select"
@@ -180,6 +184,7 @@ import Column from 'primevue/column';
 import Select from 'primevue/select';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
+import Tooltip from 'primevue/tooltip';
 import InputNumber from 'primevue/inputnumber';
 import PrimeButton from 'primevue/button';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
@@ -196,6 +201,8 @@ import {
   type ActivityFieldGroup,
   type ActivityRow,
   addRow,
+  amountWithoutCurrency,
+  currencyWithoutAmount,
   deleteRow,
   type KpiType,
   kpiTypeLabels,
@@ -220,7 +227,13 @@ const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType
 const activityToAdd = ref<string | undefined>(undefined);
 const addActivitySelectRef = ref<{ show: (isFocus?: boolean) => void }>();
 
-const activityOptions = Object.entries(ActivityName).map(([value, label]) => ({ value, label }));
+const vTooltip = Tooltip;
+const absoluteShareHint = 'Please provide both an amount and a currency, or leave both empty.';
+const allActivityOptions = Object.entries(ActivityName).map(([value, label]) => ({ value, label }));
+const activityOptions = computed(() => {
+  const used = new Set(rows.value.map((row) => row.activityName));
+  return allActivityOptions.filter((option) => !used.has(option.value));
+});
 const currencyList = getDataset(DropdownDatasetIdentifier.CurrencyCodes).sort((a, b) => a.label.localeCompare(b.label));
 const yesNoOptions = ['Yes', 'No'];
 
@@ -298,7 +311,7 @@ function getNumber(row: ActivityRow, path: string): number | null {
  * @param name the selected activity api name
  */
 function onAddSelected(name: string | undefined): void {
-  if (name) addRow(rows.value, name);
+  if (name && !rows.value.some((row) => row.activityName === name)) addRow(rows.value, name);
   activityToAdd.value = undefined;
 }
 
@@ -319,7 +332,10 @@ const percentValid = (row: ActivityRow): boolean =>
 
 const isPageValid = computed<boolean>(
   () =>
-    rows.value.every((row) => !!row.activityName && percentValid(row)) && (extendedDialogRef.value?.isPageValid ?? true)
+    rows.value.every(
+      (row) => !!row.activityName && percentValid(row) && !amountWithoutCurrency(row) && !currencyWithoutAmount(row)
+    ) &&
+    (extendedDialogRef.value?.isPageValid ?? true)
 );
 
 /**

@@ -91,3 +91,21 @@ export function deleteRow(rows: ActivityRow[], index: number): void {
 export function addRow(rows: ActivityRow[], activityName: string): void {
   rows.push({ activityName, naceCodes: getNaceCodesForActivity(activityName), share: null });
 }
+
+/**
+ * @param row the row
+ * @returns true if an amount is set but no currency
+ */
+export function amountWithoutCurrency(row: ActivityRow): boolean {
+  const share = row.share?.absoluteShare;
+  return share?.amount != null && !share.currency;
+}
+
+/**
+ * @param row the row
+ * @returns true if a currency is set but no amount
+ */
+export function currencyWithoutAmount(row: ActivityRow): boolean {
+  const share = row.share?.absoluteShare;
+  return !!share?.currency && share.amount == null;
+}
