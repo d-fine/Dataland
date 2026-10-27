@@ -26,6 +26,7 @@ import { componentDictionary } from '@/components/resources/dataTable/EditDataPo
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -84,7 +85,8 @@ const scalarDataPointObject: ExtendedDataPointType = {
 const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? scalarDataPointObject;
 
 provide('companyId', companyId);
-provide('activityKpiType', modalData?.kpiType);
+// For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
+provide('activityKpiType', modalData?.kpiType ?? kpiTypeFromDataPointTypeId(dataPointTypeId));
 
 /**
  * Updates the data point with the current API body.

@@ -4,6 +4,19 @@ export type KpiType = 'revenue' | 'capex' | 'opex';
 
 export const kpiTypeLabels: Record<KpiType, string> = { revenue: 'Revenue', capex: 'CapEx', opex: 'OpEx' };
 
+const activitiesDataPointTypeIdKpiRegex = /ActivitiesComponent(Revenue|Capex|Opex)/;
+
+/**
+ * Derives the KPI type from the data point type id of an activity list,
+ * e.g. "extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities" yields "capex".
+ * @param dataPointTypeId the data point type id
+ * @returns the KPI type or undefined if the id is not the one of an activity list
+ */
+export function kpiTypeFromDataPointTypeId(dataPointTypeId: string | undefined | null): KpiType | undefined {
+  const match = dataPointTypeId ? activitiesDataPointTypeIdKpiRegex.exec(dataPointTypeId) : null;
+  return match ? (match[1]!.toLowerCase() as KpiType) : undefined;
+}
+
 /**
  * A single editable column of an activity row. The header may contain the placeholder `{kpi}`, which is replaced by
  * the label of the KPI type (Revenue, CapEx, OpEx) so that the headers match the ones of the view modal.
