@@ -41,7 +41,7 @@
     "eslint-plugin-vue": "10.11.1",
     "npm-check-updates": "23.1.1",
     "prettier": "3.9.10",
-    "prettier-plugin-astro": "1.1.1",
+    "prettier-plugin-astro": "1.1.2",
     "tailwindcss": "4.3.3",
     "vue-eslint-parser": "10.4.1"
   }
