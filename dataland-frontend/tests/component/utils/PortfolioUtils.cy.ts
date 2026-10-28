@@ -55,9 +55,9 @@ describe('Unit test for PortfolioUtils', () => {
     } as unknown as EnrichedPortfolio;
 
     expect(groupProxiedCompaniesByProxyId(portfolio, new Map([['ext', 'Alpha']])).get('p')).to.deep.equal([
-      { companyId: 'ext', companyName: 'Alpha', linkable: false },
-      { companyId: 'unknown', companyName: 'unknown', linkable: false },
-      { companyId: 'in', companyName: 'Zeta', linkable: true },
+      { companyId: 'ext', companyName: 'Alpha' },
+      { companyId: 'unknown', companyName: 'unknown' },
+      { companyId: 'in', companyName: 'Zeta' },
     ]);
   });
 });
