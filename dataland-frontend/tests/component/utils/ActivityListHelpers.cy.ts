@@ -39,11 +39,10 @@ describe('Unit test for ActivityListHelpers', () => {
   });
 
   it('returns undefined for ids that are not the ones of activity lists', () => {
-    expect(kpiTypeFromDataPointTypeId('extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentAligned')).to.equal(
-      undefined
-    );
-    expect(kpiTypeFromDataPointTypeId('')).to.equal(undefined);
-    expect(kpiTypeFromDataPointTypeId(undefined)).to.equal(undefined);
+    expect(kpiTypeFromDataPointTypeId('extendedDecimalCapexRelativeShareOfNuclearActivitiesInPercentAligned')).to.be
+      .undefined;
+    expect(kpiTypeFromDataPointTypeId('')).to.be.undefined;
+    expect(kpiTypeFromDataPointTypeId(undefined)).to.be.undefined;
   });
 
   it('derives a KPI type for every activity list cell of the EU taxonomy non-financials view configurations', () => {
