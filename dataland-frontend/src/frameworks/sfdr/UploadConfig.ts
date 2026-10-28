@@ -29,7 +29,7 @@ export const sfdrDataModel = [
         fields: [
           {
             name: 'fiscalYearEnd',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             description: 'The date the fiscal year ends.',
 
             component: 'DateExtendedDataPointFormField',
@@ -131,7 +131,7 @@ export const sfdrDataModel = [
         fields: [
           {
             name: 'grossDomesticProductGdpInEUR',
-            label: 'Gross Domestic Product (GDP)',
+            label: 'Gross domestic product (GDP)',
             description:
               'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
 
@@ -143,7 +143,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'pppAdjustedGrossDomesticProductGdp',
-            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            label: 'PPP adjusted gross domestic product (GDP)',
             description:
               'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
 
@@ -207,7 +207,7 @@ export const sfdrDataModel = [
           },
           {
             name: 'enterpriseValueInEUR',
-            label: 'Enterprise Value',
+            label: 'Enterprise value',
             description:
               'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
 

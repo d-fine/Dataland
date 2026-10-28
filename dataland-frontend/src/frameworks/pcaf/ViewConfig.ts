@@ -30,7 +30,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         children: [
           {
             type: 'cell',
-            label: 'Fiscal Year Deviation',
+            label: 'Fiscal year deviation',
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
@@ -46,7 +46,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                       : ''
                   );
                 })(),
-                'Fiscal Year Deviation',
+                'Fiscal year deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
@@ -65,7 +65,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                       : ''
                   );
                 })(),
-                'Fiscal Year Deviation',
+                'Fiscal year deviation',
                 dataPoint
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
@@ -73,19 +73,19 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
           },
           {
             type: 'cell',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataset.general?.general?.fiscalYearEnd
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataPoint
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
@@ -215,19 +215,19 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
   },
   {
     type: 'section',
-    label: 'Company Value',
+    label: 'Company value',
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: 'section',
-        label: 'Company Value',
+        label: 'Company value',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: 'cell',
-            label: 'Gross Domestic Product (GDP)',
+            label: 'Gross domestic product (GDP)',
             explanation:
               'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
             shouldDisplay: (): boolean => true,
@@ -237,13 +237,13 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                   dataset.companyValue?.companyValue?.grossDomesticProductGdpInEUR?.value,
                   'EUR'
                 ),
-                'Gross Domestic Product (GDP)',
+                'Gross domestic product (GDP)',
                 dataset.companyValue?.companyValue?.grossDomesticProductGdpInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Gross Domestic Product (GDP)',
+                'Gross domestic product (GDP)',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -251,7 +251,7 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
           },
           {
             type: 'cell',
-            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            label: 'PPP adjusted gross domestic product (GDP)',
             explanation:
               'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
             shouldDisplay: (): boolean => true,
@@ -261,13 +261,13 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
                   dataset.companyValue?.companyValue?.pppAdjustedGrossDomesticProductGdp?.value,
                   'USD'
                 ),
-                'PPP adjusted Gross Domestic Product (GDP)',
+                'PPP adjusted gross domestic product (GDP)',
                 dataset.companyValue?.companyValue?.pppAdjustedGrossDomesticProductGdp
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'USD'),
-                'PPP adjusted Gross Domestic Product (GDP)',
+                'PPP adjusted gross domestic product (GDP)',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -345,20 +345,20 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
           },
           {
             type: 'cell',
-            label: 'Enterprise Value',
+            label: 'Enterprise value',
             explanation:
               'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(dataset.companyValue?.listedCompany?.enterpriseValueInEUR?.value, 'EUR'),
-                'Enterprise Value',
+                'Enterprise value',
                 dataset.companyValue?.listedCompany?.enterpriseValueInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Enterprise Value',
+                'Enterprise value',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',

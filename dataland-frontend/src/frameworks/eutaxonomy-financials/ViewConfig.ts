@@ -39,7 +39,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
         children: [
           {
             type: 'cell',
-            label: 'Fiscal Year Deviation',
+            label: 'Fiscal year deviation',
             explanation: 'Does the fiscal year deviate from the calendar year?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
@@ -55,7 +55,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                       : ''
                   );
                 })(),
-                'Fiscal Year Deviation',
+                'Fiscal year deviation',
                 dataset.general?.general?.fiscalYearDeviation
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
@@ -76,7 +76,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
                       : ''
                   );
                 })(),
-                'Fiscal Year Deviation',
+                'Fiscal year deviation',
                 dataPoint
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
@@ -84,19 +84,19 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
           },
           {
             type: 'cell',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatStringForDatatable(dataset.general?.general?.fiscalYearEnd?.value),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataset.general?.general?.fiscalYearEnd
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataPoint
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
