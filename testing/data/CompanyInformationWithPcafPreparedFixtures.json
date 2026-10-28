@@ -2,32 +2,36 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-PCAF-Framework-Company",
-			"headquarters": "Simi Valley",
-			"headquartersPostalCode": "24404-1176",
-			"sector": "initiatives",
+			"headquarters": "Port Veronaworth",
+			"headquartersPostalCode": "25631",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [
-					"bWA0H8GLtzCV6j9cDUGI"
-				],
+				"Lei": [],
 				"Isin": [
-					"GqZMQguxjsqt"
+					"x4dQMUr0yJLI",
+					"CKqWa2yolwsy"
 				],
-				"PermId": [],
+				"PermId": [
+					"bspYhVIvj2"
+				],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"fbIlUTfaw"
+					"8jGHAz57A"
 				],
 				"CompanyRegistrationNumber": [
-					"DRTHt9VASVFLIMH"
+					"nLGEPSrhqNQjKS8"
 				]
 			},
-			"countryCode": "GG",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://shadowy-tectonics.com/",
-			"fiscalYearEnd": "16-Aug",
+			"countryCode": "GQ",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Harber - Zboncak",
+				"Mosciski and Sons"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://overcooked-goat.com",
+			"fiscalYearEnd": "26-Nov",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -36,264 +40,220 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "827-1013",
+							"page": "1052",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "initiatives",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
 							"publicationDate": null
 						},
-						"comment": "synthesize multi-byte circuit",
+						"comment": "quantify solid state port",
 						"quality": "Reported"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-04-28",
+						"value": "2024-08-13",
 						"dataSource": {
-							"page": "1172-1204",
+							"page": "1010-1201",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
+							"tagName": "applications",
 							"publicationDate": null
 						},
-						"comment": "back up solid state monitor",
+						"comment": "override redundant capacitor",
 						"quality": "NoDataFound"
 					}
 				},
 				"company": {
 					"mainPcafSector": {
-						"value": "Industrials",
+						"value": "Materials",
 						"dataSource": {
-							"page": "449, 1248-1258",
+							"page": "1065, 1228-1238",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "users",
+							"tagName": "functionalities",
 							"publicationDate": null
 						},
-						"comment": "transmit auxiliary program",
-						"quality": "Incomplete"
+						"comment": "hack back-end driver",
+						"quality": "Estimated"
 					},
 					"companyExchangeStatus": {
 						"value": "Listed",
 						"dataSource": {
-							"page": "1025, 1237-1247",
+							"page": "207",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "niches",
+							"publicationDate": null
+						},
+						"comment": "back up online port",
+						"quality": "Audited"
+					}
+				}
+			},
+			"companyValue": {
+				"companyValue": {
+					"grossDomesticProductGdpInEUR": {
+						"value": 24231.87,
+						"dataSource": {
+							"page": "435, 792-802",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "functionalities",
+							"publicationDate": null
+						},
+						"comment": "bypass bluetooth bus",
+						"quality": "Incomplete"
+					},
+					"pppAdjustedGrossDomesticProductGdp": {
+						"value": 9198.73,
+						"dataSource": {
+							"page": "267",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "convergence",
+							"publicationDate": null
+						},
+						"comment": "transmit neural program",
+						"quality": "Incomplete"
+					},
+					"bookValueOfDebtInEUR": {
+						"value": 57146.9,
+						"dataSource": {
+							"page": "638-1128",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "communities",
+							"publicationDate": null
+						},
+						"comment": "bypass back-end driver",
+						"quality": "Estimated"
+					}
+				},
+				"listedCompany": {
+					"marketCapitalizationInEUR": {
+						"value": 72754.57,
+						"dataSource": {
+							"page": "629, 1302-1312",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "solutions",
 							"publicationDate": null
 						},
-						"comment": "copy multi-byte bandwidth",
-						"quality": "Incomplete"
-					}
-				}
-			},
-			"companyValue": {
-				"listedCompany": {
-					"marketCapitalizationInEUR": {
-						"value": 89708.93,
-						"dataSource": {
-							"page": "1034-1239",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "blockchains",
-							"publicationDate": null
-						},
-						"comment": "input wireless transmitter",
-						"quality": "NoDataFound"
-					},
-					"bookValueOfDebtInEUR": {
-						"value": 7926.1,
-						"dataSource": {
-							"page": "1186",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "smart contracts",
-							"publicationDate": null
-						},
-						"comment": "program solid state monitor",
-						"quality": "NoDataFound"
+						"comment": "override wireless card",
+						"quality": "Audited"
 					},
 					"minoritiesInterestInEUR": {
-						"value": 12568.87,
+						"value": 48069.92,
 						"dataSource": {
-							"page": "568, 1036-1046",
+							"page": "571, 1013-1023",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "paradigms",
+							"tagName": "content",
 							"publicationDate": null
 						},
-						"comment": "synthesize open-source feed",
-						"quality": "Incomplete"
+						"comment": "transmit virtual microchip",
+						"quality": "Audited"
+					},
+					"enterpriseValueInEUR": {
+						"value": 27772.34,
+						"dataSource": {
+							"page": "485",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "relationships",
+							"publicationDate": null
+						},
+						"comment": "compress mobile interface",
+						"quality": "Audited"
 					}
 				},
 				"unlistedCompany": {
-					"totalEquityAndDebtInEUR": {
-						"value": 43041.13,
+					"totalEquityInEUR": {
+						"value": 5138.64,
 						"dataSource": {
-							"page": "943-1033",
+							"page": "1158, 1226-1236",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "markets",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "index wireless panel",
-						"quality": "Audited"
+						"comment": "quantify mobile matrix",
+						"quality": "Estimated"
+					},
+					"totalEquityAndDebtInEUR": {
+						"value": 52164.52,
+						"dataSource": {
+							"page": "109-458",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "navigate digital port",
+						"quality": "Reported"
 					}
 				}
 			},
 			"environmental": {
 				"greenhouseGasEmissions": {
 					"scope1GhgEmissionsInTonnes": {
-						"value": 47809.45,
+						"value": 9571.47,
 						"dataSource": {
-							"page": "638",
+							"page": "351, 1247-1257",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "networks",
+							"tagName": "smart contracts",
 							"publicationDate": null
 						},
-						"comment": "generate virtual card",
+						"comment": "bypass digital program",
+						"quality": "Estimated"
+					},
+					"scope2GhgEmissionsInTonnes": {
+						"value": 92802.93,
+						"dataSource": {
+							"page": "384-1158",
+							"fileName": null,
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "e-commerce",
+							"publicationDate": null
+						},
+						"comment": "bypass digital interface",
 						"quality": "Incomplete"
 					},
 					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 64067.24,
+						"value": 10178.5,
 						"dataSource": {
-							"page": "68",
+							"page": "367, 1176-1186",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
+							"tagName": "metrics",
 							"publicationDate": null
 						},
-						"comment": "navigate multi-byte monitor",
+						"comment": "compress mobile circuit",
 						"quality": "NoDataFound"
 					},
 					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 37320.81,
+						"value": 1007.6,
 						"dataSource": {
-							"page": "169-1183",
+							"page": "393",
 							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "blockchains",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "paradigms",
 							"publicationDate": null
 						},
-						"comment": "reboot haptic microchip",
-						"quality": "Estimated"
+						"comment": "compress bluetooth bus",
+						"quality": "Incomplete"
 					},
 					"scope3GhgEmissionsInTonnes": {
-						"value": 54776.41,
+						"value": 85627.71,
 						"dataSource": {
-							"page": "382, 464-474",
+							"page": "210, 1006-1016",
 							"fileName": null,
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "applications",
+							"tagName": "large language models",
 							"publicationDate": null
 						},
-						"comment": "synthesize digital capacitor",
-						"quality": "Incomplete"
-					}
-				}
-			},
-			"companyValueEstimation": {
-				"listedCompany": {
-					"marketCapitalizationInEUR": {
-						"value": 57093.38,
-						"dataSource": {
-							"page": "647, 1058-1068",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "back up online protocol",
-						"quality": "Reported"
-					},
-					"bookValueOfDebtInEUR": {
-						"value": 76018.4,
-						"dataSource": {
-							"page": "777-1022",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "methodologies",
-							"publicationDate": null
-						},
-						"comment": "compress wireless card",
-						"quality": "Incomplete"
-					},
-					"minoritiesInterestInEUR": {
-						"value": 61557.91,
-						"dataSource": {
-							"page": "251, 711-721",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "convergence",
-							"publicationDate": null
-						},
-						"comment": "input mobile sensor",
-						"quality": "Estimated"
-					}
-				},
-				"unlistedCompany": {
-					"totalEquityAndDebtInEUR": {
-						"value": 809.8,
-						"dataSource": {
-							"page": "444, 841-851",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "supply-chains",
-							"publicationDate": null
-						},
-						"comment": "reboot cross-platform pixel",
-						"quality": "Estimated"
-					}
-				}
-			},
-			"environmentalEstimation": {
-				"greenhouseGasEmissions": {
-					"scope1GhgEmissionsInTonnes": {
-						"value": 24496.08,
-						"dataSource": {
-							"page": "662",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "relationships",
-							"publicationDate": null
-						},
-						"comment": "transmit back-end capacitor",
-						"quality": "Reported"
-					},
-					"scope2GhgEmissionsLocationBasedInTonnes": {
-						"value": 82084.27,
-						"dataSource": {
-							"page": "261-533",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "navigate 1080p microchip",
-						"quality": "Incomplete"
-					},
-					"scope2GhgEmissionsMarketBasedInTonnes": {
-						"value": 40192.99,
-						"dataSource": {
-							"page": "315",
-							"fileName": null,
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "markets",
-							"publicationDate": null
-						},
-						"comment": "override open-source port",
-						"quality": "Audited"
-					},
-					"scope3GhgEmissionsInTonnes": {
-						"value": 69149.2,
-						"dataSource": {
-							"page": "441",
-							"fileName": null,
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "initiatives",
-							"publicationDate": null
-						},
-						"comment": "compress solid state panel",
-						"quality": "Estimated"
+						"comment": "generate online microchip",
+						"quality": "NoDataFound"
 					}
 				}
 			}

@@ -10,5 +10,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class PcafCompanyvalueUnlistedCompany(
     @field:Valid()
+    val totalEquityInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val totalEquityAndDebtInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

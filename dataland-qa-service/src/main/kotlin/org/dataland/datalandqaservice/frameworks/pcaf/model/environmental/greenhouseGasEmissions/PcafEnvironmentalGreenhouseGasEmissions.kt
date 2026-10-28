@@ -12,6 +12,8 @@ data class PcafEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val scope1GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
+    val scope2GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val scope2GhgEmissionsLocationBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val scope2GhgEmissionsMarketBasedInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

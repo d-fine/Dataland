@@ -2,6 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.pcaf.model.companyValue
 
 import jakarta.validation.Valid
+import org.dataland.datalandqaservice.frameworks.pcaf.model.companyValue.companyValue.PcafCompanyvalueCompanyValue
 import org.dataland.datalandqaservice.frameworks.pcaf.model.companyValue.listedCompany.PcafCompanyvalueListedCompany
 import org.dataland.datalandqaservice.frameworks.pcaf.model.companyValue.unlistedCompany.PcafCompanyvalueUnlistedCompany
 
@@ -9,6 +10,8 @@ import org.dataland.datalandqaservice.frameworks.pcaf.model.companyValue.unliste
  * The QA-model for the CompanyValue section
  */
 data class PcafCompanyValue(
+    @field:Valid()
+    val companyValue: PcafCompanyvalueCompanyValue? = null,
     @field:Valid()
     val listedCompany: PcafCompanyvalueListedCompany? = null,
     @field:Valid()

@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.pcaf.model.companyValue
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.companyValue.PcafCompanyvalueCompanyValue
 import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.listedCompany.PcafCompanyvalueListedCompany
 import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.unlistedCompany.PcafCompanyvalueUnlistedCompany
 
@@ -10,6 +11,8 @@ import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.unlistedC
  */
 @Suppress("MaxLineLength")
 data class PcafCompanyValue(
+    @field:Valid()
+    val companyValue: PcafCompanyvalueCompanyValue? = null,
     @field:Valid()
     val listedCompany: PcafCompanyvalueListedCompany? = null,
     @field:Valid()

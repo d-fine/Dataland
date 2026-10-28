@@ -8771,7 +8771,7 @@
             ]
           }
         },
-        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Information Technology\"; \"Materials\"; \"Public\"; \"Real estate\"; \"Utilities\";",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointYesNo": {
@@ -9607,11 +9607,10 @@
           "Financials",
           "HealthCare",
           "Industrials",
-          "Industry",
           "InformationTechnology",
           "Materials",
+          "Public",
           "RealEstate",
-          "Sovereign",
           "Utilities"
         ]
       },
@@ -10196,7 +10195,7 @@
             ]
           }
         },
-        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Industry\"; \"Information Technology\"; \"Materials\"; \"Real estate\"; \"Sovereign\"; \"Utilities\";",
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Information Technology\"; \"Materials\"; \"Public\"; \"Real estate\"; \"Utilities\";",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
       "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
@@ -10237,6 +10236,14 @@
       "PcafCompanyValue": {
         "type": "object",
         "properties": {
+          "companyValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueCompanyValue"
+              }
+            ]
+          },
           "listedCompany": {
             "nullable": true,
             "allOf": [
@@ -10255,22 +10262,30 @@
           }
         }
       },
-      "PcafCompanyValueEstimation": {
+      "PcafCompanyvalueCompanyValue": {
         "type": "object",
         "properties": {
-          "listedCompany": {
+          "grossDomesticProductGdpInEUR": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           },
-          "unlistedCompany": {
+          "pppAdjustedGrossDomesticProductGdp": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -10287,7 +10302,7 @@
               }
             ]
           },
-          "bookValueOfDebtInEUR": {
+          "minoritiesInterestInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -10295,7 +10310,7 @@
               }
             ]
           },
-          "minoritiesInterestInEUR": {
+          "enterpriseValueInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -10308,20 +10323,7 @@
       "PcafCompanyvalueUnlistedCompany": {
         "type": "object",
         "properties": {
-          "totalEquityAndDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueestimationListedCompany": {
-        "type": "object",
-        "properties": {
-          "marketCapitalizationInEUR": {
+          "totalEquityInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -10329,27 +10331,6 @@
               }
             ]
           },
-          "bookValueOfDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "minoritiesInterestInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueestimationUnlistedCompany": {
-        "type": "object",
-        "properties": {
           "totalEquityAndDebtInEUR": {
             "nullable": true,
             "allOf": [
@@ -10386,22 +10367,6 @@
                 "$ref": "#/components/schemas/PcafEnvironmental"
               }
             ]
-          },
-          "companyValueEstimation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafCompanyValueEstimation"
-              }
-            ]
-          },
-          "environmentalEstimation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
-              }
-            ]
           }
         }
       },
@@ -10418,19 +10383,6 @@
           }
         }
       },
-      "PcafEnvironmentalEstimation": {
-        "type": "object",
-        "properties": {
-          "greenhouseGasEmissions": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
-              }
-            ]
-          }
-        }
-      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
@@ -10442,36 +10394,7 @@
               }
             ]
           },
-          "scope2GhgEmissionsLocationBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2GhgEmissionsMarketBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope3GhgEmissionsInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
-        "type": "object",
-        "properties": {
-          "scope1GhgEmissionsInTonnes": {
+          "scope2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -10564,11 +10487,10 @@
           "Financials",
           "HealthCare",
           "Industrials",
-          "Industry",
           "InformationTechnology",
           "Materials",
+          "Public",
           "RealEstate",
-          "Sovereign",
           "Utilities"
         ]
       },

@@ -5272,11 +5272,10 @@
               "Financials",
               "HealthCare",
               "Industrials",
-              "Industry",
               "InformationTechnology",
               "Materials",
+              "Public",
               "RealEstate",
-              "Sovereign",
               "Utilities"
             ]
           },
@@ -6774,11 +6773,10 @@
               "Financials",
               "HealthCare",
               "Industrials",
-              "Industry",
               "InformationTechnology",
               "Materials",
+              "Public",
               "RealEstate",
-              "Sovereign",
               "Utilities"
             ]
           },
@@ -6872,6 +6870,14 @@
       "PcafCompanyValue": {
         "type": "object",
         "properties": {
+          "companyValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafCompanyvalueCompanyValue"
+              }
+            ]
+          },
           "listedCompany": {
             "nullable": true,
             "allOf": [
@@ -6890,22 +6896,30 @@
           }
         }
       },
-      "PcafCompanyValueEstimation": {
+      "PcafCompanyvalueCompanyValue": {
         "type": "object",
         "properties": {
-          "listedCompany": {
+          "grossDomesticProductGdpInEUR": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafCompanyvalueestimationListedCompany"
+                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
               }
             ]
           },
-          "unlistedCompany": {
+          "pppAdjustedGrossDomesticProductGdp": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafCompanyvalueestimationUnlistedCompany"
+                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -6922,7 +6936,7 @@
               }
             ]
           },
-          "bookValueOfDebtInEUR": {
+          "minoritiesInterestInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -6930,7 +6944,7 @@
               }
             ]
           },
-          "minoritiesInterestInEUR": {
+          "enterpriseValueInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -6943,20 +6957,7 @@
       "PcafCompanyvalueUnlistedCompany": {
         "type": "object",
         "properties": {
-          "totalEquityAndDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueestimationListedCompany": {
-        "type": "object",
-        "properties": {
-          "marketCapitalizationInEUR": {
+          "totalEquityInEUR": {
             "nullable": true,
             "allOf": [
               {
@@ -6964,27 +6965,6 @@
               }
             ]
           },
-          "bookValueOfDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "minoritiesInterestInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueestimationUnlistedCompany": {
-        "type": "object",
-        "properties": {
           "totalEquityAndDebtInEUR": {
             "nullable": true,
             "allOf": [
@@ -7021,22 +7001,6 @@
                 "$ref": "#/components/schemas/PcafEnvironmental"
               }
             ]
-          },
-          "companyValueEstimation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafCompanyValueEstimation"
-              }
-            ]
-          },
-          "environmentalEstimation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmentalEstimation"
-              }
-            ]
           }
         }
       },
@@ -7053,19 +7017,6 @@
           }
         }
       },
-      "PcafEnvironmentalEstimation": {
-        "type": "object",
-        "properties": {
-          "greenhouseGasEmissions": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmentalestimationGreenhouseGasEmissions"
-              }
-            ]
-          }
-        }
-      },
       "PcafEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
@@ -7077,36 +7028,7 @@
               }
             ]
           },
-          "scope2GhgEmissionsLocationBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2GhgEmissionsMarketBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope3GhgEmissionsInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafEnvironmentalestimationGreenhouseGasEmissions": {
-        "type": "object",
-        "properties": {
-          "scope1GhgEmissionsInTonnes": {
+          "scope2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {

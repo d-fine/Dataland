@@ -12,7 +12,7 @@ data class PcafCompanyvalueListedCompany(
     @field:Valid()
     val marketCapitalizationInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val bookValueOfDebtInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val minoritiesInterestInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val enterpriseValueInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

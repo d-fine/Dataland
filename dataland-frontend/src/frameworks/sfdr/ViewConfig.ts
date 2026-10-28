@@ -63,7 +63,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Main PCAF sector',
             explanation:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Information Technology"; "Materials"; "Public"; "Real estate"; "Utilities";',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -76,11 +76,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                     Financials: 'Financials',
                     HealthCare: 'Health Care',
                     Industrials: 'Industrials',
-                    Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
                     Materials: 'Materials',
+                    Public: 'Public',
                     RealEstate: 'Real Estate',
-                    Sovereign: 'Sovereign',
                     Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(
@@ -103,11 +102,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                     Financials: 'Financials',
                     HealthCare: 'Health Care',
                     Industrials: 'Industrials',
-                    Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
                     Materials: 'Materials',
+                    Public: 'Public',
                     RealEstate: 'Real Estate',
-                    Sovereign: 'Sovereign',
                     Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(

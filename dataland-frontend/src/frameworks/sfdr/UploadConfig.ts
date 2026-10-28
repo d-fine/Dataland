@@ -40,7 +40,7 @@ export const sfdrDataModel = [
             name: 'mainPcafSector',
             label: 'Main PCAF sector',
             description:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Information Technology"; "Materials"; "Public"; "Real estate"; "Utilities";',
             options: [
               {
                 label: 'Communication Services',
@@ -71,10 +71,6 @@ export const sfdrDataModel = [
                 value: 'Industrials',
               },
               {
-                label: 'Industry',
-                value: 'Industry',
-              },
-              {
                 label: 'Information Technology',
                 value: 'InformationTechnology',
               },
@@ -83,12 +79,12 @@ export const sfdrDataModel = [
                 value: 'Materials',
               },
               {
-                label: 'Real Estate',
-                value: 'RealEstate',
+                label: 'Public',
+                value: 'Public',
               },
               {
-                label: 'Sovereign',
-                value: 'Sovereign',
+                label: 'Real Estate',
+                value: 'RealEstate',
               },
               {
                 label: 'Utilities',
