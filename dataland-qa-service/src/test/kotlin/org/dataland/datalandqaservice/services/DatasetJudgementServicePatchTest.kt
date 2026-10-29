@@ -25,13 +25,13 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
         source: AcceptedDataPointSource?,
         acceptedQaReportId: String? = null,
         customValue: String? = null,
-        reasonForCustomDataPoint: String? = null,
+        reviewerComment: String? = null,
         dataPointType: String = mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE,
     ): DataPointJudgementEntity {
         service.patchJudgementDetails(
             UUID.randomUUID(),
             dataPointType,
-            JudgementDetailsPatch(source, null, customValue, reasonForCustomDataPoint, acceptedQaReportId),
+            JudgementDetailsPatch(source, null, customValue, reviewerComment, acceptedQaReportId),
         )
 
         return captureSavedJudgement()
@@ -80,62 +80,95 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     }
 
     @Test
-    fun `patchJudgementDetails with Custom and non-null reason stores reason on entity`() {
+    fun `patchJudgementDetails with Custom and non-null comment stores comment on entity`() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Custom,
                 customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-                reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT,
+                reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT,
             )
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertEquals(mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT, saved.reasonForCustomDataPoint)
+        assertEquals(mockDatasetJudgementEntityForTest.REVIEWER_COMMENT, saved.reviewerComment)
     }
 
     @Test
-    fun `patchJudgementDetails with Custom and null reason stores null on entity`() {
+    fun `patchJudgementDetails with Custom and null comment stores null on entity`() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Custom,
                 customValue = mockDatasetJudgementEntityForTest.CUSTOM_VALUE,
-                reasonForCustomDataPoint = null,
+                reviewerComment = null,
             )
 
         assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
+        assertNull(saved.reviewerComment)
     }
 
-    @Test
-    fun `patchJudgementDetails with Original clears reasonForCustomDataPoint`() {
-        datasetJudgementEntity.dataPoints.first().apply {
-            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
-        }
+    private fun firstQaReportId() =
+        datasetJudgementEntity.dataPoints
+            .first()
+            .qaReports
+            .first()
+            .qaReportId
 
-        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
+    @Test
+    fun `patchJudgementDetails with Original stores reviewerComment`() {
+        val saved =
+            patchAndGetDataPoint(
+                AcceptedDataPointSource.Original,
+                reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT,
+            )
 
         assertEquals(AcceptedDataPointSource.Original, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
+        assertEquals(mockDatasetJudgementEntityForTest.REVIEWER_COMMENT, saved.reviewerComment)
     }
 
     @Test
-    fun `patchJudgementDetails with Qa clears reasonForCustomDataPoint`() {
-        datasetJudgementEntity.dataPoints.first().apply {
-            reasonForCustomDataPoint = mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT
-        }
-
+    fun `patchJudgementDetails with Qa stores reviewerComment`() {
         val saved =
             patchAndGetDataPoint(
                 AcceptedDataPointSource.Qa,
-                acceptedQaReportId =
-                    datasetJudgementEntity.dataPoints
-                        .first()
-                        .qaReports
-                        .first()
-                        .qaReportId,
+                acceptedQaReportId = firstQaReportId(),
+                reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT,
             )
 
         assertEquals(AcceptedDataPointSource.Qa, saved.acceptedSource)
-        assertNull(saved.reasonForCustomDataPoint)
+        assertEquals(mockDatasetJudgementEntityForTest.REVIEWER_COMMENT, saved.reviewerComment)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Original keeps existing reviewerComment when none is provided`() {
+        datasetJudgementEntity.dataPoints.first().reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT
+
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original)
+
+        assertEquals(mockDatasetJudgementEntityForTest.REVIEWER_COMMENT, saved.reviewerComment)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Qa keeps existing reviewerComment when none is provided`() {
+        datasetJudgementEntity.dataPoints.first().reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT
+
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Qa, acceptedQaReportId = firstQaReportId())
+
+        assertEquals(mockDatasetJudgementEntityForTest.REVIEWER_COMMENT, saved.reviewerComment)
+    }
+
+    @Test
+    fun `patchJudgementDetails clears reviewerComment when a blank comment is provided`() {
+        datasetJudgementEntity.dataPoints.first().reviewerComment = mockDatasetJudgementEntityForTest.REVIEWER_COMMENT
+
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original, reviewerComment = "   ")
+
+        assertNull(saved.reviewerComment)
+    }
+
+    @Test
+    fun `patchJudgementDetails trims the reviewerComment`() {
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Original, reviewerComment = "  some comment  ")
+
+        assertEquals("some comment", saved.reviewerComment)
     }
 
     @Test
