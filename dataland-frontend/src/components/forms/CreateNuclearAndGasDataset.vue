@@ -58,32 +58,28 @@
                       <Tag :value="category.label.toUpperCase()" severity="secondary" />
                     </div>
                     <div class="col-9 formFields">
-                      <FormKit
-                        v-for="field in subcategory.fields"
-                        :key="field.name"
-                        type="group"
-                        :name="subcategory.name"
-                      >
-                        <component
-                          v-if="field.showIf(companyAssociatedNuclearAndGasData.data as NuclearAndGasData)"
-                          :is="field.component"
-                          :label="field.label"
-                          :placeholder="field.placeholder"
-                          :description="field.description"
-                          :name="field.name"
-                          :options="field.options"
-                          :required="field.required"
-                          :validation="field.validation"
-                          :validation-label="field.validationLabel"
-                          :data-test="field.name"
-                          :unit="field.unit"
-                          @reports-updated="updateDocumentsList"
-                          @field-specific-documents-updated="
-                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
-                          :ref="field.name"
-                        />
-                      </FormKit>
+                      <FormKit type="group" :name="subcategory.name"
+                        ><template v-for="field in subcategory.fields" :key="field.name">
+                          <component
+                            v-if="field.showIf(companyAssociatedNuclearAndGasData.data as NuclearAndGasData)"
+                            :is="field.component"
+                            :label="field.label"
+                            :placeholder="field.placeholder"
+                            :description="field.description"
+                            :name="field.name"
+                            :options="field.options"
+                            :required="field.required"
+                            :validation="field.validation"
+                            :validation-label="field.validationLabel"
+                            :data-test="field.name"
+                            :unit="field.unit"
+                            @reports-updated="updateDocumentsList"
+                            @field-specific-documents-updated="
+                              updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                            "
+                            :ref="field.name"
+                          /> </template
+                      ></FormKit>
                     </div>
                   </template>
                 </div>

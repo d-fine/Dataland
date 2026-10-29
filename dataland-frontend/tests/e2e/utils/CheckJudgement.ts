@@ -66,12 +66,10 @@ export function checkPatchDataPointsCalledCorrectly(interception: Interception, 
     expect(body.customDataPoint, 'customDataPoint in request body').to.not.be.null;
   }
 
-  if (judgement.reasonForCustomDataPoint == null) {
-    expect(body.reasonForCustomDataPoint ?? null, 'reasonForCustomDataPoint in request body').to.eq(null);
+  if (judgement.reviewerComment == null) {
+    expect(body.reviewerComment || null, 'reviewerComment in request body').to.eq(null);
   } else {
-    expect(body.reasonForCustomDataPoint, 'reasonForCustomDataPoint in request body').to.eq(
-      judgement.reasonForCustomDataPoint
-    );
+    expect(body.reviewerComment, 'reviewerComment in request body').to.eq(judgement.reviewerComment);
   }
 }
 
@@ -126,10 +124,10 @@ export function makeJudgementDecision(judgement: QaJudgement): void {
     );
   }
 
-  if (judgement.reasonForCustomDataPoint != null) {
-    cy.get('[data-test="reason-for-custom-datapoint-field"]').click();
-    cy.get('[data-test="reason-for-custom-datapoint-field"]').clear();
-    cy.get('[data-test="reason-for-custom-datapoint-field"]').type(judgement.reasonForCustomDataPoint);
+  if (judgement.reviewerComment != null) {
+    cy.get('[data-test="reviewer-comment-field"]').click();
+    cy.get('[data-test="reviewer-comment-field"]').clear();
+    cy.get('[data-test="reviewer-comment-field"]').type(judgement.reviewerComment);
   }
 
   if (judgement.acceptedSource === AcceptedDataPointSource.Original) {

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { type Component, computed, defineComponent, ref } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
 import Keycloak from 'keycloak-js';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
@@ -42,7 +42,14 @@ const storeWindowWidth = (): void => {
 };
 export default defineComponent({
   name: 'app',
-  components: { TheHeader, DynamicDialog, AuthenticationWrapper, TheFooter, VueQueryDevtools },
+  components: {
+    TheHeader,
+    DynamicDialog,
+    AuthenticationWrapper,
+    TheFooter,
+    // Cast needed: its inferred props type references the non-exported DevtoolsOptions (TS2883)
+    VueQueryDevtools: VueQueryDevtools as Component,
+  },
 
   data() {
     return {
