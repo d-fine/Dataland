@@ -10,7 +10,11 @@ const activities = [
  * @param value the initial activities
  */
 function mountComponent(value: object[] = activities): void {
-  mountEditFormField(EligibleOrAlignedActivitiesFormField, { value, quality: 'Reported', comment: '' });
+  mountEditFormField(
+    EligibleOrAlignedActivitiesFormField,
+    { value, quality: 'Reported', comment: '' },
+    { activityKpiType: 'revenue' }
+  );
 }
 
 describe('Component test for EligibleOrAlignedActivitiesFormField', () => {

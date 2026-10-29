@@ -1,230 +1,112 @@
 <template>
-  <div :class="{ 'inline-layout': props.inline }">
-    <div class="inline-toolbar">
-      <slot name="toolbar-start" />
-      <div v-if="!props.hideQualityAndComment" class="field-group">
-        <h4 v-if="!props.inline">Quality</h4>
-        <Select
-          :placeholder="'Select Quality'"
-          v-model="chosenQuality"
-          :options="qualityOptionsList ?? []"
-          optionLabel="label"
-          optionValue="value"
-          data-test="quality-select"
-          inputId="quality-select"
-          aria-label="Quality"
-          :style="props.inline ? 'width: 10em' : undefined"
-          :fluid="!props.inline"
-        />
-      </div>
-      <div class="field-group">
-        <h4 v-if="!props.inline">Data Source</h4>
-        <div class="data-source-wrapper">
-          <Select
-            :placeholder="'Select Document'"
-            v-model="selectedDocument"
-            :options="availableDocuments ?? []"
-            optionLabel="label"
-            optionValue="value"
-            data-test="document-select"
-            :style="props.inline ? 'width: 14em' : 'width: 17em'"
-            inputId="document-select"
-            aria-label="Data Source"
-            fluid
-          />
-          <InputText
-            v-model="insertedPage"
-            placeholder="Page(s)"
-            data-test="page-number-input"
-            :style="props.inline ? 'width: 6em' : 'width: 8em'"
-            :disabled="!selectedDocument"
-            :invalid="!isPageValid"
-          />
-          <PrimeButton
-            v-if="props.inline"
-            label="Go to documents page"
-            variant="link"
-            as="a"
-            :href="`/companies/${companyId}/documents`"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-test="go-to-documents-link"
-          />
-        </div>
-      </div>
-    </div>
-    <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
-      {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
-    </small>
-    <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
-      <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
-      <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
-      <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
-      <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
-    </div>
-
-    <PrimeButton
-      v-if="!props.inline"
-      label="Go to documents page"
-      variant="link"
-      as="a"
-      :href="`/companies/${companyId}/documents`"
-      target="_blank"
-      rel="noopener noreferrer"
-      data-test="go-to-documents-link"
+  <template v-if="!props.hideQualityAndComment">
+    <h4>Quality</h4>
+    <Select
+      :placeholder="'Select Quality'"
+      v-model="chosenQuality"
+      :options="qualityOptionsList"
+      optionLabel="label"
+      optionValue="value"
+      data-test="quality-select"
+      inputId="quality-select"
+      aria-label="Quality"
+      fluid
     />
-
-    <template v-if="!props.hideQualityAndComment">
-      <h4 v-if="!props.inline">Comment</h4>
-      <Textarea
-        :placeholder="'Insert comment'"
-        v-model="insertedComment"
-        data-test="comment-textarea"
-        id="comment-input"
-        aria-label="Comment"
-        :rows="props.inline ? 2 : 5"
-        :draggable="false"
-        fluid
-        :style="props.inline ? 'margin-top: var(--spacing-xs)' : undefined"
-      />
-    </template>
+  </template>
+  <h4>Data Source</h4>
+  <div class="data-source-wrapper">
+    <Select
+      :placeholder="'Select Document'"
+      v-model="selectedDocument"
+      :options="availableDocuments"
+      optionLabel="label"
+      optionValue="value"
+      data-test="document-select"
+      style="width: 17em"
+      inputId="document-select"
+      aria-label="Data Source"
+      fluid
+    />
+    <InputText
+      v-model="insertedPage"
+      placeholder="Page(s)"
+      data-test="page-number-input"
+      style="width: 8em"
+      :disabled="!selectedDocument"
+      :invalid="!isPageValid"
+    />
   </div>
+  <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
+    {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
+  </small>
+  <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
+    <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
+    <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
+    <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
+    <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
+  </div>
+
+  <PrimeButton
+    label="Go to documents page"
+    variant="link"
+    as="a"
+    :href="`/companies/${companyId}/documents`"
+    target="_blank"
+    rel="noopener noreferrer"
+    data-test="go-to-documents-link"
+  />
+
+  <template v-if="!props.hideQualityAndComment">
+    <h4>Comment</h4>
+    <Textarea
+      :placeholder="'Insert comment'"
+      v-model="insertedComment"
+      data-test="comment-textarea"
+      id="comment-input"
+      aria-label="Comment"
+      rows="5"
+      :draggable="false"
+      fluid
+    />
+  </template>
 </template>
 
 <script setup lang="ts">
 import Select from 'primevue/select';
-import { QualityOptions } from '@clients/backend';
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import PrimeButton from 'primevue/button';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
-import { isPageReferenceValid, PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils.ts';
-import type {
-  ExtendedDataPointType,
-  ExtendedDataPointMetaInfoType,
-} from '@/components/resources/dataTable/conversion/Utils.ts';
-
-const allDocuments = ref<DocumentMetaInfoResponse[]>([]);
-const availableDocuments = ref<{ label: string; value: string }[]>([]);
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+import { PAGE_NUMBER_VALIDATION_ERROR_MESSAGE } from '@/utils/ValidationUtils.ts';
+import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
+import {
+  qualityOptionsList,
+  useExtendedDataPointForm,
+} from '@/components/resources/dataTable/modals/useExtendedDataPointForm.ts';
 
 const props = defineProps<{
   extendedDataPointObject?: ExtendedDataPointType;
   hideQualityAndComment?: boolean;
-  inline?: boolean;
 }>();
 
-const chosenQuality = ref<string | undefined>(props.extendedDataPointObject?.quality ?? undefined);
-const selectedDocument = ref<string | null>(props.extendedDataPointObject?.dataSource?.fileReference ?? null);
-const insertedComment = ref<string | undefined>(props.extendedDataPointObject?.comment ?? undefined);
-const insertedPage = ref<string | null>(props.extendedDataPointObject?.dataSource?.page ?? null);
-const companyId = inject<string>('companyId');
-const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
-const selectedDocumentMetaInformation = computed(() => {
-  return allDocuments.value.find((doc) => doc.documentId === selectedDocument.value) ?? null;
-});
-
-/**
- * Whether the currently entered page reference is valid. An empty value is considered valid, since the page field is optional.
- */
-const isPageValid = computed<boolean>(() => {
-  const trimmedPage = insertedPage.value?.trim();
-  return !trimmedPage || isPageReferenceValid(trimmedPage);
-});
-
-watch(selectedDocument, (val) => {
-  const meta = allDocuments.value.find((doc) => doc.documentId === val) ?? null;
-  if (!meta) {
-    insertedPage.value = null;
-  }
-});
-
-onMounted(async () => {
-  await updateDocumentsList();
-
-  setSelectedDocument(selectedDocument.value);
-
-  if (chosenQuality.value) {
-    const matchQuality = qualityOptionsList.find((q) => q.value === chosenQuality.value);
-    if (matchQuality) {
-      chosenQuality.value = matchQuality.value;
-    }
-  }
-});
-
-/**
- * Gathers the current form data into an object.
- * @returns An object containing the current form data.
- */
-function getFormData(): ExtendedDataPointMetaInfoType {
-  return {
-    quality: chosenQuality.value ?? undefined,
-    comment: insertedComment.value ?? undefined,
-    dataSource: {
-      page: insertedPage.value?.trim() || undefined,
-      fileReference: selectedDocument.value ?? undefined,
-    },
-  };
-}
+const {
+  companyId,
+  chosenQuality,
+  selectedDocument,
+  insertedComment,
+  insertedPage,
+  availableDocuments,
+  selectedDocumentMetaInformation,
+  isPageValid,
+  getFormData,
+} = useExtendedDataPointForm(props.extendedDataPointObject);
 
 defineExpose({
   getFormData,
   isPageValid,
 });
-
-/**
- * Fetches the list of documents from the API and updates the availableDocuments and allDocuments refs.
- */
-async function updateDocumentsList(): Promise<void> {
-  try {
-    const documentControllerApi = apiClientProvider.apiClients.documentController;
-    const response = await documentControllerApi.searchForDocumentMetaInformation(companyId);
-    allDocuments.value = response.data;
-    availableDocuments.value = allDocuments.value
-      .filter((doc) => doc.documentName && doc.documentId)
-      .map((doc) => ({
-        label: doc.documentName!,
-        value: doc.documentId,
-      }));
-  } catch (error) {
-    console.error('Error fetching documents:', error);
-    allDocuments.value = [];
-    availableDocuments.value = [];
-  }
-}
-
-/**
- * Sets the selected document based on the provided document ID.
- * Updates the selectedDocument, selectedDocumentMeta, and insertedPage refs accordingly.
- *
- * @param docId - The ID of the document to select, or null to clear the selection.
- */
-function setSelectedDocument(docId: string | null): void {
-  const meta = allDocuments.value.find((doc) => doc.documentId === docId) ?? null;
-
-  selectedDocument.value = meta?.documentId ?? null;
-  insertedPage.value = meta ? insertedPage.value : null;
-}
 </script>
 
 <style scoped>
-.inline-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.inline-layout .field-group {
-  display: flex;
-  align-items: center;
-}
-
 .data-source-wrapper {
   display: flex;
   align-items: center;

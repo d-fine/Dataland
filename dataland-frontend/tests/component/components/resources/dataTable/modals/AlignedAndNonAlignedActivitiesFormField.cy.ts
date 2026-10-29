@@ -23,7 +23,7 @@ const variants = [
 variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow }) => {
   describe(`Component test for ${name}`, () => {
     it('renders the activity read-only and the expected columns', () => {
-      mountEditFormField(component, dataPoint);
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('[data-test="activity-name"]').should('have.text', 'Afforestation');
       cy.get('[data-test="activity-select"]').should('not.exist');
       cy.get('[data-test="percent-share.relativeShareInPercent"]').should('exist');
@@ -37,7 +37,7 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('renders the same headers as the view modal', () => {
-      mountEditFormField(component, dataPoint);
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       const thead = '[data-test="activities-edit-table"] thead';
       cy.get(thead).should('contain.text', 'Revenue (%)');
       cy.get(`${thead} tr`).should('have.length', expectsGroupHeaderRow ? 2 : 1);
@@ -48,7 +48,7 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('adds a row via the select and deletes rows', () => {
-      mountEditFormField(component, dataPoint);
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('[data-test="add-activity-select"]').click();
       cy.get('.p-select-option').first().click();
       cy.get('[data-test="activity-name"]').should('have.length', 2);
@@ -57,7 +57,7 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('offers a button to add the first activity when the list is empty', () => {
-      mountEditFormField(component, { ...dataPoint, value: [] });
+      mountEditFormField(component, { ...dataPoint, value: [] }, { activityKpiType: 'revenue' });
       cy.get('[data-test="activity-name"]').should('not.exist');
       cy.get('[data-test="empty-activities"]').should('contain.text', 'No activities have been added yet.');
       cy.get('[data-test="add-first-activity-button"]').click();
@@ -67,7 +67,7 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('returns the list in the api body', () => {
-      mountEditFormField(component, dataPoint);
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('@component').then((instance: { buildApiBodyWithExtendedInfo: () => string }) => {
         const body = JSON.parse(instance.buildApiBodyWithExtendedInfo());
         expect(body.value).to.have.length(1);
@@ -76,7 +76,7 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('writes edited amount, currency and share into the api body', () => {
-      mountEditFormField(component, dataPoint);
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('input#amount-0').clear().type('1500').blur();
       cy.get('[data-test="currency-select"]').click();
       cy.get('.p-select-filter').type('(EUR)');
@@ -90,10 +90,11 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
     });
 
     it('is invalid when a percentage is out of range', () => {
-      mountEditFormField(component, {
-        ...dataPoint,
-        value: [{ ...row, share: { relativeShareInPercent: 150 } }],
-      });
+      mountEditFormField(
+        component,
+        { ...dataPoint, value: [{ ...row, share: { relativeShareInPercent: 150 } }] },
+        { activityKpiType: 'revenue' }
+      );
       cy.get('@component').its('isPageValid').should('equal', false);
     });
 

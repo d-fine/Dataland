@@ -149,9 +149,8 @@
       </div>
     </template>
   </DataTable>
-  <ExtendedDataPointFormFieldDialog
+  <InlineExtendedDataPointFormField
     ref="extendedDialogRef"
-    inline
     v-model:selectedDocumentMeta="selectedDocumentMeta"
     :extendedDataPointObject="props.extendedDataPointObject"
     class="edit-footer"
@@ -174,11 +173,12 @@
         @update:modelValue="onAddSelected"
       />
     </template>
-  </ExtendedDataPointFormFieldDialog>
+  </InlineExtendedDataPointFormField>
 </template>
 
 <script setup lang="ts">
 import { computed, inject, ref, toRaw } from 'vue';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Select from 'primevue/select';
@@ -188,7 +188,7 @@ import Tooltip from 'primevue/tooltip';
 import InputNumber from 'primevue/inputnumber';
 import PrimeButton from 'primevue/button';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
+import InlineExtendedDataPointFormField from '@/components/resources/dataTable/modals/InlineExtendedDataPointFormField.vue';
 import {
   buildApiBody,
   type ExtendedDataPointMetaInfoType,
@@ -218,8 +218,8 @@ const props = defineProps<{
   flat?: boolean;
 }>();
 
-const kpiType = inject<KpiType | undefined>('activityKpiType', undefined) ?? 'revenue';
-const kpiLabel = kpiTypeLabels[kpiType] ?? kpiTypeLabels.revenue;
+const kpiType = assertDefined(inject<KpiType>('activityKpiType'));
+const kpiLabel = kpiTypeLabels[kpiType];
 
 const rows = ref<ActivityRow[]>(structuredClone(toRaw((props.extendedDataPointObject.value ?? []) as ActivityRow[])));
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);

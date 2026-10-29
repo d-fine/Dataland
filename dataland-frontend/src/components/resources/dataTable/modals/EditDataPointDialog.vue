@@ -51,18 +51,30 @@ const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageVal
 const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
 const modalData = dataPoint?.displayValue?.modalOptions?.data;
-const listDataPointObject: ExtendedDataPointType | undefined =
-  modalData || activityComponentNames.has(uploadComponentName ?? '')
-    ? {
-        value: modalData?.listOfRowContents ?? [],
-        quality: modalData?.dataPointDisplay?.quality ?? '',
-        comment: modalData?.dataPointDisplay?.comment ?? '',
-        dataSource: {
-          fileReference: modalData?.dataPointDisplay?.dataSource?.fileReference ?? '',
-          page: modalData?.dataPointDisplay?.dataSource?.page ?? '',
-        },
-      }
-    : undefined;
+
+/**
+ * Activity list data points are edited as a list. For empty cells there is no modal data, so the list structure is
+ * built with empty values.
+ * @returns whether the data point is an activity list
+ */
+function isActivityListDataPoint(): boolean {
+  return activityComponentNames.has(uploadComponentName ?? '');
+}
+
+/**
+ * @returns the extended data point object for activity lists (empty if there is no modal data)
+ */
+function buildActivityListDataPointObject(): ExtendedDataPointType {
+  return {
+    value: modalData?.listOfRowContents ?? [],
+    quality: modalData?.dataPointDisplay?.quality ?? '',
+    comment: modalData?.dataPointDisplay?.comment ?? '',
+    dataSource: {
+      fileReference: modalData?.dataPointDisplay?.dataSource?.fileReference ?? '',
+      page: modalData?.dataPointDisplay?.dataSource?.page ?? '',
+    },
+  };
+}
 
 /**
  * @returns the inner display value as trimmed string (empty if it is not a string)
@@ -95,7 +107,9 @@ function buildScalarDataPointObject(): ExtendedDataPointType {
   };
 }
 
-const extendedDataPointObject: ExtendedDataPointType = listDataPointObject ?? buildScalarDataPointObject();
+const extendedDataPointObject: ExtendedDataPointType = isActivityListDataPoint()
+  ? buildActivityListDataPointObject()
+  : buildScalarDataPointObject();
 
 provide('companyId', companyId);
 // For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
