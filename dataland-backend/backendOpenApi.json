@@ -10233,114 +10233,6 @@
         "description": "Does the fiscal year deviate from the calendar year?",
         "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
       },
-      "PcafCompanyValue": {
-        "type": "object",
-        "properties": {
-          "companyValue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafCompanyvalueCompanyValue"
-              }
-            ]
-          },
-          "listedCompany": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafCompanyvalueListedCompany"
-              }
-            ]
-          },
-          "unlistedCompany": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafCompanyvalueUnlistedCompany"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueCompanyValue": {
-        "type": "object",
-        "properties": {
-          "grossDomesticProductGdpInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "pppAdjustedGrossDomesticProductGdp": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "bookValueOfDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueListedCompany": {
-        "type": "object",
-        "properties": {
-          "marketCapitalizationInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "minoritiesInterestInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "enterpriseValueInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafCompanyvalueUnlistedCompany": {
-        "type": "object",
-        "properties": {
-          "totalEquityInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "totalEquityAndDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -10352,11 +10244,11 @@
               }
             ]
           },
-          "companyValue": {
+          "financial": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/PcafCompanyValue"
+                "$ref": "#/components/schemas/PcafFinancial"
               }
             ]
           },
@@ -10419,6 +10311,114 @@
             ]
           },
           "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancial": {
+        "type": "object",
+        "properties": {
+          "financial": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialFinancial"
+              }
+            ]
+          },
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialFinancial": {
+        "type": "object",
+        "properties": {
+          "grossDomesticProductGdpInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "pppAdjustedGrossDomesticProductGdp": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "enterpriseValueInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "totalEquityAndDebtInEUR": {
             "nullable": true,
             "allOf": [
               {

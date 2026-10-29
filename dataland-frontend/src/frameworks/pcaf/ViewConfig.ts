@@ -215,13 +215,13 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
   },
   {
     type: 'section',
-    label: 'Company value',
+    label: 'Financial',
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: 'section',
-        label: 'Company value',
+        label: 'Financial',
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -233,12 +233,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.companyValue?.companyValue?.grossDomesticProductGdpInEUR?.value,
-                  'EUR'
-                ),
+                formatNumberForDatatable(dataset.financial?.financial?.grossDomesticProductGdpInEUR?.value, 'EUR'),
                 'Gross domestic product (GDP)',
-                dataset.companyValue?.companyValue?.grossDomesticProductGdpInEUR
+                dataset.financial?.financial?.grossDomesticProductGdpInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -258,11 +255,11 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
-                  dataset.companyValue?.companyValue?.pppAdjustedGrossDomesticProductGdp?.value,
+                  dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp?.value,
                   'USD'
                 ),
                 'PPP adjusted gross domestic product (GDP)',
-                dataset.companyValue?.companyValue?.pppAdjustedGrossDomesticProductGdp
+                dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -281,9 +278,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.companyValue?.bookValueOfDebtInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.financial?.bookValueOfDebtInEUR?.value, 'EUR'),
                 'Book value of debt',
-                dataset.companyValue?.companyValue?.bookValueOfDebtInEUR
+                dataset.financial?.financial?.bookValueOfDebtInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -309,9 +306,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.listedCompany?.marketCapitalizationInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.listedCompany?.marketCapitalizationInEUR?.value, 'EUR'),
                 'Market capitalization',
-                dataset.companyValue?.listedCompany?.marketCapitalizationInEUR
+                dataset.financial?.listedCompany?.marketCapitalizationInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -330,9 +327,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.listedCompany?.minoritiesInterestInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.listedCompany?.minoritiesInterestInEUR?.value, 'EUR'),
                 'Minorities interest',
-                dataset.companyValue?.listedCompany?.minoritiesInterestInEUR
+                dataset.financial?.listedCompany?.minoritiesInterestInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -351,9 +348,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.listedCompany?.enterpriseValueInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.listedCompany?.enterpriseValueInEUR?.value, 'EUR'),
                 'Enterprise value',
-                dataset.companyValue?.listedCompany?.enterpriseValueInEUR
+                dataset.financial?.listedCompany?.enterpriseValueInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -379,9 +376,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.unlistedCompany?.totalEquityInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityInEUR?.value, 'EUR'),
                 'Total equity',
-                dataset.companyValue?.unlistedCompany?.totalEquityInEUR
+                dataset.financial?.unlistedCompany?.totalEquityInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
@@ -399,9 +396,9 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
+                formatNumberForDatatable(dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR?.value, 'EUR'),
                 'Total equity and debt',
-                dataset.companyValue?.unlistedCompany?.totalEquityAndDebtInEUR
+                dataset.financial?.unlistedCompany?.totalEquityAndDebtInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(

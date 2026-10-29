@@ -14,8 +14,8 @@
         "companyExchangeStatus" : "extendedEnumCompanyExchangeStatus"
       }
     },
-    "companyValue" : {
-      "companyValue" : {
+    "financial" : {
+      "financial" : {
         "grossDomesticProductGdpInEUR" : "extendedDecimalGrossDomesticProductGdpInEUR",
         "pppAdjustedGrossDomesticProductGdp" : "extendedDecimalPppAdjustedGrossDomesticProductGdp",
         "bookValueOfDebtInEUR" : "extendedDecimalBookValueOfDebtInEUR"

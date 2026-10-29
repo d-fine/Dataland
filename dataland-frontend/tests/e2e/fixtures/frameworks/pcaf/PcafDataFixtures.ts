@@ -52,8 +52,8 @@ export function generatePcafData(nullProbability = DEFAULT_PROBABILITY): PcafDat
         ),
       },
     },
-    companyValue: {
-      companyValue: {
+    financial: {
+      financial: {
         grossDomesticProductGdpInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         pppAdjustedGrossDomesticProductGdp: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),

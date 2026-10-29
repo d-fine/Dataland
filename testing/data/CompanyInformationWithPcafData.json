@@ -89,8 +89,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": null,
 					"pppAdjustedGrossDomesticProductGdp": {
 						"value": null,
@@ -298,8 +298,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": null,
 					"pppAdjustedGrossDomesticProductGdp": {
 						"value": null,
@@ -520,8 +520,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 81361.35,
 						"dataSource": {
@@ -741,8 +741,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 12482.3,
 						"dataSource": null,
@@ -969,8 +969,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": null,
 					"pppAdjustedGrossDomesticProductGdp": null,
 					"bookValueOfDebtInEUR": null
@@ -1125,8 +1125,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 32857.08,
 						"dataSource": {
@@ -1322,8 +1322,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 96917.08,
 						"dataSource": {
@@ -1520,8 +1520,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": null,
 						"dataSource": {
@@ -1735,8 +1735,8 @@
 					"companyExchangeStatus": null
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 53755.63,
 						"dataSource": {
@@ -1934,8 +1934,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": null,
 						"dataSource": {

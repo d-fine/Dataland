@@ -130,14 +130,14 @@ export const pcafDataModel = [
     ],
   },
   {
-    name: 'companyValue',
-    label: 'Company value',
+    name: 'financial',
+    label: 'Financial',
     color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'companyValue',
-        label: 'Company value',
+        name: 'financial',
+        label: 'Financial',
         fields: [
           {
             name: 'grossDomesticProductGdpInEUR',

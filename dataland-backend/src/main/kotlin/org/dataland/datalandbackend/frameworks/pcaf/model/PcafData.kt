@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.frameworks.pcaf.model
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.frameworks.pcaf.model.companyValue.PcafCompanyValue
 import org.dataland.datalandbackend.frameworks.pcaf.model.environmental.PcafEnvironmental
+import org.dataland.datalandbackend.frameworks.pcaf.model.financial.PcafFinancial
 import org.dataland.datalandbackend.frameworks.pcaf.model.general.PcafGeneral
 
 /**
@@ -16,7 +16,7 @@ data class PcafData(
     @field:Valid()
     val general: PcafGeneral? = null,
     @field:Valid()
-    val companyValue: PcafCompanyValue? = null,
+    val financial: PcafFinancial? = null,
     @field:Valid()
     val environmental: PcafEnvironmental? = null,
 )

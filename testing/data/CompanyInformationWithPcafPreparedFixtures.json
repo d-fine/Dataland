@@ -89,8 +89,8 @@
 					}
 				}
 			},
-			"companyValue": {
-				"companyValue": {
+			"financial": {
+				"financial": {
 					"grossDomesticProductGdpInEUR": {
 						"value": 24231.87,
 						"dataSource": {
