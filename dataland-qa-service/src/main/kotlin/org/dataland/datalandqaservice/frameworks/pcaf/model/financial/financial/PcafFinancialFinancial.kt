@@ -10,8 +10,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class PcafFinancialFinancial(
     @field:Valid()
-    val grossDomesticProductGdpInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
     val pppAdjustedGrossDomesticProductGdp: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val bookValueOfDebtInEUR: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,

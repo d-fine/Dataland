@@ -13,7 +13,6 @@
     },
     "financial" : {
       "financial" : {
-        "grossDomesticProductGdpInEUR" : "GDP_IN_EUR",
         "pppAdjustedGrossDomesticProductGdp" : "PPP_ADJUSTED_GDP_IN_USD",
         "bookValueOfDebtInEUR" : "BOOK_VALUE_OF_DEBT_IN_EUR"
       },

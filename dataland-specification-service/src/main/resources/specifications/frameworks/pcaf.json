@@ -16,7 +16,6 @@
     },
     "financial" : {
       "financial" : {
-        "grossDomesticProductGdpInEUR" : "extendedDecimalGrossDomesticProductGdpInEUR",
         "pppAdjustedGrossDomesticProductGdp" : "extendedDecimalPppAdjustedGrossDomesticProductGdp",
         "bookValueOfDebtInEUR" : "extendedDecimalBookValueOfDebtInEUR"
       },

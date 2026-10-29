@@ -6986,14 +6986,6 @@
       "PcafFinancialFinancial": {
         "type": "object",
         "properties": {
-          "grossDomesticProductGdpInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-              }
-            ]
-          },
           "pppAdjustedGrossDomesticProductGdp": {
             "nullable": true,
             "allOf": [

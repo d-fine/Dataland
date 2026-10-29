@@ -140,18 +140,6 @@ export const pcafDataModel = [
         label: 'Financial',
         fields: [
           {
-            name: 'grossDomesticProductGdpInEUR',
-            label: 'Gross domestic product (GDP)',
-            description:
-              'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
             name: 'pppAdjustedGrossDomesticProductGdp',
             label: 'PPP adjusted gross domestic product (GDP)',
             description:

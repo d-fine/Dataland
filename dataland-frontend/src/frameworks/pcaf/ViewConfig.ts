@@ -227,27 +227,6 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         children: [
           {
             type: 'cell',
-            label: 'Gross domestic product (GDP)',
-            explanation:
-              'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.financial?.financial?.grossDomesticProductGdpInEUR?.value, 'EUR'),
-                'Gross domestic product (GDP)',
-                dataset.financial?.financial?.grossDomesticProductGdpInEUR
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Gross domestic product (GDP)',
-                dataPoint
-              ),
-            uploadComponentName: 'BigDecimalExtendedDataPointFormField',
-            dataPointTypeId: 'extendedDecimalGrossDomesticProductGdpInEUR',
-          },
-          {
-            type: 'cell',
             label: 'PPP adjusted gross domestic product (GDP)',
             explanation:
               'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
