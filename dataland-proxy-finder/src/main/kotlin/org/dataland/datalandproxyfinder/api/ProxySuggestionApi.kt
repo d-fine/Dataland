@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @RequestMapping("/proxy-suggestions")
 @SecurityRequirement(name = "default-bearer-auth")
-interface ProxySuggestionApi {
+fun interface ProxySuggestionApi {
     /**
      * Searches a proxy company for the given company.
      */
