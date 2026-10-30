@@ -27,6 +27,6 @@ describe('Component tests for EutaxonomyNonFinancials202673Panel', () => {
       [preparedFixture]
     );
 
-    getCellValueContainer('Fiscal Year Deviation').should('contain.text', expectedDisplay);
+    getCellValueContainer('Fiscal year deviation').should('contain.text', expectedDisplay);
   });
 });

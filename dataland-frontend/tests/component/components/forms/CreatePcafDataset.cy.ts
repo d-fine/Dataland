@@ -28,7 +28,7 @@ const mockData: CompanyAssociatedDataPcafData = {
   companyId: 'company-id',
   reportingPeriod: '2024',
   data: {
-    companyValue: {
+    financial: {
       listedCompany: {
         marketCapitalizationInEUR: { value: 1000 },
       },

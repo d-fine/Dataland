@@ -1,6 +1,6 @@
 Field Identifier,Category,Sub-Category,Field Name,Alias Export,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field,Include Category in Type Name,Include Sub-Category in Type Name,Data Point Type Name Overwrite,Field Calculation
-1,General,General,Fiscal Year Deviation,FISCAL_YEAR_DEVIATION,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,,,,,
-2,General,General,Fiscal Year End,FISCAL_YEAR_END,The date the fiscal year ends.,Date, ,,Extended,,,,,,,
+1,General,General,Fiscal year deviation,FISCAL_YEAR_DEVIATION,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,,,,,
+2,General,General,Fiscal year end,FISCAL_YEAR_END,The date the fiscal year ends.,Date, ,,Extended,,,,,,,
 3,General,General,Referenced Reports,REFERENCED_REPORTS,Please upload all relevant reports for this dataset in the PDF format.,Report Preupload, ,,,,,,,,,
 4,General,General,Are all Group Entities covered?,ALL_GROUP_ENTITIES_COVERED,Are all Group legal entities covered in the reports?,Yes/No, ,,Extended,,,,,,AreAllGroupEntitiesCoveredByEuTaxonomyReports,
 5,General,General,Number of Employees,NO_OF_EMPLOYEES,Total Number of Employees (including temporary workers with assignment duration longer than 6 months),Number,"Allowed Range: [0, INF]",,Extended,,,,,,,
