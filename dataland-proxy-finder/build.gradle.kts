@@ -1,0 +1,142 @@
+// dataland-proxy-finder
+
+val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
+val jacocoSources by extra(sonarSources)
+val jacocoClasses by extra(
+    project.files(
+        sourceSets.asMap.values.flatMap { sourceSet ->
+            sourceSet.output.classesDirs.map {
+                fileTree(it) {
+                    exclude("**/openApiClient/**")
+                }
+            }
+        },
+    ),
+)
+val jacocoVersion: String by project
+val openApiGeneratorTimeOutThresholdInSeconds: String by project
+
+plugins {
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    jacoco
+    id("org.springdoc.openapi-gradle-plugin")
+    id("com.gorylenko.gradle-git-properties")
+    id("org.springframework.boot")
+    kotlin("kapt")
+}
+
+dependencies {
+    implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-keycloak-adapter"))
+    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.okhttp)
+    implementation(libs.log4j)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.to.slf4j)
+    implementation(libs.logback.classic)
+    implementation(libs.logback.core)
+    implementation(libs.slf4j.api)
+    implementation(Spring.boot.web)
+    implementation(libs.spring.boot.jackson2)
+    implementation(Spring.boot.actuator)
+    implementation(Spring.boot.validation)
+    implementation(Spring.boot.security)
+    implementation(libs.spring.boot.starter.aspectj)
+    implementation(libs.jackson.module.kotlin)
+    kapt(Spring.boot.configurationProcessor)
+    testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.spring.boot.webmvc.test)
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8491/proxy-finder/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8491"))
+    }
+    outputFileName.set("$projectDir/proxyFinderOpenApi.json")
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
+    }
+}
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
+}
+
+tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the backend service."
+    group = "clients"
+    val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
+    inputSpec.set(project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path)
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/backend")
+            .get()
+            .toString(),
+    )
+    packageName.set(backendClientDestinationPackage)
+    modelPackage.set("$backendClientDestinationPackage.model")
+    apiPackage.set("$backendClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
+tasks.register("generateClients") {
+    description = "Task to generate all required clients for the service."
+    group = "clients"
+    dependsOn("generateBackendClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-keycloak-adapter:assemble")
+}
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
+}
+
+tasks.getByName("ktlintMainSourceSetCheck") {
+    dependsOn("generateClients")
+}
+
+sourceSets {
+    val main by getting
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+}
+
+ktlint {
+    filter {
+        exclude("**/openApiClient/**")
+    }
+}

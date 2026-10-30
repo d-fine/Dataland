@@ -167,6 +167,22 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U accounting_service" ]
     logging:
       <<: *loki-logging
+  proxy-finder:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+    image: ${PROXY_FINDER_IMAGE:-ghcr.io/d-fine/dataland/dataland_proxy_finder_test:${DATALAND_PROXY_FINDER_TEST_VERSION}}
+    expose:
+      - "8080"
+
+    <<: *uncritical-constants-env
+    environment:
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_PROXY_FINDER_CLIENT_SECRET: ${DATALAND_PROXY_FINDER_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
   data-sourcing-service:
         restart: always
         profiles: [ "production", "testing", "development" ]
@@ -474,6 +490,7 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
+      DATALAND_PROXY_FINDER_CLIENT_SECRET: ${DATALAND_PROXY_FINDER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}

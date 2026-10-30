@@ -32,6 +32,7 @@ Use this when the user asks to generate or refresh clients, or when a consumer m
 - `dataland-community-manager`
 - `dataland-data-sourcing-service`
 - `dataland-accounting-service`
+- `dataland-proxy-finder`
 - `dataland-batch-manager`
 - `dataland-internal-storage`
 - `dataland-keycloak-adapter`

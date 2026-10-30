@@ -3364,6 +3364,80 @@
         ]
       }
     },
+    "/company-proxies/{companyId}/proxy-suggestion": {
+      "post": {
+        "tags": [
+          "company-proxy-controller"
+        ],
+        "summary": "Find a proxy suggestion for a company.",
+        "description": "Starts a proxy search for the given company and returns the suggested proxy company. The suggestion is not stored as a proxy relation.",
+        "operationId": "findProxySuggestion",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "description": "The unique identifier under which a company can be found on Dataland.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found a proxy suggestion.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxySuggestion"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Dataland admins may search proxy companies."
+          },
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "422": {
+            "description": "No valid proxy suggestion could be found, e.g. the suggested company does not exist on Dataland or is the company itself."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -20783,6 +20857,67 @@
             "type": "string",
             "description": "The data point type of the provided data point.",
             "example": "extendedEnumYesNoIsNfrdMandatory"
+          }
+        }
+      },
+      "ProxySuggestion": {
+        "required": [
+          "companyId",
+          "confidence",
+          "proxyCompanyId",
+          "reasoning",
+          "sources"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the company for which a proxy company was searched.",
+            "example": "c9710c7b-9cd6-446b-85b0-3773d2aceb48"
+          },
+          "proxyCompanyId": {
+            "type": "string",
+            "description": "The Dataland company ID of the suggested proxy company, whose data may be used as a proxy for the company.",
+            "example": "f1fda7ba-4bd6-4f4c-9d6c-6d3b3a4e0c2a"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The confidence of the proxy finder in the suggestion, as a value between 0 (no confidence) and 1 (full confidence).",
+            "format": "double",
+            "example": 0.85
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "A human-readable explanation of why the proxy company was suggested.",
+            "example": "The suggested company is the parent company and publishes consolidated sustainability reports."
+          },
+          "sources": {
+            "type": "array",
+            "description": "The sources on which the suggestion is based.",
+            "items": {
+              "$ref": "#/components/schemas/ProxySuggestionSource"
+            }
+          }
+        }
+      },
+      "ProxySuggestionSource": {
+        "required": [
+          "title",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short human-readable title of the source.",
+            "example": "Annual Report 2024"
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL under which the source can be found.",
+            "example": "https://example.com/annual-report-2024.pdf"
           }
         }
       },
