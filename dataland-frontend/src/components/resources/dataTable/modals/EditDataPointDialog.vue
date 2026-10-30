@@ -26,6 +26,7 @@ import { componentDictionary } from '@/components/resources/dataTable/EditDataPo
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { activityComponentNames, kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
@@ -49,26 +50,70 @@ const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageVal
  */
 const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
-const extendedDataPointObject: ExtendedDataPointType = {
-  value: ((): string | undefined => {
-    const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
-  })(),
-  quality: ((): string | undefined => {
-    const valueOrPotentialQuality =
-      unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return valueOrPotentialQuality && Object.values(QualityOptions).includes(valueOrPotentialQuality)
-      ? valueOrPotentialQuality
-      : unref(dataPoint?.displayValue?.quality ?? '');
-  })(),
-  comment: unref(dataPoint?.displayValue?.comment ?? ''),
-  dataSource: {
-    fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
-    page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
-  },
-};
+const modalData = dataPoint?.displayValue?.modalOptions?.data;
+
+/**
+ * Activity list data points are edited as a list. For empty cells there is no modal data, so the list structure is
+ * built with empty values.
+ * @returns whether the data point is an activity list
+ */
+function isActivityListDataPoint(): boolean {
+  return activityComponentNames.has(uploadComponentName ?? '');
+}
+
+/**
+ * @returns the extended data point object for activity lists (empty if there is no modal data)
+ */
+function buildActivityListDataPointObject(): ExtendedDataPointType {
+  return {
+    value: modalData?.listOfRowContents ?? [],
+    quality: modalData?.dataPointDisplay?.quality ?? '',
+    comment: modalData?.dataPointDisplay?.comment ?? '',
+    dataSource: {
+      fileReference: modalData?.dataPointDisplay?.dataSource?.fileReference ?? '',
+      page: modalData?.dataPointDisplay?.dataSource?.page ?? '',
+    },
+  };
+}
+
+/**
+ * @returns the inner display value as trimmed string (empty if it is not a string)
+ */
+function innerDisplayText(): string {
+  const inner = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '');
+  return typeof inner === 'string' ? inner.trim() : '';
+}
+
+/**
+ * @returns the extended data point object for scalar data points
+ */
+function buildScalarDataPointObject(): ExtendedDataPointType {
+  return {
+    value: ((): string | undefined => {
+      const value = innerDisplayText() || undefined;
+      return value && !(Object.values(QualityOptions) as string[]).includes(value) ? value : undefined;
+    })(),
+    quality: ((): string | undefined => {
+      const valueOrPotentialQuality = innerDisplayText() || undefined;
+      return valueOrPotentialQuality && (Object.values(QualityOptions) as string[]).includes(valueOrPotentialQuality)
+        ? valueOrPotentialQuality
+        : unref(dataPoint?.displayValue?.quality ?? '');
+    })(),
+    comment: unref(dataPoint?.displayValue?.comment ?? ''),
+    dataSource: {
+      fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
+      page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
+    },
+  };
+}
+
+const extendedDataPointObject: ExtendedDataPointType = isActivityListDataPoint()
+  ? buildActivityListDataPointObject()
+  : buildScalarDataPointObject();
 
 provide('companyId', companyId);
+// For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
+provide('activityKpiType', modalData?.kpiType ?? kpiTypeFromDataPointTypeId(dataPointTypeId));
 
 /**
  * Updates the data point with the current API body.
