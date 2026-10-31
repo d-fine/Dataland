@@ -100,7 +100,7 @@ spring-security-crypto = { module = "org.springframework.security:spring-securit
 spring-security-web = { module = "org.springframework.security:spring-security-web" }
 
 # Spring-related
-spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.4" }
+spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.5" }
 springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
