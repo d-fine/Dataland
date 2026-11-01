@@ -242,6 +242,35 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
     )
 }
 
+tasks.register("generateProxyFinderClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the proxy finder."
+    group = "clients"
+    val proxyFinderClientDestinationPackage = "org.dataland.datalandproxyfinder.openApiClient"
+    inputSpec.set(project.file("${project.rootDir}/dataland-proxy-finder/proxyFinderOpenApi.json").path)
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/proxy-finder")
+            .get()
+            .toString(),
+    )
+    packageName.set(proxyFinderClientDestinationPackage)
+    modelPackage.set("$proxyFinderClientDestinationPackage.model")
+    apiPackage.set("$proxyFinderClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+}
+
 tasks.register("generateCurrencyCodesFile", JavaExec::class) {
     doNotTrackState("The file should always be regenerated.")
     description = "Generates the shared ISO 4217 currencyCodes.json in dataland-backend-utils from the JDK currencies."
@@ -259,6 +288,7 @@ tasks.register("generateClients") {
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateSpecificationServiceClient")
+    dependsOn("generateProxyFinderClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -277,6 +307,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/proxy-finder/src/main/kotlin"))
 }
 
 ktlint {

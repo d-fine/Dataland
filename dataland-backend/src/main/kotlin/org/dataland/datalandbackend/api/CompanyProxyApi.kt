@@ -4,12 +4,14 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
+import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.GeneralOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.validator.CompanyExists
 import org.springframework.http.ResponseEntity
@@ -262,4 +264,49 @@ interface CompanyProxyApi {
         @RequestBody
         companyProxy: CompanyProxy<String>,
     ): ResponseEntity<StoredCompanyProxy>
+
+    /**
+     * Searches a proxy company for the given company using the proxy finder.
+     */
+    @Operation(
+        summary = "Find a proxy suggestion for a company.",
+        description =
+            "Starts a proxy search for the given company and returns the suggested proxy company. " +
+                "The suggestion is not stored as a proxy relation.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully found a proxy suggestion."),
+            ApiResponse(
+                responseCode = "403",
+                description = "Only Dataland admins may search proxy companies.",
+                content = [Content(array = ArraySchema())],
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified company does not exist on Dataland.",
+                content = [Content(mediaType = "application/json")],
+            ),
+            ApiResponse(
+                responseCode = "422",
+                description =
+                    "No valid proxy suggestion could be found, e.g. the suggested company does not exist on " +
+                        "Dataland or is the company itself.",
+                content = [Content(schema = Schema())],
+            ),
+        ],
+    )
+    @PostMapping(
+        value = ["/{companyId}/proxy-suggestion"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun findProxySuggestion(
+        @Parameter(
+            description = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_DESCRIPTION,
+            example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
+            required = true,
+        )
+        @PathVariable companyId: String,
+    ): ResponseEntity<ProxySuggestion>
 }

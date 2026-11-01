@@ -24,6 +24,7 @@ include(
     "dataland-specification-lib",
     "dataland-specification-service",
     "dataland-user-service",
+    "dataland-proxy-finder",
     "dataland-website",
     "dataland-sharedElements",
 )
