@@ -25,7 +25,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -47,7 +47,7 @@ jobs:
     needs:
       - rebuild-docker-images
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -104,7 +104,7 @@ jobs:
     env:
       ENVIRONMENT: ${{ github.event.inputs.whichEnvironment }}
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -219,7 +219,7 @@ jobs:
       matrix:
         testGroup: [ 1,2,3,4,5,6 ]
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
