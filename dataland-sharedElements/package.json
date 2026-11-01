@@ -33,13 +33,13 @@
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.9.0",
     "depcheck": "1.4.7",
-    "eslint": "^10.13.0",
-    "eslint-plugin-jsdoc": "^64.5.4",
-    "eslint-plugin-vue": "^10.11.1",
-    "npm-check-updates": "^23.1.1",
-    "prettier": "^3.9.10",
-    "typescript": "^6.0.3",
-    "vue": "^3.5.44",
-    "vue-tsc": "^3.3.13"
+    "eslint": "10.13.0",
+    "eslint-plugin-jsdoc": "64.5.4",
+    "eslint-plugin-vue": "10.11.1",
+    "npm-check-updates": "23.1.1",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "vue": "3.5.44",
+    "vue-tsc": "3.3.13"
   }
 }
