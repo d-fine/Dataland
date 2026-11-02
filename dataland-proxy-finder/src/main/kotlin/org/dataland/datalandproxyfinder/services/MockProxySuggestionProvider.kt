@@ -44,7 +44,10 @@ class MockProxySuggestionProvider(
             datalandCompanyService.findCompanyIdByLei(proxyCompanyLei)
                 ?: throw InvalidProxySuggestionApiException(
                     summary = "Suggested proxy company does not exist.",
-                    message = "The mocked proxy company with LEI $proxyCompanyLei does not exist on Dataland.",
+                    message =
+                        "The mocked proxy company with LEI $proxyCompanyLei does not exist on Dataland. " +
+                            "Prepopulate the fake fixtures or set PROXY_FINDER_MOCK_PROXY_COMPANY_LEI " +
+                            "to the LEI of an existing company.",
                 )
         return ProxySuggestion(
             companyId = company.companyId,

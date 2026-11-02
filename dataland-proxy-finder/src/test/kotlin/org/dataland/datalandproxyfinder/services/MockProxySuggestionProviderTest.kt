@@ -14,7 +14,7 @@ import java.util.UUID
 
 class MockProxySuggestionProviderTest {
     private val mockDatalandCompanyService = mock<DatalandCompanyService>()
-    private val proxyCompanyLei = "DALAPROXYFINDERMOCK1"
+    private val proxyCompanyLei = "3VtVfvDAmT9vm0VBcrp9"
     private val proxyCompanyId = UUID.randomUUID().toString()
 
     private lateinit var provider: MockProxySuggestionProvider
