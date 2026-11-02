@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
 import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
  * This provider will be replaced by an AI-based implementation of [ProxySuggestionProvider].
  */
 @Service
+@ConditionalOnProperty(name = ["dataland.proxy-finder.provider"], havingValue = "mock")
 class MockProxySuggestionProvider(
     private val datalandCompanyService: DatalandCompanyService,
     @Value("\${dataland.proxy-finder.mock.proxy-company-lei}") private val proxyCompanyLei: String,
