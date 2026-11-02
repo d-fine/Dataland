@@ -29,8 +29,8 @@ import java.util.UUID
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
-    @Column(name = "data_point_id")
-    val dataPointId: String,
+    @Column(name = "data_point_id", nullable = true)
+    val dataPointId: String?,
     /**
      * QA reports are independently owned resources managed via [DataPointQaReportEntity]'s dedicated
      * API (see DataPointQaReportManager). This is a read-only association used to display the latest
