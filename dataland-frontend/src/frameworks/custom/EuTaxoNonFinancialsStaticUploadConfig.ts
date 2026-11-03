@@ -13,7 +13,7 @@ export const eutaxonomyNonFinancialsDataModel = [
         fields: [
           {
             name: 'fiscalYearDeviation',
-            label: 'Fiscal Year Deviation',
+            label: 'Fiscal year deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
             unit: '',
             component: 'RadioButtonsExtendedDataPointFormField',
@@ -32,7 +32,7 @@ export const eutaxonomyNonFinancialsDataModel = [
           },
           {
             name: 'fiscalYearEnd',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             description: 'The date the fiscal year ends',
             unit: '',
             component: 'DateExtendedDataPointFormField',
