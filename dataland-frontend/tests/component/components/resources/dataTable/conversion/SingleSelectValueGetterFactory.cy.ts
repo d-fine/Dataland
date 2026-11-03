@@ -8,7 +8,7 @@ import { singleSelectValueGetterFactory } from '@/components/resources/dataTable
 describe('Unit test for the SingleSelectValueGetterFactory', () => {
   const field: Field = {
     name: 'fiscalYearDeviation',
-    label: 'Fiscal Year Deviation',
+    label: 'Fiscal year deviation',
     description: 'Does the fiscal year deviate from the calendar year?',
     unit: '',
     component: 'RadioButtonsFormField',
