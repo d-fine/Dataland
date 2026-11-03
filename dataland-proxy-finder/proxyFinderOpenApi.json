@@ -55,10 +55,10 @@
             "description": "Only Dataland admins may search proxy companies."
           },
           "404": {
-            "description": "The specified company does not exist on Dataland or no suitable proxy company was found."
+            "description": "The specified company does not exist on Dataland."
           },
           "422": {
-            "description": "The proxy suggestion is invalid, e.g. the suggested company does not exist on Dataland or is the company itself."
+            "description": "No valid proxy suggestion could be found, e.g. no suitable proxy company was identified, the suggested company does not exist on Dataland or is the company itself."
           },
           "503": {
             "description": "The AI service is unavailable, timed out, or rate limited."

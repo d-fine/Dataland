@@ -5,6 +5,8 @@ import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientError
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientException
+import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerError
+import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerException
 import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestion
 import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestionSource
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -30,6 +32,7 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.net.SocketTimeoutException
 import java.util.UUID
 
 @SpringBootTest(
@@ -113,7 +116,38 @@ class CompanyProxySuggestionControllerTest(
     fun `an unknown company reported by the proxy finder results in a 404`() {
         val companyId = UUID.randomUUID().toString()
         doThrow(proxyFinderClientException(404)).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
-        requestProxySuggestion(companyId).andExpect(status().isNotFound)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isNotFound)
+            .andExpect(jsonPath("$.errors[0].summary").value("Company not found"))
+    }
+
+    @Test
+    fun `an unavailable proxy finder is forwarded as a 503 with its explanation`() {
+        val companyId = UUID.randomUUID().toString()
+        val message = "The AI service could not process the request. Please try again later."
+        val errorBody =
+            """{"errors":[{"errorType":"service-unavailable","summary":"The proxy search is currently unavailable.",""" +
+                """"message":"$message","httpStatus":503}]}"""
+        doThrow(
+            ServerException(
+                message = "Server error",
+                statusCode = 503,
+                response = ServerError<Any>(body = errorBody, statusCode = 503),
+            ),
+        ).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isServiceUnavailable)
+            .andExpect(jsonPath("$.errors[0].errorType").value("service-unavailable"))
+            .andExpect(jsonPath("$.errors[0].message").value(message))
+    }
+
+    @Test
+    fun `a timeout of the proxy finder results in a 503 instead of an internal server error`() {
+        val companyId = UUID.randomUUID().toString()
+        doThrow(SocketTimeoutException("timeout")).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isServiceUnavailable)
+            .andExpect(jsonPath("$.errors[0].summary").value("The proxy search is currently unavailable."))
     }
 
     @Test

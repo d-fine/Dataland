@@ -3,6 +3,7 @@ package org.dataland.datalandproxyfinder.services
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.openai.client.OpenAIClient
 import com.openai.core.JsonValue
+import com.openai.core.RequestOptions
 import com.openai.models.Reasoning
 import com.openai.models.ReasoningEffort
 import com.openai.models.responses.Response
@@ -21,6 +22,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -46,6 +48,7 @@ class ProxySearchLlmClient(
     @Value("\${dataland.proxy-finder.azure.deployment-name}") private val deploymentName: String,
     @Value("\${dataland.proxy-finder.azure.reasoning-effort}") private val reasoningEffort: String,
     @Value("\${dataland.proxy-finder.azure.max-tool-rounds}") private val maxToolRounds: Int,
+    @Value("\${dataland.proxy-finder.azure.max-research-duration}") private val maxResearchDuration: Duration,
     @Value("classpath:prompts/proxy-search.st") systemPrompt: Resource,
 ) {
     companion object {
@@ -59,17 +62,33 @@ class ProxySearchLlmClient(
      * Asks the LLM for the proxy company of the given company.
      * @param companyName the name of the company for which a proxy company is searched
      * @return the structured result of the research
-     * @throws ProxySearchLlmException if the LLM did not produce a usable result
+     * @throws ProxySearchLlmException if the LLM did not produce a usable result within the limits
      */
     fun research(companyName: String): ProxySearchLlmResult {
+        val deadline = System.nanoTime() + maxResearchDuration.toNanos()
         val userMessage = "Find the proxy company for the company \"$companyName\"."
-        var response = openAiClient.responses().create(baseParams().input(userMessage).build())
+        var response = create(baseParams().input(userMessage).build(), deadline)
         repeat(maxToolRounds) {
             val functionCalls = response.output().mapNotNull { it.functionCall().getOrNull() }
             if (functionCalls.isEmpty()) return parseResult(response)
-            response = openAiClient.responses().create(followUpParams(response.id(), functionCalls))
+            response = create(followUpParams(response.id(), functionCalls), deadline)
         }
         throw ProxySearchLlmException("The LLM did not finish within $maxToolRounds tool-calling rounds.")
+    }
+
+    /**
+     * Sends a request to the Responses API. The request may only use the time that is left of the overall research
+     * duration, so that the proxy finder answers before its callers time out.
+     */
+    private fun create(
+        params: ResponseCreateParams,
+        deadline: Long,
+    ): Response {
+        val remaining = Duration.ofNanos(deadline - System.nanoTime())
+        if (remaining.isNegative || remaining.isZero) {
+            throw ProxySearchLlmException("The proxy research exceeded the maximum duration of $maxResearchDuration.")
+        }
+        return openAiClient.responses().create(params, RequestOptions.builder().timeout(remaining).build())
     }
 
     private fun followUpParams(

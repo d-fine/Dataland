@@ -1,12 +1,13 @@
 package org.dataland.datalandproxyfinder.services
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiException
 import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.dataland.datalandproxyfinder.model.ProxySearchLlmResult
 import org.dataland.datalandproxyfinder.model.ProxySearchLlmSource
 import org.dataland.datalandproxyfinder.model.ProxySearchStatus
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.doThrow
@@ -45,13 +46,23 @@ class AzureOpenAiProxySuggestionProviderTest {
     }
 
     @Test
-    fun `non found statuses and missing ids result in not found`() {
-        listOf(ProxySearchStatus.SELF, ProxySearchStatus.UNCLEAR, ProxySearchStatus.AMBIGUOUS).forEach {
-            stubResult(ProxySearchLlmResult(status = it, parentCompanyId = proxyId))
-            assertThrows<ResourceNotFoundApiException> { provider.suggestProxy(company) }
+    fun `non found statuses and missing ids result in an explained unprocessable error`() {
+        val expectedExplanations =
+            mapOf(
+                ProxySearchLlmResult(status = ProxySearchStatus.SELF, parentCompanyId = proxyId) to "own ultimate parent",
+                ProxySearchLlmResult(status = ProxySearchStatus.UNCLEAR) to "could not reliably determine",
+                ProxySearchLlmResult(status = ProxySearchStatus.AMBIGUOUS, candidates = listOf("A AG", "B AG")) to
+                    "candidates: A AG, B AG",
+                ProxySearchLlmResult(status = ProxySearchStatus.FOUND, parentName = "Parent AG") to
+                    "\"Parent AG\" as the ultimate parent",
+            )
+        expectedExplanations.forEach { (result, expectedText) ->
+            stubResult(result.copy(reasoning = "Some reasoning"))
+            val exception = assertThrows<InvalidProxySuggestionApiException> { provider.suggestProxy(company) }
+            assertEquals(AzureOpenAiProxySuggestionProvider.NO_SUITABLE_PROXY_SUMMARY, exception.summary)
+            assertTrue(exception.message.contains(expectedText), exception.message)
+            assertTrue(exception.message.contains("Reasoning of the AI: Some reasoning"), exception.message)
         }
-        stubResult(ProxySearchLlmResult(status = ProxySearchStatus.FOUND, parentCompanyId = null))
-        assertThrows<ResourceNotFoundApiException> { provider.suggestProxy(company) }
     }
 
     @Test

@@ -27,6 +27,7 @@ class ProxySearchLlmClientTest {
         const val API_KEY = "test-key"
         const val MAX_TOOL_ROUNDS = 2
         const val SYSTEM_PROMPT = "You are a test prompt."
+        val MAX_RESEARCH_DURATION: Duration = Duration.ofSeconds(10)
     }
 
     private data class RecordedRequest(
@@ -37,6 +38,9 @@ class ProxySearchLlmClientTest {
 
     private val requests = ConcurrentLinkedQueue<RecordedRequest>()
     private val responses = ConcurrentLinkedQueue<String>()
+
+    @Volatile
+    private var responseDelay: Duration = Duration.ZERO
     private lateinit var server: HttpServer
     private lateinit var openAiClient: OpenAIClient
     private val companyService = mock<DatalandCompanyService>()
@@ -51,19 +55,22 @@ class ProxySearchLlmClientTest {
             AzureOpenAiClientConfiguration().azureOpenAiClient(
                 endpoint = "http://localhost:${server.address.port}/openai/v1/",
                 apiKey = API_KEY,
-                timeout = Duration.ofSeconds(10),
+                timeout = MAX_RESEARCH_DURATION,
                 maxRetries = 0,
             )
-        llmClient =
-            ProxySearchLlmClient(
-                openAiClient = openAiClient,
-                datalandCompanyTools = DatalandCompanyTools(companyService),
-                deploymentName = DEPLOYMENT,
-                reasoningEffort = "medium",
-                maxToolRounds = MAX_TOOL_ROUNDS,
-                systemPrompt = ByteArrayResource(SYSTEM_PROMPT.toByteArray()),
-            )
+        llmClient = createLlmClient(MAX_RESEARCH_DURATION)
     }
+
+    private fun createLlmClient(maxResearchDuration: Duration) =
+        ProxySearchLlmClient(
+            openAiClient = openAiClient,
+            datalandCompanyTools = DatalandCompanyTools(companyService),
+            deploymentName = DEPLOYMENT,
+            reasoningEffort = "medium",
+            maxToolRounds = MAX_TOOL_ROUNDS,
+            maxResearchDuration = maxResearchDuration,
+            systemPrompt = ByteArrayResource(SYSTEM_PROMPT.toByteArray()),
+        )
 
     @AfterEach
     fun tearDown() {
@@ -79,6 +86,7 @@ class ProxySearchLlmClientTest {
                 body = defaultObjectMapper.readTree(exchange.requestBody.readAllBytes()),
             ),
         )
+        Thread.sleep(responseDelay.toMillis())
         val body = (responses.poll() ?: error("No response queued")).toByteArray()
         exchange.responseHeaders.add("Content-Type", "application/json")
         exchange.sendResponseHeaders(200, body.size.toLong())
@@ -210,5 +218,20 @@ class ProxySearchLlmClientTest {
             responses.add(it)
             assertThrows<ProxySearchLlmException> { llmClient.research("Child GmbH") }
         }
+    }
+
+    @Test
+    fun `the research is aborted when the maximum duration is exceeded`() {
+        responseDelay = Duration.ofSeconds(2)
+        responses.add(
+            response(
+                "resp_slow",
+                listOf(functionCall("call_1", DatalandCompanyTools.SEARCH_COMPANIES_BY_NAME, """{"name":"X"}""")),
+            ),
+        )
+        val shortLlmClient = createLlmClient(Duration.ofMillis(500))
+        val start = System.nanoTime()
+        assertThrows<RuntimeException> { shortLlmClient.research("Child GmbH") }
+        assertTrue(Duration.ofNanos(System.nanoTime() - start) < Duration.ofSeconds(2))
     }
 }

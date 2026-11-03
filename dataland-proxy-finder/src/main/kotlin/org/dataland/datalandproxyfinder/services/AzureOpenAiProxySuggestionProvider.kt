@@ -1,6 +1,6 @@
 package org.dataland.datalandproxyfinder.services
 
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiException
 import org.dataland.datalandbackendutils.exceptions.SingleApiException
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
@@ -22,6 +22,10 @@ import org.springframework.stereotype.Service
 class AzureOpenAiProxySuggestionProvider(
     private val proxySearchLlmClient: ProxySearchLlmClient,
 ) : ProxySuggestionProvider {
+    companion object {
+        const val NO_SUITABLE_PROXY_SUMMARY = "No suitable proxy company found."
+    }
+
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun suggestProxy(company: ProxySearchCompany): ProxySuggestion = mapToSuggestion(company, callLlm(company))
@@ -52,11 +56,9 @@ class AzureOpenAiProxySuggestionProvider(
     ): ProxySuggestion {
         val proxyCompanyId = result.parentCompanyId
         if (result.status != ProxySearchStatus.FOUND || proxyCompanyId.isNullOrBlank()) {
-            throw ResourceNotFoundApiException(
-                summary = "No suitable proxy company found.",
-                message =
-                    "No suitable proxy company could be determined for company ${company.companyId} " +
-                        "(research status: ${result.status}).",
+            throw InvalidProxySuggestionApiException(
+                summary = NO_SUITABLE_PROXY_SUMMARY,
+                message = explainMissingProxy(company, result),
             )
         }
         return ProxySuggestion(
@@ -66,5 +68,34 @@ class AzureOpenAiProxySuggestionProvider(
             reasoning = result.reasoning.orEmpty(),
             sources = result.sources.map { ProxySuggestionSource(title = it.title, url = it.url) },
         )
+    }
+
+    /**
+     * Builds a human-readable explanation why no proxy company could be suggested, including the reasoning of the LLM.
+     */
+    private fun explainMissingProxy(
+        company: ProxySearchCompany,
+        result: ProxySearchLlmResult,
+    ): String {
+        val candidates =
+            result.candidates
+                .takeIf { it.isNotEmpty() }
+                ?.joinToString(prefix = " (candidates: ", postfix = ")")
+                .orEmpty()
+        val outcome =
+            when (result.status) {
+                ProxySearchStatus.SELF ->
+                    "The AI considers \"${company.companyName}\" to be its own ultimate parent, so there is no proxy company."
+                ProxySearchStatus.AMBIGUOUS ->
+                    "The AI could not resolve \"${company.companyName}\" to a single legal entity$candidates."
+                ProxySearchStatus.UNCLEAR ->
+                    "The AI could not reliably determine the ultimate parent of \"${company.companyName}\" " +
+                        "or the parent does not exist on Dataland."
+                ProxySearchStatus.FOUND ->
+                    "The AI identified \"${result.parentName.orEmpty()}\" as the ultimate parent of " +
+                        "\"${company.companyName}\", but could not find it on Dataland."
+            }
+        val reasoning = if (result.reasoning.isNullOrBlank()) "" else " Reasoning of the AI: ${result.reasoning}"
+        return outcome + reasoning
     }
 }

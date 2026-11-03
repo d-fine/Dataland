@@ -26,7 +26,7 @@ class AzureOpenAiClientConfiguration {
     fun azureOpenAiClient(
         @Value("\${dataland.proxy-finder.azure.endpoint}") endpoint: String,
         @Value("\${dataland.proxy-finder.azure.api-key}") apiKey: String,
-        @Value("\${dataland.proxy-finder.azure.timeout}") timeout: Duration,
+        @Value("\${dataland.proxy-finder.azure.max-research-duration}") timeout: Duration,
         @Value("\${dataland.proxy-finder.azure.max-retries}") maxRetries: Int,
     ): OpenAIClient =
         OpenAIOkHttpClient
