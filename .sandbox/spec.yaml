@@ -9,6 +9,8 @@ sandbox:
 permissions:
   network:
     allow:
+      # Allow for Azure Foundry
+      - "*.cognitiveservices.azure.com:443"
       # Access for Copilot
       - "api.githubcopilot.com:443"
 

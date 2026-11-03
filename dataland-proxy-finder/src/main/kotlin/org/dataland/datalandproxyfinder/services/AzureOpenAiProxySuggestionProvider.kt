@@ -1,0 +1,82 @@
+package org.dataland.datalandproxyfinder.services
+
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiException
+import org.dataland.datalandbackendutils.exceptions.SingleApiException
+import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
+import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
+import org.dataland.datalandproxyfinder.model.ProxySearchCompany
+import org.dataland.datalandproxyfinder.model.ProxySearchLlmResult
+import org.dataland.datalandproxyfinder.model.ProxySearchStatus
+import org.slf4j.LoggerFactory
+import org.springframework.ai.chat.client.ChatClient
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.stereotype.Service
+
+/**
+ * Proxy suggestion provider that asks an LLM deployed in Azure OpenAI (via Spring AI) for the proxy company.
+ * The LLM resolves companies to Dataland company IDs via [DatalandCompanyTools]. The returned suggestion is
+ * validated by the caller.
+ */
+@Service
+@ConditionalOnProperty(name = ["dataland.proxy-finder.provider"], havingValue = "azure")
+class AzureOpenAiProxySuggestionProvider(
+    private val chatClient: ChatClient,
+    private val datalandCompanyService: DatalandCompanyService,
+) : ProxySuggestionProvider {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    override fun suggestProxy(company: ProxySearchCompany): ProxySuggestion {
+        val result = callLlm(company) ?: throw unavailable("The AI service returned an unreadable response.")
+        return mapToSuggestion(company, result)
+    }
+
+    @Suppress("TooGenericExceptionCaught") // any failure of the LLM call must be reported as 503
+    private fun callLlm(company: ProxySearchCompany): ProxySearchLlmResult? {
+        val userMessage = "Find the proxy company for the company \"${company.companyName}\"."
+        return try {
+            chatClient
+                .prompt()
+                .user(userMessage)
+                .tools(DatalandCompanyTools(datalandCompanyService))
+                .call()
+                .entity(ProxySearchLlmResult::class.java)
+        } catch (exception: SingleApiException) {
+            throw exception
+        } catch (exception: RuntimeException) {
+            logger.error("Calling the LLM failed for company ${company.companyId}.", exception)
+            throw unavailable("The AI service could not process the request.", exception)
+        }
+    }
+
+    private fun unavailable(
+        reason: String,
+        cause: Throwable? = null,
+    ) = ServiceUnavailableApiException(
+        summary = "The proxy search is currently unavailable.",
+        message = "$reason Please try again later.",
+        cause = cause,
+    )
+
+    private fun mapToSuggestion(
+        company: ProxySearchCompany,
+        result: ProxySearchLlmResult,
+    ): ProxySuggestion {
+        val proxyCompanyId = result.parentCompanyId
+        if (result.status != ProxySearchStatus.FOUND || proxyCompanyId.isNullOrBlank()) {
+            throw ResourceNotFoundApiException(
+                summary = "No suitable proxy company found.",
+                message =
+                    "No suitable proxy company could be determined for company ${company.companyId} " +
+                        "(research status: ${result.status}).",
+            )
+        }
+        return ProxySuggestion(
+            companyId = company.companyId,
+            proxyCompanyId = proxyCompanyId,
+            confidence = (result.confidence ?: 0.0).coerceIn(0.0, 1.0),
+            reasoning = result.reasoning.orEmpty(),
+            sources = result.sources.map { ProxySuggestionSource(title = it.title, url = it.url) },
+        )
+    }
+}
