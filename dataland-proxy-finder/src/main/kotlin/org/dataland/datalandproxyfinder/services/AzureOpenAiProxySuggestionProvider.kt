@@ -9,45 +9,33 @@ import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.dataland.datalandproxyfinder.model.ProxySearchLlmResult
 import org.dataland.datalandproxyfinder.model.ProxySearchStatus
 import org.slf4j.LoggerFactory
-import org.springframework.ai.chat.client.ChatClient
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 
 /**
- * Proxy suggestion provider that asks an LLM deployed in Azure OpenAI (via Spring AI) for the proxy company.
+ * Proxy suggestion provider that asks an LLM deployed in Azure OpenAI (Responses API) for the proxy company.
  * The LLM resolves companies to Dataland company IDs via [DatalandCompanyTools]. The returned suggestion is
  * validated by the caller.
  */
 @Service
 @ConditionalOnProperty(name = ["dataland.proxy-finder.provider"], havingValue = "azure")
 class AzureOpenAiProxySuggestionProvider(
-    private val chatClient: ChatClient,
-    private val datalandCompanyService: DatalandCompanyService,
+    private val proxySearchLlmClient: ProxySearchLlmClient,
 ) : ProxySuggestionProvider {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun suggestProxy(company: ProxySearchCompany): ProxySuggestion {
-        val result = callLlm(company) ?: throw unavailable("The AI service returned an unreadable response.")
-        return mapToSuggestion(company, result)
-    }
+    override fun suggestProxy(company: ProxySearchCompany): ProxySuggestion = mapToSuggestion(company, callLlm(company))
 
     @Suppress("TooGenericExceptionCaught") // any failure of the LLM call must be reported as 503
-    private fun callLlm(company: ProxySearchCompany): ProxySearchLlmResult? {
-        val userMessage = "Find the proxy company for the company \"${company.companyName}\"."
-        return try {
-            chatClient
-                .prompt()
-                .user(userMessage)
-                .tools(DatalandCompanyTools(datalandCompanyService))
-                .call()
-                .entity(ProxySearchLlmResult::class.java)
+    private fun callLlm(company: ProxySearchCompany): ProxySearchLlmResult =
+        try {
+            proxySearchLlmClient.research(company.companyName)
         } catch (exception: SingleApiException) {
             throw exception
         } catch (exception: RuntimeException) {
             logger.error("Calling the LLM failed for company ${company.companyId}.", exception)
             throw unavailable("The AI service could not process the request.", exception)
         }
-    }
 
     private fun unavailable(
         reason: String,

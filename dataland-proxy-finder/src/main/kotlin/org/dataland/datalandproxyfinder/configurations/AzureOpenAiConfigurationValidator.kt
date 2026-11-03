@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component
 @Component
 @ConditionalOnProperty(name = ["dataland.proxy-finder.provider"], havingValue = "azure")
 class AzureOpenAiConfigurationValidator(
-    @Value("\${spring.ai.openai.base-url:}") private val endpoint: String,
-    @Value("\${spring.ai.openai.api-key:}") private val apiKey: String,
-    @Value("\${spring.ai.openai.chat.model:}") private val deploymentName: String,
+    @Value("\${dataland.proxy-finder.azure.endpoint:}") private val endpoint: String,
+    @Value("\${dataland.proxy-finder.azure.api-key:}") private val apiKey: String,
+    @Value("\${dataland.proxy-finder.azure.deployment-name:}") private val deploymentName: String,
 ) {
     init {
         val missing =

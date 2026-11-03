@@ -7,41 +7,26 @@ import org.dataland.datalandproxyfinder.model.ProxySearchLlmResult
 import org.dataland.datalandproxyfinder.model.ProxySearchLlmSource
 import org.dataland.datalandproxyfinder.model.ProxySearchStatus
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.springframework.ai.chat.client.ChatClient
 import java.util.UUID
 
 class AzureOpenAiProxySuggestionProviderTest {
-    private val chatClient = mock<ChatClient>(defaultAnswer = org.mockito.Answers.RETURNS_DEEP_STUBS)
+    private val llmClient = mock<ProxySearchLlmClient>()
     private val company = ProxySearchCompany(UUID.randomUUID().toString(), "Child GmbH")
     private val proxyId = UUID.randomUUID().toString()
-    private lateinit var provider: AzureOpenAiProxySuggestionProvider
+    private val provider = AzureOpenAiProxySuggestionProvider(llmClient)
 
-    @BeforeEach
-    fun setup() {
-        provider = AzureOpenAiProxySuggestionProvider(chatClient, mock<DatalandCompanyService>())
-    }
-
-    private fun llmCall() =
-        chatClient
-            .prompt()
-            .user(any<String>())
-            .tools(any<Any>())
-            .call()
-            .entity(ProxySearchLlmResult::class.java)
-
-    private fun stubEntity(result: ProxySearchLlmResult?) {
-        whenever(llmCall()).thenReturn(result)
+    private fun stubResult(result: ProxySearchLlmResult) {
+        whenever(llmClient.research(company.companyName)).thenReturn(result)
     }
 
     @Test
     fun `a found result is mapped to a proxy suggestion`() {
-        stubEntity(
+        stubResult(
             ProxySearchLlmResult(
                 status = ProxySearchStatus.FOUND,
                 parentName = "Parent AG",
@@ -62,18 +47,18 @@ class AzureOpenAiProxySuggestionProviderTest {
     @Test
     fun `non found statuses and missing ids result in not found`() {
         listOf(ProxySearchStatus.SELF, ProxySearchStatus.UNCLEAR, ProxySearchStatus.AMBIGUOUS).forEach {
-            stubEntity(ProxySearchLlmResult(status = it, parentCompanyId = proxyId))
+            stubResult(ProxySearchLlmResult(status = it, parentCompanyId = proxyId))
             assertThrows<ResourceNotFoundApiException> { provider.suggestProxy(company) }
         }
-        stubEntity(ProxySearchLlmResult(status = ProxySearchStatus.FOUND, parentCompanyId = null))
+        stubResult(ProxySearchLlmResult(status = ProxySearchStatus.FOUND, parentCompanyId = null))
         assertThrows<ResourceNotFoundApiException> { provider.suggestProxy(company) }
     }
 
     @Test
-    fun `llm errors and empty responses result in service unavailable`() {
-        whenever(llmCall()).thenThrow(RuntimeException("429 rate limit"))
-        assertThrows<ServiceUnavailableApiException> { provider.suggestProxy(company) }
-        stubEntity(null)
-        assertThrows<ServiceUnavailableApiException> { provider.suggestProxy(company) }
+    fun `llm errors and unusable responses result in service unavailable`() {
+        listOf(RuntimeException("429 rate limit"), ProxySearchLlmException("no answer")).forEach {
+            doThrow(it).whenever(llmClient).research(company.companyName)
+            assertThrows<ServiceUnavailableApiException> { provider.suggestProxy(company) }
+        }
     }
 }
