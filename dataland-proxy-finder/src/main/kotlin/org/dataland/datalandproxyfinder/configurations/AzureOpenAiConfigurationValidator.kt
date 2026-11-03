@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 class AzureOpenAiConfigurationValidator(
     @Value("\${spring.ai.openai.base-url:}") private val endpoint: String,
     @Value("\${spring.ai.openai.api-key:}") private val apiKey: String,
-    @Value("\${spring.ai.openai.chat.options.microsoft-deployment-name:}") private val deploymentName: String,
+    @Value("\${spring.ai.openai.chat.model:}") private val deploymentName: String,
 ) {
     init {
         val missing =
