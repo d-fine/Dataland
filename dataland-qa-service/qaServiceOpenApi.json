@@ -4760,11 +4760,11 @@
             "nullable": true,
             "example": "{\"extendedDateFiscalYearEnd\":\" 2026-12-31 \"}"
           },
-          "reasonForCustomDataPoint": {
+          "reviewerComment": {
             "type": "string",
-            "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
+            "description": "An optional internal comment of the reviewer, independent of the accepted source. It can e.g. explain why a custom data point was created or why the original value was accepted although the QA bot suggested a correction.",
             "nullable": true,
-            "example": "The original value was incorrect and the QA report claimed there was no data found."
+            "example": "The original value was correct; the QA bot rejected it because of a misread table."
           },
           "preApprovalCheckResults": {
             "nullable": true,
@@ -15640,11 +15640,11 @@
             "nullable": true,
             "example": "{\"value\":\"No\",\"quality\":\"Incomplete\",\"comment\":\"program neural circuit\",\"dataSource\":{\"page\":\"1026\",\"tagName\":\"web services\",\"fileName\":\"SustainabilityReport\",\"fileReference\":\"1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868\",\"publicationDate\":\"2024-01-07\"}}"
           },
-          "reasonForCustomDataPoint": {
+          "reviewerComment": {
             "type": "string",
-            "description": "An optional comment explaining why a custom data point was created instead of accepting the original uploaded value or the QA bot suggestion. Only relevant when acceptedSource is Custom; null for all other sources.",
+            "description": "An optional internal comment of the reviewer, independent of the accepted source. It can e.g. explain why a custom data point was created or why the original value was accepted although the QA bot suggested a correction.",
             "nullable": true,
-            "example": "The original value was incorrect and the QA report claimed there was no data found."
+            "example": "The original value was correct; the QA bot rejected it because of a misread table."
           },
           "acceptedQaReportId": {
             "type": "string",

@@ -1798,174 +1798,138 @@ describe('JudgeDialog component tests', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // 13. Reason for custom data point
+  // 13. Reviewer comment
   // ---------------------------------------------------------------------------
-  describe('Reason for custom data point', () => {
-    it('shows the reason textarea in the custom section', () => {
-      mountJudgeDialog();
+  describe('Reviewer comment', () => {
+    const fieldSelector = '[data-test="reviewer-comment-field"]';
 
-      cy.get('[data-test="custom-datapoint-section"]').within(() => {
-        cy.get('[data-test="reason-for-custom-datapoint-field"]').scrollIntoView().should('be.visible');
-        cy.contains('Reason for custom data point').should('be.visible');
-      });
-    });
-
-    it('shows warning modal when accepting Original source with a non-blank reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('my-custom-reason');
-      cy.get('[data-test="accept-original-button"]').click();
-
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').and('contain.text', 'Reason will be discarded');
-    });
-
-    it('shows warning modal when accepting QA report source with a non-blank reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('my-custom-reason');
-      cy.get('[data-test="accept-report-button"]').click();
-
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').and('contain.text', 'Reason will be discarded');
-    });
-
-    it('does not show warning modal when accepting Custom source with a non-blank reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="custom-value-field"]').clear().type('my-custom-value');
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('my-custom-reason');
-      cy.get('[data-test="accept-custom-button"]').click();
-
-      cy.wait('@patchJudgementDetail');
-      cy.get('[data-test="confirmation-modal"]').should('not.exist');
-    });
-
-    it('does not show warning modal when accepting Original source with a blank reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', '');
-      cy.get('[data-test="accept-original-button"]').click();
-
-      cy.wait('@patchJudgementDetail');
-      cy.get('[data-test="confirmation-modal"]').should('not.exist');
-    });
-
-    it('closes the warning modal and preserves the reason when clicking Go back', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('reason-to-preserve');
-      cy.get('[data-test="accept-original-button"]').click();
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').and('contain.text', 'Reason will be discarded');
-
-      cy.get('[data-test="cancel-confirmation-modal-button"]').click();
-
-      cy.get('[data-test="confirmation-modal"]').should('not.exist');
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', 'reason-to-preserve');
-      cy.get('@patchJudgementDetail.all').should('have.length', 0);
-    });
-
-    it('clears the reason and fires PATCH when clicking Proceed on the warning modal', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('reason-to-discard');
-      cy.get('[data-test="accept-original-button"]').click();
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').and('contain.text', 'Reason will be discarded');
-
-      cy.get('[data-test="ok-confirmation-modal-button"]').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Original);
-        expect(interception.request.body.reasonForCustomDataPoint).to.be.undefined;
-      });
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', '');
-    });
-
-    it('advances to the next KPI after clicking Proceed on the warning modal', () => {
-      mountJudgeDialog();
-
-      cy.contains('KPI Alpha Label').should('be.visible');
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('reason-to-discard');
-      cy.get('[data-test="accept-original-button"]').click();
-      cy.get('[data-test="confirmation-modal"]').should('be.visible').and('contain.text', 'Reason will be discarded');
-
-      cy.get('[data-test="ok-confirmation-modal-button"]').click();
-      cy.wait('@patchJudgementDetail');
-
-      cy.get('[data-test^="judge-dialog-header-"]').should('contain.text', 'KPI Beta Label');
-      cy.get('[data-test^="judge-dialog-header-"]').should('not.contain.text', 'KPI Alpha Label');
-    });
-
-    it('includes reasonForCustomDataPoint in the PATCH body when accepting Custom source with a reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="custom-value-field"]').clear().type('my-custom-value');
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').clear().type('my-custom-reason');
-      cy.get('[data-test="accept-custom-button"]').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
-        expect(interception.request.body.reasonForCustomDataPoint).to.eq('my-custom-reason');
-      });
-    });
-
-    it('omits reasonForCustomDataPoint from the PATCH body when accepting Custom source without a reason', () => {
-      mountJudgeDialog();
-
-      cy.get('[data-test="custom-value-field"]').clear().type('my-custom-value');
-      cy.get('[data-test="accept-custom-button"]').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
-        expect(interception.request.body.reasonForCustomDataPoint).to.be.undefined;
-      });
-    });
-
-    it('pre-populates the reason textarea from a previously accepted custom data point', () => {
-      const previousCustomValue = { value: 'accepted-custom-val', quality: 'Audited' };
-      const judgementWithPreviousCustomAndReason: DatasetJudgementResponse = {
+    /**
+     * @param reviewerComment the reviewer comment stored with the first data point
+     * @param acceptedSource the accepted source stored with the first data point
+     * @returns a judgement with a stored reviewer comment on the first data point
+     */
+    function judgementWithComment(
+      reviewerComment: string,
+      acceptedSource: AcceptedDataPointSource = AcceptedDataPointSource.Original
+    ): DatasetJudgementResponse {
+      return {
         ...baseDatasetJudgement,
         dataPoints: {
           ...baseDatasetJudgement.dataPoints,
           [dataPointTypeId]: {
             ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            acceptedSource: AcceptedDataPointSource.Custom,
-            customValue: JSON.stringify(previousCustomValue),
-            reasonForCustomDataPoint: 'previously-saved-reason',
+            acceptedSource,
+            reviewerComment,
           },
         },
       };
-      mountJudgeDialog({ datasetJudgement: judgementWithPreviousCustomAndReason });
+    }
 
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', 'previously-saved-reason');
+    it('shows the reviewer comment field once, outside of the custom section', () => {
+      mountJudgeDialog();
+
+      cy.get(fieldSelector).scrollIntoView().should('be.visible');
+      cy.contains('Reviewer comment (internal only)').should('be.visible');
+      cy.get('[data-test="custom-datapoint-section"]').find(fieldSelector).should('not.exist');
+      cy.get(fieldSelector).should('have.length', 1);
     });
 
-    it('resets the reason textarea when navigating to a KPI without a previously accepted custom reason', () => {
-      const judgementWithMixedCustom: DatasetJudgementResponse = {
-        ...baseDatasetJudgement,
-        dataPoints: {
-          [dataPointTypeId]: {
-            ...baseDatasetJudgement.dataPoints[dataPointTypeId],
-            acceptedSource: AcceptedDataPointSource.Custom,
-            customValue: JSON.stringify({ value: 'accepted-custom-val', quality: 'Audited' }),
-            reasonForCustomDataPoint: 'should-be-cleared',
-          },
-          [secondDataPointTypeId]: {
-            dataPointType: secondDataPointTypeId,
-            dataPointId: secondDataPointId,
-            acceptedSource: undefined,
-            qaReports: [],
-          },
+    it('does not show a discard warning when accepting a non-Custom source with a comment', () => {
+      mountJudgeDialog();
+
+      cy.get(fieldSelector).clear().type('my-comment');
+      cy.get('[data-test="accept-original-button"]').click();
+
+      cy.wait('@patchJudgementDetail');
+      cy.get('[data-test="confirmation-modal"]').should('not.exist');
+    });
+
+    it('includes the comment in the PATCH body when accepting the Original source', () => {
+      mountJudgeDialog();
+
+      cy.get(fieldSelector).clear().type('  original-is-correct  ');
+      cy.get('[data-test="accept-original-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Original);
+        expect(interception.request.body.reviewerComment).to.eq('original-is-correct');
+      });
+    });
+
+    it('includes the comment in the PATCH body when accepting a QA report', () => {
+      mountJudgeDialog();
+
+      cy.get(fieldSelector).clear().type('qa-is-correct');
+      cy.get('[data-test="accept-report-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Qa);
+        expect(interception.request.body.reviewerComment).to.eq('qa-is-correct');
+      });
+    });
+
+    it('includes the comment in the PATCH body when accepting the Custom source', () => {
+      mountJudgeDialog();
+
+      cy.get('[data-test="custom-value-field"]').clear().type('my-custom-value');
+      cy.get(fieldSelector).clear().type('my-custom-reason');
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Custom);
+        expect(interception.request.body.reviewerComment).to.eq('my-custom-reason');
+      });
+    });
+
+    it('sends an empty comment so that a cleared comment is removed', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithComment('to-be-removed') });
+
+      cy.get(fieldSelector).should('have.value', 'to-be-removed').clear();
+      cy.get('[data-test="accept-original-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.body.reviewerComment).to.eq('');
+      });
+    });
+
+    it('pre-populates the comment from a previously accepted Original source', () => {
+      mountJudgeDialog({ datasetJudgement: judgementWithComment('previously-saved-comment') });
+
+      cy.get(fieldSelector).should('have.value', 'previously-saved-comment');
+    });
+
+    it('pre-populates the comment from a previously accepted Custom source', () => {
+      const judgement = judgementWithComment('previously-saved-reason', AcceptedDataPointSource.Custom);
+      judgement.dataPoints[dataPointTypeId]!.customValue = JSON.stringify({
+        value: 'accepted-custom-val',
+        quality: 'Audited',
+      });
+      mountJudgeDialog({ datasetJudgement: judgement });
+
+      cy.get(fieldSelector).should('have.value', 'previously-saved-reason');
+    });
+
+    it('resets the comment when navigating to a KPI without a comment', () => {
+      const judgement = judgementWithComment('should-be-cleared');
+      judgement.dataPoints = {
+        [dataPointTypeId]: judgement.dataPoints[dataPointTypeId]!,
+        [secondDataPointTypeId]: {
+          dataPointType: secondDataPointTypeId,
+          dataPointId: secondDataPointId,
+          acceptedSource: undefined,
+          qaReports: [],
         },
       };
-      mountJudgeDialog({ datasetJudgement: judgementWithMixedCustom });
+      mountJudgeDialog({ datasetJudgement: judgement });
 
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', 'should-be-cleared');
+      cy.get(fieldSelector).should('have.value', 'should-be-cleared');
 
       cy.get('[data-test="next-datapoint-select"]').click();
       cy.get('.p-select-overlay').should('be.visible');
       cy.contains('KPI Beta Label').click();
       cy.get('[data-test="go-to-datapoint-button"]').click();
 
-      cy.get('[data-test="reason-for-custom-datapoint-field"]').should('have.value', '');
+      cy.get(fieldSelector).should('have.value', '');
     });
   });
 });

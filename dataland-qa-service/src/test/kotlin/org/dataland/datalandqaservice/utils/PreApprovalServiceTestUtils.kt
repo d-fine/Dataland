@@ -84,7 +84,7 @@ object PreApprovalServiceTestUtils {
             acceptedSource = null,
             reporterUserIdOfAcceptedQaReport = null,
             customValue = null,
-            reasonForCustomDataPoint = null,
+            reviewerComment = null,
         )
 
     /**
