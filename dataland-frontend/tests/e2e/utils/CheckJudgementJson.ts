@@ -28,7 +28,7 @@ export interface QaJudgement {
   reporterUserNameOfAcceptedQaReport?: string;
   customValue?: string;
   customCurrency?: string;
-  reasonForCustomDataPoint?: string;
+  reviewerComment?: string;
 }
 
 export interface QaScenarioConfig {

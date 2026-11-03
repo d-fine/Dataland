@@ -15,12 +15,12 @@ describe('Component test for the portfolio proxied companies cell', () => {
   }
 
   const companies: ProxiedCompany[] = [
-    { companyId: 'id0', companyName: 'Company 0', linkable: true },
-    { companyId: 'id1', companyName: 'Company 1', linkable: false },
-    { companyId: 'id2', companyName: 'Company 2', linkable: true },
-    { companyId: 'id3', companyName: 'Company 3', linkable: true },
-    { companyId: 'id4', companyName: 'Company 4', linkable: false },
-    { companyId: 'id5', companyName: 'Company 5', linkable: true },
+    { companyId: 'id0', companyName: 'Company 0' },
+    { companyId: 'id1', companyName: 'Company 1' },
+    { companyId: 'id2', companyName: 'Company 2' },
+    { companyId: 'id3', companyName: 'Company 3' },
+    { companyId: 'id4', companyName: 'Company 4' },
+    { companyId: 'id5', companyName: 'Company 5' },
   ];
 
   it('Shows the names of all companies', () => {
@@ -30,10 +30,9 @@ describe('Component test for the portfolio proxied companies cell', () => {
     });
   });
 
-  it('Renders linkable companies as links and others as plain text, and emits navigate when clicking a link', () => {
+  it('Renders all companies as links and emits navigate when clicking a link', () => {
     mountComponent(companies).then(({ wrapper }) => {
-      cy.get('[data-test="proxied-company-link"]').should('have.length', 4);
-      cy.get('[data-test="proxied-company-text"]').should('have.length', 2);
+      cy.get('[data-test="proxied-company-link"]').should('have.length', 6);
       cy.get('[data-test="proxied-company-link"]')
         .last()
         .click()

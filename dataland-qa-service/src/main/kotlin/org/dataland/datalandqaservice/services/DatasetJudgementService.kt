@@ -183,6 +183,7 @@ class DatasetJudgementService
 
             applyCustomDataPoint(dataPointType, patch.customDataPoint, dataPoint)
             applyAcceptedSource(dataPoint, patch)
+            applyReviewerComment(dataPoint, patch)
 
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
         }
@@ -216,6 +217,20 @@ class DatasetJudgementService
         }
 
         /**
+         * Applies the reviewer comment of the patch independently of the accepted source.
+         * A missing comment leaves the stored comment untouched, a blank comment clears it.
+         *
+         * @param dataPoint The data point entity to update.
+         * @param patch The patch containing the reviewer comment.
+         */
+        private fun applyReviewerComment(
+            dataPoint: DataPointJudgementEntity,
+            patch: JudgementDetailsPatch,
+        ) {
+            patch.reviewerComment?.let { dataPoint.reviewerComment = it.trim().ifEmpty { null } }
+        }
+
+        /**
          * Applies the accepted source and related fields based on the patch.
          *
          * @param dataPoint The data point entity to update.
@@ -231,7 +246,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Original
                         this.reporterUserIdOfAcceptedQaReport = null
                         this.acceptedQaReportId = null
-                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -246,7 +260,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport = UUID.fromString(report.reporterUserId)
                         this.acceptedQaReportId = report.qaReportId
-                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -256,7 +269,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Custom
                         this.reporterUserIdOfAcceptedQaReport = null
                         this.acceptedQaReportId = null
-                        this.reasonForCustomDataPoint = patch.reasonForCustomDataPoint
                     }
                 }
 

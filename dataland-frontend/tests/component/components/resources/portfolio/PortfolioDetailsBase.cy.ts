@@ -72,7 +72,7 @@ describe('Component test for the portfolio details base component (non-sourceabi
       cy.get('th').contains('Proxy for').should('not.exist');
     });
 
-    it('Shows grouped proxied names, linking only companies in the portfolio', () => {
+    it('Shows grouped proxied names, linking all proxied companies', () => {
       cy.intercept('GET', `**/companies/${externalId}/info`, { companyName: 'External Corp' }).as('getInfo');
       mountWith({
         ...portfolioFixture,
@@ -87,9 +87,11 @@ describe('Component test for the portfolio details base component (non-sourceabi
       cy.get(cell).should('contain.text', 'Banana LLC').and('contain.text', 'External Corp');
       cy.get(cell)
         .find('[data-test="proxied-company-link"]')
-        .should('have.length', 1)
-        .and('contain.text', 'Banana LLC');
-      cy.get(cell).find('[data-test="proxied-company-text"]').should('have.text', 'External Corp');
+        .should('have.length', 2)
+        .and('contain.text', 'Banana LLC')
+        .and('contain.text', 'External Corp');
+      cy.get(cell).find(`a[href="/companies/${externalId}"]`).should('contain.text', 'External Corp');
+      cy.get(cell).find('[data-test="proxied-company-text"]').should('not.exist');
       cy.get('table tr:nth-child(2) td:nth-child(2)').should('have.text', '');
     });
   });

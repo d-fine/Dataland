@@ -57,7 +57,7 @@ export function calculateReportingPeriodEntriesByCompanyAndFramework(
 
 /**
  * Groups the companies proxied within a portfolio by the ID of their proxy company. Names are taken from the
- * portfolio if the proxied company is part of it (then it is linkable), otherwise from the externally fetched
+ * portfolio if the proxied company is part of it, otherwise from the externally fetched
  * names, falling back to the company ID. Each list is deduplicated and sorted by company name.
  * @param portfolio the enriched portfolio (may be undefined while loading)
  * @param externalProxiedCompanyNames names of proxied companies that are not part of the portfolio, by company ID
@@ -75,7 +75,7 @@ export function groupProxiedCompaniesByProxyId(
       portfolioName ?? externalProxiedCompanyNames.get(replacement.proxiedCompanyId) ?? replacement.proxiedCompanyId;
     const list = result.get(replacement.proxyCompanyId) ?? [];
     if (!list.some((company) => company.companyId === replacement.proxiedCompanyId)) {
-      list.push({ companyId: replacement.proxiedCompanyId, companyName, linkable: portfolioName !== undefined });
+      list.push({ companyId: replacement.proxiedCompanyId, companyName });
     }
     result.set(replacement.proxyCompanyId, list);
   }
