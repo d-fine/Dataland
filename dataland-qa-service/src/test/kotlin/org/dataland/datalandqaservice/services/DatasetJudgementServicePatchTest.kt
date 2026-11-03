@@ -234,6 +234,79 @@ class DatasetJudgementServicePatchTest : DatasetJudgementServiceTestBase() {
     }
 
     @Test
+    fun `patchJudgementDetails with Custom creates data point without original when dataPointType not in judgement`() {
+        val missingType = "missing-type"
+        val dataPointCountBefore = datasetJudgementEntity.dataPoints.size
+
+        val saved =
+            patchAndGetDataPoint(
+                AcceptedDataPointSource.Custom,
+                customValue = "{\"value\": 42}",
+                reviewerComment = "added by judge",
+                dataPointType = missingType,
+            )
+
+        assertNull(saved.dataPointId)
+        assertEquals("{\"value\": 42}", saved.customValue)
+        assertEquals(AcceptedDataPointSource.Custom, saved.acceptedSource)
+        assertEquals("added by judge", saved.reviewerComment)
+        assertEquals(datasetJudgementEntity, saved.datasetJudgement)
+        assertEquals(dataPointCountBefore + 1, datasetJudgementEntity.dataPoints.size)
+        verify(datasetJudgementSupportService).validateCustomDataPoint("{\"value\": 42}", missingType)
+    }
+
+    @Test
+    fun `patchJudgementDetails with Custom on existing dataPointType does not create a new data point`() {
+        val dataPointCountBefore = datasetJudgementEntity.dataPoints.size
+
+        val saved = patchAndGetDataPoint(AcceptedDataPointSource.Custom, customValue = "{\"value\": 1}")
+
+        assertEquals(dataPointCountBefore, datasetJudgementEntity.dataPoints.size)
+        assertTrue(saved.dataPointId != null)
+    }
+
+    @Test
+    fun `patchJudgementDetails throws when dataPointType not in judgement and accepted source is not Custom`() {
+        listOf(AcceptedDataPointSource.Original, AcceptedDataPointSource.Qa, null).forEach { source ->
+            assertThrows<InvalidInputApiException> {
+                service.patchJudgementDetails(
+                    UUID.randomUUID(),
+                    "unknown-type",
+                    JudgementDetailsPatch(source, null, "{\"value\": 1}", null, UUID.randomUUID().toString()),
+                )
+            }
+        }
+        assertTrue(datasetJudgementEntity.dataPoints.none { it.dataPointType == "unknown-type" })
+    }
+
+    @Test
+    fun `patchJudgementDetails throws when dataPointType not in judgement and custom value is missing`() {
+        assertThrows<InvalidInputApiException> {
+            service.patchJudgementDetails(
+                UUID.randomUUID(),
+                "unknown-type",
+                JudgementDetailsPatch(AcceptedDataPointSource.Custom, null, null),
+            )
+        }
+        assertTrue(datasetJudgementEntity.dataPoints.none { it.dataPointType == "unknown-type" })
+    }
+
+    @Test
+    fun `patchJudgementDetails does not add data point when custom value for missing dataPointType is invalid`() {
+        whenever(datasetJudgementSupportService.validateCustomDataPoint(any(), any()))
+            .thenThrow(BackendClientException(statusCode = 400))
+
+        assertThrows<InvalidInputApiException> {
+            service.patchJudgementDetails(
+                UUID.randomUUID(),
+                "unknown-type",
+                JudgementDetailsPatch(AcceptedDataPointSource.Custom, null, "invalid"),
+            )
+        }
+        assertTrue(datasetJudgementEntity.dataPoints.none { it.dataPointType == "unknown-type" })
+    }
+
+    @Test
     fun `patchJudgementDetails throws InsufficientRights when user is not judge`() {
         AuthenticationMock.mockSecurityContext(
             "other@example.com",

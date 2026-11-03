@@ -279,7 +279,7 @@ class DatasetJudgementFinalizationServiceTest {
 
         val exception = assertThrows<InvalidInputApiException> { service.handleAcceptance(dummyDatasetJudgement) }
         assertTrue(exception.getErrorResponse().message.contains("dataSource must not set fileName"))
-        assertTrue(exception.getErrorResponse().message.contains(dummyDatasetJudgement.dataPoints.first().dataPointId))
+        assertTrue(exception.getErrorResponse().message.contains(dummyDatasetJudgement.dataPoints.first().dataPointId!!))
         verify(qaReviewManager, never()).changeQaStatus(any(), any(), any(), any())
     }
 }

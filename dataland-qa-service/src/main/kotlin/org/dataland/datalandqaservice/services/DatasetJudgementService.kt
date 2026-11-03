@@ -173,19 +173,50 @@ class DatasetJudgementService
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
             DatasetJudgementValidationHelper.validateAcceptedQaReportIdIsSetIfAcceptedSourceIsQa(patch)
-            val dataPoint =
-                datasetJudgement.dataPoints
-                    .find { it.dataPointType == dataPointType }
-                    ?: throw InvalidInputApiException(
-                        "Invalid input.",
-                        "Data point with type '$dataPointType' not found.",
-                    )
+            val existingDataPoint = datasetJudgement.dataPoints.find { it.dataPointType == dataPointType }
+            val dataPoint = existingDataPoint ?: createDataPointWithoutOriginal(dataPointType, patch)
 
             applyCustomDataPoint(dataPointType, patch.customDataPoint, dataPoint)
             applyAcceptedSource(dataPoint, patch)
             applyReviewerComment(dataPoint, patch)
 
+            if (existingDataPoint == null) {
+                datasetJudgement.addAssociatedDataPoints(dataPoint)
+            }
+
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
+        }
+
+        /**
+         * Creates a data point judgement entity for a data point type that is not contained in the original dataset.
+         * This is only allowed if the patch provides a custom value and accepts it as source.
+         * The returned entity is not yet attached to the dataset judgement, so that it is only added after
+         * all patch values have been validated and applied successfully.
+         *
+         * @param dataPointType The type of the data point missing in the original dataset.
+         * @param patch The patch to apply.
+         * @return A new DataPointJudgementEntity without original data point id.
+         * @throws InvalidInputApiException If the patch does not provide and accept a custom value.
+         */
+        private fun createDataPointWithoutOriginal(
+            dataPointType: String,
+            patch: JudgementDetailsPatch,
+        ): DataPointJudgementEntity {
+            if (patch.customDataPoint == null || patch.acceptedSource != AcceptedDataPointSource.Custom) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Data point with type '$dataPointType' not found. Data points missing in the original dataset " +
+                        "can only be added by providing a custom value with accepted source Custom.",
+                )
+            }
+            return DataPointJudgementEntity(
+                dataPointType = dataPointType,
+                dataPointId = null,
+                acceptedSource = null,
+                reporterUserIdOfAcceptedQaReport = null,
+                customValue = null,
+                dataPointBaseType = datasetJudgementSupportService.resolveBaseTypeId(dataPointType),
+            )
         }
 
         /**
