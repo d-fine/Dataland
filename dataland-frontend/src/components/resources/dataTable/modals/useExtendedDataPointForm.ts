@@ -1,4 +1,4 @@
-import { computed, inject, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { QualityOptions } from '@clients/backend';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
@@ -11,7 +11,7 @@ import type {
 export const qualityOptionsList = Object.values(QualityOptions).map((value) => ({ label: value, value }));
 
 export interface ExtendedDataPointForm {
-  companyId: string | undefined;
+  companyId: string;
   chosenQuality: Ref<string | undefined>;
   selectedDocument: Ref<string | null>;
   insertedComment: Ref<string | undefined>;
@@ -25,11 +25,14 @@ export interface ExtendedDataPointForm {
 /**
  * Holds the state and logic shared by the stacked and the inline variant of the extended data point form field:
  * quality, data source (document and page) and comment, including the loading of the company's documents.
+ * @param companyId the ID of the company whose documents can be referenced
  * @param extendedDataPointObject the data point object used to prefill the form
  * @returns the form state and helpers
  */
-export function useExtendedDataPointForm(extendedDataPointObject?: ExtendedDataPointType): ExtendedDataPointForm {
-  const companyId = inject<string>('companyId');
+export function useExtendedDataPointForm(
+  companyId: string,
+  extendedDataPointObject?: ExtendedDataPointType
+): ExtendedDataPointForm {
   const chosenQuality = ref<string | undefined>(extendedDataPointObject?.quality ?? undefined);
   const selectedDocument = ref<string | null>(extendedDataPointObject?.dataSource?.fileReference ?? null);
   const insertedComment = ref<string | undefined>(extendedDataPointObject?.comment ?? undefined);

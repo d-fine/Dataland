@@ -20,7 +20,7 @@
 import { computed, ref } from 'vue';
 import DatePicker from 'primevue/datepicker';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { getHyphenatedDate } from '@/utils/DataFormatUtils.ts';
+import { getHyphenatedDate, parseIsoDateAsLocalDate } from '@/utils/DataFormatUtils.ts';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import {
   buildApiBody,
@@ -31,15 +31,6 @@ import {
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
 }>();
-
-/**
- * @param isoDate a date string in the format yyyy-mm-dd
- * @returns the date at local midnight, avoiding the UTC shift of new Date(isoDate)
- */
-function parseIsoDateAsLocalDate(isoDate: string): Date {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return new Date(year!, month! - 1, day);
-}
 
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 const initialValue = props.extendedDataPointObject.value;

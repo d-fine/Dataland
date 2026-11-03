@@ -39,22 +39,23 @@ import type {
   ExtendedDataPointMetaInfoType,
   ExtendedDataPointType,
 } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { AssuranceDataPointValueEnum } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
 }>();
 
-const options = [
-  { label: 'None', value: 'None' },
-  { label: 'Limited Assurance', value: 'LimitedAssurance' },
-  { label: 'Reasonable Assurance', value: 'ReasonableAssurance' },
-];
+const options = Object.values(AssuranceDataPointValueEnum).map((value) => ({
+  label: humanizeStringOrNumber(value),
+  value,
+}));
 // The table cell only provides the humanized value and the provider as part of the comment (see formatAssuranceForDataTable).
 const providerCommentPrefix = 'Assurance provided by ';
 
 const initialValue = props.extendedDataPointObject.value;
 const initialComment = props.extendedDataPointObject.comment ?? '';
-const assuranceValue = ref<string | null>(
+const assuranceValue = ref<AssuranceDataPointValueEnum | null>(
   typeof initialValue === 'string'
     ? (options.find((option) => option.value === initialValue || option.label === initialValue)?.value ?? null)
     : null

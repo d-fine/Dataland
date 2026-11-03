@@ -74,6 +74,7 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
 import Select from 'primevue/select';
 import PrimeButton from 'primevue/button';
 import Textarea from 'primevue/textarea';
@@ -89,8 +90,10 @@ const props = defineProps<{
   extendedDataPointObject?: ExtendedDataPointType;
 }>();
 
+const companyId = inject<string>('companyId');
+if (!companyId) throw new Error("Missing provided 'companyId'");
+
 const {
-  companyId,
   chosenQuality,
   selectedDocument,
   insertedComment,
@@ -99,7 +102,7 @@ const {
   selectedDocumentMetaInformation,
   isPageValid,
   getFormData,
-} = useExtendedDataPointForm(props.extendedDataPointObject);
+} = useExtendedDataPointForm(companyId, props.extendedDataPointObject);
 
 defineExpose({
   getFormData,
