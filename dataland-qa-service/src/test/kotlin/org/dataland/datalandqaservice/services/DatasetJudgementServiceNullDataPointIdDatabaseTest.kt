@@ -40,9 +40,9 @@ class DatasetJudgementServiceNullDataPointIdDatabaseTest(
 ) : BaseIntegrationTest() {
     private val typeWithoutDataPoint = "dummyTypeWithoutDataPoint"
     private val typeWithDataPoint = "dummyTypeWithDataPoint"
+    private val dataPointId = UUID.randomUUID().toString()
 
     private fun persistJudgementMixingNullAndNonNullDataPointIds(): DatasetJudgementEntity {
-        val dataPointId = UUID.randomUUID().toString()
         val qaReport =
             dataPointQaReportRepository.save(
                 DataPointQaReportEntity(
