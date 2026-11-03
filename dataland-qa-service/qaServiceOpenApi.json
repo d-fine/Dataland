@@ -4716,7 +4716,6 @@
       },
       "DataPointJudgement": {
         "required": [
-          "dataPointId",
           "dataPointType",
           "qaReports"
         ],
@@ -4730,6 +4729,7 @@
           "dataPointId": {
             "type": "string",
             "description": "The unique identifier of the datapoint.",
+            "nullable": true,
             "example": "32c30bc5-ecfd-46ec-b849-628d5328e2e6"
           },
           "qaReports": {
