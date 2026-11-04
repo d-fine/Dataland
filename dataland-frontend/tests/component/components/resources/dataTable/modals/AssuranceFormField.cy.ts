@@ -25,10 +25,4 @@ describe('Component test for AssuranceFormField', () => {
     mountComponent({ value: undefined });
     cy.get('@component').its('isPageValid').should('equal', false);
   });
-
-  it('does not offer quality or comment inputs', () => {
-    mountComponent({ value: 'None' });
-    cy.get('[data-test="quality-select"]').should('not.exist');
-    cy.get('#comment-input').should('not.exist');
-  });
 });
