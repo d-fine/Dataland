@@ -77,22 +77,22 @@ class DatasetJudgementServiceTest : DatasetJudgementServiceTestBase() {
     }
 
     @Test
-    fun `getDatasetJudgementById includes reasonForCustomDataPoint when set and null when not set`() {
-        val judgementIdWithReasonForCustomDataPoint = UUID.randomUUID()
+    fun `getDatasetJudgementById includes reviewerComment when set and null when not set`() {
+        val judgementIdWithReviewerComment = UUID.randomUUID()
         doReturn(mockDatasetJudgementEntityForTest.createDummyDatasetJudgementEntityWithCustomSource())
             .whenever(datasetJudgementSupportService)
-            .getDatasetJudgementEntityById(judgementIdWithReasonForCustomDataPoint)
+            .getDatasetJudgementEntityById(judgementIdWithReviewerComment)
 
         listOf(
             Pair(UUID.randomUUID(), null),
-            Pair(judgementIdWithReasonForCustomDataPoint, mockDatasetJudgementEntityForTest.REASON_FOR_CUSTOM_DATAPOINT),
+            Pair(judgementIdWithReviewerComment, mockDatasetJudgementEntityForTest.REVIEWER_COMMENT),
         ).forEach { (judgementId, expectedReason) ->
             assertEquals(
                 expectedReason,
                 service
                     .getDatasetJudgementById(judgementId)
                     .dataPoints[mockDatasetJudgementEntityForTest.DUMMY_DATA_POINT_TYPE]
-                    ?.reasonForCustomDataPoint,
+                    ?.reviewerComment,
             )
         }
     }
