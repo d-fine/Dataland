@@ -41,19 +41,19 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         children: [
           {
             type: 'cell',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatStringForDatatable(dataset.general?.company?.fiscalYearEnd?.value),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataset.general?.company?.fiscalYearEnd
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-                'Fiscal Year End',
+                'Fiscal year end',
                 dataPoint
               ),
             uploadComponentName: 'DateExtendedDataPointFormField',
@@ -63,7 +63,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Main PCAF sector',
             explanation:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Information Technology"; "Materials"; "Public"; "Real estate"; "Utilities";',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -76,11 +76,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                     Financials: 'Financials',
                     HealthCare: 'Health Care',
                     Industrials: 'Industrials',
-                    Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
                     Materials: 'Materials',
+                    Public: 'Public',
                     RealEstate: 'Real Estate',
-                    Sovereign: 'Sovereign',
                     Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(
@@ -103,11 +102,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                     Financials: 'Financials',
                     HealthCare: 'Health Care',
                     Industrials: 'Industrials',
-                    Industry: 'Industry',
                     InformationTechnology: 'Information Technology',
                     Materials: 'Materials',
+                    Public: 'Public',
                     RealEstate: 'Real Estate',
-                    Sovereign: 'Sovereign',
                     Utilities: 'Utilities',
                   };
                   return formatStringForDatatable(
@@ -190,20 +188,20 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         children: [
           {
             type: 'cell',
-            label: 'Gross Domestic Product (GDP)',
+            label: 'Gross domestic product (GDP)',
             explanation:
               'A country’s total economic output in euros. See also Regulation (EU) 2022/1288, Annex I, formula (4). Linked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicator 15',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(dataset.financial?.financial?.grossDomesticProductGdpInEUR?.value, 'EUR'),
-                'Gross Domestic Product (GDP)',
+                'Gross domestic product (GDP)',
                 dataset.financial?.financial?.grossDomesticProductGdpInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Gross Domestic Product (GDP)',
+                'Gross domestic product (GDP)',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -211,7 +209,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'PPP adjusted Gross Domestic Product (GDP)',
+            label: 'PPP adjusted gross domestic product (GDP)',
             explanation:
               'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
             shouldDisplay: (): boolean => true,
@@ -221,13 +219,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                   dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp?.value,
                   'USD'
                 ),
-                'PPP adjusted Gross Domestic Product (GDP)',
+                'PPP adjusted gross domestic product (GDP)',
                 dataset.financial?.financial?.pppAdjustedGrossDomesticProductGdp
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'USD'),
-                'PPP adjusted Gross Domestic Product (GDP)',
+                'PPP adjusted gross domestic product (GDP)',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',
@@ -326,20 +324,20 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Enterprise Value',
+            label: 'Enterprise value',
             explanation:
               'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(dataset.financial?.listedCompany?.enterpriseValueInEUR?.value, 'EUR'),
-                'Enterprise Value',
+                'Enterprise value',
                 dataset.financial?.listedCompany?.enterpriseValueInEUR
               ),
             valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformationByDataPoint(
                 formatNumberForDatatable(extractDatapointValue(dataPoint) as number | null | undefined, 'EUR'),
-                'Enterprise Value',
+                'Enterprise value',
                 dataPoint
               ),
             uploadComponentName: 'BigDecimalExtendedDataPointFormField',

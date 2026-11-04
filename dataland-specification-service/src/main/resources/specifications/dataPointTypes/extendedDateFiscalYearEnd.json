@@ -1,6 +1,6 @@
 {
   "id" : "extendedDateFiscalYearEnd",
-  "name" : "Fiscal Year End",
+  "name" : "Fiscal year end",
   "businessDefinition" : "The date the fiscal year ends.",
   "dataPointBaseTypeId" : "extendedDate",
   "frameworkOwnership" : [ "eutaxonomy-financials", "eutaxonomy-financials-2026-73", "eutaxonomy-non-financials", "eutaxonomy-non-financials-2026-73", "pcaf", "sfdr" ],
