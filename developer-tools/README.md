@@ -28,3 +28,15 @@ name and API version. The key must never be committed.
    the variable to be prompted). The key is copied into the running sandbox at `~/.azure-openai.env` (mode 600) and
    sourced by `~/.bashrc`; it is not stored in the image or the repository.
 3. Open a new shell in the sandbox and start the stack.
+
+## Using Mailjet
+
+**Locally:** export `MAILJET_API_ID` and `MAILJET_API_SECRET` in your shell before starting the stack.
+`environments/.env.dev` keeps values that are already set in the shell and contains the nonprod endpoint. The keys must never be committed.
+
+**In the opencode sandbox:**
+1. Make sure the sandbox may reach `api.mailjet.com` over HTTPS (allow it in the sbx network policy on the host).
+2. On the host, run `MAILJET_API_ID=<id> MAILJET_API_SECRET=<secret> ./developer-tools/injectAzureOpenAiKeyForSandbox.sh` (or run it without
+   the variable to be prompted). The keys are copied into the running sandbox at `~/.mailjet.env` (mode 600) and
+   sourced by `~/.bashrc`; they are not stored in the image or the repository.
+3. Open a new shell in the sandbox and start the stack.

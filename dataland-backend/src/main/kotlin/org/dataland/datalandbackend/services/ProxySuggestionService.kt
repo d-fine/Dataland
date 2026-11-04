@@ -106,7 +106,8 @@ class ProxySuggestionService(
                 is ClientError<*> -> response.body
                 is ServerError<*> -> response.body
                 else -> null
-            } as? String ?: return Pair(null, null)
+            }
+        if (body !is String) return Pair(null, null)
         return try {
             val firstError = defaultObjectMapper.readTree(body).path("errors").path(0)
             Pair(
