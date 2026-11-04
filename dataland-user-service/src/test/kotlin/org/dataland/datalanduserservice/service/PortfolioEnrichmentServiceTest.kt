@@ -111,6 +111,26 @@ class PortfolioEnrichmentServiceTest {
     }
 
     @Test
+    fun `check that pcaf and nuclear and gas reporting periods are included in availableReportingPeriods`() {
+        mockCompanyValidation()
+        whenever(mockDataAvailabilityControllerApi.searchViewableDimensions(any()))
+            .doReturn(
+                listOf(
+                    BasicDataDimensions(testCompanyId, "pcaf", "2024"),
+                    BasicDataDimensions(testCompanyId, "pcaf", "2023"),
+                    BasicDataDimensions(testCompanyId, "nuclear-and-gas", "2023"),
+                ),
+            )
+        whenever(mockNonSourceabilityControllerApi.searchNonSourceableDimensions(any())).doReturn(emptySet())
+
+        val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(testPortfolio())
+
+        val entry = enrichedPortfolio.entries.first { it.companyId == testCompanyId }
+        Assertions.assertEquals("2024, 2023", entry.availableReportingPeriods["pcaf"])
+        Assertions.assertEquals("2023", entry.availableReportingPeriods["nuclear-and-gas"])
+    }
+
+    @Test
     fun `check that a company with no real data and no non-sourceability entry has no available reporting periods`() {
         mockCompanyValidation()
         whenever(mockDataAvailabilityControllerApi.searchViewableDimensions(any())).doReturn(emptyList())
