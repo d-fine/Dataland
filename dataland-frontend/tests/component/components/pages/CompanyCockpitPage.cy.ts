@@ -52,6 +52,7 @@ describe('Component test for the company cockpit', () => {
     DataTypeEnum.EutaxonomyNonFinancials202673,
     DataTypeEnum.NuclearAndGas,
     DataTypeEnum.Sfdr,
+    DataTypeEnum.Pcaf,
   ]);
   let allFrameworks: Set<DataTypeEnum>;
   const dummyUserId = 'mock-user-id';
@@ -143,7 +144,7 @@ describe('Component test for the company cockpit', () => {
       isMobileViewActive,
       initiallyDisplayedFrameworks
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 7);
     cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
     validateDisplayedFrameworkSummaryPanels(isProvideDataButtonExpected, isMobileViewActive, allFrameworks);
     cy.get('[data-test=toggleShowAll]').contains('SHOW LESS').click();
@@ -152,7 +153,7 @@ describe('Component test for the company cockpit', () => {
       isMobileViewActive,
       initiallyDisplayedFrameworks
     );
-    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 6);
+    cy.get('[data-test=summaryPanels] > .summary-panel').its('length').should('equal', 7);
   }
 
   it('Checks the latest documents', () => {
