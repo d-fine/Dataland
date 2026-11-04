@@ -56,9 +56,9 @@ const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType
 const currency = ref<string | undefined>(undefined);
 
 onMounted(() => {
-  currency.value = props.extendedDataPointObject.value
-    ? String(props.extendedDataPointObject.value).replaceAll(/[^A-Za-z]+/g, '') || undefined
-    : undefined;
+  const value = props.extendedDataPointObject.value;
+  currency.value =
+    value && !Array.isArray(value) ? String(value).replaceAll(/[^A-Za-z]+/g, '') || undefined : undefined;
 });
 
 /**

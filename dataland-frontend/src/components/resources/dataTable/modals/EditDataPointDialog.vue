@@ -9,7 +9,7 @@
       icon="pi pi-save"
       @click="updateDataPoint"
       data-test="save-data-point-button"
-      :disabled="buttonDisabled || !isPageValid"
+      :disabled="isPending || !isPageValid"
     />
   </div>
 </template>
@@ -17,18 +17,16 @@
 <script setup lang="ts">
 import { inject, type Ref, ref, computed, unref, type Component, provide } from 'vue';
 import PrimeButton from 'primevue/button';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import type Keycloak from 'keycloak-js';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
-import { QualityOptions, type UploadedDataPoint } from '@clients/backend';
+import { QualityOptions } from '@clients/backend';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
+import { usePostDataPointMutation } from '@/api-queries/backend/data-point/usePostDataPointMutation.ts';
+import { activityComponentNames, kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const { mutate: postDataPoint, isPending } = usePostDataPointMutation();
 const errorMessage = ref('');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyId = dialogRef?.value?.data?.companyId;
@@ -40,7 +38,6 @@ const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
-const buttonDisabled = ref(false);
 
 const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageValid: boolean }>();
 
@@ -49,53 +46,86 @@ const componentRef = ref<{ buildApiBodyWithExtendedInfo: () => string; isPageVal
  */
 const isPageValid = computed<boolean>(() => componentRef.value?.isPageValid ?? true);
 
-const extendedDataPointObject: ExtendedDataPointType = {
-  value: ((): string | undefined => {
-    const value = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return value && !Object.values(QualityOptions).includes(value) ? value : undefined;
-  })(),
-  quality: ((): string | undefined => {
-    const valueOrPotentialQuality =
-      unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '').trim() || undefined;
-    return valueOrPotentialQuality && Object.values(QualityOptions).includes(valueOrPotentialQuality)
-      ? valueOrPotentialQuality
-      : unref(dataPoint?.displayValue?.quality ?? '');
-  })(),
-  comment: unref(dataPoint?.displayValue?.comment ?? ''),
-  dataSource: {
-    fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
-    page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
-  },
-};
+const modalData = dataPoint?.displayValue?.modalOptions?.data;
+
+const isActivityListDataPoint = activityComponentNames.has(uploadComponentName ?? '');
+
+/**
+ * @returns the extended data point object for activity lists (empty if there is no modal data)
+ */
+function buildActivityListDataPointObject(): ExtendedDataPointType {
+  return {
+    value: modalData?.listOfRowContents ?? [],
+    quality: modalData?.dataPointDisplay?.quality ?? '',
+    comment: modalData?.dataPointDisplay?.comment ?? '',
+    dataSource: {
+      fileReference: modalData?.dataPointDisplay?.dataSource?.fileReference ?? '',
+      page: modalData?.dataPointDisplay?.dataSource?.page ?? '',
+    },
+  };
+}
+
+/**
+ * @returns the inner display value as trimmed string (empty if it is not a string)
+ */
+function innerDisplayText(): string {
+  const inner = unref(dataPoint?.displayValue?.innerContents?.displayValue ?? '');
+  return typeof inner === 'string' ? inner.trim() : '';
+}
+
+/**
+ * @returns the extended data point object for scalar data points
+ */
+function buildScalarDataPointObject(): ExtendedDataPointType {
+  const qualityOptionValues = Object.values(QualityOptions) as string[];
+  const displayText = innerDisplayText();
+  const isQuality = qualityOptionValues.includes(displayText);
+
+  return {
+    value: displayText && !isQuality ? displayText : undefined,
+    quality: isQuality ? displayText : unref(dataPoint?.displayValue?.quality ?? ''),
+    comment: unref(dataPoint?.displayValue?.comment ?? ''),
+    dataSource: {
+      fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),
+      page: unref(dataPoint?.displayValue?.dataSource?.page ?? ''),
+    },
+  };
+}
+
+const extendedDataPointObject: ExtendedDataPointType = isActivityListDataPoint
+  ? buildActivityListDataPointObject()
+  : buildScalarDataPointObject();
 
 provide('companyId', companyId);
+// For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
+provide('activityKpiType', modalData?.kpiType ?? kpiTypeFromDataPointTypeId(dataPointTypeId));
 
 /**
  * Updates the data point with the current API body.
  */
-async function updateDataPoint(): Promise<void> {
+function updateDataPoint(): void {
   errorMessage.value = '';
-  buttonDisabled.value = true;
-  try {
-    const apiBody: UploadedDataPoint = {
-      dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
-      dataPointType: dataPointTypeId,
-      companyId: companyId,
-      reportingPeriod: reportingPeriod,
-    };
-    await apiClientProvider.apiClients.dataPointController.postDataPoint(apiBody, true);
-    dialogRef?.value?.close({ dataUpdated: true });
-    setTimeout(() => {
-      emit('dataUpdated');
-    }, 2000);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      errorMessage.value = error.message;
-    } else {
-      errorMessage.value = 'Failed to edit Data Point.';
+  postDataPoint(
+    {
+      uploadedDataPoint: {
+        dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
+        dataPointType: dataPointTypeId,
+        companyId: companyId,
+        reportingPeriod: reportingPeriod,
+      },
+      bypassQa: true,
+    },
+    {
+      onSuccess: () => {
+        dialogRef?.value?.close({ dataUpdated: true });
+        setTimeout(() => {
+          emit('dataUpdated');
+        }, 2000);
+      },
+      onError: (error) => {
+        errorMessage.value = error instanceof AxiosError ? error.message : 'Failed to edit Data Point.';
+      },
     }
-  } finally {
-    buttonDisabled.value = false;
-  }
+  );
 }
 </script>
