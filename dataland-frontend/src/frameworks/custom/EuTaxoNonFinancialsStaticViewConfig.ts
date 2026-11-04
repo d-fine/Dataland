@@ -37,7 +37,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     children: [
       {
         type: 'cell',
-        label: 'Fiscal Year Deviation',
+        label: 'Fiscal year deviation',
         explanation: 'Does the fiscal year deviate from the calendar year?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
@@ -53,7 +53,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                   : ''
               );
             })(),
-            'Fiscal Year Deviation',
+            'Fiscal year deviation',
             dataset.general?.fiscalYearDeviation
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
@@ -72,7 +72,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                   : ''
               );
             })(),
-            'Fiscal Year Deviation',
+            'Fiscal year deviation',
             dataPoint
           ),
         uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
@@ -80,19 +80,19 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Fiscal Year End',
+        label: 'Fiscal year end',
         explanation: 'The date the fiscal year ends.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatStringForDatatable(dataset.general?.fiscalYearEnd?.value),
-            'Fiscal Year End',
+            'Fiscal year end',
             dataset.general?.fiscalYearEnd
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
             formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-            'Fiscal Year End',
+            'Fiscal year end',
             dataPoint
           ),
         uploadComponentName: 'DateExtendedDataPointFormField',

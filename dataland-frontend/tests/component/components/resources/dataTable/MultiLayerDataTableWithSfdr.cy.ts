@@ -31,7 +31,7 @@ describe('Component tests for SfdrPanel', () => {
     const sfdrData = preparedFixture.t;
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    getCellValueContainer('Fiscal Year End').should('contain.text', sfdrData.general.company.fiscalYearEnd.value);
+    getCellValueContainer('Fiscal year end').should('contain.text', sfdrData.general.company.fiscalYearEnd.value);
   });
 
   /**
@@ -71,7 +71,7 @@ describe('Component tests for SfdrPanel', () => {
     const preparedFixture = getPreparedFixture('companyWithOneFilledSfdrSubcategory', preparedFixtures);
     const mockedData = constructCompanyApiResponseForSfdrSixYears(preparedFixture.t);
     mountMLDTFrameworkPanel(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, mockedData);
-    getCellValueContainer('Fiscal Year End', 5).should('contain.text', '2023-01-01');
+    getCellValueContainer('Fiscal year end', 5).should('contain.text', '2023-01-01');
 
     for (let indexOfColumn = 0; indexOfColumn < 6; indexOfColumn++) {
       cy.get(`th[data-dataset-index=${indexOfColumn}]`).should('contain.text', (2028 - indexOfColumn).toString());
@@ -84,7 +84,7 @@ describe('Component tests for SfdrPanel', () => {
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
     cy.contains('span', '2023-01-01').should('exist');
-    cy.contains('td.headers-bg', 'Fiscal Year End').should('exist');
+    cy.contains('td.headers-bg', 'Fiscal year end').should('exist');
   });
 
   it('Check SFDR view page for datapoints that have only value, quality or comment filled', () => {
