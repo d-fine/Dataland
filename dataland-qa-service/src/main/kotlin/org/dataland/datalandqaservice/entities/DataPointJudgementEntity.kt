@@ -29,24 +29,9 @@ import java.util.UUID
 class DataPointJudgementEntity(
     @Id val id: UUID = UUID.randomUUID(),
     val dataPointType: String,
-    @Column(name = "data_point_id")
-    val dataPointId: String,
-    /**
-     * QA reports are independently owned resources managed via [DataPointQaReportEntity]'s dedicated
-     * API (see DataPointQaReportManager). This is a read-only association used to display the latest
-     * QA reports for a data point within a judgement; it must not cascade any persistence operation
-     * (in particular removal) onto the referenced QA report rows, since they must survive independently
-     * of any dataset judgement's lifecycle.
-     */
-    @OneToMany
-    @JoinColumn(
-        name = "data_point_id",
-        referencedColumnName = "data_point_id",
-        insertable = false,
-        updatable = false,
-        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT),
-    )
-    val qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
+    @Column(name = "data_point_id", nullable = true)
+    val dataPointId: String?,
+    qaReports: MutableList<DataPointQaReportEntity> = mutableListOf(),
     var acceptedSource: AcceptedDataPointSource?,
     var reporterUserIdOfAcceptedQaReport: UUID?,
     @Column(columnDefinition = "TEXT", nullable = true)
@@ -64,6 +49,34 @@ class DataPointJudgementEntity(
     @Column(name = "accepted_qa_report_id")
     var acceptedQaReportId: String? = null,
 ) {
+    /**
+     * QA reports are independently owned resources managed via [DataPointQaReportEntity]'s dedicated
+     * API (see DataPointQaReportManager). This is a read-only association used to display the latest
+     * QA reports for a data point within a judgement; it must not cascade any persistence operation
+     * (in particular removal) onto the referenced QA report rows, since they must survive independently
+     * of any dataset judgement's lifecycle.
+     *
+     * The association joins on the nullable, non-primary-key column `data_point_id`. When that column is
+     * null, Hibernate populates this field with `null` (bypassing Kotlin's null-safety), so it is declared
+     * nullable here and only exposed through the null-safe [qaReports] accessor.
+     */
+    @OneToMany
+    @JoinColumn(
+        name = "data_point_id",
+        referencedColumnName = "data_point_id",
+        insertable = false,
+        updatable = false,
+        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT),
+    )
+    private var qaReportsOrNull: MutableList<DataPointQaReportEntity>? = qaReports
+
+    /**
+     * The QA reports associated with this data point. Returns an empty list if Hibernate left the
+     * association unset (which happens when [dataPointId] is null).
+     */
+    val qaReports: MutableList<DataPointQaReportEntity>
+        get() = qaReportsOrNull ?: mutableListOf()
+
     /**
      * Converts this entity to its API response DTO.
      */
