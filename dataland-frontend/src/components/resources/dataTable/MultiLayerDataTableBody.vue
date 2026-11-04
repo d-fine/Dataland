@@ -131,6 +131,7 @@ import Tooltip from 'primevue/tooltip';
 import { computed, inject, nextTick, onMounted, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
+import { activityComponentNames } from '@/utils/ActivityListHelpers.ts';
 import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 
@@ -245,6 +246,8 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     props: {
       modal: true,
       header: 'Edit Data Point',
+      style: activityComponentNames.has(cellOrSectionConfig.uploadComponentName ?? '') ? { width: '90vw' } : {},
+      contentStyle: { overflow: 'auto' },
       pt: {
         title: {
           style: {

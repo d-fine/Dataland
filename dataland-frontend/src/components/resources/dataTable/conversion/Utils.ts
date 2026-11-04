@@ -64,7 +64,7 @@ export type ExtendedDataPointMetaInfoType = {
 };
 
 export type ExtendedDataPointType = {
-  value?: number | string | null;
+  value?: number | string | null | object[];
   currency?: string;
   quality?: string;
   comment?: string;
@@ -83,7 +83,7 @@ export type ExtendedDataPointType = {
  * @returns uploadedDataPoint
  */
 export function buildApiBody(
-  dataPointValue?: number | string | null,
+  dataPointValue?: number | string | null | object[],
   currency?: string,
   extendedDataPoint?: ExtendedDataPointMetaInfoType
 ): string {
@@ -112,7 +112,7 @@ export function buildApiBody(
  * @param val The input value as string, number, null, or undefined.
  * @returns The parsed number or null if parsing fails.
  */
-export function parseValue(val: string | number | null | undefined): number | null {
+export function parseValue(val: string | number | null | undefined | object[]): number | null {
   if (typeof val === 'number') return val;
   if (typeof val === 'string') {
     const regex = /-?\d+(\.\d+)?/;
