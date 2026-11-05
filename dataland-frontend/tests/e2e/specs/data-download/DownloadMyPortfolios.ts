@@ -14,6 +14,7 @@ import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFramewo
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 
 type FileTypeLabel = 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)' | 'JavaScript Object Notation (.json)';
+type FileExtension = 'csv' | 'xlsx' | 'json';
 
 /**
  * Describes a framework for which the portfolio download is tested.
@@ -27,6 +28,8 @@ interface FrameworkTestConfig {
   upload: (token: string, companyId: string, year: string) => Promise<DataMetaInformation>;
   /** Values of the fixture that have to be contained in text based exports. If undefined, contents are not checked. */
   expectedValuesInExport?: string[];
+  /** Minimum file size in bytes per file extension. Falls back to defaultMinimumFileSizeInByte. */
+  minimumFileSizeInByte?: Partial<Record<FileExtension, number>>;
 }
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
@@ -63,6 +66,8 @@ const frameworkTestConfigs: FrameworkTestConfig[] = [
       ),
     // Values taken from the prepared PCAF fixture. They have to be contained in every text based export format.
     expectedValuesInExport: ['2024-11-30', 'Energy', 'Unlisted'],
+    // The PCAF export has far fewer columns than other frameworks, so its files are smaller.
+    minimumFileSizeInByte: { csv: 1000, xlsx: 3000 },
   },
 ];
 
@@ -70,7 +75,7 @@ const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
-const minimumFileSizeInByte = 5000;
+const defaultMinimumFileSizeInByte = 5000;
 
 /**
  * Sets up a company by uploading company information, assigning ownership and uploading data for the given years.
@@ -119,7 +124,7 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, name:
  *
  * @param fileType the file type label
  */
-function getFileExtension(fileType: FileTypeLabel): string {
+function getFileExtension(fileType: FileTypeLabel): FileExtension {
   switch (fileType) {
     case 'Comma-separated Values (.csv)':
       return 'csv';
@@ -133,14 +138,17 @@ function getFileExtension(fileType: FileTypeLabel): string {
 /**
  * Checks that the file is larger than the minimum expected size, deletes it and verifies that it is gone.
  *
+ * The file is deleted before the assertion so that a failing check cannot leave a stale file behind.
+ *
  * @param filePath the path of the downloaded file
+ * @param minimumSizeInByte the size the file has to exceed
  */
-function checkFileSizeAndDeleteAfterwards(filePath: string): void {
+function checkFileSizeAndDeleteAfterwards(filePath: string, minimumSizeInByte: number): void {
   cy.task('getFileSize', filePath).then((size) => {
-    expect(size).to.be.greaterThan(minimumFileSizeInByte);
-  });
-  cy.task('deleteFile', filePath).then(() => {
-    cy.readFile(filePath).should('not.exist');
+    cy.task('deleteFile', filePath).then(() => {
+      cy.readFile(filePath).should('not.exist');
+      expect(size).to.be.greaterThan(minimumSizeInByte);
+    });
   });
 }
 
@@ -247,7 +255,8 @@ function testDownloadPortfolio(
           checkAliasesInFile(filePath, useAliases);
         }
       }
-      checkFileSizeAndDeleteAfterwards(filePath);
+      const minimumSize = config.minimumFileSizeInByte?.[getFileExtension(fileType)] ?? defaultMinimumFileSizeInByte;
+      checkFileSizeAndDeleteAfterwards(filePath, minimumSize);
     });
   });
 }
