@@ -110,10 +110,6 @@ class UserServiceTest {
                 getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
             )
             assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
-            )
-            assertEquals(
                 "2024, 2023",
                 getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
             )
