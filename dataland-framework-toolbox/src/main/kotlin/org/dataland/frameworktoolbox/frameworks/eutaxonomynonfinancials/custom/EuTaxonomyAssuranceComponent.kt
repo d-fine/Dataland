@@ -145,7 +145,8 @@ class EuTaxonomyAssuranceComponent(
                         ),
                     ),
                 ),
-            uploadComponentName = getUploadComponentName(),
+            // The provider is edited together with the assurance value, 'assurance' is no data point type of its own.
+            uploadComponentName = "Non-editable",
             dataPointTypeId = identifier,
         )
     }

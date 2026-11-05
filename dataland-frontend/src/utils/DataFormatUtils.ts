@@ -81,3 +81,12 @@ export function getDateStringForDataExport(date: Date): string {
 function padStart(num: number): string {
   return num.toString().padStart(2, '0');
 }
+
+/**
+ * @param isoDate a date string in the format yyyy-mm-dd
+ * @returns the date at local midnight, avoiding the UTC shift of new Date(isoDate)
+ */
+export function parseIsoDateAsLocalDate(isoDate: string): Date {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return new Date(year!, month! - 1, day);
+}
