@@ -44,6 +44,7 @@ class UserServiceTest {
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2023")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2022")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2024")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.pcaf, "2023")
 
             return storedCompanyInformation
         }
@@ -97,19 +98,21 @@ class UserServiceTest {
             assertEquals(portfolioUpload.portfolioName, enrichedPortfolio.portfolioName)
             assertEquals(3, enrichedPortfolio.propertyEntries.size) // 3 companies with 1 entry each
 
-            val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg)
-            storedCompanies.map { it.companyId }.forEach {
-                assertEquals(
-                    null,
-                    getAvailableReportingPeriods(it, DataTypeEnum.pcaf, enrichedPortfolio),
-                )
-            }
+            val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg, DataTypeEnum.pcaf)
             relevantPortfolioFrameworks.forEach {
                 assertEquals(
                     null,
                     getAvailableReportingPeriods(storedCompanies[2].companyId, it, enrichedPortfolio),
                 )
             }
+            assertEquals(
+                "2023",
+                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
+            )
+            assertEquals(
+                null,
+                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
+            )
             assertEquals(
                 "2024, 2023",
                 getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),

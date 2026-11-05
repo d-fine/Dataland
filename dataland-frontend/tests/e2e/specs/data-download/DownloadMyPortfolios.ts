@@ -28,6 +28,8 @@ interface FrameworkTestConfig {
   upload: (token: string, companyId: string, year: string) => Promise<DataMetaInformation>;
   /** Values of the fixture that have to be contained in text based exports. If undefined, contents are not checked. */
   expectedValuesInExport?: string[];
+  /** Shortened field names (aliases) that have to be contained in CSV exports if "Shorten field names" is on. */
+  expectedAliasesInExport?: string[];
   /** Minimum file size in bytes per file extension. Falls back to defaultMinimumFileSizeInByte. */
   minimumFileSizeInByte?: Partial<Record<FileExtension, number>>;
 }
@@ -64,8 +66,36 @@ const frameworkTestConfigs: FrameworkTestConfig[] = [
       uploadGenericFrameworkData(token, companyId, year, pcafFixtureForTest.t, (config) =>
         getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf)!.getPublicFrameworkApiClient(config)
       ),
-    // Values taken from the prepared PCAF fixture. They have to be contained in every text based export format.
-    expectedValuesInExport: ['2024-11-30', 'Energy', 'Unlisted'],
+    // Values taken from the prepared PCAF fixture, covering the general, financial and environmental sections.
+    // They have to be contained in every text based export format (CSV and JSON), so that all formats carry the
+    // same values.
+    expectedValuesInExport: [
+      'Deviation',
+      '2024-11-30',
+      'Energy',
+      'Unlisted',
+      '80617.32',
+      '78668.38',
+      '97073.43',
+      '94792.69',
+      '19710.2',
+      '44119.34',
+      '97211.19',
+      '87633.18',
+      '6880.14',
+      '92065.28',
+      '49991.42',
+      '7031.23',
+    ],
+    expectedAliasesInExport: [
+      'FISCAL_YEAR_END',
+      'MAIN_PCAF_SECTOR',
+      'COMPANY_EXCHANGE_STATUS',
+      'ENTERPRISE_VALUE_IN_EUR',
+      'TOTAL_EQUITY_IN_EUR',
+      'SCOPE_1_GHG_EMISSIONS_IN_T',
+      'SCOPE_3_GHG_EMISSIONS_IN_T',
+    ],
     // The PCAF export has far fewer columns than other frameworks, so its files are smaller.
     minimumFileSizeInByte: { csv: 1000, xlsx: 3000 },
   },
@@ -215,15 +245,22 @@ function checkThatFileContainsExpectedValues(filePath: string, expectedValues: s
  *
  * @param filePath the path of the downloaded file
  * @param useAliases whether aliases are expected
+ * @param expectedAliases framework specific aliases that are only expected if aliases are used
  */
-function checkAliasesInFile(filePath: string, useAliases: boolean): void {
+function checkAliasesInFile(filePath: string, useAliases: boolean, expectedAliases: string[] = []): void {
   cy.readFile(filePath).then((txt) => {
     if (useAliases) {
       expect(txt).to.contain('COMPANY_NAME');
       expect(txt).to.not.contain('companyName');
+      for (const alias of expectedAliases) {
+        expect(txt).to.contain(alias);
+      }
     } else {
       expect(txt).to.contain('companyName');
       expect(txt).to.not.contain('COMPANY_NAME');
+      for (const alias of expectedAliases) {
+        expect(txt).to.not.contain(alias);
+      }
     }
   });
 }
@@ -252,7 +289,7 @@ function testDownloadPortfolio(
       if (checkContent && config.expectedValuesInExport) {
         checkThatFileContainsExpectedValues(filePath, config.expectedValuesInExport);
         if (fileType === 'Comma-separated Values (.csv)' && keepValuesOnly) {
-          checkAliasesInFile(filePath, useAliases);
+          checkAliasesInFile(filePath, useAliases, config.expectedAliasesInExport);
         }
       }
       const minimumSize = config.minimumFileSizeInByte?.[getFileExtension(fileType)] ?? defaultMinimumFileSizeInByte;
