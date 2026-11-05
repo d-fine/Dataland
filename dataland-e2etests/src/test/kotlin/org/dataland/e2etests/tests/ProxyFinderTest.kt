@@ -94,8 +94,9 @@ class ProxyFinderTest {
     }
 
     @Test
-    fun `requesting a proxy suggestion for an unknown company results in a 404`() {
-        assertProxySuggestionFailsWith(HttpStatus.NOT_FOUND, UUID.randomUUID().toString())
+    fun `requesting a proxy suggestion for an unknown or malformed company ID is rejected by the backend with a 400`() {
+        assertProxySuggestionFailsWith(HttpStatus.BAD_REQUEST, UUID.randomUUID().toString())
+        assertProxySuggestionFailsWith(HttpStatus.BAD_REQUEST, "not-a-uuid")
     }
 
     @Test
