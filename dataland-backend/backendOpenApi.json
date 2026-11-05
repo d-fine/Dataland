@@ -3395,6 +3395,12 @@
               }
             }
           },
+          "400": {
+            "description": "The specified company ID is invalid or the company does not exist on Dataland.",
+            "content": {
+              "application/json": {}
+            }
+          },
           "403": {
             "description": "Only Dataland admins may search proxy companies."
           },

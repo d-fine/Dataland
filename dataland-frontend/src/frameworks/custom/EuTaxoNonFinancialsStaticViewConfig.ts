@@ -167,7 +167,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AssuranceFormField',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
       },
       {
@@ -451,7 +451,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'revenue'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentRevenueNonAlignedActivities',
       },
       {
@@ -1125,7 +1125,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'revenue'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentRevenueAlignedActivities',
       },
       {
@@ -1335,7 +1335,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'capex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentCapexNonAlignedActivities',
       },
       {
@@ -2003,7 +2003,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'capex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities',
       },
       {
@@ -2209,7 +2209,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'opex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentOpexNonAlignedActivities',
       },
       {
@@ -2412,7 +2412,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'opex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentOpexAlignedActivities',
       },
       {

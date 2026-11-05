@@ -1,5 +1,12 @@
 package org.dataland.datalandbackend.controller
 
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.asResponseBody
+import okio.Buffer
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.utils.DefaultMocks
 import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
@@ -22,6 +29,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.security.core.context.SecurityContext
@@ -51,11 +59,34 @@ class CompanyProxySuggestionControllerTest(
     @MockitoBean
     private lateinit var proxySuggestionControllerApi: ProxySuggestionControllerApi
 
+    @MockitoBean
+    @Qualifier("AuthenticatedOkHttpClient")
+    private lateinit var authenticatedOkHttpClient: OkHttpClient
+
     private val mockSecurityContext = mock<SecurityContext>()
 
     @BeforeEach
     fun setup() {
-        reset(mockSecurityContext, proxySuggestionControllerApi)
+        reset(mockSecurityContext, proxySuggestionControllerApi, authenticatedOkHttpClient)
+        mockCompanyExistsCheck(statusCode = 200)
+    }
+
+    /**
+     * Stubs the HTTP call used by the CompanyExistsValidator so it returns the given status code.
+     */
+    private fun mockCompanyExistsCheck(statusCode: Int) {
+        val mockCall = mock<Call>()
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url("http://localhost/dummy").build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(statusCode)
+                .message("")
+                .body(Buffer().asResponseBody(null, 0))
+                .build()
+        doReturn(mockCall).whenever(authenticatedOkHttpClient).newCall(any())
+        doReturn(response).whenever(mockCall).execute()
     }
 
     private fun requestProxySuggestion(
@@ -164,5 +195,27 @@ class CompanyProxySuggestionControllerTest(
             .andExpect(jsonPath("$.errors[0].errorType").value("invalid-proxy-suggestion"))
             .andExpect(jsonPath("$.errors[0].summary").value("Suggested proxy company is the company itself."))
             .andExpect(jsonPath("$.errors[0].message").value("self reference"))
+    }
+
+    @Test
+    fun `a malformed company ID results in a 400 and the proxy finder is not called`() {
+        requestProxySuggestion("not-a-uuid").andExpect(status().isBadRequest)
+        verify(proxySuggestionControllerApi, never()).findProxySuggestion(any())
+    }
+
+    @Test
+    fun `a company unknown to Dataland results in a 400 and the proxy finder is not called`() {
+        mockCompanyExistsCheck(statusCode = 404)
+        requestProxySuggestion(UUID.randomUUID().toString()).andExpect(status().isBadRequest)
+        verify(proxySuggestionControllerApi, never()).findProxySuggestion(any())
+    }
+
+    @Test
+    fun `a failing proxy finder results in a 500`() {
+        val companyId = UUID.randomUUID().toString()
+        doThrow(ServerException("Server error", 500)).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isInternalServerError)
+            .andExpect(jsonPath("$.errors[0].summary").value("Proxy finder unavailable"))
     }
 }

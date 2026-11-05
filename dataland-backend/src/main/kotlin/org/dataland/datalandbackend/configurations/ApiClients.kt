@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableAsync
+import java.util.concurrent.TimeUnit
 
 /**
  * A configuration class that provides access to pre-configured Api Clients
@@ -50,11 +51,20 @@ class ApiClients(
 
     /**
      * Creates an auto-authenticated version of the ProxySuggestionControllerApi of the proxy finder.
-     * Uses the patient (long-timeout) OkHttp client because the AI-based proxy search can take several minutes.
-     * The proxy finder limits the duration of a search itself and responds with 503 if the limit is exceeded.
+     * Uses the patient (long-timeout) OkHttp client with a dedicated read timeout because the AI-based proxy search
+     * can take several minutes. The proxy finder limits the duration of a search itself and responds with 503 if the
+     * limit is exceeded, so the read timeout must be higher than that limit.
      */
     @Bean
     fun getProxySuggestionControllerApi(
         @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
-    ): ProxySuggestionControllerApi = ProxySuggestionControllerApi(proxyFinderBaseUrl, patientAuthenticatedOkHttpClient)
+        @Value("\${dataland.proxy-finder.read-timeout-seconds}") proxyFinderReadTimeoutSeconds: Long,
+    ): ProxySuggestionControllerApi =
+        ProxySuggestionControllerApi(
+            proxyFinderBaseUrl,
+            patientAuthenticatedOkHttpClient
+                .newBuilder()
+                .readTimeout(proxyFinderReadTimeoutSeconds, TimeUnit.SECONDS)
+                .build(),
+        )
 }

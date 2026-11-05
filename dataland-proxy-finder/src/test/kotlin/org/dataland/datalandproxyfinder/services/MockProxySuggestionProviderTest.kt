@@ -1,8 +1,9 @@
 package org.dataland.datalandproxyfinder.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -10,6 +11,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
+import org.springframework.http.HttpStatus
 import java.util.UUID
 
 class MockProxySuggestionProviderTest {
@@ -45,13 +47,14 @@ class MockProxySuggestionProviderTest {
     }
 
     @Test
-    fun `an exception is thrown if the configured proxy company does not exist`() {
+    fun `an internal server error is thrown if the configured proxy company does not exist`() {
         doReturn(null).whenever(mockDatalandCompanyService).findCompanyIdByLei(proxyCompanyLei)
 
         val exception =
-            assertThrows<InvalidProxySuggestionApiException> {
+            assertThrows<InternalServerErrorApiException> {
                 provider.suggestProxy(ProxySearchCompany(UUID.randomUUID().toString(), "Some Company"))
             }
-        assertEquals(ProxySuggestionValidator.UNKNOWN_PROXY_COMPANY_SUMMARY, exception.summary)
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getErrorResponse().httpStatus)
+        assertTrue(exception.message!!.contains(proxyCompanyLei))
     }
 }

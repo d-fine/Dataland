@@ -113,6 +113,16 @@ class ProxySuggestionControllerTest(
             .andExpect(status().isUnprocessableContent)
             .andExpect(jsonPath("$.errors[0].errorType").value(INVALID_PROXY_SUGGESTION_ERROR_TYPE))
     }
+
+    @Test
+    fun `a misconfigured mock proxy company returns 500`() {
+        doThrow(ClientException(statusCode = 404))
+            .whenever(companyDataControllerApi)
+            .getCompanyIdByIdentifier(IdentifierType.Lei, PROXY_COMPANY_LEI)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isInternalServerError)
+            .andExpect(jsonPath("$.errors[0].errorType").value("internal-server-error"))
+    }
 }
 
 private const val PROXY_COMPANY_LEI = "TESTPROXYCOMPANYLEI1"

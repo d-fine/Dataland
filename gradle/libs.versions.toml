@@ -37,6 +37,7 @@ jodconverter = "5.1.1"
 openai-java = "4.39.1"
 spring-boot = "4.1.1"
 spring-framework = "7.0.9"
+springdoc = "3.1.1"
 detekt = "2.0.0-alpha.6"
 bouncy-castle = "1.70"
 testcontainers = "1.21.4"
@@ -103,7 +104,8 @@ spring-security-web = { module = "org.springframework.security:spring-security-w
 
 # Spring-related
 spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.5" }
-springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
+springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+springdoc-openapi-api = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 openai-java = { module = "com.openai:openai-java", version.ref = "openai-java" }
