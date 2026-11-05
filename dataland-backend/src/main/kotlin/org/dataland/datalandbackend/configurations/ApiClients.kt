@@ -49,10 +49,12 @@ class ApiClients(
     ): SpecificationControllerApi = SpecificationControllerApi(specificationServiceBaseUrl, authenticatedOkHttpClient)
 
     /**
-     * Creates an auto-authenticated version of the ProxySuggestionControllerApi of the proxy finder
+     * Creates an auto-authenticated version of the ProxySuggestionControllerApi of the proxy finder.
+     * Uses the patient (long-timeout) OkHttp client because generating a proxy suggestion (e.g. via an LLM)
+     * can take longer than the default timeout to complete.
      */
     @Bean
     fun getProxySuggestionControllerApi(
-        @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): ProxySuggestionControllerApi = ProxySuggestionControllerApi(proxyFinderBaseUrl, authenticatedOkHttpClient)
+        @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
+    ): ProxySuggestionControllerApi = ProxySuggestionControllerApi(proxyFinderBaseUrl, patientAuthenticatedOkHttpClient)
 }

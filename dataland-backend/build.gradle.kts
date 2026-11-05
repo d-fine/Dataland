@@ -262,6 +262,8 @@ tasks.register("generateProxyFinderClient", org.openapitools.generator.gradle.pl
         mapOf(
             "dateLibrary" to "java21",
             "useTags" to "true",
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
         ),
     )
     additionalProperties.set(

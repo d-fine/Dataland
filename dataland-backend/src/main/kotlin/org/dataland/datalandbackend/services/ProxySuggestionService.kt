@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.core.JacksonException
 import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
@@ -10,10 +11,15 @@ import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientError
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientException
+import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerError
+import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.io.IOException
 import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestion as ProxyFinderProxySuggestion
+
+const val PROXY_FINDER_UNAVAILABLE_SUMMARY = "Proxy finder unavailable"
 
 /**
  * Requests proxy suggestions from the proxy finder and translates its errors into Dataland API errors.
@@ -30,17 +36,42 @@ class ProxySuggestionService(
      * @return the validated proxy suggestion of the proxy finder
      * @throws ResourceNotFoundApiException if the company does not exist on Dataland
      * @throws InvalidProxySuggestionApiException if the proxy finder could not produce a valid suggestion
+     * @throws InternalServerErrorApiException if the proxy finder is unavailable or failed for a server-side reason
      */
     fun requestProxySuggestion(companyId: String): ProxySuggestion {
         logger.info("Requesting proxy suggestion for company $companyId from the proxy finder.")
-        val suggestion =
-            try {
-                proxySuggestionControllerApi.findProxySuggestion(companyId)
-            } catch (clientException: ClientException) {
-                throw translateClientException(companyId, clientException)
-            }
-        return suggestion.toProxySuggestion()
+        return runCatching { proxySuggestionControllerApi.findProxySuggestion(companyId) }
+            .getOrElse { throw translateProxyFinderException(companyId, it) }
+            .toProxySuggestion()
     }
+
+    /**
+     * Translates exceptions of the proxy finder client into Dataland API exceptions. Server errors and connection
+     * failures (including timeouts) are server-side problems the caller cannot fix, so they become internal server
+     * errors. Unexpected throwables are passed on unchanged.
+     */
+    private fun translateProxyFinderException(
+        companyId: String,
+        throwable: Throwable,
+    ): Throwable =
+        when (throwable) {
+            is ClientException -> translateClientException(companyId, throwable)
+
+            is ServerException -> {
+                logger.error(
+                    "The proxy finder returned status ${throwable.statusCode} for company $companyId. " +
+                        "Response body: ${(throwable.response as? ServerError<*>)?.body}",
+                )
+                proxyFinderUnavailable(companyId, throwable)
+            }
+
+            is IOException -> {
+                logger.error("Could not reach the proxy finder for company $companyId: ${throwable.message}")
+                proxyFinderUnavailable(companyId, throwable)
+            }
+
+            else -> throwable
+        }
 
     private fun translateClientException(
         companyId: String,
@@ -63,8 +94,24 @@ class ProxySuggestionService(
                 )
             }
 
-            else -> clientException
+            else -> {
+                logger.error(
+                    "The proxy finder returned status ${clientException.statusCode} for company $companyId. " +
+                        "Response body: ${(clientException.response as? ClientError<*>)?.body}",
+                )
+                proxyFinderUnavailable(companyId, clientException)
+            }
         }
+
+    private fun proxyFinderUnavailable(
+        companyId: String,
+        cause: Exception,
+    ) = InternalServerErrorApiException(
+        publicSummary = PROXY_FINDER_UNAVAILABLE_SUMMARY,
+        publicMessage = "The proxy finder could not process the request. Please try again later or contact support.",
+        internalMessage = "Requesting a proxy suggestion for company $companyId from the proxy finder failed: ${cause.message}",
+        internalCause = cause,
+    )
 
     private fun extractErrorSummaryAndMessage(clientException: ClientException): Pair<String?, String?> {
         val body = (clientException.response as? ClientError<*>)?.body as? String ?: return Pair(null, null)

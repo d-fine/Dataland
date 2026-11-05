@@ -278,6 +278,11 @@ interface CompanyProxyApi {
         value = [
             ApiResponse(responseCode = "200", description = "Successfully found a proxy suggestion."),
             ApiResponse(
+                responseCode = "400",
+                description = "The specified company ID is invalid or the company does not exist on Dataland.",
+                content = [Content(mediaType = "application/json")],
+            ),
+            ApiResponse(
                 responseCode = "403",
                 description = "Only Dataland admins may search proxy companies.",
                 content = [Content(array = ArraySchema())],
@@ -307,6 +312,8 @@ interface CompanyProxyApi {
             example = GeneralOpenApiDescriptionsAndExamples.COMPANY_ID_EXAMPLE,
             required = true,
         )
-        @PathVariable companyId: String,
+        @PathVariable
+        @CompanyExists
+        companyId: String,
     ): ResponseEntity<ProxySuggestion>
 }

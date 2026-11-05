@@ -1,10 +1,12 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientError
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientException
+import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerError
 import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerException
 import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestion
 import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestionSource
@@ -18,6 +20,7 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
+import java.net.SocketTimeoutException
 import java.util.UUID
 
 class ProxySuggestionServiceTest {
@@ -81,12 +84,36 @@ class ProxySuggestionServiceTest {
     }
 
     @Test
-    fun `other errors of the proxy finder are not translated`() {
-        val forbidden = clientException(403)
+    fun `other client errors of the proxy finder are translated into an internal server error`() {
+        val forbidden = clientException(403, """{"errors":[]}""")
         doThrow(forbidden).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
-        assertSame(forbidden, assertThrows<ClientException> { proxySuggestionService.requestProxySuggestion(companyId) })
 
-        doThrow(ServerException("Server error", 500)).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
-        assertThrows<ServerException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        val exception =
+            assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        assertEquals(PROXY_FINDER_UNAVAILABLE_SUMMARY, exception.publicSummary)
+        assertSame(forbidden, exception.cause)
+    }
+
+    @Test
+    fun `server errors of the proxy finder are translated into an internal server error`() {
+        val serverException =
+            ServerException("Server error", 503, ServerError<Any>(body = "unavailable", statusCode = 503))
+        doThrow(serverException).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
+
+        val exception =
+            assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        assertEquals(PROXY_FINDER_UNAVAILABLE_SUMMARY, exception.publicSummary)
+        assertSame(serverException, exception.cause)
+    }
+
+    @Test
+    fun `a timeout when calling the proxy finder is translated into an internal server error`() {
+        val timeout = SocketTimeoutException("timeout")
+        doThrow(timeout).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
+
+        val exception =
+            assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        assertEquals(PROXY_FINDER_UNAVAILABLE_SUMMARY, exception.publicSummary)
+        assertSame(timeout, exception.cause)
     }
 }

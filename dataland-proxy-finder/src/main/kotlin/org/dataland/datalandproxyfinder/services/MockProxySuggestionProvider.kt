@@ -1,6 +1,6 @@
 package org.dataland.datalandproxyfinder.services
 
-import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
 import org.dataland.datalandproxyfinder.model.ProxySearchCompany
@@ -42,13 +42,7 @@ class MockProxySuggestionProvider(
         )
         val proxyCompanyId =
             datalandCompanyService.findCompanyIdByLei(proxyCompanyLei)
-                ?: throw InvalidProxySuggestionApiException(
-                    summary = "Suggested proxy company does not exist.",
-                    message =
-                        "The mocked proxy company with LEI $proxyCompanyLei does not exist on Dataland. " +
-                            "Prepopulate the fake fixtures or set PROXY_FINDER_MOCK_PROXY_COMPANY_LEI " +
-                            "to the LEI of an existing company.",
-                )
+                ?: throw misconfiguredProxyCompany()
         return ProxySuggestion(
             companyId = company.companyId,
             proxyCompanyId = proxyCompanyId,
@@ -56,5 +50,18 @@ class MockProxySuggestionProvider(
             reasoning = MOCK_REASONING,
             sources = MOCK_SOURCES,
         )
+    }
+
+    /**
+     * The configured mock proxy company not existing is a server-side misconfiguration the client cannot fix,
+     * so it results in an internal server error rather than an invalid proxy suggestion.
+     */
+    private fun misconfiguredProxyCompany(): InternalServerErrorApiException {
+        val internalMessage =
+            "The mocked proxy company with LEI $proxyCompanyLei does not exist on Dataland. " +
+                "Prepopulate the fake fixtures or set PROXY_FINDER_MOCK_PROXY_COMPANY_LEI " +
+                "to the LEI of an existing company."
+        logger.error(internalMessage)
+        return InternalServerErrorApiException(internalMessage)
     }
 }

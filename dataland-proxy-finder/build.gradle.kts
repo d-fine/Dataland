@@ -26,10 +26,16 @@ plugins {
     kotlin("kapt")
 }
 
+// The proxy finder is internal only and must not serve a Swagger UI. Only the API docs starter is used and the UI
+// starter, which is pulled in transitively via dataland-backend-utils, is excluded.
+configurations.all {
+    exclude(group = "org.springdoc", module = "springdoc-openapi-starter-webmvc-ui")
+}
+
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
-    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.springdoc.openapi.api)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
     implementation(libs.log4j)

@@ -322,6 +322,8 @@ services:
     depends_on:
       backend:
         condition: service_started
+      proxy-finder:
+        condition: service_healthy
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
