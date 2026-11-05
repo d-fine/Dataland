@@ -13,7 +13,10 @@ import com.openai.models.responses.ResponseFunctionToolCall
 import com.openai.models.responses.ResponseInputItem
 import com.openai.models.responses.ResponseStatus
 import com.openai.models.responses.ResponseTextConfig
+import com.openai.models.responses.WebSearchPreviewTool
+import com.openai.models.responses.WebSearchTool
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
+import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.dataland.datalandproxyfinder.model.ProxySearchLlmResult
 import org.dataland.datalandproxyfinder.model.ProxySearchStatus
 import org.slf4j.LoggerFactory
@@ -36,9 +39,10 @@ class ProxySearchLlmException(
 /**
  * Runs the proxy research against the Responses API of the Azure OpenAI deployment.
  *
- * The LLM may call the Dataland company tools. Function calls are executed locally and their outputs are sent back
- * (chained via previous_response_id) until the LLM returns its final answer, which is enforced to match the
- * JSON schema of [ProxySearchLlmResult] (structured output).
+ * The LLM receives the data Dataland stores about the company (see [ProxySearchUserMessage]) and may use the web
+ * search tool of the Responses API (executed by Azure) and the Dataland company tools. Function calls are executed
+ * locally and their outputs are sent back (chained via previous_response_id) until the LLM returns its final answer,
+ * which is enforced to match the JSON schema of [ProxySearchLlmResult] (structured output).
  */
 @Component
 @ConditionalOnProperty(name = ["dataland.proxy-finder.provider"], havingValue = "azure")
@@ -49,10 +53,13 @@ class ProxySearchLlmClient(
     @Value("\${dataland.proxy-finder.azure.reasoning-effort}") private val reasoningEffort: String,
     @Value("\${dataland.proxy-finder.azure.max-tool-rounds}") private val maxToolRounds: Int,
     @Value("\${dataland.proxy-finder.azure.max-research-duration}") private val maxResearchDuration: Duration,
+    @Value("\${dataland.proxy-finder.azure.web-search-tool-type}") private val webSearchToolType: String,
     @Value("classpath:prompts/proxy-search.st") systemPrompt: Resource,
 ) {
     companion object {
         const val RESULT_SCHEMA_NAME = "proxy_search_result"
+        const val WEB_SEARCH_TOOL_TYPE_NONE = "none"
+        const val WEB_SEARCH_PREVIEW_TOOL_TYPE = "web_search_preview"
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -60,14 +67,13 @@ class ProxySearchLlmClient(
 
     /**
      * Asks the LLM for the proxy company of the given company.
-     * @param companyName the name of the company for which a proxy company is searched
+     * @param company the company for which a proxy company is searched, including its Dataland data
      * @return the structured result of the research
      * @throws ProxySearchLlmException if the LLM did not produce a usable result within the limits
      */
-    fun research(companyName: String): ProxySearchLlmResult {
+    fun research(company: ProxySearchCompany): ProxySearchLlmResult {
         val deadline = System.nanoTime() + maxResearchDuration.toNanos()
-        val userMessage = "Find the proxy company for the company \"$companyName\"."
-        var response = create(baseParams().input(userMessage).build(), deadline)
+        var response = create(baseParams().input(ProxySearchUserMessage.build(company)).build(), deadline)
         repeat(maxToolRounds) {
             val functionCalls = response.output().mapNotNull { it.functionCall().getOrNull() }
             if (functionCalls.isEmpty()) return parseResult(response)
@@ -123,8 +129,22 @@ class ProxySearchLlmClient(
                 .instructions(instructions)
                 .reasoning(Reasoning.builder().effort(ReasoningEffort.of(reasoningEffort)).build())
                 .text(ResponseTextConfig.builder().format(resultFormat()).build())
+        addWebSearchTool(builder)
         datalandCompanyTools.definitions.forEach { builder.addTool(it) }
         return builder
+    }
+
+    /**
+     * Adds the hosted web search tool. Its type is configurable, because the supported type depends on the
+     * Azure OpenAI deployment ("web_search" or "web_search_preview"); "none" disables web search.
+     */
+    private fun addWebSearchTool(builder: ResponseCreateParams.Builder) {
+        when (val type = webSearchToolType.trim()) {
+            "", WEB_SEARCH_TOOL_TYPE_NONE -> Unit
+            WEB_SEARCH_PREVIEW_TOOL_TYPE ->
+                builder.addTool(WebSearchPreviewTool.builder().type(WebSearchPreviewTool.Type.WEB_SEARCH_PREVIEW).build())
+            else -> builder.addTool(WebSearchTool.builder().type(WebSearchTool.Type.of(type)).build())
+        }
     }
 
     private fun parseResult(response: Response): ProxySearchLlmResult {

@@ -33,7 +33,7 @@ class AzureOpenAiProxySuggestionProvider(
     @Suppress("TooGenericExceptionCaught") // any failure of the LLM call must be reported as 503
     private fun callLlm(company: ProxySearchCompany): ProxySearchLlmResult =
         try {
-            proxySearchLlmClient.research(company.companyName)
+            proxySearchLlmClient.research(company)
         } catch (exception: SingleApiException) {
             throw exception
         } catch (exception: RuntimeException) {

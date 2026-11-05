@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpServer
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.datalandproxyfinder.configurations.AzureOpenAiClientConfiguration
 import org.dataland.datalandproxyfinder.model.DatalandCompanyCandidate
+import org.dataland.datalandproxyfinder.model.ProxySearchCompany
 import org.dataland.datalandproxyfinder.model.ProxySearchStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,6 +29,7 @@ class ProxySearchLlmClientTest {
         const val MAX_TOOL_ROUNDS = 2
         const val SYSTEM_PROMPT = "You are a test prompt."
         val MAX_RESEARCH_DURATION: Duration = Duration.ofSeconds(10)
+        val COMPANY = ProxySearchCompany(companyId = "child-id", companyName = "Child GmbH")
     }
 
     private data class RecordedRequest(
@@ -61,16 +63,19 @@ class ProxySearchLlmClientTest {
         llmClient = createLlmClient(MAX_RESEARCH_DURATION)
     }
 
-    private fun createLlmClient(maxResearchDuration: Duration) =
-        ProxySearchLlmClient(
-            openAiClient = openAiClient,
-            datalandCompanyTools = DatalandCompanyTools(companyService),
-            deploymentName = DEPLOYMENT,
-            reasoningEffort = "medium",
-            maxToolRounds = MAX_TOOL_ROUNDS,
-            maxResearchDuration = maxResearchDuration,
-            systemPrompt = ByteArrayResource(SYSTEM_PROMPT.toByteArray()),
-        )
+    private fun createLlmClient(
+        maxResearchDuration: Duration,
+        webSearchToolType: String = "web_search",
+    ) = ProxySearchLlmClient(
+        openAiClient = openAiClient,
+        datalandCompanyTools = DatalandCompanyTools(companyService),
+        deploymentName = DEPLOYMENT,
+        reasoningEffort = "medium",
+        maxToolRounds = MAX_TOOL_ROUNDS,
+        maxResearchDuration = maxResearchDuration,
+        webSearchToolType = webSearchToolType,
+        systemPrompt = ByteArrayResource(SYSTEM_PROMPT.toByteArray()),
+    )
 
     @AfterEach
     fun tearDown() {
@@ -168,7 +173,7 @@ class ProxySearchLlmClientTest {
         )
         responses.add(response("resp_2", listOf(message(foundAnswer))))
 
-        val result = llmClient.research("Child GmbH")
+        val result = llmClient.research(COMPANY)
 
         assertEquals(ProxySearchStatus.FOUND, result.status)
         assertEquals("parent-id", result.parentCompanyId)
@@ -182,11 +187,14 @@ class ProxySearchLlmClientTest {
             assertEquals(DEPLOYMENT, it.body["model"].textValue())
             assertEquals(SYSTEM_PROMPT, it.body["instructions"].textValue())
             assertEquals("medium", it.body["reasoning"]["effort"].textValue())
-            assertEquals(2, it.body["tools"].size())
+            assertEquals(
+                listOf("web_search", "function", "function"),
+                it.body["tools"].map { tool -> tool["type"].textValue() },
+            )
             assertEquals("json_schema", it.body["text"]["format"]["type"].textValue())
             assertTrue(it.body["text"]["format"]["strict"].booleanValue())
         }
-        assertTrue(first.body["input"].textValue().contains("Child GmbH"))
+        assertEquals(ProxySearchUserMessage.build(COMPANY), first.body["input"].textValue())
         assertEquals("resp_1", second.body["previous_response_id"].textValue())
         val functionCallOutput = second.body["input"].single()
         assertEquals("function_call_output", functionCallOutput["type"].textValue())
@@ -204,8 +212,21 @@ class ProxySearchLlmClientTest {
                 ),
             )
         }
-        assertThrows<ProxySearchLlmException> { llmClient.research("Child GmbH") }
+        assertThrows<ProxySearchLlmException> { llmClient.research(COMPANY) }
         assertEquals(MAX_TOOL_ROUNDS + 1, requests.size)
+    }
+
+    @Test
+    fun `the web search tool type is configurable and can be disabled`() {
+        mapOf(
+            "web_search_preview" to listOf("web_search_preview", "function", "function"),
+            "none" to listOf("function", "function"),
+        ).forEach { (type, expectedTools) ->
+            requests.clear()
+            responses.add(response("resp_$type", listOf(message(foundAnswer))))
+            createLlmClient(MAX_RESEARCH_DURATION, type).research(COMPANY)
+            assertEquals(expectedTools, requests.single().body["tools"].map { it["type"].textValue() })
+        }
     }
 
     @Test
@@ -216,7 +237,7 @@ class ProxySearchLlmClientTest {
             response("resp_malformed", listOf(message("this is not json"))),
         ).forEach {
             responses.add(it)
-            assertThrows<ProxySearchLlmException> { llmClient.research("Child GmbH") }
+            assertThrows<ProxySearchLlmException> { llmClient.research(COMPANY) }
         }
     }
 
@@ -231,7 +252,7 @@ class ProxySearchLlmClientTest {
         )
         val shortLlmClient = createLlmClient(Duration.ofMillis(500))
         val start = System.nanoTime()
-        assertThrows<RuntimeException> { shortLlmClient.research("Child GmbH") }
+        assertThrows<RuntimeException> { shortLlmClient.research(COMPANY) }
         assertTrue(Duration.ofNanos(System.nanoTime() - start) < Duration.ofSeconds(2))
     }
 }

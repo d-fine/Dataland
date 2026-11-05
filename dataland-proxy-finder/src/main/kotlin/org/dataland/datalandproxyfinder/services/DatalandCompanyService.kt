@@ -2,6 +2,7 @@ package org.dataland.datalandproxyfinder.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -19,24 +20,34 @@ class DatalandCompanyService(
     private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
     /**
-     * Retrieves the company with the given ID from the backend.
+     * Retrieves the company with the given ID from the backend, including the Dataland company of its parent LEI
+     * (if one is stored and the parent exists on Dataland).
      * @param companyId the Dataland company ID
      * @return the company
      * @throws ResourceNotFoundApiException if the company does not exist on Dataland
      */
     fun getCompany(companyId: String): ProxySearchCompany {
-        val companyInformation =
-            if (ValidationUtils.isUuid(companyId)) {
-                try {
-                    companyDataControllerApi.getCompanyInfo(companyId)
-                } catch (clientException: ClientException) {
-                    throw translateNotFound(companyId, clientException)
-                }
-            } else {
-                null
-            }
-        return companyInformation?.let { ProxySearchCompany(companyId = companyId, companyName = it.companyName) }
-            ?: throw companyNotFound(companyId)
+        val companyInformation = getCompanyInformation(companyId)
+        val parentCompanyLei = companyInformation.parentCompanyLei?.takeIf { it.isNotBlank() }
+        return ProxySearchCompany(
+            companyId = companyId,
+            companyName = companyInformation.companyName,
+            alternativeNames = companyInformation.companyAlternativeNames.orEmpty(),
+            identifiers = companyInformation.identifiers.filterValues { it.isNotEmpty() },
+            countryCode = companyInformation.countryCode,
+            headquarters = companyInformation.headquarters,
+            parentCompanyLei = parentCompanyLei,
+            parentCompany = parentCompanyLei?.let { findCompanyByIdentifier(IdentifierType.Lei.name, it) },
+        )
+    }
+
+    private fun getCompanyInformation(companyId: String): CompanyInformation {
+        if (!ValidationUtils.isUuid(companyId)) throw companyNotFound(companyId)
+        return try {
+            companyDataControllerApi.getCompanyInfo(companyId)
+        } catch (clientException: ClientException) {
+            throw translateNotFound(companyId, clientException)
+        }
     }
 
     /**
@@ -104,7 +115,7 @@ class DatalandCompanyService(
     ): DatalandCompanyCandidate? {
         val type = IdentifierType.values().firstOrNull { it.name.equals(identifierType.trim(), ignoreCase = true) }
         val companyId = type?.let { findCompanyIdByIdentifier(it, identifier.trim()) }
-        return companyId?.let { DatalandCompanyCandidate(it, getCompany(it).companyName) }
+        return companyId?.let { DatalandCompanyCandidate(it, getCompanyInformation(it).companyName) }
     }
 
     private fun findCompanyIdByIdentifier(

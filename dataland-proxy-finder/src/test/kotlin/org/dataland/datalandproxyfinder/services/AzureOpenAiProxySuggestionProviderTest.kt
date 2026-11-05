@@ -22,7 +22,7 @@ class AzureOpenAiProxySuggestionProviderTest {
     private val provider = AzureOpenAiProxySuggestionProvider(llmClient)
 
     private fun stubResult(result: ProxySearchLlmResult) {
-        whenever(llmClient.research(company.companyName)).thenReturn(result)
+        whenever(llmClient.research(company)).thenReturn(result)
     }
 
     @Test
@@ -68,7 +68,7 @@ class AzureOpenAiProxySuggestionProviderTest {
     @Test
     fun `llm errors and unusable responses result in service unavailable`() {
         listOf(RuntimeException("429 rate limit"), ProxySearchLlmException("no answer")).forEach {
-            doThrow(it).whenever(llmClient).research(company.companyName)
+            doThrow(it).whenever(llmClient).research(company)
             assertThrows<ServiceUnavailableApiException> { provider.suggestProxy(company) }
         }
     }
