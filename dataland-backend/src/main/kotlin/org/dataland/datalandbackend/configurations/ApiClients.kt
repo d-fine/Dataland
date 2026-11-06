@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
+import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -19,6 +20,7 @@ class ApiClients(
     @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
     @Value("\${dataland.documentmanager.base-url}") private val documentManagerBaseUrl: String,
     @Value("\${dataland.specification-service.base-url}") private val specificationServiceBaseUrl: String,
+    @Value("\${dataland.company-service.base-url}") private val companyServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyRolesControllerApi of the community manager
@@ -45,4 +47,14 @@ class ApiClients(
     fun getSpecificationControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
     ): SpecificationControllerApi = SpecificationControllerApi(specificationServiceBaseUrl, authenticatedOkHttpClient)
+
+    /**
+     * Creates an auto-authenticated version of the ProxySuggestionControllerApi of the proxy finder.
+     * Uses the patient (long-timeout) OkHttp client because generating a proxy suggestion (e.g. via an LLM)
+     * can take longer than the default timeout to complete.
+     */
+    @Bean
+    fun getProxySuggestionControllerApi(
+        @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
+    ): ProxySuggestionControllerApi = ProxySuggestionControllerApi(companyServiceBaseUrl, patientAuthenticatedOkHttpClient)
 }

@@ -36,6 +36,7 @@ poi = "5.5.1"
 jodconverter = "5.1.1"
 spring-boot = "4.1.1"
 spring-framework = "7.0.9"
+springdoc = "3.1.1"
 detekt = "2.0.0-alpha.6"
 bouncy-castle = "1.70"
 testcontainers = "1.21.4"
@@ -86,6 +87,7 @@ spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-aspectj = { module = "org.springframework.boot:spring-boot-starter-aspectj" }
 spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-jdbc-test = { module = "org.springframework.boot:spring-boot-jdbc-test" }
@@ -101,7 +103,8 @@ spring-security-web = { module = "org.springframework.security:spring-security-w
 
 # Spring-related
 spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "5.0.5" }
-springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "3.1.1" }
+springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+springdoc-openapi-api = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
