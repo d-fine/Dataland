@@ -1,0 +1,188 @@
+package org.dataland.datalandbackend.controller
+
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.asResponseBody
+import okio.Buffer
+import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.utils.DefaultMocks
+import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientError
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientException
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ServerException
+import org.dataland.datalandcompanyservice.openApiClient.model.ProxySuggestion
+import org.dataland.datalandcompanyservice.openApiClient.model.ProxySuggestionSource
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultActions
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.UUID
+
+@SpringBootTest(
+    classes = [DatalandBackend::class],
+    properties = ["spring.profiles.active=nodb"],
+)
+@AutoConfigureMockMvc
+@DefaultMocks
+class CompanyProxySuggestionControllerTest(
+    @Autowired private val mockMvc: MockMvc,
+) {
+    companion object {
+        private const val PROXY_SUGGESTION_ENDPOINT = "/company-proxies/{companyId}/proxy-suggestion"
+    }
+
+    @MockitoBean
+    private lateinit var proxySuggestionControllerApi: ProxySuggestionControllerApi
+
+    @MockitoBean
+    @Qualifier("AuthenticatedOkHttpClient")
+    private lateinit var authenticatedOkHttpClient: OkHttpClient
+
+    private val mockSecurityContext = mock<SecurityContext>()
+
+    @BeforeEach
+    fun setup() {
+        reset(mockSecurityContext, proxySuggestionControllerApi, authenticatedOkHttpClient)
+        mockCompanyExistsCheck(statusCode = 200)
+    }
+
+    /**
+     * Stubs the HTTP call used by the CompanyExistsValidator so it returns the given status code.
+     */
+    private fun mockCompanyExistsCheck(statusCode: Int) {
+        val mockCall = mock<Call>()
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url("http://localhost/dummy").build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(statusCode)
+                .message("")
+                .body(Buffer().asResponseBody(null, 0))
+                .build()
+        doReturn(mockCall).whenever(authenticatedOkHttpClient).newCall(any())
+        doReturn(response).whenever(mockCall).execute()
+    }
+
+    private fun requestProxySuggestion(
+        companyId: String,
+        role: DatalandRealmRole = DatalandRealmRole.ROLE_ADMIN,
+    ): ResultActions {
+        val authentication =
+            AuthenticationMock.mockJwtAuthentication(
+                username = role.name,
+                userId = UUID.randomUUID().toString(),
+                roles = setOf(role, DatalandRealmRole.ROLE_USER),
+            )
+        doReturn(authentication).whenever(mockSecurityContext).authentication
+        return mockMvc.perform(post(PROXY_SUGGESTION_ENDPOINT, companyId).with(securityContext(mockSecurityContext)))
+    }
+
+    private fun proxyFinderClientException(
+        statusCode: Int,
+        body: String? = null,
+    ) = ClientException(
+        message = "Client error",
+        statusCode = statusCode,
+        response = ClientError<Any>(body = body, statusCode = statusCode),
+    )
+
+    @Test
+    fun `an admin receives the proxy suggestion of the proxy finder`() {
+        val companyId = UUID.randomUUID().toString()
+        val proxyCompanyId = UUID.randomUUID().toString()
+        doReturn(
+            ProxySuggestion(
+                companyId = companyId,
+                proxyCompanyId = proxyCompanyId,
+                confidence = 0.5,
+                reasoning = "Mocked reasoning",
+                sources = listOf(ProxySuggestionSource(title = "Source", url = "https://example.com")),
+            ),
+        ).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+
+        requestProxySuggestion(companyId)
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.companyId").value(companyId))
+            .andExpect(jsonPath("$.proxyCompanyId").value(proxyCompanyId))
+            .andExpect(jsonPath("$.confidence").value(0.5))
+            .andExpect(jsonPath("$.reasoning").value("Mocked reasoning"))
+            .andExpect(jsonPath("$.sources[0].title").value("Source"))
+            .andExpect(jsonPath("$.sources[0].url").value("https://example.com"))
+    }
+
+    @Test
+    fun `non admin users get a 403 when requesting a proxy suggestion and the proxy finder is not called`() {
+        requestProxySuggestion(UUID.randomUUID().toString(), DatalandRealmRole.ROLE_UPLOADER)
+            .andExpect(status().isForbidden)
+        verify(proxySuggestionControllerApi, never()).findProxySuggestion(any())
+    }
+
+    @Test
+    fun `an unknown company reported by the proxy finder results in a 404`() {
+        val companyId = UUID.randomUUID().toString()
+        doThrow(proxyFinderClientException(404)).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+        requestProxySuggestion(companyId).andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `an invalid suggestion reported by the proxy finder is forwarded as a 422`() {
+        val companyId = UUID.randomUUID().toString()
+        val errorBody =
+            """{"errors":[{"errorType":"invalid-proxy-suggestion","summary":"Suggested proxy company is the company itself.",""" +
+                """"message":"self reference","httpStatus":422}]}"""
+        doThrow(proxyFinderClientException(422, errorBody))
+            .whenever(proxySuggestionControllerApi)
+            .findProxySuggestion(companyId)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isUnprocessableContent)
+            .andExpect(jsonPath("$.errors[0].errorType").value("invalid-proxy-suggestion"))
+            .andExpect(jsonPath("$.errors[0].summary").value("Suggested proxy company is the company itself."))
+            .andExpect(jsonPath("$.errors[0].message").value("self reference"))
+    }
+
+    @Test
+    fun `a malformed company ID results in a 400 and the proxy finder is not called`() {
+        requestProxySuggestion("not-a-uuid").andExpect(status().isBadRequest)
+        verify(proxySuggestionControllerApi, never()).findProxySuggestion(any())
+    }
+
+    @Test
+    fun `a company unknown to Dataland results in a 400 and the proxy finder is not called`() {
+        mockCompanyExistsCheck(statusCode = 404)
+        requestProxySuggestion(UUID.randomUUID().toString()).andExpect(status().isBadRequest)
+        verify(proxySuggestionControllerApi, never()).findProxySuggestion(any())
+    }
+
+    @Test
+    fun `a failing proxy finder results in a 500`() {
+        val companyId = UUID.randomUUID().toString()
+        doThrow(ServerException("Server error", 503)).whenever(proxySuggestionControllerApi).findProxySuggestion(companyId)
+        requestProxySuggestion(companyId)
+            .andExpect(status().isInternalServerError)
+            .andExpect(jsonPath("$.errors[0].summary").value("Proxy finder unavailable"))
+    }
+}

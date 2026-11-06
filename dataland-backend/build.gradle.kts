@@ -242,6 +242,37 @@ tasks.register("generateSpecificationServiceClient", org.openapitools.generator.
     )
 }
 
+tasks.register("generateCompanyServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the company service."
+    group = "clients"
+    val companyServiceClientDestinationPackage = "org.dataland.datalandcompanyservice.openApiClient"
+    inputSpec.set(project.file("${project.rootDir}/dataland-company-service/companyServiceOpenApi.json").path)
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/company-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(companyServiceClientDestinationPackage)
+    modelPackage.set("$companyServiceClientDestinationPackage.model")
+    apiPackage.set("$companyServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+}
+
 tasks.register("generateCurrencyCodesFile", JavaExec::class) {
     doNotTrackState("The file should always be regenerated.")
     description = "Generates the shared ISO 4217 currencyCodes.json in dataland-backend-utils from the JDK currencies."
@@ -259,6 +290,7 @@ tasks.register("generateClients") {
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateSpecificationServiceClient")
+    dependsOn("generateCompanyServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -277,6 +309,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/company-service/src/main/kotlin"))
 }
 
 ktlint {
