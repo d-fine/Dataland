@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.configurations
 
 import okhttp3.OkHttpClient
 import org.dataland.datalandcommunitymanager.openApiClient.api.CompanyRolesControllerApi
-import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
+import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.springframework.beans.factory.annotation.Qualifier
@@ -21,7 +21,7 @@ class ApiClients(
     @Value("\${dataland.community-manager.base-url}") private val communityManagerBaseUrl: String,
     @Value("\${dataland.documentmanager.base-url}") private val documentManagerBaseUrl: String,
     @Value("\${dataland.specification-service.base-url}") private val specificationServiceBaseUrl: String,
-    @Value("\${dataland.proxy-finder.base-url}") private val proxyFinderBaseUrl: String,
+    @Value("\${dataland.company-service.base-url}") private val companyServiceBaseUrl: String,
 ) {
     /**
      * Creates an auto-authenticated version of the CompanyRolesControllerApi of the community manager
@@ -58,13 +58,13 @@ class ApiClients(
     @Bean
     fun getProxySuggestionControllerApi(
         @Qualifier("PatientAuthenticatedOkHttpClient") patientAuthenticatedOkHttpClient: OkHttpClient,
-        @Value("\${dataland.proxy-finder.read-timeout-seconds}") proxyFinderReadTimeoutSeconds: Long,
+        @Value("\${dataland.company-service.read-timeout-seconds}") companyServiceReadTimeoutSeconds: Long,
     ): ProxySuggestionControllerApi =
         ProxySuggestionControllerApi(
-            proxyFinderBaseUrl,
+            companyServiceBaseUrl,
             patientAuthenticatedOkHttpClient
                 .newBuilder()
-                .readTimeout(proxyFinderReadTimeoutSeconds, TimeUnit.SECONDS)
+                .readTimeout(companyServiceReadTimeoutSeconds, TimeUnit.SECONDS)
                 .build(),
         )
 }

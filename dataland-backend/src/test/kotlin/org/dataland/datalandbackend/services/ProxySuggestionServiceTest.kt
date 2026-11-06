@@ -4,13 +4,13 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
 import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiException
-import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientError
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientException
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerError
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerException
-import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestion
-import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestionSource
+import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientError
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientException
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ServerError
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ServerException
+import org.dataland.datalandcompanyservice.openApiClient.model.ProxySuggestion
+import org.dataland.datalandcompanyservice.openApiClient.model.ProxySuggestionSource
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.BeforeEach
@@ -91,7 +91,7 @@ class ProxySuggestionServiceTest {
 
         val exception =
             assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
-        assertEquals(PROXY_FINDER_UNAVAILABLE_SUMMARY, exception.publicSummary)
+        assertEquals(COMPANY_SERVICE_UNAVAILABLE_SUMMARY, exception.publicSummary)
         assertSame(forbidden, exception.cause)
     }
 
@@ -103,7 +103,7 @@ class ProxySuggestionServiceTest {
 
         val exception =
             assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
-        assertEquals(PROXY_FINDER_UNAVAILABLE_SUMMARY, exception.publicSummary)
+        assertEquals(COMPANY_SERVICE_UNAVAILABLE_SUMMARY, exception.publicSummary)
         assertSame(serverException, exception.cause)
     }
 

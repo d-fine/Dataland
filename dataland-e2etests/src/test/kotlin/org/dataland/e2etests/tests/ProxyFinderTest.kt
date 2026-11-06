@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.PROXY_FINDER_MOCK_PROXY_COMPANY_LEI
+import org.dataland.e2etests.COMPANY_SERVICE_MOCK_PROXY_COMPANY_LEI
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -36,11 +36,13 @@ class ProxyFinderTest {
             GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
                 try {
                     apiAccessor.companyDataControllerApi
-                        .getCompanyIdByIdentifier(IdentifierType.Lei, PROXY_FINDER_MOCK_PROXY_COMPANY_LEI)
+                        .getCompanyIdByIdentifier(IdentifierType.Lei, COMPANY_SERVICE_MOCK_PROXY_COMPANY_LEI)
                         .companyId
                 } catch (exception: ClientException) {
                     if (exception.statusCode != HttpStatus.NOT_FOUND.value()) throw exception
-                    apiAccessor.uploadOneCompanyWithIdentifiers(lei = PROXY_FINDER_MOCK_PROXY_COMPANY_LEI)!!.actualStoredCompany.companyId
+                    apiAccessor
+                        .uploadOneCompanyWithIdentifiers(lei = COMPANY_SERVICE_MOCK_PROXY_COMPANY_LEI)!!
+                        .actualStoredCompany.companyId
                 }
             }
     }

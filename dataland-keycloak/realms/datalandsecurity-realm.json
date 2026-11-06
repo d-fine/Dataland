@@ -338,7 +338,7 @@
       "dataland-qa-service" : [ ],
       "dataland-api-key-manager" : [ ],
       "dataland-accounting-service" : [ ],
-      "dataland-proxy-finder" : [ ],
+      "dataland-company-service" : [ ],
       "dataland-backend" : [ ],
       "admin-cli" : [ ],
       "dataland-email-service" : [ ],
@@ -769,12 +769,12 @@
     "groups" : [ ]
   }, {
     "id" : "4b3344ce-dd4f-491b-9853-6c9574bc1e87",
-    "username" : "service-account-dataland-proxy-finder",
+    "username" : "service-account-dataland-company-service",
     "emailVerified" : false,
     "enabled" : true,
     "createdTimestamp" : 1793350000000,
     "totp" : false,
-    "serviceAccountClientId" : "dataland-proxy-finder",
+    "serviceAccountClientId" : "dataland-company-service",
     "credentials" : [ ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ "TERMS_AND_CONDITIONS" ],
@@ -1851,7 +1851,7 @@
     "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
   }, {
     "id" : "d53d5863-a01b-43a4-9301-5a81b63b97fe",
-    "clientId" : "dataland-proxy-finder",
+    "clientId" : "dataland-company-service",
     "name" : "",
     "description" : "",
     "rootUrl" : "",
@@ -1861,7 +1861,7 @@
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "secret" : "${DATALAND_PROXY_FINDER_CLIENT_SECRET}",
+    "secret" : "${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}",
     "redirectUris" : [ "/*" ],
     "webOrigins" : [ "/*" ],
     "notBefore" : 0,

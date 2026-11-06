@@ -14,10 +14,10 @@ and started once by `initialSetup.sh`, which also hooks it into `~/.bashrc` so i
 surviving sandbox restarts. Safe to re-run manually at any time.
 
 ## Using Azure OpenAI (proxy finder)
-By default the proxy finder uses the mocked provider (`PROXY_FINDER_PROVIDER=mock`), so no LLM calls happen. To use the
+By default the proxy finder uses the mocked provider (`COMPANY_SERVICE_PROVIDER=mock`), so no LLM calls happen. To use the
 real nonprod Azure OpenAI deployment:
 
-**Locally:** export `PROXY_FINDER_PROVIDER=azure` and `AZURE_OPENAI_API_KEY` in your shell before starting the stack.
+**Locally:** export `COMPANY_SERVICE_PROVIDER=azure` and `AZURE_OPENAI_API_KEY` in your shell before starting the stack.
 `environments/.env.dev` keeps values that are already set in the shell and contains the nonprod endpoint, deployment
 name and API version. The key must never be committed.
 

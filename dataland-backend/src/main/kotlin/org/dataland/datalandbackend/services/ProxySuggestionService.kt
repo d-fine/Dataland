@@ -9,19 +9,19 @@ import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiExcepti
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
-import org.dataland.datalandproxyfinder.openApiClient.api.ProxySuggestionControllerApi
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientError
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ClientException
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.Response
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerError
-import org.dataland.datalandproxyfinder.openApiClient.infrastructure.ServerException
+import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientError
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientException
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.Response
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ServerError
+import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ServerException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.io.IOException
-import org.dataland.datalandproxyfinder.openApiClient.model.ProxySuggestion as ProxyFinderProxySuggestion
+import org.dataland.datalandcompanyservice.openApiClient.model.ProxySuggestion as ProxyFinderProxySuggestion
 
-const val PROXY_FINDER_UNAVAILABLE_SUMMARY = "Proxy finder unavailable"
+const val COMPANY_SERVICE_UNAVAILABLE_SUMMARY = "Proxy finder unavailable"
 
 /**
  * Requests proxy suggestions from the proxy finder and translates its errors into Dataland API errors.
@@ -132,7 +132,7 @@ class ProxySuggestionService(
         companyId: String,
         cause: Exception,
     ) = InternalServerErrorApiException(
-        publicSummary = PROXY_FINDER_UNAVAILABLE_SUMMARY,
+        publicSummary = COMPANY_SERVICE_UNAVAILABLE_SUMMARY,
         publicMessage = "The proxy finder could not process the request. Please try again later or contact support.",
         internalMessage = "Requesting a proxy suggestion for company $companyId from the proxy finder failed: ${cause.message}",
         internalCause = cause,

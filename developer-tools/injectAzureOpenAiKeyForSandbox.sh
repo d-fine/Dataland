@@ -27,7 +27,7 @@ tmp_dir="$(mktemp -d)"
 trap 'rm -rf "$tmp_dir"' EXIT
 chmod 700 "$tmp_dir"
 (umask 077 && {
-  echo "PROXY_FINDER_PROVIDER=azure"
+  echo "COMPANY_SERVICE_PROVIDER=azure"
   echo "AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY"
 } >"$tmp_dir/azure-openai.env")
 
