@@ -1,4 +1,0 @@
-FROM scratch AS builder
-
-WORKDIR /app
-COPY ./dataland-proxy-finder/build/libs/*.jar ./dataland-proxy-finder/build/libs/
