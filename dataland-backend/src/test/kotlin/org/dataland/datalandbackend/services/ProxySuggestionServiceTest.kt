@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.ServiceUnavailableApiException
 import org.dataland.datalandcompanyservice.openApiClient.api.ProxySuggestionControllerApi
 import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientError
 import org.dataland.datalandcompanyservice.openApiClient.infrastructure.ClientException
@@ -95,9 +96,9 @@ class ProxySuggestionServiceTest {
     }
 
     @Test
-    fun `server errors of the proxy finder are translated into an internal server error`() {
+    fun `server errors of the proxy finder other than 503 are translated into an internal server error`() {
         val serverException =
-            ServerException("Server error", 503, ServerError<Any>(body = "unavailable", statusCode = 503))
+            ServerException("Server error", 500, ServerError<Any>(body = "boom", statusCode = 500))
         doThrow(serverException).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
 
         val exception =
@@ -107,13 +108,26 @@ class ProxySuggestionServiceTest {
     }
 
     @Test
-    fun `a timeout when calling the proxy finder is translated into an internal server error`() {
+    fun `a 503 of the proxy finder is translated into a service unavailable exception with its details`() {
+        val body = """{"errors":[{"summary":"Some summary","message":"Some message"}]}"""
+        val serverException = ServerException("Server error", 503, ServerError<Any>(body = body, statusCode = 503))
+        doThrow(serverException).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
+
+        val exception =
+            assertThrows<ServiceUnavailableApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        assertEquals("Some summary", exception.summary)
+        assertEquals("Some message", exception.message)
+        assertSame(serverException, exception.cause)
+    }
+
+    @Test
+    fun `a timeout when calling the proxy finder is translated into a service unavailable exception`() {
         val timeout = SocketTimeoutException("timeout")
         doThrow(timeout).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
 
         val exception =
-            assertThrows<InternalServerErrorApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
-        assertEquals(COMPANY_SERVICE_UNAVAILABLE_SUMMARY, exception.publicSummary)
+            assertThrows<ServiceUnavailableApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        assertEquals(ProxySuggestionService.PROXY_SEARCH_UNAVAILABLE_SUMMARY, exception.summary)
         assertSame(timeout, exception.cause)
     }
 }

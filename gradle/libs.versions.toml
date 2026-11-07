@@ -34,6 +34,7 @@ itext = "9.8.0"
 tika = "4.1.0"
 poi = "5.5.1"
 jodconverter = "5.1.1"
+openai-java = "4.39.1"
 spring-boot = "4.1.1"
 spring-framework = "7.0.9"
 springdoc = "3.1.1"
@@ -107,6 +108,7 @@ springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-star
 springdoc-openapi-api = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
+openai-java = { module = "com.openai:openai-java", version.ref = "openai-java" }
 
 # PostgreSQL
 postgresql = { group = "org.postgresql", name = "postgresql", version = "42.7.14" }

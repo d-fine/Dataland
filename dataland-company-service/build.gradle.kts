@@ -51,6 +51,7 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(libs.spring.boot.starter.aspectj)
     implementation(libs.jackson.module.kotlin)
+    implementation(libs.openai.java)
     kapt(Spring.boot.configurationProcessor)
     testImplementation(Spring.boot.test)
     testImplementation(libs.mockito.kotlin)
