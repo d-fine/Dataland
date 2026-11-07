@@ -2,7 +2,7 @@
 
 [plugins]
 
-com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "3.1.4" }
+com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "3.1.5" }
 dev-detekt = { id = "dev.detekt", version.ref = "detekt" }
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 org-springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
