@@ -25,6 +25,8 @@ describe('Check the Portfolio Download view', function (): void {
                   reportingPeriodsPerFramework: [
                     ['sfdr', ['2024', '2023', '2022']],
                     ['eutaxonomy-financials', ['2021']],
+                    ['nuclear-and-gas', ['2023']],
+                    ['pcaf', ['2024', '2023']],
                   ],
                   isDownloading: false,
                 },
@@ -40,6 +42,16 @@ describe('Check the Portfolio Download view', function (): void {
       cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
       cy.get('.p-select-list-container').contains('SFDR').click();
       cy.get('[data-test="frameworkSelector"]').should('contain.text', 'SFDR');
+    });
+
+    it('Check that PCAF and Nuclear and Gas can both be selected', function (): void {
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('PCAF').click();
+      cy.get('[data-test="frameworkSelector"]').should('contain.text', 'PCAF');
+
+      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+      cy.get('.p-select-list-container').contains('EU Taxonomy Nuclear and Gas').click();
+      cy.get('[data-test="frameworkSelector"]').should('contain.text', 'EU Taxonomy Nuclear and Gas');
     });
 
     it('Check file type selection', function (): void {

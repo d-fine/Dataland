@@ -26,7 +26,7 @@ class PortfolioEnrichmentService
         private val majorFrameworks =
             listOf(
                 "sfdr", "eutaxonomy-financials", "eutaxonomy-financials-2026-73", "eutaxonomy-non-financials",
-                "eutaxonomy-non-financials-2026-73", "nuclear-and-gas",
+                "eutaxonomy-non-financials-2026-73", "nuclear-and-gas", "pcaf",
             )
 
         /**

@@ -37,11 +37,13 @@
       "companyCockpitRef": "",
       "frameworkHyphenatedNamesToDataRef": {
         "sfdr": null,
-        "nuclear-and-gas": null
+        "nuclear-and-gas": null,
+        "pcaf": null
       },
       "availableReportingPeriods": {
         "sfdr": "2024",
-        "nuclear-and-gas": "2023"
+        "nuclear-and-gas": "2023",
+        "pcaf": "2023"
       }
     }
   ],

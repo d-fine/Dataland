@@ -12,6 +12,7 @@ const MAIN_FRAMEWORKS = new Set([
   'eutaxonomy-non-financials',
   'eutaxonomy-non-financials-2026-73',
   'nuclear-and-gas',
+  'pcaf',
   'sfdr',
 ]);
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
@@ -21,7 +22,10 @@ export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_
   MAIN_FRAMEWORKS.has(framework)
 );
 export const PORTFOLIO_OVERVIEW_FRAMEWORKS = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework !== 'eutaxonomy-financials-2026-73' && framework !== 'eutaxonomy-non-financials-2026-73'
+  (framework) =>
+    framework !== 'eutaxonomy-financials-2026-73' &&
+    framework !== 'eutaxonomy-non-financials-2026-73' &&
+    framework !== 'nuclear-and-gas'
 );
 export const ALL_FRAMEWORKS_IN_DISPLAYED_ORDER = [...MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER];
 ALL_FRAMEWORKS_IN_DISPLAYED_ORDER.push(

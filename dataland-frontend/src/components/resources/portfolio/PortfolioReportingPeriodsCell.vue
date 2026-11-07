@@ -49,7 +49,7 @@ const buttonPt = {
     style: 'font-weight: normal; text-align: left;',
   },
   root: {
-    style: 'padding-left: 0;',
+    style: 'padding-left: 0; justify-content: flex-start; text-align: left;',
   },
 };
 

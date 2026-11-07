@@ -237,7 +237,7 @@ class PortfolioEntryPrepared {
   readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancials202673AvailableReportingPeriods: string | undefined;
-  readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
+  readonly pcafAvailableReportingPeriods: string | undefined;
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = portfolioEntry.companyId;
@@ -265,8 +265,8 @@ class PortfolioEntryPrepared {
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
     this.eutaxonomyNonFinancials202673AvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673] || 'No data available';
-    this.nuclearAndGasAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
+    this.pcafAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.Pcaf] || 'No data available';
   }
 }
 
@@ -296,7 +296,7 @@ const filters = ref({
   eutaxonomyFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
   eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
   eutaxonomyNonFinancials202673AvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
-  nuclearAndGasAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  pcafAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
 });
 
 const queryClient = useQueryClient();
@@ -416,8 +416,8 @@ function widthOfFrameworkColumn(framework: string): string {
       return '15';
     case 'eutaxonomy-non-financials':
       return '17.5';
-    case 'nuclear-and-gas':
-      return '17.5';
+    case 'pcaf':
+      return '10';
     default:
       return '15';
   }
@@ -450,8 +450,8 @@ function getAvailableReportingPeriods(
       return portfolioEntryPrepared.eutaxonomyNonFinancialsAvailableReportingPeriods;
     case DataTypeEnum.EutaxonomyNonFinancials202673:
       return portfolioEntryPrepared.eutaxonomyNonFinancials202673AvailableReportingPeriods;
-    case DataTypeEnum.NuclearAndGas:
-      return portfolioEntryPrepared.nuclearAndGasAvailableReportingPeriods;
+    case DataTypeEnum.Pcaf:
+      return portfolioEntryPrepared.pcafAvailableReportingPeriods;
     default:
       return undefined;
   }
