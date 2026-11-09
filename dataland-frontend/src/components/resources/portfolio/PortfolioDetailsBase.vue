@@ -44,7 +44,7 @@
           field="companyName"
           header="Company Name"
           :showFilterMatchModes="false"
-          style="width: 15%"
+          style="width: 14%"
         >
           <template #body="portfolioEntry">
             <Button
@@ -79,7 +79,7 @@
           field="proxiedCompaniesText"
           header="Proxy for"
           :showFilterMatchModes="false"
-          style="width: 15%"
+          style="width: 14%"
         >
           <template #body="portfolioEntry">
             <PortfolioProxiedCompaniesCell
@@ -98,7 +98,7 @@
           </template>
         </Column>
 
-        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 11.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="countryFilterOverlay">
               <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
@@ -116,7 +116,7 @@
           </template>
         </Column>
 
-        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 11.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="sectorFilterOverlay">
               <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
@@ -411,13 +411,13 @@ const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
 function widthOfFrameworkColumn(framework: string): string {
   switch (framework) {
     case 'sfdr':
-      return '10';
+      return '12';
     case 'eutaxonomy-financials':
-      return '15';
+      return '16';
     case 'eutaxonomy-non-financials':
-      return '17.5';
+      return '20';
     case 'pcaf':
-      return '10';
+      return '12';
     default:
       return '15';
   }

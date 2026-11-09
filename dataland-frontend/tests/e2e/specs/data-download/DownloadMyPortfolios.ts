@@ -26,8 +26,11 @@ interface FrameworkTestConfig {
   loadFixture: () => void;
   /** Uploads the loaded fixture for the given company and reporting period */
   upload: (token: string, companyId: string, year: string) => Promise<DataMetaInformation>;
-  /** Values of the fixture that have to be contained in text based exports. If undefined, contents are not checked. */
-  expectedValuesInExport?: string[];
+  /**
+   * Provides the values of the uploaded fixture that have to be contained in every text based export (CSV and JSON).
+   * If undefined, contents are not checked.
+   */
+  expectedValuesInExport?: () => string[];
   /** Shortened field names (aliases) that have to be contained in CSV exports if "Shorten field names" is on. */
   expectedAliasesInExport?: string[];
   /** Minimum file size in bytes per file extension. Falls back to defaultMinimumFileSizeInByte. */
@@ -66,27 +69,8 @@ const frameworkTestConfigs: FrameworkTestConfig[] = [
       uploadGenericFrameworkData(token, companyId, year, pcafFixtureForTest.t, (config) =>
         getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf)!.getPublicFrameworkApiClient(config)
       ),
-    // Values taken from the prepared PCAF fixture, covering the general, financial and environmental sections.
-    // They have to be contained in every text based export format (CSV and JSON), so that all formats carry the
-    // same values.
-    expectedValuesInExport: [
-      'Deviation',
-      '2024-11-30',
-      'Energy',
-      'Unlisted',
-      '80617.32',
-      '78668.38',
-      '97073.43',
-      '94792.69',
-      '19710.2',
-      '44119.34',
-      '97211.19',
-      '87633.18',
-      '6880.14',
-      '92065.28',
-      '49991.42',
-      '7031.23',
-    ],
+    // The values are derived from the uploaded fixture, so that the test does not depend on concrete mock data.
+    expectedValuesInExport: () => collectDataPointValues(pcafFixtureForTest.t),
     expectedAliasesInExport: [
       'FISCAL_YEAR_END',
       'MAIN_PCAF_SECTOR',
@@ -100,6 +84,31 @@ const frameworkTestConfigs: FrameworkTestConfig[] = [
     minimumFileSizeInByte: { csv: 1000, xlsx: 3000 },
   },
 ];
+
+/**
+ * Recursively collects the values of all data points (objects having a non-null string or number "value") in the
+ * given framework data.
+ *
+ * @param data the framework data, or a part of it
+ * @returns the collected values as strings
+ */
+function collectDataPointValues(data: unknown): string[] {
+  if (Array.isArray(data)) {
+    return data.flatMap(collectDataPointValues);
+  }
+  if (data === null || typeof data !== 'object') {
+    return [];
+  }
+  const values: string[] = [];
+  for (const [key, child] of Object.entries(data)) {
+    if (key === 'value' && (typeof child === 'string' || typeof child === 'number')) {
+      values.push(String(child));
+    } else {
+      values.push(...collectDataPointValues(child));
+    }
+  }
+  return values;
+}
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
@@ -212,12 +221,16 @@ function startDownload(fileType: FileTypeLabel, useAliases: boolean = true, keep
  * @param callback receives the path of the downloaded file
  */
 function withDownloadedFile(label: string, fileType: FileTypeLabel, callback: (filePath: string) => void): void {
-  cy.wait(longTimeoutInMs);
-  cy.task('findFileByPrefix', {
-    folder: Cypress.config('downloadsFolder'),
-    prefix: `data-export-${label}`,
-    extension: getFileExtension(fileType),
-  }).then((filePath) => {
+  cy.task(
+    'findFileByPrefix',
+    {
+      folder: Cypress.config('downloadsFolder'),
+      prefix: `data-export-${label}`,
+      extension: getFileExtension(fileType),
+      waitTimeoutInMs: longTimeoutInMs,
+    },
+    { timeout: longTimeoutInMs + mediumTimeoutInMs }
+  ).then((filePath) => {
     const filePathStr = filePath as string;
     expect(filePathStr).to.exist;
     cy.readFile(filePathStr, { timeout: mediumTimeoutInMs }).should('exist');
@@ -287,7 +300,7 @@ function testDownloadPortfolio(
     startDownload(fileType, useAliases, keepValuesOnly);
     withDownloadedFile(config.label, fileType, (filePath) => {
       if (checkContent && config.expectedValuesInExport) {
-        checkThatFileContainsExpectedValues(filePath, config.expectedValuesInExport);
+        checkThatFileContainsExpectedValues(filePath, config.expectedValuesInExport());
         if (fileType === 'Comma-separated Values (.csv)' && keepValuesOnly) {
           checkAliasesInFile(filePath, useAliases, config.expectedAliasesInExport);
         }
