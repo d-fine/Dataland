@@ -44,7 +44,7 @@
           field="companyName"
           header="Company Name"
           :showFilterMatchModes="false"
-          style="width: 15%"
+          style="width: 14%"
         >
           <template #body="portfolioEntry">
             <Button
@@ -79,7 +79,7 @@
           field="proxiedCompaniesText"
           header="Proxy for"
           :showFilterMatchModes="false"
-          style="width: 15%"
+          style="width: 14%"
         >
           <template #body="portfolioEntry">
             <PortfolioProxiedCompaniesCell
@@ -98,7 +98,7 @@
           </template>
         </Column>
 
-        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :sortable="true" field="country" header="Country" :showFilterMatchModes="false" style="width: 11.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="countryFilterOverlay">
               <div v-for="country of countryOptions" :key="country" class="filter-checkbox">
@@ -116,7 +116,7 @@
           </template>
         </Column>
 
-        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 12.5%">
+        <Column :sortable="true" field="sector" header="Sector" :showFilterMatchModes="false" style="width: 11.5%">
           <template #filter="{ filterModel, filterCallback }">
             <div data-test="sectorFilterOverlay">
               <div v-for="sector of sectorOptions" :key="sector" class="filter-checkbox">
@@ -237,7 +237,7 @@ class PortfolioEntryPrepared {
   readonly eutaxonomyFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancialsAvailableReportingPeriods: string | undefined;
   readonly eutaxonomyNonFinancials202673AvailableReportingPeriods: string | undefined;
-  readonly nuclearAndGasAvailableReportingPeriods: string | undefined;
+  readonly pcafAvailableReportingPeriods: string | undefined;
 
   constructor(portfolioEntry: EnrichedPortfolioEntry) {
     this.companyId = portfolioEntry.companyId;
@@ -265,8 +265,8 @@ class PortfolioEntryPrepared {
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials] || 'No data available';
     this.eutaxonomyNonFinancials202673AvailableReportingPeriods =
       portfolioEntry.availableReportingPeriods[DataTypeEnum.EutaxonomyNonFinancials202673] || 'No data available';
-    this.nuclearAndGasAvailableReportingPeriods =
-      portfolioEntry.availableReportingPeriods[DataTypeEnum.NuclearAndGas] || 'No data available';
+    this.pcafAvailableReportingPeriods =
+      portfolioEntry.availableReportingPeriods[DataTypeEnum.Pcaf] || 'No data available';
   }
 }
 
@@ -296,7 +296,7 @@ const filters = ref({
   eutaxonomyFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
   eutaxonomyNonFinancialsAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
   eutaxonomyNonFinancials202673AvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
-  nuclearAndGasAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
+  pcafAvailableReportingPeriods: { value: [] as string[], matchMode: FilterMatchMode.IN },
 });
 
 const queryClient = useQueryClient();
@@ -411,13 +411,13 @@ const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
 function widthOfFrameworkColumn(framework: string): string {
   switch (framework) {
     case 'sfdr':
-      return '10';
+      return '12';
     case 'eutaxonomy-financials':
-      return '15';
+      return '16';
     case 'eutaxonomy-non-financials':
-      return '17.5';
-    case 'nuclear-and-gas':
-      return '17.5';
+      return '20';
+    case 'pcaf':
+      return '12';
     default:
       return '15';
   }
@@ -450,8 +450,8 @@ function getAvailableReportingPeriods(
       return portfolioEntryPrepared.eutaxonomyNonFinancialsAvailableReportingPeriods;
     case DataTypeEnum.EutaxonomyNonFinancials202673:
       return portfolioEntryPrepared.eutaxonomyNonFinancials202673AvailableReportingPeriods;
-    case DataTypeEnum.NuclearAndGas:
-      return portfolioEntryPrepared.nuclearAndGasAvailableReportingPeriods;
+    case DataTypeEnum.Pcaf:
+      return portfolioEntryPrepared.pcafAvailableReportingPeriods;
     default:
       return undefined;
   }

@@ -22,6 +22,14 @@ describe('groupAllReportingPeriodsByFramework function', () => {
       expect(result.has('eutaxonomy-financials')).to.be.true;
       expect(result.get('eutaxonomy-financials')).to.include('2023');
       expect(result.get('eutaxonomy-financials')).to.not.include.members(['2019', '2020', '2021', '2022', '2024']);
+
+      expect(result.has('pcaf')).to.be.true;
+      expect(result.get('pcaf')).to.include('2023');
+      expect(result.get('pcaf')).to.not.include.members(['2019', '2020', '2021', '2022', '2024']);
+
+      expect(result.has('nuclear-and-gas')).to.be.true;
+      expect(result.get('nuclear-and-gas')).to.include('2023');
+      expect(result.get('nuclear-and-gas')).to.not.include.members(['2019', '2020', '2021', '2022', '2024']);
     });
   });
 });

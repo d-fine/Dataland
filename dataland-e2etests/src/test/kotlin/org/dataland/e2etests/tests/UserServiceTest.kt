@@ -38,12 +38,15 @@ class UserServiceTest {
     private fun uploadDummyCompaniesAndDatasets(): List<StoredCompany> {
         GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
             val storedCompanyInformation =
-                (1..3).map { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany }
+                (1..4).map { apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany }
 
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2023")
-            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2023")
-            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2022")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2024")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2022")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2023")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.pcaf, "2024")
+            apiAccessor
+                .uploadDummyFrameworkDataset(storedCompanyInformation[2].companyId, DataTypeEnum.eutaxonomyMinusNonMinusFinancials, "2022")
 
             return storedCompanyInformation
         }
@@ -95,39 +98,34 @@ class UserServiceTest {
                 )
 
             assertEquals(portfolioUpload.portfolioName, enrichedPortfolio.portfolioName)
-            assertEquals(3, enrichedPortfolio.propertyEntries.size) // 3 companies with 1 entry each
+            assertEquals(4, enrichedPortfolio.propertyEntries.size)
 
-            val relevantPortfolioFrameworks = listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg)
-            storedCompanies.map { it.companyId }.forEach {
-                assertEquals(
-                    null,
-                    getAvailableReportingPeriods(it, DataTypeEnum.pcaf, enrichedPortfolio),
-                )
-            }
+            val relevantPortfolioFrameworks =
+                listOf(DataTypeEnum.sfdr, DataTypeEnum.lksg, DataTypeEnum.pcaf, DataTypeEnum.eutaxonomyMinusNonMinusFinancials)
             relevantPortfolioFrameworks.forEach {
                 assertEquals(
                     null,
-                    getAvailableReportingPeriods(storedCompanies[2].companyId, it, enrichedPortfolio),
+                    getAvailableReportingPeriods(storedCompanies[3].companyId, it, enrichedPortfolio),
                 )
             }
-            assertEquals(
-                "2024, 2023",
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
-            )
-            assertEquals(
-                "2023",
-                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
-            )
-            assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
-            )
-            // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
-            // data for it.
-            assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
-            )
+            listOf(
+                Triple(0, DataTypeEnum.sfdr, "2024, 2023"),
+                // SFDR and PCAF share data points, so if SFDR was uploaded, PCAF should be available for that year too and vice versa
+                Triple(0, DataTypeEnum.pcaf, "2024, 2023"),
+                Triple(0, DataTypeEnum.lksg, null),
+                Triple(1, DataTypeEnum.sfdr, "2024, 2022"),
+                Triple(1, DataTypeEnum.pcaf, "2024, 2022"),
+                // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
+                // data for it.
+                Triple(1, DataTypeEnum.lksg, null),
+                Triple(2, DataTypeEnum.eutaxonomyMinusNonMinusFinancials, "2022"),
+                Triple(2, DataTypeEnum.pcaf, null),
+            ).forEach { (companyIndex, framework, expectedPeriods) ->
+                assertEquals(
+                    expectedPeriods,
+                    getAvailableReportingPeriods(storedCompanies[companyIndex].companyId, framework, enrichedPortfolio),
+                )
+            }
         }
     }
 
