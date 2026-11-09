@@ -243,7 +243,7 @@ class ProxySearchLlmClientTest {
 
     @Test
     fun `the research is aborted when the maximum duration is exceeded`() {
-        responseDelay = Duration.ofSeconds(2)
+        responseDelay = Duration.ofSeconds(10)
         responses.add(
             response(
                 "resp_slow",
@@ -253,6 +253,6 @@ class ProxySearchLlmClientTest {
         val shortLlmClient = createLlmClient(Duration.ofMillis(500))
         val start = System.nanoTime()
         assertThrows<RuntimeException> { shortLlmClient.research(COMPANY) }
-        assertTrue(Duration.ofNanos(System.nanoTime() - start) < Duration.ofSeconds(2))
+        assertTrue(Duration.ofNanos(System.nanoTime() - start) < Duration.ofSeconds(8))
     }
 }
