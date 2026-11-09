@@ -108,7 +108,6 @@ class UserServiceTest {
                     getAvailableReportingPeriods(storedCompanies[3].companyId, it, enrichedPortfolio),
                 )
             }
-            // Triple(companyIndex, framework, expectedPeriods)
             listOf(
                 Triple(0, DataTypeEnum.sfdr, "2024, 2023"),
                 // SFDR and PCAF share data points, so if SFDR was uploaded, PCAF should be available for that year too and vice versa
