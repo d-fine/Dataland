@@ -108,45 +108,25 @@ class UserServiceTest {
                     getAvailableReportingPeriods(storedCompanies[3].companyId, it, enrichedPortfolio),
                 )
             }
-            assertEquals(
-                "2024, 2023",
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
-            )
-            // SFDR and PCAF share data points, so if SFDR was uploaded, PCAF should be available for that year too and vice versa
-            assertEquals(
-                "2024, 2023",
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
-            )
-            assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[0].companyId, DataTypeEnum.lksg, enrichedPortfolio),
-            )
-            assertEquals(
-                "2024, 2022",
-                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.sfdr, enrichedPortfolio),
-            )
-            assertEquals(
-                "2024, 2022",
-                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
-            )
-            // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
-            // data for it.
-            assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[1].companyId, DataTypeEnum.lksg, enrichedPortfolio),
-            )
-            assertEquals(
-                "2022",
-                getAvailableReportingPeriods(
-                    storedCompanies[2].companyId,
-                    DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                    enrichedPortfolio,
-                ),
-            )
-            assertEquals(
-                null,
-                getAvailableReportingPeriods(storedCompanies[2].companyId, DataTypeEnum.pcaf, enrichedPortfolio),
-            )
+            // Triple(companyIndex, framework, expectedPeriods)
+            listOf(
+                Triple(0, DataTypeEnum.sfdr, "2024, 2023"),
+                // SFDR and PCAF share data points, so if SFDR was uploaded, PCAF should be available for that year too and vice versa
+                Triple(0, DataTypeEnum.pcaf, "2024, 2023"),
+                Triple(0, DataTypeEnum.lksg, null),
+                Triple(1, DataTypeEnum.sfdr, "2024, 2022"),
+                Triple(1, DataTypeEnum.pcaf, "2024, 2022"),
+                // LkSG is not a major framework, so it does not appear in the enrichedPortfolio although the company has
+                // data for it.
+                Triple(1, DataTypeEnum.lksg, null),
+                Triple(2, DataTypeEnum.eutaxonomyMinusNonMinusFinancials, "2022"),
+                Triple(2, DataTypeEnum.pcaf, null),
+            ).forEach { (companyIndex, framework, expectedPeriods) ->
+                assertEquals(
+                    expectedPeriods,
+                    getAvailableReportingPeriods(storedCompanies[companyIndex].companyId, framework, enrichedPortfolio),
+                )
+            }
         }
     }
 
