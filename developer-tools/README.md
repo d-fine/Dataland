@@ -13,30 +13,12 @@ cypress` in `dataland-frontend`) can be viewed from the desktop at `http://local
 and started once by `initialSetup.sh`, which also hooks it into `~/.bashrc` so it self-heals on every new shell,
 surviving sandbox restarts. Safe to re-run manually at any time.
 
-## Using Azure OpenAI (proxy finder)
-By default the proxy finder uses the mocked provider (`COMPANY_SERVICE_PROVIDER=mock`), so no LLM calls happen. To use the
-real nonprod Azure OpenAI deployment:
+## Using Azure OpenAI (proxy finder) and Mailjet
+By default the proxy finder uses the mocked provider (`COMPANY_SERVICE_PROVIDER=mock`) and Mailjet uses placeholder
+credentials. To use the real nonprod services, set these variables in your shell (or sandbox environment) before
+starting the stack: `COMPANY_SERVICE_PROVIDER=azure`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT` (must end with
+`/openai/v1`), `AZURE_OPENAI_DEPLOYMENT_NAME`, `MAILJET_API_ID` and `MAILJET_API_SECRET`.
 
-**Locally:** export `COMPANY_SERVICE_PROVIDER=azure` and `AZURE_OPENAI_API_KEY` in your shell before starting the stack.
-`environments/.env.dev` keeps values that are already set in the shell and contains the nonprod endpoint, deployment
-name and API version. The key must never be committed.
-
-**In the opencode sandbox:**
-1. Make sure the sandbox may reach `*.openai.azure.com` over HTTPS (allow it in the sbx network policy on the host).
-   If the Azure deployment restricts source IPs, ask for your egress IP to be allowlisted.
-2. On the host, run `AZURE_OPENAI_API_KEY=<key> ./developer-tools/injectAzureOpenAiKeyForSandbox.sh` (or run it without
-   the variable to be prompted). The key is copied into the running sandbox at `~/.azure-openai.env` (mode 600) and
-   sourced by `~/.bashrc`; it is not stored in the image or the repository.
-3. Open a new shell in the sandbox and start the stack.
-
-## Using Mailjet
-
-**Locally:** export `MAILJET_API_ID` and `MAILJET_API_SECRET` in your shell before starting the stack.
-`environments/.env.dev` keeps values that are already set in the shell and contains the nonprod endpoint. The keys must never be committed.
-
-**In the opencode sandbox:**
-1. Make sure the sandbox may reach `api.mailjet.com` over HTTPS (allow it in the sbx network policy on the host).
-2. On the host, run `MAILJET_API_ID=<id> MAILJET_API_SECRET=<secret> ./developer-tools/injectAzureOpenAiKeyForSandbox.sh` (or run it without
-   the variable to be prompted). The keys are copied into the running sandbox at `~/.mailjet.env` (mode 600) and
-   sourced by `~/.bashrc`; they are not stored in the image or the repository.
-3. Open a new shell in the sandbox and start the stack.
+`environments/.env.dev` uses the `${VAR:-default}` syntax, so values that are already set in the environment are kept.
+Secrets must never be committed. In the opencode sandbox, make sure it may reach `*.openai.azure.com` and
+`api.mailjet.com` over HTTPS (sbx network policy on the host).
