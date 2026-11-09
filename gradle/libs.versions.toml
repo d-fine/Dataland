@@ -2,7 +2,7 @@
 
 [plugins]
 
-com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "3.1.4" }
+com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-license-report", version = "3.1.5" }
 dev-detekt = { id = "dev.detekt", version.ref = "detekt" }
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 org-springframework-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -34,8 +34,8 @@ itext = "9.8.0"
 tika = "4.1.0"
 poi = "5.5.1"
 jodconverter = "5.1.1"
-spring-boot = "4.1.1"
-spring-framework = "7.0.9"
+spring-boot = "4.1.2"
+spring-framework = "7.0.10"
 springdoc = "3.1.1"
 detekt = "2.0.0-alpha.6"
 bouncy-castle = "1.70"
