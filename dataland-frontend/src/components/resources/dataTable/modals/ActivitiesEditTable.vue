@@ -50,8 +50,8 @@
     </Column>
     <Column field="naceCodes" header="NACE Code(s)" :frozen="!props.flat" alignFrozen="left" v-bind="naceColumnProps">
       <template #body="{ data }">
-        <ul :class="{ 'unstyled-ul-list': props.flat }" data-test="nace-codes">
-          <li v-for="code of data.naceCodes ?? []" :key="code">{{ code }}</li>
+        <ul v-if="data.naceCodes?.length" :class="{ 'unstyled-ul-list': props.flat }" data-test="nace-codes">
+          <li v-for="code of data.naceCodes" :key="code">{{ code }}</li>
         </ul>
       </template>
     </Column>
@@ -138,42 +138,33 @@
     </Column>
     <template #empty>
       <div class="empty-activities" data-test="empty-activities">
-        <span>No activities have been added yet.</span>
-        <PrimeButton
-          label="Add first activity"
-          icon="pi pi-plus"
-          size="small"
-          data-test="add-first-activity-button"
-          @click="openAddActivitySelect"
-        />
+        <span>No activities have been added yet. Use the dropdown below to add one.</span>
       </div>
     </template>
   </DataTable>
+  <div class="add-activity-row">
+    <Select
+      v-model="activityToAdd"
+      :options="activityOptions"
+      optionLabel="label"
+      optionValue="value"
+      filter
+      placeholder="+ Add activity"
+      class="add-activity-select"
+      :overlayStyle="{ width: '300px' }"
+      overlayClass="add-activity-overlay"
+      inputId="add-activity-select"
+      aria-label="Add activity"
+      data-test="add-activity-select"
+      @update:modelValue="onAddSelected"
+    />
+  </div>
   <InlineExtendedDataPointFormField
     ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
     :extendedDataPointObject="props.extendedDataPointObject"
     class="edit-footer"
-  >
-    <template #toolbar-start>
-      <Select
-        ref="addActivitySelectRef"
-        v-model="activityToAdd"
-        :options="activityOptions"
-        optionLabel="label"
-        optionValue="value"
-        filter
-        placeholder="+ Add activity"
-        class="add-activity-select"
-        :overlayStyle="{ width: '300px' }"
-        overlayClass="add-activity-overlay"
-        inputId="add-activity-select"
-        aria-label="Add activity"
-        data-test="add-activity-select"
-        @update:modelValue="onAddSelected"
-      />
-    </template>
-  </InlineExtendedDataPointFormField>
+  />
 </template>
 
 <script setup lang="ts">
@@ -200,7 +191,6 @@ import {
   type ActivityField,
   type ActivityFieldGroup,
   type ActivityRow,
-  addRow,
   amountWithoutCurrency,
   currencyWithoutAmount,
   deleteRow,
@@ -225,7 +215,6 @@ const rows = ref<ActivityRow[]>(structuredClone(toRaw((props.extendedDataPointOb
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
 const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 const activityToAdd = ref<string | undefined>(undefined);
-const addActivitySelectRef = ref<{ show: (isFocus?: boolean) => void }>();
 
 const vTooltip = Tooltip;
 const absoluteShareHint = 'Please provide both an amount and a currency, or leave both empty.';
@@ -311,17 +300,9 @@ function getNumber(row: ActivityRow, path: string): number | null {
  * @param name the selected activity api name
  */
 function onAddSelected(name: string | undefined): void {
-  if (name && !rows.value.some((row) => row.activityName === name)) addRow(rows.value, name);
+  if (name && !rows.value.some((row) => row.activityName === name))
+    rows.value.push({ activityName: name, share: null });
   activityToAdd.value = undefined;
-}
-
-/**
- * Opens the add activity dropdown, so that a first activity can be added to an empty list.
- * The opening is deferred until the current click has finished propagating. Otherwise the outside-click handler of
- * the dropdown, which is registered while the click is still bubbling, would close the overlay again immediately.
- */
-function openAddActivitySelect(): void {
-  setTimeout(() => addActivitySelectRef.value?.show(true), 0);
 }
 
 const percentValid = (row: ActivityRow): boolean =>
@@ -345,11 +326,7 @@ const isPageValid = computed<boolean>(
  * @returns the JSON-stringified body
  */
 function buildApiBodyWithExtendedInfo(): string {
-  return buildApiBody(
-    rows.value.map((row) => ({ ...row, naceCodes: [] })),
-    undefined,
-    extendedDialogRef.value?.getFormData()
-  );
+  return buildApiBody(rows.value, undefined, extendedDialogRef.value?.getFormData());
 }
 
 defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
@@ -407,6 +384,10 @@ ul.unstyled-ul-list {
     margin: 0;
     list-style: none;
   }
+}
+
+.add-activity-row {
+  padding: var(--spacing-xs, 0.5rem) 0;
 }
 
 .add-activity-select {

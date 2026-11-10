@@ -56,11 +56,11 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       cy.get('[data-test="activity-name"]').should('have.length', 1);
     });
 
-    it('offers a button to add the first activity when the list is empty', () => {
+    it('shows a hint and allows adding the first activity via the dropdown when the list is empty', () => {
       mountEditFormField(component, { ...dataPoint, value: [] }, { activityKpiType: 'revenue' });
       cy.get('[data-test="activity-name"]').should('not.exist');
       cy.get('[data-test="empty-activities"]').should('contain.text', 'No activities have been added yet.');
-      cy.get('[data-test="add-first-activity-button"]').click();
+      cy.get('[data-test="add-activity-select"]').click();
       cy.get('.add-activity-overlay .p-select-option').first().click();
       cy.get('[data-test="activity-name"]').should('have.length', 1);
       cy.get('[data-test="empty-activities"]').should('not.exist');

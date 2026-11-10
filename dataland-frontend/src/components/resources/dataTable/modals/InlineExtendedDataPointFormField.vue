@@ -1,7 +1,7 @@
 <template>
   <div class="inline-layout">
+    <Divider />
     <div class="inline-toolbar">
-      <slot name="toolbar-start" />
       <div class="field-group">
         <label for="quality-select" class="field-label">Quality</label>
         <Select
@@ -67,23 +67,26 @@
       <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
     </div>
 
-    <Textarea
-      :placeholder="'Insert comment'"
-      v-model="insertedComment"
-      data-test="comment-textarea"
-      id="comment-input"
-      aria-label="Comment"
-      rows="2"
-      :draggable="false"
-      fluid
-      style="margin-top: var(--spacing-xs)"
-    />
+    <div class="field-group comment-group">
+      <label for="comment-input" class="field-label">Comment</label>
+      <Textarea
+        :placeholder="'Insert comment'"
+        v-model="insertedComment"
+        data-test="comment-textarea"
+        id="comment-input"
+        aria-label="Comment"
+        rows="2"
+        :draggable="false"
+        fluid
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { inject } from 'vue';
 import Select from 'primevue/select';
+import Divider from 'primevue/divider';
 import PrimeButton from 'primevue/button';
 import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
@@ -119,6 +122,11 @@ defineExpose({
 </script>
 
 <style scoped>
+.comment-group {
+  margin-top: var(--spacing-xs);
+  align-items: stretch !important;
+}
+
 .inline-toolbar {
   display: flex;
   flex-wrap: wrap;
