@@ -75,6 +75,38 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       });
     });
 
+    it('keeps stored NACE codes and does not add NACE codes for newly added activities', () => {
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
+      cy.get('[data-test="nace-codes"]').should('have.length', 1).and('contain.text', 'A2');
+      cy.get('[data-test="add-activity-select"]').click();
+      cy.get('.add-activity-overlay .p-select-option').first().click();
+      cy.get('[data-test="activity-name"]').should('have.length', 2);
+      cy.get('[data-test="nace-codes"]').should('have.length', 1);
+      cy.get('@component').then((instance: { buildApiBodyWithExtendedInfo: () => string }) => {
+        const [stored, added] = JSON.parse(instance.buildApiBodyWithExtendedInfo()).value;
+        expect(stored.naceCodes).to.deep.equal(['A2']);
+        expect(added).not.to.have.property('naceCodes');
+      });
+    });
+
+    it('shows an empty NACE cell when no NACE codes are stored', () => {
+      mountEditFormField(
+        component,
+        { ...dataPoint, value: [{ ...row, naceCodes: [] }] },
+        { activityKpiType: 'revenue' }
+      );
+      cy.get('[data-test="activity-name"]').should('have.length', 1);
+      cy.get('[data-test="nace-codes"]').should('not.exist');
+    });
+
+    it('labels the quality, document, page and comment fields', () => {
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
+      cy.get('label[for="quality-select"]').should('have.text', 'Quality');
+      cy.get('label[for="document-select"]').should('have.text', 'Document');
+      cy.get('label[for="page-number-input"]').should('have.text', 'Page(s)');
+      cy.get('label[for="comment-input"]').should('have.text', 'Comment');
+    });
+
     it('writes edited amount, currency and share into the api body', () => {
       mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('input#amount-0').clear().type('1500').blur();
