@@ -3,6 +3,7 @@
     <div class="inline-toolbar">
       <slot name="toolbar-start" />
       <div class="field-group">
+        <label for="quality-select" class="field-label">Quality</label>
         <Select
           :placeholder="'Select Quality'"
           v-model="chosenQuality"
@@ -17,26 +18,33 @@
       </div>
       <div class="field-group">
         <div class="data-source-wrapper">
-          <Select
-            :placeholder="'Select Document'"
-            v-model="selectedDocument"
-            :options="availableDocuments"
-            optionLabel="label"
-            optionValue="value"
-            data-test="document-select"
-            style="width: 14em"
-            inputId="document-select"
-            aria-label="Data Source"
-            fluid
-          />
-          <InputText
-            v-model="insertedPage"
-            placeholder="Page(s)"
-            data-test="page-number-input"
-            style="width: 6em"
-            :disabled="!selectedDocument"
-            :invalid="!isPageValid"
-          />
+          <div class="field-group">
+            <label for="document-select" class="field-label">Document</label>
+            <Select
+              :placeholder="'Select Document'"
+              v-model="selectedDocument"
+              :options="availableDocuments"
+              optionLabel="label"
+              optionValue="value"
+              data-test="document-select"
+              style="width: 14em"
+              inputId="document-select"
+              aria-label="Data Source"
+              fluid
+            />
+          </div>
+          <div class="field-group">
+            <label for="page-number-input" class="field-label">Page(s)</label>
+            <InputText
+              v-model="insertedPage"
+              id="page-number-input"
+              placeholder="Page(s)"
+              data-test="page-number-input"
+              style="width: 6em"
+              :disabled="!selectedDocument"
+              :invalid="!isPageValid"
+            />
+          </div>
           <PrimeButton
             label="Go to documents page"
             variant="link"
@@ -114,18 +122,25 @@ defineExpose({
 .inline-toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   gap: var(--spacing-sm);
 }
 
 .inline-layout .field-group {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xxs);
+}
+
+.field-label {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 600;
 }
 
 .data-source-wrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: var(--spacing-sm);
 }
 

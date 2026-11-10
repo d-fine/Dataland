@@ -345,7 +345,11 @@ const isPageValid = computed<boolean>(
  * @returns the JSON-stringified body
  */
 function buildApiBodyWithExtendedInfo(): string {
-  return buildApiBody(rows.value, undefined, extendedDialogRef.value?.getFormData());
+  return buildApiBody(
+    rows.value.map((row) => ({ ...row, naceCodes: [] })),
+    undefined,
+    extendedDialogRef.value?.getFormData()
+  );
 }
 
 defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
