@@ -453,12 +453,18 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
 });
 
 /**
- * Check if the QA report has invalid corrected data.
+ * Check if the QA report has invalid corrected data, i.e. it is missing or has no content at all.
+ * A missing quality is allowed as long as another field (value, comment, dataSource) is set.
  *
  * @returns True if corrected data is invalid.
  */
 function isQaReportCorrectedDataInvalid(): boolean {
-  return !currentQaReport.value || !currentQaCorrectedData.value;
+  const correctedData = currentQaCorrectedData.value;
+  if (!currentQaReport.value || !correctedData) return true;
+  const hasContent = [correctedData.value, correctedData.quality, correctedData.comment, correctedData.dataSource].some(
+    (field) => field !== null && field !== undefined && field !== ''
+  );
+  return !hasContent;
 }
 
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {

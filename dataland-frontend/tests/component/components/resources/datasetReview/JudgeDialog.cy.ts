@@ -610,6 +610,7 @@ describe('JudgeDialog component tests', () => {
 
     it('disables the accept-report button when the current QA report has an empty body', () => {
       mountJudgeDialog({ datasetJudgement: judgementWithEmptyBodyCorrectedData });
+      cy.wait('@getOriginalDataPoint');
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
