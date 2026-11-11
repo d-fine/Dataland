@@ -69,6 +69,8 @@ class CoveredCalculationRulesTest {
         mapOf(
             "Division" to 2,
             "DivisionByPercent" to 2,
+            "DivisionPerMillion" to 2,
+            "ShareOfSumInPercent" to 2,
             "Subtraction" to 2,
             "ComplementToPercent" to 1,
             "MultiplicationByPercent" to 2,
