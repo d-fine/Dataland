@@ -199,6 +199,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "division per million", TWO_INPUTS) {
+                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for division per million." }
                 divideScaled(it[0], it[1], BigDecimal("1000000"), "division per million")
             }
     },
@@ -279,6 +280,7 @@ enum class DataPointConversion(
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
             convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "share of sum in percent", TWO_INPUTS) {
+                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for share of sum in percent." }
                 shareOfSumInPercent(it[0], it[1], "share of sum in percent")
             }
     },
