@@ -34,24 +34,7 @@ export function formatAssuranceForDataTable(
 
   return wrapDisplayValueWithDatapointInformation(innerDisplayValue, fieldLabel, {
     dataSource: assurance.dataSource,
-    comment: assurance.provider ? `Assurance provided by ${assurance.provider}` : undefined,
+    comment: assurance.comment,
+    provider: assurance.provider,
   });
-}
-
-/**
- * Extracts the assurance provider from the provided assurance datapoint
- * @param assurance the assurance object to display
- * @returns the value formatted for display
- */
-export function formatAssuranceProviderForDataTable(
-  assurance: AssuranceDataPoint | undefined | null
-): AvailableMLDTDisplayObjectTypes {
-  if (!assurance?.provider) {
-    return MLDTDisplayObjectForEmptyString;
-  }
-
-  return {
-    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-    displayValue: assurance.provider,
-  };
 }

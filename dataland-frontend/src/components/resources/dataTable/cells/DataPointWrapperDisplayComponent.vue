@@ -72,6 +72,7 @@ export default defineComponent({
         quality: content.quality,
         dataSource: content.dataSource,
         comment: content.comment,
+        provider: content.provider,
       };
     },
     isAnyDataPointPropertyAvailableThatIsWorthShowingInModal() {
@@ -80,6 +81,7 @@ export default defineComponent({
 
       return (
         !isDatapointCommentConsideredMissing(this.dataPointProperties) ||
+        !!this.dataPointProperties.provider ||
         quality != undefined ||
         dataSource != undefined
       );

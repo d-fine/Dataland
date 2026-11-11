@@ -16,10 +16,7 @@ import {
   type EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
-import {
-  formatAssuranceProviderForDataTable,
-  formatAssuranceForDataTable,
-} from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
+import { formatAssuranceForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
@@ -175,16 +172,6 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
               formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
             uploadComponentName: 'AssuranceFormField',
             dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
-          },
-          {
-            type: 'cell',
-            label: 'Assurance Provider',
-            explanation: 'Provider of the Assurance',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatAssuranceProviderForDataTable(dataset.general?.general?.assurance),
-            uploadComponentName: 'Non-editable',
-            dataPointTypeId: 'assurance',
           },
         ],
       },

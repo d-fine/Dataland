@@ -87,6 +87,7 @@ interface DatapointProperties {
   quality?: string | null;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
   comment?: string | null;
+  provider?: string | null;
 }
 
 /**
@@ -185,6 +186,7 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
   if (
     dataPointProperties?.quality != undefined ||
     !isDatapointCommentConsideredMissing(dataPointProperties) ||
+    !!dataPointProperties?.provider?.trim() ||
     (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0)
   )
     return true;

@@ -38,6 +38,10 @@
             </th>
             <td>{{ dataSourcePageRange }}</td>
           </tr>
+          <tr v-if="dialogData.dataPointDisplay.provider">
+            <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Provider</span></th>
+            <td>{{ dialogData.dataPointDisplay.provider }}</td>
+          </tr>
           <tr v-if="dialogData.dataPointDisplay.comment">
             <th scope="row" class="headers-bg width-auto"><span class="table-left-label">Comment</span></th>
             <td>
