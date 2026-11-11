@@ -458,7 +458,8 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
  * @returns True if corrected data is invalid.
  */
 function isQaReportCorrectedDataInvalid(): boolean {
-  return !currentQaReport.value || !currentQaCorrectedData.value || currentQaCorrectedData.value.quality == null;
+  if (!currentQaReport.value || !currentQaCorrectedData.value) return true;
+  return !isAssuranceDataPoint.value && currentQaCorrectedData.value.quality == null;
 }
 
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
@@ -778,6 +779,26 @@ function acceptQaReportDatapoint(): void {
 }
 
 /**
+ * Removes the quality key from a custom JSON string for assurance data points, which have no quality.
+ *
+ * @param json - The custom data point JSON string.
+ * @returns The JSON string without quality for assurance data points, otherwise unchanged.
+ */
+function stripQualityForAssurance(json: string): string {
+  if (!isAssuranceDataPoint.value) return json;
+  try {
+    const parsed = JSON.parse(json);
+    if (parsed && typeof parsed === 'object' && 'quality' in parsed) {
+      delete parsed.quality;
+      return JSON.stringify(parsed, null, 2);
+    }
+  } catch {
+    // invalid JSON is handled downstream
+  }
+  return json;
+}
+
+/**
  * Accepts the custom data point (either from JSON or from the structured form)
  * as the final judgement for the current data point type.
  *
@@ -791,7 +812,11 @@ function acceptCustomDatapoint(): void {
         doc.value === customFormData.value.document || doc.dataSource.fileReference === customFormData.value.document
     ) ?? null;
   const customDataPointJson = unwrapDataPointJson(
-    editModeEnabled.value ? customJson.value : parseFormDataToDataPointJson(customFormData.value, documentOption),
+    stripQualityForAssurance(
+      editModeEnabled.value
+        ? customJson.value
+        : parseFormDataToDataPointJson(customFormData.value, documentOption, isAssuranceDataPoint.value)
+    ),
     originalDataPoint.value?.dataPoint ?? DEFAULT_CUSTOM_JSON
   );
   patchCurrentDatapoint(

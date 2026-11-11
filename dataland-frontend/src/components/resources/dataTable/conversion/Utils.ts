@@ -67,6 +67,7 @@ export type ExtendedDataPointType = {
   value?: number | string | null | object[];
   currency?: string;
   quality?: string;
+  provider?: string;
   comment?: string;
   dataSource?: {
     fileName?: string;
