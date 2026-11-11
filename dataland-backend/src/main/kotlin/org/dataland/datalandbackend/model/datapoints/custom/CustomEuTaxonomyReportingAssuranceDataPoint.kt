@@ -16,4 +16,5 @@ data class CustomEuTaxonomyReportingAssuranceDataPoint(
     @field:Valid()
     override val dataSource: ExtendedDocumentReference? = null,
     val provider: String? = null,
+    val comment: String? = null,
 ) : BaseDataPoint<AssuranceOptions>

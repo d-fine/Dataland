@@ -13872,6 +13872,10 @@
           "provider": {
             "type": "string",
             "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
           }
         },
         "description": "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
