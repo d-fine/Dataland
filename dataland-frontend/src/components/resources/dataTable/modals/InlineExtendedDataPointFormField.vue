@@ -45,6 +45,22 @@
               :invalid="!isPageValid"
             />
           </div>
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group" data-test="document-meta">
+            <span class="field-label">Name</span>
+            <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.documentName }}</span>
+          </div>
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+            <span class="field-label">Category</span>
+            <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</span>
+          </div>
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+            <span class="field-label">Publication Date</span>
+            <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</span>
+          </div>
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+            <span class="field-label">Reporting Period</span>
+            <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</span>
+          </div>
           <PrimeButton
             label="Go to documents page"
             variant="link"
@@ -60,13 +76,6 @@
     <small v-if="!isPageValid" data-test="page-number-error" class="page-number-error">
       {{ PAGE_NUMBER_VALIDATION_ERROR_MESSAGE }}
     </small>
-    <div v-if="selectedDocumentMetaInformation" class="dataland-info-text small" style="margin: var(--spacing-xs)">
-      <div><strong>Name:</strong> {{ selectedDocumentMetaInformation.documentName }}</div>
-      <div><strong>Category:</strong> {{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</div>
-      <div><strong>Publication Date:</strong> {{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</div>
-      <div><strong>Reporting Period:</strong> {{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</div>
-    </div>
-
     <div class="field-group comment-group">
       <label for="comment-input" class="field-label">Comment</label>
       <Textarea
@@ -122,11 +131,6 @@ defineExpose({
 </script>
 
 <style scoped>
-.comment-group {
-  margin-top: var(--spacing-xs);
-  align-items: stretch !important;
-}
-
 .inline-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -141,6 +145,11 @@ defineExpose({
   gap: var(--spacing-xxs);
 }
 
+.inline-layout .comment-group {
+  margin-top: var(--spacing-xs);
+  align-items: stretch;
+}
+
 .field-label {
   font-size: var(--font-size-sm, 0.875rem);
   font-weight: 600;
@@ -148,6 +157,7 @@ defineExpose({
 
 .data-source-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: var(--spacing-sm);
 }
