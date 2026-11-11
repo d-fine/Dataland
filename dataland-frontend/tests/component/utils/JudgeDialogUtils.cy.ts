@@ -285,6 +285,29 @@ describe('transformDataPointDetailToFormData', () => {
     expect(parsedWithoutProvider).to.deep.equal({ value: 'LimitedAssurance' });
   });
 
+  it('never includes a quality for assurance but keeps provider and comment', () => {
+    const form: CustomFormData = {
+      value: 'LimitedAssurance',
+      quality: 'Audited',
+      document: '',
+      pages: '',
+      comment: 'A real comment',
+      currency: '',
+      provider: 'ACME Auditors',
+    };
+
+    const parsedAssurance = JSON.parse(parseFormDataToDataPointJson(form, null, true)) as ParsedSingleDataPoint;
+    expect(parsedAssurance).to.deep.equal({
+      value: 'LimitedAssurance',
+      comment: 'A real comment',
+      provider: 'ACME Auditors',
+    });
+    expect(parsedAssurance).not.to.have.property('quality');
+
+    const parsedOther = JSON.parse(parseFormDataToDataPointJson(form, null, false)) as ParsedSingleDataPoint;
+    expect(parsedOther.quality).to.equal('Audited');
+  });
+
   it('maps the provider of an assurance data point detail', () => {
     const form = transformDataPointDetailToFormData({ value: 'LimitedAssurance', provider: 'ACME Auditors' });
     expect(form.provider).to.equal('ACME Auditors');

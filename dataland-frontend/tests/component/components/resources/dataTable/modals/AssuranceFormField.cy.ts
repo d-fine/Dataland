@@ -37,6 +37,26 @@ describe('Component test for AssuranceFormField', () => {
     });
   });
 
+  it('handles legacy data without comment and sends exactly value, provider and no quality', () => {
+    mountComponent({ value: 'Limited Assurance', provider: 'Deloitte' });
+    cy.get('[data-test="assurance-comment-input"]').should('have.value', '');
+    cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
+      const body = JSON.parse(component.buildApiBodyWithExtendedInfo()) as Record<string, unknown>;
+      expect(body).to.deep.equal({ value: 'LimitedAssurance', provider: 'Deloitte' });
+      expect(body).to.not.have.property('quality');
+    });
+  });
+
+  it('keeps provider and comment when only the level is changed', () => {
+    mountComponent({ value: 'Limited Assurance', provider: 'Deloitte', comment: 'Section 4' });
+    cy.get('[data-test="assurance-provider-input"]').should('have.value', 'Deloitte');
+    cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
+      const body = JSON.parse(component.buildApiBodyWithExtendedInfo()) as Record<string, unknown>;
+      expect(body.provider).to.equal('Deloitte');
+      expect(body.comment).to.equal('Section 4');
+    });
+  });
+
   it('is invalid without an assurance level', () => {
     mountComponent({ value: undefined });
     cy.get('@component').its('isPageValid').should('equal', false);
