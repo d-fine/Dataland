@@ -79,6 +79,7 @@ export const DATA_POINT_PATH_MAP = {
   extendedDecimalNumberOfEmployees: 'general.general.numberOfEmployees',
   extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports: 'general.general.areAllGroupEntitiesCovered',
   extendedEnumFiscalYearDeviation: 'general.general.fiscalYearDeviation',
+  customEnumEuTaxonomyReportingAssurance: 'general.general.assurance',
 
   extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount:
     'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalGrossCarryingAmount',
