@@ -107,6 +107,17 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       cy.get('label[for="comment-input"]').should('have.text', 'Comment');
     });
 
+    it('shows the document metadata with placeholders for missing values after selecting a document', () => {
+      const documents = [{ documentId: 'doc-1', documentName: 'Annual Report', documentCategory: null }];
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' }, documents);
+      cy.get('[data-test="document-meta"]').should('not.exist');
+      cy.get('[data-test="document-select"]').click();
+      cy.get('.p-select-option').contains('Annual Report').click({ force: true });
+      cy.get('[data-test="document-meta"]').should('have.length', 4);
+      cy.get('[data-test="document-meta"]').eq(0).should('contain.text', 'Annual Report');
+      [1, 2, 3].forEach((index) => cy.get('[data-test="document-meta"]').eq(index).should('contain.text', '–'));
+    });
+
     it('writes edited amount, currency and share into the api body', () => {
       mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
       cy.get('input#amount-0').clear().type('1500').blur();

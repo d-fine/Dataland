@@ -49,15 +49,15 @@
             <span class="field-label">Name</span>
             <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.documentName }}</span>
           </div>
-          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group" data-test="document-meta">
             <span class="field-label">Category</span>
             <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.documentCategory ?? '–' }}</span>
           </div>
-          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group" data-test="document-meta">
             <span class="field-label">Publication Date</span>
             <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.publicationDate ?? '–' }}</span>
           </div>
-          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group">
+          <div v-if="selectedDocumentMetaInformation" class="document-meta field-group" data-test="document-meta">
             <span class="field-label">Reporting Period</span>
             <span class="dataland-info-text small">{{ selectedDocumentMetaInformation.reportingPeriod ?? '–' }}</span>
           </div>

@@ -7,14 +7,16 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
  * @param component the edit form field to mount
  * @param extendedDataPointObject the initial data point
  * @param additionalProvide additional values to provide to the component
+ * @param documents the documents returned by the documents request of the company
  */
 export function mountEditFormField(
   component: Component,
   extendedDataPointObject: object,
-  additionalProvide: Record<string, unknown> = {}
+  additionalProvide: Record<string, unknown> = {},
+  documents: object[] = []
 ): void {
   //@ts-ignore
-  cy.intercept('GET', '**/documents/**', { statusCode: 200, body: [] });
+  cy.intercept('GET', '**/documents/**', { statusCode: 200, body: documents });
   //@ts-ignore
   cy.mountWithPlugins(component, {
     keycloak: minimalKeycloakMock({}),
