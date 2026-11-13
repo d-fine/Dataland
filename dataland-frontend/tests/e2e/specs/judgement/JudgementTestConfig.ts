@@ -1,7 +1,6 @@
 import { QaReportDataPointVerdict, AcceptedDataPointSource } from '@clients/qaservice';
 import { admin_userId, reviewer_userId } from '@e2e/utils/Cypress.ts';
 import { DATA_POINT_TYPES, type QaScenarioConfig } from '@e2e/utils/CheckJudgementJson.ts';
-import { type FixtureData } from '@sharedUtils/Fixtures';
 import { QualityOptions, type EutaxonomyFinancialsData } from '@clients/backend';
 import { getFieldValueFromFrameworkDataset } from '@/components/resources/dataTable/conversion/Utils';
 
@@ -80,6 +79,7 @@ export const DATA_POINT_PATH_MAP = {
   extendedDecimalNumberOfEmployees: 'general.general.numberOfEmployees',
   extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports: 'general.general.areAllGroupEntitiesCovered',
   extendedEnumFiscalYearDeviation: 'general.general.fiscalYearDeviation',
+  customEnumEuTaxonomyReportingAssurance: 'general.general.assurance',
 
   extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalGrossCarryingAmount:
     'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalGrossCarryingAmount',
@@ -99,32 +99,6 @@ export const DATA_POINT_PATH_MAP = {
   extendedCurrencyCreditInstitutionAssetsForCalculationOfGreenAssetRatioTotalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling:
     'creditInstitution.assetsForCalculationOfGreenAssetRatio.totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling',
 } as const;
-
-/**
- * Returns a deep-cloned fixture with the EU taxonomy "assurance" data point removed.
- *
- * This helper is used for E2E stability: the assurance field is known to have a
- * non-standard structure that can interfere with the judge modal flow.
- */
-export function stripAssuranceFromFixture(
-  fixture: FixtureData<EutaxonomyFinancialsData>
-): FixtureData<EutaxonomyFinancialsData> {
-  const clone = structuredClone(fixture);
-
-  try {
-    const t = clone.t;
-
-    if (t?.general?.general && Object.hasOwn(t.general.general, 'assurance')) {
-      delete (t.general.general as Record<string, unknown>)['assurance'];
-    }
-
-    if (t?.general && Object.hasOwn(t.general, 'assurance')) {
-      delete (t.general as Record<string, unknown>)['assurance'];
-    }
-  } catch {}
-
-  return clone;
-}
 
 /**
  * Extracts the scalar value for a given data point type from an EU taxonomy financials dataset.

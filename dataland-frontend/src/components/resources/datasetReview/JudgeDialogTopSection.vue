@@ -150,8 +150,11 @@ const tableRows = computed(() => {
     rows.push({ label: 'Provider', value: props.data?.provider });
   }
 
+  if (!props.isAssuranceDataPoint) {
+    rows.push({ label: 'Quality', value: props.data?.quality });
+  }
+
   rows.push(
-    { label: 'Quality', value: props.data?.quality },
     { label: 'Document', value: props.data?.dataSource?.fileName ?? props.data?.dataSource?.fileReference },
     { label: 'Page(s)', value: props.data?.dataSource?.page },
     { label: 'Comment', value: props.data?.comment }

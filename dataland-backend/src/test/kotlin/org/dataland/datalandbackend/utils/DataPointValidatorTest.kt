@@ -57,6 +57,33 @@ class DataPointValidatorTest {
                     ?: throw IllegalArgumentException("Could not load the resource file"),
             )
 
+    private val assuranceClasses =
+        listOf("org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint")
+
+    @Test
+    fun `check that assurance data points with provider and comment are accepted`() {
+        val json = """{"value":"LimitedAssurance","provider":"Some Provider","comment":"Some comment"}"""
+        assuranceClasses.forEach {
+            assertDoesNotThrow { dataPointValidator.validateConsistency(json, it, correlationId) }
+        }
+    }
+
+    @Test
+    fun `check that assurance data points without comment are still accepted`() {
+        val json = """{"value":"None","provider":"Some Provider"}"""
+        assuranceClasses.forEach {
+            assertDoesNotThrow { dataPointValidator.validateConsistency(json, it, correlationId) }
+        }
+    }
+
+    @Test
+    fun `check that assurance data points with a quality are rejected`() {
+        val json = """{"value":"LimitedAssurance","provider":"Some Provider","comment":"c","quality":"Audited"}"""
+        assuranceClasses.forEach {
+            assertThrows<InvalidInputApiException> { dataPointValidator.validateConsistency(json, it, correlationId) }
+        }
+    }
+
     @Test
     fun `check that a valid input passes the validation`() {
         assertDoesNotThrow { dataPointValidator.validateConsistency(getJsonString(currencyDataPoint), validationClass, correlationId) }

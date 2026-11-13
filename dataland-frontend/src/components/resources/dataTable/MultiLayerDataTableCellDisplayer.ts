@@ -46,6 +46,7 @@ export type MLDTDisplayComponentTypes = {
     quality?: string;
     dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
     comment?: string;
+    provider?: string;
   };
 };
 

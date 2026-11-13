@@ -12,7 +12,8 @@
       "fileReference" : "String",
       "publicationDate" : "LocalDate"
     },
-    "provider" : "String"
+    "provider" : "String",
+    "comment" : "String"
   },
   "example" : {
     "value" : "LimitedAssurance",
@@ -23,6 +24,7 @@
       "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47",
       "publicationDate" : null
     },
-    "provider" : "Deloitte"
+    "provider" : "Deloitte",
+    "comment" : "Assurance provided by the annual report, section 4"
   }
 }

@@ -8060,6 +8060,10 @@
           "provider": {
             "type": "string",
             "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
           }
         },
         "description": "Contains suggested data corrections for the rejected data point.",

@@ -84,6 +84,7 @@ function buildScalarDataPointObject(): ExtendedDataPointType {
   return {
     value: displayText && !isQuality ? displayText : undefined,
     quality: isQuality ? displayText : unref(dataPoint?.displayValue?.quality ?? ''),
+    provider: unref(dataPoint?.displayValue?.provider ?? ''),
     comment: unref(dataPoint?.displayValue?.comment ?? ''),
     dataSource: {
       fileReference: unref(dataPoint?.displayValue?.dataSource?.fileReference ?? ''),

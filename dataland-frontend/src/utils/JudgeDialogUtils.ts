@@ -65,10 +65,12 @@ export function hasValueContent(value: unknown): boolean {
  */
 export function parseFormDataToDataPointJson(
   formData: CustomFormData,
-  selectedDocument: DocumentOption | null
+  selectedDocument: DocumentOption | null,
+  isAssurance = false
 ): string {
-  const { value, quality, comment, pages, currency, provider } = formData;
+  const { value, quality: formQuality, comment, pages, currency, provider } = formData;
 
+  const quality = isAssurance ? '' : formQuality;
   const documentDataSource = selectedDocument?.dataSource ?? null;
   let dataSource: ParsedSingleDataPoint['dataSource'] | null;
   if (documentDataSource) {
