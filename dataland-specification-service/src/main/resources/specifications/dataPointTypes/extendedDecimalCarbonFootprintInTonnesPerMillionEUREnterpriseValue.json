@@ -5,5 +5,29 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,
-  "calculationRules" : [ ]
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalScope1And2And3GhgEmissionsInTonnes", "extendedDecimalEnterpriseValueInEUR" ],
+    "calculationMethod" : "DivisionPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1GhgEmissionsInTonnes", "extendedDecimalScope2GhgEmissionsInTonnes", "extendedDecimalScope3GhgEmissionsInTonnes", "extendedDecimalEnterpriseValueInEUR" ],
+    "calculationMethod" : "SumDivisionPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1And2And3GhgEmissionsInTonnes", "extendedDecimalMarketCapitalizationInEUR", "extendedDecimalBookValueOfDebtInEUR", "extendedDecimalMinoritiesInterestInEUR" ],
+    "calculationMethod" : "DivisionBySumPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1GhgEmissionsInTonnes", "extendedDecimalScope2GhgEmissionsInTonnes", "extendedDecimalScope3GhgEmissionsInTonnes", "extendedDecimalMarketCapitalizationInEUR", "extendedDecimalBookValueOfDebtInEUR", "extendedDecimalMinoritiesInterestInEUR" ],
+    "calculationMethod" : "SumDivisionBySumPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1And2And3GhgEmissionsInTonnes", "extendedDecimalTotalEquityAndDebtInEUR" ],
+    "calculationMethod" : "DivisionPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1GhgEmissionsInTonnes", "extendedDecimalScope2GhgEmissionsInTonnes", "extendedDecimalScope3GhgEmissionsInTonnes", "extendedDecimalTotalEquityAndDebtInEUR" ],
+    "calculationMethod" : "SumDivisionPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1And2And3GhgEmissionsInTonnes", "extendedDecimalTotalEquityInEUR", "extendedDecimalBookValueOfDebtInEUR" ],
+    "calculationMethod" : "DivisionBySumPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1GhgEmissionsInTonnes", "extendedDecimalScope2GhgEmissionsInTonnes", "extendedDecimalScope3GhgEmissionsInTonnes", "extendedDecimalTotalEquityInEUR", "extendedDecimalBookValueOfDebtInEUR" ],
+    "calculationMethod" : "SumDivisionBySumPerMillion"
+  } ]
 }

@@ -16,6 +16,8 @@ import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as E
 
 private val ONE_HUNDRED = BigDecimal("100")
 private const val REQUIRED_INPUT_COUNT = 3
+private const val SUM_NUMERATOR_INPUT_COUNT = 3
+private const val TWO_INPUTS = 2
 
 /**
  * Ensures that [inputs] preserve a fixed order and returns them as a [List].
@@ -184,6 +186,105 @@ enum class DataPointConversion(
             )
     },
 
+    DIVISION_PER_MILLION("DivisionPerMillion") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "${references[0]} / ${references[1]} * 10^6"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "division per million", TWO_INPUTS) {
+                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for division per million." }
+                divideScaled(it[0], it[1], BigDecimal("1000000"), "division per million")
+            }
+    },
+
+    SUM_DIVISION_PER_MILLION("SumDivisionPerMillion") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "(${references.dropLast(1).joinToString(" + ")}) / ${references.last()} * 10^6"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "sum division per million") {
+                divideSumsPerMillion(it.dropLast(1), listOf(it.last()), "sum division per million")
+            }
+    },
+
+    DIVISION_BY_SUM_PER_MILLION("DivisionBySumPerMillion") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "${references.first()} / (${references.drop(1).joinToString(" + ")}) * 10^6"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "division by sum per million") {
+                divideSumsPerMillion(listOf(it.first()), it.drop(1), "division by sum per million")
+            }
+    },
+
+    /**
+     * Fixed split: the first [SUM_NUMERATOR_INPUT_COUNT] inputs form the numerator sum, all remaining inputs
+     * (at least two) form the denominator sum.
+     */
+    SUM_DIVISION_BY_SUM_PER_MILLION("SumDivisionBySumPerMillion") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "(${references.take(SUM_NUMERATOR_INPUT_COUNT).joinToString(" + ")}) / " +
+                "(${references.drop(SUM_NUMERATOR_INPUT_COUNT).joinToString(" + ")}) * 10^6"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertNumeric(
+                inputs, targetType, specs, sourceFrameworksByType, "sum division by sum per million",
+                SUM_NUMERATOR_INPUT_COUNT + 2,
+            ) {
+                divideSumsPerMillion(
+                    it.take(SUM_NUMERATOR_INPUT_COUNT),
+                    it.drop(SUM_NUMERATOR_INPUT_COUNT),
+                    "sum division by sum per million",
+                )
+            }
+    },
+
+    SHARE_OF_SUM_IN_PERCENT("ShareOfSumInPercent") {
+        override fun getCalculationFormula(inputs: Collection<UploadedDataPoint>): String {
+            val references = getNumberedSourceReferences(inputs)
+            return "${references[0]} / (${references[0]} + ${references[1]}) * 100"
+        }
+
+        override fun convert(
+            inputs: Collection<UploadedDataPoint>,
+            targetType: DataPointType,
+            specs: Map<DataPointType, DataPointTypeSpecification>,
+            sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        ): UploadedDataPoint =
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "share of sum in percent", TWO_INPUTS) {
+                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for share of sum in percent." }
+                shareOfSumInPercent(it[0], it[1], "share of sum in percent")
+            }
+    },
+
     IDENTITY("Identity") {
         override fun createComment(
             inputs: Collection<UploadedDataPoint>,
@@ -294,6 +395,40 @@ enum class DataPointConversion(
         fun byId(id: String): DataPointConversion =
             entries.firstOrNull { it.id == id }
                 ?: throw IllegalArgumentException("Unsupported method: $id")
+    }
+
+    /**
+     * Derives a decimal data point from [inputs] using [compute] on the ordered input values.
+     * Used by the per-million and share-of-sum conversions, whose result is always a plain decimal.
+     *
+     * @param minimumInputCount the minimum number of inputs required; a conversion with exactly this many inputs
+     * must be configured for fixed-arity methods
+     * @param compute computes the result value from the ordered input values
+     * @return the derived data point
+     */
+    protected fun convertNumeric(
+        inputs: Collection<UploadedDataPoint>,
+        targetType: DataPointType,
+        specs: Map<DataPointType, DataPointTypeSpecification>,
+        sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
+        operationName: String,
+        minimumInputCount: Int = 2,
+        compute: (List<BigDecimal>) -> BigDecimal,
+    ): UploadedDataPoint {
+        val orderedInputs = requireOrderedInputs(inputs, operationName)
+        val operands = extractNumericOperands(orderedInputs, operationName, minimumInputCount)
+        val calculatedDataPoint =
+            ExtendedDataPoint(
+                value = compute(operands.values),
+                quality = mergeQuality(operands.dataPoints.map { it.quality }),
+                comment = createComment(inputs, specs, operands.dataPoints, sourceFrameworksByType),
+                dataSource = mergeDataSources(operands.dataPoints.mapNotNull(::getDataSource)),
+            )
+        return createUploadedDataPoint(
+            inputs = inputs,
+            targetType = targetType,
+            calculatedDataPoint = calculatedDataPoint,
+        )
     }
 
     /**

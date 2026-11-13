@@ -131,3 +131,62 @@ internal inline fun <reified V : ExtendedDataPointInterface<BigDecimal>> extract
         percent = percent,
     )
 }
+
+private val ONE_MILLION = BigDecimal("1000000")
+
+/**
+ * Parses [inputs] as decimal data points and returns them together with their values.
+ *
+ * @param inputs the ordered source data points
+ * @param operationName the human-readable operation name used in validation error messages
+ * @param minimumInputCount the minimum number of inputs required by the operation
+ * @return the deserialized data points and their non-null values in input order
+ */
+internal fun extractNumericOperands(
+    inputs: Collection<UploadedDataPoint>,
+    operationName: String,
+    minimumInputCount: Int,
+): SumOperands<ExtendedDataPoint<BigDecimal>> {
+    require(inputs.size >= minimumInputCount) {
+        "At least $minimumInputCount data points must be provided for $operationName."
+    }
+    val dataPoints = inputs.map { defaultObjectMapper.readValue<ExtendedDataPoint<BigDecimal>>(it.dataPoint) }
+    val values =
+        dataPoints.map {
+            requireNotNull(it.value) { "Data points for $operationName must not have null value fields." }
+        }
+    return SumOperands(dataPoints = dataPoints, values = values)
+}
+
+/**
+ * Computes [numerator] / [denominator] scaled by [multiplier].
+ *
+ * @throws IllegalArgumentException if [denominator] is zero
+ */
+internal fun divideScaled(
+    numerator: BigDecimal,
+    denominator: BigDecimal,
+    multiplier: BigDecimal,
+    operationName: String,
+): BigDecimal {
+    require(denominator.signum() != 0) { "The divisor in $operationName must not be zero." }
+    return numerator.multiply(multiplier).divide(denominator, CALCULATION_SCALE, CALCULATION_ROUNDING_MODE)
+}
+
+/**
+ * Computes (sum of numerators) / (sum of denominators) * 10^6.
+ */
+internal fun divideSumsPerMillion(
+    numerators: List<BigDecimal>,
+    denominators: List<BigDecimal>,
+    operationName: String,
+): BigDecimal = divideScaled(numerators.sumOf { it }, denominators.sumOf { it }, ONE_MILLION, operationName)
+
+/**
+ * Computes x / (x + y) * 100.
+ */
+internal fun shareOfSumInPercent(
+    x: BigDecimal,
+    y: BigDecimal,
+    operationName: String,
+): BigDecimal = divideScaled(x, x.add(y), BigDecimal("100"), operationName)
