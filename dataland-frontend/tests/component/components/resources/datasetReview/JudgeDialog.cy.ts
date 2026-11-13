@@ -577,10 +577,21 @@ describe('JudgeDialog component tests', () => {
       },
     };
 
-    it('disables the accept-report button when the current QA report has corrected data with null as quality', () => {
+    it('calls PATCH with AcceptedDataPointSource.Qa when accepting a QA report whose corrected data has no quality', () => {
       mountJudgeDialog({ datasetJudgement: judgementWithCorrectedDataWithNullQuality });
 
-      cy.get('[data-test="accept-report-button"]').should('be.disabled');
+      cy.get('[data-test="accept-report-button"]').should('not.be.disabled').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        expect(interception.request.url).to.contain(
+          `/qa/dataset-judgements/${datasetJudgementId}/data-points/${dataPointTypeId}`
+        );
+        expect(interception.request.body).to.deep.include({
+          acceptedSource: AcceptedDataPointSource.Qa,
+          acceptedQaReportId: 'qa-report-1',
+        });
+        expect(interception.request.body.customDataPoint).to.be.undefined;
+      });
     });
 
     const judgementWithEmptyBodyCorrectedData: DatasetJudgementResponse = {
@@ -599,6 +610,7 @@ describe('JudgeDialog component tests', () => {
 
     it('disables the accept-report button when the current QA report has an empty body', () => {
       mountJudgeDialog({ datasetJudgement: judgementWithEmptyBodyCorrectedData });
+      cy.wait('@getOriginalDataPoint');
 
       cy.get('[data-test="accept-report-button"]').should('be.disabled');
     });
