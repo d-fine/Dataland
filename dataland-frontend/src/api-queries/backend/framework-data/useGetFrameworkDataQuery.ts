@@ -1,5 +1,5 @@
 import { computed, unref, type MaybeRef } from 'vue';
-import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
+import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
 import type { DataTypeEnum } from '@clients/backend';
 import { useApiClient } from '@/utils/useApiClient';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
@@ -35,12 +35,16 @@ async function fetchFrameworkData(
  *
  * @param {{ framework: MaybeRef<DataTypeEnum|undefined>, dataId: MaybeRef<string|undefined> }} params -
  *   Reactive or static values for framework and data id.
+ * @param options - Additional TanStack query options (spread last).
  * @returns {UseQueryReturnType<CompanyAssociatedData<object>, Error>} Query result for the requested data.
  */
-export function useGetFrameworkDataQuery(params: {
-  framework: MaybeRef<DataTypeEnum | undefined>;
-  dataId: MaybeRef<string | undefined>;
-}): UseQueryReturnType<CompanyAssociatedData<object>, Error> {
+export function useGetFrameworkDataQuery(
+  params: {
+    framework: MaybeRef<DataTypeEnum | undefined>;
+    dataId: MaybeRef<string | undefined>;
+  },
+  options: Omit<UseQueryOptions<CompanyAssociatedData<object>, Error>, 'queryKey' | 'queryFn'> = {}
+): UseQueryReturnType<CompanyAssociatedData<object>, Error> {
   const apiClientProvider = useApiClient();
 
   const framework = computed(() => unref(params.framework));
@@ -58,5 +62,6 @@ export function useGetFrameworkDataQuery(params: {
       }
       return fetchFrameworkData(framework.value, dataId.value, apiClientProvider);
     },
+    ...options,
   });
 }

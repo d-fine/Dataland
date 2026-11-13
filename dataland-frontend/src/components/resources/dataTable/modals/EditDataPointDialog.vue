@@ -3,6 +3,9 @@
   <Message v-if="errorMessage" severity="error" :life="3000">
     {{ errorMessage }}
   </Message>
+  <Message v-if="pendingActivationMessage" severity="info" data-test="save-data-point-pending-activation">
+    {{ pendingActivationMessage }}
+  </Message>
   <div style="display: flex; justify-content: flex-end; margin-top: var(--spacing-md)">
     <PrimeButton
       label="SAVE CHANGES"
@@ -23,18 +26,18 @@ import { componentDictionary } from '@/components/resources/dataTable/EditDataPo
 import Message from 'primevue/message';
 import { AxiosError } from 'axios';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
-import { usePostDataPointMutation } from '@/api-queries/backend/data-point/usePostDataPointMutation.ts';
+import { useSaveDataPointAwaitingActivation } from '@/utils/useSaveDataPointAwaitingActivation.ts';
 import { activityComponentNames, kpiTypeFromDataPointTypeId } from '@/utils/ActivityListHelpers.ts';
 
-const { mutate: postDataPoint, isPending } = usePostDataPointMutation();
+const { save: saveDataPoint, isPending } = useSaveDataPointAwaitingActivation();
 const errorMessage = ref('');
+const pendingActivationMessage = ref('');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
 const companyId = dialogRef?.value?.data?.companyId;
 const reportingPeriod = dialogRef?.value?.data?.reportingPeriod;
 const uploadComponentName = dialogRef?.value?.data?.uploadComponentName;
 const dataPointTypeId = dialogRef?.value?.data?.dataPointTypeId;
 const dataPoint = dialogRef?.value?.data?.dataPoint;
-const emit = defineEmits<(e: 'dataUpdated') => void>();
 const resolvedComponent = computed<Component | null>(() => {
   return componentDictionary[uploadComponentName ?? ''] ?? null;
 });
@@ -105,7 +108,8 @@ provide('activityKpiType', modalData?.kpiType ?? kpiTypeFromDataPointTypeId(data
  */
 function updateDataPoint(): void {
   errorMessage.value = '';
-  postDataPoint(
+  pendingActivationMessage.value = '';
+  saveDataPoint(
     {
       uploadedDataPoint: {
         dataPoint: componentRef.value?.buildApiBodyWithExtendedInfo() ?? '',
@@ -116,11 +120,13 @@ function updateDataPoint(): void {
       bypassQa: true,
     },
     {
-      onSuccess: () => {
+      onDone: ({ activated }) => {
+        if (!activated) {
+          pendingActivationMessage.value =
+            'Your change was saved, but we could not confirm it yet. Please close this dialog and reload the page to check.';
+          return;
+        }
         dialogRef?.value?.close({ dataUpdated: true });
-        setTimeout(() => {
-          emit('dataUpdated');
-        }, 2000);
       },
       onError: (error) => {
         errorMessage.value = error instanceof AxiosError ? error.message : 'Failed to edit Data Point.';

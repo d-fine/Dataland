@@ -34,8 +34,6 @@
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
       :hideEmptyFields="hideEmptyFields ?? false"
-      :key="updateKey"
-      @dataUpdated="handleDataUpdated"
     />
   </div>
   <div v-if="status == 'InsufficientRights'">
@@ -51,7 +49,7 @@ import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinne
 import MultiLayerDataTable from '@/components/resources/dataTable/MultiLayerDataTable.vue';
 import ShowMultipleReportsBanner from '@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { computed, inject, ref, shallowRef, watch } from 'vue';
+import { computed, inject } from 'vue';
 import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
 import { sortDatasetsByReportingPeriod } from '@/utils/DataTableDisplay';
@@ -66,20 +64,15 @@ import {
   type NuclearAndGasData,
   type SfdrData,
 } from '@clients/backend';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
-import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils';
-import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { AxiosError } from 'axios';
+import { useGetAllCompanyFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetAllCompanyFrameworkDataQuery';
+import { useGetFrameworkDataQuery } from '@/api-queries/backend/framework-data/useGetFrameworkDataQuery';
+import { useGetCompanyAssociatedDataByDimensionsQuery } from '@/api-queries/backend/framework-data/useGetCompanyAssociatedDataByDimensionsQuery';
 
 type ViewPanelStates = 'LoadingDatasets' | 'DisplayingDatasets' | 'Error' | 'InsufficientRights';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const injectHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
-
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
 const props = defineProps<{
   companyId: string;
@@ -92,7 +85,7 @@ const props = defineProps<{
 const hideEmptyFields = computed<boolean | undefined>(() => injectHideEmptyFields?.value);
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 const sortedDataAndMetaInfo = computed(() => {
-  return sortDatasetsByReportingPeriod(rawDataAndMetaInfoForDisplay.value);
+  return sortDatasetsByReportingPeriod([...rawDataAndMetaInfoForDisplay.value]);
 });
 const sortedReportingPeriods = computed(() => {
   return sortedDataAndMetaInfo.value.map((singleDataAndMetaInfo) => singleDataAndMetaInfo.metaInfo.reportingPeriod);
@@ -151,86 +144,55 @@ const sortedReports = computed(() => {
   }
 });
 
-const updateCounter = ref(0);
-const status = ref<ViewPanelStates>('LoadingDatasets');
-const rawDataAndMetaInfoForDisplay = shallowRef<DataAndMetaInformation<FrameworkDataType>[]>([]);
-const updateKey = ref(0);
+const singleMetaInfo = computed(() => props.singleDataMetaInfoToDisplay);
+const isSingleMode = computed(() => !!singleMetaInfo.value);
 
-watch(
-  [
-    (): string => props.companyId,
-    (): string => props.frameworkIdentifier,
-    (): DataMetaInformation | undefined => props.singleDataMetaInfoToDisplay,
-  ],
-
-  async () => reloadDisplayData(++updateCounter.value),
-  { immediate: true }
+const allDataQuery = useGetAllCompanyFrameworkDataQuery(
+  { framework: () => props.frameworkIdentifier, companyId: () => props.companyId },
+  { enabled: computed(() => !isSingleMode.value && !!props.companyId) }
 );
 
-/**
- * Handles the dataUpdated event from child components and triggers a reload.
- */
-function handleDataUpdated(): void {
-  updateKey.value++;
-  void reloadDisplayData(++updateCounter.value);
-}
+const singleByIdQuery = useGetFrameworkDataQuery(
+  {
+    framework: computed(() => props.frameworkIdentifier as DataTypeEnum),
+    dataId: computed(() => (isSingleMode.value ? singleMetaInfo.value?.dataId : undefined)),
+  },
+  { retry: false }
+);
 
-/**
- * Triggers a reload of the information to be displayed with concurrency conflict handling.
- * @param currentCounter the value of the request counter at call-time.
- */
-async function reloadDisplayData(currentCounter: number): Promise<void> {
-  status.value = 'LoadingDatasets';
-  try {
-    const fetchedDataAndMetaInfo = await loadDataForDisplay(props.companyId, props.singleDataMetaInfoToDisplay);
-    if (updateCounter.value == currentCounter) {
-      rawDataAndMetaInfoForDisplay.value = fetchedDataAndMetaInfo;
-      status.value = 'DisplayingDatasets';
-    }
-  } catch (err) {
-    console.error(err);
-    if (updateCounter.value == currentCounter) {
-      if (err instanceof AxiosError && err.response?.status == 403) {
-        status.value = 'InsufficientRights';
-      } else {
-        status.value = 'Error';
-      }
-    }
+// Falls back to the reporting period if the dataset cannot be fetched via its id.
+const singleByDimensionsQuery = useGetCompanyAssociatedDataByDimensionsQuery(
+  {
+    framework: () => props.frameworkIdentifier,
+    companyId: () => singleMetaInfo.value?.companyId,
+    reportingPeriod: () => singleMetaInfo.value?.reportingPeriod,
+  },
+  {
+    enabled: computed(() => isSingleMode.value && (!singleMetaInfo.value?.dataId || singleByIdQuery.isError.value)),
   }
-}
+);
 
-/**
- * Fetches all datasets that should be displayed
- * @param companyId the id of the company to retrieve data for
- * @param singleDataMetaInfoToDisplay If set, only display the dataset belonging to this single entry
- * @returns the datasets that should be displayed
- */
-async function loadDataForDisplay(
-  companyId: string,
-  singleDataMetaInfoToDisplay?: DataMetaInformation
-): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const dataControllerApi = getFrameworkDataApiForIdentifier(props.frameworkIdentifier, apiClientProvider) as
-    PublicFrameworkDataApi<FrameworkDataType> | undefined;
-  if (!dataControllerApi) throw new Error(`No data controller found for framework ${props.frameworkIdentifier}`);
-  if (!singleDataMetaInfoToDisplay) return (await dataControllerApi.getAllCompanyData(assertDefined(companyId))).data;
-  let singleDataset;
-  if (singleDataMetaInfoToDisplay.dataId) {
-    try {
-      singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;
-      return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-    } catch (error) {
-      console.error(error);
-      console.log(`Unable to fetch data via ID. Falling back to reporting Period.`);
-    }
+const activeSingleQuery = computed(() =>
+  !singleMetaInfo.value?.dataId || singleByIdQuery.isError.value ? singleByDimensionsQuery : singleByIdQuery
+);
+
+const rawDataAndMetaInfoForDisplay = computed<DataAndMetaInformation<FrameworkDataType>[]>(() => {
+  if (isSingleMode.value) {
+    const data = activeSingleQuery.value.data.value?.data;
+    return data && singleMetaInfo.value ? [{ metaInfo: singleMetaInfo.value, data: data as FrameworkDataType }] : [];
   }
-  singleDataset = (
-    await dataControllerApi.getCompanyAssociatedDataByDimensions(
-      singleDataMetaInfoToDisplay.reportingPeriod,
-      singleDataMetaInfoToDisplay.companyId
-    )
-  ).data.data;
-  return [{ metaInfo: singleDataMetaInfoToDisplay, data: singleDataset }];
-}
+  return (allDataQuery.data.value ?? []) as DataAndMetaInformation<FrameworkDataType>[];
+});
+
+const status = computed<ViewPanelStates>(() => {
+  const query = isSingleMode.value ? activeSingleQuery.value : allDataQuery;
+  if (query.data.value !== undefined) return 'DisplayingDatasets';
+  if (query.isError.value) {
+    const error = query.error.value;
+    return error instanceof AxiosError && error.response?.status == 403 ? 'InsufficientRights' : 'Error';
+  }
+  return 'LoadingDatasets';
+});
 </script>
 <style scoped>
 .d-center-div {
