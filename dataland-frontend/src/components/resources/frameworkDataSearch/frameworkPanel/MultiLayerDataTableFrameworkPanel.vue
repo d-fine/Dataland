@@ -187,7 +187,7 @@ const rawDataAndMetaInfoForDisplay = computed<DataAndMetaInformation<FrameworkDa
 const status = computed<ViewPanelStates>(() => {
   const query = isSingleMode.value ? activeSingleQuery.value : allDataQuery;
   if (query.data.value !== undefined) return 'DisplayingDatasets';
-  if (query.isError.value && !(isSingleMode.value && query === singleByIdQuery)) {
+  if (query.isError.value) {
     const error = query.error.value;
     return error instanceof AxiosError && error.response?.status == 403 ? 'InsufficientRights' : 'Error';
   }

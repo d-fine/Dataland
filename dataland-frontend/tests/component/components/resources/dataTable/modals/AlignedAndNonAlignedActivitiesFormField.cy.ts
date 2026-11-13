@@ -112,10 +112,13 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' }, documents);
       cy.get('[data-test="document-meta"]').should('not.exist');
       cy.get('[data-test="document-select"]').click();
-      cy.get('.p-select-option').contains('Annual Report').click({ force: true });
+      cy.get('.p-select-option').should('contain.text', 'Annual Report');
+      cy.get('[data-test="document-select"]').type('{downarrow}{enter}');
       cy.get('[data-test="document-meta"]').should('have.length', 4);
       cy.get('[data-test="document-meta"]').eq(0).should('contain.text', 'Annual Report');
-      [1, 2, 3].forEach((index) => cy.get('[data-test="document-meta"]').eq(index).should('contain.text', '–'));
+      [1, 2, 3].forEach((index) => {
+        cy.get('[data-test="document-meta"]').eq(index).should('contain.text', '–');
+      });
     });
 
     it('writes edited amount, currency and share into the api body', () => {
