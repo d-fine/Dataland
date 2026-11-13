@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyId
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandcompanyservice.model.DatalandCompanyCandidate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
@@ -46,6 +47,52 @@ class DatalandCompanyServiceTest {
         val company = datalandCompanyService.getCompany(companyId)
         assertEquals(companyId, company.companyId)
         assertEquals("Some Company", company.companyName)
+        assertNull(company.parentCompanyLei)
+        assertNull(company.parentCompany)
+    }
+
+    @Test
+    fun `a company is retrieved with its Dataland data and the Dataland company of its parent LEI`() {
+        val parentCompanyId = UUID.randomUUID().toString()
+        doReturn(
+            CompanyInformation(
+                companyName = "Some Company",
+                headquarters = "Berlin",
+                identifiers = mapOf("Lei" to listOf("CHILDLEI"), "Isin" to emptyList()),
+                countryCode = "DE",
+                companyAlternativeNames = listOf("Some Company Legal GmbH"),
+                parentCompanyLei = "PARENTLEI",
+            ),
+        ).whenever(mockCompanyDataControllerApi).getCompanyInfo(companyId)
+        doReturn(CompanyId(parentCompanyId))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanyIdByIdentifier(IdentifierType.Lei, "PARENTLEI")
+        doReturn(CompanyInformation("Parent AG", "Munich", emptyMap(), "DE", parentCompanyLei = "GRANDPARENTLEI"))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanyInfo(parentCompanyId)
+
+        val company = datalandCompanyService.getCompany(companyId)
+
+        assertEquals(listOf("Some Company Legal GmbH"), company.alternativeNames)
+        assertEquals(mapOf("Lei" to listOf("CHILDLEI")), company.identifiers)
+        assertEquals("DE", company.countryCode)
+        assertEquals("Berlin", company.headquarters)
+        assertEquals("PARENTLEI", company.parentCompanyLei)
+        assertEquals(DatalandCompanyCandidate(parentCompanyId, "Parent AG"), company.parentCompany)
+        verify(mockCompanyDataControllerApi, never()).getCompanyIdByIdentifier(IdentifierType.Lei, "GRANDPARENTLEI")
+    }
+
+    @Test
+    fun `a parent LEI that is not on Dataland is kept without a Dataland company`() {
+        doReturn(CompanyInformation("Some Company", "Berlin", emptyMap(), "DE", parentCompanyLei = "UNKNOWNLEI"))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanyInfo(companyId)
+        doThrow(notFound).whenever(mockCompanyDataControllerApi).getCompanyIdByIdentifier(IdentifierType.Lei, "UNKNOWNLEI")
+
+        val company = datalandCompanyService.getCompany(companyId)
+
+        assertEquals("UNKNOWNLEI", company.parentCompanyLei)
+        assertNull(company.parentCompany)
     }
 
     @Test

@@ -9,6 +9,8 @@ sandbox:
 permissions:
   network:
     allow:
+      # Allow for Azure Foundry
+      - "*.cognitiveservices.azure.com:443"
       # Access for Copilot
       - "api.githubcopilot.com:443"
 
@@ -34,6 +36,7 @@ permissions:
       - plugins-artifacts.gradle.org:443
       - repo.gradle.org:443
       - repo.maven.apache.org:443
+      - api.mailjet.com:443
      
       - download.cypress.io:443
       - cdn.cypress.io:443

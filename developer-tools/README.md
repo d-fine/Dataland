@@ -12,3 +12,13 @@ Idempotently starts Xvfb, x11vnc, and noVNC (websockify) inside the sandbox so t
 cypress` in `dataland-frontend`) can be viewed from the desktop at `http://localhost:6080/vnc.html`. It is installed
 and started once by `initialSetup.sh`, which also hooks it into `~/.bashrc` so it self-heals on every new shell,
 surviving sandbox restarts. Safe to re-run manually at any time.
+
+## Using Azure OpenAI (proxy finder) and Mailjet
+By default the proxy finder uses the mocked provider (`COMPANY_SERVICE_PROVIDER=mock`) and Mailjet uses placeholder
+credentials. To use the real nonprod services, set these variables in your shell (or sandbox environment) before
+starting the stack: `COMPANY_SERVICE_PROVIDER=azure`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT` (must end with
+`/openai/v1`), `AZURE_OPENAI_DEPLOYMENT_NAME`, `MAILJET_API_ID` and `MAILJET_API_SECRET`.
+
+`environments/.env.dev` uses the `${VAR:-default}` syntax, so values that are already set in the environment are kept.
+Secrets must never be committed. In the opencode sandbox, make sure it may reach `*.openai.azure.com` and
+`api.mailjet.com` over HTTPS (sbx network policy on the host).

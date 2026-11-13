@@ -33,6 +33,13 @@ location /api/ {
   proxy_pass ${BACKEND_URL};
   include utils/proxy.conf;
   include utils/errorsAsJson.conf;
+
+  # The AI-based proxy search (POST /api/company-proxies/{companyId}/proxy-suggestion) can take several minutes.
+  # Headers and error handling are inherited from /api/; the proxy finder limits a search to 240s itself.
+  location /api/company-proxies/ {
+    proxy_pass ${BACKEND_URL}company-proxies/;
+    proxy_read_timeout 300s;
+  }
 }
 
 location /documents/ {

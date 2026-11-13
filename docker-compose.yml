@@ -181,6 +181,11 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_COMPANY_SERVICE_CLIENT_SECRET: ${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}
+      # "mock" unless explicitly set to "azure", so that no real LLM calls happen by accident (e.g. in CI)
+      COMPANY_SERVICE_PROVIDER: ${COMPANY_SERVICE_PROVIDER:-mock}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_DEPLOYMENT_NAME: ${AZURE_OPENAI_DEPLOYMENT_NAME:-}
     logging:
       <<: *loki-logging
   data-sourcing-service:
