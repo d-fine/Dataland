@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.core.JacksonException
+import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.INVALID_PROXY_SUGGESTION_ERROR_TYPE
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -133,22 +134,10 @@ class ProxySuggestionService(
      * Both an unknown company and an invalid proxy suggestion are reported with a 404 by the proxy finder. They are
      * told apart by the error type of the response.
      */
-    private fun isInvalidProxySuggestion(clientException: ClientException): Boolean {
-        if (clientException.statusCode != HttpStatus.NOT_FOUND.value()) return false
-        val body = (clientException.response as? ClientError<*>)?.body as? String ?: return false
-        return try {
-            defaultObjectMapper
-                .readTree(body)
-                .path("errors")
-                .path(0)
-                .path("errorType")
-                .textValue() ==
-                INVALID_PROXY_SUGGESTION_ERROR_TYPE
-        } catch (exception: JacksonException) {
-            logger.warn("Could not parse error response of the proxy finder: ${exception.message}")
-            false
-        }
-    }
+    private fun isInvalidProxySuggestion(clientException: ClientException): Boolean =
+        clientException.statusCode == HttpStatus.NOT_FOUND.value() &&
+            extractFirstError(clientException.response)?.path("errorType")?.textValue() ==
+            INVALID_PROXY_SUGGESTION_ERROR_TYPE
 
     private fun proxyFinderUnavailable(
         companyId: String,
@@ -161,22 +150,23 @@ class ProxySuggestionService(
     )
 
     private fun extractErrorSummaryAndMessage(response: Response?): Pair<String?, String?> {
+        val firstError = extractFirstError(response)
+        return Pair(firstError?.path("summary")?.textValue(), firstError?.path("message")?.textValue())
+    }
+
+    private fun extractFirstError(response: Response?): JsonNode? {
         val body =
             when (response) {
                 is ClientError<*> -> response.body
                 is ServerError<*> -> response.body
                 else -> null
             }
-        if (body !is String) return Pair(null, null)
+        if (body !is String) return null
         return try {
-            val firstError = defaultObjectMapper.readTree(body).path("errors").path(0)
-            Pair(
-                firstError.path("summary").textValue(),
-                firstError.path("message").textValue(),
-            )
+            defaultObjectMapper.readTree(body).path("errors").path(0)
         } catch (exception: JacksonException) {
             logger.warn("Could not parse error response of the proxy finder: ${exception.message}")
-            Pair(null, null)
+            null
         }
     }
 
