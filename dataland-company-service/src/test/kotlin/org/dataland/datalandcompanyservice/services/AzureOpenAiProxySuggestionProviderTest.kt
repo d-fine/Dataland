@@ -32,7 +32,7 @@ class AzureOpenAiProxySuggestionProviderTest {
                 status = ProxySearchStatus.FOUND,
                 parentName = "Parent AG",
                 parentCompanyId = proxyId,
-                confidence = 1.7,
+                confidence = 0.8,
                 reasoning = "Annual report",
                 sources = listOf(ProxySearchLlmSource("Report", "https://example.com", "official_filing")),
             ),
@@ -40,9 +40,23 @@ class AzureOpenAiProxySuggestionProviderTest {
         val suggestion = provider.suggestProxy(company)
         assertEquals(company.companyId, suggestion.companyId)
         assertEquals(proxyId, suggestion.proxyCompanyId)
-        assertEquals(1.0, suggestion.confidence)
+        assertEquals(0.8, suggestion.confidence)
         assertEquals("Annual report", suggestion.reasoning)
         assertEquals("https://example.com", suggestion.sources.single().url)
+    }
+
+    @Test
+    fun `confidence is mapped to the interval from zero to one`() {
+        mapOf(1.7 to 1.0, -0.5 to 0.0, 0.0 to 0.0, 1.0 to 1.0, 0.4 to 0.4).forEach { (raw, expected) ->
+            stubResult(
+                ProxySearchLlmResult(
+                    status = ProxySearchStatus.FOUND,
+                    parentCompanyId = proxyId,
+                    confidence = raw,
+                ),
+            )
+            assertEquals(expected, provider.suggestProxy(company).confidence, "raw confidence $raw")
+        }
     }
 
     @Test

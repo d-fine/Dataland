@@ -3,6 +3,7 @@ package org.dataland.datalandcompanyservice.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyId
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -31,6 +32,7 @@ class DatalandCompanyServiceTest {
     private val companyId = UUID.randomUUID().toString()
     private val notFound = ClientException(statusCode = 404)
     private val forbidden = ClientException(statusCode = 403)
+    private val badRequest = ClientException(statusCode = 400)
 
     @BeforeEach
     fun setup() {
@@ -130,5 +132,38 @@ class DatalandCompanyServiceTest {
 
         assertEquals(companyId, datalandCompanyService.findCompanyIdByLei("KNOWNLEI"))
         assertNull(datalandCompanyService.findCompanyIdByLei("UNKNOWNLEI"))
+    }
+
+    @Test
+    fun `companies are searched by trimmed name and mapped to candidates`() {
+        val otherCompanyId = UUID.randomUUID().toString()
+        doReturn(listOf(CompanyIdAndName(companyId, "Parent AG"), CompanyIdAndName(otherCompanyId, "Parent Holding")))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompaniesBySearchString("Parent", 5)
+
+        val candidates = datalandCompanyService.searchCompaniesByName("  Parent ", 5)
+
+        assertEquals(
+            listOf(DatalandCompanyCandidate(companyId, "Parent AG"), DatalandCompanyCandidate(otherCompanyId, "Parent Holding")),
+            candidates,
+        )
+    }
+
+    @Test
+    fun `a search without matches returns an empty list`() {
+        doReturn(emptyList<CompanyIdAndName>()).whenever(mockCompanyDataControllerApi).getCompaniesBySearchString("Nothing", 5)
+        assertTrue(datalandCompanyService.searchCompaniesByName("Nothing", 5).isEmpty())
+    }
+
+    @Test
+    fun `a search string rejected by the backend as too short returns an empty list`() {
+        doThrow(badRequest).whenever(mockCompanyDataControllerApi).getCompaniesBySearchString("a", 5)
+        assertTrue(datalandCompanyService.searchCompaniesByName("a", 5).isEmpty())
+    }
+
+    @Test
+    fun `other client errors during the company search are not swallowed`() {
+        doThrow(forbidden).whenever(mockCompanyDataControllerApi).getCompaniesBySearchString("Parent", 5)
+        assertThrows<ClientException> { datalandCompanyService.searchCompaniesByName("Parent", 5) }
     }
 }
