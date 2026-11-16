@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import jakarta.validation.Validation
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -12,6 +13,7 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -58,7 +60,24 @@ class DataPointValidatorTest {
             )
 
     private val assuranceClasses =
-        listOf("org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint")
+        listOf(
+            "org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint",
+        )
+
+    @Test
+    fun `check that the framework assurance data point deserializes the comment and rejects a quality`() {
+        val assuranceClass =
+            AssuranceDataPoint::class.java
+        val parsed =
+            defaultObjectMapper.readValue(
+                """{"value":"LimitedAssurance","provider":"P","comment":"c"}""",
+                assuranceClass,
+            )
+        assertEquals("c", parsed.comment)
+        assertThrows<Exception> {
+            defaultObjectMapper.readValue("""{"value":"LimitedAssurance","quality":"Audited"}""", assuranceClass)
+        }
+    }
 
     @Test
     fun `check that assurance data points with provider and comment are accepted`() {

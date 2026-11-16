@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.utils.DataExportUtils
+import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -59,7 +60,7 @@ class DataExportUtilsTest {
     }
 
     private fun assuranceNode(withComment: Boolean) =
-        com.fasterxml.jackson.databind.ObjectMapper().readTree(
+        defaultObjectMapper.readTree(
             """{"assurance":{"value":"Limited","provider":"Other Auditors"${if (withComment) ""","comment":"Some comment"""" else ""}}}""",
         )
 

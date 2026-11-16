@@ -503,6 +503,23 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
+    it('strips a quality typed into the JSON editor when accepting a custom assurance data point', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType(assuranceType) });
+      cy.wait('@getOriginalDataPoint');
+
+      const customJson = '{"value":"LimitedAssurance","provider":"JSON Auditors","comment":"c","quality":"Audited"}';
+      cy.get('[data-test="edit-mode-toggle"]').click();
+      cy.get('[data-test="custom-json-textarea"]').clear().type(customJson, { parseSpecialCharSequences: false });
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        const parsed = JSON.parse(interception.request.body.customDataPoint) as Record<string, unknown>;
+        expect(parsed.provider).to.equal('JSON Auditors');
+        expect(parsed.comment).to.equal('c');
+        expect(parsed).not.to.have.property('quality');
+      });
+    });
+
     it('still requires and shows a quality for non-Assurance data points', () => {
       mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
       cy.wait('@getOriginalDataPoint');
