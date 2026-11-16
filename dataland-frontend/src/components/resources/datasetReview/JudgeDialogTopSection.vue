@@ -148,9 +148,7 @@ const tableRows = computed(() => {
 
   if (props.isAssuranceDataPoint) {
     rows.push({ label: 'Provider', value: props.data?.provider });
-  }
-
-  if (!props.isAssuranceDataPoint) {
+  } else {
     rows.push({ label: 'Quality', value: props.data?.quality });
   }
 

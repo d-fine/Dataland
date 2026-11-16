@@ -4,6 +4,8 @@ import { getCellValueContainer } from '@sharedUtils/components/resources/dataTab
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
 import { eutaxonomyFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-financials/ViewConfig';
+import { eutaxonomyFinancials202673ViewConfiguration } from '@/frameworks/eutaxonomy-financials-2026-73/ViewConfig';
+import { eutaxonomyNonFinancials202673ViewConfiguration } from '@/frameworks/eutaxonomy-non-financials-2026-73/ViewConfig';
 import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/custom/EuTaxoNonFinancialsStaticViewConfig.ts';
 
 type GeneralSection = { general?: Record<string, unknown> };
@@ -17,6 +19,22 @@ const scenarios = [
     dataType: DataTypeEnum.EutaxonomyFinancials,
     viewConfig: eutaxonomyFinancialsViewConfiguration,
     nested: true,
+  },
+  {
+    name: 'EU Taxonomy Financials (2026/73)',
+    fixtureFile: 'CompanyInformationWithEutaxonomyFinancials202673PreparedFixtures',
+    fixtureName: 'All-fields-defined-for-EU-Taxonomy-Financials-202673-Framework-Company',
+    dataType: DataTypeEnum.EutaxonomyFinancials202673,
+    viewConfig: eutaxonomyFinancials202673ViewConfiguration,
+    nested: true,
+  },
+  {
+    name: 'EU Taxonomy Non-Financials (2026/73)',
+    fixtureFile: 'CompanyInformationWithEutaxonomyNonFinancials202673PreparedFixtures',
+    fixtureName: 'All-fields-defined-for-EU-Taxonomy-Non-Financials-202673-Framework-Company',
+    dataType: DataTypeEnum.EutaxonomyNonFinancials202673,
+    viewConfig: eutaxonomyNonFinancials202673ViewConfiguration,
+    nested: false,
   },
   {
     name: 'EU Taxonomy Non-Financials',
@@ -69,6 +87,11 @@ scenarios.forEach(({ name, fixtureFile, fixtureName, dataType, viewConfig, neste
         cy.contains('tr', 'Comment').should('contain.text', 'Test comment');
         cy.contains('Quality').should('not.exist');
       });
+    });
+
+    it('shows a plain value without modal link if neither provider nor comment exist', () => {
+      mountWithAssurance({ value: 'LimitedAssurance' });
+      getCellValueContainer('Assurance').should('contain.text', 'Limited Assurance').find('a').should('not.exist');
     });
 
     it('offers the modal for a provider-only assurance', () => {

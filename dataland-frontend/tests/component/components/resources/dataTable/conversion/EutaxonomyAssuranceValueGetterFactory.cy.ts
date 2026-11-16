@@ -20,7 +20,7 @@ describe('Unit test for formatAssuranceForDataTable', () => {
     const displayValue = result.displayValue as Record<string, unknown>;
     expect(displayValue.provider).to.equal('Some Provider');
     expect(displayValue.comment).to.equal('A real comment');
-    expect(displayValue.quality).to.equal(undefined);
+    expect(displayValue.quality).to.be.undefined;
     expect(displayValue.innerContents).to.deep.equal({
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: 'Limited Assurance',
@@ -41,8 +41,8 @@ describe('Unit test for formatAssuranceForDataTable', () => {
     const result = formatAssuranceForDataTable({ value: AssuranceDataPointValueEnum.ReasonableAssurance }, 'Assurance');
     expect(result.displayComponentName).to.equal(MLDTDisplayComponentName.DataPointWrapperDisplayComponent);
     const displayValue = result.displayValue as Record<string, unknown>;
-    expect(displayValue.provider).to.equal(undefined);
-    expect(displayValue.comment).to.equal(undefined);
+    expect(displayValue.provider).to.be.undefined;
+    expect(displayValue.comment).to.be.undefined;
   });
 });
 
