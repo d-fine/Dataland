@@ -223,9 +223,7 @@ const individualIntegerThreshold = computed(
 const effectiveIntegerThreshold = computed(
   () => individualIntegerThreshold.value ?? preApprovalConfig.value?.integerAbsoluteThreshold
 );
-const displayIntegerThreshold = computed(() =>
-  effectiveIntegerThreshold.value === undefined ? 'unknown' : effectiveIntegerThreshold.value
-);
+const displayIntegerThreshold = computed(() => effectiveIntegerThreshold.value ?? 'unknown');
 
 // ===== Next data point data =====
 

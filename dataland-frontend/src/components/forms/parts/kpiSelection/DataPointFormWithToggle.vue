@@ -193,25 +193,9 @@ export default defineComponent({
     isValidFileName: isValidFileName,
   }),
   watch: {
-    dataPointIsAvailable(newValue: boolean) {
-      if (newValue) {
-        this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
-        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
-        this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
-        this.currentValue = this.valueBeforeDataPointWasDisabled;
-        this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
-      } else {
-        this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
-        this.valueBeforeDataPointWasDisabled = this.currentValue;
-        this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
-        this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
-        this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
-        this.currentAmountValue = '';
-        this.currentValue = '';
-        this.currentReportValue = '';
-        this.currentPageValue = '';
-        this.currentQualityValue = null;
-      }
+    dataPointIsAvailable() {
+      if (this.dataPointIsAvailable) this.restoreDataPointValues();
+      else this.storeAndClearDataPointValues();
     },
   },
   mounted() {
@@ -261,6 +245,31 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Restores the values stored before the data point was disabled
+     */
+    restoreDataPointValues() {
+      this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+      this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
+      this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
+      this.currentValue = this.valueBeforeDataPointWasDisabled;
+      this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
+    },
+    /**
+     * Stores the current values and clears the form fields
+     */
+    storeAndClearDataPointValues() {
+      this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
+      this.valueBeforeDataPointWasDisabled = this.currentValue;
+      this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
+      this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
+      this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
+      this.currentAmountValue = '';
+      this.currentValue = '';
+      this.currentReportValue = '';
+      this.currentPageValue = '';
+      this.currentQualityValue = null;
+    },
     validatePageNumber,
     /**
      * Toggle dataPointIsAvailable variable value and emit event

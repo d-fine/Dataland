@@ -143,7 +143,7 @@ export default defineComponent({
      * @param newValue the value to change the selected option to
      */
     setSelectedOption(newValue: string | null) {
-      this.selectedOption = newValue === null ? undefined : newValue;
+      this.selectedOption = newValue ?? undefined;
       this.$emit('update:modelValue', newValue);
     },
     /**
