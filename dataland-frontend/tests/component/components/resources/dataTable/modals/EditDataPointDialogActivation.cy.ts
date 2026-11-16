@@ -45,4 +45,31 @@ describe('EditDataPointDialog save', () => {
     cy.get('@close').should('have.been.calledWith', { dataUpdated: true });
     cy.then(() => expect(metaInfoRequests).to.be.at.least(3));
   });
+
+  it('keeps the dialog open and disables saving when activation times out', () => {
+    const close = cy.stub().as('close');
+    cy.intercept('POST', '**/data-points?*', { statusCode: 200, body: metaInfo(false) }).as('post');
+    cy.intercept('GET', '**/data-points/new-id/metadata', { statusCode: 200, body: metaInfo(false) });
+
+    mountEditFormField(
+      EditDataPointDialog,
+      {},
+      {
+        dialogRef: ref({
+          data: {
+            companyId: 'c',
+            reportingPeriod: '2024',
+            uploadComponentName: 'YesNoExtendedDataPointFormField',
+            dataPointTypeId: 'extendedEnumYesNo',
+            dataPoint: { displayValue: { innerContents: { displayValue: 'Yes' }, quality: 'Reported' } },
+          },
+          close,
+        }),
+      }
+    );
+    cy.get('[data-test="save-data-point-button"]').click();
+    cy.get('[data-test="save-data-point-pending-activation"]', { timeout: 20000 }).should('be.visible');
+    cy.get('[data-test="save-data-point-button"]').should('be.disabled');
+    cy.get('@close').should('not.have.been.called');
+  });
 });

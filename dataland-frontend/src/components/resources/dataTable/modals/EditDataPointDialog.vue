@@ -12,7 +12,7 @@
       icon="pi pi-save"
       @click="updateDataPoint"
       data-test="save-data-point-button"
-      :disabled="isPending || !isPageValid"
+      :disabled="isPending || !isPageValid || !!pendingActivationMessage"
     />
   </div>
 </template>
