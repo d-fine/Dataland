@@ -1,12 +1,13 @@
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { DataTypeEnum, type EutaxonomyFinancialsData, type EutaxonomyNonFinancialsData } from '@clients/backend';
+import { DataTypeEnum } from '@clients/backend';
 import { getCellValueContainer } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
 import { eutaxonomyFinancialsViewConfiguration } from '@/frameworks/eutaxonomy-financials/ViewConfig';
 import { eutaxonomyNonFinancialsViewConfiguration } from '@/frameworks/custom/EuTaxoNonFinancialsStaticViewConfig.ts';
 
-type AnyFixture = FixtureData<EutaxonomyFinancialsData> | FixtureData<EutaxonomyNonFinancialsData>;
+type GeneralSection = { general?: Record<string, unknown> };
+type AssuranceFixture = FixtureData<GeneralSection>;
 
 const scenarios = [
   {
@@ -29,11 +30,11 @@ const scenarios = [
 
 scenarios.forEach(({ name, fixtureFile, fixtureName, dataType, viewConfig, nested }) => {
   describe(`Assurance display of the ${name} view page`, () => {
-    let preparedFixtures: AnyFixture[];
+    let preparedFixtures: AssuranceFixture[];
 
     before(() => {
       cy.fixture(fixtureFile).then((json) => {
-        preparedFixtures = json as AnyFixture[];
+        preparedFixtures = json as AssuranceFixture[];
       });
     });
 
@@ -42,9 +43,7 @@ scenarios.forEach(({ name, fixtureFile, fixtureName, dataType, viewConfig, neste
      * @param assurance the assurance data point to display
      */
     function mountWithAssurance(assurance: Record<string, unknown>): void {
-      const fixture = structuredClone(getPreparedFixture(fixtureName, preparedFixtures)) as FixtureData<{
-        general?: Record<string, unknown>;
-      }>;
+      const fixture = structuredClone(getPreparedFixture(fixtureName, preparedFixtures));
       const general = (fixture.t.general ?? {}) as Record<string, unknown>;
       fixture.t.general = nested
         ? { ...general, general: { ...(general.general as object), assurance } }
