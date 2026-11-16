@@ -130,8 +130,8 @@ class DatalandCompanyServiceTest {
             .getCompanyIdByIdentifier(IdentifierType.Lei, "KNOWNLEI")
         doThrow(notFound).whenever(mockCompanyDataControllerApi).getCompanyIdByIdentifier(IdentifierType.Lei, "UNKNOWNLEI")
 
-        assertEquals(companyId, datalandCompanyService.findCompanyIdByLei("KNOWNLEI"))
-        assertNull(datalandCompanyService.findCompanyIdByLei("UNKNOWNLEI"))
+        assertEquals(companyId, datalandCompanyService.findCompanyIdByIdentifier(IdentifierType.Lei, "KNOWNLEI"))
+        assertNull(datalandCompanyService.findCompanyIdByIdentifier(IdentifierType.Lei, "UNKNOWNLEI"))
     }
 
     @Test

@@ -1,5 +1,6 @@
 package org.dataland.datalandcompanyservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
@@ -43,7 +44,7 @@ class MockProxySuggestionProvider(
                 "using proxy company with LEI $proxyCompanyLei.",
         )
         val proxyCompanyId =
-            datalandCompanyService.findCompanyIdByLei(proxyCompanyLei)
+            datalandCompanyService.findCompanyIdByIdentifier(IdentifierType.Lei, proxyCompanyLei)
                 ?: throw misconfiguredProxyCompany()
         return ProxySuggestion(
             companyId = company.companyId,

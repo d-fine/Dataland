@@ -38,14 +38,10 @@ fun interface ProxySuggestionApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "The specified company does not exist on Dataland.",
-                content = [Content(schema = Schema())],
-            ),
-            ApiResponse(
-                responseCode = "422",
                 description =
-                    "No valid proxy suggestion could be found, e.g. no suitable proxy company was identified, the " +
-                        "suggested company does not exist on Dataland or is the company itself.",
+                    "The specified company does not exist on Dataland or no valid proxy suggestion could be found, e.g. no " +
+                        "suitable proxy company was identified, the suggested company does not exist on Dataland or is the " +
+                        "company itself.",
                 content = [Content(schema = Schema())],
             ),
             ApiResponse(

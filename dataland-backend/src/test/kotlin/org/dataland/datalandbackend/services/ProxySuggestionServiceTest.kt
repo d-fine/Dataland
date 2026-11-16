@@ -65,9 +65,9 @@ class ProxySuggestionServiceTest {
     }
 
     @Test
-    fun `a 422 of the proxy finder is translated into an invalid proxy suggestion exception with its details`() {
-        val body = """{"errors":[{"summary":"Some summary","message":"Some message"}]}"""
-        doThrow(clientException(422, body)).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
+    fun `a 404 of the proxy finder with an invalid suggestion error type is translated into an invalid proxy suggestion exception`() {
+        val body = """{"errors":[{"errorType":"invalid-proxy-suggestion","summary":"Some summary","message":"Some message"}]}"""
+        doThrow(clientException(404, body)).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
 
         val exception =
             assertThrows<InvalidProxySuggestionApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
@@ -76,12 +76,12 @@ class ProxySuggestionServiceTest {
     }
 
     @Test
-    fun `a 422 of the proxy finder with an unreadable body results in a generic invalid proxy suggestion exception`() {
-        doThrow(clientException(422, "not json")).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
-
-        val exception =
-            assertThrows<InvalidProxySuggestionApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
-        assertEquals("Invalid proxy suggestion.", exception.summary)
+    fun `a 404 of the proxy finder with another error type or an unreadable body is translated into a resource not found exception`() {
+        val companyNotFoundBody = """{"errors":[{"errorType":"resource-not-found","summary":"s","message":"m"}]}"""
+        listOf(companyNotFoundBody, "not json").forEach { body ->
+            doThrow(clientException(404, body)).whenever(mockProxySuggestionControllerApi).findProxySuggestion(companyId)
+            assertThrows<ResourceNotFoundApiException> { proxySuggestionService.requestProxySuggestion(companyId) }
+        }
     }
 
     @Test

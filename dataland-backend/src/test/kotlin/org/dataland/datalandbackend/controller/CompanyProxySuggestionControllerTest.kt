@@ -182,16 +182,16 @@ class CompanyProxySuggestionControllerTest(
     }
 
     @Test
-    fun `an invalid suggestion reported by the proxy finder is forwarded as a 422`() {
+    fun `an invalid suggestion reported by the proxy finder is forwarded as a 404`() {
         val companyId = UUID.randomUUID().toString()
         val errorBody =
             """{"errors":[{"errorType":"invalid-proxy-suggestion","summary":"Suggested proxy company is the company itself.",""" +
-                """"message":"self reference","httpStatus":422}]}"""
-        doThrow(proxyFinderClientException(422, errorBody))
+                """"message":"self reference","httpStatus":404}]}"""
+        doThrow(proxyFinderClientException(404, errorBody))
             .whenever(proxySuggestionControllerApi)
             .findProxySuggestion(companyId)
         requestProxySuggestion(companyId)
-            .andExpect(status().isUnprocessableContent)
+            .andExpect(status().isNotFound)
             .andExpect(jsonPath("$.errors[0].errorType").value("invalid-proxy-suggestion"))
             .andExpect(jsonPath("$.errors[0].summary").value("Suggested proxy company is the company itself."))
             .andExpect(jsonPath("$.errors[0].message").value("self reference"))

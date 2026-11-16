@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.core.JacksonException
 import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
+import org.dataland.datalandbackendutils.exceptions.INVALID_PROXY_SUGGESTION_ERROR_TYPE
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidProxySuggestionApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -102,15 +103,8 @@ class ProxySuggestionService(
         companyId: String,
         clientException: ClientException,
     ): Exception =
-        when (clientException.statusCode) {
-            HttpStatus.NOT_FOUND.value() ->
-                ResourceNotFoundApiException(
-                    summary = COMPANY_NOT_FOUND,
-                    message = "Dataland does not know the company ID $companyId.",
-                    cause = clientException,
-                )
-
-            HttpStatus.UNPROCESSABLE_CONTENT.value() -> {
+        when {
+            isInvalidProxySuggestion(clientException) -> {
                 val (summary, message) = extractErrorSummaryAndMessage(clientException.response)
                 InvalidProxySuggestionApiException(
                     summary = summary ?: "Invalid proxy suggestion.",
@@ -118,6 +112,13 @@ class ProxySuggestionService(
                     cause = clientException,
                 )
             }
+
+            clientException.statusCode == HttpStatus.NOT_FOUND.value() ->
+                ResourceNotFoundApiException(
+                    summary = COMPANY_NOT_FOUND,
+                    message = "Dataland does not know the company ID $companyId.",
+                    cause = clientException,
+                )
 
             else -> {
                 logger.error(
@@ -127,6 +128,27 @@ class ProxySuggestionService(
                 proxyFinderUnavailable(companyId, clientException)
             }
         }
+
+    /**
+     * Both an unknown company and an invalid proxy suggestion are reported with a 404 by the proxy finder. They are
+     * told apart by the error type of the response.
+     */
+    private fun isInvalidProxySuggestion(clientException: ClientException): Boolean {
+        if (clientException.statusCode != HttpStatus.NOT_FOUND.value()) return false
+        val body = (clientException.response as? ClientError<*>)?.body as? String ?: return false
+        return try {
+            defaultObjectMapper
+                .readTree(body)
+                .path("errors")
+                .path(0)
+                .path("errorType")
+                .textValue() ==
+                INVALID_PROXY_SUGGESTION_ERROR_TYPE
+        } catch (exception: JacksonException) {
+            logger.warn("Could not parse error response of the proxy finder: ${exception.message}")
+            false
+        }
+    }
 
     private fun proxyFinderUnavailable(
         companyId: String,
