@@ -51,6 +51,7 @@ describe('EditDataPointDialog save', () => {
     cy.intercept('POST', '**/data-points?*', { statusCode: 200, body: metaInfo(false) }).as('post');
     cy.intercept('GET', '**/data-points/new-id/metadata', { statusCode: 200, body: metaInfo(false) });
 
+    cy.clock();
     mountEditFormField(
       EditDataPointDialog,
       {},
@@ -68,7 +69,9 @@ describe('EditDataPointDialog save', () => {
       }
     );
     cy.get('[data-test="save-data-point-button"]').click();
-    cy.get('[data-test="save-data-point-pending-activation"]', { timeout: 20000 }).should('be.visible');
+    cy.wait('@post');
+    cy.tick(16000);
+    cy.get('[data-test="save-data-point-pending-activation"]').should('be.visible');
     cy.get('[data-test="save-data-point-button"]').should('be.disabled');
     cy.get('@close').should('not.have.been.called');
   });
