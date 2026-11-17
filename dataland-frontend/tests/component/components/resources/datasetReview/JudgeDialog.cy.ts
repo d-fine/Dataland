@@ -246,6 +246,36 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
+    it('shows the file name instead of the file reference if both are available', () => {
+      mountJudgeDialog({
+        originalDataPointBody: { value: 'v', dataSource: { fileName: 'report.pdf', fileReference: 'abc123' } },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]')
+        .contains('tr', 'Document')
+        .should('contain.text', 'report.pdf')
+        .and('not.contain.text', 'abc123');
+    });
+
+    it('falls back to the file reference if the file name is missing', () => {
+      mountJudgeDialog({ originalDataPointBody: { value: 'v', dataSource: { fileReference: 'abc123' } } });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').contains('tr', 'Document').should('contain.text', 'abc123');
+    });
+
+    it('shows a placeholder for missing values in the original section', () => {
+      mountJudgeDialog({ originalDataPointBody: { value: 'v' } });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        ['Quality', 'Document', 'Page(s)', 'Comment'].forEach((label) => {
+          cy.contains('tr', label).should('contain.text', '—');
+        });
+      });
+    });
+
     it('displays corrected data point fields from the QA report', () => {
       mountJudgeDialog();
 
