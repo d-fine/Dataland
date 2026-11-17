@@ -2,7 +2,10 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrEnvironmental
+import org.dataland.datalandbackend.openApiClient.model.SfdrEnvironmentalGreenhouseGasEmissions
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -26,6 +29,19 @@ class Sfdr {
     private val listOfOneCompanyInformation =
         apiAccessor.testDataProviderForSfdrData
             .getCompanyInformationWithoutIdentifiers(1)
+
+    private val datasetWithoutCalculations =
+        listOf(
+            SfdrData(
+                environmental =
+                    SfdrEnvironmental(
+                        greenhouseGasEmissions =
+                            SfdrEnvironmentalGreenhouseGasEmissions(
+                                scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 123.45.toBigDecimal()),
+                            ),
+                    ),
+            ),
+        )
 
     @BeforeAll
     fun postTestDocuments() {
@@ -64,10 +80,12 @@ class Sfdr {
 
     @Test
     fun `check that an uploaded dataset can be retrieved by data dimensions`() {
+        // The fixture dataset is not used here: retrieval by dimensions derives calculated fields that are empty in the
+        // upload, so a dataset without any calculation inputs is needed for a faithful round trip comparison.
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneSfdrDataset,
+                datasetWithoutCalculations,
                 apiAccessor::sfdrUploaderFunction,
                 reportingPeriod = "2024",
             )
@@ -87,7 +105,7 @@ class Sfdr {
         // rather than being persisted/round-tripped as-is from the upload payload.
         val ignoredKeys = setOf("publicationDate", "fileName", "reportingPeriod", "dataSource", "referencedReports")
         assertEqualsByJsonComparator(
-            listOfOneSfdrDataset[0],
+            datasetWithoutCalculations[0],
             downloadedAssociatedData.data,
             JsonComparator.JsonComparisonOptions(ignoredKeys),
         )
