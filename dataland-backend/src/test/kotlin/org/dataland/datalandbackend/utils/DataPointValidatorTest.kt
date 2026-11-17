@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -59,48 +60,41 @@ class DataPointValidatorTest {
                     ?: throw IllegalArgumentException("Could not load the resource file"),
             )
 
-    private val assuranceClasses =
-        listOf(
-            "org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint",
-        )
+    private val assuranceClass =
+        "org.dataland.datalandbackend.model.datapoints.custom.CustomEuTaxonomyReportingAssuranceDataPoint"
 
     @Test
     fun `check that the framework assurance data point deserializes the comment and rejects a quality`() {
-        val assuranceClass =
-            AssuranceDataPoint::class.java
         val parsed =
             defaultObjectMapper.readValue(
                 """{"value":"LimitedAssurance","provider":"P","comment":"c"}""",
-                assuranceClass,
+                AssuranceDataPoint::class.java,
             )
         assertEquals("c", parsed.comment)
-        assertThrows<Exception> {
-            defaultObjectMapper.readValue("""{"value":"LimitedAssurance","quality":"Audited"}""", assuranceClass)
+        assertThrows<UnrecognizedPropertyException> {
+            defaultObjectMapper.readValue(
+                """{"value":"LimitedAssurance","quality":"Audited"}""",
+                AssuranceDataPoint::class.java,
+            )
         }
     }
 
     @Test
     fun `check that assurance data points with provider and comment are accepted`() {
         val json = """{"value":"LimitedAssurance","provider":"Some Provider","comment":"Some comment"}"""
-        assuranceClasses.forEach {
-            assertDoesNotThrow { dataPointValidator.validateConsistency(json, it, correlationId) }
-        }
+        assertDoesNotThrow { dataPointValidator.validateConsistency(json, assuranceClass, correlationId) }
     }
 
     @Test
     fun `check that assurance data points without comment are still accepted`() {
         val json = """{"value":"None","provider":"Some Provider"}"""
-        assuranceClasses.forEach {
-            assertDoesNotThrow { dataPointValidator.validateConsistency(json, it, correlationId) }
-        }
+        assertDoesNotThrow { dataPointValidator.validateConsistency(json, assuranceClass, correlationId) }
     }
 
     @Test
     fun `check that assurance data points with a quality are rejected`() {
         val json = """{"value":"LimitedAssurance","provider":"Some Provider","comment":"c","quality":"Audited"}"""
-        assuranceClasses.forEach {
-            assertThrows<InvalidInputApiException> { dataPointValidator.validateConsistency(json, it, correlationId) }
-        }
+        assertThrows<InvalidInputApiException> { dataPointValidator.validateConsistency(json, assuranceClass, correlationId) }
     }
 
     @Test
