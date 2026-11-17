@@ -5,5 +5,11 @@
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null,
-  "calculationRules" : [ ]
+  "calculationRules" : [ {
+    "inputs" : [ "extendedDecimalScope1And2And3GhgEmissionsInTonnes", "extendedDecimalTotalRevenueInEUR" ],
+    "calculationMethod" : "DivisionPerMillion"
+  }, {
+    "inputs" : [ "extendedDecimalScope1GhgEmissionsInTonnes", "extendedDecimalScope2GhgEmissionsInTonnes", "extendedDecimalScope3GhgEmissionsInTonnes", "extendedDecimalTotalRevenueInEUR" ],
+    "calculationMethod" : "SumDivisionPerMillion"
+  } ]
 }
