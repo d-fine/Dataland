@@ -6,8 +6,7 @@
         class="proxied-company-link"
         data-test="proxied-company-link"
         @click.prevent="$emit('navigate', company.companyId)"
-        >{{ company.companyName }}</a
-      ><template v-if="index < companies.length - 1">, </template>
+        >{{ company.companyName }}</a><template v-if="index < companies.length - 1">, </template>
     </template>
   </span>
 </template>
