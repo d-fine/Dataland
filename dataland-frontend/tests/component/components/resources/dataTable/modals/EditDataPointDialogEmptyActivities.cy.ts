@@ -49,7 +49,7 @@ Object.entries(emptyShapes).forEach(([name, dataPoint]) => {
         }),
       }
     );
-    cy.get('[data-test="add-first-activity-button"]').click();
+    cy.get('[data-test="add-activity-select"]').click();
     cy.get('.add-activity-overlay .p-select-option').first().click();
     cy.get('[data-test="activity-name"]').should('have.length', 1);
   });

@@ -1,11 +1,13 @@
 package org.dataland.datalandcompanyservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestionSource
 import org.dataland.datalandcompanyservice.model.ProxySearchCompany
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 
 /**
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service
  * This provider will be replaced by an AI-based implementation of [ProxySuggestionProvider].
  */
 @Service
+@ConditionalOnProperty(name = ["dataland.company-service.provider"], havingValue = "mock")
 class MockProxySuggestionProvider(
     private val datalandCompanyService: DatalandCompanyService,
     @Value("\${dataland.company-service.mock.proxy-company-lei}") private val proxyCompanyLei: String,
@@ -41,7 +44,7 @@ class MockProxySuggestionProvider(
                 "using proxy company with LEI $proxyCompanyLei.",
         )
         val proxyCompanyId =
-            datalandCompanyService.findCompanyIdByLei(proxyCompanyLei)
+            datalandCompanyService.findCompanyIdByIdentifier(IdentifierType.Lei, proxyCompanyLei)
                 ?: throw misconfiguredProxyCompany()
         return ProxySuggestion(
             companyId = company.companyId,

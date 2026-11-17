@@ -102,8 +102,8 @@ class ProxyFinderTest {
     }
 
     @Test
-    fun `a suggestion of the company itself is rejected by the proxy finder validation with a 422`() {
-        val exception = assertProxySuggestionFailsWith(HttpStatus.UNPROCESSABLE_CONTENT, mockProxyCompanyId)
+    fun `a suggestion of the company itself is rejected by the proxy finder validation with a 404`() {
+        val exception = assertProxySuggestionFailsWith(HttpStatus.NOT_FOUND, mockProxyCompanyId)
         val responseBody = (exception.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("invalid-proxy-suggestion"))
     }
