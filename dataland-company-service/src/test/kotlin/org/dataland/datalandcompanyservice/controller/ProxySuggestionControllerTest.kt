@@ -97,20 +97,20 @@ class ProxySuggestionControllerTest(
     }
 
     @Test
-    fun `a suggestion of the company itself returns 422`() {
+    fun `a suggestion of the company itself returns 404`() {
         doReturn(CompanyId(companyId))
             .whenever(companyDataControllerApi)
             .getCompanyIdByIdentifier(IdentifierType.Lei, PROXY_COMPANY_LEI)
         requestProxySuggestion(companyId)
-            .andExpect(status().isUnprocessableContent)
+            .andExpect(status().isNotFound)
             .andExpect(jsonPath("$.errors[0].errorType").value(INVALID_PROXY_SUGGESTION_ERROR_TYPE))
     }
 
     @Test
-    fun `a suggestion of an unknown company returns 422`() {
+    fun `a suggestion of an unknown company returns 404`() {
         doThrow(ClientException(statusCode = 404)).whenever(companyDataControllerApi).isCompanyIdValid(any())
         requestProxySuggestion(companyId)
-            .andExpect(status().isUnprocessableContent)
+            .andExpect(status().isNotFound)
             .andExpect(jsonPath("$.errors[0].errorType").value(INVALID_PROXY_SUGGESTION_ERROR_TYPE))
     }
 
