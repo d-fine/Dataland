@@ -110,7 +110,6 @@
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
           :inReviewMode="inReviewMode"
-          @dataUpdated="$emit('dataUpdated')"
         />
       </template>
     </template>
@@ -139,9 +138,6 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn');
 const dialog = useDialog();
-const emit = defineEmits<{
-  dataUpdated: [];
-}>();
 
 /**
  * Scrolls to a specific target element identified by its unique data attribute if it becomes visible.
@@ -270,7 +266,6 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     onClose: (options) => {
       void (async (): Promise<void> => {
         if (options?.data?.dataUpdated) {
-          emit('dataUpdated');
           await nextTick();
           await scroller(cellOrSectionConfig.dataPointTypeId);
         }
