@@ -6,7 +6,7 @@
   "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "between:0,100" ],
   "calculationRules" : [ {
-    "inputs" : [ "extendedIntegerFemaleBoardMembersBoardofDirectors", "extendedIntegerMaleBoardMembersBoardofDirectors" ],
+    "inputs" : [ "extendedIntegerFemaleBoardMembersBoardOfDirectors", "extendedIntegerMaleBoardMembersBoardOfDirectors" ],
     "calculationMethod" : "ShareOfSumInPercent"
   } ]
 }

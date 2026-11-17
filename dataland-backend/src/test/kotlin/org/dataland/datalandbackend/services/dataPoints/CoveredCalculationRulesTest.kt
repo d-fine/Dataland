@@ -37,6 +37,19 @@ class CoveredCalculationRulesTest {
             }
 
     @Test
+    fun `check that all calculation rule inputs refer to existing data point types`() {
+        val existingIds = getDataPointTypeFiles().map { it.nameWithoutExtension }.toSet()
+        val unknownInputs =
+            getSpecifiedCalculationRules()
+                .flatMap { (file, rule) -> rule.inputs.filter { it !in existingIds }.map { "${file.name}: $it" } }
+
+        assertTrue(
+            unknownInputs.isEmpty(),
+            "The following calculation rule inputs do not exist as data point types: ${unknownInputs.joinToString(", ")}",
+        )
+    }
+
+    @Test
     fun `check that all calculation rules specified in the framework toolbox are also implemented`() {
         val specifiedCalculationRules =
             getSpecifiedCalculationRules()
