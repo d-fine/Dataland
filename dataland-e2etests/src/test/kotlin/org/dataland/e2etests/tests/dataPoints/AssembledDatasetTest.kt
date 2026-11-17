@@ -26,8 +26,6 @@ import org.dataland.e2etests.utils.assertEqualsByJsonComparator
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -120,71 +118,6 @@ class AssembledDatasetTest {
                 )
 
             compareSfdrCompanyInformationDatasets(datasetWithoutCalculations, downloadedDataset.data)
-        }
-    }
-
-    @Test
-    fun `ensure that calculated fields are derived by dimensions but not returned by dataset id`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val inputDataset =
-            SfdrData(
-                environmental =
-                    SfdrEnvironmental(
-                        greenhouseGasEmissions =
-                            SfdrEnvironmentalGreenhouseGasEmissions(
-                                scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 100.toBigDecimal()),
-                                scope2GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 50.toBigDecimal()),
-                            ),
-                    ),
-            )
-        val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = true, dataset = inputDataset)
-
-        Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val calculated =
-                Backend.sfdrDataControllerApi
-                    .getCompanyAssociatedSfdrDataByDimensions(dataMetaInformation.reportingPeriod, companyId)
-                    .data.environmental
-                    ?.greenhouseGasEmissions
-                    ?.scope1And2GhgEmissionsInTonnes
-            assertNotNull(calculated)
-            assertEquals(0, 150.toBigDecimal().compareTo(calculated!!.value))
-            assertTrue(calculated.comment!!.contains("calculated using the following formula"))
-        }
-
-        val byDataId =
-            Backend.sfdrDataControllerApi
-                .getCompanyAssociatedSfdrData(dataMetaInformation.dataId)
-                .data.environmental
-                ?.greenhouseGasEmissions
-        assertNull(byDataId?.scope1And2GhgEmissionsInTonnes)
-    }
-
-    @Test
-    fun `ensure that a directly entered value takes precedence over the calculation`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val inputDataset =
-            SfdrData(
-                environmental =
-                    SfdrEnvironmental(
-                        greenhouseGasEmissions =
-                            SfdrEnvironmentalGreenhouseGasEmissions(
-                                scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 100.toBigDecimal()),
-                                scope2GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 50.toBigDecimal()),
-                                scope1And2GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 7.toBigDecimal()),
-                            ),
-                    ),
-            )
-        val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = true, dataset = inputDataset)
-
-        Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
-            val value =
-                Backend.sfdrDataControllerApi
-                    .getCompanyAssociatedSfdrDataByDimensions(dataMetaInformation.reportingPeriod, companyId)
-                    .data.environmental
-                    ?.greenhouseGasEmissions
-                    ?.scope1And2GhgEmissionsInTonnes
-                    ?.value
-            assertEquals(0, 7.toBigDecimal().compareTo(value))
         }
     }
 

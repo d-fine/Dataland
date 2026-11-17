@@ -395,6 +395,13 @@ enum class DataPointConversion(
                 ?: throw IllegalArgumentException("Unsupported method: $id")
     }
 
+    /**
+     * Derives a decimal data point from [inputs] using [compute] on the ordered input values.
+     *
+     * @param minimumInputCount the minimum number of inputs required
+     * @param compute computes the result value from the ordered input values
+     * @return the derived data point
+     */
     protected fun convertNumeric(
         inputs: Collection<UploadedDataPoint>,
         targetType: DataPointType,
