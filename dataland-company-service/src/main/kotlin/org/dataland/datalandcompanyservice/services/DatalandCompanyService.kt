@@ -2,10 +2,12 @@ package org.dataland.datalandcompanyservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.COMPANY_NOT_FOUND
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.ValidationUtils
+import org.dataland.datalandcompanyservice.model.DatalandCompanyCandidate
 import org.dataland.datalandcompanyservice.model.ProxySearchCompany
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -17,25 +19,28 @@ import org.springframework.stereotype.Service
 class DatalandCompanyService(
     private val companyDataControllerApi: CompanyDataControllerApi,
 ) {
+    // --- Public API ---
+
     /**
-     * Retrieves the company with the given ID from the backend.
+     * Retrieves the company with the given ID from the backend, including the Dataland company of its parent LEI
+     * (if one is stored and the parent exists on Dataland).
      * @param companyId the Dataland company ID
      * @return the company
      * @throws ResourceNotFoundApiException if the company does not exist on Dataland
      */
     fun getCompany(companyId: String): ProxySearchCompany {
-        val companyInformation =
-            if (ValidationUtils.isUuid(companyId)) {
-                try {
-                    companyDataControllerApi.getCompanyInfo(companyId)
-                } catch (clientException: ClientException) {
-                    throw translateNotFound(companyId, clientException)
-                }
-            } else {
-                null
-            }
-        return companyInformation?.let { ProxySearchCompany(companyId = companyId, companyName = it.companyName) }
-            ?: throw companyNotFound(companyId)
+        val companyInformation = getCompanyInformation(companyId)
+        val parentCompanyLei = companyInformation.parentCompanyLei?.takeIf { it.isNotBlank() }
+        return ProxySearchCompany(
+            companyId = companyId,
+            companyName = companyInformation.companyName,
+            alternativeNames = companyInformation.companyAlternativeNames.orEmpty(),
+            identifiers = companyInformation.identifiers.filterValues { it.isNotEmpty() },
+            countryCode = companyInformation.countryCode,
+            headquarters = companyInformation.headquarters,
+            parentCompanyLei = parentCompanyLei,
+            parentCompany = parentCompanyLei?.let { findCompanyByIdentifier(IdentifierType.Lei.name, it) },
+        )
     }
 
     /**
@@ -45,42 +50,79 @@ class DatalandCompanyService(
      */
     fun companyExists(companyId: String): Boolean {
         if (!ValidationUtils.isUuid(companyId)) return false
-        return try {
+        return recoverFromStatus(HttpStatus.NOT_FOUND, { false }) {
             companyDataControllerApi.isCompanyIdValid(companyId)
             true
-        } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                false
-            } else {
-                throw clientException
-            }
         }
     }
 
     /**
-     * Looks up the Dataland company ID of the company with the given LEI.
-     * @param lei the LEI of the company
-     * @return the Dataland company ID or null if no company with this LEI exists on Dataland
+     * Searches companies by (part of) their name.
+     * @param name the search string
+     * @param limit the maximum number of results
+     * @return the matching companies, empty if the search string is too short or nothing matches
      */
-    fun findCompanyIdByLei(lei: String): String? =
-        try {
-            companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.Lei, lei).companyId
-        } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-                null
-            } else {
-                throw clientException
-            }
+    fun searchCompaniesByName(
+        name: String,
+        limit: Int,
+    ): List<DatalandCompanyCandidate> =
+        recoverFromStatus(HttpStatus.BAD_REQUEST, { emptyList() }) {
+            companyDataControllerApi
+                .getCompaniesBySearchString(name.trim(), limit)
+                .map { DatalandCompanyCandidate(it.companyId, it.companyName) }
         }
 
-    private fun translateNotFound(
-        companyId: String,
-        clientException: ClientException,
-    ): Exception =
-        if (clientException.statusCode == HttpStatus.NOT_FOUND.value()) {
-            companyNotFound(companyId, clientException)
-        } else {
-            clientException
+    /**
+     * Looks up a company by an identifier of the given type.
+     * @param identifierType the name of the identifier type (case-insensitive), e.g. Lei
+     * @param identifier the identifier value
+     * @return the company or null if the type is unknown or no such company exists
+     */
+    fun findCompanyByIdentifier(
+        identifierType: String,
+        identifier: String,
+    ): DatalandCompanyCandidate? {
+        val type = IdentifierType.values().firstOrNull { it.name.equals(identifierType.trim(), ignoreCase = true) }
+        val companyId = type?.let { findCompanyIdByIdentifier(it, identifier.trim()) }
+        return companyId?.let { DatalandCompanyCandidate(it, getCompanyInformation(it).companyName) }
+    }
+
+    /**
+     * Looks up the Dataland company ID of the company with the given identifier.
+     * @param type the identifier type
+     * @param identifier the identifier value
+     * @return the Dataland company ID or null if no company with this identifier exists on Dataland
+     */
+    fun findCompanyIdByIdentifier(
+        type: IdentifierType,
+        identifier: String,
+    ): String? =
+        recoverFromStatus(HttpStatus.NOT_FOUND, { null }) {
+            companyDataControllerApi.getCompanyIdByIdentifier(type, identifier).companyId
+        }
+
+    // --- Private helpers ---
+
+    private fun getCompanyInformation(companyId: String): CompanyInformation {
+        if (!ValidationUtils.isUuid(companyId)) throw companyNotFound(companyId)
+        return recoverFromStatus(HttpStatus.NOT_FOUND, { throw companyNotFound(companyId, it) }) {
+            companyDataControllerApi.getCompanyInfo(companyId)
+        }
+    }
+
+    /**
+     * Executes the block and returns the result of [fallback] if the backend answers with the given status.
+     * Any other client error is rethrown.
+     */
+    private inline fun <T> recoverFromStatus(
+        status: HttpStatus,
+        fallback: (ClientException) -> T,
+        block: () -> T,
+    ): T =
+        try {
+            block()
+        } catch (clientException: ClientException) {
+            if (clientException.statusCode == status.value()) fallback(clientException) else throw clientException
         }
 
     private fun companyNotFound(
