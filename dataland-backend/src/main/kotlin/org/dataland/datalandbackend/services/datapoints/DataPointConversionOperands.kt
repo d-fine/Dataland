@@ -99,7 +99,7 @@ internal inline fun <
     )
 }
 
-private val ONE_HUNDRED = BigDecimal("100")
+internal val ONE_HUNDRED = BigDecimal("100")
 
 internal data class PercentageMultiplicationOperands<V : ExtendedDataPointInterface<BigDecimal>>(
     val valueDataPoint: V,
@@ -132,7 +132,7 @@ internal inline fun <reified V : ExtendedDataPointInterface<BigDecimal>> extract
     )
 }
 
-private val ONE_MILLION = BigDecimal("1000000")
+internal val ONE_MILLION = BigDecimal("1000000")
 
 /**
  * Parses [inputs] as decimal data points and returns them together with their values.
@@ -189,4 +189,4 @@ internal fun shareOfSumInPercent(
     x: BigDecimal,
     y: BigDecimal,
     operationName: String,
-): BigDecimal = divideScaled(x, x.add(y), BigDecimal("100"), operationName)
+): BigDecimal = divideScaled(x, x.add(y), ONE_HUNDRED, operationName)

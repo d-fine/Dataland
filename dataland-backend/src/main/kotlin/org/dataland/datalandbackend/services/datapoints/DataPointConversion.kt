@@ -14,10 +14,8 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import java.math.BigDecimal
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint as ExtendedDataPointInterface
 
-private val ONE_HUNDRED = BigDecimal("100")
 private const val REQUIRED_INPUT_COUNT = 3
 private const val SUM_NUMERATOR_INPUT_COUNT = 3
-private const val TWO_INPUTS = 2
 
 /**
  * Ensures that [inputs] preserve a fixed order and returns them as a [List].
@@ -198,9 +196,9 @@ enum class DataPointConversion(
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
-            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "division per million", TWO_INPUTS) {
-                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for division per million." }
-                divideScaled(it[0], it[1], BigDecimal("1000000"), "division per million")
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "division per million", 2) {
+                require(it.size == 2) { "Exactly two data points must be provided for division per million." }
+                divideScaled(it[0], it[1], ONE_MILLION, "division per million")
             }
     },
 
@@ -279,8 +277,8 @@ enum class DataPointConversion(
             specs: Map<DataPointType, DataPointTypeSpecification>,
             sourceFrameworksByType: Map<DataPointType, List<FrameworkSpecification>>,
         ): UploadedDataPoint =
-            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "share of sum in percent", TWO_INPUTS) {
-                require(it.size == TWO_INPUTS) { "Exactly two data points must be provided for share of sum in percent." }
+            convertNumeric(inputs, targetType, specs, sourceFrameworksByType, "share of sum in percent", 2) {
+                require(it.size == 2) { "Exactly two data points must be provided for share of sum in percent." }
                 shareOfSumInPercent(it[0], it[1], "share of sum in percent")
             }
     },
@@ -399,7 +397,6 @@ enum class DataPointConversion(
 
     /**
      * Derives a decimal data point from [inputs] using [compute] on the ordered input values.
-     * Used by the per-million and share-of-sum conversions, whose result is always a plain decimal.
      *
      * @param minimumInputCount the minimum number of inputs required; a conversion with exactly this many inputs
      * must be configured for fixed-arity methods
