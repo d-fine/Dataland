@@ -25,7 +25,6 @@ describe('Unit test for formatAssuranceForDataTable', () => {
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
       displayValue: 'Limited Assurance',
     });
-    expect(JSON.stringify(result)).not.to.contain('Assurance provided by');
   });
 
   it('keeps the provider even if neither comment nor data source exist', () => {

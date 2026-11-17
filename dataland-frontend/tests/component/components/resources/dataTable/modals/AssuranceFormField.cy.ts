@@ -49,11 +49,16 @@ describe('Component test for AssuranceFormField', () => {
 
   it('keeps provider and comment when only the level is changed', () => {
     mountComponent({ value: 'Limited Assurance', provider: 'Deloitte', comment: 'Section 4' });
+    cy.get('[data-test="assurance-select"]').click();
+    cy.get('.p-select-option-label').contains('Reasonable Assurance').click();
     cy.get('[data-test="assurance-provider-input"]').should('have.value', 'Deloitte');
+    cy.get('[data-test="assurance-comment-input"]').should('have.value', 'Section 4');
     cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
-      const body = JSON.parse(component.buildApiBodyWithExtendedInfo()) as Record<string, unknown>;
-      expect(body.provider).to.equal('Deloitte');
-      expect(body.comment).to.equal('Section 4');
+      expect(JSON.parse(component.buildApiBodyWithExtendedInfo())).to.deep.equal({
+        value: 'ReasonableAssurance',
+        provider: 'Deloitte',
+        comment: 'Section 4',
+      });
     });
   });
 

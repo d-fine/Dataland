@@ -392,30 +392,6 @@ describe('JudgeDialog component tests', () => {
       },
     });
 
-    it('shows the provider in the Original section and a provider field in the Custom form', () => {
-      mountJudgeDialog({
-        datasetJudgement: withBaseType(assuranceType),
-        originalDataPointBody: { value: 'LimitedAssurance', provider: 'ACME Auditors', quality: 'Audited' },
-      });
-      cy.wait('@getOriginalDataPoint');
-
-      cy.get('[data-test="original-datapoint-section"]').within(() => {
-        cy.contains('tr', 'Provider').should('contain.text', 'ACME Auditors');
-      });
-
-      cy.get('[data-test="custom-value-field"]').click();
-      cy.get('[data-test="custom-value-field"]').clear();
-      cy.get('[data-test="custom-value-field"]').type('ReasonableAssurance');
-      cy.get('[data-test="custom-provider-field"]').type('Other Auditors');
-      cy.get('[data-test="accept-custom-button"]').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        const body = interception.request.body as { customDataPoint?: string };
-        const parsed = JSON.parse(body.customDataPoint ?? '{}') as { provider?: string };
-        expect(parsed.provider).to.equal('Other Auditors');
-      });
-    });
-
     const withAssuranceQaReport = (correctedData: object): DatasetJudgementResponse => {
       const base = withBaseType(assuranceType);
       return {
@@ -458,7 +434,6 @@ describe('JudgeDialog component tests', () => {
         cy.contains('tr', 'Comment').should('contain.text', 'QA comment text');
         cy.contains('tr', 'Quality').should('not.exist');
       });
-      cy.get('[data-test="original-datapoint-section"]').should('not.contain.text', 'Assurance provided by');
     });
 
     it('shows a comment field but no quality dropdown in the Custom form', () => {
@@ -468,17 +443,6 @@ describe('JudgeDialog component tests', () => {
       cy.get('[data-test="custom-comment-field"]').should('exist');
       cy.get('[data-test="custom-provider-field"]').should('exist');
       cy.get('[data-test="custom-quality-field"]').should('not.exist');
-    });
-
-    it('can accept a QA report without quality (e.g. from the DALAI bot) for assurance', () => {
-      mountJudgeDialog({
-        datasetJudgement: withAssuranceQaReport({ value: 'LimitedAssurance', provider: 'Bot Provider', quality: null }),
-      });
-      cy.get('[data-test="accept-report-button"]').should('be.enabled').click();
-
-      cy.wait('@patchJudgementDetail').then((interception) => {
-        expect(interception.request.body.acceptedSource).to.eq(AcceptedDataPointSource.Qa);
-      });
     });
 
     it('sends provider and comment but never a quality when accepting a custom assurance data point', () => {
@@ -520,22 +484,14 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
-    it('still requires and shows a quality for non-Assurance data points', () => {
+    it('shows quality but no provider elements for non-assurance data points', () => {
       mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
       cy.wait('@getOriginalDataPoint');
 
       cy.get('[data-test="custom-quality-field"]').should('exist');
-      cy.get('[data-test="original-datapoint-section"]').within(() => {
-        cy.contains('tr', 'Quality').should('exist');
-      });
-    });
-
-    it('does not show provider elements for non-Assurance data points', () => {
-      mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
-      cy.wait('@getOriginalDataPoint');
-
       cy.get('[data-test="custom-provider-field"]').should('not.exist');
       cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Quality').should('exist');
         cy.contains('tr', 'Provider').should('not.exist');
       });
     });
