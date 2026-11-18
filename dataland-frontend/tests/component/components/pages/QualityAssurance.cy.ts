@@ -81,17 +81,12 @@ function getFirstElementInColumn(columnName: string): Cypress.Chainable<JQuery> 
  * @param value
  */
 function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
-  if (side === 'left') {
-    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').first().as('leftHandle');
-    for (let i = 0; i < value - 1; i++) {
-      cy.get('@leftHandle').focus().type('{rightarrow}');
-    }
-  } else {
-    cy.get('[data-test="priority-slider"]').find('.p-slider-handle').last().as('rightHandle');
-    for (let i = 0; i < value - 1; i++) {
-      cy.get('@rightHandle').focus().type('{leftarrow}');
-    }
-  }
+  const priorityMin = 1;
+  const priorityMax = 10;
+  const inputs = cy.get('[data-test="priority-slider"]').find('input.p-slider-input');
+  const handle = side === 'left' ? inputs.first() : inputs.last();
+  const target = side === 'left' ? priorityMin + value - 1 : priorityMax - value + 1;
+  handle.invoke('val', target).trigger('input').trigger('change');
 }
 type ReviewQueueElementOptions = {
   dataId: string;
