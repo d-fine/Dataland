@@ -55,7 +55,9 @@ class ProxySuggestionService(
         throwable: Throwable,
     ): Throwable =
         when (throwable) {
-            is ClientException -> translateClientException(companyId, throwable)
+            is ClientException -> {
+                translateClientException(companyId, throwable)
+            }
 
             is ServerException -> {
                 logger.error(
@@ -70,7 +72,9 @@ class ProxySuggestionService(
                 proxyFinderUnavailable(companyId, throwable)
             }
 
-            else -> throwable
+            else -> {
+                throwable
+            }
         }
 
     private fun translateClientException(
@@ -78,12 +82,13 @@ class ProxySuggestionService(
         clientException: ClientException,
     ): Exception =
         when (clientException.statusCode) {
-            HttpStatus.NOT_FOUND.value() ->
+            HttpStatus.NOT_FOUND.value() -> {
                 ResourceNotFoundApiException(
                     summary = COMPANY_NOT_FOUND,
                     message = "Dataland does not know the company ID $companyId.",
                     cause = clientException,
                 )
+            }
 
             HttpStatus.UNPROCESSABLE_CONTENT.value() -> {
                 val (summary, message) = extractErrorSummaryAndMessage(clientException)

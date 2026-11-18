@@ -9,7 +9,7 @@ org-springframework-boot = { id = "org.springframework.boot", version.ref = "spr
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.2.0" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
-org-sonarqube = { id = "org.sonarqube", version = "7.5.0.8588" }
+org-sonarqube = { id = "org.sonarqube", version = "7.6.0.18749" }
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "4.0.1" }
 org-openapi-generator = { id = "org.openapi.generator", version = "7.27.0" }
@@ -20,7 +20,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "2.4.10"
+kotlin = "2.4.21"
 okhttp3 = "5.5.1"
 moshi = "1.15.2"
 mockito = "5.24.0"

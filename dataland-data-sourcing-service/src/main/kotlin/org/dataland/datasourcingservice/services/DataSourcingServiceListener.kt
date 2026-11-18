@@ -109,7 +109,9 @@ class DataSourcingServiceListener
                         }
                     }
 
-                    else -> Unit
+                    else -> {
+                        Unit
+                    }
                 }
             }
         }

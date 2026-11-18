@@ -19,14 +19,27 @@ fun isGreaterOrEqual(
     value: Number?,
     minimumValue: Long,
 ) = when (value) {
-    null -> true
-    is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
-    is BigInteger -> value >= BigInteger.valueOf(minimumValue)
-    is Long -> value >= minimumValue
-    else ->
+    null -> {
+        true
+    }
+
+    is BigDecimal -> {
+        value >= BigDecimal.valueOf(minimumValue)
+    }
+
+    is BigInteger -> {
+        value >= BigInteger.valueOf(minimumValue)
+    }
+
+    is Long -> {
+        value >= minimumValue
+    }
+
+    else -> {
         throwInvalidValidatorException(
             "Type ${value::class.simpleName} is not handled by number validator",
         )
+    }
 }
 
 /**
@@ -36,14 +49,27 @@ fun isLessOrEqual(
     value: Number?,
     maximumValue: Long,
 ) = when (value) {
-    null -> true
-    is BigDecimal -> value <= BigDecimal.valueOf(maximumValue)
-    is BigInteger -> value <= BigInteger.valueOf(maximumValue)
-    is Long -> value <= maximumValue
-    else ->
+    null -> {
+        true
+    }
+
+    is BigDecimal -> {
+        value <= BigDecimal.valueOf(maximumValue)
+    }
+
+    is BigInteger -> {
+        value <= BigInteger.valueOf(maximumValue)
+    }
+
+    is Long -> {
+        value <= maximumValue
+    }
+
+    else -> {
         throwInvalidValidatorException(
             "Type ${value::class.simpleName} is not handled by number validator",
         )
+    }
 }
 
 /**

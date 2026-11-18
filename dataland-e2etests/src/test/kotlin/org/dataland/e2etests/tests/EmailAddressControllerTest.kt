@@ -73,15 +73,17 @@ class EmailAddressControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(user)
 
         when (user) {
-            TechnicalUser.Admin ->
+            TechnicalUser.Admin -> {
                 assertDoesNotThrow {
                     apiAccessor.emailAddressControllerApi.getUsersByCompanyAssociatedSubdomains(companyId)
                 }
+            }
 
-            else ->
+            else -> {
                 assertThrows<ClientException> {
                     apiAccessor.emailAddressControllerApi.getUsersByCompanyAssociatedSubdomains(companyId)
                 }
+            }
         }
 
         if (user == TechnicalUser.Admin) return
@@ -171,12 +173,16 @@ class EmailAddressControllerTest {
 
         when (role) {
             CompanyRole.CompanyOwner, CompanyRole.Admin,
-            -> assertDoesNotThrow { verifyAdminMailAddress() }
+            -> {
+                assertDoesNotThrow { verifyAdminMailAddress() }
+            }
+
             else
-            ->
+            -> {
                 assertThrows<ClientException> { verifyAdminMailAddress() }.also {
                     assertEquals(403, it.statusCode)
                 }
+            }
         }
     }
 }

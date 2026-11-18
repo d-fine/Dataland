@@ -59,7 +59,9 @@ class PercentageComponent(
     override fun getUploadComponentName(): String =
         when (documentSupport) {
             is NoDocumentSupport -> "NumberFormField"
+
             is ExtendedDocumentSupport -> "PercentageExtendedDataPointFormField"
+
             else -> throw IllegalArgumentException(
                 "Upload-page generation for this component " +
                     "does not support $documentSupport",

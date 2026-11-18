@@ -110,26 +110,33 @@ class DocumentMetaInfoEntityTest {
             )
 
         when {
-            qaStatus == QaStatus.Accepted ->
+            qaStatus == QaStatus.Accepted -> {
                 assertTrue(
                     documentMetaInfoEntity.isViewableByUser(),
                     "Method returned false although QaStatus is Accepted.",
                 )
-            !isUserLoggedIn ->
+            }
+
+            !isUserLoggedIn -> {
                 assertFalse(
                     documentMetaInfoEntity.isViewableByUser(),
                     "Method returned true although QaStatus is Pending and user is not logged in.",
                 )
-            uploaderId != DUMMY_USER_ID && userRoles.isEmpty() ->
+            }
+
+            uploaderId != DUMMY_USER_ID && userRoles.isEmpty() -> {
                 assertFalse(
                     documentMetaInfoEntity.isViewableByUser(),
                     "Method returned true although all conditions failed.",
                 )
-            else ->
+            }
+
+            else -> {
                 assertTrue(
                     documentMetaInfoEntity.isViewableByUser(),
                     "Method returned false although user should have the right to view the non-accepted document.",
                 )
+            }
         }
     }
 }

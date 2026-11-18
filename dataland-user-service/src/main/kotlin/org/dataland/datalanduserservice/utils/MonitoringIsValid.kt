@@ -31,14 +31,18 @@ class PortfolioMonitoringValidator : ConstraintValidator<MonitoringIsValid, Port
         context: ConstraintValidatorContext,
     ): Boolean =
         when (value?.isMonitored) {
-            true ->
+            true -> {
                 value.monitoredFrameworks.isNotEmpty() &&
                     value.timeWindowThreshold != null
+            }
 
-            false ->
+            false -> {
                 value.monitoredFrameworks.isEmpty() &&
                     value.timeWindowThreshold == null
+            }
 
-            null -> false
+            null -> {
+                false
+            }
         }
 }
