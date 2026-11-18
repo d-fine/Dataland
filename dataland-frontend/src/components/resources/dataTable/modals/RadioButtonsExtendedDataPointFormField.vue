@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import SelectButton from 'primevue/selectbutton';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
@@ -30,11 +30,21 @@ const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
 }>();
 
-// Currently only used for the fiscal year deviation data point.
-const options = [
+const deviationOptions = [
   { label: 'Deviation', value: 'Deviation' },
   { label: 'No Deviation', value: 'NoDeviation' },
 ];
+const exchangeStatusOptions = [
+  { label: 'Listed', value: 'Listed' },
+  { label: 'Unlisted', value: 'Unlisted' },
+];
+const optionsByDataPointTypeId: Record<string, { label: string; value: string }[]> = {
+  extendedEnumCompanyExchangeStatus: exchangeStatusOptions,
+  extendedEnumSfdrCompanyExchangeStatus: exchangeStatusOptions,
+};
+
+const dataPointTypeId = inject<string | undefined>('dataPointTypeId', undefined);
+const options = optionsByDataPointTypeId[dataPointTypeId ?? ''] ?? deviationOptions;
 
 const initialValue = props.extendedDataPointObject.value;
 const dataPointValue = ref<string | null>(

@@ -4,8 +4,8 @@ import RadioButtonsExtendedDataPointFormField from '@/components/resources/dataT
 /**
  * @param extendedDataPointObject the initial data point
  */
-function mountComponent(extendedDataPointObject: object): void {
-  mountEditFormField(RadioButtonsExtendedDataPointFormField, extendedDataPointObject);
+function mountComponent(extendedDataPointObject: object, dataPointTypeId?: string): void {
+  mountEditFormField(RadioButtonsExtendedDataPointFormField, extendedDataPointObject, { dataPointTypeId });
 }
 
 describe('Component test for RadioButtonsExtendedDataPointFormField', () => {
@@ -21,6 +21,16 @@ describe('Component test for RadioButtonsExtendedDataPointFormField', () => {
     cy.get('[data-test="radio-buttons-select"]').contains('No Deviation').click();
     cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
       expect(JSON.parse(component.buildApiBodyWithExtendedInfo()).value).to.equal('NoDeviation');
+    });
+  });
+
+  it('offers Listed and Unlisted for the company exchange status', () => {
+    mountComponent({ value: 'Listed' }, 'extendedEnumCompanyExchangeStatus');
+    cy.get('[data-test="radio-buttons-select"]').should('contain', 'Listed').and('contain', 'Unlisted');
+    cy.get('[data-test="radio-buttons-select"]').should('not.contain', 'Deviation');
+    cy.get('[data-test="radio-buttons-select"]').contains('Unlisted').click();
+    cy.get('@component').then((component: { buildApiBodyWithExtendedInfo: () => string }) => {
+      expect(JSON.parse(component.buildApiBodyWithExtendedInfo()).value).to.equal('Unlisted');
     });
   });
 });
