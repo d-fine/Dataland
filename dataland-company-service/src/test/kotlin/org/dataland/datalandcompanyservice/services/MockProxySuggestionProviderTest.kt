@@ -1,5 +1,6 @@
 package org.dataland.datalandcompanyservice.services
 
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandcompanyservice.model.ProxySearchCompany
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -29,7 +30,7 @@ class MockProxySuggestionProviderTest {
 
     @Test
     fun `the same hardcoded suggestion is returned for any input company`() {
-        doReturn(proxyCompanyId).whenever(mockDatalandCompanyService).findCompanyIdByLei(proxyCompanyLei)
+        doReturn(proxyCompanyId).whenever(mockDatalandCompanyService).findCompanyIdByIdentifier(IdentifierType.Lei, proxyCompanyLei)
         val firstCompany = ProxySearchCompany(UUID.randomUUID().toString(), "First Company AG")
         val secondCompany = ProxySearchCompany(UUID.randomUUID().toString(), "Second Company GmbH")
 
@@ -48,7 +49,7 @@ class MockProxySuggestionProviderTest {
 
     @Test
     fun `an internal server error is thrown if the configured proxy company does not exist`() {
-        doReturn(null).whenever(mockDatalandCompanyService).findCompanyIdByLei(proxyCompanyLei)
+        doReturn(null).whenever(mockDatalandCompanyService).findCompanyIdByIdentifier(IdentifierType.Lei, proxyCompanyLei)
 
         val exception =
             assertThrows<InternalServerErrorApiException> {

@@ -31,4 +31,26 @@ describe('Component tests for toggle data point', () => {
       cy.wrap(mounted.component).its('currentQualityValue').should('eq', 'Estimated');
     });
   });
+
+  it('Shows percentage and absolute inputs in second input mode and restores them after toggling', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(DataPointFormWithToggle, {
+      // @ts-ignore
+      props: {
+        name: 'tradingPortfolioInPercent',
+        kpiInfoMappings: euTaxonomyKpiInfoMappings,
+        kpiNameMappings: euTaxonomyKpiNameMappings,
+        showSecondInput: true,
+      },
+    }).then((mounted) => {
+      cy.get('[data-test="value"]').should('not.exist');
+      cy.get('[data-test="valueAsPercentageInSecondInputMode"]').should('be.visible').type('12');
+      cy.get('[data-test="valueAsAbsoluteInSecondInputMode"]').should('be.visible').type('34');
+      cy.get('[data-test="dataPointToggleButton"]').click();
+      cy.wrap(mounted.component).its('currentAmountValue').should('eq', '');
+      cy.get('[data-test="dataPointToggleButton"]').click();
+      cy.wrap(mounted.component).its('currentValue').should('eq', '12');
+      cy.wrap(mounted.component).its('currentAmountValue').should('eq', '34');
+    });
+  });
 });

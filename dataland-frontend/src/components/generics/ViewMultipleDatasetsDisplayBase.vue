@@ -91,7 +91,7 @@ export default defineComponent({
     nonSourceabilityInfoText(): string {
       const periods = Array.from(this.nonSourceableDimensions ?? [])
         .map((dim) => dim.reportingPeriod)
-        .sort();
+        .sort((a, b) => a.localeCompare(b));
       if (periods.length === 0) {
         return '';
       }

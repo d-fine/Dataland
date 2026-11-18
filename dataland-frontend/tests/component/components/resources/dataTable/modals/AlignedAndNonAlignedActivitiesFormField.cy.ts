@@ -56,11 +56,11 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
       cy.get('[data-test="activity-name"]').should('have.length', 1);
     });
 
-    it('offers a button to add the first activity when the list is empty', () => {
+    it('shows a hint and allows adding the first activity via the dropdown when the list is empty', () => {
       mountEditFormField(component, { ...dataPoint, value: [] }, { activityKpiType: 'revenue' });
       cy.get('[data-test="activity-name"]').should('not.exist');
       cy.get('[data-test="empty-activities"]').should('contain.text', 'No activities have been added yet.');
-      cy.get('[data-test="add-first-activity-button"]').click();
+      cy.get('[data-test="add-activity-select"]').click();
       cy.get('.add-activity-overlay .p-select-option').first().click();
       cy.get('[data-test="activity-name"]').should('have.length', 1);
       cy.get('[data-test="empty-activities"]').should('not.exist');
@@ -72,6 +72,52 @@ variants.forEach(({ name, component, expectsYesNoColumns, expectsGroupHeaderRow 
         const body = JSON.parse(instance.buildApiBodyWithExtendedInfo());
         expect(body.value).to.have.length(1);
         expect(body.value[0].activityName).to.equal('Afforestation');
+      });
+    });
+
+    it('keeps stored NACE codes and does not add NACE codes for newly added activities', () => {
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
+      cy.get('[data-test="nace-codes"]').should('have.length', 1).and('contain.text', 'A2');
+      cy.get('[data-test="add-activity-select"]').click();
+      cy.get('.add-activity-overlay .p-select-option').first().click();
+      cy.get('[data-test="activity-name"]').should('have.length', 2);
+      cy.get('[data-test="nace-codes"]').should('have.length', 1);
+      cy.get('@component').then((instance: { buildApiBodyWithExtendedInfo: () => string }) => {
+        const [stored, added] = JSON.parse(instance.buildApiBodyWithExtendedInfo()).value;
+        expect(stored.naceCodes).to.deep.equal(['A2']);
+        expect(added).not.to.have.property('naceCodes');
+      });
+    });
+
+    it('shows an empty NACE cell when no NACE codes are stored', () => {
+      mountEditFormField(
+        component,
+        { ...dataPoint, value: [{ ...row, naceCodes: [] }] },
+        { activityKpiType: 'revenue' }
+      );
+      cy.get('[data-test="activity-name"]').should('have.length', 1);
+      cy.get('[data-test="nace-codes"]').should('not.exist');
+    });
+
+    it('labels the quality, document, page and comment fields', () => {
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' });
+      cy.get('label[for="quality-select"]').should('have.text', 'Quality');
+      cy.get('label[for="document-select"]').should('have.text', 'Document');
+      cy.get('label[for="page-number-input"]').should('have.text', 'Page(s)');
+      cy.get('label[for="comment-input"]').should('have.text', 'Comment');
+    });
+
+    it('shows the document metadata with placeholders for missing values after selecting a document', () => {
+      const documents = [{ documentId: 'doc-1', documentName: 'Annual Report', documentCategory: null }];
+      mountEditFormField(component, dataPoint, { activityKpiType: 'revenue' }, documents);
+      cy.get('[data-test="document-meta"]').should('not.exist');
+      cy.get('[data-test="document-select"]').click();
+      cy.get('.p-select-option').should('contain.text', 'Annual Report');
+      cy.get('[data-test="document-select"]').type('{downarrow}{enter}');
+      cy.get('[data-test="document-meta"]').should('have.length', 4);
+      cy.get('[data-test="document-meta"]').eq(0).should('contain.text', 'Annual Report');
+      [1, 2, 3].forEach((index) => {
+        cy.get('[data-test="document-meta"]').eq(index).should('contain.text', '–');
       });
     });
 

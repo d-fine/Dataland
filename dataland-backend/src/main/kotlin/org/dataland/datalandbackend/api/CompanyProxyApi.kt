@@ -289,14 +289,15 @@ interface CompanyProxyApi {
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "The specified company does not exist on Dataland.",
+                description =
+                    "The specified company does not exist on Dataland or no valid proxy suggestion could be found, e.g. no " +
+                        "suitable proxy company was identified, the suggested company does not exist on Dataland or is the " +
+                        "company itself.",
                 content = [Content(mediaType = "application/json")],
             ),
             ApiResponse(
-                responseCode = "422",
-                description =
-                    "No valid proxy suggestion could be found, e.g. the suggested company does not exist on " +
-                        "Dataland or is the company itself.",
+                responseCode = "503",
+                description = "The proxy search is currently unavailable, e.g. the AI service failed or took too long.",
                 content = [Content(schema = Schema())],
             ),
         ],
