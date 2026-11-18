@@ -16,53 +16,36 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
 import SelectButton from 'primevue/selectbutton';
-import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
+import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
 import {
-  buildApiBody,
-  type ExtendedDataPointMetaInfoType,
-  type ExtendedDataPointType,
-} from '@/components/resources/dataTable/conversion/Utils.ts';
+  useOptionExtendedDataPoint,
+  type SelectOption,
+} from '@/components/resources/dataTable/modals/useOptionExtendedDataPoint.ts';
 
 const props = defineProps<{
   extendedDataPointObject: ExtendedDataPointType;
 }>();
 
-const deviationOptions = [
+const deviationOptions: SelectOption[] = [
   { label: 'Deviation', value: 'Deviation' },
   { label: 'No Deviation', value: 'NoDeviation' },
 ];
-const exchangeStatusOptions = [
+const exchangeStatusOptions: SelectOption[] = [
   { label: 'Listed', value: 'Listed' },
   { label: 'Unlisted', value: 'Unlisted' },
 ];
-const optionsByDataPointTypeId: Record<string, { label: string; value: string }[]> = {
-  extendedEnumCompanyExchangeStatus: exchangeStatusOptions,
-  extendedEnumSfdrCompanyExchangeStatus: exchangeStatusOptions,
-};
 
-const dataPointTypeId = inject<string | undefined>('dataPointTypeId', undefined);
-const options = optionsByDataPointTypeId[dataPointTypeId ?? ''] ?? deviationOptions;
-
-const initialValue = props.extendedDataPointObject.value;
-const dataPointValue = ref<string | null>(
-  typeof initialValue === 'string'
-    ? (options.find((option) => option.value === initialValue || option.label === initialValue)?.value ?? null)
-    : null
-);
-const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
-const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
-
-const isPageValid = computed<boolean>(() => extendedDialogRef.value?.isPageValid ?? true);
-
-/**
- * @returns the JSON-stringified API body including the extended meta info
- */
-function buildApiBodyWithExtendedInfo(): string {
-  return buildApiBody(dataPointValue.value, undefined, extendedDialogRef.value?.getFormData());
-}
+const { options, dataPointValue, selectedDocumentMeta, extendedDialogRef, isPageValid, buildApiBodyWithExtendedInfo } =
+  useOptionExtendedDataPoint(
+    props.extendedDataPointObject,
+    {
+      extendedEnumCompanyExchangeStatus: exchangeStatusOptions,
+      extendedEnumSfdrCompanyExchangeStatus: exchangeStatusOptions,
+    },
+    deviationOptions
+  );
 
 defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
 </script>
