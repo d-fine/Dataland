@@ -8,7 +8,7 @@ const val INVALID_PROXY_SUGGESTION_ERROR_TYPE = "invalid-proxy-suggestion"
 /**
  * An InvalidProxySuggestionApiException should be thrown if the proxy finder produced a suggestion that violates the
  * validation rules for proxy suggestions (e.g., the suggested company does not exist on Dataland or is the company
- * itself). It is returned with a 422 status code.
+ * itself). It is returned with a 404 status code.
  */
 class InvalidProxySuggestionApiException(
     val summary: String,
@@ -20,6 +20,6 @@ class InvalidProxySuggestionApiException(
             errorType = INVALID_PROXY_SUGGESTION_ERROR_TYPE,
             summary = summary,
             message = message,
-            httpStatus = HttpStatus.UNPROCESSABLE_CONTENT,
+            httpStatus = HttpStatus.NOT_FOUND,
         )
 }

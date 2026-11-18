@@ -147,7 +147,7 @@ const dialog = useDialog();
 
 onMounted(() => {
   const data = dialogRef?.value.data;
-  if (!data || !data.portfolio) return;
+  if (!data?.portfolio) return;
   const portfolio = data.portfolio as EnrichedPortfolio;
   portfolioId.value = portfolio.portfolioId;
   portfolioName.value = portfolio.portfolioName;
