@@ -24,4 +24,20 @@ describe('Component tests for the NaceCodeSelector', () => {
       cy.get('[data-test="NaceCodeSelectorTree"] span.p-badge').filter(':contains("1")').should('have.length', 1);
     });
   });
+
+  it('Ensure that a selected NACE code can be deselected again', () => {
+    //@ts-ignore
+    cy.mountWithPlugins(NaceCodeSelector, {}).then(() => {
+      cy.get('[data-test="NaceCodeSelectorInput"]').click();
+      cy.get('[data-test="NaceCodeSelectorInput"]').type('62.02');
+      cy.get('[data-test="NaceCodeSelectorCheckbox"]').find('input[type="checkbox"]').eq(3).click();
+      cy.get('[data-test="NaceCodeSelectorInput"]').clear();
+      cy.get('[data-test="NaceCodeSelectorTree"] span.p-badge').filter(':contains("1")').should('have.length', 1);
+
+      cy.get('[data-test="NaceCodeSelectorInput"]').type('62.02');
+      cy.get('[data-test="NaceCodeSelectorCheckbox"]').find('input[type="checkbox"]').eq(3).click();
+      cy.get('[data-test="NaceCodeSelectorInput"]').clear();
+      cy.get('[data-test="NaceCodeSelectorTree"] span.p-badge').filter(':contains("1")').should('have.length', 0);
+    });
+  });
 });
