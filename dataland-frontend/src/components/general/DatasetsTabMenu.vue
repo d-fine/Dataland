@@ -17,14 +17,13 @@
 import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
 import { useGetAllSharedPortfolioNamesForCurrentUserQuery } from '@/api-queries/user-service/portfolio/useGetAllSharedPortfolioNamesForCurrentUserQuery';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import type Keycloak from 'keycloak-js';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 import Tab from 'primevue/tab';
 import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
@@ -36,12 +35,11 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const route = useRoute();
 
-const currentUserId = ref<string | undefined>(undefined);
-const isUserJudge = ref(false);
-const isUserAdmin = ref(false);
+const { userId: currentUserId, roles: currentUserRoles } = useCurrentUser();
+const isUserJudge = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_JUDGE));
+const isUserAdmin = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_ADMIN));
 
 const { data: sharedPortfolioNames } = useGetAllSharedPortfolioNamesForCurrentUserQuery({
   enabled: computed(() => !!currentUserId.value),
@@ -80,23 +78,6 @@ const currentTabId = computed<TabInfo['id']>(() => {
 
   return (route.meta.initialTabId as TabInfo['id']) ?? '';
 });
-
-onMounted(() => {
-  resolveCurrentUser().catch((error) => console.log(error));
-});
-
-/**
- * Resolves the id and the Keycloak roles of the logged-in user, which enable the queries and role-based tabs.
- */
-async function resolveCurrentUser(): Promise<void> {
-  const keycloak = await assertDefined(getKeycloakPromise)();
-  if (!keycloak.authenticated) return;
-  currentUserId.value = keycloak.idTokenParsed?.sub;
-  [isUserJudge.value, isUserAdmin.value] = await Promise.all([
-    checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise),
-    checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise),
-  ]);
-}
 
 /**
  * Handles the tab change event.

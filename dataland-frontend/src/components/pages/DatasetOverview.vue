@@ -36,17 +36,13 @@ import TheContent from '@/components/generics/TheContent.vue';
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
 import { toDatasetTableInfo } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 import PrimeButton from 'primevue/button';
-import { computed, inject, ref } from 'vue';
+import { computed } from 'vue';
 import router from '@/router';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
-const currentUserId = ref<string | undefined>(undefined);
-const hasUserUploaderRights = ref<boolean | undefined>(undefined);
+const { userId: currentUserId, roles: currentUserRoles } = useCurrentUser();
+const hasUserUploaderRights = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_UPLOADER));
 
 const { data: userUploads, isPending, isError } = useGetUserUploadsDataMetaInformationQuery({ userId: currentUserId });
 
@@ -58,15 +54,4 @@ const datasetTableInfos = computed(() => (userUploads.value ?? []).map(toDataset
 function linkToNewDataset(): void {
   void router.push('/companies/choose');
 }
-
-getUserId(assertDefined(getKeycloakPromise))
-  .then((userId) => {
-    currentUserId.value = userId;
-  })
-  .catch((error) => console.log(error));
-checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
-  .then((userHasUploaderRights) => {
-    hasUserUploaderRights.value = userHasUploaderRights;
-  })
-  .catch((error) => console.log(error));
 </script>

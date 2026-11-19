@@ -41,7 +41,7 @@
   </TheContent>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { whenever } from '@vueuse/core';
 
@@ -61,23 +61,19 @@ import TabPanel from 'primevue/tabpanel';
 import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
 import { useGetCompanyRightsQuery } from '@/api-queries/community-manager/company-rights/useGetCompanyRightsQuery';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 import { CompanyRole } from '@clients/communitymanager';
-import type Keycloak from 'keycloak-js';
 
 const props = defineProps<{ companyId: string }>();
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const router = useRouter();
 
 const roles = Object.values(CompanyRole);
 const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
 const showSuccess = ref(false);
 
-const isKeycloakResolved = ref(false);
-const currentUserId = ref<string | undefined>(undefined);
-const isUserDatalandAdmin = ref(false);
+const { userId: currentUserId, roles: currentUserRoles, isResolved: isKeycloakResolved } = useCurrentUser();
+const isUserDatalandAdmin = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_ADMIN));
 
 const { data: currentUserRoleAssignments, isFetched: areRoleAssignmentsFetched } =
   useGetExtendedCompanyRoleAssignmentsQuery({ userId: currentUserId });
@@ -105,18 +101,6 @@ const areRightsLoaded = computed(
     (!currentUserId.value || areRoleAssignmentsFetched.value) &&
     (!isUserCompanyMember.value || areCompanyRightsFetched.value)
 );
-
-/**
- * Resolves the id and the Dataland admin role of the logged-in user from Keycloak.
- */
-async function resolveCurrentUser(): Promise<void> {
-  const keycloak = await assertDefined(getKeycloakPromise)();
-  if (keycloak.authenticated) {
-    currentUserId.value = keycloak.idTokenParsed?.sub;
-    isUserDatalandAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  }
-  isKeycloakResolved.value = true;
-}
 
 /**
  * Opens the tab requested by a deep link to the users or credits tab once the rights of the user are known.
@@ -165,10 +149,6 @@ watch(activeTab, async (val) => {
   } catch (err) {
     console.error('Navigation failed', err);
   }
-});
-
-onMounted(() => {
-  void resolveCurrentUser();
 });
 </script>
 
