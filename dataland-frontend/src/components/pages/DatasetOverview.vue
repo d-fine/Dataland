@@ -25,7 +25,7 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
@@ -35,51 +35,34 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import { defineComponent, inject } from 'vue';
+import { inject, ref } from 'vue';
 import router from '@/router';
 
-export default defineComponent({
-  name: 'DatasetOverview',
-  components: {
-    DatalandProgressSpinner,
-    PrimeButton,
-    TheContent,
-    DatasetOverviewTable,
-  },
-  data() {
-    return {
-      datasetTableInfos: [] as DatasetTableInfo[],
-      waitingForData: true,
-      hasUserUploaderRights: undefined as boolean | undefined,
-    };
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  created() {
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .catch((error) => console.log(error));
-    this.requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
-  },
-  methods: {
-    /**
-     * Links the current instance or context to a new dataset, establishing a connection or association with it.
-     */
-    linkToNewDataset() {
-      void router.push('/companies/choose');
-    },
-    /**
-     * Finds the datasets the logged in user is responsible for and creates corresponding table entries
-     */
-    requestDataMetaDataForCurrentUser: async function (): Promise<void> {
-      this.datasetTableInfos = await getMyDatasetTableInfos(assertDefined(this.getKeycloakPromise));
-      this.waitingForData = false;
-    },
-  },
-});
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
+const datasetTableInfos = ref<DatasetTableInfo[]>([]);
+const waitingForData = ref(true);
+const hasUserUploaderRights = ref<boolean | undefined>(undefined);
+
+/**
+ * Links the current instance or context to a new dataset, establishing a connection or association with it.
+ */
+function linkToNewDataset(): void {
+  void router.push('/companies/choose');
+}
+
+/**
+ * Finds the datasets the logged in user is responsible for and creates corresponding table entries
+ */
+async function requestDataMetaDataForCurrentUser(): Promise<void> {
+  datasetTableInfos.value = await getMyDatasetTableInfos(assertDefined(getKeycloakPromise));
+  waitingForData.value = false;
+}
+
+checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+  .then((userHasUploaderRights) => {
+    hasUserUploaderRights.value = userHasUploaderRights;
+  })
+  .catch((error) => console.log(error));
+requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
 </script>

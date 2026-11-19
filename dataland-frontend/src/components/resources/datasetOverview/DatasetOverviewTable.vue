@@ -57,19 +57,8 @@
   </div>
 </template>
 
-<style>
-#dataset-overview-table tr:hover {
-  cursor: pointer;
-}
-
-#dataset-overview-table th {
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-</style>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -82,94 +71,93 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import PrimeButton from 'primevue/button';
 
-export default defineComponent({
-  name: 'DatasetOverviewTable',
-  mounted() {
-    this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
-  },
-  components: {
-    PrimeButton,
-    IconField,
-    InputIcon,
-    DatalandTag,
-    DataTable,
-    Column,
-    InputText,
-  },
-  data() {
-    return {
-      searchBarInput: '',
-      displayedDatasetTableInfos: [] as DatasetTableInfo[],
-      humanizeString: humanizeStringOrNumber,
-      convertDate: convertUnixTimeInMsToDateString,
-      loading: false,
-      latestSearchString: '' as string,
-    };
-  },
-  props: {
-    datasetTableInfos: {
-      type: Array,
-      default: [] as DatasetTableInfo[],
-    },
-  },
-  watch: {
-    searchBarInput(newSearchString) {
-      this.applySearchFilter(newSearchString as string);
-    },
-    datasetTableInfos() {
-      this.displayedDatasetTableInfos = this.datasetTableInfos as DatasetTableInfo[];
-    },
-  },
-  methods: {
-    /**
-     * Computes the path a row click should lead to depending on the selected dataset and its status
-     * @param datasetTableInfo relevant dataset information
-     * @returns the path depending on the status of the data set
-     */
-    getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
-      return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
-    },
-    /**
-     * Navigates to the specified dataset's details page based on the provided dataset information.
-     *
-     * @param {DatasetTableInfo} datasetTableInfo - Object containing information about the dataset table to navigate to.
-     * @return {void} Does not return a value.
-     */
-    goToDataset(datasetTableInfo: DatasetTableInfo) {
-      void router.push(this.getTableRowLinkTarget(datasetTableInfo));
-    },
+const props = withDefaults(defineProps<{ datasetTableInfos?: DatasetTableInfo[] }>(), {
+  datasetTableInfos: () => [],
+});
 
-    /**
-     * Filter the given datasets for the search string in the company name
-     * @param searchString The search string to look for in the company names
-     */
-    applySearchFilter(searchString: string): void {
-      this.loading = true;
-      let arrayToFilter: DatasetTableInfo[];
-      const lowerCaseSearchString = searchString.toLowerCase();
-      if (lowerCaseSearchString.includes(this.latestSearchString.toLowerCase())) {
-        arrayToFilter = this.displayedDatasetTableInfos;
-      } else {
-        arrayToFilter = this.datasetTableInfos as DatasetTableInfo[];
-      }
-      this.displayedDatasetTableInfos = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
-        return datasetTableInfo.companyName.toLowerCase().includes(lowerCaseSearchString);
-      });
-      this.latestSearchString = lowerCaseSearchString;
-      this.loading = false;
-    },
+const searchBarInput = ref('');
+const displayedDatasetTableInfos = ref<DatasetTableInfo[]>([]);
+const loading = ref(false);
+const latestSearchString = ref('');
 
-    /**
-     * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
-     * @param event an event that stores the DatasetTableInfo of the on clicked row
-     * @param event.data the DatasetTableInfo to be pushed to
-     */
-    rerouteRowClick(event: { data: DatasetTableInfo }) {
-      void router.push(this.getTableRowLinkTarget(event.data));
-    },
-  },
+const humanizeString = humanizeStringOrNumber;
+const convertDate = convertUnixTimeInMsToDateString;
+
+/**
+ * Computes the path a row click should lead to depending on the selected dataset and its status
+ * @param datasetTableInfo relevant dataset information
+ * @returns the path depending on the status of the data set
+ */
+function getTableRowLinkTarget(datasetTableInfo: DatasetTableInfo): string {
+  return `/companies/${datasetTableInfo.companyId}/frameworks/${datasetTableInfo.dataType}/${datasetTableInfo.dataId}`;
+}
+
+/**
+ * Navigates to the specified dataset's details page based on the provided dataset information.
+ *
+ * @param {DatasetTableInfo} datasetTableInfo - Object containing information about the dataset table to navigate to.
+ * @return {void} Does not return a value.
+ */
+function goToDataset(datasetTableInfo: DatasetTableInfo): void {
+  void router.push(getTableRowLinkTarget(datasetTableInfo));
+}
+
+/**
+ * Filter the given datasets for the search string in the company name
+ * @param searchString The search string to look for in the company names
+ */
+function applySearchFilter(searchString: string): void {
+  loading.value = true;
+  let arrayToFilter: DatasetTableInfo[];
+  const lowerCaseSearchString = searchString.toLowerCase();
+  if (lowerCaseSearchString.includes(latestSearchString.value.toLowerCase())) {
+    arrayToFilter = displayedDatasetTableInfos.value;
+  } else {
+    arrayToFilter = props.datasetTableInfos;
+  }
+  displayedDatasetTableInfos.value = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
+    return datasetTableInfo.companyName.toLowerCase().includes(lowerCaseSearchString);
+  });
+  latestSearchString.value = lowerCaseSearchString;
+  loading.value = false;
+}
+
+/**
+ * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
+ * @param event an event that stores the DatasetTableInfo of the on clicked row
+ * @param event.data the DatasetTableInfo to be pushed to
+ */
+function rerouteRowClick(event: { data: DatasetTableInfo }): void {
+  void router.push(getTableRowLinkTarget(event.data));
+}
+
+watch(searchBarInput, (newSearchString) => {
+  applySearchFilter(newSearchString);
+});
+
+watch(
+  () => props.datasetTableInfos,
+  () => {
+    displayedDatasetTableInfos.value = props.datasetTableInfos;
+  }
+);
+
+onMounted(() => {
+  displayedDatasetTableInfos.value = props.datasetTableInfos;
 });
 </script>
+
+<style>
+#dataset-overview-table tr:hover {
+  cursor: pointer;
+}
+
+#dataset-overview-table th {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+</style>
+
 <style scoped>
 .text-primary {
   color: var(--main-color);
