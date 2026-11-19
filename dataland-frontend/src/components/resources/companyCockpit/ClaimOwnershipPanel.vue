@@ -38,9 +38,9 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
+import { useGetCompanyInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInfoQuery';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import Card from 'primevue/card';
@@ -52,22 +52,17 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 
 const dialogIsOpen = ref(false);
 const claimIsSubmitted = ref(false);
-const companyName = ref('');
+
+const { data: companyInformation } = useGetCompanyInfoQuery({ companyId: () => props.companyId });
+const companyName = computed(() => companyInformation.value?.companyName ?? '');
 
 watch(
   () => props.companyId,
-  (newCompanyId, oldCompanyId) => {
-    if (newCompanyId !== oldCompanyId) {
-      dialogIsOpen.value = false;
-      claimIsSubmitted.value = false;
-      void getCompanyName();
-    }
+  () => {
+    dialogIsOpen.value = false;
+    claimIsSubmitted.value = false;
   }
 );
-
-onMounted(() => {
-  void getCompanyName();
-});
 
 /**
  * handles the emitted claim event
@@ -81,22 +76,6 @@ function onClaimSubmitted(): void {
  */
 function onCloseDialog(): void {
   dialogIsOpen.value = false;
-}
-
-/**
- * Uses the dataland API to retrieve information about the company identified by the local
- * companyId object.
- */
-async function getCompanyName(): Promise<void> {
-  try {
-    if (props.companyId !== undefined) {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
-        .companyDataController;
-      companyName.value = (await companyDataControllerApi.getCompanyInfo(props.companyId)).data.companyName;
-    }
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 /**

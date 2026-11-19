@@ -44,7 +44,8 @@ describe('Component test for the authorization of company cockpit components', (
     cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('be.visible').click();
     cy.get('[data-test="creditsBalance"]').should('be.visible');
-    cy.get('@fetchCompanyRights.all').should('have.length', 0);
+    // Admins see the credits of non-member companies. The rights are only requested once, for the member badge.
+    cy.get('@fetchCompanyRights.all').should('have.length', 1);
   });
 
   it('Check tab and content visibility for users without admin and without company rights', () => {

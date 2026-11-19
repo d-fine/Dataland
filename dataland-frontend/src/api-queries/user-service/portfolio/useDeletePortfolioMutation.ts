@@ -8,7 +8,7 @@ export interface DeletePortfolioVariables {
 
 /**
  * Vue Query mutation hook that deletes a portfolio (DELETE /users/portfolios/{portfolioId}/).
- * On success, the portfolio names of the current user are invalidated. The deleted portfolio's own queries are not
+ * On success, the portfolios and portfolio names of the current user are invalidated. The deleted portfolio's own queries are not
  * invalidated, as refetching them would fail; they are garbage collected once no component uses them anymore.
  *
  * @returns Mutation result resolving once the portfolio is deleted.
@@ -23,7 +23,10 @@ export function useDeletePortfolioMutation(): UseMutationReturnType<void, Error,
       return response.data;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: portfolioKeys.names() });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: portfolioKeys.names() }),
+        queryClient.invalidateQueries({ queryKey: portfolioKeys.list() }),
+      ]);
     },
   });
 }

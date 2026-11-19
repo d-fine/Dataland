@@ -23,7 +23,7 @@ import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
 import { routes } from '@/router';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { createMemoryHistory, createRouter } from 'vue-router';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
@@ -401,7 +401,7 @@ describe('Component test for the company cockpit', () => {
       keycloak: minimalKeycloakMock({ authenticated: true, userId: dummyUserId }),
       router,
     })(CompanyCockpitPage, {
-      global: { provide: { useMobileView: computed(() => false), companyRoleAssignments: ref([]) } },
+      global: { provide: { useMobileView: computed(() => false) } },
       props: { companyId: dummyCompanyId },
     });
 

@@ -10,7 +10,7 @@ export interface ReplacePortfolioVariables {
 
 /**
  * Vue Query mutation hook that replaces an existing portfolio (PUT /users/portfolios/{portfolioId}/).
- * On success, the portfolio names of the current user and the enriched portfolio are invalidated.
+ * On success, the portfolios and portfolio names of the current user and the enriched portfolio are invalidated.
  *
  * @returns Mutation result resolving to the updated {@link BasePortfolio}.
  */
@@ -34,6 +34,7 @@ export function useReplacePortfolioMutation(): UseMutationReturnType<
     onSuccess: async (_data, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: portfolioKeys.names() }),
+        queryClient.invalidateQueries({ queryKey: portfolioKeys.list() }),
         queryClient.invalidateQueries({ queryKey: portfolioKeys.enriched(variables.portfolioId) }),
       ]);
     },

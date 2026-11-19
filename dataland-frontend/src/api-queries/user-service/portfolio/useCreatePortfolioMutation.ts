@@ -9,7 +9,7 @@ export interface CreatePortfolioVariables {
 
 /**
  * Vue Query mutation hook that creates a portfolio for the current user (POST /users/portfolios/).
- * On success, the portfolio names of the current user are invalidated.
+ * On success, the portfolios and portfolio names of the current user are invalidated.
  *
  * @returns Mutation result resolving to the created {@link BasePortfolio}.
  */
@@ -28,7 +28,10 @@ export function useCreatePortfolioMutation(): UseMutationReturnType<
       return response.data;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: portfolioKeys.names() });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: portfolioKeys.names() }),
+        queryClient.invalidateQueries({ queryKey: portfolioKeys.list() }),
+      ]);
     },
   });
 }

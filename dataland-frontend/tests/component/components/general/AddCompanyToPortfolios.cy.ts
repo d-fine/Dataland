@@ -4,11 +4,20 @@ import { BasePortfolioTimeWindowThresholdEnum } from '@clients/userservice';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 /**
+ * Stubs the request for the portfolios of the current user. Sets are converted to arrays as in real JSON responses.
+ * @param portfolios the portfolios returned for the current user
+ */
+function interceptPortfolios(portfolios: Partial<BasePortfolio>[]): void {
+  const body = JSON.parse(JSON.stringify(portfolios, (_key, value) => (value instanceof Set ? [...value] : value)));
+  cy.intercept('GET', '**/users/portfolios/', { body }).as('fetchPortfolios');
+}
+
+/**
  * Mounts the `AddCompanyToPortfolios` component with the provided dialogRef
  * using Cypress and the default mocked authentication context.
  *
  * @param {object} dialogRef - The mock dialog reference to inject into the component.
- * This includes both the `companyId` and the list of `allUserPortfolios`, and optionally a `close` stub.
+ * This includes the `companyId` and optionally a `close` stub.
  *
  * @returns {void}
  */
@@ -67,35 +76,36 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
   ];
 
   /**
-   * Creates a mock dialogRef object for mounting the AddCompanyToPortfolios component in tests.
+   * Creates a mock dialogRef object for mounting the AddCompanyToPortfolios component in tests and stubs the
+   * portfolios of the current user.
    * @param {Partial<BasePortfolio[]>} [override=mockPortfolios] - Optional override for the list of user portfolios.
-   * This allows customizing the `allUserPortfolios` provided to the component.
    * @param {() => void} [closeStub] - Optional stub function to replace the default `dialogRef.close()` method.
    * Useful for assertions in tests that validate whether the dialog was closed.
    *
-   * @returns {{ value: { data: { companyId: string; allUserPortfolios: Partial<BasePortfolio[]> }; close: () => void } }}
+   * @returns {{ value: { data: { companyId: string }; close: () => void } }}
    * A mock dialogRef object structured as expected by the component.
    */
   const getMockDialogRef = (
-    override: Partial<BasePortfolio[]> = mockPortfolios,
+    override: Partial<BasePortfolio>[] = mockPortfolios,
     closeStub?: () => void
   ): {
     value: {
       data: {
         companyId: string;
-        allUserPortfolios: Partial<BasePortfolio[]>;
       };
       close: () => void;
     };
-  } => ({
-    value: {
-      data: {
-        companyId,
-        allUserPortfolios: override,
+  } => {
+    interceptPortfolios(override);
+    return {
+      value: {
+        data: {
+          companyId,
+        },
+        close: closeStub ?? cy.stub(),
       },
-      close: closeStub ?? cy.stub(),
-    },
-  });
+    };
+  };
 
   it('shows empty selection state for a new portfolio', () => {
     mountComponent(getMockDialogRef());
@@ -195,5 +205,27 @@ describe('Tests for AddCompanyToPortfolios Component', () => {
       cy.tick(200000);
       cy.get('@closeStub').should('have.been.called');
     });
+  });
+
+  it('shows an error message if the portfolios cannot be loaded', () => {
+    cy.intercept('GET', '**/users/portfolios/', { statusCode: 500 }).as('fetchPortfolios');
+
+    mountComponent({ value: { data: { companyId }, close: cy.stub() } });
+
+    cy.wait('@fetchPortfolios');
+    cy.get('[data-test="portfoliosErrorMessage"]').should('be.visible');
+    cy.get('[data-test="saveButton"]').should('be.disabled');
+  });
+
+  it('requests the portfolios again after the company was added', () => {
+    cy.intercept('PUT', '**/portfolios/**', { statusCode: 200, body: {} }).as('addCompany');
+
+    mountComponent(getMockDialogRef());
+
+    cy.wait('@fetchPortfolios');
+    cy.get('.p-listbox-option').first().click();
+    cy.get('[data-test="saveButton"]').click();
+    cy.wait('@addCompany');
+    cy.wait('@fetchPortfolios');
   });
 });
