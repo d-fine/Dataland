@@ -361,10 +361,7 @@ async function getQaDataForCurrentPage(): Promise<void> {
       response.data.map(async (row) => ({
         ...row,
         reviewStatus: await getReviewStatus(row.qaJudgeUserId, row.qaJudgeUserName),
-        priorityWithNullHandling:
-          row.priorityOfAssociatedDataSourcing === null || row.priorityOfAssociatedDataSourcing === undefined
-            ? Number.MAX_SAFE_INTEGER
-            : row.priorityOfAssociatedDataSourcing,
+        priorityWithNullHandling: row.priorityOfAssociatedDataSourcing ?? Number.MAX_SAFE_INTEGER,
         frameworkHumanized: humanizeStringOrNumber(row.framework),
       }))
     );

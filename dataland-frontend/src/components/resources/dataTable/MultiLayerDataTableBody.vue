@@ -183,7 +183,7 @@ function toggleSection(idx: number): void {
 function expandSectionsOnPageLoad(): void {
   for (let i = 0; i < props.config.length; i++) {
     const element = props.config[i];
-    if (element && element.type == 'section' && element.expandOnPageLoad) {
+    if (element?.type == 'section' && element.expandOnPageLoad) {
       expandedSections.value.add(i);
     }
   }

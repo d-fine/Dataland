@@ -264,9 +264,7 @@ export default defineComponent({
     },
   },
   created() {
-    if (this.reportingPeriod === undefined) {
-      this.reportingPeriod = new Date();
-    }
+    this.reportingPeriod ??= new Date();
   },
   methods: {
     /**

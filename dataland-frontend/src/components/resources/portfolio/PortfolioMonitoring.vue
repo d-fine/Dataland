@@ -5,7 +5,10 @@
       <ToggleSwitch
         v-model="isMonitoringActive"
         data-test="activateMonitoringToggle"
-        @update:modelValue="onMonitoringToggled"
+        @update:modelValue="
+          (isMonitoringActive: boolean) =>
+            isMonitoringActive ? restoreMonitoringSelections() : storeAndClearMonitoringSelections()
+        "
       />
     </div>
     <div class="dataland-info-text small">
@@ -138,30 +141,30 @@ onMounted(() => {
 });
 
 /**
- * Handles toggling of the monitoring switch.
- * Stores and restores selections when toggled on/off.
- *
- * @param newValue changed monitoring state.
+ * Restores previously stored selections when monitoring is switched on.
  */
-function onMonitoringToggled(newValue: boolean): void {
-  if (newValue) {
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
-      ...option,
-      isActive: previousFrameworks.value.has(option.value),
-    }));
-    timeWindowThreshold.value = previousThreshold.value;
-  } else {
-    previousFrameworks.value = new Set(
-      availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
-    );
-    previousThreshold.value = timeWindowThreshold.value;
-    availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
-      ...option,
-      isActive: false,
-    }));
-    timeWindowThreshold.value = false;
-    resetErrors();
-  }
+function restoreMonitoringSelections(): void {
+  availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+    ...option,
+    isActive: previousFrameworks.value.has(option.value),
+  }));
+  timeWindowThreshold.value = previousThreshold.value;
+}
+
+/**
+ * Stores current selections and clears them when monitoring is switched off.
+ */
+function storeAndClearMonitoringSelections(): void {
+  previousFrameworks.value = new Set(
+    availableFrameworkMonitoringOptions.value.filter((option) => option.isActive).map((option) => option.value)
+  );
+  previousThreshold.value = timeWindowThreshold.value;
+  availableFrameworkMonitoringOptions.value = availableFrameworkMonitoringOptions.value.map((option) => ({
+    ...option,
+    isActive: false,
+  }));
+  timeWindowThreshold.value = false;
+  resetErrors();
 }
 
 /**

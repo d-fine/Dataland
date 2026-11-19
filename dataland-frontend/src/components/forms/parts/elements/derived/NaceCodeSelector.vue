@@ -41,7 +41,9 @@
             <Checkbox
               v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
               :modelValue="selectedTreeNodes.has(slotProps.node.key)"
-              @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
+              @update:modelValue="
+                (isChecked: boolean) => (isChecked ? selectNode(slotProps.node.key) : deselectNode(slotProps.node.key))
+              "
               :binary="true"
               data-test="NaceCodeSelectorCheckbox"
             ></Checkbox>
@@ -100,13 +102,18 @@ export default defineComponent({
       this.popover?.show(event);
     },
     /**
-     * Handles the click event of the selection checkboxes
-     * @param key The key of the node whose checkbox has been clicked
-     * @param isChecked the new value of the checkbox
+     * Adds the node to the selection
+     * @param key The key of the node to select
      */
-    handleNodeCheckboxClick(key: string, isChecked: boolean) {
-      if (isChecked) this.selectedTreeNodes.add(key);
-      else this.selectedTreeNodes.delete(key);
+    selectNode(key: string) {
+      this.selectedTreeNodes.add(key);
+    },
+    /**
+     * Removes the node from the selection
+     * @param key The key of the node to deselect
+     */
+    deselectNode(key: string) {
+      this.selectedTreeNodes.delete(key);
     },
     /**
      * Recursively expands the given nodes and all its children up to a maximum of max expanded nodes

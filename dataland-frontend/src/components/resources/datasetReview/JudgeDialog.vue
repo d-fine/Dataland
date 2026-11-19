@@ -597,7 +597,7 @@ const areAllDataPointsReviewed = computed<boolean>(() => {
 
   return relevantDataPointTypeIds.value.every((id) => {
     const meta = judgement.dataPoints[id];
-    return meta != null && meta.acceptedSource != null;
+    return meta?.acceptedSource != null;
   });
 });
 

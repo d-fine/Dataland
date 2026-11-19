@@ -373,7 +373,7 @@ const countryOptions = computed<string[]>(() =>
         .map((entry) => entry.country)
         .filter((country): country is string => typeof country === 'string')
     )
-  ).sort()
+  ).sort((a, b) => a.localeCompare(b))
 );
 
 const sectorOptions = computed<string[]>(() =>
@@ -383,7 +383,7 @@ const sectorOptions = computed<string[]>(() =>
         .map((entry) => entry.sector)
         .filter((sector): sector is string => typeof sector === 'string')
     )
-  ).sort()
+  ).sort((a, b) => a.localeCompare(b))
 );
 
 const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
@@ -397,7 +397,7 @@ const reportingPeriodOptions = computed<Map<string, string[]>>(() => {
             .map((entry) => getAvailableReportingPeriods(entry, framework))
             .filter((period): period is string => typeof period === 'string')
         )
-      ).sort()
+      ).sort((a, b) => a.localeCompare(b))
     );
   }
   return options;
