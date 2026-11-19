@@ -172,7 +172,7 @@ import { useSetJudgeForDatasetJudgementMutation } from '@/api-queries/qa-service
 import { useAcceptAllRemainingOriginalDataPointsMutation } from '@/api-queries/qa-service/dataset-judgement/useAcceptAllRemainingOriginalDataPointsMutation.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
+import { usePostRequestCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostRequestCountQuery.ts';
 import { useGetCompanyInformationByIdInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
@@ -278,7 +278,10 @@ const {
   data: filteredRequestCount,
   isPending: isRequestCountPending,
   isError: isRequestCountError,
-} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled: arePrecheckQueriesEnabled });
+} = usePostRequestCountQuery(
+  { requestSearchFilterString: requestSearchFilters },
+  { enabled: arePrecheckQueriesEnabled }
+);
 
 const {
   data: companyData,

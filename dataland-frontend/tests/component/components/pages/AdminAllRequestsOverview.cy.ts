@@ -649,7 +649,7 @@ describe('Component test for the admin-requests-overview page', () => {
   });
 
   describe('Error handling', () => {
-    it('handles API error gracefully', () => {
+    it('shows an error message if the requests cannot be loaded', () => {
       cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', {
         statusCode: 500,
         body: 'Internal Server Error',
@@ -659,16 +659,48 @@ describe('Component test for the admin-requests-overview page', () => {
         body: 'Internal Server Error',
       });
 
-      cy.window().then((win) => {
-        cy.spy(win.console, 'error').as('consoleError');
-      });
-
       getMountingFunction({
         keycloak: adminKeycloakMock(),
         router: router,
       })(AdminAllRequestsOverview);
 
-      cy.get('@consoleError').should('have.been.called');
+      cy.get('[data-test="requests-error"]').should('be.visible').and('contain.text', 'could not be loaded');
+      cy.get('[data-test="requests-datatable"]').should('not.exist');
+      cy.get('button[data-test="trigger-filtering-requests"]').should('not.be.disabled');
+    });
+  });
+
+  describe('Loading behaviour', () => {
+    it('keeps the current page visible while the next page is loading and does not recount', () => {
+      mountAdminAllRequestsPageWithManyMocks();
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', cy.spy().as('countRequest'));
+      cy.intercept('POST', `**/data-sourcing/enhanced-requests/search?chunkSize=${chunkSize}&chunkIndex=1`, {
+        body: mockRequestsLarge.slice(chunkSize),
+        delay: 500,
+      }).as('fetchSecondPage');
+
+      cy.get(`button[aria-label="Page 2"]`).first().click();
+
+      assertNumberOfSearchResults(chunkSize);
+      cy.get('[data-test="requests-datatable"]').find('.p-datatable-mask').should('exist');
+      cy.get('button[data-test="trigger-filtering-requests"]').should('be.disabled');
+      cy.wait('@fetchSecondPage');
+      assertNumberOfSearchResults(mockRequestsLarge.length - chunkSize);
+      cy.get('[data-test="requests-datatable"]').find('.p-datatable-mask').should('not.exist');
+      cy.get('@countRequest').should('not.have.been.called');
+    });
+
+    it('only applies edited filters when they are submitted', () => {
+      mountAdminAllRequestsPageWithMocks();
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search**', cy.spy().as('searchRequest'));
+
+      cy.get('input[data-test="email-searchbar"]').type(mailSearchTerm);
+      cy.get('@searchRequest').should('not.have.been.called');
+      assertNumberOfSearchResults(mockRequests.length);
+
+      setupFilterIntercepts([mockRequests[0]], (body) => body.emailAddress === mailSearchTerm);
+      cy.get('input[data-test="email-searchbar"]').type('{enter}');
+      assertNumberOfSearchResults(1);
     });
   });
 });
