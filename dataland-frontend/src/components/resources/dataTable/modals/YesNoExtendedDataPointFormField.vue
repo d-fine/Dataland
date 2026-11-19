@@ -35,7 +35,9 @@ const props = defineProps<{
 }>();
 
 const dataPointValue = ref<string | null>(
-  props.extendedDataPointObject.value !== null && props.extendedDataPointObject.value !== undefined
+  props.extendedDataPointObject.value !== null &&
+    props.extendedDataPointObject.value !== undefined &&
+    !Array.isArray(props.extendedDataPointObject.value)
     ? String(props.extendedDataPointObject.value)
     : null
 );

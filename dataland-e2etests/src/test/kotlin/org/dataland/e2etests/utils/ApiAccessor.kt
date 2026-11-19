@@ -13,11 +13,13 @@ import org.dataland.datalandbackend.openApiClient.api.EutaxonomyFinancialsDataCo
 import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.PcafDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPcafData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -25,6 +27,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.PcafData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandqaservice.openApiClient.api.NonSourceabilityQaControllerApi
@@ -84,6 +87,9 @@ class ApiAccessor {
     val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderForSfdrData = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
 
+    val dataControllerApiForPcafData = PcafDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val testDataProviderForPcafData = FrameworkTestDataProvider.forFrameworkFixtures(PcafData::class.java)
+
     val jwtHelper = JwtAuthenticationHelper()
     val generalTestDataProvider = GeneralTestDataProvider()
     private val qaApiAccessor = QaApiAccessor()
@@ -123,6 +129,15 @@ class ApiAccessor {
         bypassQa: Boolean = true,
     ) = dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
         CompanyAssociatedDataSfdrData(companyId, reportingPeriod, sfdrData), bypassQa,
+    )
+
+    fun pcafUploaderFunction(
+        companyId: String,
+        pcafData: PcafData,
+        reportingPeriod: String,
+        bypassQa: Boolean = true,
+    ) = dataControllerApiForPcafData.postCompanyAssociatedPcafData(
+        CompanyAssociatedDataPcafData(companyId, reportingPeriod, pcafData), bypassQa,
     )
 
     /**
@@ -200,6 +215,10 @@ class ApiAccessor {
 
             DataTypeEnum.sfdr -> {
                 uploadDataset(testDataProviderForSfdrData, ::sfdrUploaderFunction)
+            }
+
+            DataTypeEnum.pcaf -> {
+                uploadDataset(testDataProviderForPcafData, ::pcafUploaderFunction)
             }
 
             DataTypeEnum.eutaxonomyMinusNonMinusFinancials -> {

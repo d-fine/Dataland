@@ -19,7 +19,7 @@ import java.util.UUID
  * @property qaReports the QA report data points submitted for this data point type
  * @property acceptedSource which source was accepted for this data point
  * @property customValue the custom value accepted for this data point, if applicable
- * @property reasonForCustomDataPoint an explanation for why a custom datapoint was needed
+ * @property reviewerComment an internal comment of the reviewer on the accepted source (original, QA or custom)
  * @property dataPointBaseType the id of the base type of the data point type (e.g. "extendedCurrency"); null for
  * judgements created before this property was stored
  */
@@ -33,7 +33,7 @@ data class DataPointJudgement(
         description = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_ID_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.DATA_POINT_ID_EXAMPLE,
     )
-    val dataPointId: String,
+    val dataPointId: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.QA_REPORTS_DESCRIPTION,
     )
@@ -54,10 +54,10 @@ data class DataPointJudgement(
     )
     val customValue: String?,
     @field:Schema(
-        description = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_DESCRIPTION,
-        example = QaServiceOpenApiDescriptionsAndExamples.REASON_FOR_CUSTOM_DATA_POINT_EXAMPLE,
+        description = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_COMMENT_DESCRIPTION,
+        example = QaServiceOpenApiDescriptionsAndExamples.REVIEWER_COMMENT_EXAMPLE,
     )
-    val reasonForCustomDataPoint: String?,
+    val reviewerComment: String?,
     @field:Schema(
         description = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_DESCRIPTION,
         example = QaServiceOpenApiDescriptionsAndExamples.PRE_APPROVAL_CHECK_RESULTS_EXAMPLE,

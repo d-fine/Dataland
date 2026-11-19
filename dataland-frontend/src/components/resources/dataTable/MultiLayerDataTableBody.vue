@@ -110,7 +110,6 @@
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
           :inReviewMode="inReviewMode"
-          @dataUpdated="$emit('dataUpdated')"
         />
       </template>
     </template>
@@ -131,6 +130,7 @@ import Tooltip from 'primevue/tooltip';
 import { computed, inject, nextTick, onMounted, ref } from 'vue';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
+import { activityComponentNames } from '@/utils/ActivityListHelpers.ts';
 import EditDataPointDialog from '@/components/resources/dataTable/modals/EditDataPointDialog.vue';
 import { componentDictionary } from '@/components/resources/dataTable/EditDataPointComponentDictionary.ts';
 
@@ -138,9 +138,6 @@ const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
 const editModeIsOn = inject('editModeIsOn');
 const dialog = useDialog();
-const emit = defineEmits<{
-  dataUpdated: [];
-}>();
 
 /**
  * Scrolls to a specific target element identified by its unique data attribute if it becomes visible.
@@ -186,7 +183,7 @@ function toggleSection(idx: number): void {
 function expandSectionsOnPageLoad(): void {
   for (let i = 0; i < props.config.length; i++) {
     const element = props.config[i];
-    if (element && element.type == 'section' && element.expandOnPageLoad) {
+    if (element?.type == 'section' && element.expandOnPageLoad) {
       expandedSections.value.add(i);
     }
   }
@@ -245,6 +242,8 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     props: {
       modal: true,
       header: 'Edit Data Point',
+      style: activityComponentNames.has(cellOrSectionConfig.uploadComponentName ?? '') ? { width: '90vw' } : {},
+      contentStyle: { overflow: 'auto' },
       pt: {
         title: {
           style: {
@@ -267,7 +266,6 @@ function openEditDataPointModal(idx: number, cellOrSectionConfig: MLDTCellConfig
     onClose: (options) => {
       void (async (): Promise<void> => {
         if (options?.data?.dataUpdated) {
-          emit('dataUpdated');
           await nextTick();
           await scroller(cellOrSectionConfig.dataPointTypeId);
         }

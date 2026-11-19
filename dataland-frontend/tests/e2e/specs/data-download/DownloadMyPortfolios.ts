@@ -3,6 +3,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
+  type PcafData,
   type StoredCompany,
 } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
@@ -12,64 +13,143 @@ import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 
-let storedCompany: StoredCompany;
-let secondCompany: StoredCompany;
-let portfolioName: string;
+type FileTypeLabel = 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)' | 'JavaScript Object Notation (.json)';
+type FileExtension = 'csv' | 'xlsx' | 'json';
+
+/**
+ * Describes a framework for which the portfolio download is tested.
+ */
+interface FrameworkTestConfig {
+  /** The label of the framework in the download dialog */
+  label: string;
+  /** Loads the fixture that is uploaded for the companies of the portfolio */
+  loadFixture: () => void;
+  /** Uploads the loaded fixture for the given company and reporting period */
+  upload: (token: string, companyId: string, year: string) => Promise<DataMetaInformation>;
+  /**
+   * Provides the values of the uploaded fixture that have to be contained in every text based export (CSV and JSON).
+   * If undefined, contents are not checked.
+   */
+  expectedValuesInExport?: () => string[];
+  /** Shortened field names (aliases) that have to be contained in CSV exports if "Shorten field names" is on. */
+  expectedAliasesInExport?: string[];
+  /** Minimum file size in bytes per file extension. Falls back to defaultMinimumFileSizeInByte. */
+  minimumFileSizeInByte?: Partial<Record<FileExtension, number>>;
+}
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
+let pcafFixtureForTest: FixtureData<PcafData>;
+
+const frameworkTestConfigs: FrameworkTestConfig[] = [
+  {
+    label: 'EU Taxonomy Non-Financials',
+    loadFixture: (): void => {
+      cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then((jsonContent) => {
+        const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
+        euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
+          'all-fields-defined-for-eu-taxo-non-financials-alpha',
+          preparedFixtures
+        );
+      });
+    },
+    upload: (token, companyId, year) =>
+      uploadGenericFrameworkData(token, companyId, year, euTaxonomyForNonFinancialsFixtureForTest.t, (config) =>
+        getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
+      ),
+  },
+  {
+    label: 'PCAF',
+    loadFixture: (): void => {
+      cy.fixture('CompanyInformationWithPcafPreparedFixtures.json').then((jsonContent) => {
+        const preparedFixtures = jsonContent as Array<FixtureData<PcafData>>;
+        pcafFixtureForTest = getPreparedFixture('All-fields-defined-for-PCAF-Framework-Company', preparedFixtures);
+      });
+    },
+    upload: (token, companyId, year) =>
+      uploadGenericFrameworkData(token, companyId, year, pcafFixtureForTest.t, (config) =>
+        getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf)!.getPublicFrameworkApiClient(config)
+      ),
+    // The values are derived from the uploaded fixture, so that the test does not depend on concrete mock data.
+    expectedValuesInExport: () => collectDataPointValues(pcafFixtureForTest.t),
+    expectedAliasesInExport: [
+      'FISCAL_YEAR_END',
+      'MAIN_PCAF_SECTOR',
+      'COMPANY_EXCHANGE_STATUS',
+      'ENTERPRISE_VALUE_IN_EUR',
+      'TOTAL_EQUITY_IN_EUR',
+      'SCOPE_1_GHG_EMISSIONS_IN_T',
+      'SCOPE_3_GHG_EMISSIONS_IN_T',
+    ],
+    // The PCAF export has far fewer columns than other frameworks, so its files are smaller.
+    minimumFileSizeInByte: { csv: 1000, xlsx: 3000 },
+  },
+];
+
+/**
+ * Recursively collects the values of all data points (objects having a non-null string or number "value") in the
+ * given framework data.
+ *
+ * @param data the framework data, or a part of it
+ * @returns the collected values as strings
+ */
+function collectDataPointValues(data: unknown): string[] {
+  if (Array.isArray(data)) {
+    return data.flatMap(collectDataPointValues);
+  }
+  if (data === null || typeof data !== 'object') {
+    return [];
+  }
+  const values: string[] = [];
+  for (const [key, child] of Object.entries(data)) {
+    if (key === 'value' && (typeof child === 'string' || typeof child === 'number')) {
+      values.push(String(child));
+    } else {
+      values.push(...collectDataPointValues(child));
+    }
+  }
+  return values;
+}
 
 const reportingYearsToSelect = ['2024', '2023', '2022'];
 const unavailableYears = ['2025', '2021', '2020'];
+const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 const longTimeoutInMs = Number(Cypress.expose('long_timeout_in_ms') ?? 100000);
+const defaultMinimumFileSizeInByte = 5000;
 
 /**
- * Uploads data for a given company for specified years using a generic framework.
+ * Sets up a company by uploading company information, assigning ownership and uploading data for the given years.
  *
- * @param {string} token - The authentication token to access the API.
- * @param {StoredCompany} company - The company information including the company ID.
- * @param {string[]} years - An array of years for which the data is to be uploaded.
- * @return {Promise<DataMetaInformation[]>} A promise resolving to an array of additional information for the uploaded data.
+ * @param config the framework configuration providing the upload
+ * @param token the authentication token used to access the API
+ * @param companyName the name of the company to be set up
+ * @param years the reporting periods for which data is uploaded
+ * @returns a promise resolving to the created company
  */
-function uploadDataForCompany(token: string, company: StoredCompany, years: string[]): Promise<DataMetaInformation[]> {
-  return Promise.all(
-    years.map((year) =>
-      uploadGenericFrameworkData(token, company.companyId, year, euTaxonomyForNonFinancialsFixtureForTest.t, (config) =>
-        getBasePublicFrameworkDefinition(DataTypeEnum.EutaxonomyNonFinancials)!.getPublicFrameworkApiClient(config)
-      )
-    )
-  );
-}
-
-/**
- * Sets up a company with provided data by uploading company information, assigning ownership,
- * and uploading associated data for specified years.
- *
- * @param {string} token - The authentication token used to access the API.
- * @param {string} companyName - The name of the company to be set up.
- * @param {number[]} years - An array of years for which data will be uploaded for the company.
- * @return {Promise<Object>} A promise that resolves to the created company object.
- */
-function setupCompanyWithData(token: string, companyName: string, years: string[]): Promise<StoredCompany> {
+function setupCompanyWithData(
+  config: FrameworkTestConfig,
+  token: string,
+  companyName: string,
+  years: string[]
+): Promise<StoredCompany> {
   return getOrUploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((company) => {
     return assignCompanyOwnershipToDatalandAdmin(token, company.companyId)
-      .then(() => uploadDataForCompany(token, company, years))
+      .then(() => Promise.all(years.map((year) => config.upload(token, company.companyId, year))))
       .then(() => company);
   });
 }
 
 /**
- * Creates a new portfolio with the specified companies and name.
+ * Creates a new portfolio containing the two given companies.
  *
- * @param {StoredCompany} company1 - The first company to be included in the portfolio. Must contain a `companyId` property.
- * @param {StoredCompany} company2 - The second company to be included in the portfolio. Must contain a `companyId` property.
- * @param {string} portfolioName - The name of the portfolio to be created.
- * @return {void} This function does not return a value.
+ * @param company1 the first company of the portfolio
+ * @param company2 the second company of the portfolio
+ * @param name the name of the portfolio
  */
-function createPortfolio(company1: StoredCompany, company2: StoredCompany, portfolioName: string): void {
+function createPortfolio(company1: StoredCompany, company2: StoredCompany, name: string): void {
   cy.ensureLoggedInAsAdmin();
   cy.visitAndCheckAppMount('/portfolios');
   cy.get('[data-test="add-portfolio"]').click();
-  cy.get('[data-test="portfolio-name-input"]:visible').invoke('val', portfolioName).trigger('input');
+  cy.get('[data-test="portfolio-name-input"]:visible').invoke('val', name).trigger('input');
   cy.get('[data-test="company-identifiers-input"]')
     .invoke('val', `${company1.companyId},${company2.companyId}`)
     .trigger('input');
@@ -79,175 +159,273 @@ function createPortfolio(company1: StoredCompany, company2: StoredCompany, portf
 }
 
 /**
- * Checks that the file at the given path is larger than the minimum expected size,
- * deletes it afterwards and verifies that it is gone.
+ * Returns the file extension belonging to the file type label shown in the download dialog.
  *
- * @param {string} filePath - The path to the downloaded file.
- * @return {void} This function does not return a value.
+ * @param fileType the file type label
  */
-function checkFileSizeAndDeleteAfterwards(filePath: string): void {
-  cy.task('getFileSize', filePath).then((size) => {
-    expect(size).to.be.greaterThan(5000);
-  });
-
-  cy.task('deleteFile', filePath).then(() => {
-    cy.readFile(filePath).should('not.exist');
-  });
-}
-
-/**
- * Tests the functionality for downloading a portfolio file with specified options.
- *
- * @param {Object} params - The parameters for the download operation.
- * @param {string} params.description - A description of the test scenario.
- * @param {'Comma-separated Values (.csv)' | 'Excel-compatible CSV File (.csv)'} params.fileType - The format in which the portfolio file should be downloaded.
- * @param {boolean} [params.keepValuesOnly=true] - Specifies whether to include additional information in the downloaded file.
- * @return {void} This function does not return a value.
- */
-function testDownloadPortfolio({
-  description,
-  fileType,
-  keepValuesOnly = true,
-}: {
-  description: string;
-  fileType: 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)';
-  keepValuesOnly?: boolean;
-}): void {
-  it(description, () => {
-    const downloadDir = Cypress.config('downloadsFolder');
-
-    const fileExtension = getFileExtension(fileType);
-
-    const partialFileNamePrefix = 'data-export-EU Taxonomy Non-Financials';
-
-    cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
-    cy.get('.p-select-list-container').contains(fileType).click();
-    if (keepValuesOnly) {
-      cy.get('[data-test="valuesOnlySwitch"]').click();
-    }
-    cy.get('[data-test="downloadDataButtonInModal"]').click();
-
-    cy.wait(longTimeoutInMs);
-    cy.task('findFileByPrefix', {
-      folder: downloadDir,
-      prefix: partialFileNamePrefix,
-      extension: fileExtension,
-    }).then((filePath) => {
-      const filePathStr = filePath as string;
-      expect(filePathStr).to.exist;
-
-      cy.readFile(filePathStr, { timeout: longTimeoutInMs }).should('exist');
-
-      checkFileSizeAndDeleteAfterwards(filePathStr);
-    });
-  });
-}
-
-/**
- * Extracts file extension from user's choice
- * @param fileType type of file to be downloaded
- */
-function getFileExtension(fileType: string): string {
+function getFileExtension(fileType: FileTypeLabel): FileExtension {
   switch (fileType) {
     case 'Comma-separated Values (.csv)':
       return 'csv';
     case 'Excel File (.xlsx)':
       return 'xlsx';
-    default:
-      throw new Error(`Unknown fileType: ${fileType}`);
+    case 'JavaScript Object Notation (.json)':
+      return 'json';
   }
 }
 
-before(function () {
-  cy.fixture('CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json').then((jsonContent) => {
-    const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
-    euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
-      'all-fields-defined-for-eu-taxo-non-financials-alpha',
-      preparedFixtures
-    );
+/**
+ * Checks that the file is larger than the minimum expected size, deletes it and verifies that it is gone.
+ *
+ * The file is deleted before the assertion so that a failing check cannot leave a stale file behind.
+ *
+ * @param filePath the path of the downloaded file
+ * @param minimumSizeInByte the size the file has to exceed
+ */
+function checkFileSizeAndDeleteAfterwards(filePath: string, minimumSizeInByte: number): void {
+  cy.task('getFileSize', filePath).then((size) => {
+    cy.task('deleteFile', filePath).then(() => {
+      cy.readFile(filePath).should('not.exist');
+      expect(size).to.be.greaterThan(minimumSizeInByte);
+    });
   });
-});
+}
 
-describeIf(
-  'As a user I want to download a portfolio with selected reporting periods for a specified framework and file type',
-  {
-    executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
-  },
-  () => {
-    before(() => {
-      const uniqueCompanyMarkerWithDate = Date.now().toString();
-      const testCompanyName = 'Company-1-' + uniqueCompanyMarkerWithDate;
-      const secondCompanyName = 'Company-2-' + uniqueCompanyMarkerWithDate;
-      portfolioName = `Download Portfolio ${Date.now()}`;
-
-      let adminToken: string;
-
-      return getAdminToken()
-        .then((token) => {
-          adminToken = token;
-          return setupCompanyWithData(token, testCompanyName, ['2022', '2023', '2024']);
-        })
-        .then((company1) => {
-          storedCompany = company1;
-          return setupCompanyWithData(adminToken, secondCompanyName, ['2023', '2024']);
-        })
-        .then((company2) => {
-          secondCompany = company2;
-        })
-        .then(() => {
-          createPortfolio(storedCompany, secondCompany, portfolioName);
-        });
-    });
-
-    beforeEach(() => {
-      cy.ensureLoggedInAsAdmin();
-      cy.visitAndCheckAppMount('/portfolios');
-      cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
-      cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
-      cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
-      cy.get('.p-select-list-container').contains('EU Taxonomy Non-Financials').click();
-      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
-      cy.get('[data-test="reportingPeriodSelector"]').click();
-      for (const year of reportingYearsToSelect) {
-        cy.get('.p-multiselect-list').contains(year).click();
-      }
-      cy.get('body').click(0, 0);
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as a CSV file without additional information',
-      fileType: 'Comma-separated Values (.csv)',
-      keepValuesOnly: false,
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as an Excel-compatible CSV file without additional information',
-      fileType: 'Excel File (.xlsx)',
-      keepValuesOnly: false,
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as CSV file with additional information',
-      fileType: 'Comma-separated Values (.csv)',
-    });
-
-    testDownloadPortfolio({
-      description: 'Download the portfolio as an Excel-compatible CSV file with additional information',
-      fileType: 'Excel File (.xlsx)',
-    });
-
-    it('Shows that unavailable reporting periods are disabled in the dropdown', () => {
-      cy.get('[data-test="reportingPeriodSelector"]').click();
-      for (const year of unavailableYears) {
-        cy.get('.p-multiselect-list').contains(year).parent().should('have.attr', 'data-p-disabled', 'true');
-      }
-    });
-
-    it('Verifies latest reporting period toggle controls reporting period selector', () => {
-      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
-      cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
-      cy.get('[data-test="latestReportingPeriodSwitch"]').click();
-      cy.get('[data-test="reportingPeriodSelector"]').should('not.have.class', 'p-disabled');
-    });
+/**
+ * Selects the file type and the export options in the open download dialog and starts the download.
+ * By default the dialog has "Values only" and "Shorten field names" switched on.
+ *
+ * @param fileType the file type to download
+ * @param useAliases whether "Shorten field names" shall be switched on
+ * @param keepValuesOnly whether "Values only" shall be switched on
+ */
+function startDownload(fileType: FileTypeLabel, useAliases: boolean = true, keepValuesOnly: boolean = true): void {
+  cy.get('[data-test="fileTypeSelector"]').find('.p-select-dropdown').click();
+  cy.get('.p-select-list-container').contains(fileType).click();
+  if (!keepValuesOnly) {
+    // Switching off "Values only" also switches off "Shorten field names"
+    cy.get('[data-test="valuesOnlySwitch"]').find('.p-toggleswitch-input').click();
+    cy.get('[data-test="includeAliasSwitch"]').should('not.have.class', 'p-toggleswitch-checked');
+  } else if (!useAliases) {
+    cy.get('[data-test="includeAliasSwitch"]').find('.p-toggleswitch-input').click();
+    cy.get('[data-test="includeAliasSwitch"]').should('not.have.class', 'p-toggleswitch-checked');
   }
-);
+  cy.get('[data-test="downloadDataButtonInModal"]').click();
+}
+
+/**
+ * Waits for the download and passes the path of the downloaded file to the callback.
+ *
+ * @param label the label of the downloaded framework, which is part of the file name
+ * @param fileType the file type that was downloaded
+ * @param callback receives the path of the downloaded file
+ */
+function withDownloadedFile(label: string, fileType: FileTypeLabel, callback: (filePath: string) => void): void {
+  cy.task(
+    'findFileByPrefix',
+    {
+      folder: Cypress.config('downloadsFolder'),
+      prefix: `data-export-${label}`,
+      extension: getFileExtension(fileType),
+      waitTimeoutInMs: longTimeoutInMs,
+    },
+    { timeout: longTimeoutInMs + mediumTimeoutInMs }
+  ).then((filePath) => {
+    const filePathStr = filePath as string;
+    expect(filePathStr).to.exist;
+    cy.readFile(filePathStr, { timeout: mediumTimeoutInMs }).should('exist');
+    callback(filePathStr);
+  });
+}
+
+/**
+ * Checks that a text based export contains all expected values.
+ *
+ * @param filePath the path of the downloaded file
+ * @param expectedValues the values that have to be contained
+ */
+function checkThatFileContainsExpectedValues(filePath: string, expectedValues: string[]): void {
+  cy.readFile(filePath).then((content) => {
+    const text = typeof content === 'string' ? content : JSON.stringify(content);
+    for (const expectedValue of expectedValues) {
+      expect(text).to.contain(expectedValue);
+    }
+  });
+}
+
+/**
+ * Checks whether the column headers in the file are aliases (e.g. COMPANY_NAME) or plain names (e.g. companyName).
+ *
+ * @param filePath the path of the downloaded file
+ * @param useAliases whether aliases are expected
+ * @param expectedAliases framework specific aliases that are only expected if aliases are used
+ */
+function checkAliasesInFile(filePath: string, useAliases: boolean, expectedAliases: string[] = []): void {
+  cy.readFile(filePath).then((txt) => {
+    if (useAliases) {
+      expect(txt).to.contain('COMPANY_NAME');
+      expect(txt).to.not.contain('companyName');
+      for (const alias of expectedAliases) {
+        expect(txt).to.contain(alias);
+      }
+    } else {
+      expect(txt).to.contain('companyName');
+      expect(txt).to.not.contain('COMPANY_NAME');
+      for (const alias of expectedAliases) {
+        expect(txt).to.not.contain(alias);
+      }
+    }
+  });
+}
+
+/**
+ * Registers a test that downloads the portfolio in the given format and checks the downloaded file.
+ *
+ * @param config the framework configuration
+ * @param description the description of the test
+ * @param fileType the file type to download
+ * @param useAliases whether "Shorten field names" shall be switched on
+ * @param keepValuesOnly whether "Values only" shall be switched on
+ * @param checkContent whether the content of the file is checked (only possible for text based formats)
+ */
+function testDownloadPortfolio(
+  config: FrameworkTestConfig,
+  description: string,
+  fileType: FileTypeLabel,
+  useAliases: boolean,
+  keepValuesOnly: boolean,
+  checkContent: boolean
+): void {
+  it(description, () => {
+    startDownload(fileType, useAliases, keepValuesOnly);
+    withDownloadedFile(config.label, fileType, (filePath) => {
+      if (checkContent && config.expectedValuesInExport) {
+        checkThatFileContainsExpectedValues(filePath, config.expectedValuesInExport());
+        if (fileType === 'Comma-separated Values (.csv)' && keepValuesOnly) {
+          checkAliasesInFile(filePath, useAliases, config.expectedAliasesInExport);
+        }
+      }
+      const minimumSize = config.minimumFileSizeInByte?.[getFileExtension(fileType)] ?? defaultMinimumFileSizeInByte;
+      checkFileSizeAndDeleteAfterwards(filePath, minimumSize);
+    });
+  });
+}
+
+for (const config of frameworkTestConfigs) {
+  describeIf(
+    `As a user I want to download a ${config.label} portfolio with selected reporting periods and file type`,
+    {
+      executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
+    },
+    () => {
+      let portfolioName: string;
+
+      before(() => {
+        config.loadFixture();
+        const uniqueCompanyMarkerWithDate = Date.now().toString();
+        const testCompanyName = `Company-1-${config.label}-${uniqueCompanyMarkerWithDate}`;
+        const secondCompanyName = `Company-2-${config.label}-${uniqueCompanyMarkerWithDate}`;
+        portfolioName = `Download ${config.label} Portfolio ${Date.now()}`;
+
+        let adminToken: string;
+        let firstCompany: StoredCompany;
+
+        return getAdminToken()
+          .then((token) => {
+            adminToken = token;
+            return setupCompanyWithData(config, token, testCompanyName, ['2022', '2023', '2024']);
+          })
+          .then((company1) => {
+            firstCompany = company1;
+            return setupCompanyWithData(config, adminToken, secondCompanyName, ['2023', '2024']);
+          })
+          .then((company2) => {
+            createPortfolio(firstCompany, company2, portfolioName);
+          });
+      });
+
+      beforeEach(() => {
+        cy.ensureLoggedInAsAdmin();
+        cy.visitAndCheckAppMount('/portfolios');
+        cy.get(`[data-test="${portfolioName}"]`).contains(portfolioName).click();
+        cy.get(`[data-test="portfolio-${portfolioName}"] [data-test="download-portfolio"]`).click();
+        cy.get('[data-test="frameworkSelector"]').find('.p-select-dropdown').click();
+        cy.get('.p-select-list-container').contains(config.label).click();
+        cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+        cy.get('[data-test="reportingPeriodSelector"]').click();
+        for (const year of reportingYearsToSelect) {
+          cy.get('.p-multiselect-list').contains(year).click();
+        }
+        cy.get('body').click(0, 0);
+      });
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as a CSV file without additional information',
+        'Comma-separated Values (.csv)',
+        true,
+        true,
+        true
+      );
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as a CSV file without shortened field names',
+        'Comma-separated Values (.csv)',
+        false,
+        true,
+        true
+      );
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as a CSV file with additional information',
+        'Comma-separated Values (.csv)',
+        false,
+        false,
+        true
+      );
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as an Excel file without additional information',
+        'Excel File (.xlsx)',
+        true,
+        true,
+        false
+      );
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as an Excel file with additional information',
+        'Excel File (.xlsx)',
+        false,
+        false,
+        false
+      );
+
+      testDownloadPortfolio(
+        config,
+        'Download the portfolio as a JSON file',
+        'JavaScript Object Notation (.json)',
+        true,
+        true,
+        true
+      );
+
+      it('Shows that unavailable reporting periods are disabled in the dropdown', () => {
+        cy.get('[data-test="reportingPeriodSelector"]').click();
+        for (const year of unavailableYears) {
+          cy.get('.p-multiselect-list').contains(year).parent().should('have.attr', 'data-p-disabled', 'true');
+        }
+      });
+
+      it('Verifies latest reporting period toggle controls reporting period selector', () => {
+        cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+        cy.get('[data-test="reportingPeriodSelector"]').should('have.class', 'p-disabled');
+        cy.get('[data-test="latestReportingPeriodSwitch"]').click();
+        cy.get('[data-test="reportingPeriodSelector"]').should('not.have.class', 'p-disabled');
+      });
+    }
+  );
+}

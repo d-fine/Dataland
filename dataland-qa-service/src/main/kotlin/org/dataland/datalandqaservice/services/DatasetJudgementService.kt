@@ -173,18 +173,50 @@ class DatasetJudgementService
             DatasetJudgementValidationHelper.validateUserIsJudge(datasetJudgement.qaJudgeUserId)
             DatasetJudgementValidationHelper.validatePatchContainsCustomDataPointOrAcceptedSource(patch)
             DatasetJudgementValidationHelper.validateAcceptedQaReportIdIsSetIfAcceptedSourceIsQa(patch)
-            val dataPoint =
-                datasetJudgement.dataPoints
-                    .find { it.dataPointType == dataPointType }
-                    ?: throw InvalidInputApiException(
-                        "Invalid input.",
-                        "Data point with type '$dataPointType' not found.",
-                    )
+            val existingDataPoint = datasetJudgement.dataPoints.find { it.dataPointType == dataPointType }
+            val dataPoint = existingDataPoint ?: createDataPointWithoutOriginal(dataPointType, patch)
 
             applyCustomDataPoint(dataPointType, patch.customDataPoint, dataPoint)
             applyAcceptedSource(dataPoint, patch)
+            applyReviewerComment(dataPoint, patch)
+
+            if (existingDataPoint == null) {
+                datasetJudgement.addAssociatedDataPoints(dataPoint)
+            }
 
             return datasetJudgementRepository.save(datasetJudgement).toDatasetJudgementResponse()
+        }
+
+        /**
+         * Creates a data point judgement entity for a data point type that is not contained in the original dataset.
+         * This is only allowed if the patch provides a custom value and accepts it as source.
+         * The returned entity is not yet attached to the dataset judgement, so that it is only added after
+         * all patch values have been validated and applied successfully.
+         *
+         * @param dataPointType The type of the data point missing in the original dataset.
+         * @param patch The patch to apply.
+         * @return A new DataPointJudgementEntity without original data point id.
+         * @throws InvalidInputApiException If the patch does not provide and accept a custom value.
+         */
+        private fun createDataPointWithoutOriginal(
+            dataPointType: String,
+            patch: JudgementDetailsPatch,
+        ): DataPointJudgementEntity {
+            if (patch.customDataPoint == null || patch.acceptedSource != AcceptedDataPointSource.Custom) {
+                throw InvalidInputApiException(
+                    "Invalid input.",
+                    "Data point with type '$dataPointType' not found. Data points missing in the original dataset " +
+                        "can only be added by providing a custom value with accepted source Custom.",
+                )
+            }
+            return DataPointJudgementEntity(
+                dataPointType = dataPointType,
+                dataPointId = null,
+                acceptedSource = null,
+                reporterUserIdOfAcceptedQaReport = null,
+                customValue = null,
+                dataPointBaseType = datasetJudgementSupportService.resolveBaseTypeId(dataPointType),
+            )
         }
 
         /**
@@ -216,6 +248,20 @@ class DatasetJudgementService
         }
 
         /**
+         * Applies the reviewer comment of the patch independently of the accepted source.
+         * A missing comment leaves the stored comment untouched, a blank comment clears it.
+         *
+         * @param dataPoint The data point entity to update.
+         * @param patch The patch containing the reviewer comment.
+         */
+        private fun applyReviewerComment(
+            dataPoint: DataPointJudgementEntity,
+            patch: JudgementDetailsPatch,
+        ) {
+            patch.reviewerComment?.let { dataPoint.reviewerComment = it.trim().ifEmpty { null } }
+        }
+
+        /**
          * Applies the accepted source and related fields based on the patch.
          *
          * @param dataPoint The data point entity to update.
@@ -231,7 +277,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Original
                         this.reporterUserIdOfAcceptedQaReport = null
                         this.acceptedQaReportId = null
-                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -246,7 +291,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Qa
                         this.reporterUserIdOfAcceptedQaReport = UUID.fromString(report.reporterUserId)
                         this.acceptedQaReportId = report.qaReportId
-                        this.reasonForCustomDataPoint = null
                     }
                 }
 
@@ -256,7 +300,6 @@ class DatasetJudgementService
                         this.acceptedSource = AcceptedDataPointSource.Custom
                         this.reporterUserIdOfAcceptedQaReport = null
                         this.acceptedQaReportId = null
-                        this.reasonForCustomDataPoint = patch.reasonForCustomDataPoint
                     }
                 }
 

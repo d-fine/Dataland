@@ -8,6 +8,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The changes have been inspected for possible breaking API changes (changed data models, endpoints, response codes, exception handling, ...). If there are any discuss them with the team.
   - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
+- [ ] The ticket/implementation was presented (or at least offered to be presented) in one of the 5pm functional review slots with the managers
 - [ ] Make sure you understand the entire workflow from the user’s perspective, and test/review it accordingly. If anything is unclear, please reach out to the dev team.
 - [ ] At least one test exists testing the new feature
   - [ ] Make sure all newly added functionality (especially user facing) is tested
@@ -22,9 +23,8 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The new feature is manually used/tested/observed on the clone server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
   - [ ] The feature branch is deployed to one of the dev servers with `Reset non-user related Docker Volumes & Re-populate` turned on, and it's verified that the CD run is green
 - [ ] ELSE, the new version is deployed to one of the dev servers using this branch
-  - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on 
-  - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
+  - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
-- [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers (no longer enforced by GitHub)
+- [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers at least once, check with "dev1.dataland.com/gitinfo"
 - [ ] Ensure that the release notes are written in a way that is understandable to a non-technical audience.

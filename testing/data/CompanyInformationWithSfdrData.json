@@ -2157,7 +2157,7 @@
 				"company": {
 					"fiscalYearEnd": null,
 					"mainPcafSector": {
-						"value": "HealthCare",
+						"value": "Financials",
 						"dataSource": {
 							"page": "612, 643-653",
 							"fileName": null,
@@ -4345,7 +4345,7 @@
 				"company": {
 					"fiscalYearEnd": null,
 					"mainPcafSector": {
-						"value": "Industry",
+						"value": "Industrials",
 						"dataSource": {
 							"page": "645-927",
 							"fileName": null,

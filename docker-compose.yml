@@ -171,28 +171,50 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U accounting_service" ]
     logging:
       <<: *loki-logging
-  data-sourcing-service:
+  company-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal
-      - data-sourcing-service-db
-    image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+    image: ${COMPANY_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_company_service_test:${DATALAND_COMPANY_SERVICE_TEST_VERSION}}
     expose:
       - "8080"
-    depends_on:
-      data-sourcing-service-db:
-        condition: service_healthy
+
     <<: *uncritical-constants-env
     environment:
-      <<: *rabbit-mq-user-and-pass
       JAVA_TOOL_OPTIONS: *java-tool-options
-      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+      DATALAND_COMPANY_SERVICE_CLIENT_SECRET: ${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}
+      # "mock" unless explicitly set to "azure", so that no real LLM calls happen by accident (e.g. in CI)
+      COMPANY_SERVICE_PROVIDER: ${COMPANY_SERVICE_PROVIDER:-mock}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_DEPLOYMENT_NAME: ${AZURE_OPENAI_DEPLOYMENT_NAME:-}
     logging:
       <<: *loki-logging
+  data-sourcing-service:
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - internal
+          - data-sourcing-service-db
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        expose:
+          - "8080"
+        depends_on:
+          data-sourcing-service-db:
+            condition: service_healthy
+        <<: *uncritical-constants-env
+        environment:
+          <<: *rabbit-mq-user-and-pass
+          JAVA_TOOL_OPTIONS: *java-tool-options
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        logging:
+          <<: *loki-logging
   data-sourcing-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -313,6 +335,8 @@ services:
     depends_on:
       backend:
         condition: service_started
+      company-service:
+        condition: service_healthy
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
@@ -342,7 +366,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "development" ]
-    image: node:24.14.1@sha256:80fc934952c8f1b2b4d39907af7211f8a9fff1a4c2cf673fb49099292c251cec
+    image: node:24.22.1@sha256:d862bb5d082c5ae0210ac07e8c0344cb8cf7bef6d78e9b8c50c179da923108ea
     networks:
       internal:
         aliases:
@@ -485,6 +509,7 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
       DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
+      DATALAND_COMPANY_SERVICE_CLIENT_SECRET: ${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
       KEYCLOAK_LINKEDIN_ID: ${KEYCLOAK_LINKEDIN_ID}

@@ -24,6 +24,7 @@ include(
     "dataland-specification-lib",
     "dataland-specification-service",
     "dataland-user-service",
+    "dataland-company-service",
     "dataland-website",
     "dataland-sharedElements",
 )

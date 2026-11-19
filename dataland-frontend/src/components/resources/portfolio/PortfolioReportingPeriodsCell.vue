@@ -2,8 +2,10 @@
   <Button v-if="clickable" variant="link" @click="$emit('navigate')" :pt="buttonPt">
     <span v-tooltip.top="tooltipOptions">
       <template v-for="(period, index) in periods" :key="period.year">
-        <span :class="{ 'non-sourceable-year': period.nonSourceable }">{{ period.year }}</span
-        ><template v-if="index < periods.length - 1">, </template>
+        <span :class="{ 'non-sourceable-year': period.nonSourceable }">{{ period.year }}</span><template
+          v-if="index < periods.length - 1"
+          >,
+        </template>
       </template>
     </span>
   </Button>
@@ -11,8 +13,10 @@
     <template v-if="periods.length === 0">No data available</template>
     <template v-else>
       <template v-for="(period, index) in periods" :key="period.year">
-        <span :class="{ 'non-sourceable-year': period.nonSourceable }">{{ period.year }}</span
-        ><template v-if="index < periods.length - 1">, </template>
+        <span :class="{ 'non-sourceable-year': period.nonSourceable }">{{ period.year }}</span><template
+          v-if="index < periods.length - 1"
+          >,
+        </template>
       </template>
     </template>
   </span>
@@ -49,7 +53,7 @@ const buttonPt = {
     style: 'font-weight: normal; text-align: left;',
   },
   root: {
-    style: 'padding-left: 0;',
+    style: 'padding-left: 0; justify-content: flex-start; text-align: left;',
   },
 };
 

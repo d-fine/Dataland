@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
+import org.dataland.datalandbackend.openApiClient.model.PcafData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import java.io.File
 import java.util.UUID
@@ -46,6 +47,11 @@ class FrameworkTestDataProvider<T>(
                     FrameworkTestDataConfiguration(
                         File("./build/resources/test/CompanyInformationWithSfdrData.json"),
                         File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"),
+                    ),
+                PcafData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithPcafData.json"),
+                        File("./build/resources/test/CompanyInformationWithPcafPreparedFixtures.json"),
                     ),
             )
 

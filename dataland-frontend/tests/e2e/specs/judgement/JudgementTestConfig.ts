@@ -34,7 +34,7 @@ export const QA_SCENARIO_CONFIG: QaScenarioConfig[] = [
       acceptedSource: AcceptedDataPointSource.Custom,
       customValue: '400400400.23',
       customCurrency: 'EUR',
-      reasonForCustomDataPoint: 'Both the original and QA suggestion values were inconsistent with other data points.',
+      reviewerComment: 'Both the original and QA suggestion values were inconsistent with other data points.',
     },
   },
   {

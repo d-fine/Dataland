@@ -67,7 +67,7 @@ export default defineComponent({
 
     dataSourceLabel(): string | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
-      if (!dataSource || !dataSource.fileName) return undefined;
+      if (!dataSource?.fileName) return undefined;
       return dataSource.fileName;
     },
 

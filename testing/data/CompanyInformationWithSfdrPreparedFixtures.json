@@ -59,7 +59,7 @@
 						"quality": "Reported"
 					},
 					"mainPcafSector": {
-						"value": "Sovereign",
+						"value": "RealEstate",
 						"dataSource": {
 							"page": "712-853",
 							"fileName": null,
@@ -283,7 +283,7 @@
 						"quality": "Audited"
 					},
 					"mainPcafSector": {
-						"value": "HealthCare",
+						"value": "Financials",
 						"dataSource": {
 							"page": "1059",
 							"fileName": null,
@@ -3134,7 +3134,7 @@
 						"quality": "NoDataFound"
 					},
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Public",
 						"dataSource": {
 							"page": "972-1045",
 							"fileName": null,
@@ -5928,7 +5928,7 @@
 						"quality": "NoDataFound"
 					},
 					"mainPcafSector": {
-						"value": "ConsumerStaples",
+						"value": "ConsumerDiscretionary",
 						"dataSource": {
 							"page": "844, 1238-1248",
 							"fileName": null,
@@ -7328,7 +7328,7 @@
 						"quality": "Audited"
 					},
 					"mainPcafSector": {
-						"value": "Industrials",
+						"value": "HealthCare",
 						"dataSource": {
 							"page": "623, 1134-1144",
 							"fileName": null,
@@ -8720,7 +8720,7 @@
 						"quality": "Incomplete"
 					},
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Public",
 						"dataSource": {
 							"page": "404-1002",
 							"fileName": null,
@@ -10118,7 +10118,7 @@
 						"quality": "Audited"
 					},
 					"mainPcafSector": {
-						"value": "InformationTechnology",
+						"value": "Materials",
 						"dataSource": {
 							"page": "1101-1239",
 							"fileName": null,
@@ -14269,7 +14269,7 @@
 						"quality": "Incomplete"
 					},
 					"mainPcafSector": {
-						"value": "HealthCare",
+						"value": "Financials",
 						"dataSource": {
 							"page": "1023",
 							"fileName": null,
@@ -15669,7 +15669,7 @@
 						"quality": "Audited"
 					},
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Public",
 						"dataSource": {
 							"page": "698-960",
 							"fileName": null,
@@ -18464,7 +18464,7 @@
 						"quality": "Estimated"
 					},
 					"mainPcafSector": {
-						"value": "Financials",
+						"value": "Energy",
 						"dataSource": {
 							"page": "1077-1161",
 							"fileName": null,
@@ -19855,7 +19855,7 @@
 						"quality": "Audited"
 					},
 					"mainPcafSector": {
-						"value": "RealEstate",
+						"value": "Public",
 						"dataSource": {
 							"page": "1097-1118",
 							"fileName": null,

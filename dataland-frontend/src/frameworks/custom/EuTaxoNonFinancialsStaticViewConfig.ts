@@ -37,7 +37,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     children: [
       {
         type: 'cell',
-        label: 'Fiscal Year Deviation',
+        label: 'Fiscal year deviation',
         explanation: 'Does the fiscal year deviate from the calendar year?',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
@@ -53,7 +53,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                   : ''
               );
             })(),
-            'Fiscal Year Deviation',
+            'Fiscal year deviation',
             dataset.general?.fiscalYearDeviation
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
@@ -72,7 +72,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
                   : ''
               );
             })(),
-            'Fiscal Year Deviation',
+            'Fiscal year deviation',
             dataPoint
           ),
         uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
@@ -80,19 +80,19 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       },
       {
         type: 'cell',
-        label: 'Fiscal Year End',
+        label: 'Fiscal year end',
         explanation: 'The date the fiscal year ends.',
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
             formatStringForDatatable(dataset.general?.fiscalYearEnd?.value),
-            'Fiscal Year End',
+            'Fiscal year end',
             dataset.general?.fiscalYearEnd
           ),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformationByDataPoint(
             formatStringForDatatable(extractDatapointValue(dataPoint) as string),
-            'Fiscal Year End',
+            'Fiscal year end',
             dataPoint
           ),
         uploadComponentName: 'DateExtendedDataPointFormField',
@@ -167,7 +167,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatAssuranceForDataTable(dataset.general?.assurance, 'Assurance'),
         valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AssuranceFormField',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
       },
       {
@@ -451,7 +451,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'revenue'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentRevenueNonAlignedActivities',
       },
       {
@@ -1125,7 +1125,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'revenue'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentRevenueAlignedActivities',
       },
       {
@@ -1335,7 +1335,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'capex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentCapexNonAlignedActivities',
       },
       {
@@ -2003,7 +2003,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'capex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentCapexAlignedActivities',
       },
       {
@@ -2209,7 +2209,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Non-Aligned Activities',
             'opex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'NonAlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyNonAlignedActivitiesComponentOpexNonAlignedActivities',
       },
       {
@@ -2412,7 +2412,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             'Aligned Activities',
             'opex'
           ),
-        uploadComponentName: 'Non-editable',
+        uploadComponentName: 'AlignedActivitiesFormField',
         dataPointTypeId: 'extendedEuTaxonomyAlignedActivitiesComponentOpexAlignedActivities',
       },
       {

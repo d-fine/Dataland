@@ -171,13 +171,19 @@ export default defineConfig({
         },
       });
       on('task', {
-        async findFileByPrefix({ folder, prefix, extension }) {
-          const files = await readdir(folder);
-          const match = files.find((file) => file.startsWith(prefix) && file.endsWith(`.${extension}`));
-          if (!match) {
-            throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
+        async findFileByPrefix({ folder, prefix, extension, waitTimeoutInMs = 0 }) {
+          const deadline = Date.now() + waitTimeoutInMs;
+          for (;;) {
+            const files = await readdir(folder);
+            const match = files.find((file) => file.startsWith(prefix) && file.endsWith(`.${extension}`));
+            if (match) {
+              return join(folder, match);
+            }
+            if (Date.now() >= deadline) {
+              throw new Error(`No file found starting with '${prefix}' and ending with '.${extension}'`);
+            }
+            await new Promise((resolve) => setTimeout(resolve, 250));
           }
-          return join(folder, match);
         },
       });
       on('task', {

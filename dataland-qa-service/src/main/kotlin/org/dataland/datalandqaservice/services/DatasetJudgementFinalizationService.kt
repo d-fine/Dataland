@@ -76,7 +76,7 @@ class DatasetJudgementFinalizationService
 
             val (acceptedTasks, rejectedTasks) =
                 dataPoints
-                    .map { dataPoint ->
+                    .mapNotNull { dataPoint ->
                         buildReviewTask(dataPoint, triggeringUserId, correlationId, timestamp)
                     }.partition { it.qaStatus == QaStatus.Accepted }
 
@@ -178,7 +178,7 @@ class DatasetJudgementFinalizationService
          * @param triggeringUserId The user ID triggering the QA status change.
          * @param correlationId The correlation ID for tracing.
          * @param timestamp The timestamp of the operation.
-         * @return A [ReviewDataPointTask] ready to be submitted.
+         * @return A [ReviewDataPointTask] ready to be submitted, or null if there is no original data point.
          * @throws InvalidInputApiException If the data point has no accepted source set.
          */
         private fun buildReviewTask(
@@ -186,7 +186,7 @@ class DatasetJudgementFinalizationService
             triggeringUserId: String,
             correlationId: String,
             timestamp: Long,
-        ): ReviewDataPointTask {
+        ): ReviewDataPointTask? {
             val qaStatus =
                 when (dataPoint.acceptedSource) {
                     AcceptedDataPointSource.Original -> {
@@ -208,8 +208,10 @@ class DatasetJudgementFinalizationService
                         )
                     }
                 }
+            // Data points without original data point (custom values added by the judge) have no QA status to update
+            val dataPointId = dataPoint.dataPointId ?: return null
             return ReviewDataPointTask(
-                dataPointId = dataPoint.dataPointId,
+                dataPointId = dataPointId,
                 qaStatus = qaStatus,
                 triggeringUserId = triggeringUserId,
                 comment = null,

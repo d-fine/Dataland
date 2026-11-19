@@ -52,37 +52,25 @@ export function generatePcafData(nullProbability = DEFAULT_PROBABILITY): PcafDat
         ),
       },
     },
-    companyValue: {
+    financial: {
+      financial: {
+        pppAdjustedGrossDomesticProductGdp: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+      },
       listedCompany: {
         marketCapitalizationInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         minoritiesInterestInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        enterpriseValueInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
       },
       unlistedCompany: {
+        totalEquityInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
     },
     environmental: {
       greenhouseGasEmissions: {
         scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-      },
-    },
-    companyValueEstimation: {
-      listedCompany: {
-        marketCapitalizationInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        bookValueOfDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        minoritiesInterestInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-      },
-      unlistedCompany: {
-        totalEquityAndDebtInEUR: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-      },
-    },
-    environmentalEstimation: {
-      greenhouseGasEmissions: {
-        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),

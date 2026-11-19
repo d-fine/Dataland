@@ -6,12 +6,14 @@ import org.dataland.datalandbackend.openApiClient.api.NonSourceabilityController
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.BasicDataDimensions
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdentifierValidationResult
+import org.dataland.datalandbackend.openApiClient.model.DataDimensionSearchRequest
 import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.ProxyCompanyReplacement
 import org.dataland.datalanduserservice.model.enums.NotificationFrequency
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -108,6 +110,29 @@ class PortfolioEnrichmentServiceTest {
 
         val entry = enrichedPortfolio.entries.first { it.companyId == testCompanyId }
         Assertions.assertEquals("2023, 2022", entry.availableReportingPeriods["sfdr"])
+    }
+
+    @Test
+    fun `check that pcaf and nuclear and gas reporting periods are included in availableReportingPeriods`() {
+        mockCompanyValidation()
+        val availableDimensions =
+            listOf(
+                BasicDataDimensions(testCompanyId, "pcaf", "2024"),
+                BasicDataDimensions(testCompanyId, "pcaf", "2023"),
+                BasicDataDimensions(testCompanyId, "nuclear-and-gas", "2023"),
+            )
+        // Like the real API, only return dimensions of the data types that were actually requested
+        whenever(mockDataAvailabilityControllerApi.searchViewableDimensions(any())).doAnswer { invocation ->
+            val requestedDataTypes = invocation.getArgument<DataDimensionSearchRequest>(0).dataTypes.orEmpty()
+            availableDimensions.filter { it.dataType in requestedDataTypes }
+        }
+        whenever(mockNonSourceabilityControllerApi.searchNonSourceableDimensions(any())).doReturn(emptySet())
+
+        val enrichedPortfolio = portfolioEnrichmentService.getEnrichedPortfolio(testPortfolio())
+
+        val entry = enrichedPortfolio.entries.first { it.companyId == testCompanyId }
+        Assertions.assertEquals("2024, 2023", entry.availableReportingPeriods["pcaf"])
+        Assertions.assertEquals("2023", entry.availableReportingPeriods["nuclear-and-gas"])
     }
 
     @Test

@@ -346,7 +346,7 @@ class PreApprovalService(
             return true
         }
 
-        val newValue = datasetJudgementSupportService.getDataPointValueNode(dataPoint.dataPointId)
+        val newValue = dataPoint.dataPointId?.let { datasetJudgementSupportService.getDataPointValueNode(it) }
         val liveValue = datasetJudgementSupportService.getDataPointValueNode(liveDataPointId)
 
         val baseTypeId = datasetJudgementSupportService.resolveBaseTypeId(dataPoint.dataPointType)

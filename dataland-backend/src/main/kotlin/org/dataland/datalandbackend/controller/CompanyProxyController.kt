@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.api.CompanyProxyApi
 import org.dataland.datalandbackend.model.proxies.CompanyProxy
 import org.dataland.datalandbackend.model.proxies.StoredCompanyProxy
 import org.dataland.datalandbackend.services.CompanyProxyManager
+import org.dataland.datalandbackend.services.ProxySuggestionService
+import org.dataland.datalandbackendutils.model.proxyfinder.ProxySuggestion
 import org.dataland.datalandbackendutils.utils.ValidationUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the company data proxy rule endpoints.
  *
  * @param companyProxyManager the service to handle creation and retrieval of proxy rules
+ * @param proxySuggestionService the service to request proxy suggestions from the proxy finder
  */
 @RestController
 class CompanyProxyController
     @Autowired
     constructor(
         private val companyProxyManager: CompanyProxyManager,
+        private val proxySuggestionService: ProxySuggestionService,
     ) : CompanyProxyApi {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -109,5 +113,13 @@ class CompanyProxyController
                     uploaderUserId = DatalandAuthentication.fromContext().userId,
                 ),
             )
+        }
+
+        /**
+         * POST /company-proxies/{companyId}/proxy-suggestion
+         */
+        override fun findProxySuggestion(companyId: String): ResponseEntity<ProxySuggestion> {
+            logger.info("Received request to find a proxy suggestion for companyId='$companyId'")
+            return ResponseEntity.ok(proxySuggestionService.requestProxySuggestion(companyId))
         }
     }

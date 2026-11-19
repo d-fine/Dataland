@@ -38,6 +38,7 @@ class DatasetJudgementTest {
     private val dataPointType3 = "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes"
     private val customDataPoint = "{\"value\":1000,\"quality\":\"Reported\",\"comment\":null,\"dataSource\":null}"
     private val customDataPointReason = "Both original and QA suggestion values were out of the expected range."
+    private val originalReviewerComment = "The original value is correct, the QA bot misread the table."
 
     private val dummyQaReport1 =
         QaReportDataPointString(
@@ -106,7 +107,7 @@ class DatasetJudgementTest {
                 val acceptedSource: AcceptedDataPointSource,
                 val acceptedQaReportId: String? = null,
                 val customDataPoint: String? = null,
-                val reasonForCustomDataPoint: String? = null,
+                val reviewerComment: String? = null,
             )
             val explicitlyHandledDataPointIds = setOf(dataPointId1, dataPointId2, dataPointId3)
 
@@ -114,7 +115,7 @@ class DatasetJudgementTest {
                 listOf(
                     PatchOperation(dataPointType1, AcceptedDataPointSource.Qa, qaReportId1),
                     PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, qaReportId2),
-                    PatchOperation(dataPointType1, AcceptedDataPointSource.Original),
+                    PatchOperation(dataPointType1, AcceptedDataPointSource.Original, reviewerComment = originalReviewerComment),
                     PatchOperation(dataPointType2, AcceptedDataPointSource.Qa, qaReportId2),
                     PatchOperation(dataPointType3, AcceptedDataPointSource.Custom, null, customDataPoint, customDataPointReason),
                 ) +
@@ -133,7 +134,7 @@ class DatasetJudgementTest {
                         it.acceptedSource,
                         null,
                         it.customDataPoint,
-                        it.reasonForCustomDataPoint,
+                        it.reviewerComment,
                         it.acceptedQaReportId,
                     ),
                 )
@@ -170,13 +171,14 @@ class DatasetJudgementTest {
 
         assertEquals(AcceptedDataPointSource.Original, datasetJudgement.dataPoints[dataPointType1]?.acceptedSource)
         assertNull(datasetJudgement.dataPoints[dataPointType1]?.reporterUserIdOfAcceptedQaReport)
+        assertEquals(originalReviewerComment, datasetJudgement.dataPoints[dataPointType1]?.reviewerComment)
 
         assertEquals(AcceptedDataPointSource.Qa, datasetJudgement.dataPoints[dataPointType2]?.acceptedSource)
-        assertNull(datasetJudgement.dataPoints[dataPointType2]?.reasonForCustomDataPoint)
+        assertNull(datasetJudgement.dataPoints[dataPointType2]?.reviewerComment)
 
         assertEquals(AcceptedDataPointSource.Custom, datasetJudgement.dataPoints[dataPointType3]?.acceptedSource)
         assertEquals(customDataPoint, datasetJudgement.dataPoints[dataPointType3]?.customValue)
-        assertEquals(customDataPointReason, datasetJudgement.dataPoints[dataPointType3]?.reasonForCustomDataPoint)
+        assertEquals(customDataPointReason, datasetJudgement.dataPoints[dataPointType3]?.reviewerComment)
     }
 
     @Test

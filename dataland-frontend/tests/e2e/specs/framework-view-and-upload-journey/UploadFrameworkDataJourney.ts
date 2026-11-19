@@ -52,7 +52,7 @@ function checkIfDropDownSwitchRendersData(): void {
   cy.get('[data-test="chooseFrameworkDropdown"]')
     .contains('a', /^EU Taxonomy Financials$/)
     .click();
-  cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
+  cy.get('td[data-cell-label="Fiscal year end"]').should('be.visible');
 
   cy.get('[data-test="chooseFrameworkDropdown"]').click();
   cy.get('[data-test="chooseFrameworkDropdown"]')

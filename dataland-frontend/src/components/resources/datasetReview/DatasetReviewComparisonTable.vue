@@ -605,7 +605,7 @@ function isCellEmpty(cellRow: CellRow, source: AcceptedDataPointSource, reporter
   switch (source) {
     case AcceptedDataPointSource.Original: {
       const original = cellRow.originalDisplay;
-      return original == null || original.displayValue == null || original.displayValue === '';
+      return original?.displayValue == null || original.displayValue === '';
     }
 
     case AcceptedDataPointSource.Custom: {

@@ -14,7 +14,7 @@ export const pcafDataModel = [
         fields: [
           {
             name: 'fiscalYearDeviation',
-            label: 'Fiscal Year Deviation',
+            label: 'Fiscal year deviation',
             description: 'Does the fiscal year deviate from the calendar year?',
             options: [
               {
@@ -33,7 +33,7 @@ export const pcafDataModel = [
           },
           {
             name: 'fiscalYearEnd',
-            label: 'Fiscal Year End',
+            label: 'Fiscal year end',
             description: 'The date the fiscal year ends.',
 
             component: 'DateExtendedDataPointFormField',
@@ -50,7 +50,7 @@ export const pcafDataModel = [
             name: 'mainPcafSector',
             label: 'Main PCAF sector',
             description:
-              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Industry"; "Information Technology"; "Materials"; "Real estate"; "Sovereign"; "Utilities";',
+              'One of the following sectors the company is mainly operating in: "Communication Services"; "Consumer Discretionary"; "Consumer Staples"; "Energy"; "Financials"; "Health Care"; "Industrials"; "Information Technology"; "Materials"; "Public"; "Real estate"; "Utilities";',
             options: [
               {
                 label: 'Communication Services',
@@ -81,10 +81,6 @@ export const pcafDataModel = [
                 value: 'Industrials',
               },
               {
-                label: 'Industry',
-                value: 'Industry',
-              },
-              {
                 label: 'Information Technology',
                 value: 'InformationTechnology',
               },
@@ -93,12 +89,12 @@ export const pcafDataModel = [
                 value: 'Materials',
               },
               {
-                label: 'Real Estate',
-                value: 'RealEstate',
+                label: 'Public',
+                value: 'Public',
               },
               {
-                label: 'Sovereign',
-                value: 'Sovereign',
+                label: 'Real Estate',
+                value: 'RealEstate',
               },
               {
                 label: 'Utilities',
@@ -134,21 +130,22 @@ export const pcafDataModel = [
     ],
   },
   {
-    name: 'companyValue',
-    label: 'Company Value',
+    name: 'financial',
+    label: 'Financial',
     color: '',
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: 'listedCompany',
-        label: 'Listed company',
+        name: 'financial',
+        label: 'Financial',
         fields: [
           {
-            name: 'marketCapitalizationInEUR',
-            label: 'Market capitalization',
-            description: 'Market capitalization in EUR calculated as: number of shares * price per share',
+            name: 'pppAdjustedGrossDomesticProductGdp',
+            label: 'PPP adjusted gross domestic product (GDP)',
+            description:
+              'A country’s total economic output, adjusted for differences in purchasing power (PPP) in US-dollar. See also PCAF (2025). The Global GHG Accounting and Reporting Standard Part A: Financed Emissions. Third Edition.',
 
-            unit: 'EUR',
+            unit: 'USD',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
@@ -159,6 +156,23 @@ export const pcafDataModel = [
             label: 'Book value of debt',
             description:
               'Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
+        ],
+      },
+      {
+        name: 'listedCompany',
+        label: 'Listed company',
+        fields: [
+          {
+            name: 'marketCapitalizationInEUR',
+            label: 'Market capitalization',
+            description: 'Market capitalization in EUR calculated as: number of shares * price per share',
 
             unit: 'EUR',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -178,12 +192,34 @@ export const pcafDataModel = [
             showIf: (): boolean => true,
             validation: 'min:0',
           },
+          {
+            name: 'enterpriseValueInEUR',
+            label: 'Enterprise value',
+            description:
+              'The enterprise value in EUR, i.e. the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4) and formula (1)+(2).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
         ],
       },
       {
         name: 'unlistedCompany',
         label: 'Unlisted company',
         fields: [
+          {
+            name: 'totalEquityInEUR',
+            label: 'Total equity',
+            description: 'Total equity in EUR as listed on the balance sheet',
+
+            unit: 'EUR',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+            validation: 'min:0',
+          },
           {
             name: 'totalEquityAndDebtInEUR',
             label: 'Total equity and debt',
@@ -222,132 +258,15 @@ export const pcafDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'scope2GhgEmissionsLocationBasedInTonnes',
-            label: 'Scope 2 GHG emissions (location-based)',
+            name: 'scope2GhgEmissionsInTonnes',
+            label: 'Scope 2 GHG emissions',
             description:
-              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
+              'Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'scope2GhgEmissionsMarketBasedInTonnes',
-            label: 'Scope 2 GHG emissions (market-based)',
-            description:
-              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(ii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'scope3GhgEmissionsInTonnes',
-            label: 'Scope 3 GHG emissions',
-            description:
-              'Scope 3 greenhouse gas emissions in tons, i.e., all indirect upstream and downstream emissions that are neither covered by scope 1 ghg emissions nor by scope 2 ghg emissions (equity share approach preferably used). See also (EU) 2016/1011 Annex III (1)(e)(iii).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'companyValueEstimation',
-    label: 'Company Value Estimation',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [
-      {
-        name: 'listedCompany',
-        label: 'Listed company',
-        fields: [
-          {
-            name: 'marketCapitalizationInEUR',
-            label: 'Market capitalization',
-            description: 'Estimation of Market capitalization in EUR calculated as: number of shares * price per share',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'bookValueOfDebtInEUR',
-            label: 'Book value of debt',
-            description:
-              'Estimation of Book value of debt in EUR = all debt as listed on the company balance sheet (not to be mixed up with other definitions)',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'minoritiesInterestInEUR',
-            label: 'Minorities interest',
-            description:
-              'Estimation of Minorities interest in EUR as potentially listed on the balance sheet for ownerships without control (typically for ownerships of less than 50%)',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-        ],
-      },
-      {
-        name: 'unlistedCompany',
-        label: 'Unlisted company',
-        fields: [
-          {
-            name: 'totalEquityAndDebtInEUR',
-            label: 'Total equity and debt',
-            description: 'Estimation of Sum of total equity and total debt in EUR as listed on the balance sheet',
-
-            unit: 'EUR',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'environmentalEstimation',
-    label: 'Environmental Estimation',
-    color: '',
-    showIf: (): boolean => true,
-    subcategories: [
-      {
-        name: 'greenhouseGasEmissions',
-        label: 'Greenhouse gas emissions',
-        fields: [
-          {
-            name: 'scope1GhgEmissionsInTonnes',
-            label: 'Scope 1 GHG emissions',
-            description:
-              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used). See also Regulation (EU) 2016/1011 Annex III (1)(e)(i).\nLinked to Regulation (EU) 2022/1288, Annex I, Table 1, Adverse sustainability indicators 1, 2, 3',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
           },
           {
             name: 'scope2GhgEmissionsLocationBasedInTonnes',

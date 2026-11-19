@@ -24,7 +24,7 @@ object MockDatasetJudgementEntityForTest {
     val dummyDatapointId = UUID.randomUUID().toString()
     val qaReportId = UUID.randomUUID().toString()
     const val CUSTOM_VALUE = """{"value": 42}"""
-    const val REASON_FOR_CUSTOM_DATAPOINT = "The original value was missing and the QA suggestion was out of range."
+    const val REVIEWER_COMMENT = "The original value was missing and the QA suggestion was out of range."
 
     fun createDummyDatasetJudgementEntity(): DatasetJudgementEntity =
         DatasetJudgementEntity(
@@ -65,7 +65,7 @@ object MockDatasetJudgementEntityForTest {
                         acceptedSource = null,
                         reporterUserIdOfAcceptedQaReport = null,
                         customValue = null,
-                        reasonForCustomDataPoint = null,
+                        reviewerComment = null,
                         datasetJudgement = null,
                     ),
                 ),
@@ -97,7 +97,7 @@ object MockDatasetJudgementEntityForTest {
                         acceptedSource = AcceptedDataPointSource.Custom,
                         reporterUserIdOfAcceptedQaReport = null,
                         customValue = CUSTOM_VALUE,
-                        reasonForCustomDataPoint = REASON_FOR_CUSTOM_DATAPOINT,
+                        reviewerComment = REVIEWER_COMMENT,
                         datasetJudgement = null,
                     ),
                 ),

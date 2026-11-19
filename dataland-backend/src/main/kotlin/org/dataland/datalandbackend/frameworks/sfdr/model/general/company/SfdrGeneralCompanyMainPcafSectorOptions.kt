@@ -17,10 +17,9 @@ enum class SfdrGeneralCompanyMainPcafSectorOptions {
     Financials,
     HealthCare,
     Industrials,
-    Industry,
     InformationTechnology,
     Materials,
+    Public,
     RealEstate,
-    Sovereign,
     Utilities,
 }

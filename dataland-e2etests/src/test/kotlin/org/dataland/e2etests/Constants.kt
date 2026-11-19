@@ -16,6 +16,9 @@ const val BASE_PATH_TO_DATA_SOURCING_SERVICE = "https://local-dev.dataland.com:4
 
 const val BASE_PATH_TO_ACCOUNTING_SERVICE = "https://local-dev.dataland.com:443/accounting"
 
+// Must match the default of dataland.company-service.mock.proxy-company-lei in the company service's application.properties
+const val COMPANY_SERVICE_MOCK_PROXY_COMPANY_LEI = "3VtVfvDAmT9vm0VBcrp9"
+
 const val PATH_TO_KEYCLOAK_TOKENENDPOINT =
     "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 

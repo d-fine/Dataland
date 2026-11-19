@@ -184,13 +184,13 @@ describe('DatasetReviewComparisonTable component tests', () => {
     cy.contains('span', qaReporter2.reporterUserName).should('be.visible');
     cy.contains('th', 'Custom Data Point').should('be.visible');
     cy.get('thead tr th').should('have.length', 5);
-    cy.contains('button', 'Fiscal Year End').should('be.visible');
+    cy.contains('button', 'Fiscal year end').should('be.visible');
   });
 
   it('shows accepted and rejected icons for original and QA sources', () => {
     mountComponent();
 
-    cy.contains('button', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal year end')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(1).find('.rejected-check').should('exist');
@@ -204,7 +204,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     mountComponent({ hideEmptyFields: true });
 
     cy.contains('button', 'Scope 2 GHG emissions').should('not.exist');
-    cy.contains('button', 'Fiscal Year End').should('be.visible');
+    cy.contains('button', 'Fiscal year end').should('be.visible');
   });
 
   it('shows empty KPI rows when hideEmptyFields is false', () => {
@@ -237,7 +237,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('renders the custom datapoint value from JSON', () => {
     mountComponent();
 
-    cy.contains('button', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal year end')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(4).should('contain.text', '2023-12-15');
@@ -250,26 +250,26 @@ describe('DatasetReviewComparisonTable component tests', () => {
 
     mountComponent({ rowClickable: true, onRowClick });
 
-    cy.contains('button', 'Fiscal Year End').should('have.class', 'kpi-link').click();
+    cy.contains('button', 'Fiscal year end').should('have.class', 'kpi-link').click();
     cy.get('@onRowClick').should('have.been.calledOnce');
     cy.get('@onRowClick').should('have.been.calledWithMatch', { dataPointTypeId: 'extendedDateFiscalYearEnd' });
   });
 
   it('kpi name is not clickable when rowClickable is set to false', () => {
     mountComponent({ rowClickable: false });
-    cy.contains('button', 'Fiscal Year End').should('have.class', 'cursor-default');
+    cy.contains('button', 'Fiscal year end').should('have.class', 'cursor-default');
   });
 
   it('QA reviewer corrected data point is clickable and opens a popup with information', () => {
     mountComponent();
 
-    cy.contains('button', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal year end')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(3).find('a.link').should('contain.text', '2023-11-30').click();
       });
 
-    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year End');
+    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal year end');
     runFunctionBlockWithinPrimeVueModal(() => {
       cy.contains('td', '2023-11-30').should('exist');
       cy.contains('td', 'Reported').should('exist');
@@ -279,13 +279,13 @@ describe('DatasetReviewComparisonTable component tests', () => {
   it('custom data point is clickable and opens a popup with information', () => {
     mountComponent();
 
-    cy.contains('button', 'Fiscal Year End')
+    cy.contains('button', 'Fiscal year end')
       .closest('tr')
       .within(() => {
         cy.get('td').eq(4).find('a.link').should('contain.text', '2023-12-15').click();
       });
 
-    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal Year End');
+    cy.get('div.p-dialog-header').should('contain.text', 'Fiscal year end');
     runFunctionBlockWithinPrimeVueModal(() => {
       cy.contains('td', '2023-12-15').should('exist');
       cy.contains('td', 'Reported').should('exist');
