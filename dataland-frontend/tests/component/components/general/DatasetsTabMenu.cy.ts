@@ -8,8 +8,10 @@ import {
   KEYCLOAK_ROLE_USER,
   KEYCLOAK_ROLE_JUDGE,
 } from '@/utils/KeycloakRoles';
-import { ref } from 'vue';
 import router from '@/router';
+import { createTestQueryClient } from '@ct/testUtils/TestQueryClient';
+import { companyRolesKeys } from '@/api-queries/community-manager/company-roles/companyRolesKeys';
+import { type QueryClient } from '@tanstack/vue-query';
 
 /**
  * Checks if the tab with the defined text is visible or not
@@ -41,14 +43,28 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
 
   /**
+   * Stubs the company role assignments of the logged-in user
+   * @param companyRoleAssignments returned for the logged-in user
+   */
+  function interceptCompanyRoleAssignments(companyRoleAssignments: CompanyRoleAssignmentExtended[]): void {
+    cy.intercept('GET', `**/community/company-role-assignments?userId=${dummyUserId}`, {
+      statusCode: 200,
+      body: companyRoleAssignments,
+    }).as('fetchCompanyRoleAssignments');
+  }
+
+  /**
    * Mounts the Dataland navigation tab with a specific authentication
    * @param keycloakRoles of the logged-in user that sees the tab
    * @param companyRoleAssignments for the logged-in user that sees the tab
+   * @param queryClient to install, only needed if the test inspects or invalidates the query cache
    */
   function mountDatasetsTabMenuWithAuthentication(
     keycloakRoles: string[],
-    companyRoleAssignments: CompanyRoleAssignmentExtended[]
+    companyRoleAssignments: CompanyRoleAssignmentExtended[],
+    queryClient?: QueryClient
   ): void {
+    interceptCompanyRoleAssignments(companyRoleAssignments);
     getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: true,
@@ -56,16 +72,11 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
         userId: dummyUserId,
       }),
       router: router,
+      queryClient,
     })(
       //@ts-ignore
       DatasetsTabMenu,
-      {
-        global: {
-          provide: {
-            companyRoleAssignments: ref(companyRoleAssignments),
-          },
-        },
-      }
+      {}
     ).then(() => {
       void router.push('/portfolios');
       assertPortfoliosTabIsHighlighted();
@@ -213,5 +224,45 @@ describe('Component tests for the tab used by logged-in users to switch pages', 
     mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], companyRoleAssignments);
     cy.get('[data-pc-name="tablist"]').contains('MY COMPANY').click();
     cy.url().should('include', `/companies/${dummyCompanyId}`);
+  });
+
+  it('Shows the MY COMPANY tab once refreshed role assignments contain a company', () => {
+    const queryClient = createTestQueryClient();
+    mountDatasetsTabMenuWithAuthentication([KEYCLOAK_ROLE_USER], [], queryClient);
+    cy.wait('@fetchCompanyRoleAssignments');
+    isTabVisible(RoleBasedTabs.MyCompany, false);
+
+    interceptCompanyRoleAssignments([
+      {
+        companyRole: CompanyRole.Analyst,
+        companyId: dummyCompanyId,
+        userId: dummyUserId,
+        firstName: dummyFirstName,
+        email: dummyEmail,
+      },
+    ]);
+    cy.then(() => queryClient.invalidateQueries({ queryKey: companyRolesKeys.all }));
+    cy.wait('@fetchCompanyRoleAssignments');
+    isTabVisible(RoleBasedTabs.MyCompany, true);
+  });
+
+  it('Does not request user-specific data for anonymous users', () => {
+    const userSpecificRequestSpy = cy.spy().as('userSpecificRequest');
+    cy.intercept('GET', '**/users/portfolios/shared/names', userSpecificRequestSpy);
+    cy.intercept('GET', '**/community/company-role-assignments*', userSpecificRequestSpy);
+    getMountingFunction({
+      keycloak: minimalKeycloakMock({ authenticated: false }),
+      router: router,
+    })(
+      //@ts-ignore
+      DatasetsTabMenu,
+      {}
+    ).then(() => {
+      void router.push('/portfolios');
+    });
+    assertThatStandardTabsAreAllVisible();
+    isTabVisible(RoleBasedTabs.MyCompany, false);
+    isTabVisible('SHARED PORTFOLIOS', false);
+    cy.get('@userSpecificRequest').should('not.have.been.called');
   });
 });
