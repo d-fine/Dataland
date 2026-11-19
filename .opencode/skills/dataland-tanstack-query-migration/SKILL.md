@@ -19,7 +19,7 @@ compatibility: opencode
 
 1. **Read the standard**: `dataland-frontend/src/api-queries/AGENTS.md`, including section 8 (usage in components) and the reference files it lists.
 2. **Inventory the component**: for every backend call list client, method, arguments, trigger (`onMounted`, watcher, event, dialog `onClose`), the refs holding results, loading/error flags, and how the view refreshes after writes (emits, `:key` counters, manual refetches). Include calls hidden in `src/utils` helpers.
-3. **Fix the boundary**: migrate the component and the children whose writes drive its refresh. Leave children that are shared with other pages as they are unless asked, and list them as follow-ups.
+3. **Fix the boundary**: migrate the component and the children whose writes drive its refresh. Leave children that are shared with other pages as they are unless asked, bridge their success events with invalidation in the parent (standard section 8, "Legacy children"), and list them as follow-ups.
 4. **Reuse hooks**: search `src/api-queries/` for a hook that wraps the same client method. If a hook you reuse or a key factory you extend violates the standard, fix it and update all of its consumers.
 5. **Add missing hooks** under `src/api-queries/<service>/<resource>/`: one hook per endpoint, key factory entries for every query, and invalidation of every affected key in each mutation's `onSuccess`.
 6. **Rewrite the component** following section 8: hook results instead of mirrored refs, `computed` for derived data, reactive params instead of watchers that fetch, `keepPreviousData` for paged or filtered lists, invalidation instead of reload emits, and user feedback for mutation errors.
@@ -33,7 +33,7 @@ compatibility: opencode
 - `staleTime` is `0`: returning to a page shows cached data immediately and refetches in the background. Do not add `refetchOnMount: 'always'` or `gcTime: 0` without a concrete reason.
 - `Set` parameters serialise to `{}` in query keys; use sorted arrays in the key.
 - Resolve Keycloak-derived values (user id) once into a ref and pass it as a parameter; do not await Keycloak inside `queryFn`.
-- Use `watch` on query data only for side effects that cannot be computed, such as selecting a default tab after the list changed.
+- Use `watch` / `whenever` on query state only for side effects that cannot be computed, such as selecting a default tab or redirecting once the data has loaded. Disabled queries stay `isPending` forever; use `isFetched` or `isSuccess || isError` to detect "settled".
 - A component cannot `inject` its own `provide`, so hooks cannot be called in `App.vue` itself.
 
 ## Verification

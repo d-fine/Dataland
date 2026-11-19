@@ -134,7 +134,9 @@ export function mockRequestsOnMounted(
  * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
  * @param isMobile determines if the mount shall happen from a mobile-users perspective
  * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
- * @param companyRoleAssignments defines the company role assignments that the current user shall have
+ * @param companyRoleAssignments defines the company role assignments that the current user shall have. They are
+ * returned when the role assignments of the current user are requested and provided as the role assignments that the
+ * app loaded on startup.
  * @returns the mounted component
  */
 export function mountCompanyCockpitWithAuthentication(
@@ -143,6 +145,13 @@ export function mountCompanyCockpitWithAuthentication(
   keycloakRoles?: string[],
   companyRoleAssignments?: CompanyRoleAssignmentExtended[]
 ): Cypress.Chainable {
+  cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+    const query = req.query as Record<string, string | undefined>;
+    if (query.userId === dummyUserId && !query.role && !query.companyId) {
+      req.reply({ statusCode: 200, body: companyRoleAssignments ?? [] });
+    }
+  }).as('fetchCurrentUserRoleAssignments');
+
   const chainable = getMountingFunction({
     keycloak: minimalKeycloakMock({
       authenticated: isLoggedIn,

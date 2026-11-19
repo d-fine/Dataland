@@ -78,8 +78,18 @@ Hooks own server state; components only derive UI from it.
 - **Applied vs. edited input.** If filters only take effect on an explicit action (button, Enter), keep the live form state separate from an `appliedFilters` ref that is assigned on submit and passed to the hook. Debounce free-text search in the component (e.g. `refDebounced` from `@vueuse/core`) and pass the debounced value.
 - **Paged or filtered lists** pass `placeholderData: keepPreviousData`, so the current rows stay visible while the next page or filter result loads. Indicate that state with `isPlaceholderData` (e.g. DataTable `:loading`), not with `isFetching`, so background refreshes stay unobtrusive.
 - **Refresh through invalidation.** After a mutation, the hook's `onSuccess` invalidation updates every affected query. Do not refetch manually, emit "please reload" events, or force remounts with `:key` counters.
+- **Side effects on loaded data** (navigation, selecting an initial tab) react to query state with `watch` / `whenever` from `@vueuse/core`; use `computed` for everything that can be derived.
 - **Mutation feedback is the component's job.** Use `mutate(variables, { onSuccess, onError })`, `mutateAsync` in `try`/`catch`, or the returned `isPending` / `error`.
 - **Destructure only what you use**: `const { data, isPending, isError } = useXQuery(...)`. Destructured fields are refs.
+- **Legacy children**: if a child component still writes via API clients and only reports success through an event, invalidate the affected key factory entries in the parent's event handler until the child is migrated. Never add new legacy children.
+
+Reference components:
+
+- `src/components/pages/MyDataRequestsOverview.vue`: single query, client-side filtering and paging via `computed`.
+- `src/components/pages/AdminAllRequestsOverview.vue`: applied filters, server-side paging, `keepPreviousData`.
+- `src/components/pages/QualityAssurance.vue`: debounced search as query param, mutation with navigation on success.
+- `src/components/resources/portfolio/PortfolioDialog.vue`: create, replace and delete mutations with component-side error handling.
+- `src/components/pages/CompanyCockpitPage.vue`: query params resolved from Keycloak, side effect (initial tab) after queries settled.
 
 ## 9. Tests
 

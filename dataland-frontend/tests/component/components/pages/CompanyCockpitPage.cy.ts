@@ -12,8 +12,19 @@ import {
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
 import { CompanyRole } from '@clients/communitymanager';
-import { KEYCLOAK_ROLE_PREMIUM_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import {
+  KEYCLOAK_ROLE_ADMIN,
+  KEYCLOAK_ROLE_PREMIUM_USER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_USER,
+} from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
+import { routes } from '@/router';
+import { getMountingFunction } from '@ct/testUtils/Mount.ts';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
+import { computed, ref } from 'vue';
+import { createMemoryHistory, createRouter } from 'vue-router';
 
 const mediumTimeoutInMs = Number(Cypress.expose('medium_timeout_in_ms') ?? 30000);
 
@@ -316,5 +327,55 @@ describe('Component test for the company cockpit', () => {
       cy.get('td').contains(dummyEmail).should('not.exist');
       cy.get('td').contains(dummyUserId).should('not.exist');
     });
+  });
+
+  it('Removing a user refreshes the role cards in place and confirms the change', () => {
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
+
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
+      cy.get('td').contains(dummyEmail).should('exist');
+      cy.get('[data-test="dialog-button"]').click();
+    });
+    cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+
+    cy.intercept('DELETE', `**/community/company-role-assignments/Analyst/${dummyCompanyId}/${dummyUserId}`, {
+      statusCode: 200,
+    }).as('removeRole');
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      if (req.query.role === CompanyRole.Analyst) {
+        req.alias = 'refetchAnalysts';
+        req.reply([]);
+      }
+    });
+    cy.get('[data-test="remove-user-button"]').click();
+
+    cy.wait('@removeRole');
+    cy.wait('@refetchAnalysts');
+    cy.get('[data-test="success-modal"]').should('be.visible').and('contain.text', 'Changes successfully saved.');
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
+      cy.get('td').contains(dummyEmail).should('not.exist');
+    });
+  });
+
+  it('Redirects from the credits tab to the datasets tab if the user may not view credits', () => {
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, []).as('fetchCompanyRights');
+    const router = createRouter({ routes, history: createMemoryHistory() });
+    cy.spy(router, 'replace').as('routerReplace');
+    void router.push(`/companies/${dummyCompanyId}/credits`);
+
+    getMountingFunction({
+      keycloak: minimalKeycloakMock({ authenticated: true, userId: dummyUserId }),
+      router,
+    })(CompanyCockpitPage, {
+      global: { provide: { useMobileView: computed(() => false), companyRoleAssignments: ref([]) } },
+      props: { companyId: dummyCompanyId },
+    });
+
+    cy.wait('@fetchCompanyRights');
+    cy.get('@routerReplace').should('have.been.calledWith', { path: `/companies/${dummyCompanyId}` });
+    cy.get('[data-test="creditsTab"]').should('not.exist');
   });
 });
