@@ -39,6 +39,8 @@ This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used fo
 - `onSuccess` only invalidates (or updates) the affected key factory entries.
 - No `onError` / `console.error` in the hook. Consumers handle errors (user feedback) via the `mutate` callbacks or the returned `error`.
 - Explicit return type `UseMutationReturnType<T, Error, Variables, unknown>`.
+- Use a mutation also for POST endpoints that only compute or validate on an explicit user action and whose result is not shared via the cache (e.g. `backend/company-data/usePostCompanyValidationMutation.ts`). Such hooks have no `onSuccess`.
+- If refetching an affected query would fail (e.g. the deleted resource itself), invalidate only the lists that contain it.
 
 ## 5. Key factories
 

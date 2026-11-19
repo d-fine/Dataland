@@ -1,15 +1,18 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <PortfolioOverviewTabs :value="currentPortfolioId" :portfolioNames="portfolioNames" @update:value="onTabChange">
+    <PortfolioOverviewTabs
+      :value="currentPortfolioId"
+      :portfolioNames="portfolioNames ?? []"
+      @update:value="onTabChange"
+    >
       <template #actions>
         <PrimeButton label="ADD NEW PORTFOLIO" @click="addNewPortfolio" icon="pi pi-plus" data-test="add-portfolio" />
       </template>
       <template #panel="{ portfolio }">
-        <PortfolioDetails
-          :portfolioId="portfolio.portfolioId"
-          @update:portfolio-overview="getPortfolios"
-          :data-test="`portfolio-${portfolio.portfolioName}`"
-        />
+        <PortfolioDetails :portfolioId="portfolio.portfolioId" :data-test="`portfolio-${portfolio.portfolioName}`" />
+      </template>
+      <template #empty>
+        <PortfolioOverviewEmptyState :is-pending="isPending" :is-error="isError" />
       </template>
     </PortfolioOverviewTabs>
   </TheContent>
@@ -19,31 +22,26 @@
 import TheContent from '@/components/generics/TheContent.vue';
 import PortfolioDetails from '@/components/resources/portfolio/PortfolioDetails.vue';
 import PortfolioDialog from '@/components/resources/portfolio/PortfolioDialog.vue';
+import PortfolioOverviewEmptyState from '@/components/resources/portfolio/PortfolioOverviewEmptyState.vue';
 import PortfolioOverviewTabs from '@/components/resources/portfolio/PortfolioOverviewTabs.vue';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { inject } from 'vue';
-import type Keycloak from 'keycloak-js';
+import { useGetAllPortfolioNamesForCurrentUserQuery } from '@/api-queries/user-service/portfolio/useGetAllPortfolioNamesForCurrentUserQuery';
 import PrimeButton from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
 import type { BasePortfolioName } from '@clients/userservice';
 import { usePortfolioOverview } from '@/components/resources/portfolio/usePortfolioOverview.ts';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const { currentPortfolioId, portfolioNames, getPortfolios, setCurrentPortfolioId, onTabChange } = usePortfolioOverview({
+const { data: portfolioNames, isPending, isError } = useGetAllPortfolioNamesForCurrentUserQuery();
+
+const { currentPortfolioId, selectPortfolio, onTabChange } = usePortfolioOverview({
   sessionStorageKey: 'last-selected-portfolio-id',
-  async fetchPortfolios(): Promise<BasePortfolioName[]> {
-    const res = await apiClientProvider.apiClients.portfolioController.getAllPortfolioNamesForCurrentUser();
-    return res.data;
-  },
+  portfolioNames,
 });
 
 /**
- * Opens the PortfolioDialog, reloads all portfolios and
- * sets the newly created one as the active tab by updating currentPortfolioId.
+ * Opens the PortfolioDialog and selects the newly created portfolio once the dialog is closed.
+ * The portfolio list itself is refreshed by the create mutation.
  */
 function addNewPortfolio(): void {
   dialog.open(PortfolioDialog, {
@@ -52,13 +50,9 @@ function addNewPortfolio(): void {
       modal: true,
     },
     onClose(options) {
-      const basePortfolioName = options?.data as BasePortfolioName;
+      const basePortfolioName = options?.data as BasePortfolioName | undefined;
       if (basePortfolioName) {
-        void getPortfolios().then(() => {
-          setCurrentPortfolioId(
-            portfolioNames.value.find((p) => p.portfolioId === basePortfolioName.portfolioId)?.portfolioId
-          );
-        });
+        selectPortfolio(basePortfolioName.portfolioId);
       }
     },
   });

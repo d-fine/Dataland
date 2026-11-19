@@ -172,7 +172,7 @@
         </Column>
       </DataTable>
     </div>
-    <slot name="dialogs" :is-monitored="isMonitored" :reload="reload" />
+    <slot name="dialogs" :is-monitored="isMonitored" />
   </div>
 </template>
 
@@ -198,7 +198,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
 import { useDialog } from 'primevue/usedialog';
-import { computed, inject, ref, toRef } from 'vue';
+import { computed, inject, ref } from 'vue';
 import DownloadData from '@/components/general/DownloadData.vue';
 import type { PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
@@ -305,7 +305,7 @@ const {
   data: enrichedPortfolio,
   isPending: isLoading,
   isError,
-} = useGetEnrichedPortfolioQuery(toRef(props, 'portfolioId'));
+} = useGetEnrichedPortfolioQuery({ portfolioId: () => props.portfolioId });
 const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false);
 const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
 const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
@@ -498,6 +498,7 @@ function navigateToCompany(companyId: string): void {
 
 /**
  * Invalidates the cached portfolio so that it is refetched.
+ * Only needed for dialogs that still call the API directly instead of using mutation hooks.
  */
 function reload(): void {
   void queryClient.invalidateQueries({ queryKey: portfolioKeys.enriched(props.portfolioId) });

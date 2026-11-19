@@ -43,17 +43,13 @@
 <script setup lang="ts">
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { inject, ref } from 'vue';
-import type Keycloak from 'keycloak-js';
+import { useDeleteCurrentUserFromSharingMutation } from '@/api-queries/user-service/portfolio/useDeleteCurrentUserFromSharingMutation';
+import { ref } from 'vue';
 
 const props = defineProps<{ visible: boolean; portfolioId: string }>();
 const emit = defineEmits(['close', 'sharing-removed']);
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-const isRemoving = ref(false);
+const { mutate: deleteCurrentUserFromSharing, isPending: isRemoving } = useDeleteCurrentUserFromSharingMutation();
 const errorMessage = ref<string | null>(null);
 
 /**
@@ -67,22 +63,21 @@ function onUpdateVisible(newValue: boolean): void {
 }
 
 /**
- * Remove the current user from sharing of the portfolio
+ * Remove the current user from sharing of the portfolio.
+ * The mutation refreshes the list of shared portfolios.
  */
-async function removePortfolio(): Promise<void> {
+function removePortfolio(): void {
   if (isRemoving.value) return;
 
-  isRemoving.value = true;
   errorMessage.value = null;
-
-  try {
-    await apiClientProvider.apiClients.portfolioController.deleteCurrentUserFromSharing(props.portfolioId);
-    emit('sharing-removed');
-  } catch (error) {
-    console.error('Failed to remove portfolio sharing', error);
-    errorMessage.value = 'Something went wrong while removing access. Please try again.';
-  } finally {
-    isRemoving.value = false;
-  }
+  deleteCurrentUserFromSharing(
+    { portfolioId: props.portfolioId },
+    {
+      onSuccess: () => emit('sharing-removed'),
+      onError: () => {
+        errorMessage.value = 'Something went wrong while removing access. Please try again.';
+      },
+    }
+  );
 }
 </script>
