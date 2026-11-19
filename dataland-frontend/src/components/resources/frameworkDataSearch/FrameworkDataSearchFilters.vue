@@ -63,13 +63,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject, ref } from 'vue';
-import { type ApiClientProvider } from '@/services/ApiClients';
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import {
   type CountryCodeSelectableItem,
@@ -77,6 +75,7 @@ import {
   type SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
+import { useApiClient } from '@/utils/useApiClient';
 import PrimeButton from 'primevue/button';
 import Divider from 'primevue/divider';
 import { type DataTypeEnum } from '@clients/backend';
@@ -87,202 +86,197 @@ export interface FrameworkDataSearchDropdownFilterRef {
   } | null;
 }
 
-export default defineComponent({
-  name: 'FrameworkDataSearchFilters',
-  components: { FrameworkDataSearchDropdownFilter, PrimeButton, Divider },
-  emits: [
-    'update:selectedCountryCodes',
-    'update:selectedFrameworks',
-    'update:selectedSectors',
-    'update:selectedReportingPeriods',
-  ],
-  setup() {
-    return {
-      sectorFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
-      countryFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
-      frameworkFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
-      reportingPeriodFilter: ref<FrameworkDataSearchDropdownFilterRef | null>(null),
-      apiClientProvider: inject<ApiClientProvider>('apiClientProvider'),
-    };
+const props = withDefaults(
+  defineProps<{
+    selectedFrameworks?: Array<DataTypeEnum>;
+    selectedSectors?: Array<string>;
+    selectedCountryCodes?: Array<string>;
+    selectedReportingPeriods?: Array<string>;
+    showHeading?: boolean;
+  }>(),
+  {
+    selectedFrameworks: () => [],
+    selectedSectors: () => [],
+    selectedCountryCodes: () => [],
+    selectedReportingPeriods: () => [],
+    showHeading: true,
+  }
+);
+
+const emit = defineEmits<{
+  'update:selectedCountryCodes': [selectedCountryCodes: Array<string>];
+  'update:selectedFrameworks': [selectedFrameworks: Array<DataTypeEnum>];
+  'update:selectedSectors': [selectedSectors: Array<string>];
+  'update:selectedReportingPeriods': [selectedReportingPeriods: Array<string>];
+}>();
+
+const sectorFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
+const countryFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
+const frameworkFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
+const reportingPeriodFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
+const apiClientProvider = useApiClient();
+
+const localSelectedCountries = ref<Array<CountryCodeSelectableItem>>([]);
+const localSelectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const localSelectedSectors = ref<Array<SelectableItem>>([]);
+const localSelectedReportingPeriods = ref<Array<SelectableItem>>([]);
+
+const availableCountries = ref<Array<CountryCodeSelectableItem>>([]);
+const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableSectors = ref<Array<SelectableItem>>([]);
+const availableReportingPeriods = ref<Array<SelectableItem>>([]);
+
+watch(
+  localSelectedCountries,
+  (newValue) => {
+    emit(
+      'update:selectedCountryCodes',
+      newValue.map((item) => item.countryCode)
+    );
   },
-  props: {
-    selectedFrameworks: {
-      type: Array as () => Array<DataTypeEnum>,
-      default: () => [],
-    },
-    selectedSectors: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
-    selectedCountryCodes: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
-    selectedReportingPeriods: {
-      type: Array as () => Array<string>,
-      default: () => [],
-    },
-    showHeading: {
-      type: Boolean,
-      default: true,
-    },
+  { deep: true }
+);
+
+watch(
+  localSelectedSectors,
+  (newValue) => {
+    emit(
+      'update:selectedSectors',
+      newValue.map((item) => item.displayName)
+    );
   },
-  data() {
-    return {
-      localSelectedCountries: [] as Array<CountryCodeSelectableItem>,
-      localSelectedFrameworks: [] as Array<FrameworkSelectableItem>,
-      localSelectedSectors: [] as Array<SelectableItem>,
-      localSelectedReportingPeriods: [] as Array<SelectableItem>,
+  { deep: true }
+);
 
-      availableCountries: [] as Array<CountryCodeSelectableItem>,
-      availableFrameworks: [] as Array<FrameworkSelectableItem>,
-      availableSectors: [] as Array<SelectableItem>,
-      availableReportingPeriods: [] as Array<SelectableItem>,
-    };
+watch(
+  localSelectedFrameworks,
+  (newValue) => {
+    emit(
+      'update:selectedFrameworks',
+      newValue.map((item) => item.frameworkDataType)
+    );
   },
-  watch: {
-    localSelectedCountries: {
-      deep: true,
-      handler(newValue: Array<CountryCodeSelectableItem>) {
-        this.$emit(
-          'update:selectedCountryCodes',
-          newValue.map((item) => item.countryCode)
-        );
-      },
-    },
-    localSelectedSectors: {
-      deep: true,
-      handler(newValue: Array<SelectableItem>) {
-        this.$emit(
-          'update:selectedSectors',
-          newValue.map((item) => item.displayName)
-        );
-      },
-    },
-    localSelectedFrameworks: {
-      deep: true,
-      handler(newValue: Array<FrameworkSelectableItem>) {
-        this.$emit(
-          'update:selectedFrameworks',
-          newValue.map((item) => item.frameworkDataType)
-        );
-      },
-    },
-    localSelectedReportingPeriods: {
-      deep: true,
-      handler(newValue: Array<SelectableItem>) {
-        this.$emit(
-          'update:selectedReportingPeriods',
-          newValue.map((item) => item.displayName)
-        );
-      },
-    },
+  { deep: true }
+);
+
+watch(
+  localSelectedReportingPeriods,
+  (newValue) => {
+    emit(
+      'update:selectedReportingPeriods',
+      newValue.map((item) => item.displayName)
+    );
   },
-  methods: {
-    /**
-     * Resets all the filters to their default values (i.e., deselects everything)
-     */
-    resetFilters() {
-      this.localSelectedFrameworks = [];
-      this.localSelectedCountries = [];
-      this.localSelectedSectors = [];
-      this.localSelectedReportingPeriods = [];
+  { deep: true }
+);
 
-      this.$emit('update:selectedCountryCodes', []);
-      this.$emit('update:selectedSectors', []);
-      this.$emit('update:selectedFrameworks', []);
-      this.$emit('update:selectedReportingPeriods', []);
-    },
-    /**
-     * A helper function that closes all the dropdown filters
-     */
-    // The following method is used, the linter reports a false positive here
-    // eslint-disable-next-line vue/no-unused-properties
-    closeAllOpenDropDowns() {
-      this.countryFilter?.multiselect?.hide?.();
-
-      this.sectorFilter?.multiselect?.hide?.();
-
-      this.frameworkFilter?.multiselect?.hide?.();
-
-      this.reportingPeriodFilter?.multiselect?.hide?.();
-    },
-    /**
-     * Uses the Dataland API to obtain available company search filters and fills in the
-     * availableCountries, availableSectors and availableReportingPeriods elements in the format
-     * expected by the dropdown filters
-     */
-    async retrieveCountryAndSectorFilterOptions() {
-      const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
-
-      const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])]
-        .map((countryCode) => {
-          return {
-            countryCode: countryCode,
-            displayName: getCountryNameFromCountryCode(countryCode) ?? countryCode,
-            disabled: false,
-          };
-        })
-        .sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])]
-        .map((sector) => {
-          return { displayName: sector, disabled: false };
-        })
-        .sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-      this.availableReportingPeriods = [...(availableSearchFilters.data.reportingPeriods ?? [])]
-        .map((reportingPeriod) => {
-          return { displayName: reportingPeriod, disabled: false };
-        })
-        .sort((a, b) => b.displayName.localeCompare(a.displayName));
-    },
-    /**
-     * Populates the availableFrameworks property in the format expected by the dropdown filter
-     */
-    retrieveAvailableFrameworks() {
-      this.availableFrameworks = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-        let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-        if (frameworkDefinition) {
-          displayName = frameworkDefinition.label;
-        }
-
-        return {
-          frameworkDataType: dataTypeEnum,
-          displayName: displayName,
-          disabled: false,
-        };
-      });
-    },
-    /**
-     * Initializes the availableCountries, availableSectors, availableReportingPeriods and available Frameworks
-     * properties for the dropdown filters
-     * @returns a promise as this function needs to request the Dataland api
-     */
-    async retrieveAvailableFilterOptions() {
-      this.retrieveAvailableFrameworks();
-      return this.retrieveCountryAndSectorFilterOptions();
-    },
-  },
-  mounted() {
-    void this.retrieveAvailableFilterOptions().then(() => {
-      this.localSelectedCountries = this.availableCountries.filter((item) =>
-        this.selectedCountryCodes.includes(item.countryCode)
-      );
-      this.localSelectedSectors = this.availableSectors.filter((item) =>
-        this.selectedSectors.includes(item.displayName)
-      );
-      this.localSelectedFrameworks = this.availableFrameworks.filter((item) =>
-        this.selectedFrameworks.includes(item.frameworkDataType)
-      );
-      this.localSelectedReportingPeriods = this.availableReportingPeriods.filter((item) =>
-        this.selectedReportingPeriods.includes(item.displayName)
-      );
-    });
-  },
+onMounted(() => {
+  void retrieveAvailableFilterOptions().then(() => {
+    localSelectedCountries.value = availableCountries.value.filter((item) =>
+      props.selectedCountryCodes.includes(item.countryCode)
+    );
+    localSelectedSectors.value = availableSectors.value.filter((item) =>
+      props.selectedSectors.includes(item.displayName)
+    );
+    localSelectedFrameworks.value = availableFrameworks.value.filter((item) =>
+      props.selectedFrameworks.includes(item.frameworkDataType)
+    );
+    localSelectedReportingPeriods.value = availableReportingPeriods.value.filter((item) =>
+      props.selectedReportingPeriods.includes(item.displayName)
+    );
+  });
 });
+
+/**
+ * Resets all the filters to their default values (i.e., deselects everything)
+ */
+function resetFilters(): void {
+  localSelectedFrameworks.value = [];
+  localSelectedCountries.value = [];
+  localSelectedSectors.value = [];
+  localSelectedReportingPeriods.value = [];
+
+  emit('update:selectedCountryCodes', []);
+  emit('update:selectedSectors', []);
+  emit('update:selectedFrameworks', []);
+  emit('update:selectedReportingPeriods', []);
+}
+
+/**
+ * A helper function that closes all the dropdown filters
+ */
+function closeAllOpenDropDowns(): void {
+  countryFilter.value?.multiselect?.hide?.();
+
+  sectorFilter.value?.multiselect?.hide?.();
+
+  frameworkFilter.value?.multiselect?.hide?.();
+
+  reportingPeriodFilter.value?.multiselect?.hide?.();
+}
+
+/**
+ * Uses the Dataland API to obtain available company search filters and fills in the
+ * availableCountries, availableSectors and availableReportingPeriods elements in the format
+ * expected by the dropdown filters
+ */
+async function retrieveCountryAndSectorFilterOptions(): Promise<void> {
+  const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
+
+  const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
+  availableCountries.value = [...(availableSearchFilters.data.countryCodes ?? [])]
+    .map((countryCode) => {
+      return {
+        countryCode: countryCode,
+        displayName: getCountryNameFromCountryCode(countryCode) ?? countryCode,
+        disabled: false,
+      };
+    })
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+  availableSectors.value = [...(availableSearchFilters.data.sectors ?? [])]
+    .map((sector) => {
+      return { displayName: sector, disabled: false };
+    })
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+  availableReportingPeriods.value = [...(availableSearchFilters.data.reportingPeriods ?? [])]
+    .map((reportingPeriod) => {
+      return { displayName: reportingPeriod, disabled: false };
+    })
+    .sort((a, b) => b.displayName.localeCompare(a.displayName));
+}
+
+/**
+ * Populates the availableFrameworks property in the format expected by the dropdown filter
+ */
+function retrieveAvailableFrameworks(): void {
+  availableFrameworks.value = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+    let displayName = humanizeStringOrNumber(dataTypeEnum);
+    const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
+    if (frameworkDefinition) {
+      displayName = frameworkDefinition.label;
+    }
+
+    return {
+      frameworkDataType: dataTypeEnum,
+      displayName: displayName,
+      disabled: false,
+    };
+  });
+}
+
+/**
+ * Initializes the availableCountries, availableSectors, availableReportingPeriods and available Frameworks
+ * properties for the dropdown filters
+ * @returns a promise as this function needs to request the Dataland api
+ */
+async function retrieveAvailableFilterOptions(): Promise<void> {
+  retrieveAvailableFrameworks();
+  return retrieveCountryAndSectorFilterOptions();
+}
+
+defineExpose({ closeAllOpenDropDowns });
 </script>
 
 <style scoped>

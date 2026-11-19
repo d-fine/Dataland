@@ -28,11 +28,7 @@ function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): 
 
   cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
     keycloak: keycloakMock,
-  }).then((mounted) => {
-    void mounted.wrapper.setData({
-      resultArray: mockDataSearchStoredCompanyArray,
-    });
-
+  }).then(() => {
     cy.wait('@companies');
   });
 }

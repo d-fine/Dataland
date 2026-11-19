@@ -66,62 +66,56 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import Tooltip from 'primevue/tooltip';
 import Tag from 'primevue/tag';
-import { defineComponent, type PropType } from 'vue';
 import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
 import PrimeButton from 'primevue/button';
+import { type NavigationFailure } from 'vue-router';
 
-export default defineComponent({
-  name: 'FrameworkDataSearchResults',
-  components: { DataTable, Column, Tag, PrimeButton },
-  emits: ['page-update'],
-  directives: {
-    tooltip: Tooltip,
-  },
-  props: {
-    data: {
-      type: Array as PropType<BasicCompanyInformation[]>,
-      default: null,
-    },
-    previousRecords: {
-      type: Number,
-      default: null,
-    },
-    totalRecords: {
-      type: Number,
-      default: null,
-    },
-    rowsPerPage: {
-      type: Number,
-      default: null,
-    },
-  },
-  methods: {
-    /**
-     * Updates the current Page in the parent component
-     * @param event DataTablePageEvent
-     */
-    onPage(event: DataTablePageEvent) {
-      globalThis.scrollTo(0, 0);
-      this.$emit('page-update', event.page);
-    },
-    /**
-     * Navigates to the company cockpit page on a click on the row of the company
-     * @param event the row click event
-     * @param event.data the company the user clicked on
-     * @returns the promise of the router push action
-     */
-    goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
-      const companyIdOfClickedRow = event.data.companyId;
-      return router.push(`/companies/${companyIdOfClickedRow}`);
-    },
-  },
-});
+withDefaults(
+  defineProps<{
+    data?: BasicCompanyInformation[] | null;
+    previousRecords?: number;
+    totalRecords?: number;
+    rowsPerPage?: number;
+  }>(),
+  {
+    data: null,
+    previousRecords: null as unknown as number,
+    totalRecords: null as unknown as number,
+    rowsPerPage: null as unknown as number,
+  }
+);
+
+const emit = defineEmits<{
+  'page-update': [page: number];
+}>();
+
+const vTooltip = Tooltip;
+
+/**
+ * Updates the current Page in the parent component
+ * @param event DataTablePageEvent
+ */
+function onPage(event: DataTablePageEvent): void {
+  globalThis.scrollTo(0, 0);
+  emit('page-update', event.page);
+}
+
+/**
+ * Navigates to the company cockpit page on a click on the row of the company
+ * @param event the row click event
+ * @param event.data the company the user clicked on
+ * @returns the promise of the router push action
+ */
+function goToCompanyCockpit(event: { data: BasicCompanyInformation }): Promise<NavigationFailure | void | undefined> {
+  const companyIdOfClickedRow = event.data.companyId;
+  return router.push(`/companies/${companyIdOfClickedRow}`);
+}
 </script>
 
 <style scoped>
