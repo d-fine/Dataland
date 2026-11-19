@@ -86,7 +86,7 @@ function moveSliderHandleByValue(side: 'left' | 'right', value: number): void {
   const inputs = cy.get('[data-test="priority-slider"]').find('input.p-slider-input');
   const handle = side === 'left' ? inputs.first() : inputs.last();
   const target = side === 'left' ? priorityMin + value - 1 : priorityMax - value + 1;
-  handle.invoke('val', target).trigger('input').trigger('change');
+  handle.invoke('val', target).trigger('input', { force: true }).trigger('change', { force: true });
 }
 type ReviewQueueElementOptions = {
   dataId: string;
