@@ -35,6 +35,10 @@ compatibility: opencode
 - Resolve Keycloak-derived values (user id) once into a ref and pass it as a parameter; do not await Keycloak inside `queryFn`.
 - Use `watch` / `whenever` on query state only for side effects that cannot be computed, such as selecting a default tab or redirecting once the data has loaded. Disabled queries stay `isPending` forever; use `isFetched` or `isSuccess || isError` to detect "settled".
 - A component cannot `inject` its own `provide`, so hooks cannot be called in `App.vue` itself.
+- `App.vue` keeps the header and the `router-view` mounted when switching between public and protected routes, and the router reuses a page instance between routes with the same component (e.g. the company cockpit tabs). Derive everything from props and the route instead of reading them once in setup.
+- Legacy components often `inject` app-wide state (e.g. role assignments) across several lines. Search for the injection key across `src/` and the tests before removing a `provide`.
+- PrimeVue components that expect a new value per request (e.g. AutoComplete suggestions after `complete`) need a `computed` that returns a new array per request and keeps the previous one while loading (see `FrameworkDataSearchBar.vue`).
+- Tests stubbing an endpoint with `times: 1` break when a migrated component and a legacy one request the same URL. Stub without `times` unless the test asserts a sequence.
 
 ## Verification
 
