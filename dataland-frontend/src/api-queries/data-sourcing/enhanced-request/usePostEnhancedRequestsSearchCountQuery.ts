@@ -1,7 +1,7 @@
 import { type Ref, computed } from 'vue';
 import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient.ts';
-import { enhancedRequestsKeys } from '@/api-queries/data-sourcing/enhanced-request/enhancedRequestsKeys.ts';
+import { enhancedRequestKeys } from '@/api-queries/data-sourcing/enhanced-request/enhancedRequestKeys.ts';
 import type { RequestSearchFilterString } from '@clients/datasourcingservice';
 
 /**
@@ -19,7 +19,7 @@ export function usePostEnhancedRequestsSearchCountQuery(
 ): UseQueryReturnType<number, Error> {
   const apiClientProvider = useApiClient();
 
-  const queryKey = computed(() => enhancedRequestsKeys.searchCount(filters.value));
+  const queryKey = computed(() => enhancedRequestKeys.searchCount(filters.value));
 
   return useQuery<number, Error>({
     queryKey,

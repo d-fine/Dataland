@@ -1,6 +1,10 @@
 <template>
   <TheContent class="min-h-screen relative">
-    <div v-if="waitingForData || storedDataRequests.length > 0">
+    <div v-if="isError && !storedDataRequests" class="d-center-div text-center px-7 py-4" data-test="requests-error">
+      <p class="font-medium text-xl">Your data requests could not be loaded.</p>
+      <p class="font-medium text-xl">Please try again later or contact the support team if the issue persists.</p>
+    </div>
+    <div v-else-if="isPending || hasStoredDataRequests">
       <div class="container">
         <IconField class="company-search">
           <InputIcon class="pi pi-search" />
@@ -36,15 +40,13 @@
         />
         <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       </div>
-      <div v-if="waitingForData">
+      <div v-if="isPending">
         <p class="font-medium text-xl">Loading...</p>
         <DatalandProgressSpinner />
       </div>
 
-      <div style="padding: var(--spacing-md)">
+      <div v-else style="padding: var(--spacing-md)">
         <DataTable
-          v-if="displayedData"
-          v-show="!waitingForData"
           :value="displayedData"
           style="cursor: pointer"
           :row-hover="true"
@@ -57,7 +59,7 @@
           :alwaysShowPaginator="true"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
           lazy
-          :total-records="numberOfFilteredRequests"
+          :total-records="filteredAndSortedRequests.length"
           @page="onPage"
           @sort="onSort"
           @row-click="onRowClick"
@@ -107,7 +109,7 @@
       </div>
     </div>
 
-    <div v-if="!waitingForData && storedDataRequests.length === 0">
+    <div v-else>
       <div class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">You have not requested data yet.</p>
         <p class="font-medium text-xl">Individual data requests can be made for each company from its cockpit page.</p>
@@ -129,7 +131,7 @@
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
+import { useGetRequestsForRequestingUserQuery } from '@/api-queries/data-sourcing/enhanced-request/useGetRequestsForRequestingUserQuery';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import {
@@ -140,7 +142,6 @@ import {
   getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
@@ -151,53 +152,50 @@ import DataTable, {
   type DataTableSortEvent,
 } from 'primevue/datatable';
 import InputText from 'primevue/inputtext';
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { type DataSourcingEnhancedRequest, RequestState } from '@clients/datasourcingservice';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 
 const datasetsPerPage = 100;
 
-const waitingForData = ref(true);
+const availableFrameworks: FrameworkSelectableItem[] = retrieveAvailableFrameworks();
+const availableState: SelectableItem[] = [
+  { displayName: RequestState.Open, disabled: false },
+  ...retrieveAvailableDataSourcingStates(),
+  { displayName: RequestState.Withdrawn, disabled: false },
+];
+
+const { data: storedDataRequests, isPending, isError } = useGetRequestsForRequestingUserQuery();
+
 const currentPage = ref(0);
-const storedDataRequests = ref<DataSourcingEnhancedRequest[]>([]);
-const displayedData = ref<DataSourcingEnhancedRequest[]>([]);
 const searchBarInput = ref('');
-const searchBarInputFilter = ref('');
-
-const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-
-const availableState = ref<SelectableItem[]>([]);
 const selectedState = ref<SelectableItem[]>([]);
-
-const numberOfFilteredRequests = ref(0);
 const sortField = ref<keyof DataSourcingEnhancedRequest>('state');
 const sortOrder = ref(1);
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-
 const vueRouter = useRouter();
 
-onMounted(async () => {
-  availableFrameworks.value = retrieveAvailableFrameworks();
-  availableState.value = [
-    { displayName: RequestState.Open, disabled: false },
-    ...retrieveAvailableDataSourcingStates(),
-    { displayName: RequestState.Withdrawn, disabled: false },
-  ];
-  await getStoredRequestDataList();
-});
+const hasStoredDataRequests = computed(() => (storedDataRequests.value?.length ?? 0) > 0);
 
-watch([selectedFrameworks, selectedState, waitingForData], () => {
-  updateCurrentDisplayedData();
-  resetToFirstPage();
-});
+const filteredAndSortedRequests = computed(() =>
+  (storedDataRequests.value ?? [])
+    .filter((request) => filterSearchInput(request.companyName))
+    .filter((request) => selectedFrameworks.value.length === 0 || filterFramework(request.dataType))
+    .filter(
+      (request) => selectedState.value.length === 0 || filterState(getDisplayedStateLabel(getDisplayedState(request)))
+    )
+    .sort(customCompareForExtendedStoredDataRequests)
+);
 
-watch(searchBarInput, (newSearch) => {
-  searchBarInputFilter.value = newSearch;
-  updateCurrentDisplayedData();
-  resetToFirstPage();
+const displayedData = computed(() =>
+  filteredAndSortedRequests.value.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1))
+);
+
+watch([selectedFrameworks, selectedState, searchBarInput], () => {
+  currentPage.value = 0;
+  scrollToTop();
 });
 
 /**
@@ -208,24 +206,10 @@ function goToMyPortfoliosPage(): void {
 }
 
 /**
- * Retrieves and updates the list of stored data requests for the requesting user.
- * Utilizes Keycloak authentication and the API client for fetching the data.
+ * Scrolls the page to the top, e.g. after the displayed rows changed.
  */
-async function getStoredRequestDataList(): Promise<void> {
-  waitingForData.value = true;
-  storedDataRequests.value.length = 0;
-  try {
-    if (getKeycloakPromise) {
-      storedDataRequests.value = (
-        await new ApiClientProvider(
-          getKeycloakPromise()
-        ).apiClients.enhancedRequestController.getRequestsForRequestingUser()
-      ).data;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-  waitingForData.value = false;
+function scrollToTop(): void {
+  globalThis.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
@@ -241,15 +225,14 @@ function onRowClick(event: DataTableRowClickEvent): void {
 
 /**
  * Handles the sorting of data in the DataTable component.
- * Updates the sort field and order based on the event properties,
- * and triggers the update of the currently displayed data.
+ * Updates the sort field and order based on the event properties.
  *
  * @param {DataTableSortEvent} event - The sorting event containing the sort field and sort order.
  */
 function onSort(event: DataTableSortEvent): void {
   sortField.value = event.sortField as keyof DataSourcingEnhancedRequest;
   sortOrder.value = event.sortOrder ?? 1;
-  updateCurrentDisplayedData();
+  scrollToTop();
 }
 
 /**
@@ -279,7 +262,7 @@ function filterState(state: string): boolean {
  * @returns {boolean} True if the company name matches the search input, false otherwise.
  */
 function filterSearchInput(companyName: string): boolean {
-  return (companyName ?? '').toLowerCase().includes(searchBarInputFilter.value.toLowerCase());
+  return (companyName ?? '').toLowerCase().includes(searchBarInput.value.toLowerCase());
 }
 
 /**
@@ -290,42 +273,6 @@ function resetFilterAndSearchBar(): void {
   selectedFrameworks.value = [];
   selectedState.value = [];
   searchBarInput.value = '';
-  resetToFirstPage();
-}
-
-/**
- * Resets current page when filters are reset or changed.
- */
-function resetToFirstPage(): void {
-  currentPage.value = 0;
-  updateCurrentDisplayedData();
-}
-
-/**
- * Updates the list of currently displayed data based on filters, sorting, and pagination.
- * Filters the data requests by search input, selected frameworks, and states.
- * Sorts the filtered data using a custom comparison function.
- * Updates the displayed data and scrolls to the top of the page.
- */
-function updateCurrentDisplayedData(): void {
-  let data = storedDataRequests.value.filter((request) => filterSearchInput(request.companyName));
-
-  if (selectedFrameworks.value.length > 0) {
-    data = data.filter((request) => filterFramework(request.dataType));
-  }
-  if (selectedState.value.length > 0) {
-    data = data.filter((request) => filterState(getDisplayedStateLabel(getDisplayedState(request))));
-  }
-
-  data.sort((dataRequestObjectA, dataRequestObjectB) =>
-    customCompareForExtendedStoredDataRequests(dataRequestObjectA, dataRequestObjectB)
-  );
-
-  numberOfFilteredRequests.value = data.length;
-
-  displayedData.value = data.slice(datasetsPerPage * currentPage.value, datasetsPerPage * (currentPage.value + 1));
-
-  globalThis.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
@@ -363,13 +310,13 @@ function customCompareForExtendedStoredDataRequests(
 
 /**
  * Handles the pagination event in the DataTable component.
- * Updates the current page based on the event properties and refreshes the displayed data.
+ * Updates the current page based on the event properties.
  *
  * @param {DataTablePageEvent} event - The pagination event containing information about the current page.
  */
 function onPage(event: DataTablePageEvent): void {
   currentPage.value = event.page;
-  updateCurrentDisplayedData();
+  scrollToTop();
 }
 </script>
 

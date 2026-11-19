@@ -118,19 +118,25 @@ before(function () {
 });
 /**
  * Helper to intercept user data requests.
- * @param data - The data to return from the intercept (defaults to mockDataRequests)
+ * @param options - Intercept options
+ * @param options.data - The data to return from the intercept (defaults to mockDataRequests)
+ * @param options.statusCode - The HTTP status code of the response
+ * @param options.delay - Delay of the response in ms
  */
 function interceptUserRequests({
   data = mockDataRequests,
+  statusCode = 200,
+  delay = 0,
 }: {
   data?: DataSourcingEnhancedRequest[];
-  alias?: string;
-  matchPattern?: string;
+  statusCode?: number;
+  delay?: number;
 } = {}): void {
-  cy.intercept('**/data-sourcing/enhanced-requests', {
+  cy.intercept('GET', '**/data-sourcing/enhanced-requests', {
     body: data,
-    status: 200,
-  });
+    statusCode,
+    delay,
+  }).as('getUserRequests');
 }
 
 /**
@@ -145,6 +151,25 @@ function mountMyDataRequestsOverview(options: { router?: typeof router } = {}): 
 }
 
 describe('Component tests for the data requests search page', function (): void {
+  it('Shows a loading indicator until the requests are loaded', function (): void {
+    interceptUserRequests({ delay: 500 });
+    mountMyDataRequestsOverview();
+    cy.contains('Loading...').should('be.visible');
+    cy.get('[data-test="requested-datasets-table"]').should('not.exist');
+    cy.wait('@getUserRequests');
+    cy.contains('Loading...').should('not.exist');
+    cy.get('[data-test="requested-datasets-table"]').should('be.visible');
+  });
+
+  it('Shows an error message instead of the empty state if the requests cannot be loaded', function (): void {
+    interceptUserRequests({ statusCode: 500 });
+    mountMyDataRequestsOverview();
+    cy.wait('@getUserRequests');
+    cy.get('[data-test="requests-error"]').should('be.visible').and('contain.text', 'could not be loaded');
+    cy.get('[data-test="requested-datasets-table"]').should('not.exist');
+    cy.get('[data-test="myPortfoliosButton"]').should('not.exist');
+  });
+
   it('Check sorting', function (): void {
     interceptUserRequests();
     mountMyDataRequestsOverview();
@@ -222,18 +247,22 @@ describe('Component tests for the data requests search page', function (): void 
 
   it('Check existence and functionality of searchbar', function (): void {
     interceptUserRequests();
-    cy.spy(router, 'push').as('routerPush');
-    mountMyDataRequestsOverview({ router });
+    mountMyDataRequestsOverview();
     cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
       .clear()
       .type('companyOpen');
+    cy.get('table tbody').find('tr').should('have.length', 1).and('contain.text', 'companyOpen');
     cy.get('[data-test="requested-datasets-searchbar"]')
       .should('exist')
       .should('not.be.disabled')
       .clear()
-      .type('companyProcessed');
+      .type('companyProcess');
+    cy.get('table tbody').find('tr').should('have.length', 2);
+    cy.get('[data-test="reset-filter"]').click();
+    cy.get('table tbody').find('tr').should('have.length', mockDataRequests.length);
+    cy.get('@getUserRequests.all').should('have.length', 1);
   });
 
   it('Check filter functionality for framework', function (): void {

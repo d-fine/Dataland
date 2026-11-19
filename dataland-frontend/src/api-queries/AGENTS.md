@@ -69,7 +69,7 @@ Hooks own server state; components only derive UI from it.
 
 - **No mirrored state.** Do not copy `data` into local refs, and do not keep manual loading flags such as `waitingForData`. Use the hook result:
   - `isPending`: first load without data (spinner).
-  - `isError` / `error`: error UI. Show a message; never leave a spinner running on failure.
+  - `isError` / `error`: error UI. Show a message; never leave a spinner running on failure. A failed background refetch keeps the previous `data`, so keep showing that data instead of replacing it with the error (e.g. `v-if="isError && !data"`).
   - `isFetching`: background refresh while data is shown (optional subtle indicator).
 - **Derive, don't fetch imperatively.** Filtering, sorting, and client-side paging are `computed` over `data`. Do not call `refetch()` from watchers or `onMounted`.
 - **Reactive params drive fetching.** Pass refs, computeds, or getters as params; a changed key triggers the fetch. Values that are only known asynchronously (Keycloak user id, route params) go in as params and the default `enabled` keeps the query idle until they exist. Extra conditions (role, authentication) go into `options.enabled`.
