@@ -1,4 +1,5 @@
 export const datasetJudgementKeys = {
-  all: ['qaJudgementResponse'] as const,
-  detail: (datasetJudgementId: string | undefined) => ['qaJudgementResponse', 'detail', datasetJudgementId] as const,
+  all: ['datasetJudgement'] as const,
+  detail: (datasetJudgementId: string | undefined) =>
+    [...datasetJudgementKeys.all, 'detail', datasetJudgementId] as const,
 };

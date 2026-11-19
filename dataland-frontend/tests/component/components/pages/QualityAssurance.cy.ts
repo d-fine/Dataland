@@ -661,4 +661,46 @@ describe('Component tests for the Quality Assurance page', () => {
     validateSearchStringWarning(false);
     assertUnfilteredDatatableState();
   });
+
+  it('Shows a loading indicator until the queue is loaded', () => {
+    cy.intercept(`**/qa/datasets/queue`, { body: [reviewQueueElementAlpha], delay: 500 }).as('delayedFetch');
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    cy.contains('Loading data to be reviewed...').should('be.visible');
+    cy.wait('@delayedFetch');
+    cy.contains('Loading data to be reviewed...').should('not.exist');
+    cy.get('#qa-data-result tbody tr').should('have.length', 1);
+  });
+
+  it('Shows an error message instead of a spinner if the queue cannot be loaded', () => {
+    cy.intercept(`**/qa/datasets/queue`, { statusCode: 500 }).as('failingFetch');
+    getMountingFunction({ keycloak: keycloakMockWithJudgeRole })(QualityAssurance);
+    cy.wait('@failingFetch');
+    cy.get('[data-test="qa-error"]').should('be.visible').and('contain.text', 'could not be loaded');
+    cy.contains('Loading data to be reviewed...').should('not.exist');
+  });
+
+  it('Keeps the current results visible while a company name search is loading', () => {
+    mountQaAssurancePageWithMocks();
+    cy.intercept(`**/qa/datasets/queue?companyName=Alpha`, { body: [reviewQueueElementAlpha], delay: 500 }).as(
+      'delayedSearch'
+    );
+    cy.get(`input[data-test="companyNameSearchbar"]`).type('Alpha');
+    cy.get('#qa-data-result .p-datatable-mask').should('exist');
+    validateAllMockSearchResults(true);
+    cy.wait('@delayedSearch');
+    cy.get('#qa-data-result .p-datatable-mask').should('not.exist');
+    cy.get('#qa-data-result tbody tr').should('have.length', 1);
+  });
+
+  it('Reloads the queue after a review was started', () => {
+    mountQaAssurancePageWithMocks();
+    cy.intercept('POST', `**/qa/dataset-judgements/${dataIdAlpha}`, {
+      statusCode: 201,
+      body: { dataSetJudgementId: datasetReviewIdAlpha },
+    }).as('createDatasetReview');
+    cy.get('button[data-test="goToReviewButton"]').not(`:contains(${reviewerUserName})`).click();
+    cy.wait('@createDatasetReview');
+    cy.wait('@nonFilteredFetch');
+    cy.wait('@nonFilteredFetch');
+  });
 });

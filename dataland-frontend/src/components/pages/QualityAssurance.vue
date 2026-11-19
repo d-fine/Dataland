@@ -27,15 +27,20 @@
       </div>
 
       <div class="col-12 text-left p-3">
-        <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
+        <div v-if="isPending" class="d-center-div text-center px-7 py-4">
           <p class="font-medium text-xl">Loading data to be reviewed...</p>
           <DatalandProgressSpinner />
         </div>
+        <div v-else-if="isError && !pendingDatasets" class="d-center-div text-center px-7 py-4" data-test="qa-error">
+          <p class="font-medium text-xl">The datasets to be reviewed could not be loaded.</p>
+          <p class="font-medium text-xl">Please try again later or contact the support team if the issue persists.</p>
+        </div>
 
-        <div class="card">
+        <div v-else class="card">
           <DataTable
-            v-show="!waitingForData && displayDataOfPage.length > 0"
-            :value="displayDataOfPage"
+            v-show="qaReviewRows.length > 0"
+            :value="qaReviewRows"
+            :loading="isPlaceholderData"
             class="table-cursor"
             id="qa-data-result"
             :rowHover="true"
@@ -247,8 +252,8 @@
                   icon="pi pi-chevron-right"
                   icon-pos="right"
                   variant="link"
-                  :loading="loadingDataId === slotProps.data.dataId"
-                  :disabled="loadingDataId !== null"
+                  :loading="isStartingReview && startReviewVariables?.datasetId === slotProps.data.dataId"
+                  :disabled="isStartingReview"
                 />
                 <span v-else>
                   {{ slotProps.data.reviewStatus }}
@@ -256,7 +261,7 @@
               </template>
             </Column>
           </DataTable>
-          <div v-if="!waitingForData && displayDataOfPage.length == 0">
+          <div v-if="qaReviewRows.length === 0">
             <div class="d-center-div text-center px-7 py-4">
               <p class="font-medium text-xl">There are no unreviewed datasets on Dataland matching your filters.</p>
             </div>
@@ -283,10 +288,12 @@ import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import router from '@/router';
-import { ApiClientProvider } from '@/services/ApiClients';
+import { useGetInfoOnPendingDatasetsQuery } from '@/api-queries/qa-service/qa/useGetInfoOnPendingDatasetsQuery';
+import { usePostDatasetJudgementMutation } from '@/api-queries/qa-service/dataset-judgement/usePostDatasetJudgementMutation';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
+import { getUserId } from '@/utils/KeycloakUtils';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -298,7 +305,8 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
+import { keepPreviousData } from '@tanstack/vue-query';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
@@ -324,52 +332,47 @@ const filters = ref({
   },
 });
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
 type QaReviewRow = QaReviewResponse & {
   reviewStatus: string;
   priorityWithNullHandling: number;
   frameworkHumanized: string;
 };
-const displayDataOfPage = ref<QaReviewRow[]>([]);
-const waitingForData = ref(true);
 const searchBarInput = ref('');
+const companyNameFilter = ref<string | undefined>(undefined);
+const currentUserId = ref<string | undefined>(undefined);
 const selectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
+const availableFrameworks: Array<FrameworkSelectableItem> = retrieveAvailableFrameworks();
 const showNotEnoughCharactersWarning = ref(false);
-const selectedDataId = ref<string>('');
-const loadingDataId = ref<string | null>(null);
 
 const debounceInMs = 300;
-let timerId = 0;
+let searchDebounceTimeoutId = 0;
 let notEnoughCharactersWarningTimeoutId = 0;
 
 const { confirmationModal, openConfirmationModal } = useConfirmationModal();
 
-/**
- * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
- */
-async function getQaDataForCurrentPage(): Promise<void> {
-  try {
-    waitingForData.value = true;
-    displayDataOfPage.value = [];
+const {
+  data: pendingDatasets,
+  isPending,
+  isError,
+  isPlaceholderData,
+} = useGetInfoOnPendingDatasetsQuery({ companyName: companyNameFilter }, { placeholderData: keepPreviousData });
 
-    const companyNameFilter = searchBarInput.value === '' ? undefined : searchBarInput.value;
-    const response = await apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(companyNameFilter);
-    displayDataOfPage.value = await Promise.all(
-      response.data.map(async (row) => ({
-        ...row,
-        reviewStatus: await getReviewStatus(row.qaJudgeUserId, row.qaJudgeUserName),
-        priorityWithNullHandling: row.priorityOfAssociatedDataSourcing ?? Number.MAX_SAFE_INTEGER,
-        frameworkHumanized: humanizeStringOrNumber(row.framework),
-      }))
-    );
-    waitingForData.value = false;
-  } catch (error) {
-    console.error(error);
-  }
-}
+const {
+  mutate: startReview,
+  isPending: isStartingReview,
+  variables: startReviewVariables,
+} = usePostDatasetJudgementMutation();
+
+const qaReviewRows = computed<QaReviewRow[]>(() =>
+  (pendingDatasets.value ?? []).map((row) => ({
+    ...row,
+    reviewStatus: getReviewStatus(row.qaJudgeUserId, row.qaJudgeUserName),
+    priorityWithNullHandling: row.priorityOfAssociatedDataSourcing ?? Number.MAX_SAFE_INTEGER,
+    frameworkHumanized: humanizeStringOrNumber(row.framework),
+  }))
+);
 
 /**
  * Returns the DatalandTag severity string for the given numeric data sourcing priority.
@@ -412,8 +415,7 @@ function handleReviewButtonClick(qaDataObject: QaReviewRow): void {
     void goToDatasetReviewPage(qaDataObject.datasetReviewId);
     return;
   }
-  selectedDataId.value = qaDataObject.dataId;
-  void confirmStartReview();
+  confirmStartReview(qaDataObject.dataId);
 }
 
 /**
@@ -431,36 +433,31 @@ function goToDatasetReviewPage(datasetReviewId: string): ReturnType<typeof route
 }
 
 /**
- * Confirms the start of a dataset review in the confirmation modal.
- * Creates a dataset review for the dataset with the selected data id and navigates to the corresponding dataset review page.
+ * Starts the review of the dataset with the given data id and navigates to the created dataset review page.
  * Opens a confirmation modal with an error message if the dataset review creation fails.
+ * @param dataId the id of the dataset to review
  */
-async function confirmStartReview(): Promise<void> {
-  loadingDataId.value = selectedDataId.value;
-
-  try {
-    const response = await apiClientProvider.apiClients.datasetJudgementController.postDatasetJudgement(
-      selectedDataId.value
-    );
-    confirmationModal.value.visible = false;
-    await goToDatasetReviewPage(response.data.dataSetJudgementId);
-  } catch (error) {
-    openConfirmationModal(
-      'Failed to start review',
-      'An error occurred while trying to make the postDatasetJudgement call.',
-      () => {
+function confirmStartReview(dataId: string): void {
+  startReview(
+    { datasetId: dataId },
+    {
+      onSuccess: (datasetJudgement) => {
         confirmationModal.value.visible = false;
-      }
-    );
-    if (error instanceof AxiosError) {
-      confirmationModal.value.errorMessage = formatAxiosErrorMessage(error);
-    } else {
-      confirmationModal.value.errorMessage = 'Failed to create dataset review.';
+        void goToDatasetReviewPage(datasetJudgement.dataSetJudgementId);
+      },
+      onError: (error) => {
+        openConfirmationModal(
+          'Failed to start review',
+          'An error occurred while trying to make the postDatasetJudgement call.',
+          () => {
+            confirmationModal.value.visible = false;
+          }
+        );
+        confirmationModal.value.errorMessage =
+          error instanceof AxiosError ? formatAxiosErrorMessage(error) : 'Failed to create dataset review.';
+      },
     }
-    console.error(confirmationModal.value.errorMessage);
-  } finally {
-    loadingDataId.value = null;
-  }
+  );
 }
 
 /**
@@ -515,31 +512,26 @@ function openFrameworkFilterDropdown(event: FocusEvent): void {
  * @param reviewerUserName the user name of the reviewer of the dataset
  * @returns the label of the review button
  */
-async function getReviewStatus(
+function getReviewStatus(
   reviewerUserId: string | undefined | null,
   reviewerUserName: string | undefined | null
-): Promise<string> {
-  const keycloak = await assertDefined(getKeycloakPromise)();
-  const keycloakUserId = keycloak.idTokenParsed?.sub;
+): string {
   if (reviewerUserId && reviewerUserName) {
-    return keycloakUserId === reviewerUserId ? 'Continue Review' : reviewerUserName;
+    return currentUserId.value === reviewerUserId ? 'Continue Review' : reviewerUserName;
   }
   return 'Start Review';
 }
 
 watch(searchBarInput, () => {
-  const isValid = validateSearchBarInput();
-  if (isValid) {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-    timerId = setTimeout(() => getQaDataForCurrentPage(), debounceInMs);
-  }
+  clearTimeout(searchDebounceTimeoutId);
+  if (!validateSearchBarInput()) return;
+  searchDebounceTimeoutId = setTimeout(() => {
+    companyNameFilter.value = searchBarInput.value === '' ? undefined : searchBarInput.value;
+  }, debounceInMs);
 });
 
-onMounted(() => {
-  getQaDataForCurrentPage().catch((error) => console.log(error));
-  availableFrameworks.value = retrieveAvailableFrameworks();
+onMounted(async () => {
+  currentUserId.value = await getUserId(assertDefined(getKeycloakPromise));
 });
 </script>
 
