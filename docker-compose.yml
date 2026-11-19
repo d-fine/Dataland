@@ -186,30 +186,35 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_COMPANY_SERVICE_CLIENT_SECRET: ${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}
+      # "mock" unless explicitly set to "azure", so that no real LLM calls happen by accident (e.g. in CI)
+      COMPANY_SERVICE_PROVIDER: ${COMPANY_SERVICE_PROVIDER:-mock}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_DEPLOYMENT_NAME: ${AZURE_OPENAI_DEPLOYMENT_NAME:-}
     logging:
       <<: *loki-logging
   data-sourcing-service:
-    restart: always
-    profiles: [ "production", "testing", "development" ]
-    networks:
-      - internal
-      - data-sourcing-service-db
-    image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
-    expose:
-      - "8080"
-    depends_on:
-      data-sourcing-service-db:
-        condition: service_healthy
-    <<: *uncritical-constants-env
-    environment:
-      <<: *rabbit-mq-user-and-pass
-      JAVA_TOOL_OPTIONS: *java-tool-options
-      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
-    logging:
-      <<: *loki-logging
+        restart: always
+        profiles: [ "production", "testing", "development" ]
+        networks:
+          - internal
+          - data-sourcing-service-db
+        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+        expose:
+          - "8080"
+        depends_on:
+          data-sourcing-service-db:
+            condition: service_healthy
+        <<: *uncritical-constants-env
+        environment:
+          <<: *rabbit-mq-user-and-pass
+          JAVA_TOOL_OPTIONS: *java-tool-options
+          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+        logging:
+          <<: *loki-logging
   data-sourcing-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]

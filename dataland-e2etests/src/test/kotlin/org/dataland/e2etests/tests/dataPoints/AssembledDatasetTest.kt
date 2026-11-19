@@ -5,7 +5,10 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.mosh
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrEnvironmental
+import org.dataland.datalandbackend.openApiClient.model.SfdrEnvironmentalGreenhouseGasEmissions
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandbackendutils.utils.JsonComparator
 import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReport
@@ -41,6 +44,16 @@ class AssembledDatasetTest {
     private val apiAccessor = ApiAccessor()
     private val linkedQaReportDataFile =
         File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
+    private val datasetWithoutCalculations =
+        SfdrData(
+            environmental =
+                SfdrEnvironmental(
+                    greenhouseGasEmissions =
+                        SfdrEnvironmentalGreenhouseGasEmissions(
+                            scope1GhgEmissionsInTonnes = ExtendedDataPointBigDecimal(value = 123.45.toBigDecimal()),
+                        ),
+                ),
+        )
     private val dummyReportingPeriod = "2025"
     private val testValue = 1.2345.toBigDecimal()
     private val testComment = "This is a specific test comment."
@@ -66,13 +79,14 @@ class AssembledDatasetTest {
     private fun uploadDummySfdrDataset(
         companyId: String,
         bypassQa: Boolean,
+        dataset: SfdrData = dummyDataset,
     ): DataMetaInformation {
         val dataMetaInformationResponse =
             Backend.sfdrDataControllerApi.postCompanyAssociatedSfdrData(
                 CompanyAssociatedDataSfdrData(
                     companyId = companyId,
                     reportingPeriod = dummyReportingPeriod,
-                    data = dummyDataset,
+                    data = dataset,
                 ),
                 bypassQa = bypassQa,
             )
@@ -93,7 +107,9 @@ class AssembledDatasetTest {
     @Test
     fun `ensure that an uploaded dataset can be downloaded via dimensions`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = true)
+        // The fixture dataset is not used here: retrieval by dimensions derives calculated fields that are empty in the
+        // upload, so a dataset without any calculation inputs is needed for a faithful round trip comparison.
+        val dataMetaInformation = uploadDummySfdrDataset(companyId, bypassQa = true, dataset = datasetWithoutCalculations)
         Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
             val downloadedDataset =
                 Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(
@@ -101,7 +117,7 @@ class AssembledDatasetTest {
                     companyId,
                 )
 
-            compareSfdrCompanyInformationDatasets(dummyDataset, downloadedDataset.data)
+            compareSfdrCompanyInformationDatasets(datasetWithoutCalculations, downloadedDataset.data)
         }
     }
 
