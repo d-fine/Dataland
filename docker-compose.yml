@@ -14,6 +14,8 @@ x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
 x-mailjet-api-id-and-secret: &mailjet-api-id-and-secret
   MAILJET_API_SECRET: ${MAILJET_API_SECRET}
   MAILJET_API_ID: ${MAILJET_API_ID}
+# Temporary mitigation for CVE-2026-114938.
+x-java-tool-options: &java-tool-options "-XX:-UseBASE64Intrinsics"
 x-healthcheck-settings: &healthcheck-settings
   interval: 30s
   timeout: 5s
@@ -104,6 +106,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_API_KEY_MANAGER_CLIENT_SECRET: ${DATALAND_API_KEY_MANAGER_CLIENT_SECRET}
@@ -143,6 +146,7 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       ACCOUNTING_SERVICE_DB_PASSWORD: ${ACCOUNTING_SERVICE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -178,50 +182,52 @@ services:
 
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_COMPANY_SERVICE_CLIENT_SECRET: ${DATALAND_COMPANY_SERVICE_CLIENT_SECRET}
     logging:
       <<: *loki-logging
   data-sourcing-service:
-        restart: always
-        profiles: [ "production", "testing", "development" ]
-        networks:
-          - internal
-          - data-sourcing-service-db
-        image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
-        expose:
-          - "8080"
-        depends_on:
-          data-sourcing-service-db:
-            condition: service_healthy
-        <<: *uncritical-constants-env
-        environment:
-          <<: *rabbit-mq-user-and-pass
-          DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-          DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
-        logging:
-          <<: *loki-logging
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - data-sourcing-service-db
+    image: ${DATA_SOURCING_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_data_sourcing_service_test:${DATALAND_DATA_SOURCING_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
+    depends_on:
+      data-sourcing-service-db:
+        condition: service_healthy
+    <<: *uncritical-constants-env
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
+      DATA_SOURCING_SERVICE_DB_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET: ${DATALAND_DATA_SOURCING_SERVICE_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
   data-sourcing-service-db:
-        restart: always
-        profiles: [ "production", "testing", "development" ]
-        networks:
-          - data-sourcing-service-db
-        image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
-        volumes:
-          - data_sourcing_service_data:/var/lib/postgresql
-        environment:
-          POSTGRES_DB: data_sourcing_service
-          POSTGRES_USER: data_sourcing_service
-          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-          PGUSER: data_sourcing_service
-        healthcheck:
-          <<: *healthcheck-settings
-          test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
-        logging:
-          <<: *loki-logging
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - data-sourcing-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
+    volumes:
+      - data_sourcing_service_data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: data_sourcing_service
+      POSTGRES_USER: data_sourcing_service
+      POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+      PGUSER: data_sourcing_service
+    healthcheck:
+      <<: *healthcheck-settings
+      test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
+    logging:
+      <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -234,6 +240,7 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION: ${DOCUMENT_MANAGER_MIGRATION_BASELINE_VERSION:-1}
@@ -280,6 +287,7 @@ services:
     environment:
       <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
@@ -327,6 +335,7 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_JUDGE_PASSWORD: ${KEYCLOAK_JUDGE_PASSWORD}
@@ -385,6 +394,7 @@ services:
       - internal-storage-db
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
@@ -445,6 +455,7 @@ services:
       - "8080"
     environment:
       KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      JAVA_TOOL_OPTIONS: *java-tool-options
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       keycloak-db:
@@ -466,6 +477,7 @@ services:
     command: initialize
     environment:
       <<: *mailjet-api-id-and-secret
+      JAVA_TOOL_OPTIONS: *java-tool-options
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
@@ -596,6 +608,7 @@ services:
       - "8080"
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
@@ -640,6 +653,7 @@ services:
     <<: *uncritical-constants-env
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
@@ -677,6 +691,7 @@ services:
     image: ghcr.io/d-fine/dataland/dataland_batch_manager:${DATALAND_BATCH_MANAGER_VERSION}
 
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       GET_ALL_GLEIF_COMPANIES_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_flag
       GET_ALL_GLEIF_COMPANIES_UPDATE_FLAG_FILE: /config/perform_gleif_full_golden_copy_download_for_update_flag
       GET_ALL_NORTHDATA_COMPANIES_FLAG_FILE: /config/perform_northdata_full_golden_copy_download_flag
@@ -700,6 +715,7 @@ services:
       - "8080"
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
@@ -744,6 +760,7 @@ services:
 
     <<: *uncritical-constants-env
     environment:
+      JAVA_TOOL_OPTIONS: *java-tool-options
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
       <<: *loki-logging
@@ -762,6 +779,7 @@ services:
 
     environment:
       <<: *rabbit-mq-user-and-pass
+      JAVA_TOOL_OPTIONS: *java-tool-options
       MAILJET_API_SECRET: ${MAILJET_API_SECRET}
       MAILJET_API_ID: ${MAILJET_API_ID}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
