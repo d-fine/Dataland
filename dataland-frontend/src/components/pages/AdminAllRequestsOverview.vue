@@ -9,7 +9,7 @@
           placeholder="Search by Company Name or Identifier"
           fluid
           variant="filled"
-          :disabled="isFetching"
+          :disabled="isLoadingNewResults"
           @keyup.enter="applyFilters"
         />
       </IconField>
@@ -21,7 +21,7 @@
           placeholder="Search by Requester"
           fluid
           variant="filled"
-          :disabled="isFetching"
+          :disabled="isLoadingNewResults"
           @keyup.enter="applyFilters"
         />
       </IconField>
@@ -33,14 +33,14 @@
           placeholder="Search by Comment"
           fluid
           variant="filled"
-          :disabled="isFetching"
+          :disabled="isLoadingNewResults"
           @keyup.enter="applyFilters"
         />
       </IconField>
     </div>
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
-        :disabled="isFetching"
+        :disabled="isLoadingNewResults"
         v-model="selectedFrameworks"
         :available-items="availableFrameworks"
         filter-name="Framework"
@@ -51,7 +51,7 @@
         selected-items-label="{0} frameworks"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="isFetching"
+        :disabled="isLoadingNewResults"
         v-model="selectedMixedStates"
         :available-items="availableMixedStates"
         filter-name="State"
@@ -62,7 +62,7 @@
         selected-items-label="{0} states"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="isFetching"
+        :disabled="isLoadingNewResults"
         v-model="selectedPriorities"
         :available-items="availablePriorities"
         filter-name="Priority"
@@ -73,7 +73,7 @@
         selected-items-label="{0} request priorities"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="isFetching"
+        :disabled="isLoadingNewResults"
         v-model="selectedReportingPeriods"
         :available-items="availableReportingPeriods"
         filter-name="Reporting Period"
@@ -85,7 +85,7 @@
       />
       <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       <PrimeButton
-        :disabled="isFetching"
+        :disabled="isLoadingNewResults"
         data-test="trigger-filtering-requests"
         @click="applyFilters"
         label="FILTER REQUESTS"
@@ -105,7 +105,7 @@
         <DataTable
           data-test="requests-datatable"
           :value="currentDataRequests"
-          :loading="isFetching"
+          :loading="isLoadingNewResults"
           :paginator="true"
           :lazy="true"
           :total-records="totalRecords"
@@ -316,7 +316,7 @@ const firstRowIndex = computed(() => currentChunkIndex.value * rowsPerPage);
 const {
   data: currentDataRequests,
   isPending: isSearchPending,
-  isFetching: isSearchFetching,
+  isPlaceholderData: isSearchPlaceholderData,
   isError: isSearchError,
 } = usePostRequestSearchQuery(
   { requestSearchFilterString: appliedFilters, chunkSize: rowsPerPage, chunkIndex: currentChunkIndex },
@@ -325,12 +325,12 @@ const {
 const {
   data: totalRecords,
   isPending: isCountPending,
-  isFetching: isCountFetching,
+  isPlaceholderData: isCountPlaceholderData,
   isError: isCountError,
 } = usePostRequestCountQuery({ requestSearchFilterString: appliedFilters }, { placeholderData: keepPreviousData });
 
 const isPending = computed(() => isSearchPending.value || isCountPending.value);
-const isFetching = computed(() => isSearchFetching.value || isCountFetching.value);
+const isLoadingNewResults = computed(() => isSearchPlaceholderData.value || isCountPlaceholderData.value);
 const hasLoadingError = computed(
   () => (isSearchError.value && !currentDataRequests.value) || (isCountError.value && totalRecords.value === undefined)
 );

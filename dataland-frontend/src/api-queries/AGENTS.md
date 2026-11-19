@@ -70,11 +70,11 @@ Hooks own server state; components only derive UI from it.
 - **No mirrored state.** Do not copy `data` into local refs, and do not keep manual loading flags such as `waitingForData`. Use the hook result:
   - `isPending`: first load without data (spinner).
   - `isError` / `error`: error UI. Show a message; never leave a spinner running on failure. A failed background refetch keeps the previous `data`, so keep showing that data instead of replacing it with the error (e.g. `v-if="isError && !data"`).
-  - `isFetching`: background refresh while data is shown (optional subtle indicator).
+  - `isFetching`: any request in flight, including background refreshes of shown data. Rarely needed in the UI.
 - **Derive, don't fetch imperatively.** Filtering, sorting, and client-side paging are `computed` over `data`. Do not call `refetch()` from watchers or `onMounted`.
 - **Reactive params drive fetching.** Pass refs, computeds, or getters as params; a changed key triggers the fetch. Values that are only known asynchronously (Keycloak user id, route params) go in as params and the default `enabled` keeps the query idle until they exist. Extra conditions (role, authentication) go into `options.enabled`.
 - **Applied vs. edited input.** If filters only take effect on an explicit action (button, Enter), keep the live form state separate from an `appliedFilters` ref that is assigned on submit and passed to the hook. Debounce free-text search in the component (e.g. `refDebounced` from `@vueuse/core`) and pass the debounced value.
-- **Paged or filtered lists** pass `placeholderData: keepPreviousData`, so the current rows stay visible while the next page or filter result loads.
+- **Paged or filtered lists** pass `placeholderData: keepPreviousData`, so the current rows stay visible while the next page or filter result loads. Indicate that state with `isPlaceholderData` (e.g. DataTable `:loading`), not with `isFetching`, so background refreshes stay unobtrusive.
 - **Refresh through invalidation.** After a mutation, the hook's `onSuccess` invalidation updates every affected query. Do not refetch manually, emit "please reload" events, or force remounts with `:key` counters.
 - **Mutation feedback is the component's job.** Use `mutate(variables, { onSuccess, onError })`, `mutateAsync` in `try`/`catch`, or the returned `isPending` / `error`.
 - **Destructure only what you use**: `const { data, isPending, isError } = useXQuery(...)`. Destructured fields are refs.
