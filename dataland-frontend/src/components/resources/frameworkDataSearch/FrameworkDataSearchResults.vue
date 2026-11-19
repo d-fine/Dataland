@@ -10,6 +10,7 @@
       :first="previousRecords"
       :total-records="totalRecords"
       :rows="rowsPerPage"
+      :loading="loading"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
       :alwaysShowPaginator="false"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -82,9 +83,11 @@ withDefaults(
     previousRecords?: number;
     totalRecords?: number;
     rowsPerPage?: number;
+    loading?: boolean;
   }>(),
   {
     data: null,
+    loading: false,
     previousRecords: null as unknown as number,
     totalRecords: null as unknown as number,
     rowsPerPage: null as unknown as number,

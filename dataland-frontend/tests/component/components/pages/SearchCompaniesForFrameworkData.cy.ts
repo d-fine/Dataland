@@ -2,6 +2,7 @@ import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesF
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type BasicCompanyInformation } from '@clients/backend';
+import { createTestQueryClient } from '@ct/testUtils/TestQueryClient';
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 
@@ -67,4 +68,47 @@ describe('Component tests for the Dataland companies search page', function (): 
       });
     }
   );
+
+  it('Shows a loading indicator until the first search results are loaded', function () {
+    cy.intercept('GET', '**/api/companies?**', { body: mockDataSearchResponse, delay: 500 }).as('fetchCompanies');
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+    });
+    cy.contains('p', 'Loading...').should('be.visible');
+    cy.wait('@fetchCompanies');
+    cy.contains('p', 'Loading...').should('not.exist');
+    verifySearchResultTableExists();
+  });
+
+  it('Shows an error message if the search results cannot be loaded', function () {
+    cy.intercept('GET', '**/api/companies?**', { statusCode: 500 }).as('fetchCompanies');
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+    });
+    cy.wait('@fetchCompanies');
+    cy.get('[data-test="companiesError"]').should('be.visible');
+    cy.contains('p', 'Loading...').should('not.exist');
+  });
+
+  it('Shows cached search results immediately when the page is mounted again', function () {
+    const queryClient = createTestQueryClient();
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+      queryClient,
+    }).then(({ wrapper }) => {
+      verifySearchResultTableExists();
+      cy.then(() => wrapper.unmount());
+    });
+    cy.get('table.p-datatable-table').should('not.exist');
+
+    cy.intercept('GET', '**/api/companies?**', { body: mockDataSearchResponse, delay: 2000 }).as('refetchCompanies');
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+      queryClient,
+    });
+    // The short timeout ensures that the results are shown from the cache while the background refetch is pending
+    cy.get('table.p-datatable-table', { timeout: 500 }).contains('th', 'COMPANY');
+    cy.contains('p', 'Loading...').should('not.exist');
+    cy.wait('@refetchCompanies');
+  });
 });

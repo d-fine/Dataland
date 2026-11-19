@@ -5,7 +5,7 @@
         <label for="sector-filter" v-if="showHeading">Filter by company</label>
         <div class="filter-group-items">
           <FrameworkDataSearchDropdownFilter
-            v-model="localSelectedSectors"
+            v-model="selectedSectorItems"
             ref="sectorFilter"
             :available-items="availableSectors"
             filter-name="Sector"
@@ -17,7 +17,7 @@
             data-test="frameworkDataSearchDropdownFilterSector"
           />
           <FrameworkDataSearchDropdownFilter
-            v-model="localSelectedCountries"
+            v-model="selectedCountryItems"
             ref="countryFilter"
             :available-items="availableCountries"
             filter-name="Country"
@@ -34,7 +34,7 @@
         <label for="framework-filter" v-if="showHeading">Filter for available data sets</label>
         <div class="filter-group-items">
           <FrameworkDataSearchDropdownFilter
-            v-model="localSelectedFrameworks"
+            v-model="selectedFrameworkItems"
             ref="frameworkFilter"
             :available-items="availableFrameworks"
             filter-name="Framework"
@@ -45,7 +45,7 @@
             class="search-filter framework-filter"
           />
           <FrameworkDataSearchDropdownFilter
-            v-model="localSelectedReportingPeriods"
+            v-model="selectedReportingPeriodItems"
             ref="reportingPeriodFilter"
             :available-items="availableReportingPeriods"
             filter-name="Reporting Period"
@@ -64,10 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useGetAvailableCompanySearchFiltersQuery } from '@/api-queries/backend/company-data/useGetAvailableCompanySearchFiltersQuery';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { arraySetEquals } from '@/utils/ArrayUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import {
   type CountryCodeSelectableItem,
@@ -75,7 +77,6 @@ import {
   type SelectableItem,
 } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
-import { useApiClient } from '@/utils/useApiClient';
 import PrimeButton from 'primevue/button';
 import Divider from 'primevue/divider';
 import { type DataTypeEnum } from '@clients/backend';
@@ -114,88 +115,102 @@ const sectorFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
 const countryFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
 const frameworkFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
 const reportingPeriodFilter = ref<FrameworkDataSearchDropdownFilterRef | null>(null);
-const apiClientProvider = useApiClient();
 
-const localSelectedCountries = ref<Array<CountryCodeSelectableItem>>([]);
-const localSelectedFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const localSelectedSectors = ref<Array<SelectableItem>>([]);
-const localSelectedReportingPeriods = ref<Array<SelectableItem>>([]);
+const { data: availableSearchFilters } = useGetAvailableCompanySearchFiltersQuery();
 
-const availableCountries = ref<Array<CountryCodeSelectableItem>>([]);
-const availableFrameworks = ref<Array<FrameworkSelectableItem>>([]);
-const availableSectors = ref<Array<SelectableItem>>([]);
-const availableReportingPeriods = ref<Array<SelectableItem>>([]);
+const availableFrameworks: Array<FrameworkSelectableItem> = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => ({
+  frameworkDataType: dataTypeEnum,
+  displayName: getFrontendFrameworkDefinition(dataTypeEnum)?.label ?? humanizeStringOrNumber(dataTypeEnum),
+  disabled: false,
+}));
 
-watch(
-  localSelectedCountries,
-  (newValue) => {
+const availableCountries = computed<Array<CountryCodeSelectableItem>>(() =>
+  [...(availableSearchFilters.value?.countryCodes ?? [])]
+    .map((countryCode) => ({
+      countryCode: countryCode,
+      displayName: getCountryNameFromCountryCode(countryCode) ?? countryCode,
+      disabled: false,
+    }))
+    .sort((a, b) => a.displayName.localeCompare(b.displayName))
+);
+
+const availableSectors = computed<Array<SelectableItem>>(() =>
+  [...(availableSearchFilters.value?.sectors ?? [])]
+    .map((sector) => ({ displayName: sector, disabled: false }))
+    .sort((a, b) => a.displayName.localeCompare(b.displayName))
+);
+
+const availableReportingPeriods = computed<Array<SelectableItem>>(() =>
+  [...(availableSearchFilters.value?.reportingPeriods ?? [])]
+    .map((reportingPeriod) => ({ displayName: reportingPeriod, disabled: false }))
+    .sort((a, b) => b.displayName.localeCompare(a.displayName))
+);
+
+const selectedCountryItems = computed({
+  get: () => availableCountries.value.filter((item) => props.selectedCountryCodes.includes(item.countryCode)),
+  set: (items: Array<CountryCodeSelectableItem>) =>
     emit(
       'update:selectedCountryCodes',
-      newValue.map((item) => item.countryCode)
-    );
-  },
-  { deep: true }
-);
+      items.map((item) => item.countryCode)
+    ),
+});
 
-watch(
-  localSelectedSectors,
-  (newValue) => {
+const selectedSectorItems = computed({
+  get: () => availableSectors.value.filter((item) => props.selectedSectors.includes(item.displayName)),
+  set: (items: Array<SelectableItem>) =>
     emit(
       'update:selectedSectors',
-      newValue.map((item) => item.displayName)
-    );
-  },
-  { deep: true }
-);
+      items.map((item) => item.displayName)
+    ),
+});
 
-watch(
-  localSelectedFrameworks,
-  (newValue) => {
+const selectedFrameworkItems = computed({
+  get: () => availableFrameworks.filter((item) => props.selectedFrameworks.includes(item.frameworkDataType)),
+  set: (items: Array<FrameworkSelectableItem>) =>
     emit(
       'update:selectedFrameworks',
-      newValue.map((item) => item.frameworkDataType)
-    );
-  },
-  { deep: true }
-);
+      items.map((item) => item.frameworkDataType)
+    ),
+});
 
-watch(
-  localSelectedReportingPeriods,
-  (newValue) => {
+const selectedReportingPeriodItems = computed({
+  get: () =>
+    availableReportingPeriods.value.filter((item) => props.selectedReportingPeriods.includes(item.displayName)),
+  set: (items: Array<SelectableItem>) =>
     emit(
       'update:selectedReportingPeriods',
-      newValue.map((item) => item.displayName)
-    );
-  },
-  { deep: true }
-);
-
-onMounted(() => {
-  void retrieveAvailableFilterOptions().then(() => {
-    localSelectedCountries.value = availableCountries.value.filter((item) =>
-      props.selectedCountryCodes.includes(item.countryCode)
-    );
-    localSelectedSectors.value = availableSectors.value.filter((item) =>
-      props.selectedSectors.includes(item.displayName)
-    );
-    localSelectedFrameworks.value = availableFrameworks.value.filter((item) =>
-      props.selectedFrameworks.includes(item.frameworkDataType)
-    );
-    localSelectedReportingPeriods.value = availableReportingPeriods.value.filter((item) =>
-      props.selectedReportingPeriods.includes(item.displayName)
-    );
-  });
+      items.map((item) => item.displayName)
+    ),
 });
+
+/**
+ * Once the filter options are loaded, drops selected values (e.g. from the URL) that are not available as options,
+ * so that the applied filters match the selection shown in the dropdowns.
+ */
+watch(
+  availableSearchFilters,
+  (loadedSearchFilters) => {
+    if (!loadedSearchFilters) return;
+    const availableCountryCodes = selectedCountryItems.value.map((item) => item.countryCode);
+    if (!arraySetEquals(availableCountryCodes, props.selectedCountryCodes)) {
+      emit('update:selectedCountryCodes', availableCountryCodes);
+    }
+    const availableSelectedSectors = selectedSectorItems.value.map((item) => item.displayName);
+    if (!arraySetEquals(availableSelectedSectors, props.selectedSectors)) {
+      emit('update:selectedSectors', availableSelectedSectors);
+    }
+    const availableSelectedReportingPeriods = selectedReportingPeriodItems.value.map((item) => item.displayName);
+    if (!arraySetEquals(availableSelectedReportingPeriods, props.selectedReportingPeriods)) {
+      emit('update:selectedReportingPeriods', availableSelectedReportingPeriods);
+    }
+  },
+  { immediate: true }
+);
 
 /**
  * Resets all the filters to their default values (i.e., deselects everything)
  */
 function resetFilters(): void {
-  localSelectedFrameworks.value = [];
-  localSelectedCountries.value = [];
-  localSelectedSectors.value = [];
-  localSelectedReportingPeriods.value = [];
-
   emit('update:selectedCountryCodes', []);
   emit('update:selectedSectors', []);
   emit('update:selectedFrameworks', []);
@@ -213,67 +228,6 @@ function closeAllOpenDropDowns(): void {
   frameworkFilter.value?.multiselect?.hide?.();
 
   reportingPeriodFilter.value?.multiselect?.hide?.();
-}
-
-/**
- * Uses the Dataland API to obtain available company search filters and fills in the
- * availableCountries, availableSectors and availableReportingPeriods elements in the format
- * expected by the dropdown filters
- */
-async function retrieveCountryAndSectorFilterOptions(): Promise<void> {
-  const companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
-
-  const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-  availableCountries.value = [...(availableSearchFilters.data.countryCodes ?? [])]
-    .map((countryCode) => {
-      return {
-        countryCode: countryCode,
-        displayName: getCountryNameFromCountryCode(countryCode) ?? countryCode,
-        disabled: false,
-      };
-    })
-    .sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-  availableSectors.value = [...(availableSearchFilters.data.sectors ?? [])]
-    .map((sector) => {
-      return { displayName: sector, disabled: false };
-    })
-    .sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-  availableReportingPeriods.value = [...(availableSearchFilters.data.reportingPeriods ?? [])]
-    .map((reportingPeriod) => {
-      return { displayName: reportingPeriod, disabled: false };
-    })
-    .sort((a, b) => b.displayName.localeCompare(a.displayName));
-}
-
-/**
- * Populates the availableFrameworks property in the format expected by the dropdown filter
- */
-function retrieveAvailableFrameworks(): void {
-  availableFrameworks.value = FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
-    let displayName = humanizeStringOrNumber(dataTypeEnum);
-    const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-    if (frameworkDefinition) {
-      displayName = frameworkDefinition.label;
-    }
-
-    return {
-      frameworkDataType: dataTypeEnum,
-      displayName: displayName,
-      disabled: false,
-    };
-  });
-}
-
-/**
- * Initializes the availableCountries, availableSectors, availableReportingPeriods and available Frameworks
- * properties for the dropdown filters
- * @returns a promise as this function needs to request the Dataland api
- */
-async function retrieveAvailableFilterOptions(): Promise<void> {
-  retrieveAvailableFrameworks();
-  return retrieveCountryAndSectorFilterOptions();
 }
 
 defineExpose({ closeAllOpenDropDowns });
