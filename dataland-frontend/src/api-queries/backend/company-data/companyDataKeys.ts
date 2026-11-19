@@ -1,4 +1,4 @@
 export const companyDataKeys = {
   all: ['companyData'] as const,
-  byCompanyId: (companyId: string | undefined) => ['companyData', companyId] as const,
+  info: (companyId: string | undefined) => [...companyDataKeys.all, 'info', companyId] as const,
 };

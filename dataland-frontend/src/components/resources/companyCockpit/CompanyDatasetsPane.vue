@@ -119,7 +119,9 @@ type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary
 const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
 
 const nonSourceabilityRequest = computed(() => ({ companyIds: [props.companyId] }));
-const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
+const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery({
+  dataDimensionSearchRequest: nonSourceabilityRequest,
+});
 
 const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
   const grouped: Partial<Record<DataTypeEnum, string[]>> = {};

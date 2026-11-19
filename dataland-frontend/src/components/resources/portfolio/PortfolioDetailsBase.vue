@@ -179,11 +179,10 @@
 <script setup lang="ts">
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { useQueryClient, useQueries } from '@tanstack/vue-query';
-import { useApiClient } from '@/utils/useApiClient.ts';
+import { useQueryClient } from '@tanstack/vue-query';
 import { useGetEnrichedPortfolioQuery } from '@/api-queries/user-service/portfolio/useGetEnrichedPortfolioQuery.ts';
 import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys.ts';
-import { getCompanyInformationQueryOptions } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
+import { useGetCompanyInfoQueries } from '@/api-queries/backend/company-data/useGetCompanyInfoQueries.ts';
 import { PORTFOLIO_OVERVIEW_FRAMEWORKS, MAX_NUMBER_OF_PORTFOLIO_ENTRIES_PER_PAGE } from '@/utils/Constants.ts';
 import { getCountryNameFromCountryCode } from '@/utils/CountryCodeConverter.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -214,7 +213,7 @@ import PortfolioReportingPeriodsCell, {
 import PortfolioProxiedCompaniesCell, {
   type ProxiedCompany,
 } from '@/components/resources/portfolio/PortfolioProxiedCompaniesCell.vue';
-import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceabilityDimensionsGroupedByCompanyAndFrameworkQuery.ts';
+import { useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery.ts';
 import {
   calculateReportingPeriodEntriesByCompanyAndFramework,
   groupProxiedCompaniesByProxyId,
@@ -300,7 +299,6 @@ const filters = ref({
 });
 
 const queryClient = useQueryClient();
-const apiClient = useApiClient();
 const {
   data: enrichedPortfolio,
   isPending: isLoading,
@@ -310,7 +308,7 @@ const isMonitored = computed(() => enrichedPortfolio.value?.isMonitored ?? false
 const portfolioCompanyIds = computed(() => enrichedPortfolio.value?.entries.map((entry) => entry.companyId) ?? []);
 const nonSourceabilityRequest = computed(() => ({ companyIds: portfolioCompanyIds.value }));
 const { data: nonSourceableDimensionsGrouped } = useSearchNonSourceableDimensionsGroupedByCompanyAndFrameworkQuery(
-  nonSourceabilityRequest,
+  { dataDimensionSearchRequest: nonSourceabilityRequest },
   { enabled: computed(() => portfolioCompanyIds.value.length > 0) }
 );
 const reportingPeriodEntriesByCompanyAndFramework = computed(() =>
@@ -329,16 +327,14 @@ const missingProxiedCompanyIds = computed<string[]>(() => {
     )
   );
 });
-const externalProxiedCompanyNames = useQueries({
-  queries: computed(() => missingProxiedCompanyIds.value.map((id) => getCompanyInformationQueryOptions(id, apiClient))),
-  combine: (results) => {
-    const names = new Map<string, string>();
-    results.forEach((result, index) => {
-      const id = missingProxiedCompanyIds.value[index];
-      if (id && result.data) names.set(id, result.data.companyName);
-    });
-    return names;
-  },
+const externalProxiedCompanyInfoQueries = useGetCompanyInfoQueries({ companyIds: missingProxiedCompanyIds });
+const externalProxiedCompanyNames = computed(() => {
+  const names = new Map<string, string>();
+  externalProxiedCompanyInfoQueries.value.forEach((result, index) => {
+    const id = missingProxiedCompanyIds.value[index];
+    if (id && result.data) names.set(id, result.data.companyName);
+  });
+  return names;
 });
 const showProxiedColumn = computed(() => (enrichedPortfolio.value?.proxyCompanyReplacements?.length ?? 0) > 0);
 const proxiedCompaniesByProxyId = computed(() =>

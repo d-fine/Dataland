@@ -173,7 +173,7 @@ import { useAcceptAllRemainingOriginalDataPointsMutation } from '@/api-queries/q
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
 import { usePostRequestCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostRequestCountQuery.ts';
-import { useGetCompanyInformationByIdInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
+import { useGetCompanyInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInfoQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
 import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
@@ -287,7 +287,7 @@ const {
   data: companyData,
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
-} = useGetCompanyInformationByIdInfoQuery(companyIdRef);
+} = useGetCompanyInfoQuery({ companyId: companyIdRef });
 
 const {
   data: filteredMetaData,
