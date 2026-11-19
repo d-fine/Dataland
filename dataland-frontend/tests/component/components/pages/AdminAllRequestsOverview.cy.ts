@@ -702,5 +702,16 @@ describe('Component test for the admin-requests-overview page', () => {
       cy.get('input[data-test="email-searchbar"]').type('{enter}');
       assertNumberOfSearchResults(1);
     });
+
+    it('reloads the results when filtering again without changing the filters', () => {
+      mountAdminAllRequestsPageWithMocks();
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search?*', [mockRequests[0]]).as('reloadedSearch');
+      cy.intercept('POST', '**/data-sourcing/enhanced-requests/search/count', '1').as('reloadedCount');
+
+      cy.get('button[data-test="trigger-filtering-requests"]').click();
+
+      cy.wait(['@reloadedSearch', '@reloadedCount']);
+      assertNumberOfSearchResults(1);
+    });
   });
 });

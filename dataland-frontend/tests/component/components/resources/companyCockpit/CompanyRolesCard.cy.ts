@@ -413,6 +413,16 @@ describe('Company Roles Card Tests', () => {
     cy.get('tbody').should('not.contain', dummyEmail);
   });
 
+  it('shows an error message instead of an empty list if the users cannot be loaded', () => {
+    cy.intercept('GET', '**/community/company-role-assignments*', { statusCode: 500 }).as('failingRoleAssignments');
+    mountCompanyRolesCard(CompanyRole.Analyst, CompanyRole.CompanyOwner);
+
+    cy.wait('@failingRoleAssignments');
+    cy.get('[data-test="company-roles-error"]').should('be.visible');
+    cy.get('table').should('not.exist');
+    cy.get('[data-test="add-user-button"]').should('not.exist');
+  });
+
   it('keeps the dialog open and shows an error if removing a user fails', () => {
     mountCardAs();
     cy.intercept('DELETE', '**/company-role-assignments/*/*/*', { statusCode: 500 }).as('failingRemoveRole');

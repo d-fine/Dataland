@@ -16,7 +16,7 @@
         :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
       />
       <Button
-        v-if="roleHasUsers && allowedToEditRoles"
+        v-if="roleHasUsers && allowedToEditRoles && !hasUsersLoadingError"
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
@@ -40,7 +40,16 @@
     </template>
 
     <template #content>
-      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem">
+      <Message v-if="hasUsersLoadingError" severity="error" data-test="company-roles-error">
+        The users with this role could not be loaded. Please try again later.
+      </Message>
+      <DataTable
+        v-else
+        :key="allowedToEditRoles ? 'edit-on' : 'edit-off'"
+        :value="rowsForRole"
+        :loading="isLoadingUsers"
+        tableStyle="min-width: 50rem"
+      >
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
         <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
@@ -59,7 +68,7 @@
         </Column>
       </DataTable>
       <Button
-        v-if="!roleHasUsers && allowedToEditRoles"
+        v-if="!roleHasUsers && allowedToEditRoles && !isLoadingUsers && !hasUsersLoadingError"
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
@@ -251,10 +260,15 @@ const emit = defineEmits<(e: 'users-changed', message: string) => void>();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const queryClient = useQueryClient();
 
-const { data: companyUserInformation } = useGetExtendedCompanyRoleAssignmentsQuery({
+const {
+  data: companyUserInformation,
+  isPending: isLoadingUsers,
+  isError: isUsersError,
+} = useGetExtendedCompanyRoleAssignmentsQuery({
   role: () => props.role,
   companyId: () => props.companyId,
 });
+const hasUsersLoadingError = computed(() => isUsersError.value && !companyUserInformation.value);
 const { mutate: assignCompanyRole, isPending: isAssigningRole } = useAssignCompanyRoleMutation();
 const { mutate: removeCompanyRole, isPending: isRemovingRole } = useRemoveCompanyRoleMutation();
 const mutationErrorMessage = ref<string | null>(null);

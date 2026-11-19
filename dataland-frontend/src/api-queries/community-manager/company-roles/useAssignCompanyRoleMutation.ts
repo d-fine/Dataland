@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
 import { useApiClient } from '@/utils/useApiClient';
 import { companyRolesKeys } from '@/api-queries/community-manager/company-roles/companyRolesKeys';
+import { inheritedRolesKeys } from '@/api-queries/community-manager/inherited-roles/inheritedRolesKeys';
 import { type CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 
 export interface AssignCompanyRoleVariables {
@@ -12,7 +13,8 @@ export interface AssignCompanyRoleVariables {
 /**
  * Vue Query mutation hook that assigns a company role to a user, replacing the user's previous role for the company
  * (POST /community/company-role-assignments/{role}/{companyId}/{userId}).
- * On success, all company role queries are invalidated, because the user moves between role lists.
+ * On success, all company role and inherited role queries are invalidated. The invalidation is not awaited, because the
+ * refreshed roles can remove the calling component, e.g. when users change their own role.
  *
  * @returns Mutation result resolving to the created {@link CompanyRoleAssignment}.
  */
@@ -34,8 +36,9 @@ export function useAssignCompanyRoleMutation(): UseMutationReturnType<
       );
       return response.data;
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: companyRolesKeys.all });
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: companyRolesKeys.all });
+      void queryClient.invalidateQueries({ queryKey: inheritedRolesKeys.all });
     },
   });
 }

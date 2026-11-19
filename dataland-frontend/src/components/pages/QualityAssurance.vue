@@ -293,7 +293,7 @@ import { usePostDatasetJudgementMutation } from '@/api-queries/qa-service/datase
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type FrameworkSelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
-import { getUserId } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type Keycloak from 'keycloak-js';
@@ -307,6 +307,7 @@ import PrimeButton from 'primevue/button';
 import Message from 'primevue/message';
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { keepPreviousData } from '@tanstack/vue-query';
+import { refDebounced } from '@vueuse/core';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import { AxiosError } from 'axios';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter.ts';
@@ -347,7 +348,8 @@ const availableFrameworks: Array<FrameworkSelectableItem> = retrieveAvailableFra
 const showNotEnoughCharactersWarning = ref(false);
 
 const debounceInMs = 300;
-let searchDebounceTimeoutId = 0;
+const debouncedSearchBarInput = refDebounced(searchBarInput, debounceInMs);
+const isUserJudge = ref(false);
 let notEnoughCharactersWarningTimeoutId = 0;
 
 const { confirmationModal, openConfirmationModal } = useConfirmationModal();
@@ -357,7 +359,10 @@ const {
   isPending,
   isError,
   isPlaceholderData,
-} = useGetInfoOnPendingDatasetsQuery({ companyName: companyNameFilter }, { placeholderData: keepPreviousData });
+} = useGetInfoOnPendingDatasetsQuery(
+  { companyName: companyNameFilter },
+  { placeholderData: keepPreviousData, enabled: isUserJudge }
+);
 
 const {
   mutate: startReview,
@@ -473,26 +478,31 @@ function resetFilterAndSearchBar(): void {
 }
 
 /**
+ * Checks whether a company name search input may be sent to the backend, i.e. it is empty or has at least three
+ * characters.
+ * @param input the search input
+ * @returns true if the input is valid
+ */
+function isValidSearchInput(input: string): boolean {
+  return input.length === 0 || input.length >= 3;
+}
+
+/**
  * Validates the current company name search bar input.
  * If there are only one or two characters typed, an error message shall be rendered asking the user to
  * provide at least three characters.
- * @returns the outcome of the validation
  */
-function validateSearchBarInput(): boolean {
+function validateSearchBarInput(): void {
   clearTimeout(notEnoughCharactersWarningTimeoutId);
 
-  const inputLength = searchBarInput.value.length;
-  const notEnoughCharacters = inputLength > 0 && inputLength < 3;
-
-  if (notEnoughCharacters) {
+  if (!isValidSearchInput(searchBarInput.value)) {
     notEnoughCharactersWarningTimeoutId = setTimeout(() => {
       showNotEnoughCharactersWarning.value = true;
     }, 1000);
-    return false;
+    return;
   }
 
   showNotEnoughCharactersWarning.value = false;
-  return true;
 }
 
 /**
@@ -522,16 +532,17 @@ function getReviewStatus(
   return 'Start Review';
 }
 
-watch(searchBarInput, () => {
-  clearTimeout(searchDebounceTimeoutId);
-  if (!validateSearchBarInput()) return;
-  searchDebounceTimeoutId = setTimeout(() => {
-    companyNameFilter.value = searchBarInput.value === '' ? undefined : searchBarInput.value;
-  }, debounceInMs);
+watch(searchBarInput, validateSearchBarInput);
+
+watch(debouncedSearchBarInput, (input) => {
+  if (isValidSearchInput(input)) {
+    companyNameFilter.value = input === '' ? undefined : input;
+  }
 });
 
 onMounted(async () => {
   currentUserId.value = await getUserId(assertDefined(getKeycloakPromise));
+  isUserJudge.value = await checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise);
 });
 </script>
 

@@ -81,9 +81,6 @@ const isUserDatalandAdmin = ref(false);
 
 const { data: currentUserRoleAssignments, isFetched: areRoleAssignmentsFetched } =
   useGetExtendedCompanyRoleAssignmentsQuery({ userId: currentUserId });
-const { data: companyRights, isFetched: areCompanyRightsFetched } = useGetCompanyRightsQuery({
-  companyId: () => props.companyId,
-});
 
 const userRole = computed<CompanyRole | null>(
   () =>
@@ -92,6 +89,11 @@ const userRole = computed<CompanyRole | null>(
 );
 const isUserCompanyMember = computed(() => userRole.value !== null);
 const isUserCompanyMemberOrAdmin = computed(() => isUserCompanyMember.value || isUserDatalandAdmin.value);
+
+const { data: companyRights, isFetched: areCompanyRightsFetched } = useGetCompanyRightsQuery(
+  { companyId: () => props.companyId },
+  { enabled: computed(() => !!props.companyId && isUserCompanyMember.value) }
+);
 const isCompanyDatalandMember = computed(() => companyRights.value?.includes('Member') ?? false);
 const canViewCredits = computed(
   () => isUserDatalandAdmin.value || (isUserCompanyMember.value && isCompanyDatalandMember.value)
@@ -101,7 +103,7 @@ const areRightsLoaded = computed(
   () =>
     isKeycloakResolved.value &&
     (!currentUserId.value || areRoleAssignmentsFetched.value) &&
-    areCompanyRightsFetched.value
+    (!isUserCompanyMember.value || areCompanyRightsFetched.value)
 );
 
 /**
@@ -117,27 +119,38 @@ async function resolveCurrentUser(): Promise<void> {
 }
 
 /**
- * Opens the tab matching the current route once the rights of the user are known.
- * Redirects to the datasets tab if the user is not allowed to see the requested tab.
+ * Opens the tab requested by a deep link to the users or credits tab once the rights of the user are known.
+ * Redirects to the datasets tab if the user is not allowed to see the requested tab. Other routes keep the current tab,
+ * so that a tab the user selected in the meantime is not overridden.
  */
 function selectInitialTab(): void {
   const path = router.currentRoute.value.path;
-  const onCreditsTab = path.endsWith('/credits');
-  const onUsersTab = path.endsWith('/users');
-
-  if ((!canViewCredits.value && onCreditsTab) || (!isUserCompanyMemberOrAdmin.value && onUsersTab)) {
-    activeTab.value = 'datasets';
-    void router.replace({ path: `/companies/${props.companyId}` });
-  } else if (onCreditsTab) {
-    activeTab.value = 'credits';
-  } else if (onUsersTab) {
-    activeTab.value = 'users';
-  } else {
-    activeTab.value = 'datasets';
+  if (path.endsWith('/credits')) {
+    if (canViewCredits.value) activeTab.value = 'credits';
+    else redirectToDatasetsTab();
+  } else if (path.endsWith('/users')) {
+    if (isUserCompanyMemberOrAdmin.value) activeTab.value = 'users';
+    else redirectToDatasetsTab();
   }
 }
 
+/**
+ * Shows the datasets tab and replaces the route of a tab the user is not allowed to see.
+ */
+function redirectToDatasetsTab(): void {
+  activeTab.value = 'datasets';
+  void router.replace({ path: `/companies/${props.companyId}` });
+}
+
 whenever(areRightsLoaded, selectInitialTab, { once: true });
+
+watch(canViewCredits, (canView) => {
+  if (!canView && activeTab.value === 'credits') activeTab.value = 'datasets';
+});
+
+watch(isUserCompanyMemberOrAdmin, (isMemberOrAdmin) => {
+  if (!isMemberOrAdmin && activeTab.value === 'users') activeTab.value = 'datasets';
+});
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;

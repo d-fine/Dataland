@@ -41,11 +41,10 @@ describe('Component test for the authorization of company cockpit components', (
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_ADMIN], []);
 
-    cy.wait('@fetchCompanyRights');
-
     cy.get('[data-test="usersTab"]').should('be.visible');
     cy.get('[data-test="creditsTab"]').should('be.visible').click();
     cy.get('[data-test="creditsBalance"]').should('be.visible');
+    cy.get('@fetchCompanyRights.all').should('have.length', 0);
   });
 
   it('Check tab and content visibility for users without admin and without company rights', () => {
@@ -53,10 +52,11 @@ describe('Component test for the authorization of company cockpit components', (
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     mountCompanyCockpitWithAuthentication(true, false, undefined, []);
 
-    cy.wait('@fetchCompanyRights');
+    cy.wait('@fetchCurrentUserRoleAssignments');
     cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
     cy.get('[data-test="usersTab"]').should('not.exist');
     cy.get('[data-test="creditsTab"]').should('not.exist');
+    cy.get('@fetchCompanyRights.all').should('have.length', 0);
   });
 
   it('Check tab and content visibility for users with company rights for a non member company', () => {

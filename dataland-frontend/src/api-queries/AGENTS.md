@@ -1,6 +1,6 @@
 # API Queries (TanStack Query)
 
-This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used for all backend communication from Vue components. This document is the authoritative server-state standard for `dataland-frontend`: sections 1-7 apply to every new or modified file here, section 8 applies to every component or composable that consumes these hooks. Some existing files do not comply yet; do not copy their deviations, follow this document instead. To migrate a legacy component, follow the `dataland-tanstack-query-migration` skill.
+This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used for all backend communication from Vue components. This document is the authoritative server-state standard for `dataland-frontend`: sections 1-7 apply to every new or modified file here, section 8 applies to every component or composable that consumes these hooks, and section 9 applies to their component tests. Some existing files do not comply yet; do not copy their deviations, follow this document instead. To migrate a legacy component, follow the `dataland-tanstack-query-migration` skill.
 
 ## Reference files
 
@@ -36,7 +36,8 @@ This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used fo
 
 - Signature: `useXMutation()` with no hook arguments. All inputs are passed as a typed variables object to `mutate()` / `mutateAsync()`, with an exported `<Name>Variables` interface.
 - `mutationFn` returns `response.data`, never the `AxiosResponse`.
-- `onSuccess` only invalidates (or updates) the affected key factory entries.
+- `onSuccess` only invalidates (or updates) the affected key factory entries, including those of other resources whose responses depend on the mutated data.
+- By default, `await` the invalidation in `onSuccess`: the mutation stays pending until active queries are refetched, so consumer callbacks see fresh data. Do not await it (`void`) if consumers usually navigate away afterwards or if the refetched data can unmount the calling component (e.g. users removing their own access). TanStack skips `mutate` callbacks of unmounted components.
 - No `onError` / `console.error` in the hook. Consumers handle errors (user feedback) via the `mutate` callbacks or the returned `error`.
 - Explicit return type `UseMutationReturnType<T, Error, Variables, unknown>`.
 - Use a mutation also for POST endpoints that only compute or validate on an explicit user action and whose result is not shared via the cache (e.g. `backend/company-data/usePostCompanyValidationMutation.ts`). Such hooks have no `onSuccess`.
@@ -55,7 +56,8 @@ export const dataPointKeys = {
 ```
 
 - The root segment matches the resource name; never reuse a root across resources.
-- Key segments must be JSON-serialisable. Objects are compared by value (property order and `undefined` fields do not matter); a `Set` serialises to `{}`, so put it into the key as a sorted array.
+- Key segments must be JSON-serialisable. Objects are hashed by value (property order and `undefined` fields do not matter for identical keys); a `Set` serialises to `{}`, so put it into the key as a sorted array.
+- Invalidation matches key prefixes, and object segments match if the filter's properties match. An explicit `undefined` in a filter object must match as well, so when invalidating a subset, leave unset properties out of the filter or invalidate a higher-level key such as `all`.
 
 ## 6. API clients
 
@@ -70,7 +72,8 @@ export const dataPointKeys = {
 Hooks own server state; components only derive UI from it.
 
 - **No mirrored state.** Do not copy `data` into local refs, and do not keep manual loading flags such as `waitingForData`. Use the hook result:
-  - `isPending`: first load without data (spinner).
+  - `isPending`: no data yet (spinner). A disabled query without data stays pending, so check the enabling condition as well if a query may be disabled permanently (e.g. for anonymous users).
+  - `isFetched`: the query has completed at least once (success or error). Use it to detect "settled" before side effects; with retries, it only becomes true after the last attempt.
   - `isError` / `error`: error UI. Show a message; never leave a spinner running on failure. A failed background refetch keeps the previous `data`, so keep showing that data instead of replacing it with the error (e.g. `v-if="isError && !data"`).
   - `isFetching`: any request in flight, including background refreshes of shown data. Rarely needed in the UI.
 - **Derive, don't fetch imperatively.** Filtering, sorting, and client-side paging are `computed` over `data`. Do not call `refetch()` from watchers or `onMounted`.

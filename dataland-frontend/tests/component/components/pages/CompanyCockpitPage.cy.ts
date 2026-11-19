@@ -359,7 +359,38 @@ describe('Component test for the company cockpit', () => {
     });
   });
 
-  it('Redirects from the credits tab to the datasets tab if the user may not view credits', () => {
+  it('Switches to the datasets tab and confirms the change after users removed their own access', () => {
+    mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
+    cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, []);
+    mountCompanyCockpitWithAuthentication(true, false, undefined, [
+      generateCompanyRoleAssignment(CompanyRole.CompanyOwner, dummyCompanyId),
+    ]);
+
+    cy.get('[data-test="usersTab"]').click();
+    cy.contains('[data-test="company-roles-card"]', 'Analysts').within(() => {
+      cy.get('[data-test="dialog-button"]').click();
+    });
+    cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+
+    cy.intercept('DELETE', `**/community/company-role-assignments/Analyst/${dummyCompanyId}/${dummyUserId}`, {
+      statusCode: 200,
+    }).as('removeOwnRole');
+    cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+      if (req.query.userId === dummyUserId) {
+        req.alias = 'refetchOwnRoles';
+        req.reply([]);
+      }
+    });
+    cy.get('[data-test="remove-user-button"]').click();
+
+    cy.wait('@removeOwnRole');
+    cy.wait('@refetchOwnRoles');
+    cy.get('[data-test="success-modal"]').should('be.visible');
+    cy.get('[data-test="usersTab"]').should('not.exist');
+    cy.get('[data-test=sfdr-summary-panel]').should('be.visible');
+  });
+
+  it('Redirects from the credits tab to the datasets tab if the user is no company member', () => {
     mockRequestsOnMounted(true, companyInformationForTest, mockMapOfDataTypeToAggregatedFrameworkDataSummary);
     cy.intercept('GET', `**/community/company-rights/${dummyCompanyId}*`, []).as('fetchCompanyRights');
     const router = createRouter({ routes, history: createMemoryHistory() });
@@ -374,8 +405,8 @@ describe('Component test for the company cockpit', () => {
       props: { companyId: dummyCompanyId },
     });
 
-    cy.wait('@fetchCompanyRights');
     cy.get('@routerReplace').should('have.been.calledWith', { path: `/companies/${dummyCompanyId}` });
     cy.get('[data-test="creditsTab"]').should('not.exist');
+    cy.get('@fetchCompanyRights.all').should('have.length', 0);
   });
 });

@@ -317,6 +317,7 @@ const {
   data: currentDataRequests,
   isPending: isSearchPending,
   isPlaceholderData: isSearchPlaceholderData,
+  refetch: refetchSearch,
   isError: isSearchError,
 } = usePostRequestSearchQuery(
   { requestSearchFilterString: appliedFilters, chunkSize: rowsPerPage, chunkIndex: currentChunkIndex },
@@ -326,6 +327,7 @@ const {
   data: totalRecords,
   isPending: isCountPending,
   isPlaceholderData: isCountPlaceholderData,
+  refetch: refetchCount,
   isError: isCountError,
 } = usePostRequestCountQuery({ requestSearchFilterString: appliedFilters }, { placeholderData: keepPreviousData });
 
@@ -425,9 +427,16 @@ function buildFiltersFromInputs(): RequestSearchFilterString {
 
 /**
  * Applies the current search bar and dropdown inputs as filters and shows the first page of the results.
+ * If neither the filters nor the page change, the current results are reloaded instead.
  */
 function applyFilters(): void {
-  appliedFilters.value = buildFiltersFromInputs();
+  const filters = buildFiltersFromInputs();
+  if (JSON.stringify(filters) === JSON.stringify(appliedFilters.value) && currentChunkIndex.value === 0) {
+    void refetchSearch();
+    void refetchCount();
+    return;
+  }
+  appliedFilters.value = filters;
   currentChunkIndex.value = 0;
 }
 
