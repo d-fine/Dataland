@@ -12,7 +12,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { defaultConfig, plugin } from '@formkit/vue';
 import { computed, defineComponent, h } from 'vue';
 import DynamicDialog from 'primevue/dynamicdialog';
-import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
+import { type QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
+import { createTestQueryClient } from '@ct/testUtils/TestQueryClient';
 
 interface DatalandMountOptions {
   /**
@@ -23,6 +24,11 @@ interface DatalandMountOptions {
    * The router to use. If no router is provided, a memory router is used.
    */
   router?: Router;
+  /**
+   * The QueryClient to install. Defaults to a fresh client without retries. Only pass one if the test needs to
+   * seed or inspect the query cache.
+   */
+  queryClient?: QueryClient;
   /**
    * If set to true, the component is mounted with a dialog wrapper containing the component.
    * WARNING: This implies that props will not be passed to the component directly, but to the wrapper.
@@ -64,7 +70,7 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
         },
       ],
       DialogService,
-      [VueQueryPlugin, { queryClient: new QueryClient() }]
+      [VueQueryPlugin, { queryClient: additionalOptions.queryClient ?? createTestQueryClient() }]
     );
     options.global.provide = options.global.provide ?? {};
 

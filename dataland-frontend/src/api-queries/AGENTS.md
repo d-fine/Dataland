@@ -1,6 +1,6 @@
 # API Queries (TanStack Query)
 
-This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used for all backend communication from Vue components. Follow these rules for every new or modified file here. Some existing files do not comply yet; do not copy their deviations, follow this document instead.
+This directory contains the TanStack Query (`@tanstack/vue-query`) hooks used for all backend communication from Vue components. This document is the authoritative server-state standard for `dataland-frontend`: sections 1-7 apply to every new or modified file here, section 8 applies to every component or composable that consumes these hooks. Some existing files do not comply yet; do not copy their deviations, follow this document instead. To migrate a legacy component, follow the `dataland-tanstack-query-migration` skill.
 
 ## Reference files
 
@@ -53,6 +53,7 @@ export const dataPointKeys = {
 ```
 
 - The root segment matches the resource name; never reuse a root across resources.
+- Key segments must be JSON-serialisable. Objects are compared by value (property order and `undefined` fields do not matter); a `Set` serialises to `{}`, so put it into the key as a sorted array.
 
 ## 6. API clients
 
@@ -62,6 +63,24 @@ export const dataPointKeys = {
 
 - Every exported hook has a short TSDoc describing the endpoint, parameters, and (for mutations) what is invalidated.
 
-## 8. Tests
+## 8. Using hooks in components
 
-- `cy.mountWithPlugins(Component, { keycloak: minimalKeycloakMock({}) })` already installs `VueQueryPlugin` and provides `apiClientProvider`. Stub endpoints with `cy.intercept`; do not mock hooks.
+Hooks own server state; components only derive UI from it.
+
+- **No mirrored state.** Do not copy `data` into local refs, and do not keep manual loading flags such as `waitingForData`. Use the hook result:
+  - `isPending`: first load without data (spinner).
+  - `isError` / `error`: error UI. Show a message; never leave a spinner running on failure.
+  - `isFetching`: background refresh while data is shown (optional subtle indicator).
+- **Derive, don't fetch imperatively.** Filtering, sorting, and client-side paging are `computed` over `data`. Do not call `refetch()` from watchers or `onMounted`.
+- **Reactive params drive fetching.** Pass refs, computeds, or getters as params; a changed key triggers the fetch. Values that are only known asynchronously (Keycloak user id, route params) go in as params and the default `enabled` keeps the query idle until they exist. Extra conditions (role, authentication) go into `options.enabled`.
+- **Applied vs. edited input.** If filters only take effect on an explicit action (button, Enter), keep the live form state separate from an `appliedFilters` ref that is assigned on submit and passed to the hook. Debounce free-text search in the component (e.g. `refDebounced` from `@vueuse/core`) and pass the debounced value.
+- **Paged or filtered lists** pass `placeholderData: keepPreviousData`, so the current rows stay visible while the next page or filter result loads.
+- **Refresh through invalidation.** After a mutation, the hook's `onSuccess` invalidation updates every affected query. Do not refetch manually, emit "please reload" events, or force remounts with `:key` counters.
+- **Mutation feedback is the component's job.** Use `mutate(variables, { onSuccess, onError })`, `mutateAsync` in `try`/`catch`, or the returned `isPending` / `error`.
+- **Destructure only what you use**: `const { data, isPending, isError } = useXQuery(...)`. Destructured fields are refs.
+
+## 9. Tests
+
+- `cy.mountWithPlugins(Component, { keycloak: minimalKeycloakMock({}) })` and `getMountingFunction({ keycloak })` install `VueQueryPlugin` with a fresh `QueryClient` per mount (retries disabled) and provide `apiClientProvider`. Never install `VueQueryPlugin` in a test yourself; pass `queryClient` in the mount options only if the test must seed or inspect the cache.
+- Stub endpoints with `cy.intercept`; do not mock hooks.
+- For migrated components, cover the loading state (delayed intercept), the error state (`statusCode: 500`), and, for mutations, that the affected queries are requested again (`cy.wait` on the list intercept).

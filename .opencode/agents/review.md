@@ -26,7 +26,7 @@ Workflow:
 - If unrelated untracked or uncommitted files are present, mention that they were excluded from the review.
 - Prioritize bugs, regressions, risky assumptions, missing verification, generated-artifact drift, and cross-module impact.
 - Pay special attention to OpenAPI producer-consumer changes, shared frontend package impact, CI parity, performance, and security.
-- In `dataland-frontend`, flag any new API-client usage (`useApiClient()`, `ApiClientProvider`, `apiClients.*`, `axios`) outside `src/api-queries/`, any new hook that violates `dataland-frontend/src/api-queries/AGENTS.md`, and any new entry in the ESLint legacy exception list for API clients.
+- In `dataland-frontend`, flag any new API-client usage (`useApiClient()`, `ApiClientProvider`, `apiClients.*`, `axios`) outside `src/api-queries/` (this is not lint-enforced), any new hook that violates sections 1-7 of `dataland-frontend/src/api-queries/AGENTS.md`, and any component that violates section 8 (query data or loading flags mirrored into local refs, refetches triggered from watchers, reloads via emits or `:key` counters instead of invalidation, missing error state).
 
 Output:
 - Present findings first in chat, ordered by severity, with file references.

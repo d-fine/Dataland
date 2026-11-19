@@ -12,7 +12,8 @@ import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import DynamicDialog from 'primevue/dynamicdialog';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
+import { type QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
+import { createTestQueryClient } from '@ct/testUtils/TestQueryClient';
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -24,6 +25,11 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
 type MountingOptions = {
   router?: Router;
   keycloak?: Keycloak;
+  /**
+   * The QueryClient to install. Defaults to a fresh client without retries. Only pass one if the test needs to
+   * seed or inspect the query cache.
+   */
+  queryClient?: QueryClient;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,7 +100,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
       },
     ],
     DialogService,
-    [VueQueryPlugin, { queryClient: new QueryClient() }]
+    [VueQueryPlugin, { queryClient: options.queryClient ?? createTestQueryClient() }]
   );
   options.global.provide = options.global.provide ?? {};
 

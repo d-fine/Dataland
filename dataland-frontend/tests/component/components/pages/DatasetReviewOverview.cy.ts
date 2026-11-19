@@ -3,10 +3,7 @@ import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
 import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backend';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import DatasetReviewOverview from '@/components/pages/DatasetReviewOverview.vue';
-import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { type DatasetJudgementResponse, DatasetJudgementState } from '@clients/qaservice';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { computed } from 'vue';
 
 const dataId = 'test-data-id';
 const datasetJudgementId = 'test-judgement-id';
@@ -159,27 +156,11 @@ describe('DatasetReviewOverview page details', () => {
     cy.intercept('HEAD', `**/community/company-ownership/${companyId}`, { statusCode: 200, body: [] });
     cy.intercept('HEAD', '**/community/company-role-assignments/CompanyOwner/**', { statusCode: 200, body: [] });
 
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-      },
-    });
-
-    const mount = getMountingFunction();
-    const keycloakPromise = Promise.resolve(keycloakMockWithJudge);
-    const apiClientProvider = new ApiClientProvider(keycloakPromise);
+    const mount = getMountingFunction({ keycloak: keycloakMockWithJudge });
 
     mount(DatasetReviewOverview, {
       props: {
         datasetJudgementId: datasetJudgementId,
-      },
-      global: {
-        plugins: [[VueQueryPlugin, { queryClient }]],
-        provide: {
-          getKeycloakPromise: () => keycloakPromise,
-          authenticated: computed(() => true),
-          apiClientProvider: computed(() => apiClientProvider),
-        },
       },
     });
   }

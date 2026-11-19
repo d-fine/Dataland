@@ -61,7 +61,9 @@ Use this when a change touches the main Vue frontend, the Astro website, or the 
 - A `dataland-website` change can require `dataland-frontend` verification because the frontend build consumes website output.
 - A backend API change that surfaces in the frontend usually requires client regeneration before deeper debugging.
 - Do not introduce new `@ts-nocheck` directives in modified frontend files.
-- In `dataland-frontend`, flag any new direct API-client usage in `.vue` files; API calls must go through TanStack Query hooks per `dataland-frontend/src/api-queries/AGENTS.md`.
+- In `dataland-frontend`, flag any new direct API-client usage outside `src/api-queries/` (components, composables, and utils). Server state must follow `dataland-frontend/src/api-queries/AGENTS.md`; this is checked in review, not by lint.
+- When a hook or key factory in `dataland-frontend/src/api-queries/` changes, run the component tests of every consumer of that hook (search for its imports), because cache keys and invalidation are shared across pages.
+- Migrations of legacy components to TanStack Query follow the `dataland-tanstack-query-migration` skill.
 
 ## Output style
 

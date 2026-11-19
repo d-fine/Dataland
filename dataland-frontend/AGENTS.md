@@ -37,8 +37,9 @@
 # Data Fetching (TanStack Query)
 
 - API clients may only be used inside `src/api-queries/` (see the root `AGENTS.md` and `src/api-queries/AGENTS.md`).
-- ESLint enforces this; legacy files are exempt via `legacyDirectApiClientFiles` in `eslint.config.mjs`. Only remove entries from that list, never add any.
-- Do not refactor legacy components unasked. If your change touched their data loading, recommend the migration once in your final summary.
+- `src/api-queries/AGENTS.md` is the authoritative server-state standard: hook conventions (sections 1-7) and how components consume hooks (section 8).
+- The rule is not enforced by lint; it is checked in review. Never add new direct API-client usage outside `src/api-queries/`.
+- Do not refactor legacy components unasked. If your change touched their data loading, recommend the migration once in your final summary. Migrations follow the `dataland-tanstack-query-migration` skill.
 
 # Package-Specific Rules
 
