@@ -22,27 +22,27 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
-    "@astrojs/mdx": "^8.1.1",
-    "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vue": "^7.1.2",
+    "@astrojs/mdx": "^8.1.6",
+    "@astrojs/sitemap": "^3.7.5",
+    "@astrojs/vue": "^7.1.6",
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "astro": "^7.4.2",
+    "astro": "^7.4.12",
     "typescript": "^6.0.3",
-    "vue": "^3.5.44"
+    "vue": "^3.5.45"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "@typescript-eslint/eslint-plugin": "8.72.1",
-    "@typescript-eslint/parser": "8.72.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "@typescript-eslint/eslint-plugin": "8.73.0",
+    "@typescript-eslint/parser": "8.73.0",
     "@vue/eslint-config-prettier": "10.2.0",
-    "eslint": "10.13.0",
+    "eslint": "10.15.0",
     "eslint-plugin-astro": "3.2.1",
-    "eslint-plugin-cypress": "7.0.4",
-    "eslint-plugin-vue": "10.11.1",
+    "eslint-plugin-cypress": "7.0.5",
+    "eslint-plugin-vue": "10.12.1",
     "npm-check-updates": "23.1.1",
-    "prettier": "3.9.10",
+    "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
-    "tailwindcss": "4.3.4",
+    "tailwindcss": "4.3.5",
     "vue-eslint-parser": "10.4.2"
   }
 }
