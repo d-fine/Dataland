@@ -37,7 +37,6 @@
           <IconField class="w-12">
             <InputIcon class="pi pi-search" />
             <InputText v-model="searchBarInput" placeholder="Search table" fluid />
-            <InputIcon v-if="loading" class="pi pi-spin pi-spinner" aria-hidden="true" />
           </IconField>
         </template>
         <template #body="{ data }">
@@ -58,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -76,9 +75,13 @@ const props = withDefaults(defineProps<{ datasetTableInfos?: DatasetTableInfo[] 
 });
 
 const searchBarInput = ref('');
-const displayedDatasetTableInfos = ref<DatasetTableInfo[]>([]);
-const loading = ref(false);
-const latestSearchString = ref('');
+
+const displayedDatasetTableInfos = computed(() => {
+  const lowerCaseSearchString = searchBarInput.value.toLowerCase();
+  return props.datasetTableInfos.filter((datasetTableInfo) =>
+    datasetTableInfo.companyName.toLowerCase().includes(lowerCaseSearchString)
+  );
+});
 
 const humanizeString = humanizeStringOrNumber;
 const convertDate = convertUnixTimeInMsToDateString;
@@ -103,26 +106,6 @@ function goToDataset(datasetTableInfo: DatasetTableInfo): void {
 }
 
 /**
- * Filter the given datasets for the search string in the company name
- * @param searchString The search string to look for in the company names
- */
-function applySearchFilter(searchString: string): void {
-  loading.value = true;
-  let arrayToFilter: DatasetTableInfo[];
-  const lowerCaseSearchString = searchString.toLowerCase();
-  if (lowerCaseSearchString.includes(latestSearchString.value.toLowerCase())) {
-    arrayToFilter = displayedDatasetTableInfos.value;
-  } else {
-    arrayToFilter = props.datasetTableInfos;
-  }
-  displayedDatasetTableInfos.value = arrayToFilter.filter((datasetTableInfo: DatasetTableInfo) => {
-    return datasetTableInfo.companyName.toLowerCase().includes(lowerCaseSearchString);
-  });
-  latestSearchString.value = lowerCaseSearchString;
-  loading.value = false;
-}
-
-/**
  * Depending on the dataset status, executes a router push to either the dataset view page or an upload page
  * @param event an event that stores the DatasetTableInfo of the on clicked row
  * @param event.data the DatasetTableInfo to be pushed to
@@ -130,21 +113,6 @@ function applySearchFilter(searchString: string): void {
 function rerouteRowClick(event: { data: DatasetTableInfo }): void {
   void router.push(getTableRowLinkTarget(event.data));
 }
-
-watch(searchBarInput, (newSearchString) => {
-  applySearchFilter(newSearchString);
-});
-
-watch(
-  () => props.datasetTableInfos,
-  () => {
-    displayedDatasetTableInfos.value = props.datasetTableInfos;
-  }
-);
-
-onMounted(() => {
-  displayedDatasetTableInfos.value = props.datasetTableInfos;
-});
 </script>
 
 <style>

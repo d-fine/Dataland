@@ -122,4 +122,27 @@ describe('Component test for DatasetOverviewTable', () => {
     cy.get('td').contains(nameOfCompanyAlpha).should('not.exist');
     cy.get('td').contains(nameOfCompanyBeta).should('exist');
   });
+
+  it('Keeps the search applied when the datasets are updated', () => {
+    const updatedDatasetTableInfoMockForAlpha = createDatasetTableInfoMock(nameOfCompanyAlpha, DataTypeEnum.Sfdr);
+    //@ts-ignore
+    cy.mountWithPlugins<typeof DatasetOverviewTable>(DatasetOverviewTable, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mocked) => {
+      void mocked.wrapper.setProps({ datasetTableInfos: [datasetTableInfoMockForAlpha, datasetTableInfoMockForBeta] });
+      cy.get('input').type(nameOfCompanyAlpha);
+      cy.get('td').contains(nameOfCompanyBeta).should('not.exist');
+      cy.then(() =>
+        mocked.wrapper.setProps({
+          datasetTableInfos: [
+            datasetTableInfoMockForAlpha,
+            datasetTableInfoMockForBeta,
+            updatedDatasetTableInfoMockForAlpha,
+          ],
+        })
+      );
+      cy.get('td').contains(humanizeStringOrNumber(DataTypeEnum.Sfdr)).should('exist');
+      cy.get('td').contains(nameOfCompanyBeta).should('not.exist');
+    });
+  });
 });
