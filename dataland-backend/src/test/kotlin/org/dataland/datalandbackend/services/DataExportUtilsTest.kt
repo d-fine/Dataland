@@ -67,25 +67,19 @@ class DataExportUtilsTest {
     @Test
     fun `values only export of assurance keeps value and provider but drops comment`() {
         val (data, fields) = DataExportUtils.getCsvDataAndNonEmptyFields(listOf(assuranceNode(true)), true)
-        Assertions.assertTrue(fields.any { it.endsWith("value") && it.contains("assurance") })
-        Assertions.assertTrue(fields.any { it.endsWith("provider") })
-        Assertions.assertTrue(fields.none { it.endsWith("comment") })
         Assertions.assertEquals(
-            "Other Auditors",
-            data
-                .first()
-                .entries
-                .first { it.key.endsWith("provider") }
-                .value,
+            setOf("assurance.value", "assurance.provider", DataExportUtils.PROXIED_FIELD),
+            fields,
         )
+        Assertions.assertEquals("Other Auditors", data.first()["assurance.provider"])
     }
 
     @Test
     fun `full export of assurance has comment column only if comment is set`() {
         val (_, withComment) = DataExportUtils.getCsvDataAndNonEmptyFields(listOf(assuranceNode(true)), false)
         val (_, withoutComment) = DataExportUtils.getCsvDataAndNonEmptyFields(listOf(assuranceNode(false)), false)
-        Assertions.assertTrue(withComment.any { it.endsWith("comment") })
-        Assertions.assertTrue(withComment.any { it.endsWith("provider") })
-        Assertions.assertTrue(withoutComment.none { it.endsWith("comment") })
+        val baseFields = setOf("assurance.value", "assurance.provider", DataExportUtils.PROXIED_FIELD)
+        Assertions.assertEquals(baseFields + "assurance.comment", withComment)
+        Assertions.assertEquals(baseFields, withoutComment)
     }
 }

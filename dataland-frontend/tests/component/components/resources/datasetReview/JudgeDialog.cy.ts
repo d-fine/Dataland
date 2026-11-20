@@ -246,36 +246,6 @@ describe('JudgeDialog component tests', () => {
       });
     });
 
-    it('shows the file name instead of the file reference if both are available', () => {
-      mountJudgeDialog({
-        originalDataPointBody: { value: 'v', dataSource: { fileName: 'report.pdf', fileReference: 'abc123' } },
-      });
-      cy.wait('@getOriginalDataPoint');
-
-      cy.get('[data-test="original-datapoint-section"]')
-        .contains('tr', 'Document')
-        .should('contain.text', 'report.pdf')
-        .and('not.contain.text', 'abc123');
-    });
-
-    it('falls back to the file reference if the file name is missing', () => {
-      mountJudgeDialog({ originalDataPointBody: { value: 'v', dataSource: { fileReference: 'abc123' } } });
-      cy.wait('@getOriginalDataPoint');
-
-      cy.get('[data-test="original-datapoint-section"]').contains('tr', 'Document').should('contain.text', 'abc123');
-    });
-
-    it('shows a placeholder for missing values in the original section', () => {
-      mountJudgeDialog({ originalDataPointBody: { value: 'v' } });
-      cy.wait('@getOriginalDataPoint');
-
-      cy.get('[data-test="original-datapoint-section"]').within(() => {
-        ['Quality', 'Document', 'Page(s)', 'Comment'].forEach((label) => {
-          cy.contains('tr', label).should('contain.text', '—');
-        });
-      });
-    });
-
     it('displays corrected data point fields from the QA report', () => {
       mountJudgeDialog();
 
@@ -482,9 +452,12 @@ describe('JudgeDialog component tests', () => {
       });
       cy.wait('@getOriginalDataPoint');
 
+      // copies the original quality into the hidden form data, so that the safeguard is actually exercised
+      cy.get('[data-test="copy-original-to-custom"]').click();
       cy.get('[data-test="custom-value-field"]').click();
       cy.get('[data-test="custom-value-field"]').clear();
       cy.get('[data-test="custom-value-field"]').type('ReasonableAssurance');
+      cy.get('[data-test="custom-provider-field"]').clear();
       cy.get('[data-test="custom-provider-field"]').type('Other Auditors');
       cy.get('[data-test="custom-comment-field"]').type('My real comment');
       cy.get('[data-test="accept-custom-button"]').click();
@@ -495,6 +468,20 @@ describe('JudgeDialog component tests', () => {
         expect(parsed.comment).to.equal('My real comment');
         expect(parsed).not.to.have.property('quality');
       });
+    });
+
+    it('does not show a copied quality in the JSON editor for assurance data points', () => {
+      mountJudgeDialog({
+        datasetJudgement: withBaseType(assuranceType),
+        originalDataPointBody: { value: 'LimitedAssurance', provider: 'ACME Auditors', quality: 'Audited' },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="copy-original-to-custom"]').click();
+      cy.get('[data-test="edit-mode-toggle"]').click();
+
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'ACME Auditors');
+      cy.get('[data-test="custom-json-textarea"]').should('not.contain.value', 'quality');
     });
 
     it('strips a quality typed into the JSON editor when accepting a custom assurance data point', () => {

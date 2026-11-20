@@ -93,7 +93,7 @@ class DataPointValidatorTest {
 
     @Test
     fun `check that assurance data points with a quality are rejected`() {
-        val json = """{"value":"LimitedAssurance","provider":"Some Provider","comment":"c","quality":"Audited"}"""
+        val json = """{"value":"LimitedAssurance","provider":"Some Provider","quality":"Audited"}"""
         assertThrows<InvalidInputApiException> { dataPointValidator.validateConsistency(json, assuranceClass, correlationId) }
     }
 

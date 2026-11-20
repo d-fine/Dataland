@@ -395,7 +395,11 @@ function updateTextareaOverflowStates(): void {
  * @returns Nothing
  */
 function formDataToJson(): void {
-  jsonValue.value = parseFormDataToDataPointJson(formData.value, selectedDocumentOption.value);
+  jsonValue.value = parseFormDataToDataPointJson(
+    formData.value,
+    selectedDocumentOption.value,
+    props.isAssuranceDataPoint
+  );
 }
 
 /**
