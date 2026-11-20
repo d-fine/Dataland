@@ -1,33 +1,34 @@
-import { computed, type Ref } from 'vue';
-import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
+import { computed, toValue, type MaybeRefOrGetter } from 'vue';
+import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
+import { useApiClient } from '@/utils/useApiClient';
+import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys';
 import { type PortfolioUserAccessRight } from '@clients/userservice';
-import { useApiClient } from '@/utils/useApiClient.ts';
-import { portfolioKeys } from '@/api-queries/user-service/portfolio/portfolioKeys.ts';
 
 /**
- * Vue Query hook that fetches portfolio access rights for a given portfolio id.
+ * Vue Query hook that fetches the users with access to a portfolio and their roles
+ * (GET /users/portfolios/{portfolioId}/access-rights).
+ * The query is disabled while `portfolioId` is empty.
  *
- * @param {Ref<string|undefined>} portfolioId - Reactive reference containing the portfolio id; query runs when truthy.
- * @returns {UseQueryReturnType<PortfolioUserAccessRight[], Error>} Query result containing the portfolio access rights.
+ * @param params - Endpoint parameters.
+ * @param params.portfolioId - Id of the portfolio.
+ * @param options - Additional TanStack query options. A passed `enabled` replaces the default.
+ * @returns Vue Query result containing the {@link PortfolioUserAccessRight}s.
  */
 export function useGetPortfolioAccessRightsQuery(
-  portfolioId: Ref<string | undefined>
+  params: { portfolioId: MaybeRefOrGetter<string | undefined> },
+  options: Omit<UseQueryOptions<PortfolioUserAccessRight[], Error>, 'queryKey' | 'queryFn'> = {}
 ): UseQueryReturnType<PortfolioUserAccessRight[], Error> {
   const apiClientProvider = useApiClient();
-  const queryKey = computed(() => portfolioKeys.portfolioAccessRights(portfolioId.value));
-  const enabled = computed(() => !!portfolioId.value);
 
   return useQuery<PortfolioUserAccessRight[], Error>({
-    queryKey,
-    enabled,
+    queryKey: computed(() => portfolioKeys.accessRights(toValue(params.portfolioId))),
     queryFn: async () => {
-      if (!portfolioId.value) {
-        throw new Error('portfolioId is undefined');
-      }
-      const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(
-        portfolioId.value
-      );
+      const portfolioId = toValue(params.portfolioId);
+      if (!portfolioId) throw new Error('portfolioId is undefined');
+      const response = await apiClientProvider.apiClients.portfolioController.getPortfolioAccessRights(portfolioId);
       return response.data;
     },
+    enabled: computed(() => !!toValue(params.portfolioId)),
+    ...options,
   });
 }

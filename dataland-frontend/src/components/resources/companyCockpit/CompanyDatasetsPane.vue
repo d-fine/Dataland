@@ -7,9 +7,9 @@
           <div class="card__separator" />
           <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
             <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
-            <div v-if="getDocumentData(category).length === 0">-</div>
+            <div v-if="latestDocumentsByCategory[category].length === 0">-</div>
             <div v-else>
-              <div v-for="document in getDocumentData(category)" :key="document.documentId">
+              <div v-for="document in latestDocumentsByCategory[category]" :key="document.documentId">
                 <DocumentDownloadLink
                   :document-download-info="{
                     downloadName: documentNameOrId(document),
@@ -43,7 +43,7 @@
         <FrameworkSummaryPanel
           v-for="framework of frameworksToDisplay"
           :key="framework"
-          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework()"
+          :is-user-allowed-to-upload="isUserAllowedToUpload"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -73,8 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, inject, unref, onMounted } from 'vue';
-import type { Ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Card from 'primevue/card';
@@ -84,42 +83,40 @@ import DocumentDownloadLink from '@/components/resources/frameworkDataSearch/Doc
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
+import { useGetAggregatedFrameworkDataSummaryQuery } from '@/api-queries/backend/company-data/useGetAggregatedFrameworkDataSummaryQuery';
+import { useSearchNonSourceableDimensionsQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsQuery';
+import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
+import { useHasCompanyAtLeastOneOwnerQuery } from '@/api-queries/community-manager/company-roles/useHasCompanyAtLeastOneOwnerQuery';
+import { useSearchForDocumentMetaInformationQuery } from '@/api-queries/document-manager/document/useSearchForDocumentMetaInformationQuery';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { getPluralCategory, documentNameOrId, documentPublicationDateOrEmpty } from '@/utils/StringFormatter';
 import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 
-import type Keycloak from 'keycloak-js';
-import type { AggregatedFrameworkDataSummary, DataTypeEnum } from '@clients/backend';
-import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
+import type { DataTypeEnum } from '@clients/backend';
+import { CompanyRole } from '@clients/communitymanager';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import { useSearchNonSourceableDimensionsQuery } from '@/api-queries/backend/non-sourceability/useSearchNonSourceableDimensionsQuery';
+
+const NUMBER_OF_LATEST_DOCUMENTS_PER_CATEGORY = 3;
 
 const props = defineProps<{ companyId: string }>();
 
-/** injections available app-wide */
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
-  'companyRoleAssignments',
-  ref([])
-);
-
 const router = useRouter();
+const { userId: currentUserId, roles: currentUserRoles } = useCurrentUser();
 
-/** local state (self-contained) */
-type SummaryByType = Partial<Record<DataTypeEnum, AggregatedFrameworkDataSummary>>;
-const aggregatedFrameworkDataSummary = ref<SummaryByType>({});
+const { data: aggregatedFrameworkDataSummary } = useGetAggregatedFrameworkDataSummaryQuery({
+  companyId: () => props.companyId,
+});
 
 const nonSourceabilityRequest = computed(() => ({ companyIds: [props.companyId] }));
-const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
+const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery({
+  dataDimensionSearchRequest: nonSourceabilityRequest,
+});
 
 const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, string[]>>>(() => {
   const grouped: Partial<Record<DataTypeEnum, string[]>> = {};
@@ -134,26 +131,42 @@ const nonSourceablePeriodsByFramework = computed<Partial<Record<DataTypeEnum, st
   return grouped;
 });
 
-const FRAMEWORKS_ALL = ALL_FRAMEWORKS_IN_DISPLAYED_ORDER;
-const FRAMEWORKS_MAIN = MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER;
+const { data: hasCompanyOwner } = useHasCompanyAtLeastOneOwnerQuery(
+  { companyId: () => props.companyId },
+  { enabled: computed(() => isCompanyIdValid(props.companyId)) }
+);
+const isClaimPanelVisible = computed(() => hasCompanyOwner.value === false);
+
+const { data: currentUserRoleAssignments } = useGetExtendedCompanyRoleAssignmentsQuery({ userId: currentUserId });
+const isUserAllowedToUpload = computed(() => {
+  const isUserCompanyOwnerOrUploader = (currentUserRoleAssignments.value ?? []).some(
+    (assignment) =>
+      assignment.companyId === props.companyId &&
+      (assignment.companyRole === CompanyRole.CompanyOwner || assignment.companyRole === CompanyRole.DataUploader)
+  );
+  return isUserCompanyOwnerOrUploader || currentUserRoles.value.includes(KEYCLOAK_ROLE_UPLOADER);
+});
+
+const latestDocumentQueries = Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum).map((category) => ({
+  category,
+  query: useSearchForDocumentMetaInformationQuery({
+    companyId: () => props.companyId,
+    documentCategories: [category],
+    chunkSize: NUMBER_OF_LATEST_DOCUMENTS_PER_CATEGORY,
+  }),
+}));
+const latestDocumentsByCategory = computed(() => {
+  const documentsByCategory = {} as Record<DocumentMetaInfoDocumentCategoryEnum, DocumentMetaInfoResponse[]>;
+  for (const { category, query } of latestDocumentQueries) {
+    documentsByCategory[category] = query.data.value ?? [];
+  }
+  return documentsByCategory;
+});
 
 const showAllFrameworks = ref(false);
-const frameworksToDisplay = computed(() => (showAllFrameworks.value ? FRAMEWORKS_ALL : FRAMEWORKS_MAIN));
-const isUserCompanyOwnerOrUploader = ref(false);
-const isUserKeycloakUploader = ref(false);
-const isAnyCompanyOwnerExisting = ref(false);
-
-const isClaimPanelVisible = computed(() => !isAnyCompanyOwnerExisting.value && isCompanyIdValid(props.companyId));
-
-const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
-  latestDocuments[`latest${category}`] = [];
-}
-const chunkSize = 3;
-
-const getDocumentData = (category: keyof typeof DocumentMetaInfoDocumentCategoryEnum): DocumentMetaInfoResponse[] => {
-  return latestDocuments[`latest${category}`] || [];
-};
+const frameworksToDisplay = computed(() =>
+  showAllFrameworks.value ? ALL_FRAMEWORKS_IN_DISPLAYED_ORDER : MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER
+);
 
 /**
  * Toggles the display of all frameworks.
@@ -168,74 +181,6 @@ function toggleShowAll(): void {
 function routeToDocuments(): void {
   void router.push({ path: `/companies/${props.companyId}/documents` });
 }
-
-/**
- * Determines if the user is allowed to upload for a given framework.
- */
-function isUserAllowedToUploadForFramework(): boolean {
-  return isUserCompanyOwnerOrUploader.value || isUserKeycloakUploader.value;
-}
-
-/**
- * Fetches the aggregated framework data summary for the current company.
- * Updates the aggregatedFrameworkDataSummary ref with the response.
- */
-async function getAggregatedFrameworkDataSummary(): Promise<void> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients.companyDataController;
-  const response = await api.getAggregatedFrameworkDataSummary(props.companyId);
-  aggregatedFrameworkDataSummary.value = response.data as SummaryByType;
-}
-
-/**
- * Fetches the latest document meta-information for each document category.
- * Populates the latestDocuments reactive object with the results.
- */
-async function getMetaInfoForLatestDocuments(): Promise<void> {
-  const api = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients.documentController;
-  await Promise.all(
-    Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum).map(async (value) => {
-      const result = await api.searchForDocumentMetaInformation(
-        props.companyId,
-        new Set([value]),
-        undefined,
-        chunkSize
-      );
-      latestDocuments[`latest${value}`] = result.data;
-    })
-  );
-}
-
-/**
- * Sets user rights and roles for the current company.
- * Updates isAnyCompanyOwnerExisting, isUserCompanyOwnerOrUploader, and isUserKeycloakUploader.
- */
-async function setLocalRights(): Promise<void> {
-  isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
-
-  const assignments = unref(companyRoleAssignmentsRef) ?? [];
-  const roles = new Set(assignments.filter((r) => r.companyId === props.companyId).map((r) => r.companyRole));
-  isUserCompanyOwnerOrUploader.value = roles.has(CompanyRole.CompanyOwner) || roles.has(CompanyRole.DataUploader);
-
-  isUserKeycloakUploader.value = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise);
-}
-
-/** lifecycle & reactivity */
-watch(
-  () => props.companyId,
-  async (newId, oldId) => {
-    if (newId === oldId) return;
-    await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
-  }
-);
-/** Added to fix flakyness in CompanyOwnershipUserJourney to eliminate race condition */
-watch(companyRoleAssignmentsRef, async (newAssignments) => {
-  if (!newAssignments?.length) return;
-  await setLocalRights();
-});
-
-onMounted(async () => {
-  await Promise.all([setLocalRights(), getAggregatedFrameworkDataSummary(), getMetaInfoForLatestDocuments()]);
-});
 </script>
 
 <style scoped lang="scss">

@@ -1,24 +1,18 @@
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import options from 'axios';
 import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 import { type CompanyInformation, IdentifierType } from '@clients/backend';
 
 /**
- * Mounts the CreditsCard component with the provided dummyCompanyId.
+ * Mounts the CreditsCard component for the company with the provided id.
+ * @param dummyCompanyId of the company whose credits are shown
  */
-function mountComponent(dummyCompanyId: string, isDatalandAdmin: boolean): void {
+function mountComponent(dummyCompanyId: string): void {
   //@ts-ignore
   cy.mountWithPlugins(CreditsCard, {
+    keycloak: minimalKeycloakMock({}),
     props: {
       companyId: dummyCompanyId,
-      isUserDatalandAdmin: isDatalandAdmin,
     },
-    global: {
-      provide: {
-        getKeycloakPromise: () => Promise.resolve(minimalKeycloakMock({})),
-      },
-    },
-    ...options,
   });
 }
 
@@ -66,7 +60,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is visible and correctly displayed if a Member has credits', () => {
     interceptCreditBalance(dummyCompanyId, 100);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, true);
+    mountComponent(dummyCompanyId);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
 
@@ -77,7 +71,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is correctly displayed if user has zero credits', () => {
     interceptCreditBalance(dummyCompanyId, 0);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, true);
+    mountComponent(dummyCompanyId);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
     cy.get('[data-test="credits-balance-chip"]').should('be.visible');
@@ -87,7 +81,7 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('Credit Balance is correctly displayed if user has a negative credit balance', () => {
     interceptCreditBalance(dummyCompanyId, -345);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, true);
+    mountComponent(dummyCompanyId);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
     cy.get('[data-test="credits-balance-chip"]').should('be.visible');
@@ -98,7 +92,7 @@ describe('As a user I want to see available credits on Dataland of the company I
     const expectedInfoText = 'Any questions regarding your credits? Contact info@dataland.com';
     interceptCreditBalance(dummyCompanyId, 100);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, true);
+    mountComponent(dummyCompanyId);
 
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
@@ -115,10 +109,21 @@ describe('As a user I want to see available credits on Dataland of the company I
   it('The creditsCard displays "-" if no creditsBalance is null', () => {
     interceptCreditBalance(dummyCompanyId, null);
     interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
-    mountComponent(dummyCompanyId, true);
+    mountComponent(dummyCompanyId);
     cy.wait('@creditBalance');
     cy.wait('@companyInformation');
 
     cy.get('[data-test="credits-balance-chip"]').should('contain', '-');
+  });
+
+  it('The creditsCard displays "-" and the LEI if the credit balance cannot be loaded', () => {
+    cy.intercept('GET', `**/accounting/credits/${dummyCompanyId}/balance*`, { statusCode: 500 }).as('creditBalance');
+    interceptCompanyInformation(dummyCompanyId, dummyCompanyInfo);
+    mountComponent(dummyCompanyId);
+    cy.wait('@creditBalance');
+    cy.wait('@companyInformation');
+
+    cy.get('[data-test="credits-balance-chip"]').should('contain', '-');
+    cy.get('[data-test="creditsBalance"]').should('contain', '724500973ODKK3IFQ447');
   });
 });

@@ -17,12 +17,12 @@
       />
     </template>
 
-    <template #dialogs="{ reload }">
+    <template #dialogs>
       <PortfolioRemoveSharing
         :visible="isRemoveDialogVisible"
         :portfolio-id="props.portfolioId"
         @close="isRemoveDialogVisible = false"
-        @sharing-removed="() => onRemoveSharing(reload)"
+        @sharing-removed="isRemoveDialogVisible = false"
       />
     </template>
   </PortfolioDetailsBase>
@@ -32,7 +32,7 @@
 import PortfolioDetailsBase from '@/components/resources/portfolio/PortfolioDetailsBase.vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { computed, ref, toRef } from 'vue';
+import { computed, ref } from 'vue';
 import PortfolioRemoveSharing from '@/components/resources/portfolio/PortfolioRemoveSharing.vue';
 import { type PortfolioUserAccessRight, PortfolioUserAccessRightPortfolioAccessRoleEnum } from '@clients/userservice';
 import { useGetPortfolioAccessRightsQuery } from '@/api-queries/user-service/portfolio/useGetPortfolioAccessRightsQuery.ts';
@@ -41,10 +41,13 @@ const props = defineProps<{
   portfolioId: string;
 }>();
 
-const portfolioIdRef = toRef(props, 'portfolioId');
-const { data: accessRights, isLoading, isError } = useGetPortfolioAccessRightsQuery(portfolioIdRef);
-
-const emit = defineEmits(['update:portfolio-overview']);
+const {
+  data: accessRights,
+  isLoading,
+  isError,
+} = useGetPortfolioAccessRightsQuery({
+  portfolioId: () => props.portfolioId,
+});
 
 const isRemoveDialogVisible = ref(false);
 
@@ -67,15 +70,6 @@ const sharedByTagAttributes = computed(() => {
  */
 function openRemoveModal(): void {
   isRemoveDialogVisible.value = true;
-}
-
-/**
- * Handles successful removal: closes dialog, reloads data and notifies overview.
- */
-function onRemoveSharing(reload: () => void): void {
-  isRemoveDialogVisible.value = false;
-  reload();
-  emit('update:portfolio-overview');
 }
 </script>
 

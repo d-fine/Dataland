@@ -114,6 +114,7 @@ describe('Check the portfolio dialog', function (): void {
         body: { message: 'Portfolio deleted successfully' },
       });
     }).as('deletePortfolio');
+    const closeStub = cy.stub().as('dialogClose');
 
     // @ts-ignore
     cy.mountWithPlugins(PortfolioDialog, {
@@ -125,7 +126,7 @@ describe('Check the portfolio dialog', function (): void {
               data: {
                 portfolio: portfolioFixture,
               },
-              close: cy.stub(),
+              close: closeStub,
             },
           },
         },
@@ -134,12 +135,64 @@ describe('Check the portfolio dialog', function (): void {
       cy.get('[data-test="portfolio-dialog-delete-button"]').should('exist');
       cy.get('[data-test="portfolio-dialog-delete-button"]').click();
       cy.wait('@deletePortfolio').its('response.statusCode').should('eq', 200);
-      cy.intercept('DELETE', '**/portfolios/**', (req) => {
-        req.reply({
-          statusCode: 200,
-          body: { message: 'Portfolio deleted successfully' },
+      cy.get('@dialogClose').should('have.been.calledOnceWith', { isDeleted: true });
+    });
+  });
+
+  it('Should create a portfolio and pass its id and name to the dialog close handler', function (): void {
+    const companyEntry = portfolioFixture.entries[0];
+    cy.intercept('POST', '**/companies/validation', [
+      { identifier: companyEntry.companyId, companyInformation: companyEntry },
+    ]).as('validateCompanies');
+    cy.intercept('POST', '**/users/portfolios/', {
+      ...portfolioFixture,
+      portfolioId: 'new-portfolio-id',
+      portfolioName: 'New Portfolio',
+    }).as('createPortfolio');
+    const closeStub = cy.stub().as('dialogClose');
+
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDialog, {
+      keycloak: minimalKeycloakMock({}),
+      global: { provide: { dialogRef: { value: { close: closeStub } } } },
+    }).then(() => {
+      cy.get('[data-test="portfolio-name-input"]').type('New Portfolio');
+      cy.get('[data-test="company-identifiers-input"]').type(companyEntry.companyId);
+      cy.get('[data-test="portfolio-dialog-add-companies"]').click();
+      cy.wait('@validateCompanies');
+      cy.get('[data-test="portfolio-dialog-save-button"]').click();
+
+      cy.wait('@createPortfolio')
+        .its('request.body')
+        .should('deep.include', {
+          portfolioName: 'New Portfolio',
+          identifiers: [companyEntry.companyId],
         });
+      cy.get('@dialogClose').should('have.been.calledOnceWith', {
+        portfolioId: 'new-portfolio-id',
+        portfolioName: 'New Portfolio',
       });
+    });
+  });
+
+  it('Should show a dedicated message if a portfolio with the same name exists', function (): void {
+    cy.intercept('PUT', `**/users/portfolios/${portfolioFixture.portfolioId}/`, { statusCode: 409 }).as(
+      'replacePortfolio'
+    );
+    const closeStub = cy.stub().as('dialogClose');
+
+    // @ts-ignore
+    cy.mountWithPlugins(PortfolioDialog, {
+      keycloak: minimalKeycloakMock({}),
+      global: {
+        provide: { dialogRef: { value: { data: { portfolio: portfolioFixture }, close: closeStub } } },
+      },
+    }).then(() => {
+      cy.get('[data-test="portfolio-dialog-save-button"]').click();
+      cy.wait('@replacePortfolio');
+      cy.get('[data-test="unknown-portfolio-error"]').should('contain.text', 'A portfolio with same name exists');
+      cy.get('[data-test="portfolio-dialog-save-button"]').should('not.be.disabled');
+      cy.get('@dialogClose').should('not.have.been.called');
     });
   });
 });

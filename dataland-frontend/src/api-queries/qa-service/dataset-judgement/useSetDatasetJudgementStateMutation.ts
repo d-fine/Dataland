@@ -1,38 +1,44 @@
 import { useMutation, useQueryClient, type UseMutationReturnType } from '@tanstack/vue-query';
-import { type Ref } from 'vue';
-import { useApiClient } from '@/utils/useApiClient.ts';
+import { useApiClient } from '@/utils/useApiClient';
+import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys';
+import { qaKeys } from '@/api-queries/qa-service/qa/qaKeys';
 import { type DatasetJudgementResponse, type DatasetJudgementState } from '@clients/qaservice';
-import { datasetJudgementKeys } from '@/api-queries/qa-service/dataset-judgement/datasetJudgementKeys.ts';
-import { type AxiosResponse } from 'axios';
+
+export interface SetDatasetJudgementStateVariables {
+  datasetJudgementId: string;
+  datasetJudgementState: DatasetJudgementState;
+}
 
 /**
- * Set a dataset judgement's state.
+ * Vue Query mutation hook that sets the state of a dataset judgement, e.g. to finish a review
+ * (PATCH /qa/dataset-judgements/{datasetJudgementId}/state).
+ * On success, the dataset judgement detail query and all QA queue queries are invalidated,
+ * because a finished review removes the dataset from the queue.
  *
- * @param {Ref<string | undefined>} datasetJudgementId - Reactive id of the dataset judgement; mutation throws if undefined.
- * @param {DatasetJudgementState} targetState - State to set on the judgement.
- * @returns {UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown>} Mutation result; on success invalidates the judgement detail query.
+ * @returns Mutation result resolving to the updated {@link DatasetJudgementResponse}.
  */
-export function useSetDatasetJudgementStateMutation(
-  datasetJudgementId: Ref<string | undefined>,
-  targetState: DatasetJudgementState
-): UseMutationReturnType<AxiosResponse<DatasetJudgementResponse>, Error, void, unknown> {
-  const apiClient = useApiClient();
+export function useSetDatasetJudgementStateMutation(): UseMutationReturnType<
+  DatasetJudgementResponse,
+  Error,
+  SetDatasetJudgementStateVariables,
+  unknown
+> {
   const queryClient = useQueryClient();
+  const apiClientProvider = useApiClient();
 
   return useMutation({
-    mutationFn: async () => {
-      const id = datasetJudgementId.value;
-
-      if (id === undefined || id === null) {
-        throw new Error('datasetJudgementId is undefined');
-      }
-      return await apiClient.apiClients.datasetJudgementController.setJudgementState(id, targetState);
+    mutationFn: async ({ datasetJudgementId, datasetJudgementState }: SetDatasetJudgementStateVariables) => {
+      const response = await apiClientProvider.apiClients.datasetJudgementController.setJudgementState(
+        datasetJudgementId,
+        datasetJudgementState
+      );
+      return response.data;
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: datasetJudgementKeys.detail(datasetJudgementId.value) });
-    },
-    onError: (error) => {
-      console.error('Error setting dataset judgement state:', error);
+    onSuccess: async (_data, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: datasetJudgementKeys.detail(variables.datasetJudgementId) }),
+        queryClient.invalidateQueries({ queryKey: qaKeys.all }),
+      ]);
     },
   });
 }

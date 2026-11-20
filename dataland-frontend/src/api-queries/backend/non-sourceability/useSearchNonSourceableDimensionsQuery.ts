@@ -1,33 +1,37 @@
-import { type Ref, computed } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter } from 'vue';
 import { useQuery, type UseQueryOptions, type UseQueryReturnType } from '@tanstack/vue-query';
-import { useApiClient } from '@/utils/useApiClient.ts';
-import { nonSourceabilityKeys } from '@/api-queries/backend/non-sourceability/nonSourceabilityKeys.ts';
+import { useApiClient } from '@/utils/useApiClient';
+import { nonSourceabilityKeys } from '@/api-queries/backend/non-sourceability/nonSourceabilityKeys';
 import type { BasicDataDimensions, DataDimensionSearchRequest } from '@clients/backend';
 
 /**
- * Vue Query hook that fetches the set of non-sourceable data dimensions matching the given search request.
+ * Vue Query hook that fetches the non-sourceable data dimensions matching a search request
+ * (POST /non-sourceable/search).
+ * The query is disabled while `dataDimensionSearchRequest` is undefined.
  *
- * Uses POST /non-sourceable/search.
- *
- * @param request - Reactive search request (companyIds/dataTypes/reportingPeriods filters).
- * @param options - Additional query options (e.g. enabled).
- * @returns Query result containing the matching non-sourceable BasicDataDimensions.
+ * @param params - Endpoint parameters.
+ * @param params.dataDimensionSearchRequest - Filters by company ids, data types and reporting periods.
+ * @param options - Additional TanStack query options. A passed `enabled` replaces the default.
+ * @returns Vue Query result containing the matching non-sourceable {@link BasicDataDimensions}.
  */
 export function useSearchNonSourceableDimensionsQuery(
-  request: Readonly<Ref<DataDimensionSearchRequest>>,
-  options?: Omit<UseQueryOptions<Set<BasicDataDimensions>, Error>, 'queryKey' | 'queryFn'>
+  params: { dataDimensionSearchRequest: MaybeRefOrGetter<DataDimensionSearchRequest | undefined> },
+  options: Omit<UseQueryOptions<Set<BasicDataDimensions>, Error>, 'queryKey' | 'queryFn'> = {}
 ): UseQueryReturnType<Set<BasicDataDimensions>, Error> {
   const apiClientProvider = useApiClient();
-  const queryKey = computed(() => nonSourceabilityKeys.search(request.value));
 
   return useQuery<Set<BasicDataDimensions>, Error>({
-    queryKey,
+    queryKey: computed(() => nonSourceabilityKeys.search(toValue(params.dataDimensionSearchRequest))),
     queryFn: async () => {
-      const response = await apiClientProvider.backendClients.nonSourceabilityController.searchNonSourceableDimensions(
-        request.value
-      );
+      const dataDimensionSearchRequest = toValue(params.dataDimensionSearchRequest);
+      if (!dataDimensionSearchRequest) throw new Error('dataDimensionSearchRequest is undefined');
+      const response =
+        await apiClientProvider.backendClients.nonSourceabilityController.searchNonSourceableDimensions(
+          dataDimensionSearchRequest
+        );
       return response.data;
     },
+    enabled: computed(() => !!toValue(params.dataDimensionSearchRequest)),
     ...options,
   });
 }

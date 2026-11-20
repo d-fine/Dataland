@@ -1,11 +1,8 @@
 import JudgeDialog from '@/components/resources/datasetReview/JudgeDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import { AcceptedDataPointSource, DatasetJudgementState, QaReportDataPointVerdict } from '@clients/qaservice';
 import type { DatasetJudgementResponse } from '@clients/qaservice';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { computed } from 'vue';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { MLDTDisplayObjectForEmptyString } from '@/components/resources/dataTable/MultiLayerDataTableCellDisplayer';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
@@ -190,14 +187,7 @@ function mountJudgeDialog(options?: {
     body: { samplingProbability: 0.25 },
   }).as('getPreApprovalConfig');
 
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
-  });
-
-  const mount = getMountingFunction();
-  const keycloakMock = minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] });
-  const keycloakPromise = Promise.resolve(keycloakMock);
-  const apiClientProvider = new ApiClientProvider(keycloakPromise);
+  const mount = getMountingFunction({ keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] }) });
 
   mount(JudgeDialog, {
     props: {
@@ -205,14 +195,6 @@ function mountJudgeDialog(options?: {
       dataPointTypeId: options?.dataPointTypeId ?? dataPointTypeId,
       kpiRows: options?.kpiRows ?? kpiRows,
       isOpen: true,
-    },
-    global: {
-      plugins: [[VueQueryPlugin, { queryClient }]],
-      provide: {
-        getKeycloakPromise: () => keycloakPromise,
-        authenticated: computed(() => true),
-        apiClientProvider: computed(() => apiClientProvider),
-      },
     },
   });
 

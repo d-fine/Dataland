@@ -9,8 +9,8 @@
           placeholder="Search by Company Name or Identifier"
           fluid
           variant="filled"
-          :disabled="waitingForData"
-          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
+          :disabled="isLoadingNewResults"
+          @keyup.enter="applyFilters"
         />
       </IconField>
       <IconField class="search-bar">
@@ -21,8 +21,8 @@
           placeholder="Search by Requester"
           fluid
           variant="filled"
-          :disabled="waitingForData"
-          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
+          :disabled="isLoadingNewResults"
+          @keyup.enter="applyFilters"
         />
       </IconField>
       <IconField class="search-bar">
@@ -33,14 +33,14 @@
           placeholder="Search by Comment"
           fluid
           variant="filled"
-          :disabled="waitingForData"
-          @keyup.enter="resetChunkAndFirstRowIndexAndGetAllRequests"
+          :disabled="isLoadingNewResults"
+          @keyup.enter="applyFilters"
         />
       </IconField>
     </div>
     <div class="search-container-last-line">
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
+        :disabled="isLoadingNewResults"
         v-model="selectedFrameworks"
         :available-items="availableFrameworks"
         filter-name="Framework"
@@ -51,7 +51,7 @@
         selected-items-label="{0} frameworks"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
+        :disabled="isLoadingNewResults"
         v-model="selectedMixedStates"
         :available-items="availableMixedStates"
         filter-name="State"
@@ -62,7 +62,7 @@
         selected-items-label="{0} states"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
+        :disabled="isLoadingNewResults"
         v-model="selectedPriorities"
         :available-items="availablePriorities"
         filter-name="Priority"
@@ -73,7 +73,7 @@
         selected-items-label="{0} request priorities"
       />
       <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
+        :disabled="isLoadingNewResults"
         v-model="selectedReportingPeriods"
         :available-items="availableReportingPeriods"
         filter-name="Reporting Period"
@@ -85,25 +85,27 @@
       />
       <PrimeButton variant="text" @click="resetFilterAndSearchBar" label="RESET" data-test="reset-filter" />
       <PrimeButton
-        :disabled="waitingForData"
+        :disabled="isLoadingNewResults"
         data-test="trigger-filtering-requests"
-        @click="resetChunkAndFirstRowIndexAndGetAllRequests"
+        @click="applyFilters"
         label="FILTER REQUESTS"
       />
     </div>
-    <div v-if="waitingForData">
+    <div v-if="isPending">
       <p class="font-medium text-xl">Loading...</p>
       <DatalandProgressSpinner />
     </div>
+    <div v-else-if="hasLoadingError" class="d-center-div text-center px-7 py-4" data-test="requests-error">
+      <p class="font-medium text-xl">The data requests could not be loaded.</p>
+      <p class="font-medium text-xl">Please try again later or contact the support team if the issue persists.</p>
+    </div>
 
-    <div style="padding: var(--spacing-md)">
+    <div v-else style="padding: var(--spacing-md)">
       <div class="card">
         <DataTable
-          v-if="currentDataRequests"
-          v-show="!waitingForData"
-          ref="dataTable"
           data-test="requests-datatable"
           :value="currentDataRequests"
+          :loading="isLoadingNewResults"
           :paginator="true"
           :lazy="true"
           :total-records="totalRecords"
@@ -255,13 +257,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { keepPreviousData } from '@tanstack/vue-query';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import DatalandTag from '@/components/general/DatalandTag.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { useRouter } from 'vue-router';
-import { ApiClientProvider } from '@/services/ApiClients';
+import { usePostRequestSearchQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostRequestSearchQuery';
+import { usePostRequestCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostRequestCountQuery';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
 import type {
   FrameworkSelectableItem,
@@ -278,7 +282,6 @@ import {
   getDisplayedStateLabel,
 } from '@/utils/RequestsOverviewPageUtils';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
@@ -287,31 +290,52 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
 import Popover from 'primevue/popover';
-import { type RequestPriority, type DataSourcingEnhancedRequest } from '@clients/datasourcingservice';
+import { type RequestPriority, type RequestSearchFilterString } from '@clients/datasourcingservice';
 
-const datasetsPerPage = 100;
+const rowsPerPage = 100;
 const COLUMN_SELECTION_STORAGE_KEY = 'adminAllRequestsOverview.selectedColumns';
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const router = useRouter();
 
-const waitingForData = ref(true);
-const currentChunkIndex = ref(0);
-const totalRecords = ref(0);
-const rowsPerPage = ref(datasetsPerPage);
-const firstRowIndex = ref(0);
-const currentDataRequests = ref<DataSourcingEnhancedRequest[]>([]);
 const searchBarInputEmail = ref('');
 const searchBarInputComment = ref('');
 const searchBarInputCompanySearchString = ref('');
 
-const availableFrameworks = ref<FrameworkSelectableItem[]>([]);
+const availableFrameworks: FrameworkSelectableItem[] = retrieveAvailableFrameworks();
 const selectedFrameworks = ref<FrameworkSelectableItem[]>([]);
-const availableMixedStates = ref<DisplayedStateSelectableItem[]>([]);
+const availableMixedStates: DisplayedStateSelectableItem[] = retrieveAvailableDisplayedStates();
 const selectedMixedStates = ref<DisplayedStateSelectableItem[]>([]);
-const availablePriorities = ref<SelectableItem[]>([]);
+const availablePriorities: SelectableItem[] = retrieveAvailablePriorities();
 const selectedPriorities = ref<SelectableItem[]>([]);
-const availableReportingPeriods = ref<SelectableItem[]>([]);
+const availableReportingPeriods: SelectableItem[] = retrieveAvailableReportingPeriods();
 const selectedReportingPeriods = ref<SelectableItem[]>([]);
+
+const appliedFilters = ref<RequestSearchFilterString>(buildFiltersFromInputs());
+const currentChunkIndex = ref(0);
+const firstRowIndex = computed(() => currentChunkIndex.value * rowsPerPage);
+
+const {
+  data: currentDataRequests,
+  isPending: isSearchPending,
+  isPlaceholderData: isSearchPlaceholderData,
+  refetch: refetchSearch,
+  isError: isSearchError,
+} = usePostRequestSearchQuery(
+  { requestSearchFilterString: appliedFilters, chunkSize: rowsPerPage, chunkIndex: currentChunkIndex },
+  { placeholderData: keepPreviousData }
+);
+const {
+  data: totalRecords,
+  isPending: isCountPending,
+  isPlaceholderData: isCountPlaceholderData,
+  refetch: refetchCount,
+  isError: isCountError,
+} = usePostRequestCountQuery({ requestSearchFilterString: appliedFilters }, { placeholderData: keepPreviousData });
+
+const isPending = computed(() => isSearchPending.value || isCountPending.value);
+const isLoadingNewResults = computed(() => isSearchPlaceholderData.value || isCountPlaceholderData.value);
+const hasLoadingError = computed(
+  () => (isSearchError.value && !currentDataRequests.value) || (isCountError.value && totalRecords.value === undefined)
+);
 
 interface ColumnDefinition {
   field: string;
@@ -377,78 +401,49 @@ function isColumnVisible(field: string): boolean {
 }
 
 /**
- * Sets the current chunk index and first row index to zero.
+ * Builds the search filters from the current state of the search bars and dropdown filters.
+ * Empty inputs are omitted so that they do not restrict the search.
+ * @returns the search filters for the backend
  */
-function setChunkAndFirstRowIndexToZero(): void {
-  currentChunkIndex.value = 0;
-  firstRowIndex.value = 0;
+function buildFiltersFromInputs(): RequestSearchFilterString {
+  const mixedStateFilters = convertDisplayedStatesToApiFilters(selectedMixedStates.value);
+  return {
+    dataTypes: selectedFrameworks.value.length
+      ? selectedFrameworks.value.map((item) => item.frameworkDataType)
+      : undefined,
+    requestStates: mixedStateFilters.requestStates,
+    dataSourcingStates: mixedStateFilters.dataSourcingStates,
+    requestPriorities: selectedPriorities.value.length
+      ? selectedPriorities.value.map((item) => item.displayName as RequestPriority)
+      : undefined,
+    reportingPeriods: selectedReportingPeriods.value.length
+      ? selectedReportingPeriods.value.map((item) => item.displayName)
+      : undefined,
+    emailAddress: searchBarInputEmail.value || undefined,
+    adminComment: searchBarInputComment.value || undefined,
+    companySearchString: searchBarInputCompanySearchString.value || undefined,
+  };
 }
 
-onMounted(() => {
-  availableFrameworks.value = retrieveAvailableFrameworks();
-  availableMixedStates.value = retrieveAvailableDisplayedStates();
-  availablePriorities.value = retrieveAvailablePriorities();
-  availableReportingPeriods.value = retrieveAvailableReportingPeriods();
-  void getAllRequestsForFilters();
-});
-
 /**
- * Fetches all requests from the backend based on the selected filters and search bar inputs.
+ * Applies the current search bar and dropdown inputs as filters and shows the first page of the results.
+ * If neither the filters nor the page change, the current results are reloaded instead.
  */
-async function getAllRequestsForFilters(): Promise<void> {
-  waitingForData.value = true;
-  const selectedFrameworksForApi = computed<string[] | undefined>(() =>
-    selectedFrameworks.value.length ? selectedFrameworks.value.map((i) => i.frameworkDataType) : undefined
-  );
-
-  const mixedStateFilters = computed(() => convertDisplayedStatesToApiFilters(selectedMixedStates.value));
-
-  const selectedPrioritiesForApi = computed<RequestPriority[] | undefined>(() =>
-    selectedPriorities.value.length ? selectedPriorities.value.map((i) => i.displayName as RequestPriority) : undefined
-  );
-
-  const selectedReportingPeriodsForApi = computed<string[] | undefined>(() =>
-    selectedReportingPeriods.value.length ? selectedReportingPeriods.value.map((i) => i.displayName) : undefined
-  );
-
-  try {
-    if (getKeycloakPromise) {
-      const apiClientProvider = new ApiClientProvider(getKeycloakPromise());
-      const filters = {
-        dataTypes: selectedFrameworksForApi.value,
-        requestStates: mixedStateFilters.value.requestStates,
-        dataSourcingStates: mixedStateFilters.value.dataSourcingStates,
-        requestPriorities: selectedPrioritiesForApi.value,
-        reportingPeriods: selectedReportingPeriodsForApi.value,
-        emailAddress: searchBarInputEmail.value || undefined,
-        adminComment: searchBarInputComment.value || undefined,
-        companySearchString: searchBarInputCompanySearchString.value || undefined,
-      };
-
-      const [dataResponse, countResponse] = await Promise.all([
-        apiClientProvider.apiClients.enhancedRequestController.postRequestSearch(
-          filters,
-          datasetsPerPage,
-          currentChunkIndex.value
-        ),
-        apiClientProvider.apiClients.enhancedRequestController.postRequestCountQuery(filters),
-      ]);
-
-      currentDataRequests.value = dataResponse.data;
-      totalRecords.value = countResponse.data;
-    }
-  } catch (error) {
-    console.error(error);
+function applyFilters(): void {
+  const filters = buildFiltersFromInputs();
+  if (JSON.stringify(filters) === JSON.stringify(appliedFilters.value) && currentChunkIndex.value === 0) {
+    void refetchSearch();
+    void refetchCount();
+    return;
   }
-
-  waitingForData.value = false;
+  appliedFilters.value = filters;
+  currentChunkIndex.value = 0;
 }
 
 /**
- * Resets all filters and search bars to their initial state and fetches all requests again.
+ * Resets all filters and search bars to their initial state and shows all requests again.
  */
 function resetFilterAndSearchBar(): void {
-  currentChunkIndex.value = 0;
   selectedFrameworks.value = [];
   selectedMixedStates.value = [];
   selectedPriorities.value = [];
@@ -456,8 +451,7 @@ function resetFilterAndSearchBar(): void {
   searchBarInputEmail.value = '';
   searchBarInputComment.value = '';
   searchBarInputCompanySearchString.value = '';
-  setChunkAndFirstRowIndexToZero();
-  void getAllRequestsForFilters();
+  applyFilters();
 }
 
 /**
@@ -466,19 +460,7 @@ function resetFilterAndSearchBar(): void {
  */
 function onPage(event: DataTablePageEvent): void {
   globalThis.scrollTo(0, 0);
-  if (event.page != currentChunkIndex.value) {
-    currentChunkIndex.value = event.page;
-    firstRowIndex.value = currentChunkIndex.value * rowsPerPage.value;
-    void getAllRequestsForFilters();
-  }
-}
-
-/**
- * Resets the chunk index and first row index to zero and fetches all requests again.
- */
-function resetChunkAndFirstRowIndexAndGetAllRequests(): void {
-  setChunkAndFirstRowIndexToZero();
-  void getAllRequestsForFilters();
+  currentChunkIndex.value = event.page;
 }
 
 /**

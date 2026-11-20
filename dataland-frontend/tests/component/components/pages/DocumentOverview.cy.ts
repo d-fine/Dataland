@@ -8,16 +8,14 @@ import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } f
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import { ref } from 'vue';
 import { generateCompanyRoleAssignment } from '@ct/testUtils/CompanyCockpitUtils.ts';
 
 /**
- * Waits for the 6 requests that happen when the document overview page is being mounted
+ * Waits for the requests that happen when the document overview page is being mounted
  */
 function waitForRequestsOnMounted(): void {
   cy.wait('@fetchCompanyInfo');
   cy.wait('@fetchCompanyOwnershipExistence');
-  cy.wait('@fetchValidateCompanyRole');
   cy.wait('@fetchDocumentsFilteredCompanyId');
   cy.wait('@fetchAvailableDataDimensions');
 }
@@ -53,9 +51,6 @@ describe('Component test for the Document Overview', () => {
     cy.intercept(`**/community/company-ownership/${dummyCompanyId}`, {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
     }).as('fetchCompanyOwnershipExistence');
-    cy.intercept(`**/community/company-role-assignments/CompanyOwner/${dummyCompanyId}/mock-user-id`, {
-      statusCode: 200,
-    }).as('fetchValidateCompanyRole');
     cy.intercept(`**/?companyId=${dummyCompanyId}`, {
       body: mockFetchedDocuments,
       times: 1,
@@ -85,7 +80,6 @@ describe('Component test for the Document Overview', () => {
     cy.intercept(`**/community/company-role-assignments?userId=${dummyUserId}`, {
       statusCode: 200,
       body: companyRoleAssignments,
-      times: 1,
     }).as('fetchCompanyRoleAssignments');
     return getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -94,11 +88,6 @@ describe('Component test for the Document Overview', () => {
         userId: dummyUserId,
       }),
     })(DocumentOverview, {
-      global: {
-        provide: {
-          companyRoleAssignments: ref(companyRoleAssignments),
-        },
-      },
       props: {
         companyId: dummyCompanyId,
       },

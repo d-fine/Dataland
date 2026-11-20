@@ -384,4 +384,56 @@ describe('Company Roles Card Tests', () => {
       });
     });
   });
+
+  it('closes all dialogs after a confirmed change of the own role', () => {
+    mountCardAs();
+    cy.get('[data-test="dialog-button"]').click();
+    cy.get('[data-test="dialog-menu"]').contains('Change User’s Role').click();
+    cy.get('[role="option"]').contains('Admins').click();
+    cy.get('[data-test="change-role-button"]').click();
+    cy.get('[data-test="confirm-self-role-change-button"]').click();
+
+    cy.wait('@assignRole');
+    cy.get('[data-test="confirm-self-role-change-button"]').should('not.exist');
+    cy.get('[data-test="change-user-role-dialog"]').should('not.exist');
+  });
+
+  it('reloads the users of the role after a user was removed', () => {
+    mountCardAs();
+    cy.get('tbody tr').should('contain', dummyEmail);
+    cy.intercept('GET', '**/community/company-role-assignments*', []).as('getRoleAssignmentsAfterRemoval');
+
+    cy.get('[data-test="dialog-button"]').click();
+    cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+    cy.get('[data-test="remove-user-button"]').click();
+
+    cy.wait('@removeRole').its('request.url').should('include', `/Analyst/${dummyCompanyId}/${dummyUserId}`);
+    cy.wait('@getRoleAssignmentsAfterRemoval');
+    cy.get('[data-test="remove-user-button"]').should('not.exist');
+    cy.get('tbody').should('not.contain', dummyEmail);
+  });
+
+  it('shows an error message instead of an empty list if the users cannot be loaded', () => {
+    cy.intercept('GET', '**/community/company-role-assignments*', { statusCode: 500 }).as('failingRoleAssignments');
+    mountCompanyRolesCard(CompanyRole.Analyst, CompanyRole.CompanyOwner);
+
+    cy.wait('@failingRoleAssignments');
+    cy.get('[data-test="company-roles-error"]').should('be.visible');
+    cy.get('table').should('not.exist');
+    cy.get('[data-test="add-user-button"]').should('not.exist');
+  });
+
+  it('keeps the dialog open and shows an error if removing a user fails', () => {
+    mountCardAs();
+    cy.intercept('DELETE', '**/company-role-assignments/*/*/*', { statusCode: 500 }).as('failingRemoveRole');
+
+    cy.get('[data-test="dialog-button"]').click();
+    cy.get('[data-test="dialog-menu"]').contains('Remove User').click();
+    cy.get('[data-test="remove-user-button"]').click();
+
+    cy.wait('@failingRemoveRole');
+    cy.get('[role="dialog"]').should('contain', 'The user could not be removed. Please try again.');
+    cy.get('[data-test="remove-user-button"]').should('be.visible');
+    cy.get('tbody tr').should('contain', dummyEmail);
+  });
 });

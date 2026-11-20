@@ -2,7 +2,7 @@
   <PortfolioDetailsBase :portfolio-id="props.portfolioId">
     <template #actions="{ enrichedPortfolio, monitoredTagAttributes, resetFilters, openDownload, reload }">
       <Button
-        @click="openEditModal(enrichedPortfolio, reload)"
+        @click="openEditModal(enrichedPortfolio)"
         data-test="edit-portfolio"
         label="EDIT PORTFOLIO"
         icon="pi pi-pencil"
@@ -79,7 +79,6 @@ import { useGetInheritedRolesQuery } from '@/api-queries/community-manager/inher
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialog = useDialog();
-const emit = defineEmits(['update:portfolio-overview']);
 
 const props = defineProps<{
   portfolioId: string;
@@ -115,10 +114,9 @@ async function loadKeycloakUserInfo(): Promise<void> {
 
 /**
  * Opens the PortfolioDialog with the current portfolio's data for editing.
- * Once the dialog is closed, it reloads the portfolio data and emits an update event
- * to refresh the portfolio overview.
+ * The dialog's mutations refresh the portfolio and the portfolio overview.
  */
-function openEditModal(enrichedPortfolio: EnrichedPortfolio | undefined, reload: () => void): void {
+function openEditModal(enrichedPortfolio: EnrichedPortfolio | undefined): void {
   dialog.open(PortfolioDialog, {
     props: {
       header: 'Edit Portfolio',
@@ -128,18 +126,12 @@ function openEditModal(enrichedPortfolio: EnrichedPortfolio | undefined, reload:
       portfolio: enrichedPortfolio,
       isMonitoring: enrichedPortfolio?.isMonitored ?? false,
     },
-    onClose(options) {
-      if (!options?.data?.isDeleted) {
-        reload();
-      }
-      emit('update:portfolio-overview');
-    },
   });
 }
 
 /**
  * Opens the PortfolioMonitoring with the current portfolio's data.
- * Once the dialog is closed, it reloads the portfolio data and shows the portfolio overview again.
+ * Once the monitoring is saved, it shows a success message and reloads the portfolio data.
  */
 function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, reload: () => void): void {
   const fullName = 'Monitoring of ' + enrichedPortfolio?.portfolioName;
@@ -165,7 +157,6 @@ function openMonitoringModal(enrichedPortfolio: EnrichedPortfolio | undefined, r
       if (options?.data?.monitoringSaved) {
         isSuccessDialogVisible.value = true;
         reload();
-        emit('update:portfolio-overview');
       }
     },
   });

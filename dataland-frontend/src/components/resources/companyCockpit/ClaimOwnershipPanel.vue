@@ -37,108 +37,68 @@
   />
 </template>
 
-<script lang="ts">
-import { defineComponent, inject } from 'vue';
+<script setup lang="ts">
+import { computed, inject, ref, watch } from 'vue';
+import { useGetCompanyInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInfoQuery';
 import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwnershipDialog.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import Card from 'primevue/card';
 import PrimeButton from 'primevue/button';
 
-export default defineComponent({
-  name: 'CompanyCockpitPage',
-  components: {
-    ClaimOwnershipDialog,
-    Card,
-    PrimeButton,
-  },
-  inject: {
-    injectedUseMobileView: {
-      from: 'useMobileView',
-      default: false,
-    },
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  data() {
-    return {
-      dialogIsOpen: false,
-      claimIsSubmitted: false,
-      companyName: '',
-    };
-  },
-  watch: {
-    companyId(newCompanyId, oldCompanyId) {
-      if (newCompanyId !== oldCompanyId) {
-        this.dialogIsOpen = false;
-        this.claimIsSubmitted = false;
-        void this.getCompanyName();
-      }
-    },
-  },
-  props: {
-    companyId: {
-      type: String,
-      required: true,
-    },
-  },
-  mounted() {
-    void this.getCompanyName();
-  },
-  methods: {
-    /**
-     * handles the emitted claim event
-     */
-    onClaimSubmitted() {
-      this.claimIsSubmitted = true;
-    },
-    /**
-     * handles the close button click event of the dialog
-     */
-    onCloseDialog() {
-      this.dialogIsOpen = false;
-    },
-    /**
-     * Uses the dataland API to retrieve information about the company identified by the local
-     * companyId object.
-     */
-    async getCompanyName() {
-      try {
-        if (this.companyId !== undefined) {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          this.companyName = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data.companyName;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * opens the dialog
-     */
-    async openDialog() {
-      const isLoggedIn = await this.checkLoggedIn();
-      if (isLoggedIn) {
-        this.dialogIsOpen = true;
-      } else {
-        const keycloakInstance = await assertDefined(this.getKeycloakPromise)();
-        await keycloakInstance.register();
-      }
-    },
-    /**
-     * checks if user is logged in
-     * @returns boolean
-     */
-    async checkLoggedIn() {
-      if (this.getKeycloakPromise) {
-        return (await this.getKeycloakPromise()).authenticated;
-      }
-      return false;
-    },
-  },
-});
+const props = defineProps<{ companyId: string }>();
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+
+const dialogIsOpen = ref(false);
+const claimIsSubmitted = ref(false);
+
+const { data: companyInformation } = useGetCompanyInfoQuery({ companyId: () => props.companyId });
+const companyName = computed(() => companyInformation.value?.companyName ?? '');
+
+watch(
+  () => props.companyId,
+  () => {
+    dialogIsOpen.value = false;
+    claimIsSubmitted.value = false;
+  }
+);
+
+/**
+ * handles the emitted claim event
+ */
+function onClaimSubmitted(): void {
+  claimIsSubmitted.value = true;
+}
+
+/**
+ * handles the close button click event of the dialog
+ */
+function onCloseDialog(): void {
+  dialogIsOpen.value = false;
+}
+
+/**
+ * opens the dialog
+ */
+async function openDialog(): Promise<void> {
+  const isLoggedIn = await checkLoggedIn();
+  if (isLoggedIn) {
+    dialogIsOpen.value = true;
+  } else {
+    const keycloakInstance = await assertDefined(getKeycloakPromise)();
+    await keycloakInstance.register();
+  }
+}
+
+/**
+ * checks if user is logged in
+ * @returns boolean
+ */
+async function checkLoggedIn(): Promise<boolean | undefined> {
+  if (getKeycloakPromise) {
+    return (await getKeycloakPromise()).authenticated;
+  }
+  return false;
+}
 </script>

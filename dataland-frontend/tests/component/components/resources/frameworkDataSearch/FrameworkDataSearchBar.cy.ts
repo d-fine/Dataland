@@ -87,4 +87,24 @@ describe('Component tests for the search bar on the company search page', () => 
     validateSearchStringWarning(false);
     validateAutocompletePanel(false);
   });
+
+  it('Suggests companies by name if no filter is active and confirms the search on enter', () => {
+    const onSearchConfirmed = cy.spy().as('searchConfirmed');
+    cy.intercept('GET', '**/api/companies/names?searchString=abc&resultLimit=3', [
+      { companyId: 'company-id', companyName: 'abc Company' },
+    ]).as('fetchCompanyNames');
+    getMountingFunction({ keycloak: minimalKeycloakMock() })(FrameworkDataSearchBar, {
+      props: {
+        filter: { dataTypes: [], countryCodes: [], sectors: [], reportingPeriods: [] },
+        onSearchConfirmed,
+      },
+    });
+
+    typeIntoSearchBar('abc');
+    cy.wait('@fetchCompanyNames');
+    cy.get('.p-autocomplete-option').should('have.length', 1).and('contain.text', 'abc Company');
+
+    typeIntoSearchBar('{enter}');
+    cy.get('@searchConfirmed').should('have.been.calledOnceWith', 'abc');
+  });
 });

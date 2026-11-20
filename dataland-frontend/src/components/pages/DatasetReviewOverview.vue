@@ -74,7 +74,7 @@
                     label="FINISH REVIEW"
                     severity="success"
                     icon="pi pi-check"
-                    :disabled="!canFinishReview || isFinishReviewMutationPending"
+                    :disabled="!canFinishReview || isSetJudgementStatePending"
                     @click="finishReview"
                     data-test="qaReviewPageFinishButton"
                   />
@@ -172,8 +172,8 @@ import { useSetJudgeForDatasetJudgementMutation } from '@/api-queries/qa-service
 import { useAcceptAllRemainingOriginalDataPointsMutation } from '@/api-queries/qa-service/dataset-judgement/useAcceptAllRemainingOriginalDataPointsMutation.ts';
 import router from '@/router';
 import { useConfirmationModal } from '@/components/resources/popups/useConfirmationModal.ts';
-import { usePostEnhancedRequestsSearchCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostEnhancedRequestsSearchCountQuery.ts';
-import { useGetCompanyInformationByIdInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInformationByIdInfoQuery.ts';
+import { usePostRequestCountQuery } from '@/api-queries/data-sourcing/enhanced-request/usePostRequestCountQuery.ts';
+import { useGetCompanyInfoQuery } from '@/api-queries/backend/company-data/useGetCompanyInfoQuery.ts';
 import { RequestState, type RequestSearchFilterString } from '@clients/datasourcingservice';
 import { usePostMetaDataFiltersQuery } from '@/api-queries/backend/meta-data/usePostMetaDataFiltersQuery.ts';
 import { type DataMetaInformationSearchFilter, type DataTypeEnum, QaStatus } from '@clients/backend';
@@ -278,13 +278,16 @@ const {
   data: filteredRequestCount,
   isPending: isRequestCountPending,
   isError: isRequestCountError,
-} = usePostEnhancedRequestsSearchCountQuery(requestSearchFilters, { enabled: arePrecheckQueriesEnabled });
+} = usePostRequestCountQuery(
+  { requestSearchFilterString: requestSearchFilters },
+  { enabled: arePrecheckQueriesEnabled }
+);
 
 const {
   data: companyData,
   isPending: isCompanyDataPending,
   isError: isCompanyDataError,
-} = useGetCompanyInformationByIdInfoQuery(companyIdRef);
+} = useGetCompanyInfoQuery({ companyId: companyIdRef });
 
 const {
   data: filteredMetaData,
@@ -396,25 +399,14 @@ function onKpiRowsBuilt(rows: CellRow[]): void {
 
 const { mutate: assignToMeMutation, isPending: isAssigningToMe } = useSetJudgeForDatasetJudgementMutation();
 
-const { mutate: rejectReviewMutation, isPending: isRejectReviewMutationPending } = useSetDatasetJudgementStateMutation(
-  datasetJudgementIdRef,
-  DatasetJudgementState.FinishedWithDatasetRejection
-);
-
-const { mutate: finishReviewMutation, isPending: isFinishReviewMutationPending } = useSetDatasetJudgementStateMutation(
-  datasetJudgementIdRef,
-  DatasetJudgementState.FinishedWithDatasetAcceptance
-);
+const { mutate: setJudgementStateMutation, isPending: isSetJudgementStatePending } =
+  useSetDatasetJudgementStateMutation();
 
 const { mutate: acceptAllRemainingOriginalMutation, isPending: isAcceptAllRemainingOriginalMutationPending } =
   useAcceptAllRemainingOriginalDataPointsMutation();
 
 const isModalActionPending = computed(
-  () =>
-    isAssigningToMe.value ||
-    isRejectReviewMutationPending.value ||
-    isFinishReviewMutationPending.value ||
-    isAcceptAllRemainingOriginalMutationPending.value
+  () => isAssigningToMe.value || isSetJudgementStatePending.value || isAcceptAllRemainingOriginalMutationPending.value
 );
 const isActionSuccess = ref(false);
 
@@ -448,20 +440,26 @@ const rejectDataset = (): void => {
     'Are you sure you want to reject the dataset and all ' +
       'underlying data points? This action will finish the review and cannot be undone.',
     () => {
-      rejectReviewMutation(undefined, {
-        onSuccess: () => {
-          isActionSuccess.value = true;
-          confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
-          setTimeout(() => {
-            confirmationModal.value.visible = false;
-            isActionSuccess.value = false;
-            void goToQaPage();
-          }, 3200);
+      setJudgementStateMutation(
+        {
+          datasetJudgementId: props.datasetJudgementId,
+          datasetJudgementState: DatasetJudgementState.FinishedWithDatasetRejection,
         },
-        onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to reject dataset: ' + error.message;
-        },
-      });
+        {
+          onSuccess: () => {
+            isActionSuccess.value = true;
+            confirmationModal.value.message = 'Dataset successfully rejected. Rerouting to QA page ...';
+            setTimeout(() => {
+              confirmationModal.value.visible = false;
+              isActionSuccess.value = false;
+              void goToQaPage();
+            }, 3200);
+          },
+          onError: (error) => {
+            confirmationModal.value.errorMessage = 'Failed to reject dataset: ' + error.message;
+          },
+        }
+      );
     }
   );
 };
@@ -471,20 +469,26 @@ const finishReview = (): void => {
     'Finish Review',
     'Are you sure you want to mark this dataset review as finished?',
     () => {
-      finishReviewMutation(undefined, {
-        onSuccess: () => {
-          isActionSuccess.value = true;
-          confirmationModal.value.message = 'Dataset review completed. Rerouting to QA page ...';
-          setTimeout(() => {
-            confirmationModal.value.visible = false;
-            isActionSuccess.value = false;
-            void goToQaPage();
-          }, 3200);
+      setJudgementStateMutation(
+        {
+          datasetJudgementId: props.datasetJudgementId,
+          datasetJudgementState: DatasetJudgementState.FinishedWithDatasetAcceptance,
         },
-        onError: (error) => {
-          confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + formatAxiosErrorMessage(error);
-        },
-      });
+        {
+          onSuccess: () => {
+            isActionSuccess.value = true;
+            confirmationModal.value.message = 'Dataset review completed. Rerouting to QA page ...';
+            setTimeout(() => {
+              confirmationModal.value.visible = false;
+              isActionSuccess.value = false;
+              void goToQaPage();
+            }, 3200);
+          },
+          onError: (error) => {
+            confirmationModal.value.errorMessage = 'Failed to finish dataset review: ' + formatAxiosErrorMessage(error);
+          },
+        }
+      );
     } // Implement action here in seperate ticket
   );
 };

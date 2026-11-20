@@ -1,7 +1,7 @@
 import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { QualityOptions } from '@clients/backend';
 import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
-import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { useSearchForDocumentMetaInformationQuery } from '@/api-queries/document-manager/document/useSearchForDocumentMetaInformationQuery.ts';
 import { isPageReferenceValid } from '@/utils/ValidationUtils.ts';
 import type {
   ExtendedDataPointMetaInfoType,
@@ -38,7 +38,7 @@ export function useExtendedDataPointForm(
   const insertedComment = ref<string | undefined>(extendedDataPointObject?.comment ?? undefined);
   const insertedPage = ref<string | null>(extendedDataPointObject?.dataSource?.page ?? null);
 
-  const { data: documents, isFetched } = useGetDocumentMetaInfoByCompanyIdQuery(ref(companyId));
+  const { data: documents, isFetched } = useSearchForDocumentMetaInformationQuery({ companyId });
   const allDocuments = computed<DocumentMetaInfoResponse[]>(() => documents.value ?? []);
   const availableDocuments = computed(() =>
     allDocuments.value

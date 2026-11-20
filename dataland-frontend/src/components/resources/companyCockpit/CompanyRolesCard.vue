@@ -16,7 +16,7 @@
         :style="{ visibility: showInfoMessage ? 'hidden' : 'visible' }"
       />
       <Button
-        v-if="roleHasUsers && allowedToEditRoles"
+        v-if="roleHasUsers && allowedToEditRoles && !hasUsersLoadingError"
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
@@ -40,7 +40,16 @@
     </template>
 
     <template #content>
-      <DataTable :key="allowedToEditRoles ? 'edit-on' : 'edit-off'" :value="rowsForRole" tableStyle="min-width: 50rem">
+      <Message v-if="hasUsersLoadingError" severity="error" data-test="company-roles-error">
+        The users with this role could not be loaded. Please try again later.
+      </Message>
+      <DataTable
+        v-else
+        :key="allowedToEditRoles ? 'edit-on' : 'edit-off'"
+        :value="rowsForRole"
+        :loading="isLoadingUsers"
+        tableStyle="min-width: 50rem"
+      >
         <Column field="firstName" header="First Name" style="width: 20%" sortable />
         <Column field="lastName" header="Last Name" style="width: 20%" sortable />
         <Column field="email" header="Email" :style="{ width: emailColumnWidth }" />
@@ -59,7 +68,7 @@
         </Column>
       </DataTable>
       <Button
-        v-if="!roleHasUsers && allowedToEditRoles"
+        v-if="!roleHasUsers && allowedToEditRoles && !isLoadingUsers && !hasUsersLoadingError"
         icon="pi pi-plus"
         variant="text"
         :label="`ADD ${group?.title.toUpperCase()}`"
@@ -122,10 +131,14 @@
         </div>
       </template>
     </Listbox>
+    <Message v-if="mutationErrorMessage" severity="error" style="margin-top: var(--spacing-md)">
+      {{ mutationErrorMessage }}
+    </Message>
     <template #footer>
       <Button
         label="Change Role"
         :disabled="selectedRole === null"
+        :loading="isAssigningRole"
         @click="onChangeRoleClick"
         data-test="change-role-button"
       />
@@ -136,8 +149,11 @@
   <Dialog v-model:visible="showRemoveUserDialog" :header="`Remove Company Role`" :modal="true" :closable="true">
     <span>You're about to remove the user:</span><br />
     <span style="font-weight: var(--font-weight-medium)">{{ roleTargetText }}</span>
+    <Message v-if="mutationErrorMessage" severity="error" style="margin-top: var(--spacing-md)">
+      {{ mutationErrorMessage }}
+    </Message>
     <template #footer>
-      <Button label="Remove User" @click="confirmRemoveUser" data-test="remove-user-button" />
+      <Button label="Remove User" :loading="isRemovingRole" @click="confirmRemoveUser" data-test="remove-user-button" />
     </template>
   </Dialog>
 
@@ -179,13 +195,18 @@
           showAddUserDialog = false;
         "
       />
-      <Button label="Confirm" data-test="confirm-self-role-change-button" @click="onConfirmSelfRoleChange" />
+      <Button
+        label="Confirm"
+        data-test="confirm-self-role-change-button"
+        :loading="isAssigningRole"
+        @click="onConfirmSelfRoleChange"
+      />
     </template>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 
 import Button from 'primevue/button';
@@ -198,13 +219,16 @@ import Menu from 'primevue/menu';
 import Message from 'primevue/message';
 
 import type Keycloak from 'keycloak-js';
-import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
 import { CompanyRole } from '@clients/communitymanager';
+import { useQueryClient } from '@tanstack/vue-query';
 
 import AddUserDialog from '@/components/resources/companyCockpit/AddUserDialog.vue';
-import { ApiClientProvider } from '@/services/ApiClients';
+import { companyRolesKeys } from '@/api-queries/community-manager/company-roles/companyRolesKeys';
+import { useAssignCompanyRoleMutation } from '@/api-queries/community-manager/company-roles/useAssignCompanyRoleMutation';
+import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
+import { useRemoveCompanyRoleMutation } from '@/api-queries/community-manager/company-roles/useRemoveCompanyRoleMutation';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils.ts';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils.ts';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 import { useStorage } from '@vueuse/core';
 
@@ -233,11 +257,21 @@ const props = defineProps<{
 
 const emit = defineEmits<(e: 'users-changed', message: string) => void>();
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const queryClient = useQueryClient();
 
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
-const companyUserInformation = ref<CompanyRoleAssignmentExtended[]>([]);
+const {
+  data: companyUserInformation,
+  isPending: isLoadingUsers,
+  isError: isUsersError,
+} = useGetExtendedCompanyRoleAssignmentsQuery({
+  role: () => props.role,
+  companyId: () => props.companyId,
+});
+const hasUsersLoadingError = computed(() => isUsersError.value && !companyUserInformation.value);
+const { mutate: assignCompanyRole, isPending: isAssigningRole } = useAssignCompanyRoleMutation();
+const { mutate: removeCompanyRole, isPending: isRemovingRole } = useRemoveCompanyRoleMutation();
+const mutationErrorMessage = ref<string | null>(null);
 
 const showChangeRoleDialog = ref(false);
 const showRemoveUserDialog = ref(false);
@@ -253,7 +287,7 @@ const typeOfConfirmDialog = ref<ConfirmDialogType | null>(null);
 
 const selectedUser = ref<TableRow | null>(null);
 const selectedRole = ref<CompanyRole | null>(null);
-let currentUserId: string | undefined = undefined;
+const currentUserId = ref<string | undefined>(undefined);
 
 const isGlobalAdmin = ref(false);
 const showInfoMessage = useStorage<boolean>(`showInfoMessageCompanyRoles-${props.role}`, true);
@@ -292,7 +326,7 @@ const groups: CompanyRoleDetails[] = [
 const group = computed(() => groups.find((g) => g.role === props.role));
 
 const rowsForRole = computed<TableRow[]>(() =>
-  companyUserInformation.value
+  (companyUserInformation.value ?? [])
     .filter((u) => u.companyId === props.companyId && u.companyRole === props.role)
     .map((u) => ({
       firstName: u.firstName ?? '',
@@ -320,6 +354,7 @@ const rowMenuItems = computed<MenuItem[]>(() =>
           command: (): void => {
             selectedUser.value = activeRow.value!;
             selectedRole.value = null;
+            mutationErrorMessage.value = null;
             showChangeRoleDialog.value = true;
           },
         },
@@ -327,6 +362,7 @@ const rowMenuItems = computed<MenuItem[]>(() =>
           label: 'Remove User',
           command: (): void => {
             selectedUser.value = activeRow.value!;
+            mutationErrorMessage.value = null;
             showRemoveUserDialog.value = true;
           },
         },
@@ -402,80 +438,76 @@ function showInfoBox(): void {
 }
 
 /**
- * Fetches the company user information for the current role and company.
- */
-async function getCompanyUserInformation(): Promise<void> {
-  const keycloakPromise = await getKeycloakPromise();
-  const userDetails = await keycloakPromise.loadUserProfile();
-  currentUserId = userDetails.id;
-  if (!props.companyId) return;
-  try {
-    const api = apiClientProvider.apiClients.companyRolesController;
-    const res = await api.getExtendedCompanyRoleAssignments(props.role, props.companyId, undefined);
-    companyUserInformation.value = res.data;
-  } catch (error) {
-    console.error('Failed to load company users:', error);
-  }
-}
-
-/**
  * Determines if the role of the currently selected user is being changed.
  */
 function isRoleOfCurrentUserBeingChanged(): boolean {
-  return selectedUser.value?.userId === currentUserId;
+  return selectedUser.value?.userId === currentUserId.value;
 }
 
 /**
  * Handles the event when the "Change Role" button is clicked.
  */
-async function onChangeRoleClick(): Promise<void> {
+function onChangeRoleClick(): void {
   if (isRoleOfCurrentUserBeingChanged()) {
     showSelfRoleChangeModal.value = true;
     typeOfConfirmDialog.value = ConfirmDialogType.ChangeRole;
   } else {
-    await confirmChangeRole();
+    confirmChangeRole();
   }
 }
 
 /**
  * Confirms and processes the role change for the selected user.
+ * The mutation refreshes the user lists of all role cards.
  */
-async function confirmChangeRole(): Promise<void> {
+function confirmChangeRole(): void {
   if (!selectedUser.value || selectedRole.value == null) return;
-  try {
-    const api = apiClientProvider.apiClients.companyRolesController;
-    await api.assignCompanyRole(selectedRole.value, props.companyId, selectedUser.value.userId);
-    showChangeRoleDialog.value = false;
-    await getCompanyUserInformation();
-    emit('users-changed', 'User role successfully changed.');
-  } catch (err) {
-    console.error('Failed to change role:', err);
-  }
+  mutationErrorMessage.value = null;
+  assignCompanyRole(
+    { role: selectedRole.value, companyId: props.companyId, userId: selectedUser.value.userId },
+    {
+      onSuccess: () => {
+        showSelfRoleChangeModal.value = false;
+        showChangeRoleDialog.value = false;
+        emit('users-changed', 'User role successfully changed.');
+      },
+      onError: () => {
+        showSelfRoleChangeModal.value = false;
+        mutationErrorMessage.value = 'The role could not be changed. Please try again.';
+      },
+    }
+  );
 }
 
 /**
  * Confirms and processes the removal of the selected user from the role.
+ * The mutation refreshes the user lists of all role cards.
  */
-async function confirmRemoveUser(): Promise<void> {
+function confirmRemoveUser(): void {
   if (!selectedUser.value) return;
-  try {
-    const api = apiClientProvider.apiClients.companyRolesController;
-    await api.removeCompanyRole(props.role, props.companyId, selectedUser.value.userId);
-    showRemoveUserDialog.value = false;
-    await getCompanyUserInformation();
-    emit('users-changed', 'User successfully removed.');
-  } catch (err) {
-    console.error('Failed to remove user:', err);
-  }
+  mutationErrorMessage.value = null;
+  removeCompanyRole(
+    { role: props.role, companyId: props.companyId, userId: selectedUser.value.userId },
+    {
+      onSuccess: () => {
+        showRemoveUserDialog.value = false;
+        emit('users-changed', 'User successfully removed.');
+      },
+      onError: () => {
+        mutationErrorMessage.value = 'The user could not be removed. Please try again.';
+      },
+    }
+  );
 }
 
 /**
  * Handles the event when users are added through the AddUserDialog.
+ * AddUserDialog still assigns the roles without mutation hooks, so the role queries are invalidated here.
  * @param message - Optional success message to emit
  */
 async function handleUsersAdded(message?: string): Promise<void> {
   showAddUserDialog.value = false;
-  await getCompanyUserInformation();
+  await queryClient.invalidateQueries({ queryKey: companyRolesKeys.all });
   emit('users-changed', message || 'User(s) successfully added.');
 }
 
@@ -485,7 +517,7 @@ async function handleUsersAdded(message?: string): Promise<void> {
  */
 async function onConfirmSelfRoleChange(): Promise<void> {
   if (typeOfConfirmDialog.value === ConfirmDialogType.ChangeRole) {
-    await confirmChangeRole();
+    confirmChangeRole();
   } else if (typeOfConfirmDialog.value === ConfirmDialogType.AddUsers) {
     await addUserDialog.value?.handleAddUser();
     showSelfRoleChangeModal.value = false;
@@ -493,12 +525,8 @@ async function onConfirmSelfRoleChange(): Promise<void> {
   }
 }
 
-watch([(): string => props.companyId, (): CompanyRole => props.role], async function () {
-  await getCompanyUserInformation();
-});
-
 onMounted(async () => {
+  currentUserId.value = await getUserId(assertDefined(getKeycloakPromise));
   isGlobalAdmin.value = await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise);
-  await getCompanyUserInformation();
 });
 </script>

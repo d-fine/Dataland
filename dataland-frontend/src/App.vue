@@ -1,12 +1,12 @@
 <template>
   <DynamicDialog />
-  <component
+  <AuthenticationWrapper
     v-if="route.meta.requiresAuthentication !== undefined"
-    :is="route.meta.requiresAuthentication ? 'AuthenticationWrapper' : 'div'"
+    :disable-authentication-wrapper="!route.meta.requiresAuthentication"
   >
     <TheHeader />
     <router-view />
-  </component>
+  </AuthenticationWrapper>
   <TheFooter />
   <VueQueryDevtools />
 </template>
@@ -25,8 +25,6 @@ import SessionDialog from '@/components/general/SessionDialog.vue';
 import { KEYCLOAK_INIT_OPTIONS } from '@/utils/Constants';
 import { useSharedSessionStateStore } from '@/stores/Stores';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import { getCompanyRoleAssignmentsForCurrentUser } from '@/utils/CompanyRolesUtils';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { useRoute } from 'vue-router';
 
@@ -59,8 +57,6 @@ export default defineComponent({
       functionIdOfSessionSetInterval: undefined as number | undefined,
 
       apiClientProvider: undefined as ApiClientProvider | undefined,
-
-      companyRoleAssignments: undefined as Array<CompanyRoleAssignmentExtended> | undefined,
     };
   },
 
@@ -98,9 +94,6 @@ export default defineComponent({
         if (this.keycloakPromise) return this.keycloakPromise;
         throw new Error('The Keycloak promise has not yet been initialised. This should not be possible...');
       },
-      companyRoleAssignments: computed(() => {
-        return this.companyRoleAssignments;
-      }),
       authenticated: computed(() => {
         return this.keycloakAuthenticated;
       }),
@@ -129,10 +122,9 @@ export default defineComponent({
     processUserAuthentication() {
       this.keycloakPromise = this.initKeycloak();
       if (this.keycloakPromise !== undefined) {
-        const apiClientProvider = new ApiClientProvider(this.keycloakPromise);
-        this.apiClientProvider = apiClientProvider;
+        this.apiClientProvider = new ApiClientProvider(this.keycloakPromise);
         this.keycloakPromise
-          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak, apiClientProvider))
+          .then((keycloak) => this.handleResolvedKeycloakPromise(keycloak))
           .catch((e) => console.log(e));
       }
     },
@@ -164,29 +156,15 @@ export default defineComponent({
     /**
      * Executes actions based on the resolved Keycloak-login-status of the current user
      * @param resolvedKeycloakPromise contains the login-status of the current user
-     * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
      */
-    handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
+    handleResolvedKeycloakPromise(resolvedKeycloakPromise: Keycloak) {
       this.resolvedKeycloakPromise = resolvedKeycloakPromise;
       if (this.resolvedKeycloakPromise.authenticated) {
         localStorage.setItem('dataland_authenticated', 'true');
         void updateTokenAndItsExpiryTimestampAndStoreBoth(this.resolvedKeycloakPromise, true);
-        void this.setCompanyRolesForUser(resolvedKeycloakPromise, apiClientProvider);
       } else {
         localStorage.removeItem('dataland_authenticated');
       }
-    },
-
-    /**
-     * Fetches the company roles of the current user and stores it in a variable.
-     * @param resolvedKeycloakPromise contains the login-status of the current user
-     * @param apiClientProvider to trigger a request to the backend of Dataland for getting the users company roles
-     */
-    async setCompanyRolesForUser(resolvedKeycloakPromise: Keycloak, apiClientProvider: ApiClientProvider) {
-      this.companyRoleAssignments = await getCompanyRoleAssignmentsForCurrentUser(
-        resolvedKeycloakPromise,
-        apiClientProvider
-      );
     },
 
     /**
