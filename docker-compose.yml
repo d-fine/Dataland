@@ -216,23 +216,23 @@ services:
         logging:
           <<: *loki-logging
   data-sourcing-service-db:
-        restart: always
-        profiles: [ "production", "testing", "development" ]
-        networks:
-          - data-sourcing-service-db
-        image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
-        volumes:
-          - data_sourcing_service_data:/var/lib/postgresql
-        environment:
-          POSTGRES_DB: data_sourcing_service
-          POSTGRES_USER: data_sourcing_service
-          POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
-          PGUSER: data_sourcing_service
-        healthcheck:
-          <<: *healthcheck-settings
-          test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
-        logging:
-          <<: *loki-logging
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - data-sourcing-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres:${DATALAND_POSTGRES_VERSION}
+    volumes:
+      - data_sourcing_service_data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: data_sourcing_service
+      POSTGRES_USER: data_sourcing_service
+      POSTGRES_PASSWORD: ${DATA_SOURCING_SERVICE_DB_PASSWORD}
+      PGUSER: data_sourcing_service
+    healthcheck:
+      <<: *healthcheck-settings
+      test: [ "CMD-SHELL", "pg_isready -U data_sourcing_service" ]
+    logging:
+      <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
