@@ -30,8 +30,12 @@ describe('Component tests for JudgeDialogTopSection table rows', () => {
       getMountingFunction()(JudgeDialogTopSection, {
         props: { title: 'Original', acceptLabel: 'Accept', sectionType: 'original', data, ...props },
       });
-      shown.forEach((label) => cy.contains('th', label).should('exist'));
-      hidden.forEach((label) => cy.contains('th', label).should('not.exist'));
+      shown.forEach((label) => {
+        cy.contains('th', label).should('exist');
+      });
+      hidden.forEach((label) => {
+        cy.contains('th', label).should('not.exist');
+      });
     });
   });
 });
