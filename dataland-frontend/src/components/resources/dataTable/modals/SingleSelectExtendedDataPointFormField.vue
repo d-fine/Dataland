@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import PrimeSelect from 'primevue/select';
-import { PcafGeneralCompanyMainPcafSectorOptions } from '@clients/backend';
+import { PcafGeneralCompanyMainPcafSectorOptions, SfdrGeneralCompanyMainPcafSectorOptions } from '@clients/backend';
 import ExtendedDataPointFormFieldDialog from '@/components/resources/dataTable/modals/ExtendedDataPointFormFieldDialog.vue';
 import type { ExtendedDataPointType } from '@/components/resources/dataTable/conversion/Utils.ts';
 import {
@@ -42,6 +42,7 @@ function optionsFromEnum(enumObject: Record<string, string>): SelectOption[] {
 const { options, dataPointValue, selectedDocumentMeta, extendedDialogRef, isPageValid, buildApiBodyWithExtendedInfo } =
   useOptionExtendedDataPoint(props.extendedDataPointObject, {
     extendedEnumPcafMainSector: optionsFromEnum(PcafGeneralCompanyMainPcafSectorOptions),
+    extendedEnumSfdrMainPcafSector: optionsFromEnum(SfdrGeneralCompanyMainPcafSectorOptions),
   });
 
 defineExpose({ buildApiBodyWithExtendedInfo, isPageValid });
