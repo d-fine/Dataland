@@ -109,7 +109,7 @@
                 />
               </td>
             </tr>
-            <tr>
+            <tr v-if="!isAssuranceDataPoint">
               <th scope="row" class="headers-bg">
                 <label for="custom-quality-field">Quality</label>
               </th>
@@ -312,7 +312,9 @@ const customValueText = computed<string>({
 const isFormValid = computed<boolean>(() => {
   const f = formData.value;
   const valueHasContent = hasValueContent(f.value);
-  const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment].some((v) => v.trim().length > 0);
+  const otherFieldsHaveContent = [f.quality, f.document, f.pages, f.comment, f.provider].some(
+    (v) => v.trim().length > 0
+  );
   const hasAnyContent = valueHasContent || otherFieldsHaveContent;
   const pagesPatternOk = !f.pages || isPageReferenceValid(f.pages);
   const currencyRequirementOk = !props.isCurrencyDataPoint || !valueHasContent || f.currency.trim().length > 0;
@@ -393,7 +395,11 @@ function updateTextareaOverflowStates(): void {
  * @returns Nothing
  */
 function formDataToJson(): void {
-  jsonValue.value = parseFormDataToDataPointJson(formData.value, selectedDocumentOption.value);
+  jsonValue.value = parseFormDataToDataPointJson(
+    formData.value,
+    selectedDocumentOption.value,
+    props.isAssuranceDataPoint
+  );
 }
 
 /**

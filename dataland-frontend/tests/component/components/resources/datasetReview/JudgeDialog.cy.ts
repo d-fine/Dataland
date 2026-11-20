@@ -392,36 +392,123 @@ describe('JudgeDialog component tests', () => {
       },
     });
 
-    it('shows the provider in the Original section and a provider field in the Custom form', () => {
+    const withAssuranceQaReport = (correctedData: object): DatasetJudgementResponse => {
+      const base = withBaseType(assuranceType);
+      return {
+        ...base,
+        dataPoints: {
+          ...base.dataPoints,
+          [dataPointTypeId]: {
+            ...base.dataPoints[dataPointTypeId],
+            qaReports: base.dataPoints[dataPointTypeId].qaReports.map((qaReport) => ({
+              ...qaReport,
+              correctedData: JSON.stringify(correctedData),
+            })),
+          },
+        },
+      };
+    };
+
+    it('shows provider and a real comment but no quality in the Original and Reviewed sections', () => {
+      mountJudgeDialog({
+        datasetJudgement: withAssuranceQaReport({
+          value: 'ReasonableAssurance',
+          provider: 'QA Auditors',
+          comment: 'QA comment text',
+        }),
+        originalDataPointBody: {
+          value: 'LimitedAssurance',
+          provider: 'ACME Auditors',
+          comment: 'Original comment text',
+        },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Provider').should('contain.text', 'ACME Auditors');
+        cy.contains('tr', 'Comment').should('contain.text', 'Original comment text');
+        cy.contains('tr', 'Quality').should('not.exist');
+      });
+      cy.get('[data-test="corrected-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Provider').should('contain.text', 'QA Auditors');
+        cy.contains('tr', 'Comment').should('contain.text', 'QA comment text');
+        cy.contains('tr', 'Quality').should('not.exist');
+      });
+    });
+
+    it('shows a comment field but no quality dropdown in the Custom form', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType(assuranceType) });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="custom-comment-field"]').should('exist');
+      cy.get('[data-test="custom-provider-field"]').should('exist');
+      cy.get('[data-test="custom-quality-field"]').should('not.exist');
+    });
+
+    it('sends provider and comment but never a quality when accepting a custom assurance data point', () => {
       mountJudgeDialog({
         datasetJudgement: withBaseType(assuranceType),
         originalDataPointBody: { value: 'LimitedAssurance', provider: 'ACME Auditors', quality: 'Audited' },
       });
       cy.wait('@getOriginalDataPoint');
 
-      cy.get('[data-test="original-datapoint-section"]').within(() => {
-        cy.contains('tr', 'Provider').should('contain.text', 'ACME Auditors');
-      });
-
+      // copies the original quality into the hidden form data, so that the safeguard is actually exercised
+      cy.get('[data-test="copy-original-to-custom"]').click();
       cy.get('[data-test="custom-value-field"]').click();
       cy.get('[data-test="custom-value-field"]').clear();
       cy.get('[data-test="custom-value-field"]').type('ReasonableAssurance');
+      cy.get('[data-test="custom-provider-field"]').clear();
       cy.get('[data-test="custom-provider-field"]').type('Other Auditors');
+      cy.get('[data-test="custom-comment-field"]').type('My real comment');
       cy.get('[data-test="accept-custom-button"]').click();
 
       cy.wait('@patchJudgementDetail').then((interception) => {
-        const body = interception.request.body as { customDataPoint?: string };
-        const parsed = JSON.parse(body.customDataPoint ?? '{}') as { provider?: string };
+        const parsed = JSON.parse(interception.request.body.customDataPoint) as Record<string, unknown>;
         expect(parsed.provider).to.equal('Other Auditors');
+        expect(parsed.comment).to.equal('My real comment');
+        expect(parsed).not.to.have.property('quality');
       });
     });
 
-    it('does not show provider elements for non-Assurance data points', () => {
+    it('does not show a copied quality in the JSON editor for assurance data points', () => {
+      mountJudgeDialog({
+        datasetJudgement: withBaseType(assuranceType),
+        originalDataPointBody: { value: 'LimitedAssurance', provider: 'ACME Auditors', quality: 'Audited' },
+      });
+      cy.wait('@getOriginalDataPoint');
+
+      cy.get('[data-test="copy-original-to-custom"]').click();
+      cy.get('[data-test="edit-mode-toggle"]').click();
+
+      cy.get('[data-test="custom-json-textarea"]').should('contain.value', 'ACME Auditors');
+      cy.get('[data-test="custom-json-textarea"]').should('not.contain.value', 'quality');
+    });
+
+    it('strips a quality typed into the JSON editor when accepting a custom assurance data point', () => {
+      mountJudgeDialog({ datasetJudgement: withBaseType(assuranceType) });
+      cy.wait('@getOriginalDataPoint');
+
+      const customJson = '{"value":"LimitedAssurance","provider":"JSON Auditors","comment":"c","quality":"Audited"}';
+      cy.get('[data-test="edit-mode-toggle"]').click();
+      cy.get('[data-test="custom-json-textarea"]').clear().type(customJson, { parseSpecialCharSequences: false });
+      cy.get('[data-test="accept-custom-button"]').click();
+
+      cy.wait('@patchJudgementDetail').then((interception) => {
+        const parsed = JSON.parse(interception.request.body.customDataPoint) as Record<string, unknown>;
+        expect(parsed.provider).to.equal('JSON Auditors');
+        expect(parsed.comment).to.equal('c');
+        expect(parsed).not.to.have.property('quality');
+      });
+    });
+
+    it('shows quality but no provider elements for non-assurance data points', () => {
       mountJudgeDialog({ datasetJudgement: withBaseType('extendedDecimal') });
       cy.wait('@getOriginalDataPoint');
 
+      cy.get('[data-test="custom-quality-field"]').should('exist');
       cy.get('[data-test="custom-provider-field"]').should('not.exist');
       cy.get('[data-test="original-datapoint-section"]').within(() => {
+        cy.contains('tr', 'Quality').should('exist');
         cy.contains('tr', 'Provider').should('not.exist');
       });
     });

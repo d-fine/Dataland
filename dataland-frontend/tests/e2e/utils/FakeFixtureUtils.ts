@@ -247,9 +247,12 @@ export class Generator {
       ? valueOrNull(generateDataSource(this.reports), this.nullProbability)
       : null;
 
+    const comment = isAssuranceProviderExisting ? valueOrNull(faker.lorem.sentence(), this.nullProbability) : null;
+
     return {
       value: assurance,
       provider: provider,
+      comment: comment,
       dataSource: dataSource,
     };
   }

@@ -87,6 +87,7 @@ interface DatapointProperties {
   quality?: string | null;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
   comment?: string | null;
+  provider?: string | null;
 }
 
 /**
@@ -171,6 +172,7 @@ export function wrapDisplayValueWithDatapointInformationByDataPoint(
             }
           : null,
         comment: toSafeDisplayString(parsed.comment) || null,
+        provider: toSafeDisplayString(parsed.provider) || null,
       }
     : undefined;
   return wrapDisplayValueWithDatapointInformation(inputValue, fieldLabel, datapointProperties);
@@ -185,6 +187,7 @@ function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties 
   if (
     dataPointProperties?.quality != undefined ||
     !isDatapointCommentConsideredMissing(dataPointProperties) ||
+    !!dataPointProperties?.provider?.trim() ||
     (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0)
   )
     return true;
@@ -225,6 +228,7 @@ export function buildDisplayValueWhenDataPointMetaInfoIsAvailable(
     innerContents: innerContent,
     quality: isOnlyQualityProvided ? undefined : (datapointProperties?.quality ?? undefined),
     comment: datapointProperties?.comment ?? undefined,
+    provider: datapointProperties?.provider ?? undefined,
     dataSource: datapointProperties?.dataSource ?? undefined,
     fieldLabel: fieldLabel,
   };
