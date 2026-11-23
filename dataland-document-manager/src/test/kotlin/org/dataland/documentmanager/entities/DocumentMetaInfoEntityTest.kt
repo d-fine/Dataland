@@ -81,6 +81,15 @@ class DocumentMetaInfoEntityTest {
         isUserLoggedIn: Boolean,
         userRoles: Set<DatalandRealmRole>,
     ) {
+        mockSecurityContextForUser(isUserLoggedIn, userRoles)
+        documentMetaInfoEntity = buildDocumentMetaInfoEntity(uploaderId, qaStatus)
+        assertViewabilityMatchesExpectation(qaStatus, uploaderId, isUserLoggedIn, userRoles)
+    }
+
+    private fun mockSecurityContextForUser(
+        isUserLoggedIn: Boolean,
+        userRoles: Set<DatalandRealmRole>,
+    ) {
         val mockAuthentication =
             if (isUserLoggedIn) {
                 AuthenticationMock.mockJwtAuthentication(
@@ -94,21 +103,31 @@ class DocumentMetaInfoEntityTest {
 
         doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
 
-        documentMetaInfoEntity =
-            DocumentMetaInfoEntity(
-                documentId = "dummy-document-id",
-                documentType = DocumentType.Pdf,
-                documentName = "dummy-document",
-                documentCategory = DocumentCategory.AnnualReport,
-                companyIds = mutableSetOf("dummy-company-id"),
-                uploaderId = uploaderId,
-                uploadTime = 0L,
-                publicationDate = null,
-                reportingPeriod = null,
-                qaStatus = qaStatus,
-            )
+    private fun buildDocumentMetaInfoEntity(
+        uploaderId: String,
+        qaStatus: QaStatus,
+    ): DocumentMetaInfoEntity =
+        DocumentMetaInfoEntity(
+            documentId = "dummy-document-id",
+            documentType = DocumentType.Pdf,
+            documentName = "dummy-document",
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = mutableSetOf("dummy-company-id"),
+            uploaderId = uploaderId,
+            uploadTime = 0L,
+            publicationDate = null,
+            reportingPeriod = null,
+            qaStatus = qaStatus,
+        )
 
+    private fun assertViewabilityMatchesExpectation(
+        qaStatus: QaStatus,
+        uploaderId: String,
+        isUserLoggedIn: Boolean,
+        userRoles: Set<DatalandRealmRole>,
+    ) {
         when {
             qaStatus == QaStatus.Accepted -> {
                 assertTrue(
