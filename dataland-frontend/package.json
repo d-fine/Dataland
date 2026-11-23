@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@dataland/shared-elements": "file:../dataland-sharedElements",
-    "@formkit/core": "^2.7.0",
-    "@formkit/themes": "^2.7.0",
-    "@formkit/vue": "^2.7.0",
+    "@formkit/core": "^2.8.1",
+    "@formkit/themes": "^2.8.1",
+    "@formkit/vue": "^2.8.1",
     "@ibm/plex": "^6.4.1",
     "@primeuix/themes": "^2.0.3",
     "@primevue/core": "^4.5.5",
-    "@tanstack/vue-query": "^5.108.0",
+    "@tanstack/vue-query": "^5.108.2",
     "@vueuse/core": "^15.0.0",
     "axios": "^1.21.1",
     "cypress-recurse": "^1.37.2",
@@ -44,13 +44,13 @@
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
-    "vue": "^3.5.45",
+    "vue": "^3.5.46",
     "vue-router": "^5.5.1"
   },
   "devDependencies": {
     "@cypress/code-coverage": "4.1.3",
     "@faker-js/faker": "^10.6.0",
-    "@tanstack/vue-query-devtools": "^6.4.3",
+    "@tanstack/vue-query-devtools": "^6.4.5",
     "@tsconfig/node24": "^24.0.6",
     "@types/markdown-it": "^14.2.0",
     "@types/node": "^26.6.6",
@@ -64,8 +64,8 @@
     "depcheck": "1.4.7",
     "dompurify": "^3.4.18",
     "eslint": "^10.15.0",
-    "eslint-plugin-cypress": "^7.0.5",
-    "eslint-plugin-jsdoc": "^65.4.12",
+    "eslint-plugin-cypress": "^7.1.0",
+    "eslint-plugin-jsdoc": "^65.5.0",
     "eslint-plugin-vue": "^10.12.1",
     "git-commit-id": "2.0.1",
     "lint-staged": "^17.6.1",
@@ -80,7 +80,7 @@
     "typescript": "^6.0.3",
     "vite": "^8.3.8",
     "vite-plugin-istanbul": "9.0.1",
-    "vue-markdown-render": "2.3.1",
+    "vue-markdown-render": "3.0.0",
     "vue-tsc": "^3.3.14"
   }
 }
