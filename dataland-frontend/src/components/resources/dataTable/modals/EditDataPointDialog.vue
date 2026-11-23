@@ -100,6 +100,7 @@ const extendedDataPointObject: ExtendedDataPointType = isActivityListDataPoint
   : buildScalarDataPointObject();
 
 provide('companyId', companyId);
+provide('dataPointTypeId', dataPointTypeId);
 // For empty cells there is no modal data, so the KPI type is derived from the data point type id instead.
 provide('activityKpiType', modalData?.kpiType ?? kpiTypeFromDataPointTypeId(dataPointTypeId));
 
