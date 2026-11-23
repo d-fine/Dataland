@@ -5,6 +5,7 @@ import CurrencyExtendedDataPointFormField from '@/components/resources/dataTable
 import EligibleOrAlignedActivitiesFormField from '@/components/resources/dataTable/modals/EligibleOrAlignedActivitiesFormField.vue';
 import DateExtendedDataPointFormField from '@/components/resources/dataTable/modals/DateExtendedDataPointFormField.vue';
 import RadioButtonsExtendedDataPointFormField from '@/components/resources/dataTable/modals/RadioButtonsExtendedDataPointFormField.vue';
+import SingleSelectExtendedDataPointFormField from '@/components/resources/dataTable/modals/SingleSelectExtendedDataPointFormField.vue';
 import AssuranceFormField from '@/components/resources/dataTable/modals/AssuranceFormField.vue';
 import AlignedActivitiesFormField from '@/components/resources/dataTable/modals/AlignedActivitiesFormField.vue';
 import NonAlignedActivitiesFormField from '@/components/resources/dataTable/modals/NonAlignedActivitiesFormField.vue';
@@ -18,6 +19,7 @@ export const componentDictionary: Record<string, Component> = {
   EligibleOrAlignedActivitiesFormField,
   DateExtendedDataPointFormField,
   RadioButtonsExtendedDataPointFormField,
+  ExtendedSingleSelectFormField: SingleSelectExtendedDataPointFormField,
   AssuranceFormField,
   AlignedActivitiesFormField,
   NonAlignedActivitiesFormField,
