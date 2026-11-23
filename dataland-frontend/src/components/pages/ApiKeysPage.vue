@@ -225,12 +225,8 @@ export default defineComponent({
         ).apiClients.apiKeyController;
         const apiKeyMetaInfoForUser = await apiKeyManagerController.getApiKeyMetaInfoForUser();
         this.waitingForData = false;
-        this.userRolesAccordingToApiKey = apiKeyMetaInfoForUser.data.keycloakRoles
-          ? apiKeyMetaInfoForUser.data.keycloakRoles
-          : [];
-        this.userRolesAccordingToKeycloak = resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
-          ? resolvedKeycloakPromise.tokenParsed?.realm_access?.roles
-          : [];
+        this.userRolesAccordingToApiKey = apiKeyMetaInfoForUser.data.keycloakRoles ?? [];
+        this.userRolesAccordingToKeycloak = resolvedKeycloakPromise.tokenParsed?.realm_access?.roles ?? [];
         this.userAlreadyHasApiKey = apiKeyMetaInfoForUser.data.active ? apiKeyMetaInfoForUser.data.active : false;
         this.expiryDate = apiKeyMetaInfoForUser.data.expiryDate ? apiKeyMetaInfoForUser.data.expiryDate : undefined;
       } catch (error) {
@@ -269,9 +265,7 @@ export default defineComponent({
         this.userAlreadyHasApiKey = true;
         this.expiryDate = response.data.apiKeyMetaInfo.expiryDate ? response.data.apiKeyMetaInfo.expiryDate : undefined;
         this.newKey = response.data.apiKey;
-        this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles
-          ? response.data.apiKeyMetaInfo.keycloakRoles
-          : [];
+        this.userRolesAccordingToApiKey = response.data.apiKeyMetaInfo.keycloakRoles ?? [];
         this.setActivePageState('view');
       } catch (error) {
         console.error(error);

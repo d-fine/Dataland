@@ -453,12 +453,17 @@ const currentQaReport = computed<DataPointQaReport | null>(() => {
 });
 
 /**
- * Check if the QA report has invalid corrected data.
+ * Check if the QA report has invalid corrected data, i.e. it is missing or has no content at all.
  *
  * @returns True if corrected data is invalid.
  */
 function isQaReportCorrectedDataInvalid(): boolean {
-  return !currentQaReport.value || !currentQaCorrectedData.value || currentQaCorrectedData.value.quality == null;
+  const correctedData = currentQaCorrectedData.value;
+  if (!currentQaReport.value || !correctedData) return true;
+  const hasContent = Object.values(correctedData).some(
+    (field) => field !== null && field !== undefined && field !== ''
+  );
+  return !hasContent;
 }
 
 const isQaReportAcceptButtonDisabled = computed<boolean>(() => {
@@ -592,7 +597,7 @@ const areAllDataPointsReviewed = computed<boolean>(() => {
 
   return relevantDataPointTypeIds.value.every((id) => {
     const meta = judgement.dataPoints[id];
-    return meta != null && meta.acceptedSource != null;
+    return meta?.acceptedSource != null;
   });
 });
 

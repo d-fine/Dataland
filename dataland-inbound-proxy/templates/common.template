@@ -33,6 +33,18 @@ location /api/ {
   proxy_pass ${BACKEND_URL};
   include utils/proxy.conf;
   include utils/errorsAsJson.conf;
+
+  # The AI-based proxy search (POST /api/company-proxies/{companyId}/proxy-suggestion) can take several minutes.
+  # Headers and error handling are inherited from /api/.
+  # TIMEOUT CHAIN for the AI-based proxy search - these three values depend on each other, keep them in sync:
+  #   1. dataland-company-service/src/main/resources/provider-azure.properties: dataland.company-service.azure.max-research-duration (240s)
+  #   2. dataland-backend/src/main/resources/application.properties: dataland.company-service.read-timeout-seconds (270s)
+  #   3. dataland-inbound-proxy/templates/common.template: proxy_read_timeout of /api/company-proxies/ (300s)
+  # Required order: 1 < 2 < 3, so that the 503 of the proxy finder arrives instead of a cut connection.
+  location /api/company-proxies/ {
+    proxy_pass ${BACKEND_URL}company-proxies/;
+    proxy_read_timeout 300s;
+  }
 }
 
 location /documents/ {
