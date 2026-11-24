@@ -69,7 +69,9 @@ class ProxySuggestionService(
                 translateClientException(companyId, throwable)
             }
 
-            is ServerException -> translateServerException(companyId, throwable)
+            is ServerException -> {
+                translateServerException(companyId, throwable)
+            }
 
             is IOException -> {
                 logger.error("Calling the proxy finder failed for company $companyId.", throwable)
@@ -118,12 +120,13 @@ class ProxySuggestionService(
                 )
             }
 
-            clientException.statusCode == HttpStatus.NOT_FOUND.value() ->
+            clientException.statusCode == HttpStatus.NOT_FOUND.value() -> {
                 ResourceNotFoundApiException(
                     summary = COMPANY_NOT_FOUND,
                     message = "Dataland does not know the company ID $companyId.",
                     cause = clientException,
                 )
+            }
 
             else -> {
                 logger.error(
