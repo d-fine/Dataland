@@ -16,10 +16,11 @@ describe('Component test for CreateCompany', () => {
   });
 
   it('Check that an error message is displayed when trying to upload a company without any identifiers', async () => {
-    await wrapper.setData({ identifiers: {} });
+    await wrapper.setData({ countryCode: 'DE', identifiers: {} });
     await (wrapper.vm.postCompanyInformation as () => Promise<void>)();
-    expect(wrapper.vm.uploadSucceded).to.be.false;
-    expect(wrapper.vm.postCompanyProcessed).to.be.true;
+    expect(wrapper.vm.message).to.equal('Please specify at least one company identifier.');
+    expect(wrapper.vm.uploadSucceded).to.equal(false);
+    expect(wrapper.vm.postCompanyProcessed).to.equal(true);
   });
 
   it('Check if removing an alternative company name works', () => {
