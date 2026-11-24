@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataExportStore
@@ -55,18 +54,6 @@ class PcafDataController
             reportingPeriod: String,
             companyId: String,
         ): ResponseEntity<CompanyAssociatedData<PcafData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
-
-        @Operation(
-            operationId = "postCompanyAssociatedPcafData",
-            summary = "Upload new dataset.",
-            description =
-                "The uploaded data is added to the data store, the generated data id is returned. " +
-                    "Document references must contain only the file ID, no additional document metadata.",
-        )
-        override fun postCompanyAssociatedData(
-            companyAssociatedData: CompanyAssociatedData<PcafData>,
-            bypassQa: Boolean,
-        ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
         @Operation(operationId = "postExportJobCompanyAssociatedPcafDataByDimensions")
         override fun postExportJobCompanyAssociatedDataByDimensions(

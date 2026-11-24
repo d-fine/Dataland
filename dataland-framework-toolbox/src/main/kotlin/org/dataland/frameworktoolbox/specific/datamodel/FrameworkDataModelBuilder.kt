@@ -62,6 +62,7 @@ class FrameworkDataModelBuilder(
     private fun buildFrameworkSpecificApiController(
         into: DatalandRepository,
         assembledDataset: Boolean,
+        backendUploadEndpoint: Boolean,
     ) {
         logger.trace("Building the framework-specific API Controller")
         val targetPath =
@@ -81,6 +82,7 @@ class FrameworkDataModelBuilder(
                 "frameworkIdentifier" to framework.identifier,
                 "frameworkPackageName" to removeUnallowedJavaIdentifierCharacters(framework.identifier),
                 "frameworkDataType" to rootDataModelClass.getTypeReference(false),
+                "backendUploadEndpoint" to backendUploadEndpoint,
             ),
             writer,
         )
@@ -95,12 +97,13 @@ class FrameworkDataModelBuilder(
         into: DatalandRepository,
         buildApiController: Boolean,
         assembledDataset: Boolean,
+        backendUploadEndpoint: Boolean = true,
     ) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into.backendKotlinSrc)
 
         if (buildApiController) {
-            buildFrameworkSpecificApiController(into, assembledDataset)
+            buildFrameworkSpecificApiController(into, assembledDataset, backendUploadEndpoint)
         }
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")

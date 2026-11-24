@@ -23,7 +23,11 @@ class PcafFramework :
         explanation = "Partnership for Carbon Accounting Financials",
         File("./dataland-framework-toolbox/inputs/pcaf/pcaf.xlsx"),
         order = 8,
-        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.UploadPage,
+                FrameworkGenerationFeatures.BackendUploadEndpoint,
+            ),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         overwriteDataPointSpecificationForEnums(framework.root)

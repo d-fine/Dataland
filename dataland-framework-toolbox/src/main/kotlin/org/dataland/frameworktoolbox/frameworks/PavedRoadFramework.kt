@@ -194,6 +194,7 @@ abstract class PavedRoadFramework(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             assembledDataset = enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications),
+            backendUploadEndpoint = enabledFeatures.contains(FrameworkGenerationFeatures.BackendUploadEndpoint),
         )
     }
 

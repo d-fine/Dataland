@@ -2,16 +2,17 @@
 package org.dataland.datalandbackend.frameworks.${frameworkPackageName}
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
-<#list frameworkDataType.imports as import>import ${import}
+<#if backendUploadEndpoint>import org.dataland.datalandbackend.controller.UploadableDataController
+<#else>import org.dataland.datalandbackend.controller.DataController
+</#if><#list frameworkDataType.imports as import>import ${import}
 </#list>
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.CompanyQueryManager
+<#if backendUploadEndpoint>import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+</#if>import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataExportStore
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -40,7 +41,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
     @Qualifier("${frameworkDataExportService}") dataExportService: DataExportService<${frameworkDataType.shortenedQualifier}>,
     dataExportStore: DataExportStore,
     companyQueryManager: CompanyQueryManager,
-) : DataController<${frameworkDataType.shortenedQualifier}>(
+) : <#if backendUploadEndpoint>UploadableDataController<#else>DataController</#if><${frameworkDataType.shortenedQualifier}>(
     datasetStorageService,
     dataMetaInformationManager,
     dataExportService,
@@ -60,6 +61,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         return super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
     }
 
+<#if backendUploadEndpoint>
     @Operation(
         operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}",
         summary = "Upload new dataset.",
@@ -74,6 +76,7 @@ class ${frameworkDataType.shortenedQualifier}Controller
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
+</#if>
     @Operation(operationId = "postExportJobCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
     override fun postExportJobCompanyAssociatedDataByDimensions(
         exportRequestData: ExportRequestData,

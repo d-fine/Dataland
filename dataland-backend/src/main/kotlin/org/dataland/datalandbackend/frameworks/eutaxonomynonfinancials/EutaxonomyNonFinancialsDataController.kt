@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
@@ -38,7 +38,7 @@ class EutaxonomyNonFinancialsDataController
         @Qualifier("AssembledExportService") dataExportService: DataExportService<EutaxonomyNonFinancialsData>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
-    ) : DataController<EutaxonomyNonFinancialsData>(
+    ) : UploadableDataController<EutaxonomyNonFinancialsData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,
