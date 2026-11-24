@@ -21,6 +21,15 @@
     aria-label="Assurance provider"
     data-test="assurance-provider-input"
   />
+  <h4>Comment</h4>
+  <InputText
+    v-model="comment"
+    placeholder="Insert comment"
+    fluid
+    id="assurance-comment"
+    aria-label="Assurance comment"
+    data-test="assurance-comment-input"
+  />
   <ExtendedDataPointFormFieldDialog
     ref="extendedDialogRef"
     v-model:selectedDocumentMeta="selectedDocumentMeta"
@@ -50,32 +59,29 @@ const options = Object.values(AssuranceDataPointValueEnum).map((value) => ({
   label: humanizeStringOrNumber(value),
   value,
 }));
-// The table cell only provides the humanized value and the provider as part of the comment (see formatAssuranceForDataTable).
-const providerCommentPrefix = 'Assurance provided by ';
 
 const initialValue = props.extendedDataPointObject.value;
-const initialComment = props.extendedDataPointObject.comment ?? '';
 const assuranceValue = ref<AssuranceDataPointValueEnum | null>(
   typeof initialValue === 'string'
     ? (options.find((option) => option.value === initialValue || option.label === initialValue)?.value ?? null)
     : null
 );
-const provider = ref<string>(
-  initialComment.startsWith(providerCommentPrefix) ? initialComment.slice(providerCommentPrefix.length) : ''
-);
+const provider = ref<string>(props.extendedDataPointObject.provider ?? '');
+const comment = ref<string>(props.extendedDataPointObject.comment ?? '');
 const selectedDocumentMeta = ref<DocumentMetaInfoResponse | undefined>(undefined);
 const extendedDialogRef = ref<{ getFormData: () => ExtendedDataPointMetaInfoType; isPageValid: boolean }>();
 
 const isPageValid = computed<boolean>(() => !!assuranceValue.value && (extendedDialogRef.value?.isPageValid ?? true));
 
 /**
- * @returns the JSON-stringified assurance data point (value, provider and data source)
+ * @returns the JSON-stringified assurance data point (value, provider, comment and data source, never a quality)
  */
 function buildApiBodyWithExtendedInfo(): string {
   const dataSource = extendedDialogRef.value?.getFormData().dataSource;
   return JSON.stringify({
     value: assuranceValue.value,
     ...(provider.value.trim() ? { provider: provider.value.trim() } : {}),
+    ...(comment.value.trim() ? { comment: comment.value.trim() } : {}),
     ...(dataSource?.fileReference
       ? { dataSource: { fileReference: dataSource.fileReference, page: dataSource.page } }
       : {}),

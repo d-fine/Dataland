@@ -19,10 +19,7 @@ import {
 } from '@clients/backend';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory';
-import {
-  formatAssuranceProviderForDataTable,
-  formatAssuranceForDataTable,
-} from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
+import { formatAssuranceForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils';
 export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<EutaxonomyNonFinancials202673Data> = [
@@ -169,16 +166,6 @@ export const eutaxonomyNonFinancials202673ViewConfiguration: MLDTConfig<Eutaxono
           formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
         uploadComponentName: 'AssuranceFormField',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
-      },
-      {
-        type: 'cell',
-        label: 'Assurance Provider',
-        explanation: 'Provider of the Assurance',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancials202673Data): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceProviderForDataTable(dataset.general?.assurance),
-        uploadComponentName: 'Non-editable',
-        dataPointTypeId: 'assurance',
       },
       {
         type: 'cell',
