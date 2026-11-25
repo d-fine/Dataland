@@ -94,7 +94,14 @@ describeIf(
           return cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null);
         })
         .then((buffer) => {
-          const arrayBuffer = Uint8Array.from(buffer).buffer;
+          // Document ids are content hashes. Appending a unique PDF comment after the end-of-file marker keeps
+          // the PDF valid but guarantees a fresh document, so the test cannot pick up a document that is stuck in
+          // a non-accepted QA state from an earlier run on a long-lived server.
+          const uniqueSuffix = new TextEncoder().encode(`\n%judgement-test-${Date.now()}-${Math.random()}\n`);
+          const uniqueBytes = new Uint8Array(buffer.length + uniqueSuffix.length);
+          uniqueBytes.set(Uint8Array.from(buffer), 0);
+          uniqueBytes.set(uniqueSuffix, buffer.length);
+          const arrayBuffer = uniqueBytes.buffer;
 
           return uploadDocumentViaApi(adminToken, arrayBuffer, TEST_PDF_REPORT_FILE_NAME, {
             documentName: TEST_PDF_REPORT_FILE_NAME,
@@ -204,7 +211,11 @@ describeIf(
     });
 
     it('Check accepting a custom data point with a selected document reference and page succeeds', () => {
-      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
+      waitForDocumentToBeSearchableForCompany(
+        storedCompany.companyId,
+        uploadedDocumentMetaInfo.documentId,
+        tokens.adminToken
+      );
 
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
         const dataPointType = DATA_POINT_TYPES.greenAssetRatioEligible;
@@ -238,7 +249,11 @@ describeIf(
     });
 
     it('Check accepting a custom data point copied from a QA-corrected value with a document reference succeeds', () => {
-      waitForDocumentToBeSearchableForCompany(storedCompany.companyId, uploadedDocumentMetaInfo.documentId);
+      waitForDocumentToBeSearchableForCompany(
+        storedCompany.companyId,
+        uploadedDocumentMetaInfo.documentId,
+        tokens.adminToken
+      );
       const dataPointType = DATA_POINT_TYPES.areAllGroupEntitiesCovered;
       const dataPointId = overview.dataPointsWithoutQaReports[dataPointType];
       const correctedValueWithDocReference = JSON.stringify({
@@ -293,8 +308,9 @@ const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 120000;
  *
  * @param companyId  The Dataland company id the document should be associated with.
  * @param documentId The id (sha256 hash) of the document to wait for.
+ * @param token      Bearer token used to read the document's QA status for diagnostics.
  */
-function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string): void {
+function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string, token: string): void {
   let lastObservation = 'no response received';
   cy.waitUntil(
     () =>
@@ -309,6 +325,20 @@ function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: 
           const documents = Array.isArray(response.body) ? response.body : [];
           lastObservation = `HTTP ${response.status}, ${documents.length} document(s) returned`;
           return response.status === 200 && documents.some((document) => document.documentId === documentId);
+        })
+        .then((isSearchable) => {
+          if (isSearchable) return true;
+          return cy
+            .request({
+              method: 'GET',
+              url: `${apiBaseUrl}/documents/${documentId}/metadata`,
+              headers: { Authorization: `Bearer ${token}` },
+              failOnStatusCode: false,
+            })
+            .then((metaResponse) => {
+              lastObservation += `, document qaStatus: ${metaResponse.body?.qaStatus ?? `unknown (HTTP ${metaResponse.status})`}`;
+              return false;
+            });
         }),
     {
       timeout: DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS,
