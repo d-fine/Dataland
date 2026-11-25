@@ -214,6 +214,20 @@ function startDownload(fileType: FileTypeLabel, useAliases: boolean = true, keep
 }
 
 /**
+ * Closes the reporting period multiselect overlay and verifies that it is gone, as an overlay that stays open covers
+ * the switches below it. A click outside of the overlay is not always registered, so the selector is toggled as fallback.
+ */
+function closeReportingPeriodOverlay(): void {
+  cy.get('body').click(0, 0);
+  cy.get('body').then(($body) => {
+    if ($body.find('.p-multiselect-overlay').length > 0) {
+      cy.get('[data-test="reportingPeriodSelector"]').click();
+    }
+  });
+  cy.get('.p-multiselect-overlay').should('not.exist');
+}
+
+/**
  * Waits for the download and passes the path of the downloaded file to the callback.
  *
  * @param label the label of the downloaded framework, which is part of the file name
@@ -356,7 +370,7 @@ for (const config of frameworkTestConfigs) {
         for (const year of reportingYearsToSelect) {
           cy.get('.p-multiselect-list').contains(year).click();
         }
-        cy.get('body').click(0, 0);
+        closeReportingPeriodOverlay();
       });
 
       testDownloadPortfolio(

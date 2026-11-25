@@ -13,6 +13,12 @@ class DatalandRepositoryGradleInterface(
 ) {
     private val logger by LoggerDelegate()
 
+    companion object {
+        // Kept moderate: the outer gradle build, the toolbox JVM and this nested daemon share one CI runner.
+        private const val NESTED_GRADLE_MAX_HEAP = "4g"
+        private const val NESTED_KOTLIN_DAEMON_MAX_HEAP = "2g"
+    }
+
     private fun withGradleConnection(usingFunction: (ProjectConnection) -> Unit) {
         val gradleConnector = GradleConnector.newConnector()
         val projectConnection =
@@ -37,7 +43,7 @@ class DatalandRepositoryGradleInterface(
                 it
                     .newBuild()
                     .forTasks(*tasks.toTypedArray())
-                    .addJvmArguments("-Xmx8g")
+                    .addJvmArguments("-Xmx$NESTED_GRADLE_MAX_HEAP", "-Dkotlin.daemon.jvm.options=-Xmx$NESTED_KOTLIN_DAEMON_MAX_HEAP")
                     .addProgressListener { update: ProgressEvent ->
                         logger.trace("GRADLE UPDATE: ${update.displayName}")
                     }.setStandardOutput(System.out)

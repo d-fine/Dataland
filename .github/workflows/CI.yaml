@@ -113,6 +113,7 @@ jobs:
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
   framework-toolbox-consistency-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs:
       - framework-toolbox-list-frameworks
     strategy:
@@ -139,8 +140,16 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
+      - name: Warm up Gradle dependency cache with retry (Maven Central occasionally answers HTTP 429)
+        run: |
+          for i in 1 2 3; do
+            ./gradlew :dataland-framework-toolbox:classes :dataland-backend-utils:classes --no-daemon && exit 0
+            echo "Attempt $i failed. Waiting before retrying..."
+            sleep $((i * 30))
+          done
+          exit 1
       - name: Build framework '${{ matrix.framework }}'
-        run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace
+        run: ./gradlew dataland-framework-toolbox:runCoverage --args='${{ matrix.framework }}' --no-daemon --stacktrace -Dorg.gradle.jvmargs="-Xmx3g" -Pkotlin.daemon.jvmargs="-Xmx2g"
       - name: Verify that there are no changed (git-tracked) files
         run: ./testing/verify_that_no_git_tracked_files_changed.sh
       - run: mv ./dataland-framework-toolbox/build/jacoco/runCoverage.exec ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
