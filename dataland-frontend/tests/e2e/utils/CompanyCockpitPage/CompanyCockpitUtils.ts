@@ -1,8 +1,5 @@
 import { getReaderToken } from '@e2e/utils/Auth';
-import {
-  searchBasicCompanyInformationForDataType,
-  waitForCompanyToBeSearchableViaApi,
-} from '@e2e/utils/GeneralApiUtils';
+import { searchBasicCompanyInformationForDataType } from '@e2e/utils/GeneralApiUtils';
 import { type CompanyIdAndName, DataTypeEnum } from '@clients/backend';
 
 /**
@@ -23,19 +20,7 @@ export function fetchTestCompanies(): Cypress.Chainable<[CompanyIdAndName, Compa
         companyId: basicCompanyInfos[1].companyId,
         companyName: basicCompanyInfos[1].companyName,
       };
-      return getReaderToken().then((token: string) => {
-        waitForCompanyToBeSearchableViaApi(
-          token,
-          alphaCompanyIdAndName.companyName,
-          DataTypeEnum.EutaxonomyNonFinancials
-        );
-        waitForCompanyToBeSearchableViaApi(
-          token,
-          betaCompanyIdAndName.companyName,
-          DataTypeEnum.EutaxonomyNonFinancials
-        );
-        return [alphaCompanyIdAndName, betaCompanyIdAndName] as [CompanyIdAndName, CompanyIdAndName];
-      });
+      return [alphaCompanyIdAndName, betaCompanyIdAndName] as [CompanyIdAndName, CompanyIdAndName];
     });
 }
 

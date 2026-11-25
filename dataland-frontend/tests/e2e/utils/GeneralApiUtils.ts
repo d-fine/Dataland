@@ -42,47 +42,6 @@ export async function searchBasicCompanyInformationForDataType(
 }
 
 /**
- * Polls the companies search API until a company whose name matches the given search string is returned, i.e. until
- * the company is searchable. Uploads are processed asynchronously, so the UI may not find a company right after upload.
- * @param token The API bearer token to use
- * @param companyName Name (or name fragment) used as search string
- * @param dataType Optional data type the company must have at least one dataset for
- * @param timeoutInMs Maximum time to wait
- */
-export function waitForCompanyToBeSearchableViaApi(
-  token: string,
-  companyName: string,
-  dataType?: DataTypeEnum,
-  timeoutInMs = 120000
-): void {
-  let lastCount = 0;
-  let lastError = 'none';
-  cy.waitUntil(
-    () =>
-      cy.wrap(
-        new CompanyDataControllerApi(new Configuration({ accessToken: token }))
-          .getCompanies(companyName, dataType ? new Set([dataType]) : undefined)
-          .then((response) => {
-            lastCount = response.data.length;
-            return response.data.some((company) => company.companyName === companyName);
-          })
-          .catch((error: unknown) => {
-            lastError = String(error);
-            return false;
-          }),
-        { log: false, timeout: timeoutInMs }
-      ),
-    {
-      timeout: timeoutInMs,
-      interval: 2000,
-      errorMsg: () =>
-        `Company "${companyName}" did not become searchable via the API within ${timeoutInMs / 1000}s ` +
-        `(data type filter: ${dataType ?? 'none'}). Last result count: ${lastCount}, last error: ${lastError}.`,
-    }
-  );
-}
-
-/**
  * Counts the number of stored companies which contain at least one dataset with the provided data type and the
  * total number of datasets for that datatype
  * @param token The API bearer token to use

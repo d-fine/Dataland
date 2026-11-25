@@ -7,7 +7,6 @@ import { getBaseUrl } from '@e2e/utils/Cypress';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { getAdminToken } from '@e2e/utils/Auth';
-import { waitForCompanyToBeSearchableViaApi } from '@e2e/utils/GeneralApiUtils';
 import { convertStringToQueryParamFormat } from '@e2e/utils/Converters';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
@@ -172,13 +171,6 @@ describe('As a user, I expect the search functionality on the /companies page to
             companiesWithSfdrData.find((it) => it.reportingPeriod !== demoCompanyToTestFor.reportingPeriod)
           );
 
-          getAdminToken().then((token) => {
-            waitForCompanyToBeSearchableViaApi(
-              token,
-              demoCompanyToTestFor.companyInformation.companyName,
-              DataTypeEnum.Sfdr
-            );
-          });
           cy.ensureLoggedInAsReader();
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(`/companies?input=${demoCompanyToTestFor.companyInformation.companyName}`).wait(
@@ -383,7 +375,6 @@ describe('As a user, I expect the search functionality on the /companies page to
               sfdrFixture.t,
               sfdrFixture.reportingPeriod
             );
-            waitForCompanyToBeSearchableViaApi(token, companyNameSfdr, DataTypeEnum.Sfdr);
           });
           validateIfFirstAutoCompleteSuggestionInSyncWithCurrentFrameworkFilter(
             companyNameSfdrPrefix,
@@ -416,7 +407,6 @@ describe('As a user, I expect the search functionality on the /companies page to
                 }
               );
             });
-            waitForCompanyToBeSearchableViaApi(token, companyName, DataTypeEnum.EutaxonomyFinancials);
           });
           cy.intercept('**/api/companies/meta-information').as('companies-meta-information');
           cy.visit(`/companies?input=${companyName}`)
