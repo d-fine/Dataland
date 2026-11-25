@@ -61,7 +61,9 @@ class QaReportSecurityPolicy(
                 )
             }
 
-            else -> apiRequestException
+            else -> {
+                apiRequestException
+            }
         }
 
     /**

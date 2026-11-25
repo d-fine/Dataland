@@ -46,18 +46,24 @@ class EmailContactService(
      */
     fun getContacts(recipient: EmailRecipient): List<EmailContact> =
         when (recipient) {
-            is EmailRecipient.EmailAddress ->
+            is EmailRecipient.EmailAddress -> {
                 listOf(EmailContact.create(recipient.email))
+            }
+
             is EmailRecipient.UserId -> {
                 val emailAddress =
                     keycloakUserService.getUser(recipient.userId).email
                         ?: throw IllegalArgumentException("User with ${recipient.userId} not found or has no email address")
                 listOf(EmailContact.create(emailAddress, null))
             }
-            is EmailRecipient.Internal ->
+
+            is EmailRecipient.Internal -> {
                 internalContacts
-            is EmailRecipient.InternalCc ->
+            }
+
+            is EmailRecipient.InternalCc -> {
                 internalCcContacts
+            }
         }
 
     /**

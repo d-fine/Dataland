@@ -109,7 +109,9 @@ internal fun extractEuTaxonomyShare(
                 )
         }
 
-        else -> throw IllegalArgumentException("The EuTaxonomyShare conversion only supports one or two inputs.")
+        else -> {
+            throw IllegalArgumentException("The EuTaxonomyShare conversion only supports one or two inputs.")
+        }
     }
 
 internal data class EuTaxonomy2020ActivityOperands<

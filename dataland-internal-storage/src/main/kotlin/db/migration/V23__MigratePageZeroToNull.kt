@@ -47,9 +47,12 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
                 val value = jsonObject.opt(key)
 
                 when {
-                    key == "page" && value is Number ->
+                    key == "page" && value is Number -> {
                         when {
-                            value.toLong() > 0 -> jsonObject.put(key, value.toString())
+                            value.toLong() > 0 -> {
+                                jsonObject.put(key, value.toString())
+                            }
+
                             else -> {
                                 logger.info(
                                     "Setting page field with value $value to NULL " +
@@ -58,10 +61,13 @@ class V23__MigratePageZeroToNull : BaseJavaMigration() {
                                 jsonObject.put(key, JSONObject.NULL)
                             }
                         }
+                    }
+
                     key == "page" && value != JSONObject.NULL -> {
                         logger.info("Page field has unexpected value '$value' in dataset ${dataTableEntity.dataId}")
                         jsonObject.put(key, JSONObject.NULL)
                     }
+
                     value is JSONObject -> {
                         updatePageFields(value)
                     }

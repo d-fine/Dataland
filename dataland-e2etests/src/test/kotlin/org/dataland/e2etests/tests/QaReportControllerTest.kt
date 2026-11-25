@@ -56,7 +56,7 @@ class QaReportControllerTest {
         bypassQa: Boolean,
     ): List<UploadInfo> =
         when (qaReport) {
-            is SfdrQaReport ->
+            is SfdrQaReport -> {
                 apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                     testCompanyInformationForSfdrData,
                     listOf(testSfdrDataset),
@@ -64,8 +64,9 @@ class QaReportControllerTest {
                     uploadConfig = UploadConfiguration(bypassQa = bypassQa),
                     ensureQaPassed = bypassQa,
                 )
+            }
 
-            is EuTaxonomyNonFinancialsQaReport ->
+            is EuTaxonomyNonFinancialsQaReport -> {
                 apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                     testCompanyInformationForEuTaxonomyNonFinancialsData,
                     testEuTaxonomyNonFinancialsDataset,
@@ -73,8 +74,11 @@ class QaReportControllerTest {
                     uploadConfig = UploadConfiguration(bypassQa = bypassQa),
                     ensureQaPassed = bypassQa,
                 )
+            }
 
-            else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+            else -> {
+                throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+            }
         }
 
     private fun <T> postQaReportForNewDataId(
@@ -85,15 +89,19 @@ class QaReportControllerTest {
         val dataIdOfUpload = uploadInfo.first().actualStoredDataMetaInfo!!.dataId
         return withTechnicalUser(TechnicalUser.Admin) {
             when (qaReport) {
-                is SfdrQaReport ->
+                is SfdrQaReport -> {
                     qaApiAccessor.sfdrQaReportControllerApi
                         .postSfdrDataQaReport(dataIdOfUpload, qaReport)
+                }
 
-                is EuTaxonomyNonFinancialsQaReport ->
+                is EuTaxonomyNonFinancialsQaReport -> {
                     qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
                         .postEutaxonomyNonFinancialsDataQaReport(dataIdOfUpload, qaReport)
+                }
 
-                else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                else -> {
+                    throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                }
             }
         }
     }
@@ -105,21 +113,25 @@ class QaReportControllerTest {
         assertEquals(
             reportMetaInformation.dataId,
             when (qaReport) {
-                is SfdrQaReport ->
+                is SfdrQaReport -> {
                     qaApiAccessor.sfdrQaReportControllerApi
                         .getSfdrDataQaReport(
                             dataId = reportMetaInformation.dataId,
                             qaReportId = reportMetaInformation.qaReportId,
                         ).metaInfo.dataId
+                }
 
-                is EuTaxonomyNonFinancialsQaReport ->
+                is EuTaxonomyNonFinancialsQaReport -> {
                     qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
                         .getEutaxonomyNonFinancialsDataQaReport(
                             dataId = reportMetaInformation.dataId,
                             qaReportId = reportMetaInformation.qaReportId,
                         ).metaInfo.dataId
+                }
 
-                else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                else -> {
+                    throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                }
             },
         )
     }
@@ -131,20 +143,24 @@ class QaReportControllerTest {
         val exception =
             assertThrows<ClientException> {
                 when (qaReport) {
-                    is SfdrQaReport ->
+                    is SfdrQaReport -> {
                         qaApiAccessor.sfdrQaReportControllerApi.getSfdrDataQaReport(
                             dataId = reportMetaInformation.dataId,
                             qaReportId = reportMetaInformation.qaReportId,
                         )
+                    }
 
-                    is EuTaxonomyNonFinancialsQaReport ->
+                    is EuTaxonomyNonFinancialsQaReport -> {
                         qaApiAccessor.euTaxonomyNonFinancialsQaReportControllerApi
                             .getEutaxonomyNonFinancialsDataQaReport(
                                 dataId = reportMetaInformation.dataId,
                                 qaReportId = reportMetaInformation.qaReportId,
                             )
+                    }
 
-                    else -> throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                    else -> {
+                        throw IllegalArgumentException("The framework of $qaReport does not support QA reports.")
+                    }
                 }
             }
         assertEquals(exception.statusCode, HttpStatus.FORBIDDEN.value())

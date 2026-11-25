@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val jacocoVersion: String by project
 val ktlintVersion: String by project
+val ktlintKotlinVersion: String by project
 val githubUser: String by project
 val githubToken: String by project
 
@@ -38,6 +39,14 @@ subprojects {
     }
     ktlint {
         version.set(ktlintVersion)
+    }
+    // ktlint embeds its own Kotlin compiler; keep it from being aligned to the project's Kotlin version
+    configurations.matching { it.name == "ktlint" }.configureEach {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.kotlin") {
+                useVersion(ktlintKotlinVersion)
+            }
+        }
     }
     kotlin {
         jvmToolchain(jvmVersion.majorVersion.toInt())

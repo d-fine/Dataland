@@ -61,14 +61,17 @@ class V17__MigrateReferencedReports : BaseJavaMigration() {
                     val general = dataset.getOrJavaNull("general") as JSONObject?
                     general?.getOrJavaNull("referencedReports") as JSONObject?
                 }
+
                 "eutaxonomy-financials" -> {
                     dataset.getOrJavaNull("referencedReports") as JSONObject?
                 }
+
                 "sfdr" -> {
                     val general = dataset.getOrJavaNull("general") as JSONObject?
                     val generalGeneral = general?.getOrJavaNull("general") as JSONObject?
                     generalGeneral?.getOrJavaNull("referencedReports") as JSONObject?
                 }
+
                 else -> {
                     null
                 }

@@ -119,11 +119,13 @@ class V24__MigrateEuTaxonomyFinancialsNewStructure : BaseJavaMigration() {
                 is JSONObject -> {
                     current = value
                 }
+
                 JSONObject.NULL, null -> {
                     val newChild = JSONObject()
                     current.put(key, newChild)
                     current = newChild
                 }
+
                 else -> {
                     logger.warn("Trying to insert into path $path but $key exists and is not a JSONObject.")
                 }

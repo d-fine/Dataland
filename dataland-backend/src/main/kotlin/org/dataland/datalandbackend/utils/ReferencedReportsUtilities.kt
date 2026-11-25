@@ -193,6 +193,7 @@ class ReferencedReportsUtilities {
                     )
                 }
             }
+
             jsonNode.isObject -> {
                 jsonNode
                     .fieldNames()
@@ -207,6 +208,7 @@ class ReferencedReportsUtilities {
                         )
                     }
             }
+
             jsonNode.isArray -> {
                 jsonNode.forEachIndexed { index, arrayEntry ->
                     validateDataSourcesDoNotContainInferableFields(
@@ -217,6 +219,7 @@ class ReferencedReportsUtilities {
                     )
                 }
             }
+
             else -> {
                 // Primitive values cannot contain nested data source nodes.
             }

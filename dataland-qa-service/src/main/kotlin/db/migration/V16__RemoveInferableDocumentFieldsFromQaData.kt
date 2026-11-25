@@ -143,8 +143,11 @@ class V16__RemoveInferableDocumentFieldsFromQaData : BaseJavaMigration() {
      */
     private fun removeInferableDocumentFields(node: JsonNode): Int =
         when {
-            node.isArray -> node.sumOf { removeInferableDocumentFields(it) }
-            node.isObject ->
+            node.isArray -> {
+                node.sumOf { removeInferableDocumentFields(it) }
+            }
+
+            node.isObject -> {
                 node.fieldNames().asSequence().toList().sumOf { key ->
                     val value = node.get(key)
                     var removed = 0
@@ -154,7 +157,11 @@ class V16__RemoveInferableDocumentFieldsFromQaData : BaseJavaMigration() {
                     }
                     removed + removeInferableDocumentFields(value)
                 }
-            else -> 0
+            }
+
+            else -> {
+                0
+            }
         }
 
     private fun removeFieldIfPresent(

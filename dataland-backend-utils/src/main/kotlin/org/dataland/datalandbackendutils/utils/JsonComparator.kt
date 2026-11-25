@@ -129,20 +129,25 @@ object JsonComparator {
             expected.isNull || actual.isNull -> {
                 findNullNodeDifferences(expected, actual, options, currentPath, differenceList)
             }
+
             expected.isObject && actual.isObject -> {
                 compareObjects(expected, options, actual, currentPath, differenceList)
             }
+
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
+
             expected.isValueNode && actual.isValueNode -> {
                 if (!options.ignoreValues && valuesDiffer(expected, actual)) {
                     differenceList.add(JsonDiff(currentPath, expected, actual))
                 }
             }
+
             valuesDiffer(expected, actual) -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
             }
+
             else -> {
                 // The nodes are equal
             }
