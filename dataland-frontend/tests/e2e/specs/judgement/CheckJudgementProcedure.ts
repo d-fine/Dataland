@@ -278,6 +278,9 @@ describeIf(
   }
 );
 
+// Remote environments need a generous budget for the async QA acceptance of uploaded documents.
+const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 120000;
+
 /**
  * Polls the real "search document meta information by company" endpoint until the given
  * document id shows up in the results for the given company, or the retry budget is exhausted.
@@ -292,6 +295,7 @@ describeIf(
  * @param documentId The id (sha256 hash) of the document to wait for.
  */
 function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string): void {
+  let lastObservation = 'no response received';
   cy.waitUntil(
     () =>
       cy
@@ -302,10 +306,17 @@ function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: 
           failOnStatusCode: false,
         })
         .then((response) => {
-          if (response.status !== 200) return false;
-          return response.body.some((document) => document.documentId === documentId);
+          const documents = Array.isArray(response.body) ? response.body : [];
+          lastObservation = `HTTP ${response.status}, ${documents.length} document(s) returned`;
+          return response.status === 200 && documents.some((document) => document.documentId === documentId);
         }),
-    { timeout: 30000, interval: 1000 }
+    {
+      timeout: DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS,
+      interval: 2000,
+      errorMsg: () =>
+        `Document ${documentId} did not become searchable for company ${companyId} within ` +
+        `${DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS / 1000}s. Last observation: ${lastObservation}`,
+    }
   );
 }
 
