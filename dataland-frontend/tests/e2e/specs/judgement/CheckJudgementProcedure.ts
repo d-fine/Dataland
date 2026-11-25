@@ -286,16 +286,12 @@ describeIf(
  * asynchronous, message-queue-driven QA acceptance step (document-manager -> internal-storage ->
  * qa-service -> document-manager) has completed. Since this test runs last in the file, most of
  * that time has usually already elapsed by the time this function is called, so this is mainly a
- * safety net. On remote environments (dev servers) the QA acceptance can take well over 30s, hence
- * the generous timeout.
+ * safety net rather than an expected long wait.
  *
  * @param companyId  The Dataland company id the document should be associated with.
  * @param documentId The id (sha256 hash) of the document to wait for.
  */
 function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string): void {
-  const timeoutInMs = 120000;
-  let lastStatus: number | undefined;
-  let lastDocumentCount = 0;
   cy.waitUntil(
     () =>
       cy
@@ -306,19 +302,10 @@ function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: 
           failOnStatusCode: false,
         })
         .then((response) => {
-          lastStatus = response.status;
           if (response.status !== 200) return false;
-          lastDocumentCount = response.body.length;
           return response.body.some((document) => document.documentId === documentId);
         }),
-    {
-      timeout: timeoutInMs,
-      interval: 2000,
-      errorMsg: () =>
-        `Document ${documentId} did not become searchable for company ${companyId} within ${timeoutInMs / 1000}s ` +
-        `(QA acceptance probably still pending). Last response status: ${lastStatus ?? 'none'}, ` +
-        `documents currently visible for the company: ${lastDocumentCount}.`,
-    }
+    { timeout: 30000, interval: 1000 }
   );
 }
 
