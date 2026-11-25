@@ -320,7 +320,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData(
+        await euTaxonomyForNonFinancialsDataControllerApi!.postFrameworkData!(
           removeInferableDocumentFields(this.companyAssociatedEutaxonomyNonFinancialsData),
           isCompanyOwnerOrDataUploader
         );

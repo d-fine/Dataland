@@ -314,7 +314,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await euTaxonomyFinancialsDataControllerApi!.postFrameworkData(
+        await euTaxonomyFinancialsDataControllerApi!.postFrameworkData!(
           removeInferableDocumentFields(this.companyAssociatedEuTaxonomyFinancialsData),
           isCompanyOwnerOrDataUploader
         );

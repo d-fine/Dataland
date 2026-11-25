@@ -16,7 +16,10 @@ const MAIN_FRAMEWORKS = new Set([
   'sfdr',
 ]);
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework !== 'eutaxonomy-financials-2026-73' && framework !== 'eutaxonomy-non-financials-2026-73'
+  (framework) =>
+    framework !== 'eutaxonomy-financials-2026-73' &&
+    framework !== 'eutaxonomy-non-financials-2026-73' &&
+    framework !== 'pcaf'
 ) as DataTypeEnum[];
 export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
   MAIN_FRAMEWORKS.has(framework)

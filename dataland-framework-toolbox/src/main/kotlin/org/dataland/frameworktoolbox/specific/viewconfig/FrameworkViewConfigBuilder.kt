@@ -59,10 +59,14 @@ class FrameworkViewConfigBuilder(
         writer.close()
     }
 
-    private fun buildApiClient(apiClientTsPath: Path) {
+    private fun buildApiClient(
+        apiClientTsPath: Path,
+        backendUploadEndpoint: Boolean,
+    ) {
         val freeMarkerContext =
             mapOf(
                 "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+                "backendUploadEndpoint" to backendUploadEndpoint,
             )
         val freemarkerTemplate =
             FreeMarker.configuration
@@ -106,7 +110,10 @@ class FrameworkViewConfigBuilder(
     /**
      * Generate the code for the ViewConfig and integrates it into the Dataland Repository
      */
-    fun build(into: DatalandRepository) {
+    fun build(
+        into: DatalandRepository,
+        backendUploadEndpoint: Boolean = true,
+    ) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
 
         val frameworkConfigDir = into.frontendSrc / "frameworks" / framework.identifier
@@ -116,7 +123,7 @@ class FrameworkViewConfigBuilder(
         }
 
         buildViewConfig(frameworkConfigDir / "ViewConfig.ts")
-        buildApiClient(frameworkConfigDir / "ApiClient.ts")
+        buildApiClient(frameworkConfigDir / "ApiClient.ts", backendUploadEndpoint)
         buildFrameworkDefinitionTs(frameworkConfigDir)
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npmInstall"))

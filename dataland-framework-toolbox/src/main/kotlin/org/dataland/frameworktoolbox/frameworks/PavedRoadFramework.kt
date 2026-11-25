@@ -299,7 +299,10 @@ abstract class PavedRoadFramework(
         }
         val viewConfig = generateViewModel(framework)
         customizeViewModel(viewConfig)
-        viewConfig.build(into = datalandProject)
+        viewConfig.build(
+            into = datalandProject,
+            backendUploadEndpoint = enabledFeatures.contains(FrameworkGenerationFeatures.BackendUploadEndpoint),
+        )
     }
 
     protected fun compileFixtureGenerator(datalandProject: DatalandRepository) {
