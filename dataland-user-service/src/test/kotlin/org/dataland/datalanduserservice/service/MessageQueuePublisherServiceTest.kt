@@ -7,6 +7,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.data.CompanyInformationIncompletePayload
 import org.dataland.datalandmessagequeueutils.messages.data.PortfolioUpdatePayload
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -92,6 +93,19 @@ class MessageQueuePublisherServiceTest {
             testCorrelationId,
             ExchangeName.USER_SERVICE_EVENTS,
             RoutingKeyNames.PORTFOLIO_UPDATE,
+        )
+    }
+
+    @Test
+    fun `test publishCompanyInformationIncomplete sends company id to the company information exchange`() {
+        messageQueuePublisherService.publishCompanyInformationIncomplete("company-1", testCorrelationId)
+
+        verify(mockCloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
+            defaultObjectMapper.writeValueAsString(CompanyInformationIncompletePayload("company-1")),
+            MessageType.COMPANY_INFORMATION_INCOMPLETE,
+            testCorrelationId,
+            ExchangeName.USER_SERVICE_COMPANY_INFORMATION_EVENTS,
+            RoutingKeyNames.COMPANY_INFORMATION_INCOMPLETE,
         )
     }
 

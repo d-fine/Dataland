@@ -15,6 +15,7 @@ object ExchangeName {
     const val BACKEND_DATASET_EVENTS = "backend.datasets"
     const val DATASOURCING_DATA_NONSOURCEABLE = "dataSourcing.dataNonSourceable"
     const val USER_SERVICE_EVENTS = "user-service.portfolio"
+    const val USER_SERVICE_COMPANY_INFORMATION_EVENTS = "user-service.companyInformation"
     const val DATA_SOURCING_SERVICE_REQUEST_EVENTS = "data-sourcing-service.requests"
     const val QA_SERVICE_NON_SOURCEABILITY_DECISIONS = "qa-service.nonSourceabilityDecisions"
 }

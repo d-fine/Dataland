@@ -21,6 +21,7 @@ object RoutingKeyNames {
     const val NON_SOURCEABILITY_SUBMISSION = "nonSourceabilitySubmission"
     const val NON_SOURCEABILITY_QA_DECISION = "nonSourceabilityQaDecision"
     const val PORTFOLIO_UPDATE = "portfolio.update"
+    const val COMPANY_INFORMATION_INCOMPLETE = "company.informationIncomplete"
     const val REQUEST_PATCH = "request.patch"
     const val REQUEST_WITHDRAWN = "request.withdrawn"
 }

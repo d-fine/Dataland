@@ -20,6 +20,7 @@ object MessageType {
     const val NON_SOURCEABILITY_QA_ACCEPTED = "NonSourceability QA accepted"
     const val NON_SOURCEABILITY_QA_REJECTED = "NonSourceability QA rejected"
     const val PORTFOLIO_UPDATE = "portfolio.update"
+    const val COMPANY_INFORMATION_INCOMPLETE = "company.informationIncomplete"
     const val REQUEST_SET_TO_PROCESSING = "Request set to processing"
     const val REQUEST_SET_TO_WITHDRAWN = "Request set to withdrawn"
 }

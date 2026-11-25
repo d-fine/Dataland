@@ -6,6 +6,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.data.CompanyInformationIncompletePayload
 import org.dataland.datalandmessagequeueutils.messages.data.PortfolioUpdatePayload
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -68,6 +69,25 @@ class MessageQueuePublisherService
                 correlationId = correlationId,
                 exchange = ExchangeName.USER_SERVICE_EVENTS,
                 routingKey = RoutingKeyNames.PORTFOLIO_UPDATE,
+            )
+        }
+
+        /**
+         * Method to publish an event announcing that a company is missing its fiscal year end and/or its sector
+         * @param companyId The ID of the incomplete company
+         * @param correlationId The correlation ID of the request initiating the event
+         */
+        fun publishCompanyInformationIncomplete(
+            companyId: String,
+            correlationId: String,
+        ) {
+            logger.info("Publish incomplete company information event for company '$companyId'. Correlation ID: '$correlationId'.")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body = defaultObjectMapper.writeValueAsString(CompanyInformationIncompletePayload(companyId)),
+                type = MessageType.COMPANY_INFORMATION_INCOMPLETE,
+                correlationId = correlationId,
+                exchange = ExchangeName.USER_SERVICE_COMPANY_INFORMATION_EVENTS,
+                routingKey = RoutingKeyNames.COMPANY_INFORMATION_INCOMPLETE,
             )
         }
 
