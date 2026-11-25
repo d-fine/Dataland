@@ -15,6 +15,15 @@ describe('Component tests for the ChooseFrameworkForDataUpload page', () => {
     },
   });
 
+  it('Does not offer frameworks without an upload form, such as PCAF', () => {
+    const offeredFrameworks = wrapper.vm.uploadableFrameworksExceptEuTaxonomy as string[];
+
+    expect(offeredFrameworks).not.to.include(DataTypeEnum.Pcaf);
+    expect(offeredFrameworks).not.to.include(DataTypeEnum.EutaxonomyFinancials202673);
+    expect(offeredFrameworks).not.to.include(DataTypeEnum.EutaxonomyNonFinancials202673);
+    expect(offeredFrameworks).to.include(DataTypeEnum.Sfdr);
+  });
+
   it('Unit tests for getMetaInfoAboutAllDatasetsForCurrentCompany', () => {
     const dataMetaInfo = { dataType: DataTypeEnum.Lksg, uploadTime: 0, reportingPeriod: '2023' } as DataMetaInformation;
     cy.intercept('**/api/metadata*', { statusCode: 200, body: [dataMetaInfo] }).then(() => {
