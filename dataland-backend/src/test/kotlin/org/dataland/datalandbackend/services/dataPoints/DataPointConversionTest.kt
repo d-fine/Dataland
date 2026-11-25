@@ -108,60 +108,44 @@ class DataPointConversionTest {
         }
 
         @JvmStatic
-        fun provideComments(): Stream<Arguments> {
-            val input1 = createDummyUploadedDataPoint("type1")
-            val input2 = createDummyUploadedDataPoint("type2")
-            val specs = createCommentSpecs()
-            val firstDataPoint =
-                ExtendedDataPoint(
-                    value = BigDecimal.ONE,
-                    quality = QualityOptions.Incomplete,
-                    comment = ORIGINAL_COMMENT,
-                )
-            val secondDataPoint = ExtendedDataPoint(value = BigDecimal.TEN, quality = QualityOptions.Reported)
-            return Stream.of(
+        fun provideComments(): Stream<Arguments> =
+            Stream.of(
+                binaryCommentArguments(DataPointConversion.SUM, "[1] + [2]"),
+                binaryCommentArguments(DataPointConversion.DIVISION, "[1] / [2]"),
+                binaryCommentArguments(DataPointConversion.DIVISION_BY_PERCENT, "100 * [1] / [2]"),
                 Arguments.of(
-                    listOf(input1, input2),
-                    specs,
-                    listOf(firstDataPoint, secondDataPoint),
-                    DataPointConversion.SUM,
-                    calculationComment(
-                        "[1] + [2]",
-                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
-                        sourceBlock(2, "Input2"),
-                    ),
-                ),
-                Arguments.of(
-                    listOf(input1, input2),
-                    specs,
-                    listOf(firstDataPoint, secondDataPoint),
-                    DataPointConversion.DIVISION,
-                    calculationComment(
-                        "[1] / [2]",
-                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
-                        sourceBlock(2, "Input2"),
-                    ),
-                ),
-                Arguments.of(
-                    listOf(input1, input2),
-                    specs,
-                    listOf(firstDataPoint, secondDataPoint),
-                    DataPointConversion.DIVISION_BY_PERCENT,
-                    calculationComment(
-                        "100 * [1] / [2]",
-                        sourceBlock(1, "Input1", ORIGINAL_COMMENT),
-                        sourceBlock(2, "Input2"),
-                    ),
-                ),
-                Arguments.of(
-                    listOf(input1),
-                    specs,
-                    listOf(firstDataPoint),
+                    listOf(createDummyUploadedDataPoint("type1")),
+                    createCommentSpecs(),
+                    listOf(commentFirstDataPoint()),
                     DataPointConversion.IDENTITY,
                     identityComment(sourceBlock(1, "Input1", ORIGINAL_COMMENT)),
                 ),
             )
-        }
+
+        private fun commentFirstDataPoint() =
+            ExtendedDataPoint(
+                value = BigDecimal.ONE,
+                quality = QualityOptions.Incomplete,
+                comment = ORIGINAL_COMMENT,
+            )
+
+        private fun commentSecondDataPoint() = ExtendedDataPoint(value = BigDecimal.TEN, quality = QualityOptions.Reported)
+
+        private fun binaryCommentArguments(
+            conversion: DataPointConversion,
+            formula: String,
+        ): Arguments =
+            Arguments.of(
+                listOf(createDummyUploadedDataPoint("type1"), createDummyUploadedDataPoint("type2")),
+                createCommentSpecs(),
+                listOf(commentFirstDataPoint(), commentSecondDataPoint()),
+                conversion,
+                calculationComment(
+                    formula,
+                    sourceBlock(1, "Input1", ORIGINAL_COMMENT),
+                    sourceBlock(2, "Input2"),
+                ),
+            )
 
         @JvmStatic
         fun provideSourceCommentQualityOptions(): Stream<Arguments> =
