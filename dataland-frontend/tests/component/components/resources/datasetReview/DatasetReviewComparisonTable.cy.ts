@@ -123,7 +123,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
     datasetReview?: DatasetJudgementResponse;
     searchQuery?: string;
     hideEmptyFields?: boolean;
-    data?: SfdrData;
+    data?: object;
+    framework?: DataTypeEnum;
     rowClickable?: boolean;
     onRowClick?: () => void;
   }): void {
@@ -146,11 +147,11 @@ describe('DatasetReviewComparisonTable component tests', () => {
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
-          framework,
+          framework: options?.framework ?? framework,
           dataId,
           searchQuery: options?.searchQuery ?? '',
           datasetReview: options?.datasetReview ?? baseDatasetReview,
-          dataMetaInformation: mockMetaInformation,
+          dataMetaInformation: { ...mockMetaInformation, dataType: options?.framework ?? framework },
           hideEmptyFields: options?.hideEmptyFields ?? false,
           rowClickable: options?.rowClickable ?? false,
           ...(options?.onRowClick && { onRowClick: options.onRowClick }),
@@ -289,6 +290,80 @@ describe('DatasetReviewComparisonTable component tests', () => {
     runFunctionBlockWithinPrimeVueModal(() => {
       cy.contains('td', '2023-12-15').should('exist');
       cy.contains('td', 'Reported').should('exist');
+    });
+  });
+
+  describe('Assurance data points', () => {
+    const assuranceType = 'customEnumEuTaxonomyReportingAssurance';
+    const assuranceData = {
+      general: {
+        general: { assurance: { value: 'LimitedAssurance', provider: 'Original Auditors', quality: 'Audited' } },
+      },
+    };
+    const assuranceReview: DatasetJudgementResponse = {
+      ...baseDatasetReview,
+      dataType: DataTypeEnum.EutaxonomyFinancials as DatasetJudgementResponse['dataType'],
+      dataPoints: {
+        [assuranceType]: {
+          dataPointType: assuranceType,
+          dataPointId: 'assurance-dp-id',
+          qaReports: [
+            {
+              dataPointId: 'assurance-dp-id',
+              dataPointType: assuranceType,
+              qaReportId: 'qa-report-assurance',
+              verdict: QaReportDataPointVerdict.QaRejected,
+              correctedData: JSON.stringify({
+                value: 'ReasonableAssurance',
+                provider: 'QA Auditors',
+                quality: QualityOptions.Audited,
+              }),
+              reporterUserId: qaReporter1.reporterUserId,
+              uploadTime: 9999,
+              active: true,
+              comment: 'comment',
+            },
+          ],
+          acceptedSource: AcceptedDataPointSource.Custom,
+          customValue: JSON.stringify({
+            value: 'LimitedAssurance',
+            provider: 'Custom Auditors',
+            quality: QualityOptions.Audited,
+          }),
+        },
+      },
+    };
+
+    /**
+     * Clicks the link in the given column of the Assurance row and checks provider shown and quality absent.
+     */
+    function checkPopup(columnIndex: number, expectedProvider: string): void {
+      mountComponent({
+        datasetReview: assuranceReview,
+        data: assuranceData,
+        framework: DataTypeEnum.EutaxonomyFinancials,
+      });
+      cy.contains('button', 'Assurance')
+        .closest('tr')
+        .within(() => {
+          cy.get('td').eq(columnIndex).find('a.link').click();
+        });
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.contains('td', expectedProvider).should('exist');
+        cy.contains('th', 'Quality').should('not.exist');
+      });
+    }
+
+    it('shows provider but no quality in the original popup', () => {
+      checkPopup(1, 'Original Auditors');
+    });
+
+    it('shows provider but no quality in the QA reviewer popup', () => {
+      checkPopup(2, 'QA Auditors');
+    });
+
+    it('shows provider but no quality in the custom popup', () => {
+      checkPopup(4, 'Custom Auditors');
     });
   });
 });

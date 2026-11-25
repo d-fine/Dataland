@@ -303,6 +303,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn(":dataland-message-queue-utils:assemble")
 }
 
+tasks.getByName("runKtlintCheckOverMainSourceSet") {
+    dependsOn("generateClients")
+}
+
+tasks.getByName("ktlintMainSourceSetCheck") {
+    dependsOn("generateClients")
+}
+
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/internal-storage/src/main/kotlin"))

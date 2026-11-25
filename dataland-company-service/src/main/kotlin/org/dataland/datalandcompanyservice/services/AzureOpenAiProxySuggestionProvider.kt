@@ -84,16 +84,23 @@ class AzureOpenAiProxySuggestionProvider(
                 .orEmpty()
         val outcome =
             when (result.status) {
-                ProxySearchStatus.SELF ->
+                ProxySearchStatus.SELF -> {
                     "The AI considers \"${company.companyName}\" to be its own ultimate parent, so there is no proxy company."
-                ProxySearchStatus.AMBIGUOUS ->
+                }
+
+                ProxySearchStatus.AMBIGUOUS -> {
                     "The AI could not resolve \"${company.companyName}\" to a single legal entity$candidates."
-                ProxySearchStatus.UNCLEAR ->
+                }
+
+                ProxySearchStatus.UNCLEAR -> {
                     "The AI could not reliably determine the ultimate parent of \"${company.companyName}\" " +
                         "or the parent does not exist on Dataland."
-                ProxySearchStatus.FOUND ->
+                }
+
+                ProxySearchStatus.FOUND -> {
                     "The AI identified \"${result.parentName.orEmpty()}\" as the ultimate parent of " +
                         "\"${company.companyName}\", but could not find it on Dataland."
+                }
             }
         val reasoning = if (result.reasoning.isNullOrBlank()) "" else " Reasoning of the AI: ${result.reasoning}"
         return outcome + reasoning

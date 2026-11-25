@@ -88,14 +88,21 @@ data class GleifCompanyCombinedInformation(
             }
 
         return when {
-            isWhitelisted -> legalName
-            transliterated.isNullOrEmpty() && otherNames.isNullOrEmpty() -> legalName
-            else ->
+            isWhitelisted -> {
+                legalName
+            }
+
+            transliterated.isNullOrEmpty() && otherNames.isNullOrEmpty() -> {
+                legalName
+            }
+
+            else -> {
                 selectNameByPriority(
                     legalName = legalName,
                     transliteratedNames = transliterated,
                     otherNames = otherNames,
                 )
+            }
         }
     }
 

@@ -20,10 +20,7 @@ import { formatCurrencyForDisplay } from '@/components/resources/dataTable/conve
 import { formatNonAlignedActivitiesForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory.ts';
 import { formatYesNoValueForDatatable } from '@/components/resources/dataTable/conversion/YesNoValueGetterFactory.ts';
 import { formatNumberForDatatable } from '@/components/resources/dataTable/conversion/NumberValueGetterFactory.ts';
-import {
-  formatAssuranceProviderForDataTable,
-  formatAssuranceForDataTable,
-} from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory.ts';
+import { formatAssuranceForDataTable } from '@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory.ts';
 import { formatStringForDatatable } from '@/components/resources/dataTable/conversion/PlainStringValueGetterFactory.ts';
 import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTable/conversion/Utils.ts';
 import { type EuTaxonomyAlignedActivity } from '@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model';
@@ -169,16 +166,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
           formatAssuranceForDataTable(parseDataPoint(dataPoint) as AssuranceDataPoint, 'Assurance'),
         uploadComponentName: 'AssuranceFormField',
         dataPointTypeId: 'customEnumEuTaxonomyReportingAssurance',
-      },
-      {
-        type: 'cell',
-        label: 'Assurance Provider',
-        explanation: 'Provider of the Assurance',
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceProviderForDataTable(dataset.general?.assurance),
-        uploadComponentName: 'Non-editable',
-        dataPointTypeId: 'assurance',
       },
       {
         type: 'cell',

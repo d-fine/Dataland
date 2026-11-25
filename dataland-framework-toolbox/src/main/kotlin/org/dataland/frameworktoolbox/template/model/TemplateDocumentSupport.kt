@@ -22,8 +22,11 @@ enum class TemplateDocumentSupport {
         fun fromString(input: String): TemplateDocumentSupport =
             when (input.trim()) {
                 "Simple" -> Simple
+
                 "Extended" -> Extended
+
                 "None", "" -> None
+
                 else -> throw IllegalArgumentException(
                     "Cannot convert '$input' to a TemplateDocumentSupport value.",
                 )

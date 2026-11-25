@@ -27,12 +27,7 @@ import type {
   QaRole,
 } from '@e2e/utils/CheckJudgementJson.ts';
 import { DATA_POINT_TYPES } from '@e2e/utils/CheckJudgementJson.ts';
-import {
-  QA_SCENARIO_CONFIG,
-  DATA_POINT_PATH_MAP,
-  stripAssuranceFromFixture,
-  extractValueForType,
-} from './JudgementTestConfig.ts';
+import { QA_SCENARIO_CONFIG, DATA_POINT_PATH_MAP, extractValueForType } from './JudgementTestConfig.ts';
 import { parseJsonValue } from '@e2e/utils/JsonUtils.ts';
 import type { Interception } from 'cypress/types/net-stubbing';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
@@ -83,7 +78,7 @@ describeIf(
       return cy
         .fixture<FixtureData<EutaxonomyFinancialsData>[]>('CompanyInformationWithEutaxonomyFinancialsPreparedFixtures')
         .then((rawFixtures) => {
-          preparedEuTaxonomyFixtures = rawFixtures.map(stripAssuranceFromFixture);
+          preparedEuTaxonomyFixtures = rawFixtures;
           return getAdminToken();
         })
         .then((token) => {

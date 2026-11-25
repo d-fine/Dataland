@@ -90,9 +90,11 @@ class DatalandCompanyTools(
             try {
                 val argumentNode = defaultObjectMapper.readTree(arguments)
                 when (name) {
-                    SEARCH_COMPANIES_BY_NAME ->
+                    SEARCH_COMPANIES_BY_NAME -> {
                         mapOf("companies" to searchCompaniesByName(argumentNode.requiredText("name")))
-                    FIND_COMPANY_BY_IDENTIFIER ->
+                    }
+
+                    FIND_COMPANY_BY_IDENTIFIER -> {
                         mapOf(
                             "company" to
                                 findCompanyByIdentifier(
@@ -100,7 +102,11 @@ class DatalandCompanyTools(
                                     argumentNode.requiredText("identifier"),
                                 ),
                         )
-                    else -> mapOf("error" to "Unknown function $name.")
+                    }
+
+                    else -> {
+                        mapOf("error" to "Unknown function $name.")
+                    }
                 }
             } catch (exception: JsonProcessingException) {
                 mapOf("error" to "The arguments are not valid JSON: ${exception.originalMessage}")

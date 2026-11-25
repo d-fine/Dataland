@@ -18,6 +18,7 @@ export type DataPointDisplay = {
   quality?: string;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference;
   comment?: string;
+  provider?: string;
 };
 
 export interface DataPointSourceInfo {
