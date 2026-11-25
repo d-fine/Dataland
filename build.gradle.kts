@@ -237,7 +237,7 @@ sonar {
                 "dataland-qa-service/src/test/kotlin/db/migration/V10__UnifyNfrdMandatoryFieldTest.kt," +
 
                 // community manager
-                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt" +
+                "dataland-community-manager/src/main/kotlin/org/dataland/datalandcommunitymanager/api/RequestApi.kt," +
 
                 // data sourcing service
                 "dataland-data-sourcing-service/src/main/kotlin/org/dataland/datasourcingservice/model/request/StoredRequest.kt," +

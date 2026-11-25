@@ -384,7 +384,7 @@ describe('parseDataPointJsonToFormData', () => {
 
     const form = parseDataPointJsonToFormData(invalidJson);
 
-    expect(form).to.equal(null);
+    expect(form).to.be.null;
   });
 
   it('round-trips a currency value together with its currency code', () => {
@@ -486,7 +486,7 @@ describe('wrapDataPointJson', () => {
   it('returns null when JSON is invalid', () => {
     const invalidJson = '{ this is not valid json }';
     const wrapped = wrapDataPointJson(invalidJson);
-    expect(wrapped).to.equal(null);
+    expect(wrapped).to.be.null;
   });
 
   it('returns null when JSON value is null', () => {

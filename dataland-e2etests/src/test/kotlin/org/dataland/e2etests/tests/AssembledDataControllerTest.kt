@@ -34,7 +34,6 @@ class AssembledDataControllerTest {
     }
 
     @Test
-    @Suppress("LongMethod")
     fun `upload eutaxonomy financials dataset without calculated field and verify it is computed on retrieval`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
@@ -45,6 +44,17 @@ class AssembledDataControllerTest {
         val eligibleButNonAlignedPremiums = BigDecimal("1.0")
         val expectedEligiblePremiums = alignedPremiums + eligibleButNonAlignedPremiums
 
+        uploadFinancialsDatasetWithoutCalculatedField(companyId, reportingPeriod, currency, alignedPremiums)
+        uploadEligibleButNonAlignedPremiumsDataPoint(companyId, reportingPeriod, currency, eligibleButNonAlignedPremiums)
+        assertCalculatedEligiblePremiums(companyId, reportingPeriod, currency, expectedEligiblePremiums)
+    }
+
+    private fun uploadFinancialsDatasetWithoutCalculatedField(
+        companyId: String,
+        reportingPeriod: String,
+        currency: String,
+        alignedPremiums: BigDecimal,
+    ) {
         val eutaxonomyFinancialsData =
             EutaxonomyFinancials202673Data(
                 insuranceReinsurance =
@@ -70,18 +80,32 @@ class AssembledDataControllerTest {
                 ),
                 bypassQa = true,
             )
+    }
 
+    private fun uploadEligibleButNonAlignedPremiumsDataPoint(
+        companyId: String,
+        reportingPeriod: String,
+        currency: String,
+        value: BigDecimal,
+    ) {
         Backend.dataPointControllerApi
             .postDataPoint(
                 UploadedDataPoint(
-                    dataPoint = """{"value": $eligibleButNonAlignedPremiums, "currency": "$currency"}""",
+                    dataPoint = """{"value": $value, "currency": "$currency"}""",
                     dataPointType = taxonomyEligibleButNonAlignedPremiumsDataPointType,
                     companyId = companyId,
                     reportingPeriod = reportingPeriod,
                 ),
                 bypassQa = true,
             )
+    }
 
+    private fun assertCalculatedEligiblePremiums(
+        companyId: String,
+        reportingPeriod: String,
+        currency: String,
+        expected: BigDecimal,
+    ) {
         ApiAwait.untilAsserted(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
             val response =
                 Backend.eutaxonomyFinancials202673DataControllerApi
@@ -94,7 +118,7 @@ class AssembledDataControllerTest {
                     ?.totalOfAbsolutePremiumsOfTaxonomyEligibleActivities
                     ?: fail("Calculated field totalOfAbsolutePremiumsOfTaxonomyEligibleActivities should be present")
 
-            assertBigDecimalEquals(expectedEligiblePremiums, calculatedField.value)
+            assertBigDecimalEquals(expected, calculatedField.value)
             assertEquals(
                 currency,
                 calculatedField.currency,
