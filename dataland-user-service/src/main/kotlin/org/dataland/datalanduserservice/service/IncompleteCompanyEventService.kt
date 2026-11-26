@@ -3,7 +3,7 @@ package org.dataland.datalanduserservice.service
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalanduserservice.utils.isMissingFiscalYearEndOrSector
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +37,7 @@ class IncompleteCompanyEventService
             companyIds.forEach { companyId ->
                 try {
                     val companyInformation = companyDataControllerApi.getCompanyById(companyId).companyInformation
-                    if (isIncomplete(companyInformation)) {
+                    if (companyInformation.isMissingFiscalYearEndOrSector()) {
                         messageQueuePublisherService.publishCompanyInformationIncomplete(companyId, correlationId)
                     }
                 } catch (exception: ClientException) {
@@ -63,7 +63,4 @@ class IncompleteCompanyEventService
                 exception,
             )
         }
-
-        private fun isIncomplete(companyInformation: CompanyInformation): Boolean =
-            companyInformation.fiscalYearEnd.isNullOrBlank() || companyInformation.sector.isNullOrBlank()
     }
