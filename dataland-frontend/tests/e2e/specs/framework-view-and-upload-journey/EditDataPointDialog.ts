@@ -130,12 +130,19 @@ describeIf(
         .within(() => {
           cy.get(`[aria-label="${QualityOptions.Incomplete}"]`).click();
         });
+      // PrimeVue hides the overlay and moves focus back to the select asynchronously. Typing before that has
+      // finished would let the select steal the focus in the middle of editing the value.
+      cy.get('.p-select-overlay').should('not.exist');
       cy.get('div.p-dialog-content').within(() => {
         cy.get('[data-test="big-decimal-input"] input').clear();
         cy.get('[data-test="big-decimal-input"] input').type(newValue);
       });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
+      cy.get('[data-test="big-decimal-input"] input').should(
+        'have.value',
+        formatNumberToReadableFormat(Number(newValue))
+      );
       saveDataPoint();
 
       cy.get('div.p-dialog-content').should('not.exist');
@@ -172,6 +179,7 @@ describeIf(
         });
 
       cy.get('[data-test="big-decimal-input"] input').blur();
+      cy.get('[data-test="big-decimal-input"] input').should('have.value', '0');
       saveDataPoint();
 
       cy.contains('span.table-left-label', 'Scope 3 GHG emissions')

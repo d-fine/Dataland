@@ -204,11 +204,16 @@ describeIf(
     });
 
     it('Check accepting a custom data point with a selected document reference and page succeeds', () => {
+      // The document name is read live from the server (not from the snapshot taken in before()), because other
+      // tests running in parallel against the same server may rename the shared document in the meantime.
+      let documentLabelInDropdown = uploadedDocumentMetaInfo.documentId;
       waitForDocumentToBeSearchableForCompany(
         storedCompany.companyId,
         uploadedDocumentMetaInfo.documentId,
         tokens.adminToken
-      );
+      ).then((currentDocumentMetaInfo) => {
+        documentLabelInDropdown = currentDocumentMetaInfo.documentName ?? currentDocumentMetaInfo.documentId;
+      });
 
       createJudgementAndOpenReviewPage(uploadedDataMetaInfo, tokens.judgeToken).then(() => {
         const dataPointType = DATA_POINT_TYPES.greenAssetRatioEligible;
@@ -225,8 +230,8 @@ describeIf(
 
         cy.get('[data-test="custom-document-field"]').click();
         cy.get('.p-select-overlay').should('be.visible');
-        cy.contains(uploadedDocumentMetaInfo.documentName ?? uploadedDocumentMetaInfo.documentId).click();
-        //select the documentId in case that the file name is not shown in the drop-down menu of the documents
+        // The document id is shown in the drop-down menu in case the document has no name.
+        cy.contains(documentLabelInDropdown).click();
 
         cy.get('[data-test="custom-pages-field"]').click();
         cy.get('[data-test="custom-pages-field"]').type('5');
@@ -302,45 +307,54 @@ const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 60000;
  * @param companyId  The Dataland company id the document should be associated with.
  * @param documentId The id (sha256 hash) of the document to wait for.
  * @param token      Bearer token used to read the document's QA status for diagnostics.
+ * @returns A chainable yielding the current meta information of the document as returned by the search.
  */
-function waitForDocumentToBeSearchableForCompany(companyId: string, documentId: string, token: string): void {
+function waitForDocumentToBeSearchableForCompany(
+  companyId: string,
+  documentId: string,
+  token: string
+): Cypress.Chainable<DocumentMetaInfoResponse> {
   let lastObservation = 'no response received';
-  cy.waitUntil(
-    () =>
-      cy
-        .request<DocumentMetaInfoResponse[]>({
-          method: 'GET',
-          url: `${apiBaseUrl}/documents/`,
-          qs: { companyId },
-          failOnStatusCode: false,
-        })
-        .then((response) => {
-          const documents = Array.isArray(response.body) ? response.body : [];
-          lastObservation = `HTTP ${response.status}, ${documents.length} document(s) returned`;
-          return response.status === 200 && documents.some((document) => document.documentId === documentId);
-        })
-        .then((isSearchable) => {
-          if (isSearchable) return true;
-          return cy
-            .request({
-              method: 'GET',
-              url: `${apiBaseUrl}/documents/${documentId}/metadata`,
-              headers: { Authorization: `Bearer ${token}` },
-              failOnStatusCode: false,
-            })
-            .then((metaResponse) => {
-              lastObservation += `, document qaStatus: ${metaResponse.body?.qaStatus ?? `unknown (HTTP ${metaResponse.status})`}`;
-              return false;
-            });
-        }),
-    {
-      timeout: DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS,
-      interval: 2000,
-      errorMsg: () =>
-        `Document ${documentId} did not become searchable for company ${companyId} within ` +
-        `${DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS / 1000}s. Last observation: ${lastObservation}`,
-    }
-  );
+  let foundDocument: DocumentMetaInfoResponse | undefined;
+  return cy
+    .waitUntil(
+      () =>
+        cy
+          .request<DocumentMetaInfoResponse[]>({
+            method: 'GET',
+            url: `${apiBaseUrl}/documents/`,
+            qs: { companyId },
+            failOnStatusCode: false,
+          })
+          .then((response) => {
+            const documents = Array.isArray(response.body) ? response.body : [];
+            lastObservation = `HTTP ${response.status}, ${documents.length} document(s) returned`;
+            foundDocument = documents.find((document) => document.documentId === documentId);
+            return response.status === 200 && foundDocument !== undefined;
+          })
+          .then((isSearchable) => {
+            if (isSearchable) return true;
+            return cy
+              .request({
+                method: 'GET',
+                url: `${apiBaseUrl}/documents/${documentId}/metadata`,
+                headers: { Authorization: `Bearer ${token}` },
+                failOnStatusCode: false,
+              })
+              .then((metaResponse) => {
+                lastObservation += `, document qaStatus: ${metaResponse.body?.qaStatus ?? `unknown (HTTP ${metaResponse.status})`}`;
+                return false;
+              });
+          }),
+      {
+        timeout: DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS,
+        interval: 2000,
+        errorMsg: () =>
+          `Document ${documentId} did not become searchable for company ${companyId} within ` +
+          `${DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS / 1000}s. Last observation: ${lastObservation}`,
+      }
+    )
+    .then(() => foundDocument!);
 }
 
 /**
