@@ -27,8 +27,14 @@ class NorthdataDataIngestor(
     private fun filterAndTriggerUpload(northDataCompanyInformation: NorthDataCompanyInformation) {
         var update = false
         when (northDataCompanyInformation.status) {
-            "terminated" -> update = false
-            "active", "liquidation", "" -> update = true
+            "terminated" -> {
+                update = false
+            }
+
+            "active", "liquidation", "" -> {
+                update = true
+            }
+
             else -> {
                 logger.info(
                     "Found unexpected status code for NorthDataCompanyInformation " +

@@ -288,13 +288,20 @@ class DataExportUtils private constructor() {
             val transformedSuffix =
                 suffixParts.mapNotNull { part ->
                     when (part) {
-                        "share", "amount", VALUE -> null
-                        "absoluteShare" -> "ABS"
-                        else ->
+                        "share", "amount", VALUE -> {
+                            null
+                        }
+
+                        "absoluteShare" -> {
+                            "ABS"
+                        }
+
+                        else -> {
                             NonFinancialsMapping.aliasMap[part]
                                 ?: NuclearAndGasMapping.aliasMap[part]
                                 ?: SfdrMapping.aliasMap[part]
                                 ?: part.uppercase()
+                        }
                     }
                 }
 

@@ -140,10 +140,17 @@ class ProxySearchLlmClient(
      */
     private fun addWebSearchTool(builder: ResponseCreateParams.Builder) {
         when (val type = webSearchToolType.trim()) {
-            "", WEB_SEARCH_TOOL_TYPE_NONE -> Unit
-            WEB_SEARCH_PREVIEW_TOOL_TYPE ->
+            "", WEB_SEARCH_TOOL_TYPE_NONE -> {
+                Unit
+            }
+
+            WEB_SEARCH_PREVIEW_TOOL_TYPE -> {
                 builder.addTool(WebSearchPreviewTool.builder().type(WebSearchPreviewTool.Type.WEB_SEARCH_PREVIEW).build())
-            else -> builder.addTool(WebSearchTool.builder().type(WebSearchTool.Type.of(type)).build())
+            }
+
+            else -> {
+                builder.addTool(WebSearchTool.builder().type(WebSearchTool.Type.of(type)).build())
+            }
         }
     }
 

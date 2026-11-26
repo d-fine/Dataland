@@ -44,22 +44,28 @@ class ProxySuggestionValidator(
         suggestion: ProxySuggestion,
     ): Pair<String, String>? =
         when {
-            !suggestion.companyId.equals(companyId, ignoreCase = true) ->
+            !suggestion.companyId.equals(companyId, ignoreCase = true) -> {
                 COMPANY_MISMATCH_SUMMARY to
                     "The proxy suggestion refers to company ${suggestion.companyId} instead of $companyId."
+            }
 
-            suggestion.proxyCompanyId.equals(companyId, ignoreCase = true) ->
+            suggestion.proxyCompanyId.equals(companyId, ignoreCase = true) -> {
                 SELF_REFERENCE_SUMMARY to
                     "The suggested proxy company ${suggestion.proxyCompanyId} is the company itself."
+            }
 
-            suggestion.confidence !in MIN_CONFIDENCE..MAX_CONFIDENCE ->
+            suggestion.confidence !in MIN_CONFIDENCE..MAX_CONFIDENCE -> {
                 INVALID_CONFIDENCE_SUMMARY to
                     "The confidence ${suggestion.confidence} is not between $MIN_CONFIDENCE and $MAX_CONFIDENCE."
+            }
 
-            !datalandCompanyService.companyExists(suggestion.proxyCompanyId) ->
+            !datalandCompanyService.companyExists(suggestion.proxyCompanyId) -> {
                 UNKNOWN_PROXY_COMPANY_SUMMARY to
                     "The suggested proxy company ${suggestion.proxyCompanyId} does not exist on Dataland."
+            }
 
-            else -> null
+            else -> {
+                null
+            }
         }
 }

@@ -108,6 +108,7 @@ object RequestStateHistoryUtils {
                             )
                             sortedRequestHistory.removeAt(0)
                         }
+
                         timeDifferenceSign > 0 -> {
                             add(
                                 ExtendedRequestHistoryEntryData(
@@ -118,6 +119,7 @@ object RequestStateHistoryUtils {
                             )
                             sortedDataSourcingHistoryAfterProcessing.removeAt(0)
                         }
+
                         else -> {
                             add(
                                 ExtendedRequestHistoryEntryData(
@@ -237,8 +239,14 @@ object RequestStateHistoryUtils {
         dataSourcingState: DataSourcingState?,
     ): DisplayedState =
         when (requestState) {
-            RequestState.Withdrawn -> DisplayedState.Withdrawn
-            RequestState.Open -> DisplayedState.Open
+            RequestState.Withdrawn -> {
+                DisplayedState.Withdrawn
+            }
+
+            RequestState.Open -> {
+                DisplayedState.Open
+            }
+
             RequestState.Processing, RequestState.Processed -> {
                 requireNotNull(
                     dataSourcingState,

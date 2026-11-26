@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.mockito.kotlin.mock
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicLong
 
 const val DEFAULT_REPORTING_PERIOD = "2023"
 const val DEFAULT_FRAMEWORK = "sfdr"
@@ -29,7 +30,11 @@ class DataBaseCreationUtils(
 
     private fun getUUID(): String = UUID.randomUUID().toString()
 
-    private fun getCurrentTime(): Long = System.currentTimeMillis()
+    private val lastUploadTime = AtomicLong(0)
+
+    // Strictly increasing, so that entries stored within the same millisecond do not violate the unique constraint
+    // on (company, type, reporting period, upload time).
+    private fun getCurrentTime(): Long = lastUploadTime.updateAndGet { maxOf(System.currentTimeMillis(), it + 1) }
 
     /**
      * Wrapper function to enable simple company storage in the database with default values, which can be overridden.

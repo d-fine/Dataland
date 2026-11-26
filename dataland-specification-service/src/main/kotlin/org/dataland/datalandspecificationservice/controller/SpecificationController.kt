@@ -111,12 +111,15 @@ class SpecificationController(
 
     private fun resolveSchema(schema: JsonNode): Any =
         when {
-            schema.isObject ->
+            schema.isObject -> {
                 schema.properties().asSequence().associate { (key, value) ->
                     key to resolveSchema(value)
                 }
+            }
 
-            schema.isArray -> schema.map { resolveSchema(it) }
+            schema.isArray -> {
+                schema.map { resolveSchema(it) }
+            }
 
             schema.isTextual -> {
                 val typeId = schema.asText()
@@ -128,6 +131,8 @@ class SpecificationController(
                 baseType.schema
             }
 
-            else -> schema
+            else -> {
+                schema
+            }
         }
 }

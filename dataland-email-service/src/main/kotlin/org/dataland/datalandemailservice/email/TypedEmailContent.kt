@@ -43,14 +43,20 @@ fun TypedEmailContent.setLateInitVars(
  */
 fun Value.setLateInitVars(emailSubscriptionTracker: EmailSubscriptionTracker) {
     when (this) {
-        is Value.List -> this.values.forEach { it.setLateInitVars(emailSubscriptionTracker) }
+        is Value.List -> {
+            this.values.forEach { it.setLateInitVars(emailSubscriptionTracker) }
+        }
+
         is Value.RelativeLink -> { /*nothing to do*/ }
+
         is Value.Text -> { /*nothing to do*/ }
-        is Value.EmailAddressWithSubscriptionStatus ->
+
+        is Value.EmailAddressWithSubscriptionStatus -> {
             this.subscribed =
                 emailSubscriptionTracker.shouldReceiveEmail(
                     EmailContact.create(this.emailAddress),
                 )
+        }
     }
 }
 

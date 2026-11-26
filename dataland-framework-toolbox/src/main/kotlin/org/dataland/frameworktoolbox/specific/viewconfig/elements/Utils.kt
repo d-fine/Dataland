@@ -19,6 +19,7 @@ fun ComponentBase.getTypescriptFieldAccessor(valueAccessor: Boolean = false): St
                     // a "?" was always emitted and some code paths depend on this.
                     // So we always output a "?".
                     is ComponentGroup -> it.identifier + "?"
+
                     else -> null
                 }
             }

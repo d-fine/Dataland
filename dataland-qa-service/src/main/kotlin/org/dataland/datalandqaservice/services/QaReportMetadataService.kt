@@ -87,7 +87,9 @@ class QaReportMetadataService(
 
         return when (matchingCompanyIdsAndNamesOnDataland.size) {
             0 -> null
+
             1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId
+
             else -> throw InvalidInputApiException(
                 summary = "Company identifier is non unique. Multiple matching companies found.",
                 message =

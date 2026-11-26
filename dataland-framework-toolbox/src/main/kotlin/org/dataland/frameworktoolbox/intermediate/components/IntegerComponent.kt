@@ -47,10 +47,17 @@ open class IntegerComponent(
 
     override fun getUploadComponentName(): String =
         when (documentSupport) {
-            is NoDocumentSupport -> "NumberFormField"
-            is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-            else ->
+            is NoDocumentSupport -> {
+                "NumberFormField"
+            }
+
+            is ExtendedDocumentSupport -> {
+                "BigDecimalExtendedDataPointFormField"
+            }
+
+            else -> {
                 throw IllegalArgumentException("IntegerComponent does not support document support '$documentSupport")
+            }
         }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {

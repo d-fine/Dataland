@@ -75,7 +75,10 @@ class ApiKeyManager
         private fun calculateExpiryDate(daysValid: Int?): Long? {
             checkIfDaysValidValueIsValid(daysValid)
             return when (daysValid) {
-                null -> null
+                null -> {
+                    null
+                }
+
                 else -> {
                     val daysValidAsLong = daysValid.toLong()
                     val millisecondsValid = (daysValidAsLong * MILLI_SECONDS_IN_A_DAY)

@@ -105,6 +105,7 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
                     val generalGeneral = general.optJSONObject("general")
                     getOrInsertJSONObject(generalGeneral, "referencedReports")
                 }
+
                 else -> {
                     JSONObject()
                 }
