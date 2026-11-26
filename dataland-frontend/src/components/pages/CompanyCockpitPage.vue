@@ -18,19 +18,19 @@
         <TabPanel value="datasets">
           <CompanyDatasetsPane :company-id="companyId" />
         </TabPanel>
-        <TabPanel v-if="rightsLoaded && isUserCompanyMemberOrAdmin" value="users">
+        <TabPanel v-if="isUserCompanyMemberOrAdmin" value="users">
           <div class="tab-layout">
             <CompanyRolesCard
               v-for="role in roles"
-              :key="`${String(role)}-${refreshAllCards}`"
+              :key="role"
               :companyId="companyId"
               :role="role"
               :userRole="userRole"
-              @users-changed="handleUsersChanged"
+              @users-changed="showSuccess = true"
             />
           </div>
         </TabPanel>
-        <TabPanel v-if="rightsLoaded && canViewCredits" value="credits">
+        <TabPanel v-if="canViewCredits" value="credits">
           <div class="tab-layout">
             <CreditsCard :companyId="companyId" />
           </div>
@@ -41,147 +41,100 @@
   </TheContent>
 </template>
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, inject, computed } from 'vue';
-import type { Ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { whenever } from '@vueuse/core';
 
 import TheContent from '@/components/generics/TheContent.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import CompanyDatasetsPane from '@/components/resources/companyCockpit/CompanyDatasetsPane.vue';
 import CompanyRolesCard from '@/components/resources/companyCockpit/CompanyRolesCard.vue';
+import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
+import SuccessDialog from '@/components/general/SuccessDialog.vue';
 
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import CreditsCard from '@/components/resources/companyCockpit/CreditsCard.vue';
 
-import { getCompanyRoleAssignmentsForCurrentUser, hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import SuccessDialog from '@/components/general/SuccessDialog.vue';
+import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
+import { useGetCompanyRightsQuery } from '@/api-queries/community-manager/company-rights/useGetCompanyRightsQuery';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { useCurrentUser } from '@/utils/useCurrentUser';
+import { CompanyRole } from '@clients/communitymanager';
 
 const props = defineProps<{ companyId: string }>();
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')!;
-const companyRoleAssignmentsRef = inject<Ref<CompanyRoleAssignmentExtended[] | undefined>>(
-  'companyRoleAssignments',
-  ref([])
-);
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-
 const router = useRouter();
 
-const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
-const isUserCompanyMemberOrAdmin = ref<boolean | null>(null);
-const isUserCompanyOwnerOrUploader = ref(false);
-const isUserKeycloakUploader = ref(false);
-const isAnyCompanyOwnerExisting = ref(false);
-const isUserCompanyMember = ref(false);
-const isUserDatalandAdmin = ref(false);
-const userRole = ref<CompanyRole | null>(null);
-const rightsLoaded = ref(false);
-const isCompanyDatalandMember = ref(false);
-
-const canViewCredits = computed(() => {
-  return isUserDatalandAdmin.value || (isUserCompanyMember.value && isCompanyDatalandMember.value);
-});
-
-const latestDocuments = reactive<Record<string, DocumentMetaInfoResponse[]>>({});
-for (const category of Object.values(DocumentMetaInfoDocumentCategoryEnum)) {
-  latestDocuments[`latest${category}`] = [];
-}
-
 const roles = Object.values(CompanyRole);
-
-/** Incrementing this value will force re-rendering of all CompanyRolesCard components. */
-const refreshAllCards = ref(0);
-
+const activeTab = ref<'datasets' | 'users' | 'credits'>('datasets');
 const showSuccess = ref(false);
 
-/**
- * Handler for user changes in company roles.
- */
-async function handleUsersChanged(): Promise<void> {
-  await setUserRights(true);
-  showSuccess.value = true;
-  refreshAllCards.value++;
-}
+const { userId: currentUserId, roles: currentUserRoles, isResolved: isKeycloakResolved } = useCurrentUser();
+const isUserDatalandAdmin = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_ADMIN));
 
-/**
- * Sets user rights and roles for the current company.
- * Updates isAnyCompanyOwnerExisting, isUserCompanyOwnerOrUploader, and isUserKeycloakUploader.
- */
-async function setUserRights(refreshUserRole: boolean): Promise<void> {
-  isAnyCompanyOwnerExisting.value = await hasCompanyAtLeastOneCompanyOwner(props.companyId, getKeycloakPromise);
+const { data: currentUserRoleAssignments, isFetched: areRoleAssignmentsFetched } =
+  useGetExtendedCompanyRoleAssignmentsQuery({ userId: currentUserId });
 
-  let assignment: CompanyRoleAssignmentExtended | undefined;
-
-  const keycloak = await getKeycloakPromise();
-  const isAuthenticated = !!keycloak?.token;
-
-  if (
-    isAuthenticated &&
-    (refreshUserRole || !companyRoleAssignmentsRef.value || companyRoleAssignmentsRef.value.length === 0)
-  ) {
-    try {
-      const assignments = await getCompanyRoleAssignmentsForCurrentUser(keycloak, apiClientProvider);
-      assignment = assignments.find((a) => a.companyId === props.companyId);
-    } catch (error) {
-      assignment = undefined;
-      console.error('Failed to retrieve company role assignments for current user', error);
-    }
-  } else {
-    assignment = companyRoleAssignmentsRef.value?.find((a) => a.companyId === props.companyId);
-  }
-
-  userRole.value = assignment?.companyRole ?? null;
-  isUserCompanyMember.value = userRole.value !== null;
-
-  isUserCompanyOwnerOrUploader.value =
-    userRole.value === CompanyRole.CompanyOwner || userRole.value === CompanyRole.DataUploader;
-
-  isUserKeycloakUploader.value = isAuthenticated
-    ? await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
-    : false;
-
-  isUserDatalandAdmin.value = isAuthenticated
-    ? await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
-    : false;
-
-  isUserCompanyMemberOrAdmin.value = isUserCompanyMember.value || isUserDatalandAdmin.value;
-
-  rightsLoaded.value = true;
-}
-
-/**
- * Checks if the company is a Dataland Member.
- */
-async function checkIfCompanyIsDatalandMember(): Promise<void> {
-  try {
-    const companyRightResponse = await apiClientProvider.apiClients.companyRightsController.getCompanyRights(
-      props.companyId
-    );
-    isCompanyDatalandMember.value = companyRightResponse.data.includes('Member');
-  } catch (error) {
-    console.error('Failed to retrieve company rights', error);
-  }
-}
-
-watch(
-  () => props.companyId,
-  async (newId, oldId) => {
-    if (newId == oldId) return;
-    await setUserRights(false);
-    await checkIfCompanyIsDatalandMember();
-  }
+const userRole = computed<CompanyRole | null>(
+  () =>
+    currentUserRoleAssignments.value?.find((assignment) => assignment.companyId === props.companyId)?.companyRole ??
+    null
 );
+const isUserCompanyMember = computed(() => userRole.value !== null);
+const isUserCompanyMemberOrAdmin = computed(() => isUserCompanyMember.value || isUserDatalandAdmin.value);
+
+const { data: companyRights, isFetched: areCompanyRightsFetched } = useGetCompanyRightsQuery(
+  { companyId: () => props.companyId },
+  { enabled: computed(() => !!props.companyId && isUserCompanyMember.value) }
+);
+const isCompanyDatalandMember = computed(() => companyRights.value?.includes('Member') ?? false);
+const canViewCredits = computed(
+  () => isUserDatalandAdmin.value || (isUserCompanyMember.value && isCompanyDatalandMember.value)
+);
+
+const areRightsLoaded = computed(
+  () =>
+    isKeycloakResolved.value &&
+    (!currentUserId.value || areRoleAssignmentsFetched.value) &&
+    (!isUserCompanyMember.value || areCompanyRightsFetched.value)
+);
+
+/**
+ * Opens the tab requested by a deep link to the users or credits tab once the rights of the user are known.
+ * Redirects to the datasets tab if the user is not allowed to see the requested tab. Other routes keep the current tab,
+ * so that a tab the user selected in the meantime is not overridden.
+ */
+function selectInitialTab(): void {
+  const path = router.currentRoute.value.path;
+  if (path.endsWith('/credits')) {
+    if (canViewCredits.value) activeTab.value = 'credits';
+    else redirectToDatasetsTab();
+  } else if (path.endsWith('/users')) {
+    if (isUserCompanyMemberOrAdmin.value) activeTab.value = 'users';
+    else redirectToDatasetsTab();
+  }
+}
+
+/**
+ * Shows the datasets tab and replaces the route of a tab the user is not allowed to see.
+ */
+function redirectToDatasetsTab(): void {
+  activeTab.value = 'datasets';
+  void router.replace({ path: `/companies/${props.companyId}` });
+}
+
+whenever(areRightsLoaded, selectInitialTab, { once: true });
+
+watch(canViewCredits, (canView) => {
+  if (!canView && activeTab.value === 'credits') activeTab.value = 'datasets';
+});
+
+watch(isUserCompanyMemberOrAdmin, (isMemberOrAdmin) => {
+  if (!isMemberOrAdmin && activeTab.value === 'users') activeTab.value = 'datasets';
+});
 
 watch(activeTab, async (val) => {
   const base = `/companies/${props.companyId}`;
@@ -197,100 +150,11 @@ watch(activeTab, async (val) => {
     console.error('Navigation failed', err);
   }
 });
-
-onMounted(async () => {
-  await setUserRights(false);
-  await checkIfCompanyIsDatalandMember();
-
-  const path = router.currentRoute.value.path;
-
-  const onCreditsTab = path.endsWith('/credits');
-  const onUsersTab = path.endsWith('/users');
-
-  if ((!canViewCredits.value && onCreditsTab) || (!isUserCompanyMemberOrAdmin.value && onUsersTab)) {
-    activeTab.value = 'datasets';
-    await router.replace({ path: `/companies/${props.companyId}` });
-  } else if (onCreditsTab) {
-    activeTab.value = 'credits';
-  } else if (onUsersTab) {
-    activeTab.value = 'users';
-  } else {
-    activeTab.value = 'datasets';
-  }
-});
 </script>
 
 <style lang="scss" scoped>
 .tab-layout {
   background-color: var(--p-surface-50);
   padding: var(--spacing-xs);
-}
-
-.card-container {
-  display: flex;
-  gap: var(--spacing-xxxl);
-  padding: var(--spacing-xl) var(--spacing-xxl);
-  background-color: var(--p-surface-50);
-  align-items: flex-start;
-
-  > .left-pane {
-    flex: 0 0 30%;
-  }
-
-  > .right-pane {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-
-    > .left-pane,
-    > .right-pane {
-      flex: none;
-      width: 100%;
-    }
-  }
-}
-
-.claim-pane {
-  margin-bottom: var(--spacing-md);
-}
-
-.frameworks-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-xxl);
-
-  /* collapse to one column on smaller screens */
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-.card {
-  &__separator {
-    width: 100%;
-    border-bottom: #e0dfde solid 1px;
-    margin-top: 8px;
-    margin-bottom: 24px;
-  }
-
-  &__subtitle {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 21px;
-    margin-top: 8px;
-  }
-}
-
-.d-letters {
-  letter-spacing: 0.05em;
-}
-
-.text-primary {
-  color: var(--main-color);
 }
 </style>

@@ -2,7 +2,7 @@ import { type CompanyRole, type CompanyRoleAssignmentExtended } from '@clients/c
 import CompanyCockpitPage from '@/components/pages/CompanyCockpitPage.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
 
 const dummyUserId = 'mock-user-id';
@@ -93,9 +93,6 @@ export function mockRequestsOnMounted(
   cy.intercept('**/community/company-ownership/*', {
     statusCode: hasCompanyAtLeastOneOwnerStatusCode,
   }).as('fetchCompanyOwnershipExistence');
-  cy.intercept('HEAD', `/community/company-role-assignments/CompanyOwner/${dummyCompanyId}/${dummyUserId}`, {
-    statusCode: 200,
-  }).as('checkUserCompanyOwnerRole');
   cy.intercept('GET', '**/documents/**', (request) => {
     request.reply({
       statusCode: 200,
@@ -134,7 +131,8 @@ export function mockRequestsOnMounted(
  * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
  * @param isMobile determines if the mount shall happen from a mobile-users perspective
  * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
- * @param companyRoleAssignments defines the company role assignments that the current user shall have
+ * @param companyRoleAssignments defines the company role assignments that the current user shall have. They are
+ * returned when the role assignments of the current user are requested.
  * @returns the mounted component
  */
 export function mountCompanyCockpitWithAuthentication(
@@ -143,6 +141,13 @@ export function mountCompanyCockpitWithAuthentication(
   keycloakRoles?: string[],
   companyRoleAssignments?: CompanyRoleAssignmentExtended[]
 ): Cypress.Chainable {
+  cy.intercept('GET', '**/community/company-role-assignments*', (req) => {
+    const query = req.query as Record<string, string | undefined>;
+    if (query.userId === dummyUserId && !query.role && !query.companyId) {
+      req.reply({ statusCode: 200, body: companyRoleAssignments ?? [] });
+    }
+  }).as('fetchCurrentUserRoleAssignments');
+
   const chainable = getMountingFunction({
     keycloak: minimalKeycloakMock({
       authenticated: isLoggedIn,
@@ -153,7 +158,6 @@ export function mountCompanyCockpitWithAuthentication(
     global: {
       provide: {
         useMobileView: computed((): boolean => isMobile),
-        companyRoleAssignments: ref(companyRoleAssignments),
       },
     },
     props: {

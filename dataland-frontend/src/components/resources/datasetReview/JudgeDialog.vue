@@ -241,7 +241,7 @@ import { useGetDataPointByIdQuery } from '@/api-queries/backend/data-point/useGe
 import { usePatchJudgementDetailsForDataPointMutation } from '@/api-queries/qa-service/dataset-judgement/usePatchJudgementDetailsForDataPointMutation.ts';
 import type { CellRow } from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { type AxiosError } from 'axios';
-import { useGetDocumentMetaInfoByCompanyIdQuery } from '@/api-queries/document-manager/document/useGetDocumentMetaInfoQuery.ts';
+import { useSearchForDocumentMetaInformationQuery } from '@/api-queries/document-manager/document/useSearchForDocumentMetaInformationQuery.ts';
 import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import {
   type ParsedSingleDataPoint,
@@ -277,7 +277,7 @@ const { data: datasetJudgement } = useDatasetJudgementQuery({ datasetJudgementId
 const isOpen = defineModel<boolean>('isOpen');
 // available company documents from query
 const companyIdRef = computed<string | undefined>(() => datasetJudgement.value?.companyId);
-const { data: allDocumentMetaInfo } = useGetDocumentMetaInfoByCompanyIdQuery(companyIdRef);
+const { data: allDocumentMetaInfo } = useSearchForDocumentMetaInformationQuery({ companyId: companyIdRef });
 const availableDocuments = computed<DocumentOption[]>(() => {
   const docs = allDocumentMetaInfo.value ?? [];
   const reportingPeriod = datasetJudgement.value?.reportingPeriod;

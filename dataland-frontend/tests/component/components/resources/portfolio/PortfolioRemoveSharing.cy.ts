@@ -69,4 +69,16 @@ describe('PortfolioRemoveSharing dialog', () => {
     cy.get('@onCloseSpy').should('not.have.been.called');
     cy.get('@onSharingRemovedSpy').should('have.been.calledOnce');
   });
+
+  it('shows an error message and does not emit "sharing-removed" if removing the access fails', () => {
+    cy.intercept('DELETE', '**/users/portfolios/shared/*', { statusCode: 500 }).as('removePortfolio');
+    mountComponent();
+
+    cy.get('[data-test="remove-confirmation-button"]').click();
+
+    cy.wait('@removePortfolio');
+    cy.get('[data-test="remove-error-message"]').should('be.visible').and('contain.text', 'Something went wrong');
+    cy.get('[data-test="remove-confirmation-button"]').should('not.be.disabled');
+    cy.get('@onSharingRemovedSpy').should('not.have.been.called');
+  });
 });

@@ -136,7 +136,9 @@ export default defineComponent({
       companyIds: [props.companyId],
       dataTypes: [props.dataType],
     }));
-    const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery(nonSourceabilityRequest);
+    const { data: nonSourceableDimensions } = useSearchNonSourceableDimensionsQuery({
+      dataDimensionSearchRequest: nonSourceabilityRequest,
+    });
 
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),

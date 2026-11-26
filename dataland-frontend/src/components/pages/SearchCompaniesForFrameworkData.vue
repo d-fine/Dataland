@@ -8,13 +8,9 @@
       <FrameworkDataSearchBar
         id="frameworkDataSearchBar"
         ref="frameworkDataSearchBar"
-        v-model="currentSearchBarInput"
-        :filter="currentCombinedFilter"
-        :chunk-size="rowsPerPage"
-        :current-page="currentPage"
-        :emit-search-results-array="true"
+        :applied-search-string="appliedSearch.searchString"
+        :filter="appliedDropdownFilters"
         @search-confirmed="handleSearchConfirmed"
-        @companies-received="handleCompanyQuery"
       />
 
       <div class="search-filters-panel">
@@ -23,10 +19,14 @@
             id="frameworkDataSearchFilters"
             class="col-8"
             ref="frameworkDataSearchFilters"
-            v-model:selected-country-codes="currentFilteredCountryCodes"
-            v-model:selected-frameworks="currentFilteredFrameworks"
-            v-model:selected-sectors="currentFilteredSectors"
-            v-model:selected-reporting-periods="currentFilteredReportingPeriods"
+            :selected-country-codes="appliedSearch.countryCodes"
+            :selected-frameworks="appliedSearch.dataTypes"
+            :selected-sectors="appliedSearch.sectors"
+            :selected-reporting-periods="appliedSearch.reportingPeriods"
+            @update:selected-country-codes="applyUserSearch({ countryCodes: $event })"
+            @update:selected-frameworks="applyUserSearch({ dataTypes: $event })"
+            @update:selected-sectors="applyUserSearch({ sectors: $event })"
+            @update:selected-reporting-periods="applyUserSearch({ reportingPeriods: $event })"
           />
         </div>
 
@@ -43,24 +43,30 @@
       </div>
     </div>
 
-    <div v-if="waitingForDataToDisplay" class="d-center-div text-center px-7 py-4">
+    <div v-if="areCompaniesError && !companies" class="d-center-div text-center px-7 py-4" data-test="companiesError">
+      <p class="font-medium text-xl">The companies could not be loaded.</p>
+      <p class="font-medium text-xl">Please try again later or contact the support team if the issue persists.</p>
+    </div>
+    <div v-else-if="isWaitingForFirstResults" class="d-center-div text-center px-7 py-4">
       <p class="font-medium text-xl">Loading...</p>
       <DatalandProgressSpinner />
     </div>
-
     <FrameworkDataSearchResults
-      v-if="!waitingForDataToDisplay"
-      ref="searchResults"
+      v-else
       :total-records="totalRecords"
       :previous-records="previousRecords"
-      :rows-per-page="rowsPerPage"
-      :data="resultsArray"
+      :rows-per-page="ROWS_PER_PAGE"
+      :data="companies"
+      :loading="areCompaniesPlaceholderData"
       @page-update="handlePageUpdate"
     />
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { type CompanySearchFilter } from '@/api-queries/backend/company-data/companyDataKeys';
+import { useGetCompaniesQuery } from '@/api-queries/backend/company-data/useGetCompaniesQuery';
+import { useGetNumberOfCompaniesQuery } from '@/api-queries/backend/company-data/useGetNumberOfCompaniesQuery';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
@@ -70,14 +76,15 @@ import router from '@/router';
 import { arraySetEquals } from '@/utils/ArrayUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { parseQueryParamArray } from '@/utils/QueryParserUtils';
-import { type FrameworkDataSearchFilterInterface } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
-import { type BasicCompanyInformation, type DataTypeEnum } from '@clients/backend';
-import type Keycloak from 'keycloak-js';
+import { useCurrentUser } from '@/utils/useCurrentUser';
+import { DataTypeEnum } from '@clients/backend';
+import { keepPreviousData } from '@tanstack/vue-query';
 import PrimeButton from 'primevue/button';
-import { defineComponent, inject, ref } from 'vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { computed, onUnmounted, ref } from 'vue';
+import { type RouteLocationNormalizedLoaded, onBeforeRouteUpdate, useRoute } from 'vue-router';
+
+type AppliedCompanySearch = Required<CompanySearchFilter>;
 
 interface FrameworkDataSearchBarRef {
   closeOverlay?: () => void;
@@ -87,277 +94,207 @@ interface FrameworkDataSearchFiltersRef {
   closeAllOpenDropDowns?: () => void;
 }
 
-export default defineComponent({
-  setup() {
-    return {
-      frameworkDataSearchFilters: ref<FrameworkDataSearchFiltersRef | null>(null),
-      frameworkDataSearchBar: ref<FrameworkDataSearchBarRef | null>(null),
-      searchResults: ref<unknown>(null),
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  name: 'SearchCompaniesForFrameworkData',
-  components: {
-    DatalandProgressSpinner,
-    FrameworkDataSearchFilters,
-    TheContent,
-    FrameworkDataSearchBar,
-    FrameworkDataSearchResults,
-    PrimeButton,
-  },
-  created() {
-    globalThis.addEventListener('scroll', () => this.handleScroll());
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .catch((error) => console.log(error));
-    this.scanQueryParams(this.route);
-    this.handleScroll();
-  },
-  data() {
-    return {
-      route: useRoute(),
-      resultsArray: [] as Array<BasicCompanyInformation>,
-      currentSearchBarInput: '',
-      currentFilteredFrameworks: [] as Array<DataTypeEnum>,
-      currentFilteredCountryCodes: [] as Array<string>,
-      currentFilteredSectors: [] as Array<string>,
-      currentFilteredReportingPeriods: [] as Array<string>,
-      currentCombinedFilter: {
-        companyNameFilter: '',
-        frameworkFilter: [],
-        sectorFilter: [],
-        countryCodeFilter: [],
-        reportingPeriodFilter: [],
-      } as FrameworkDataSearchFilterInterface,
-      isSearchBarContainerCollapsed: false,
-      rowsPerPage: 100,
-      currentPage: 0,
-      totalRecords: 0,
-      previousRecords: 0,
-      waitingForDataToDisplay: true,
-      hasUserUploaderRights: null as null | boolean,
-    };
-  },
-  beforeRouteUpdate(to: RouteLocationNormalizedLoaded) {
-    this.scanQueryParams(to);
-  },
-  watch: {
-    currentFilteredFrameworks: {
-      handler() {
-        this.updateCombinedFilterIfRequired();
-      },
-      deep: true,
-    },
-    currentFilteredCountryCodes: {
-      handler() {
-        this.updateCombinedFilterIfRequired();
-      },
-      deep: true,
-    },
-    currentFilteredSectors: {
-      handler() {
-        this.updateCombinedFilterIfRequired();
-      },
-      deep: true,
-    },
-    currentFilteredReportingPeriods: {
-      handler() {
-        this.updateCombinedFilterIfRequired();
-      },
-      deep: true,
-    },
-  },
-  computed: {
-    currentlyVisiblePageText(): string {
-      const totalSearchResults = this.totalRecords;
-      if (this.waitingForDataToDisplay) {
-        return 'loading...';
-      } else if (totalSearchResults === 0) {
-        return 'No results';
-      } else {
-        const startIndex = this.currentPage * this.rowsPerPage;
-        const endIndex =
-          startIndex + (this.rowsPerPage - 1) >= totalSearchResults
-            ? totalSearchResults - 1
-            : startIndex + (this.rowsPerPage - 1);
-        return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
-      }
-    },
-  },
-  methods: {
-    /**
-     * Redirects to the new dataset page
-     */
-    linkToNewDatasetPage() {
-      void router.push('/companies/choose');
-    },
-    /**
-     * Updates the current page.
-     * An update of the currentPage automatically triggers a data Update
-     * @param pageNumber the new page index
-     */
-    handlePageUpdate(pageNumber: number) {
-      if (pageNumber !== this.currentPage) {
-        this.waitingForDataToDisplay = true;
-        this.currentPage = pageNumber;
-        this.previousRecords = this.currentPage * this.rowsPerPage;
-      }
-    },
-    /**
-     * Called when the window is scrolled.
-     * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
-     */
-    handleScroll() {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      const collapseAt = 160;
-      const expandAt = 20;
-      const shouldCollapse = this.isSearchBarContainerCollapsed ? y > expandAt : y >= collapseAt;
+const ROWS_PER_PAGE = 100;
 
-      if (shouldCollapse !== this.isSearchBarContainerCollapsed) {
-        this.isSearchBarContainerCollapsed = shouldCollapse;
-        this.frameworkDataSearchBar?.closeOverlay?.();
-      }
+const frameworkDataSearchFilters = ref<FrameworkDataSearchFiltersRef | null>(null);
+const frameworkDataSearchBar = ref<FrameworkDataSearchBarRef | null>(null);
 
-      this.frameworkDataSearchFilters?.closeAllOpenDropDowns?.();
-    },
-    /**
-     * Parses the framework filter query parameters.
-     * @param route the current route
-     * @returns an array of framework filters from the URL or an empty array if no filter is defined
-     */
-    getQueryFrameworks(route: RouteLocationNormalizedLoaded): Array<DataTypeEnum> {
-      const queryFrameworks = route.query.framework;
-      if (queryFrameworks) {
-        const allowedDataTypeEnumValues = FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
-        return parseQueryParamArray(queryFrameworks).filter((singleFrameworkInQueryParam) =>
-          allowedDataTypeEnumValues.includes(singleFrameworkInQueryParam)
-        ) as Array<DataTypeEnum>;
-      } else {
-        return [];
-      }
-    },
-    /**
-     * Parses the country-code query parameters.
-     * @param route the current route
-     * @returns an array of country codes to filter by or an empty array of no filter is present
-     */
-    getQueryCountryCodes(route: RouteLocationNormalizedLoaded): Array<string> {
-      const queryCountryCodes = route.query.countryCode;
-      return queryCountryCodes ? parseQueryParamArray(queryCountryCodes) : [];
-    },
-    /**
-     * Parses the sector-filter query parameters.
-     * @param route the current route
-     * @returns an array of sectors to filter by or an empty array of no filter is present
-     */
-    getQuerySectors(route: RouteLocationNormalizedLoaded): Array<string> {
-      const querySectors = route.query.sector;
-      return querySectors ? parseQueryParamArray(querySectors) : [];
-    },
-    /**
-     * Parses the search term query parameter
-     * @param route the current route
-     * @returns the parsed search term query parameter or an empty string if non-existent
-     */
-    getQueryInput(route: RouteLocationNormalizedLoaded): string {
-      const queryInput = route.query.input as string;
-      return queryInput || '';
-    },
-    /**
-     * Updates the combined filter object if any of the local filters no longer match the combined filter object.
-     * An update of the combined filter object automatically triggers a new search.
-     */
-    updateCombinedFilterIfRequired() {
-      if (
-        !arraySetEquals(this.currentFilteredFrameworks, this.currentCombinedFilter.frameworkFilter) ||
-        !arraySetEquals(this.currentFilteredSectors, this.currentCombinedFilter.sectorFilter) ||
-        !arraySetEquals(this.currentFilteredCountryCodes, this.currentCombinedFilter.countryCodeFilter) ||
-        !arraySetEquals(this.currentFilteredReportingPeriods, this.currentCombinedFilter.reportingPeriodFilter) ||
-        this.currentSearchBarInput !== this.currentCombinedFilter.companyNameFilter
-      ) {
-        this.waitingForDataToDisplay = true;
-        this.currentCombinedFilter = {
-          sectorFilter: this.currentFilteredSectors,
-          frameworkFilter: this.currentFilteredFrameworks,
-          companyNameFilter: this.currentSearchBarInput,
-          countryCodeFilter: this.currentFilteredCountryCodes,
-          reportingPeriodFilter: this.currentFilteredReportingPeriods,
-        };
-      }
-    },
-    /**
-     * Reads the query parameters of the framework-, country-code-, sector- and name- filters and
-     * udpates the corresponding local variables accordingly
-     * @param route the current vue route
-     */
-    scanQueryParams(route: RouteLocationNormalizedLoaded) {
-      const queryFrameworks = this.getQueryFrameworks(route);
-      const queryCountryCodes = this.getQueryCountryCodes(route);
-      const querySectors = this.getQuerySectors(route);
-      const queryInput = this.getQueryInput(route);
-      if (
-        !arraySetEquals(this.currentFilteredFrameworks, queryFrameworks) ||
-        !arraySetEquals(this.currentFilteredCountryCodes, queryCountryCodes) ||
-        !arraySetEquals(this.currentFilteredSectors, querySectors) ||
-        this.currentSearchBarInput !== queryInput
-      ) {
-        this.currentFilteredFrameworks = queryFrameworks;
-        this.currentFilteredCountryCodes = queryCountryCodes;
-        this.currentFilteredSectors = querySectors;
-        this.currentSearchBarInput = queryInput;
-      }
-    },
-    /**
-     * Called when the new search results are received from the framework search bar. Disables the waiting indicator,
-     * resets the pagination and updates the datatable. Also updates the query parameters to reflect the new search parameters
-     * @param companiesReceived the received chunk of companies
-     * @param chunkIndex the index of the chunk
-     * @param totalNumberOfCompanies the total number of companies
-     * @returns the promise of the router push with the new query parameters
-     */
-    handleCompanyQuery(
-      companiesReceived: Array<BasicCompanyInformation>,
-      chunkIndex: number,
-      totalNumberOfCompanies: number
-    ) {
-      this.totalRecords = totalNumberOfCompanies;
-      this.resultsArray = companiesReceived;
+const route = useRoute();
+const { roles: currentUserRoles } = useCurrentUser();
+const hasUserUploaderRights = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_UPLOADER));
 
-      if (chunkIndex == 0) this.handlePageUpdate(0);
-      this.waitingForDataToDisplay = false;
+const isSearchBarContainerCollapsed = ref(false);
+const appliedSearch = ref<AppliedCompanySearch>({ ...getSearchFromRoute(route), reportingPeriods: [] });
+const currentPage = ref(0);
 
-      const queryInput = this.currentSearchBarInput == '' ? undefined : this.currentSearchBarInput;
-      const queryFrameworks = this.currentFilteredFrameworks.length == 0 ? undefined : this.currentFilteredFrameworks;
-      const queryCountryCodes =
-        this.currentFilteredCountryCodes.length == 0 ? undefined : this.currentFilteredCountryCodes;
-      const querySectors = this.currentFilteredSectors.length == 0 ? undefined : this.currentFilteredSectors;
+const appliedDropdownFilters = computed(() => ({
+  dataTypes: appliedSearch.value.dataTypes,
+  countryCodes: appliedSearch.value.countryCodes,
+  sectors: appliedSearch.value.sectors,
+  reportingPeriods: appliedSearch.value.reportingPeriods,
+}));
 
-      return router.push({
-        name: 'Search Companies for Framework Data',
-        query: {
-          input: queryInput,
-          framework: queryFrameworks,
-          countryCode: queryCountryCodes,
-          sector: querySectors,
-        },
-      });
-    },
-    /**
-     * Called when the user performed a company search. Updates the search bar contents and
-     * displays the waiting indicator
-     * @param companyNameFilter the new search filter
-     */
-    handleSearchConfirmed(companyNameFilter: string) {
-      this.waitingForDataToDisplay = true;
-      this.currentSearchBarInput = companyNameFilter;
-    },
+const {
+  data: companies,
+  isPending: areCompaniesPending,
+  isPlaceholderData: areCompaniesPlaceholderData,
+  isError: areCompaniesError,
+} = useGetCompaniesQuery(
+  {
+    searchString: () => appliedSearch.value.searchString,
+    dataTypes: () => appliedSearch.value.dataTypes,
+    countryCodes: () => appliedSearch.value.countryCodes,
+    sectors: () => appliedSearch.value.sectors,
+    reportingPeriods: () => appliedSearch.value.reportingPeriods,
+    chunkSize: ROWS_PER_PAGE,
+    chunkIndex: currentPage,
   },
-  unmounted() {
-    globalThis.removeEventListener('scroll', () => this.handleScroll());
+  { placeholderData: keepPreviousData }
+);
+
+// Without any search or filter, only companies with data for at least one framework are counted
+const isAnySearchOrFilterApplied = computed(
+  () =>
+    appliedSearch.value.searchString.length +
+      appliedSearch.value.dataTypes.length +
+      appliedSearch.value.countryCodes.length +
+      appliedSearch.value.sectors.length +
+      appliedSearch.value.reportingPeriods.length >
+    0
+);
+const {
+  data: numberOfCompanies,
+  isPending: isNumberOfCompaniesPending,
+  isPlaceholderData: isNumberOfCompaniesPlaceholderData,
+} = useGetNumberOfCompaniesQuery(
+  {
+    searchString: () => appliedSearch.value.searchString,
+    dataTypes: () => (isAnySearchOrFilterApplied.value ? appliedSearch.value.dataTypes : Object.values(DataTypeEnum)),
+    countryCodes: () => appliedSearch.value.countryCodes,
+    sectors: () => appliedSearch.value.sectors,
+    reportingPeriods: () => appliedSearch.value.reportingPeriods,
   },
+  { placeholderData: keepPreviousData }
+);
+
+const totalRecords = computed(() => numberOfCompanies.value ?? 0);
+const previousRecords = computed(() => currentPage.value * ROWS_PER_PAGE);
+const isWaitingForFirstResults = computed(
+  () => areCompaniesPending.value || (areCompaniesPlaceholderData.value && !companies.value?.length)
+);
+
+const currentlyVisiblePageText = computed((): string => {
+  const totalSearchResults = totalRecords.value;
+  if (
+    areCompaniesPending.value ||
+    areCompaniesPlaceholderData.value ||
+    isNumberOfCompaniesPending.value ||
+    isNumberOfCompaniesPlaceholderData.value
+  ) {
+    return 'loading...';
+  } else if (totalSearchResults === 0) {
+    return 'No results';
+  } else {
+    const startIndex = currentPage.value * ROWS_PER_PAGE;
+    const endIndex =
+      startIndex + (ROWS_PER_PAGE - 1) >= totalSearchResults
+        ? totalSearchResults - 1
+        : startIndex + (ROWS_PER_PAGE - 1);
+    return `${startIndex + 1}-${endIndex + 1} of ${totalSearchResults} results`;
+  }
 });
+
+// Searches changed by a navigation (e.g. the back button) are applied without writing the URL again
+onBeforeRouteUpdate((to) => {
+  applySearch(getSearchFromRoute(to));
+});
+
+globalThis.addEventListener('scroll', handleScroll);
+handleScroll();
+
+onUnmounted(() => {
+  globalThis.removeEventListener('scroll', handleScroll);
+});
+
+/**
+ * Applies a change of the search string or the filters. A changed search starts at the first page.
+ * @param change the changed parts of the search
+ * @returns true if the search changed
+ */
+function applySearch(change: Partial<AppliedCompanySearch>): boolean {
+  const current = appliedSearch.value;
+  const next = { ...current, ...change };
+  if (
+    next.searchString === current.searchString &&
+    arraySetEquals(next.dataTypes, current.dataTypes) &&
+    arraySetEquals(next.countryCodes, current.countryCodes) &&
+    arraySetEquals(next.sectors, current.sectors) &&
+    arraySetEquals(next.reportingPeriods, current.reportingPeriods)
+  ) {
+    return false;
+  }
+  appliedSearch.value = next;
+  currentPage.value = 0;
+  return true;
+}
+
+/**
+ * Applies a change of the search string or the filters made by the user and writes the changed search to the URL.
+ * Reporting periods are not part of the URL.
+ * @param change the changed parts of the search
+ */
+function applyUserSearch(change: Partial<AppliedCompanySearch>): void {
+  if (!applySearch(change)) return;
+  const search = appliedSearch.value;
+  void router.push({
+    name: 'Search Companies for Framework Data',
+    query: {
+      input: search.searchString || undefined,
+      framework: search.dataTypes.length ? search.dataTypes : undefined,
+      countryCode: search.countryCodes.length ? search.countryCodes : undefined,
+      sector: search.sectors.length ? search.sectors : undefined,
+    },
+  });
+}
+
+/**
+ * Called when the user confirmed a search in the search bar. Applies the search string and shows the first page.
+ * @param searchString the confirmed search string
+ */
+function handleSearchConfirmed(searchString: string): void {
+  applyUserSearch({ searchString });
+  currentPage.value = 0;
+}
+
+/**
+ * Redirects to the new dataset page
+ */
+function linkToNewDatasetPage(): void {
+  void router.push('/companies/choose');
+}
+
+/**
+ * Shows another page of the search results
+ * @param pageNumber the new page index
+ */
+function handlePageUpdate(pageNumber: number): void {
+  currentPage.value = pageNumber;
+}
+
+/**
+ * Called when the window is scrolled.
+ * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
+ */
+function handleScroll(): void {
+  const y = window.scrollY || document.documentElement.scrollTop;
+  const collapseAt = 160;
+  const expandAt = 20;
+  const shouldCollapse = isSearchBarContainerCollapsed.value ? y > expandAt : y >= collapseAt;
+
+  if (shouldCollapse !== isSearchBarContainerCollapsed.value) {
+    isSearchBarContainerCollapsed.value = shouldCollapse;
+    frameworkDataSearchBar.value?.closeOverlay?.();
+  }
+
+  frameworkDataSearchFilters.value?.closeAllOpenDropDowns?.();
+}
+
+/**
+ * Reads the search string and the framework, country-code and sector filters from the query parameters of a route.
+ * @param route the route to read
+ * @returns the search described by the route
+ */
+function getSearchFromRoute(route: RouteLocationNormalizedLoaded): Omit<AppliedCompanySearch, 'reportingPeriods'> {
+  const allowedDataTypeEnumValues = FRAMEWORKS_WITH_VIEW_PAGE as Array<string>;
+  return {
+    searchString: (route.query.input as string) || '',
+    dataTypes: (route.query.framework ? parseQueryParamArray(route.query.framework) : []).filter((framework) =>
+      allowedDataTypeEnumValues.includes(framework)
+    ) as Array<DataTypeEnum>,
+    countryCodes: route.query.countryCode ? parseQueryParamArray(route.query.countryCode) : [],
+    sectors: route.query.sector ? parseQueryParamArray(route.query.sector) : [],
+  };
+}
 </script>
 
 <style scoped>

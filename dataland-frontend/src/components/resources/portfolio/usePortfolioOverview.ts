@@ -1,85 +1,60 @@
-import { ref, onMounted, type Ref } from 'vue';
-import { type RemovableRef, useSessionStorage } from '@vueuse/core';
+import { computed, type ComputedRef, type Ref } from 'vue';
+import { useSessionStorage } from '@vueuse/core';
 import type { BasePortfolioName } from '@clients/userservice';
 
 interface UsePortfolioOverviewOptions {
   sessionStorageKey: string;
-  fetchPortfolios: () => Promise<BasePortfolioName[]>;
+  portfolioNames: Ref<BasePortfolioName[] | undefined>;
 }
 
 type UsePortfolioOverviewReturn = {
-  currentPortfolioId: RemovableRef<string | undefined>;
-  portfolioNames: Ref<BasePortfolioName[]>;
-  getPortfolios: () => Promise<void>;
-  setCurrentPortfolioId: (portfolioId?: string) => void;
+  currentPortfolioId: ComputedRef<string | undefined>;
+  selectPortfolio: (portfolioId: string) => void;
   onTabChange: (value: string | number) => void;
 };
 
 /**
- * Composable for managing portfolio overview state.
- * @param sessionStorageKey
- * @param fetchPortfolios
+ * Composable for managing which portfolio tab is active on a portfolio overview page.
+ * The selection is persisted in the session storage. The active portfolio is the selected one if it is part of the
+ * given portfolio names, otherwise the first portfolio.
+ * @param options the options of the composable
+ * @param options.sessionStorageKey the session storage key under which the selected portfolio id is persisted
+ * @param options.portfolioNames the portfolios shown as tabs, e.g. the data of a portfolio names query
+ * @returns the active portfolio id and functions to change the selection
  */
 export function usePortfolioOverview({
   sessionStorageKey,
-  fetchPortfolios,
+  portfolioNames,
 }: UsePortfolioOverviewOptions): UsePortfolioOverviewReturn {
-  const currentPortfolioId = useSessionStorage<string | undefined>(sessionStorageKey, undefined);
-  const portfolioNames = ref<BasePortfolioName[]>([]);
+  const selectedPortfolioId = useSessionStorage<string | undefined>(sessionStorageKey, undefined);
 
-  onMounted(() => {
-    void getPortfolios();
+  const currentPortfolioId = computed(() => {
+    const availablePortfolios = portfolioNames.value ?? [];
+    if (availablePortfolios.some((portfolio) => portfolio.portfolioId === selectedPortfolioId.value)) {
+      return selectedPortfolioId.value;
+    }
+    return availablePortfolios[0]?.portfolioId;
   });
 
   /**
-   * Retrieve all (shared) portfolios for the currently logged-in user.
+   * Selects the portfolio with the given id, e.g. after it was created.
+   * @param portfolioId the id of the portfolio to select
    */
-  async function getPortfolios(): Promise<void> {
-    try {
-      portfolioNames.value = await fetchPortfolios();
-      setCurrentPortfolioId();
-    } catch (error) {
-      console.log(error);
-    }
+  function selectPortfolio(portfolioId: string): void {
+    selectedPortfolioId.value = portfolioId;
   }
 
   /**
-   * Sets the current portfolio ID based on the following priority:
-   * 1. If a portfolioId is provided (e.g. after creating a new portfolio), use it if valid.
-   * 2. If not, and a session-stored portfolioId exists, use it if valid.
-   * 3. If none of the above are valid, fall back to the first portfolio in the list.
-   */
-  function setCurrentPortfolioId(portfolioId?: string): void {
-    if (portfolioNames.value.length === 0) {
-      currentPortfolioId.value = undefined;
-      return;
-    }
-
-    if (portfolioId && portfolioNames.value.some((p) => p.portfolioId === portfolioId)) {
-      currentPortfolioId.value = portfolioId;
-      return;
-    }
-
-    if (currentPortfolioId.value && portfolioNames.value.some((p) => p.portfolioId === currentPortfolioId.value)) {
-      return;
-    }
-
-    currentPortfolioId.value = portfolioNames.value[0]?.portfolioId;
-  }
-
-  /**
-   * Handles the tab change event by changing the currentPortfolioId.
+   * Handles the tab change event by selecting the portfolio of the tab.
    * @param value The value of the tab aka the portfolioId of the selected portfolio.
    */
   function onTabChange(value: string | number): void {
-    setCurrentPortfolioId(String(value));
+    selectPortfolio(String(value));
   }
 
   return {
     currentPortfolioId,
-    portfolioNames,
-    getPortfolios,
-    setCurrentPortfolioId,
+    selectPortfolio,
     onTabChange,
   };
 }

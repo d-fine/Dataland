@@ -14,19 +14,18 @@
 </template>
 
 <script setup lang="ts">
+import { useGetExtendedCompanyRoleAssignmentsQuery } from '@/api-queries/community-manager/company-roles/useGetExtendedCompanyRoleAssignmentsQuery';
+import { useGetAllSharedPortfolioNamesForCurrentUserQuery } from '@/api-queries/user-service/portfolio/useGetAllSharedPortfolioNamesForCurrentUserQuery';
 import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import type { CompanyRoleAssignmentExtended } from '@clients/communitymanager';
-import type Keycloak from 'keycloak-js';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 import Tab from 'primevue/tab';
 import TabList from 'primevue/tablist';
 import TabPanel from 'primevue/tabpanel';
 import TabPanels from 'primevue/tabpanels';
 import Tabs from 'primevue/tabs';
-import { inject, onMounted, ref, type Ref, computed, watch } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 
 interface TabInfo {
@@ -36,120 +35,57 @@ interface TabInfo {
   isVisible: boolean;
 }
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 const route = useRoute();
 
-// Ref is needed since App.vue is written in the Options API and we need to use the Composition API here.
-const companyRoleAssignments = assertDefined(
-  inject<Ref<Array<CompanyRoleAssignmentExtended>>>('companyRoleAssignments')
-);
+const { userId: currentUserId, roles: currentUserRoles } = useCurrentUser();
+const isUserJudge = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_JUDGE));
+const isUserAdmin = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_ADMIN));
 
-const tabs = ref<Array<TabInfo>>([
+const { data: sharedPortfolioNames } = useGetAllSharedPortfolioNamesForCurrentUserQuery({
+  enabled: computed(() => !!currentUserId.value),
+});
+const { data: currentUserRoleAssignments } = useGetExtendedCompanyRoleAssignmentsQuery({ userId: currentUserId });
+
+const myCompanyId = computed(() => currentUserRoleAssignments.value?.[0]?.companyId);
+
+const tabs = computed<Array<TabInfo>>(() => [
   { id: 'my-portfolios', label: 'MY PORTFOLIOS', route: '/portfolios', isVisible: true },
-  { id: 'shared-portfolios', label: 'SHARED PORTFOLIOS', route: '/shared-portfolios', isVisible: false },
+  {
+    id: 'shared-portfolios',
+    label: 'SHARED PORTFOLIOS',
+    route: '/shared-portfolios',
+    isVisible: (sharedPortfolioNames.value?.length ?? 0) > 0,
+  },
   { id: 'companies', label: 'COMPANIES', route: '/companies', isVisible: true },
-  { id: 'my-company', label: 'MY COMPANY', route: '/companies', isVisible: false },
+  {
+    id: 'my-company',
+    label: 'MY COMPANY',
+    route: myCompanyId.value ? `/companies/${myCompanyId.value}` : '/companies',
+    isVisible: !!myCompanyId.value,
+  },
   { id: 'my-datasets', label: 'MY DATASETS', route: '/datasets', isVisible: true },
-  { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: false },
+  { id: 'qa', label: 'QA', route: '/qualityassurance', isVisible: isUserJudge.value },
   { id: 'my-data-requests', label: 'MY DATA REQUESTS', route: '/requests', isVisible: true },
-  { id: 'all-data-requests', label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: false },
+  { id: 'all-data-requests', label: 'ALL DATA REQUESTS', route: '/requestoverview', isVisible: isUserAdmin.value },
 ]);
 
 const visibleTabs = computed(() => tabs.value.filter((tab) => tab.isVisible || tab.id === currentTabId.value));
 
 const currentTabId = computed<TabInfo['id']>(() => {
-  const myCompanyId = companyRoleAssignments.value?.[0]?.companyId;
-  if (myCompanyId && route.path.includes(`/companies/${myCompanyId}`)) {
+  if (myCompanyId.value && route.path.includes(`/companies/${myCompanyId.value}`)) {
     return 'my-company';
   }
 
   return (route.meta.initialTabId as TabInfo['id']) ?? '';
 });
 
-onMounted(() => {
-  setVisibilityForSharedPortfoliosTab();
-  setVisibilityForTabWithQualityAssurance();
-  configureCompanyRelatedTabs();
-  setVisibilityForAdminTab();
-});
-
-watch(companyRoleAssignments, () => {
-  configureCompanyRelatedTabs();
-});
-
 /**
  * Handles the tab change event.
  */
 function onTabChange(newTab: string | number): void {
-  const newId = String(newTab);
-  const tab = getTabById(newId);
+  const tab = assertDefined(tabs.value.find((tab) => tab.id === String(newTab)));
   router.push(tab.route).catch((err) => {
     console.error('Navigation error when changing tabs:', err);
   });
-}
-
-/**
- * Gets a tab by its ID.
- */
-function getTabById(tabId: TabInfo['id']): TabInfo {
-  return assertDefined(tabs.value.find((tab) => tab.id === tabId));
-}
-
-/**
- * Sets the visibility of the tab for Shared Portfolios.
- * If the user does have any shared portfolios, it is shown. Else it stays invisible.
- */
-function setVisibilityForSharedPortfoliosTab(): void {
-  apiClientProvider.apiClients.portfolioController
-    .getAllSharedPortfolioNamesForCurrentUser()
-    .then((sharedPortfolioNames) => {
-      getTabById('shared-portfolios').isVisible = sharedPortfolioNames && sharedPortfolioNames.data.length > 0;
-    })
-    .catch((error) => console.log(error));
-}
-
-/**
- * Sets the visibility of the tab for Quality Assurance.
- * If the user does have the Keycloak-role "Judge", it is shown. Else it stays invisible.
- */
-function setVisibilityForTabWithQualityAssurance(): void {
-  checkIfUserHasRole(KEYCLOAK_ROLE_JUDGE, getKeycloakPromise)
-    .then((hasUserJudgeRights) => {
-      getTabById('qa').isVisible = hasUserJudgeRights;
-    })
-    .catch((error) => console.log(error));
-}
-
-/**
- * Configures company-related tabs based on the current user's company role assignments.
- * - Shows and sets the route for the "My Company" tab when a company assignment exists.
- */
-function configureCompanyRelatedTabs(): void {
-  const myCompanyTab = getTabById('my-company');
-
-  const assignments = companyRoleAssignments.value ?? [];
-  const firstAssignment = assignments[0];
-
-  if (!firstAssignment) {
-    myCompanyTab.isVisible = false;
-    myCompanyTab.route = '/companies';
-    return;
-  }
-
-  myCompanyTab.isVisible = true;
-  myCompanyTab.route = `/companies/${firstAssignment.companyId}`;
-}
-
-/**
- * Sets the visibility of the all data requests tab.
- * Only Admins can see the tab.
- */
-function setVisibilityForAdminTab(): void {
-  checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)
-    .then((hasUserAdminRights) => {
-      getTabById('all-data-requests').isVisible = hasUserAdminRights;
-    })
-    .catch((error) => console.log(error));
 }
 </script>

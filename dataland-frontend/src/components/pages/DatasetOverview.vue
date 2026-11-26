@@ -15,7 +15,11 @@
       :dataset-table-infos="datasetTableInfos"
       :class="datasetTableInfos.length > 0 ? '' : 'hidden'"
     />
-    <div v-if="waitingForData" class="inline-loading text-center">
+    <div v-if="isError && !userUploads" class="text-center" data-test="datasetsErrorText">
+      <p class="font-medium text-xl">Your datasets could not be loaded.</p>
+      <p class="font-medium text-xl">Please try again later or contact the support team if the issue persists.</p>
+    </div>
+    <div v-else-if="isPending" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading datasets...</p>
       <DatalandProgressSpinner />
     </div>
@@ -25,61 +29,29 @@
   </TheContent>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { useGetUserUploadsDataMetaInformationQuery } from '@/api-queries/backend/user-uploads/useGetUserUploadsDataMetaInformationQuery';
 import DatalandProgressSpinner from '@/components/general/DatalandProgressSpinner.vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import DatasetOverviewTable from '@/components/resources/datasetOverview/DatasetOverviewTable.vue';
-import { type DatasetTableInfo, getMyDatasetTableInfos } from '@/components/resources/datasetOverview/DatasetTableInfo';
+import { toDatasetTableInfo } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
+import { useCurrentUser } from '@/utils/useCurrentUser';
 import PrimeButton from 'primevue/button';
-import { defineComponent, inject } from 'vue';
+import { computed } from 'vue';
 import router from '@/router';
 
-export default defineComponent({
-  name: 'DatasetOverview',
-  components: {
-    DatalandProgressSpinner,
-    PrimeButton,
-    TheContent,
-    DatasetOverviewTable,
-  },
-  data() {
-    return {
-      datasetTableInfos: [] as DatasetTableInfo[],
-      waitingForData: true,
-      hasUserUploaderRights: undefined as boolean | undefined,
-    };
-  },
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  created() {
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .catch((error) => console.log(error));
-    this.requestDataMetaDataForCurrentUser().catch((error) => console.log(error));
-  },
-  methods: {
-    /**
-     * Links the current instance or context to a new dataset, establishing a connection or association with it.
-     */
-    linkToNewDataset() {
-      void router.push('/companies/choose');
-    },
-    /**
-     * Finds the datasets the logged in user is responsible for and creates corresponding table entries
-     */
-    requestDataMetaDataForCurrentUser: async function (): Promise<void> {
-      this.datasetTableInfos = await getMyDatasetTableInfos(assertDefined(this.getKeycloakPromise));
-      this.waitingForData = false;
-    },
-  },
-});
+const { userId: currentUserId, roles: currentUserRoles } = useCurrentUser();
+const hasUserUploaderRights = computed(() => currentUserRoles.value.includes(KEYCLOAK_ROLE_UPLOADER));
+
+const { data: userUploads, isPending, isError } = useGetUserUploadsDataMetaInformationQuery({ userId: currentUserId });
+
+const datasetTableInfos = computed(() => (userUploads.value ?? []).map(toDatasetTableInfo));
+
+/**
+ * Links the current instance or context to a new dataset, establishing a connection or association with it.
+ */
+function linkToNewDataset(): void {
+  void router.push('/companies/choose');
+}
 </script>

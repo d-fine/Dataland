@@ -1,9 +1,6 @@
 import JudgeDialogNextSection from '@/components/resources/datasetReview/JudgeDialogNextSection.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { computed } from 'vue';
 import { KEYCLOAK_ROLE_JUDGE } from '@/utils/KeycloakRoles.ts';
 import type { PreApprovalConfig } from '@clients/qaservice';
 
@@ -44,14 +41,7 @@ function mountJudgeDialogNextSection(options?: {
     delay: options?.delayConfigResponseMs ?? 0,
   }).as('getPreApprovalConfig');
 
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
-  });
-
-  const mount = getMountingFunction();
-  const keycloakMock = minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] });
-  const keycloakPromise = Promise.resolve(keycloakMock);
-  const apiClientProvider = new ApiClientProvider(keycloakPromise);
+  const mount = getMountingFunction({ keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_JUDGE] }) });
 
   mount(JudgeDialogNextSection, {
     props: {
@@ -61,14 +51,6 @@ function mountJudgeDialogNextSection(options?: {
       preApprovalCheckResults: allPassingPreApprovalCheckResults,
       dataPointTypeId: dataPointTypeId,
       dataType: dataType,
-    },
-    global: {
-      plugins: [[VueQueryPlugin, { queryClient }]],
-      provide: {
-        getKeycloakPromise: () => keycloakPromise,
-        authenticated: computed(() => true),
-        apiClientProvider: computed(() => apiClientProvider),
-      },
     },
   });
 }

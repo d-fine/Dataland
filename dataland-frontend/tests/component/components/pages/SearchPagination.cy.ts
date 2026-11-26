@@ -28,11 +28,7 @@ function mockDataAndMountComponent(mockedResponse?: BasicCompanyInformation[]): 
 
   cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
     keycloak: keycloakMock,
-  }).then((mounted) => {
-    void mounted.wrapper.setData({
-      resultArray: mockDataSearchStoredCompanyArray,
-    });
-
+  }).then(() => {
     cy.wait('@companies');
   });
 }
@@ -81,5 +77,20 @@ describe('As a user, I expect there to be multiple result pages if there are man
     cy.get('.p-paginator-pages').find('button[class="p-paginator-page"]').eq(0).should('contain.text', '2').click();
     enterSearchString('abs');
     validateExistenceOfPaginator();
+  });
+
+  it('Keeps the current results visible with a loading indicator while the next page is loading', () => {
+    mockDataAndMountComponent();
+    cy.intercept('GET', '**/api/companies?**chunkIndex=1**', {
+      body: prepareSimpleDataSearchStoredCompanyArray(100),
+      delay: 1000,
+    }).as('fetchSecondPage');
+    cy.get('.p-paginator-pages').find('button[class="p-paginator-page"]').eq(0).should('contain.text', '2').click();
+    cy.get('table.p-datatable-table').should('exist');
+    cy.get('.p-datatable-mask').should('exist');
+    cy.contains('span', 'loading...').should('exist');
+    cy.wait('@fetchSecondPage');
+    cy.get('.p-datatable-mask').should('not.exist');
+    cy.get('.p-paginator-current').should('contain.text', 'Showing 101 to 200 of 200 entries');
   });
 });

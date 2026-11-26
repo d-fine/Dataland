@@ -1,11 +1,14 @@
 <template>
   <div v-if="!displaySuccessMessage" class="container">
+    <Message v-if="arePortfoliosError && !allUserPortfolios" severity="error" data-test="portfoliosErrorMessage">
+      Your portfolios could not be loaded.
+    </Message>
     <Listbox
       v-model="selectedPortfolios"
-      :options="allUserPortfolios"
+      :options="allUserPortfolios ?? []"
       optionLabel="portfolioName"
       multiple
-      :disabled="isLoading"
+      :disabled="isSaving || arePortfoliosPending"
       data-test="portfolioSelectionListbox"
       :pt="{
         option: {
@@ -28,8 +31,8 @@
     </Message>
 
     <PrimeButton
-      :disabled="selectedPortfolios.length === 0 || isLoading"
-      :loading="isLoading"
+      :disabled="selectedPortfolios.length === 0 || isSaving"
+      :loading="isSaving"
       @click="handleCompanyAddition"
       data-test="saveButton"
       icon="pi pi-plus"
@@ -40,36 +43,32 @@
 </template>
 
 <script setup lang="ts">
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { useGetAllPortfoliosForCurrentUserQuery } from '@/api-queries/user-service/portfolio/useGetAllPortfoliosForCurrentUserQuery';
+import { useReplacePortfolioMutation } from '@/api-queries/user-service/portfolio/useReplacePortfolioMutation';
 import { type BasePortfolio } from '@clients/userservice';
 import { AxiosError } from 'axios';
-import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import Message from 'primevue/message';
 import Listbox from 'primevue/listbox';
-import { inject, onMounted, type Ref, ref } from 'vue';
+import { inject, type Ref, ref } from 'vue';
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef');
-const data = dialogRef?.value.data;
-const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+const companyId: string | undefined = dialogRef?.value.data?.companyId;
 
-let companyId: string;
+const {
+  data: allUserPortfolios,
+  isPending: arePortfoliosPending,
+  isError: arePortfoliosError,
+} = useGetAllPortfoliosForCurrentUserQuery();
+const { mutateAsync: replacePortfolio } = useReplacePortfolioMutation();
 
-const allUserPortfolios = ref<BasePortfolio[]>([]);
 const selectedPortfolios = ref<BasePortfolio[]>([]);
 
 const errorMessage = ref('');
-const isLoading = ref(false);
+// The company is added to several portfolios with parallel mutations, so a single mutation state does not cover them.
+const isSaving = ref(false);
 const displaySuccessMessage = ref(false);
-
-onMounted(() => {
-  if (!data?.companyId) return;
-  companyId = data.companyId;
-  allUserPortfolios.value = data.allUserPortfolios;
-});
 
 /**
  * Handles the addition of the company to the selected portfolio(s) and closes the dialog
@@ -77,24 +76,27 @@ onMounted(() => {
  * displayed.
  */
 async function handleCompanyAddition(): Promise<void> {
-  if (selectedPortfolios.value.length === 0) return;
+  if (selectedPortfolios.value.length === 0 || !companyId) return;
 
-  isLoading.value = true;
+  isSaving.value = true;
 
   try {
     await Promise.all(
       selectedPortfolios.value.map((selectedPortfolio) => {
         const updatedCompanyIdentifiers = [...new Set([...selectedPortfolio.identifiers, companyId])];
 
-        return apiClientProvider.apiClients.portfolioController.replacePortfolio(selectedPortfolio.portfolioId, {
-          portfolioName: selectedPortfolio.portfolioName,
-          // as unknown as Set<string> cast required to ensure proper json is created
-          identifiers: updatedCompanyIdentifiers as unknown as Set<string>,
-          isMonitored: selectedPortfolio.isMonitored,
-          monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
-          notificationFrequency: selectedPortfolio.notificationFrequency,
-          timeWindowThreshold: selectedPortfolio.timeWindowThreshold,
-          sharedUserIds: selectedPortfolio.sharedUserIds,
+        return replacePortfolio({
+          portfolioId: selectedPortfolio.portfolioId,
+          portfolioUpload: {
+            portfolioName: selectedPortfolio.portfolioName,
+            // as unknown as Set<string> cast required to ensure proper json is created
+            identifiers: updatedCompanyIdentifiers as unknown as Set<string>,
+            isMonitored: selectedPortfolio.isMonitored,
+            monitoredFrameworks: selectedPortfolio.monitoredFrameworks,
+            notificationFrequency: selectedPortfolio.notificationFrequency,
+            timeWindowThreshold: selectedPortfolio.timeWindowThreshold,
+            sharedUserIds: selectedPortfolio.sharedUserIds,
+          },
         });
       })
     );
@@ -108,7 +110,7 @@ async function handleCompanyAddition(): Promise<void> {
     }
     console.error('Error adding company to portfolios:', error);
   } finally {
-    isLoading.value = false;
+    isSaving.value = false;
   }
 }
 

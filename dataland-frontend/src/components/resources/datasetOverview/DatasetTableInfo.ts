@@ -4,10 +4,6 @@ import {
   QaStatus,
   type DataMetaInformation,
 } from '@clients/backend';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients';
-import { assertDefined } from '@/utils/TypeScriptUtils';
-import { getUserId } from '@/utils/KeycloakUtils';
 
 export const ExtendedQaStatus = {
   Accepted: QaStatus.Accepted,
@@ -55,27 +51,18 @@ export function getDatasetStatus(
 }
 
 /**
- * Loads the datasets in form of DatasetTableInfos the requesting user is responsible for
- * @param getKeycloakPromise the authorization for backend interaction
- * @returns the filtered DatasetTableInfos
+ * Converts the meta information of an uploaded dataset into an entry of the dataset overview table
+ * @param dataMetaInfo the meta information of a dataset uploaded by the current user
+ * @returns the corresponding table entry
  */
-export async function getMyDatasetTableInfos(getKeycloakPromise: () => Promise<Keycloak>): Promise<DatasetTableInfo[]> {
-  const userId = await getUserId(getKeycloakPromise);
-  const userUploadsControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userUploadsController;
-  const storedCompaniesUploadedByCurrentUser = (
-    await userUploadsControllerApi.getUserUploadsDataMetaInformation(assertDefined(userId))
-  ).data;
-
-  return storedCompaniesUploadedByCurrentUser.map(
-    (company: DataMetaInformationForMyDatasets) =>
-      new DatasetTableInfo(
-        company.companyName,
-        company.dataType,
-        company.uploadTime,
-        company.companyId,
-        company.dataId,
-        company.reportingPeriod,
-        getDatasetStatus(company)
-      )
+export function toDatasetTableInfo(dataMetaInfo: DataMetaInformationForMyDatasets): DatasetTableInfo {
+  return new DatasetTableInfo(
+    dataMetaInfo.companyName,
+    dataMetaInfo.dataType,
+    dataMetaInfo.uploadTime,
+    dataMetaInfo.companyId,
+    dataMetaInfo.dataId,
+    dataMetaInfo.reportingPeriod,
+    getDatasetStatus(dataMetaInfo)
   );
 }

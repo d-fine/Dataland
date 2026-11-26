@@ -1,16 +1,20 @@
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
+const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
+
 describe('Component test for ClaimOwnershipPanel', () => {
+  beforeEach(() => {
+    cy.intercept('GET', `**/api/companies/${dummyCompanyId}/info`, {
+      body: { companyName: 'TestClaimOwnershipPanelCompany' },
+    });
+  });
+
   it('ClaimOwnershipPanel component works correctly for authenticated user', () => {
     //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: minimalKeycloakMock({}),
-      data() {
-        return {
-          companyName: 'TestClaimOwnershipPanelCompany',
-        };
-      },
+      props: { companyId: dummyCompanyId },
     }).then(() => {
       cy.get("[data-test='claimOwnershipPanelHeading']").should(
         'have.text',
@@ -33,11 +37,7 @@ describe('Component test for ClaimOwnershipPanel', () => {
     //@ts-ignore
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       keycloak: mockedKeycloak,
-      data() {
-        return {
-          companyName: 'TestClaimOwnershipPanelCompany',
-        };
-      },
+      props: { companyId: dummyCompanyId },
     }).then(() => {
       cy.get("[data-test='claimOwnershipPanelHeading']").should(
         'have.text',

@@ -1,6 +1,5 @@
 import DatasetReviewComparisonTable from '@/components/resources/datasetReview/DatasetReviewComparisonTable.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 import {
   type CompanyReport,
   type DataMetaInformation,
@@ -16,9 +15,6 @@ import {
   type DatasetJudgementResponse,
 } from '@clients/qaservice';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
-import type Keycloak from 'keycloak-js';
-import { ApiClientProvider } from '@/services/ApiClients.ts';
-import { computed } from 'vue';
 import { runFunctionBlockWithinPrimeVueModal } from '@sharedUtils/ElementChecks';
 
 describe('DatasetReviewComparisonTable component tests', () => {
@@ -128,12 +124,6 @@ describe('DatasetReviewComparisonTable component tests', () => {
     rowClickable?: boolean;
     onRowClick?: () => void;
   }): void {
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-      },
-    });
-
     cy.intercept('GET', '**/api/data/**', {
       statusCode: 200,
       body: {
@@ -144,6 +134,7 @@ describe('DatasetReviewComparisonTable component tests', () => {
     }).as('getFrameworkData');
 
     const mount = getMountingFunction({
+      keycloak: minimalKeycloakMock({}),
       dialogOptions: {
         mountWithDialog: true,
         propsToPassToTheMountedComponent: {
@@ -158,19 +149,8 @@ describe('DatasetReviewComparisonTable component tests', () => {
         },
       },
     });
-    const keycloakPromise = Promise.resolve(minimalKeycloakMock({}) as unknown as Keycloak);
-    const apiClientProvider = new ApiClientProvider(keycloakPromise);
 
-    mount(DatasetReviewComparisonTable, {
-      global: {
-        plugins: [[VueQueryPlugin, { queryClient }]],
-        provide: {
-          getKeycloakPromise: () => keycloakPromise,
-          authenticated: computed(() => true),
-          apiClientProvider: computed(() => apiClientProvider),
-        },
-      },
-    });
+    mount(DatasetReviewComparisonTable, {});
 
     cy.wait('@getFrameworkData');
   }
