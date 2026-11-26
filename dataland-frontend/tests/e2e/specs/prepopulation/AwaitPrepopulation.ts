@@ -3,6 +3,7 @@ import { getAdminToken } from '@e2e/utils/Auth';
 import { describeIf } from '@e2e/support/TestUtility';
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 import { DataTypeEnum } from '@clients/backend';
+import { FRAMEWORKS_WITHOUT_FAKE_FIXTURES } from '@/utils/Constants';
 
 const awaitPrepopulationRetries = Number(Cypress.expose('AWAIT_PREPOPULATION_RETRIES') ?? 250);
 
@@ -16,7 +17,9 @@ describeIf(
     let prepopulatedDataTypes: string[] = [];
 
     before(function () {
-      prepopulatedDataTypes = Object.values(DataTypeEnum);
+      prepopulatedDataTypes = Object.values(DataTypeEnum).filter(
+        (dataType) => !FRAMEWORKS_WITHOUT_FAKE_FIXTURES.includes(dataType)
+      );
       const fixtures = prepopulatedDataTypes.map((dataType) =>
         `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replaceAll('-', '')
       );

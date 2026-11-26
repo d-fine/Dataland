@@ -1,13 +1,13 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPcafData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
-import org.dataland.datalandbackend.openApiClient.model.PcafData
-import org.dataland.datalandbackend.openApiClient.model.PcafFinancial
-import org.dataland.datalandbackend.openApiClient.model.PcafFinancialFinancial
-import org.dataland.datalandbackend.openApiClient.model.PcafFinancialListedCompany
-import org.dataland.datalandbackend.openApiClient.model.PcafFinancialUnlistedCompany
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
+import org.dataland.datalandbackend.openApiClient.model.SfdrFinancial
+import org.dataland.datalandbackend.openApiClient.model.SfdrFinancialFinancial
+import org.dataland.datalandbackend.openApiClient.model.SfdrFinancialListedCompany
+import org.dataland.datalandbackend.openApiClient.model.SfdrFinancialUnlistedCompany
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -23,24 +23,25 @@ class PcafCalculatedFieldsTest {
 
     private fun dataPoint(value: Int) = ExtendedDataPointBigDecimal(value = value.toBigDecimal())
 
+    // PCAF datasets cannot be uploaded anymore, so the shared input datapoints are seeded via SFDR.
     private fun uploadInputsOnly(): Pair<String, String> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val data =
-            PcafData(
+            SfdrData(
                 financial =
-                    PcafFinancial(
+                    SfdrFinancial(
                         listedCompany =
-                            PcafFinancialListedCompany(
+                            SfdrFinancialListedCompany(
                                 marketCapitalizationInEUR = dataPoint(1000),
                                 minoritiesInterestInEUR = dataPoint(30),
                             ),
-                        financial = PcafFinancialFinancial(bookValueOfDebtInEUR = dataPoint(200)),
-                        unlistedCompany = PcafFinancialUnlistedCompany(totalEquityInEUR = dataPoint(500)),
+                        financial = SfdrFinancialFinancial(bookValueOfDebtInEUR = dataPoint(200)),
+                        unlistedCompany = SfdrFinancialUnlistedCompany(totalEquityInEUR = dataPoint(500)),
                     ),
             )
         val dataId =
-            apiAccessor.dataControllerApiForPcafData
-                .postCompanyAssociatedPcafData(CompanyAssociatedDataPcafData(companyId, reportingPeriod, data), bypassQa = true)
+            apiAccessor.dataControllerApiForSfdrData
+                .postCompanyAssociatedSfdrData(CompanyAssociatedDataSfdrData(companyId, reportingPeriod, data), bypassQa = true)
                 .dataId
         return companyId to dataId
     }
@@ -68,8 +69,8 @@ class PcafCalculatedFieldsTest {
         }
 
         val stored =
-            apiAccessor.dataControllerApiForPcafData
-                .getCompanyAssociatedPcafData(dataId)
+            apiAccessor.dataControllerApiForSfdrData
+                .getCompanyAssociatedSfdrData(dataId)
                 .data.financial
         assertNull(stored?.listedCompany?.enterpriseValueInEUR)
         assertNull(stored?.unlistedCompany?.totalEquityAndDebtInEUR)

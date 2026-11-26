@@ -3,7 +3,6 @@
   "schema" : {
     "general" : {
       "general" : {
-        "fiscalYearDeviation" : "FISCAL_YEAR_DEVIATION",
         "fiscalYearEnd" : "FISCAL_YEAR_END"
       },
       "company" : {

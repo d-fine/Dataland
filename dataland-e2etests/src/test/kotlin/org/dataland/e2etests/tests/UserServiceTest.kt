@@ -44,7 +44,7 @@ class UserServiceTest {
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[0].companyId, DataTypeEnum.sfdr, "2024")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2022")
             apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.lksg, "2023")
-            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.pcaf, "2024")
+            apiAccessor.uploadDummyFrameworkDataset(storedCompanyInformation[1].companyId, DataTypeEnum.sfdr, "2024")
             apiAccessor
                 .uploadDummyFrameworkDataset(storedCompanyInformation[2].companyId, DataTypeEnum.eutaxonomyMinusNonMinusFinancials, "2022")
 
@@ -110,7 +110,7 @@ class UserServiceTest {
             }
             listOf(
                 Triple(0, DataTypeEnum.sfdr, "2024, 2023"),
-                // SFDR and PCAF share data points, so if SFDR was uploaded, PCAF should be available for that year too and vice versa
+                // SFDR and PCAF share data points, so PCAF is available for every year in which SFDR was uploaded
                 Triple(0, DataTypeEnum.pcaf, "2024, 2023"),
                 Triple(0, DataTypeEnum.lksg, null),
                 Triple(1, DataTypeEnum.sfdr, "2024, 2022"),

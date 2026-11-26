@@ -27,6 +27,7 @@ class PcafFramework :
             FrameworkGenerationFeatures.allExcept(
                 FrameworkGenerationFeatures.UploadPage,
                 FrameworkGenerationFeatures.BackendUploadEndpoint,
+                FrameworkGenerationFeatures.FakeFixtures,
             ),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
@@ -37,17 +38,6 @@ class PcafFramework :
 
     private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("general") {
-                edit<SingleSelectComponent>("fiscalYearDeviation") {
-                    specificationGenerator = { categoryBuilder ->
-                        categoryBuilder.addDefaultDatapointAndSpecification(
-                            this,
-                            "Enum",
-                            "extendedEnumFiscalYearDeviation",
-                        )
-                    }
-                }
-            }
             edit<ComponentGroup>("company") {
                 edit<SingleSelectComponent>("mainPcafSector") {
                     specificationGenerator = { categoryBuilder ->

@@ -12,7 +12,6 @@ import { getOriginalNameFromTechnicalName } from '@/components/resources/dataTab
 import {
   type PcafGeneralCompanyCompanyExchangeStatusOptions,
   type PcafGeneralCompanyMainPcafSectorOptions,
-  type PcafGeneralGeneralFiscalYearDeviationOptions,
   type PcafData,
 } from '@clients/backend';
 export const pcafViewConfiguration: MLDTConfig<PcafData> = [
@@ -28,49 +27,6 @@ export const pcafViewConfiguration: MLDTConfig<PcafData> = [
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: 'cell',
-            label: 'Fiscal year deviation',
-            explanation: 'Does the fiscal year deviate from the calendar year?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: PcafData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                ((): AvailableMLDTDisplayObjectTypes => {
-                  const mappings = {
-                    Deviation: 'Deviation',
-                    NoDeviation: 'No Deviation',
-                  };
-                  return formatStringForDatatable(
-                    dataset.general?.general?.fiscalYearDeviation?.value
-                      ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation?.value, mappings)
-                      : ''
-                  );
-                })(),
-                'Fiscal year deviation',
-                dataset.general?.general?.fiscalYearDeviation
-              ),
-            valueGetterByDataPoint: (dataPoint: string): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformationByDataPoint(
-                ((): AvailableMLDTDisplayObjectTypes => {
-                  const mappings = {
-                    Deviation: 'Deviation',
-                    NoDeviation: 'No Deviation',
-                  };
-                  return formatStringForDatatable(
-                    (extractDatapointValue(dataPoint) as PcafGeneralGeneralFiscalYearDeviationOptions)
-                      ? getOriginalNameFromTechnicalName(
-                          extractDatapointValue(dataPoint) as PcafGeneralGeneralFiscalYearDeviationOptions,
-                          mappings
-                        )
-                      : ''
-                  );
-                })(),
-                'Fiscal year deviation',
-                dataPoint
-              ),
-            uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumFiscalYearDeviation',
-          },
           {
             type: 'cell',
             label: 'Fiscal year end',

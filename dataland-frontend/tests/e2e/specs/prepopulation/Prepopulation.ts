@@ -17,6 +17,7 @@ import {
 import { convertKebabCaseToPascalCase } from '@/utils/StringFormatter';
 import { type QaReportFixtureData } from '@sharedUtils/QaReportFixtures.ts';
 import { SfdrApiClient } from '@/frameworks/sfdr/ApiClient.ts';
+import { FRAMEWORKS_WITHOUT_FAKE_FIXTURES } from '@/utils/Constants';
 
 const chunkSize = 15;
 
@@ -176,7 +177,9 @@ describe(
     }
 
     // Prepopulation for frameworks of the framework-registry
-    for (const framework of getAllPublicFrameworkIdentifiers()) {
+    for (const framework of getAllPublicFrameworkIdentifiers().filter(
+      (framework) => !FRAMEWORKS_WITHOUT_FAKE_FIXTURES.includes(framework)
+    )) {
       const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,

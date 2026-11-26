@@ -6,7 +6,6 @@
   "schema" : {
     "general" : {
       "general" : {
-        "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
         "fiscalYearEnd" : "extendedDateFiscalYearEnd"
       },
       "company" : {

@@ -6818,55 +6818,6 @@
           }
         }
       },
-      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true,
-            "enum": [
-              "Deviation",
-              "NoDeviation"
-            ]
-          },
-          "quality": {
-            "type": "string",
-            "nullable": true,
-            "enum": [
-              "Audited",
-              "Reported",
-              "Estimated",
-              "Incomplete",
-              "NoDataFound"
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Contains suggested data corrections for the rejected data point.",
-        "example": {
-          "value": "No",
-          "quality": "Incomplete",
-          "comment": "program neural circuit",
-          "dataSource": {
-            "page": "1026",
-            "tagName": "web services",
-            "fileName": "SustainabilityReport",
-            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-            "publicationDate": "2024-01-07"
-          }
-        }
-      },
       "PcafData": {
         "type": "object",
         "properties": {
@@ -7099,14 +7050,6 @@
       "PcafGeneralGeneral": {
         "type": "object",
         "properties": {
-          "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
           "fiscalYearEnd": {
             "nullable": true,
             "allOf": [
@@ -7162,31 +7105,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
-              }
-            ]
-          }
-        }
-      },
-      "QaReportDataPointExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
-        "required": [
-          "comment",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string",
-            "description": "A comment explaining the verdict.",
-            "example": "The data point is correct and hence accepted."
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
               }
             ]
           }
