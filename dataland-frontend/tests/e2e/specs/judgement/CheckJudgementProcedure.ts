@@ -94,16 +94,9 @@ describeIf(
           return cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null);
         })
         .then((buffer) => {
-          // Document ids are content hashes. Appending a unique PDF comment after the end-of-file marker keeps
-          // the PDF valid but guarantees a fresh document, so the test cannot pick up a document that is stuck in
-          // a non-accepted QA state from an earlier run on a long-lived server.
-          const uniqueSuffix = new TextEncoder().encode(`\n%judgement-test-${Date.now()}-${Math.random()}\n`);
-          const uniqueBytes = new Uint8Array(buffer.length + uniqueSuffix.length);
-          uniqueBytes.set(Uint8Array.from(buffer), 0);
-          uniqueBytes.set(uniqueSuffix, buffer.length);
-          const arrayBuffer = uniqueBytes.buffer;
+          const arrayBuffer = Uint8Array.from(buffer).buffer;
 
-          return uploadDocumentViaApi(adminToken, arrayBuffer, TEST_PDF_REPORT_FILE_NAME, {
+          return uploadDocumentViaApi(adminToken, arrayBuffer, `${TEST_PDF_REPORT_FILE_NAME}.pdf`, {
             documentName: TEST_PDF_REPORT_FILE_NAME,
             documentCategory: 'Other',
             companyIds: [] as unknown as Set<string>,
@@ -294,7 +287,7 @@ describeIf(
 );
 
 // Remote environments need a generous budget for the async QA acceptance of uploaded documents.
-const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 120000;
+const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 60000;
 
 /**
  * Polls the real "search document meta information by company" endpoint until the given

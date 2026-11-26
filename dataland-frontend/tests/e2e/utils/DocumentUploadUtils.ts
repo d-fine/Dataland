@@ -94,6 +94,25 @@ export async function uploadDocumentViaApi(
 }
 
 /**
+ * Adds a single company id to the company id list of a document without touching the other company ids.
+ * Unlike patchDocumentMetaInfo (which replaces the whole list), this is safe for documents that are shared
+ * between several tests running in parallel against the same server.
+ * @param token the bearer token used to authorize the API requests
+ * @param documentId the id of the document whose company id list shall be extended
+ * @param companyId the company id to add
+ * @returns a promise on the patch response
+ */
+export async function addCompanyIdToDocument(
+  token: string,
+  documentId: string,
+  companyId: string
+): Promise<DocumentMetaInfoResponse> {
+  const documentControllerApi = new DocumentControllerApi(new Configuration({ accessToken: token }));
+  const response = await documentControllerApi.patchDocumentMetaInfoCompanyIds(documentId, companyId);
+  return response.data;
+}
+
+/**
  * Patch the company id list in the stored meta information of a given document by adding
  * a single new company id.
  * @param token the bearer token used to authorize the API requests

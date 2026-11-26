@@ -4,7 +4,7 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
 import { getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getAdminToken, getUploaderToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
-import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
+import { addCompanyIdToDocument, patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUploadUtils.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { TEST_PDF_REPORT_FILE_NAME, TEST_PDF_REPORT_FILE_PATH } from '@sharedUtils/ConstantsForPdfs.ts';
 
@@ -46,7 +46,7 @@ describeIf(
       cy.readFile(`../${TEST_PDF_REPORT_FILE_PATH}`, null).then((buffer) => {
         const arrayBuffer = Uint8Array.from(buffer).buffer;
         getUploaderToken().then(async (token: string) => {
-          documentMetaInfoResponse = await uploadDocumentViaApi(token, arrayBuffer, documentName);
+          documentMetaInfoResponse = await uploadDocumentViaApi(token, arrayBuffer, `${documentName}.pdf`);
           return documentMetaInfoResponse;
         });
       });
@@ -57,12 +57,15 @@ describeIf(
     });
 
     it('Download document, check for file name and appropriate size, and delete it afterwards', () => {
+      // The test report is shared with other tests (e.g. the judgement tests run in parallel against the same server).
+      // Therefore the company id must only be added to the existing list and never replace it.
       const documentMetaInfoPatch: DocumentMetaInfoPatch = {
         documentName: documentName,
-        companyIds: [storedCompany.companyId] as unknown as Set<string>,
       };
       getAdminToken().then((token: string) => {
-        return patchDocumentMetaInfo(token, documentMetaInfoResponse.documentId, documentMetaInfoPatch);
+        return patchDocumentMetaInfo(token, documentMetaInfoResponse.documentId, documentMetaInfoPatch).then(() =>
+          addCompanyIdToDocument(token, documentMetaInfoResponse.documentId, storedCompany.companyId)
+        );
       });
 
       visitPageAndClickDownloadButton();
