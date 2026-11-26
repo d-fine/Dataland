@@ -295,6 +295,37 @@ describeIf(
 const DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS = 60000;
 
 /**
+ * Passes through the search result. If the document was not found, additionally reads its QA status and hands a
+ * description of it to the given callback, which helps to diagnose why the document is not searchable yet.
+ *
+ * @param isSearchable  Whether the document was found by the search.
+ * @param documentId    The id (sha256 hash) of the document.
+ * @param token         Bearer token used to read the document's meta information.
+ * @param onQaStatus    Receives the description of the QA status if the document was not found.
+ * @returns A chainable yielding the unchanged search result.
+ */
+function reportQaStatusIfNotSearchable(
+  isSearchable: boolean,
+  documentId: string,
+  token: string,
+  onQaStatus: (qaStatusDescription: string) => void
+): Cypress.Chainable<boolean> {
+  if (isSearchable) return cy.wrap(true);
+  return cy
+    .request({
+      method: 'GET',
+      url: `${apiBaseUrl}/documents/${documentId}/metadata`,
+      headers: { Authorization: `Bearer ${token}` },
+      failOnStatusCode: false,
+    })
+    .then((metaResponse) => {
+      const unknownDescription = `unknown (HTTP ${metaResponse.status})`;
+      onQaStatus(String(metaResponse.body?.qaStatus ?? unknownDescription));
+      return false;
+    });
+}
+
+/**
  * Polls the real "search document meta information by company" endpoint until the given
  * document id shows up in the results for the given company, or the retry budget is exhausted.
  *
@@ -332,20 +363,11 @@ function waitForDocumentToBeSearchableForCompany(
             foundDocument = documents.find((document) => document.documentId === documentId);
             return response.status === 200 && foundDocument !== undefined;
           })
-          .then((isSearchable) => {
-            if (isSearchable) return true;
-            return cy
-              .request({
-                method: 'GET',
-                url: `${apiBaseUrl}/documents/${documentId}/metadata`,
-                headers: { Authorization: `Bearer ${token}` },
-                failOnStatusCode: false,
-              })
-              .then((metaResponse) => {
-                lastObservation += `, document qaStatus: ${metaResponse.body?.qaStatus ?? `unknown (HTTP ${metaResponse.status})`}`;
-                return false;
-              });
-          }),
+          .then((isSearchable) =>
+            reportQaStatusIfNotSearchable(isSearchable, documentId, token, (qaStatusDescription) => {
+              lastObservation += `, document qaStatus: ${qaStatusDescription}`;
+            })
+          ),
       {
         timeout: DOCUMENT_SEARCHABLE_TIMEOUT_IN_MS,
         interval: 2000,
