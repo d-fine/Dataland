@@ -42,7 +42,6 @@ const { options, dataPointValue, selectedDocumentMeta, extendedDialogRef, isPage
     props.extendedDataPointObject,
     {
       extendedEnumCompanyExchangeStatus: exchangeStatusOptions,
-      extendedEnumSfdrCompanyExchangeStatus: exchangeStatusOptions,
     },
     deviationOptions
   );

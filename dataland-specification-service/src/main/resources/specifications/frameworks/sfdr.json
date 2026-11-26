@@ -8,8 +8,8 @@
       "general" : { },
       "company" : {
         "fiscalYearEnd" : "extendedDateFiscalYearEnd",
-        "mainPcafSector" : "extendedEnumSfdrMainPcafSector",
-        "companyExchangeStatus" : "extendedEnumSfdrCompanyExchangeStatus"
+        "mainPcafSector" : "extendedEnumPcafMainSector",
+        "companyExchangeStatus" : "extendedEnumCompanyExchangeStatus"
       }
     },
     "financial" : {

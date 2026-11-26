@@ -3,7 +3,7 @@
   "name" : "Main PCAF sector",
   "businessDefinition" : "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Information Technology\"; \"Materials\"; \"Public\"; \"Real estate\"; \"Utilities\";",
   "dataPointBaseTypeId" : "extendedEnumPcafMainSector",
-  "frameworkOwnership" : [ "pcaf" ],
+  "frameworkOwnership" : [ "pcaf", "sfdr" ],
   "constraints" : null,
   "calculationRules" : [ ]
 }

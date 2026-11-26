@@ -57,8 +57,8 @@ class SfdrFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "extendedEnumSfdrMainPcafSector",
-                            dataPointTypeIdOverwrite = "extendedEnumSfdrMainPcafSector",
+                            "extendedEnumPcafMainSector",
+                            dataPointTypeIdOverwrite = "extendedEnumPcafMainSector",
                         )
                     }
                 }
@@ -67,8 +67,8 @@ class SfdrFramework :
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
                             "Enum",
-                            "extendedEnumSfdrCompanyExchangeStatus",
-                            dataPointTypeIdOverwrite = "extendedEnumSfdrCompanyExchangeStatus",
+                            "extendedEnumCompanyExchangeStatus",
+                            dataPointTypeIdOverwrite = "extendedEnumCompanyExchangeStatus",
                         )
                     }
                 }
