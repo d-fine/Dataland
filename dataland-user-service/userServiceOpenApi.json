@@ -240,6 +240,66 @@
         ]
       }
     },
+    "/subscribed-companies/incomplete-information/{companyId}": {
+      "post": {
+        "tags": [
+          "subscribed-companies-controller"
+        ],
+        "summary": "Log a company with incomplete company information",
+        "description": "Adds the company to the persistent log of companies whose fiscal year end or sector could not be completed automatically. Does nothing if the company is already logged.",
+        "operationId": "postCompanyWithIncompleteInformation",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The company is in the log.",
+            "content": {}
+          },
+          "403": {
+            "description": "Access denied."
+          },
+          "404": {
+            "description": "The company does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/portfolios/support": {
       "post": {
         "tags": [
@@ -578,17 +638,17 @@
         ]
       }
     },
-    "/subscribed-companies/incomplete-fye-information": {
+    "/subscribed-companies/incomplete-information": {
       "get": {
         "tags": [
           "subscribed-companies-controller"
         ],
-        "summary": "Get companyIDs with incomplete FYE information",
-        "description": "Returns the temporary list of companyIDs with incomplete FYE information. The return value is determined by a nightly batch job and is constant throughout the day.",
-        "operationId": "getCompaniesWithIncompleteFyeInformation",
+        "summary": "Get companyIDs with incomplete company information",
+        "description": "Returns the persistent log of companyIDs whose fiscal year end or sector could not be completed automatically. Companies that are complete by now are removed from the log before responding.",
+        "operationId": "getCompaniesWithIncompleteInformation",
         "responses": {
           "200": {
-            "description": "List of companyIDs with incomplete FYE information.",
+            "description": "List of companyIDs with incomplete company information.",
             "content": {
               "application/json": {
                 "schema": {
