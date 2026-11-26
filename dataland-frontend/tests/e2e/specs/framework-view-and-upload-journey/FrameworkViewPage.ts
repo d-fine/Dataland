@@ -129,6 +129,7 @@ describeIf(
       humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials202673),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
+      humanizeStringOrNumber(DataTypeEnum.Pcaf),
       'Documents',
     ]);
     let companyIdOfAlpha: string;
