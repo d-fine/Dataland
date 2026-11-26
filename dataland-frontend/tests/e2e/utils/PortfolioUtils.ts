@@ -1,34 +1,35 @@
-import { getAdminToken } from '@e2e/utils/Auth.ts';
+import { getAdminToken, getReviewerToken } from '@e2e/utils/Auth.ts';
 import { NotificationFrequency, PortfolioControllerApi, Configuration } from '@clients/userservice';
 import { generateDummyCompanyInformation, getOrUploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 
 /**
- * Creates a new portfolio by utilizing an API. The method obtains an access token through Keycloak authentication
- * and uses it to authenticate the API request for creating the portfolio.
+ * Creates a new portfolio for the reviewer user by utilizing an API. The reviewer is used on purpose: no other
+ * test works with the portfolios of this user, so tests using these helpers cannot interfere with portfolio tests
+ * of the admin user running in parallel against the same server.
  */
 export function createPortfolio(): void {
-  getAdminToken().then(async (token) => {
-    const companyToUpload = generateDummyCompanyInformation('Dummy Company');
-    const companyId = (await getOrUploadCompanyViaApi(token, companyToUpload)).companyId;
-
-    const dummyPortfolioUpload = {
-      portfolioName: 'Dummy Portfolio ' + Date.now(),
-      identifiers: [companyId] as unknown as Set<string>,
-      isMonitored: false,
-      monitoredFrameworks: [] as unknown as Set<string>,
-      notificationFrequency: NotificationFrequency.Weekly,
-      timeWindowThreshold: undefined,
-      sharedUserIds: [] as unknown as Set<string>,
-    };
-    await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
-  });
+  getAdminToken()
+    .then((adminToken) => getOrUploadCompanyViaApi(adminToken, generateDummyCompanyInformation('Dummy Company')))
+    .then((company) => getReviewerToken().then((token) => ({ token, companyId: company.companyId })))
+    .then(async ({ token, companyId }) => {
+      const dummyPortfolioUpload = {
+        portfolioName: 'Dummy Portfolio ' + Date.now(),
+        identifiers: [companyId] as unknown as Set<string>,
+        isMonitored: false,
+        monitoredFrameworks: [] as unknown as Set<string>,
+        notificationFrequency: NotificationFrequency.Weekly,
+        timeWindowThreshold: undefined,
+        sharedUserIds: [] as unknown as Set<string>,
+      };
+      await new PortfolioControllerApi(new Configuration({ accessToken: token })).createPortfolio(dummyPortfolioUpload);
+    });
 }
 
 /**
- * Deletes all portfolios associated with the current user.
+ * Deletes all portfolios of the reviewer user (see createPortfolio for why the reviewer is used).
  */
 export function deleteAllPortfolios(): void {
-  getAdminToken().then(async (token) => {
+  getReviewerToken().then(async (token) => {
     const allUserPortfoliosAxiosResponse = await new PortfolioControllerApi(
       new Configuration({ accessToken: token })
     ).getAllPortfolioNamesForCurrentUser();

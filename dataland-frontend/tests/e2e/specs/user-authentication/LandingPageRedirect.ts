@@ -11,7 +11,7 @@ describe('As a user, I expect to find a backToPlatformLink when logged in and vi
   });
 
   it('Checks that the redirect work when the user has no portfolio', () => {
-    cy.ensureLoggedInAsAdmin();
+    cy.ensureLoggedInAsReviewer();
     cy.visit('/')
       .url()
       .should('eq', getBaseUrl() + '/');
@@ -21,7 +21,7 @@ describe('As a user, I expect to find a backToPlatformLink when logged in and vi
 
   it('Checks that the redirect work when the user has a portfolio', () => {
     createPortfolio();
-    cy.ensureLoggedInAsAdmin();
+    cy.ensureLoggedInAsReviewer();
     cy.visit('/')
       .url()
       .should('eq', getBaseUrl() + '/');

@@ -356,7 +356,10 @@ for (const config of frameworkTestConfigs) {
         for (const year of reportingYearsToSelect) {
           cy.get('.p-multiselect-list').contains(year).click();
         }
-        cy.get('body').click(0, 0);
+        // Close the multiselect overlay (Escape is handled by PrimeVue) and wait until it is gone, so that it
+        // cannot cover the elements of the download dialog.
+        cy.get('[data-test="reportingPeriodSelector"]').type('{esc}');
+        cy.get('.p-multiselect-overlay').should('not.exist');
       });
 
       testDownloadPortfolio(
