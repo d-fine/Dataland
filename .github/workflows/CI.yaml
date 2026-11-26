@@ -80,8 +80,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
+      runConsistencyTests: ${{ steps.detectChanges.outputs.runConsistencyTests }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          fetch-depth: 0
+      - name: Detect whether the consistency tests are relevant for this change
+        id: detectChanges
+        run: ./testing/detect_framework_toolbox_relevant_changes.sh
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -113,6 +119,7 @@ jobs:
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
   framework-toolbox-consistency-tests:
     runs-on: ubuntu-latest
+    if: needs.framework-toolbox-list-frameworks.outputs.runConsistencyTests == 'true'
     needs:
       - framework-toolbox-list-frameworks
     strategy:
@@ -444,7 +451,7 @@ jobs:
       - frontend-component-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
-    if: ${{ success() }}
+    if: ${{ !failure() && !cancelled() }}
     steps:
       - name: Merge Parameters Artifacts
         uses: actions/upload-artifact/merge@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
@@ -510,7 +517,7 @@ jobs:
           delete-merged: true
   summary:
     runs-on: ubuntu-latest
-    if: success()
+    if: ${{ !failure() && !cancelled() }}
     needs:
       - merge-artefacts
       - manual-maintenance-check
