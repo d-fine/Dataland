@@ -13,6 +13,7 @@ import org.dataland.datalanduserservice.model.PortfolioSharingPatch
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.model.PortfolioUserAccessRight
 import org.dataland.datalanduserservice.model.SupportRequestData
+import org.dataland.datalanduserservice.service.IncompleteCompanyEventService
 import org.dataland.datalanduserservice.service.MessageQueuePublisherService
 import org.dataland.datalanduserservice.service.PortfolioEnrichmentService
 import org.dataland.datalanduserservice.service.PortfolioMonitoringService
@@ -40,6 +41,7 @@ class PortfolioController
         private val portfolioSharingService: PortfolioSharingService,
         private val messageQueuePublisherService: MessageQueuePublisherService,
         private val companyDataControllerApi: CompanyDataControllerApi,
+        private val incompleteCompanyEventService: IncompleteCompanyEventService,
     ) : PortfolioApi,
         PortfolioSharingApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>> =
@@ -78,10 +80,9 @@ class PortfolioController
                     .toSet()
 
             val validPortfolioUpload = portfolioUpload.copy(identifiers = validCompanyIds)
-            return ResponseEntity(
-                portfolioService.createPortfolio(BasePortfolio(validPortfolioUpload), correlationId),
-                HttpStatus.CREATED,
-            )
+            val createdPortfolio = portfolioService.createPortfolio(BasePortfolio(validPortfolioUpload), correlationId)
+            incompleteCompanyEventService.publishEventsForIncompleteCompanies(createdPortfolio.identifiers, correlationId)
+            return ResponseEntity(createdPortfolio, HttpStatus.CREATED)
         }
 
         override fun replacePortfolio(
@@ -90,13 +91,18 @@ class PortfolioController
         ): ResponseEntity<BasePortfolio> {
             val correlationId = UUID.randomUUID().toString()
             validator.validatePortfolioReplacement(portfolioId, portfolioUpload, correlationId)
-            return ResponseEntity.ok(
+            val previousCompanyIds = portfolioService.getPortfolio(portfolioId, correlationId).identifiers
+            val replacedPortfolio =
                 portfolioService.replacePortfolio(
                     portfolioId,
                     BasePortfolio(portfolioUpload),
                     correlationId,
-                ),
+                )
+            incompleteCompanyEventService.publishEventsForIncompleteCompanies(
+                replacedPortfolio.identifiers - previousCompanyIds,
+                correlationId,
             )
+            return ResponseEntity.ok(replacedPortfolio)
         }
 
         override fun deletePortfolio(portfolioId: String): ResponseEntity<Unit> =
