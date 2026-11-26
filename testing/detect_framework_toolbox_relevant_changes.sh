@@ -15,6 +15,7 @@ relevant_paths=(
   "dataland-frontend/src/frameworks/"
   "dataland-frontend/tests/e2e/fixtures/frameworks/"
   "testing/verify_that_no_git_tracked_files_changed.sh"
+  "testing/detect_framework_toolbox_relevant_changes.sh"
 )
 
 output_file="${GITHUB_OUTPUT:-/dev/null}"
