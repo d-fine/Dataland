@@ -45,7 +45,7 @@ testcontainers = "1.21.4"
 [libraries]
 
 # Gradle
-gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.9.1" }
+gradle-tooling = { group = "org.gradle", name = "gradle-tooling-api", version = "9.9.2" }
 # Detekt
 detekt-cli = { group = "dev.detekt", name = "detekt-cli", version.ref = "detekt" }
 
