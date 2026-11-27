@@ -56,7 +56,7 @@ interface SubscribedCompaniesApi {
             ),
         ],
     )
-    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    @PreAuthorize("hasRole('ROLE_REVIEWER') or hasRole('ROLE_ADMIN')")
     @GetMapping(
         value = ["/incomplete-information"],
         produces = ["application/json"],
@@ -85,7 +85,7 @@ interface SubscribedCompaniesApi {
             ),
         ],
     )
-    @PreAuthorize("hasRole('ROLE_REVIEWER')")
+    @PreAuthorize("hasRole('ROLE_REVIEWER') or hasRole('ROLE_ADMIN')")
     @PostMapping(value = ["/incomplete-information/{companyId}"])
     fun postCompanyWithIncompleteInformation(
         @PathVariable companyId: String,

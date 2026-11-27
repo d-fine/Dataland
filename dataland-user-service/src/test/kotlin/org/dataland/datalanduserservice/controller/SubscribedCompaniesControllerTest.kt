@@ -6,6 +6,8 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
@@ -60,9 +62,12 @@ class SubscribedCompaniesControllerTest : AbstractPortfolioControllerTest() {
             ).andExpect(statusMatcher)
     }
 
-    @Test
-    fun `reviewer can read the log`() {
-        setMockSecurityContext(reviewerAuthentication)
+    private fun authenticationFor(role: String) = if (role == "ADMIN") dummyAdminAuthentication else reviewerAuthentication
+
+    @ParameterizedTest
+    @ValueSource(strings = ["REVIEWER", "ADMIN"])
+    fun `privileged roles can read the log`(role: String) {
+        setMockSecurityContext(authenticationFor(role))
         whenever(incompleteCompanyInformationService.getIncompleteCompanyIds()).thenReturn(setOf("c1"))
         mockMvc
             .perform(
