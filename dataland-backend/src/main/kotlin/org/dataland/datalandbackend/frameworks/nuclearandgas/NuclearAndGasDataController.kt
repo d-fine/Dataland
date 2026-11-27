@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.nuclearandgas
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.frameworks.nuclearandgas.model.NuclearAndGasData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
@@ -38,7 +38,7 @@ class NuclearAndGasDataController
         @Qualifier("AssembledExportService") dataExportService: DataExportService<NuclearAndGasData>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
-    ) : DataController<NuclearAndGasData>(
+    ) : UploadableDataController<NuclearAndGasData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,

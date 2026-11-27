@@ -23,7 +23,12 @@ class PcafFramework :
         explanation = "Partnership for Carbon Accounting Financials",
         File("./dataland-framework-toolbox/inputs/pcaf/pcaf.xlsx"),
         order = 8,
-        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.UploadPage,
+                FrameworkGenerationFeatures.BackendUploadEndpoint,
+                FrameworkGenerationFeatures.FakeFixtures,
+            ),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         overwriteDataPointSpecificationForEnums(framework.root)
@@ -33,17 +38,6 @@ class PcafFramework :
 
     private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("general") {
-                edit<SingleSelectComponent>("fiscalYearDeviation") {
-                    specificationGenerator = { categoryBuilder ->
-                        categoryBuilder.addDefaultDatapointAndSpecification(
-                            this,
-                            "Enum",
-                            "extendedEnumFiscalYearDeviation",
-                        )
-                    }
-                }
-            }
             edit<ComponentGroup>("company") {
                 edit<SingleSelectComponent>("mainPcafSector") {
                     specificationGenerator = { categoryBuilder ->

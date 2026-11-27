@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials202673.model.EutaxonomyFinancials202673Data
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
@@ -38,7 +38,7 @@ class EutaxonomyFinancials202673DataController
         @Qualifier("AssembledExportService") dataExportService: DataExportService<EutaxonomyFinancials202673Data>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
-    ) : DataController<EutaxonomyFinancials202673Data>(
+    ) : UploadableDataController<EutaxonomyFinancials202673Data>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,

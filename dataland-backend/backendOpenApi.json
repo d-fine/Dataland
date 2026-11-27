@@ -1281,78 +1281,6 @@
         ]
       }
     },
-    "/data/pcaf": {
-      "post": {
-        "tags": [
-          "pcaf-data-controller"
-        ],
-        "summary": "Upload new dataset.",
-        "description": "The uploaded data is added to the data store, the generated data id is returned. Document references must contain only the file ID, no additional document metadata.",
-        "operationId": "postCompanyAssociatedPcafData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "description": "If true, data is not sent to QA.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataPcafData"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added data to the data store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/pcaf/export-latest-jobs": {
       "post": {
         "tags": [
@@ -10188,411 +10116,6 @@
             "nullable": true
           }
         }
-      },
-      "CompanyAssociatedDataPcafData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PcafData"
-          }
-        }
-      },
-      "ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneralCompanyCompanyExchangeStatusOptions"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
-      "ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneralCompanyMainPcafSectorOptions"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Information Technology\"; \"Materials\"; \"Public\"; \"Real estate\"; \"Utilities\";",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
-      "ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
-          "quality": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QualityOptions"
-              }
-            ]
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          }
-        },
-        "description": "Does the fiscal year deviate from the calendar year?",
-        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
-      },
-      "PcafData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneral"
-              }
-            ]
-          },
-          "financial": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafFinancial"
-              }
-            ]
-          },
-          "environmental": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmental"
-              }
-            ]
-          }
-        }
-      },
-      "PcafEnvironmental": {
-        "type": "object",
-        "properties": {
-          "greenhouseGasEmissions": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafEnvironmentalGreenhouseGasEmissions"
-              }
-            ]
-          }
-        }
-      },
-      "PcafEnvironmentalGreenhouseGasEmissions": {
-        "type": "object",
-        "properties": {
-          "scope1GhgEmissionsInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2GhgEmissionsInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2GhgEmissionsLocationBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope2GhgEmissionsMarketBasedInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "scope3GhgEmissionsInTonnes": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafFinancial": {
-        "type": "object",
-        "properties": {
-          "financial": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafFinancialFinancial"
-              }
-            ]
-          },
-          "listedCompany": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafFinancialListedCompany"
-              }
-            ]
-          },
-          "unlistedCompany": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafFinancialUnlistedCompany"
-              }
-            ]
-          }
-        }
-      },
-      "PcafFinancialFinancial": {
-        "type": "object",
-        "properties": {
-          "pppAdjustedGrossDomesticProductGdp": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "bookValueOfDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafFinancialListedCompany": {
-        "type": "object",
-        "properties": {
-          "marketCapitalizationInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "minoritiesInterestInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "enterpriseValueInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafFinancialUnlistedCompany": {
-        "type": "object",
-        "properties": {
-          "totalEquityInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "totalEquityAndDebtInEUR": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          }
-        }
-      },
-      "PcafGeneral": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneralGeneral"
-              }
-            ]
-          },
-          "company": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PcafGeneralCompany"
-              }
-            ]
-          }
-        }
-      },
-      "PcafGeneralCompany": {
-        "type": "object",
-        "properties": {
-          "mainPcafSector": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
-              }
-            ]
-          },
-          "companyExchangeStatus": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
-              }
-            ]
-          }
-        }
-      },
-      "PcafGeneralCompanyCompanyExchangeStatusOptions": {
-        "type": "string",
-        "enum": [
-          "Listed",
-          "Unlisted"
-        ]
-      },
-      "PcafGeneralCompanyMainPcafSectorOptions": {
-        "type": "string",
-        "enum": [
-          "CommunicationServices",
-          "ConsumerDiscretionary",
-          "ConsumerStaples",
-          "Energy",
-          "Financials",
-          "HealthCare",
-          "Industrials",
-          "InformationTechnology",
-          "Materials",
-          "Public",
-          "RealEstate",
-          "Utilities"
-        ]
-      },
-      "PcafGeneralGeneral": {
-        "type": "object",
-        "properties": {
-          "fiscalYearDeviation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions"
-              }
-            ]
-          },
-          "fiscalYearEnd": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
-              }
-            ]
-          }
-        }
-      },
-      "PcafGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
       },
       "CompanyAssociatedDataNuclearAndGasData": {
         "required": [
@@ -21162,6 +20685,361 @@
           },
           "data": {
             "$ref": "#/components/schemas/SfdrData"
+          }
+        }
+      },
+      "CompanyAssociatedDataPcafData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PcafData"
+          }
+        }
+      },
+      "ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompanyCompanyExchangeStatusOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "\"Listed\" if the company is listed on an exchange - otherwise \"Unlisted\"",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompanyMainPcafSectorOptions"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        },
+        "description": "One of the following sectors the company is mainly operating in: \"Communication Services\"; \"Consumer Discretionary\"; \"Consumer Staples\"; \"Energy\"; \"Financials\"; \"Health Care\"; \"Industrials\"; \"Information Technology\"; \"Materials\"; \"Public\"; \"Real estate\"; \"Utilities\";",
+        "example": "{\n      \"value\" :  \"Option 1\" , \n      \"quality\" : \"Reported\",\n      \"comment\" : \"The value is reported by the company.\"\n      \"dataSource\" : {\n        \"page\" : \"5-7\",\n        \"tagName\" : \"monetaryAmount\",\n        \"fileName\" : \"AnnualReport2020.pdf\",\n        \"fileReference\" : \"207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47\"\n      }\n    } "
+      },
+      "PcafData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneral"
+              }
+            ]
+          },
+          "financial": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancial"
+              }
+            ]
+          },
+          "environmental": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmental"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmental": {
+        "type": "object",
+        "properties": {
+          "greenhouseGasEmissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafEnvironmentalGreenhouseGasEmissions"
+              }
+            ]
+          }
+        }
+      },
+      "PcafEnvironmentalGreenhouseGasEmissions": {
+        "type": "object",
+        "properties": {
+          "scope1GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsLocationBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope2GhgEmissionsMarketBasedInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope3GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancial": {
+        "type": "object",
+        "properties": {
+          "financial": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialFinancial"
+              }
+            ]
+          },
+          "listedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialListedCompany"
+              }
+            ]
+          },
+          "unlistedCompany": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafFinancialUnlistedCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialFinancial": {
+        "type": "object",
+        "properties": {
+          "pppAdjustedGrossDomesticProductGdp": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "bookValueOfDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialListedCompany": {
+        "type": "object",
+        "properties": {
+          "marketCapitalizationInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "minoritiesInterestInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "enterpriseValueInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafFinancialUnlistedCompany": {
+        "type": "object",
+        "properties": {
+          "totalEquityInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "totalEquityAndDebtInEUR": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralGeneral"
+              }
+            ]
+          },
+          "company": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PcafGeneralCompany"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneralCompany": {
+        "type": "object",
+        "properties": {
+          "mainPcafSector": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyMainPcafSectorOptions"
+              }
+            ]
+          },
+          "companyExchangeStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointPcafGeneralCompanyCompanyExchangeStatusOptions"
+              }
+            ]
+          }
+        }
+      },
+      "PcafGeneralCompanyCompanyExchangeStatusOptions": {
+        "type": "string",
+        "enum": [
+          "Listed",
+          "Unlisted"
+        ]
+      },
+      "PcafGeneralCompanyMainPcafSectorOptions": {
+        "type": "string",
+        "enum": [
+          "CommunicationServices",
+          "ConsumerDiscretionary",
+          "ConsumerStaples",
+          "Energy",
+          "Financials",
+          "HealthCare",
+          "Industrials",
+          "InformationTechnology",
+          "Materials",
+          "Public",
+          "RealEstate",
+          "Utilities"
+        ]
+      },
+      "PcafGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "fiscalYearEnd": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointLocalDate"
+              }
+            ]
           }
         }
       },

@@ -121,7 +121,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataPoint
               ),
             uploadComponentName: 'ExtendedSingleSelectFormField',
-            dataPointTypeId: 'extendedEnumSfdrMainPcafSector',
+            dataPointTypeId: 'extendedEnumPcafMainSector',
           },
           {
             type: 'cell',
@@ -167,7 +167,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 dataPoint
               ),
             uploadComponentName: 'RadioButtonsExtendedDataPointFormField',
-            dataPointTypeId: 'extendedEnumSfdrCompanyExchangeStatus',
+            dataPointTypeId: 'extendedEnumCompanyExchangeStatus',
           },
         ],
       },

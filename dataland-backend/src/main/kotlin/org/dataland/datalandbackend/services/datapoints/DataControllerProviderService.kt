@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
@@ -34,8 +34,8 @@ class DataControllerProviderService
         private fun getDataController(
             dataTypeClass: Class<out Any>,
             dataManager: DatasetStorageService,
-        ): DataController<Any> =
-            DataController<Any>(
+        ): UploadableDataController<Any> =
+            UploadableDataController<Any>(
                 dataManager,
                 metaDataManager,
                 dataExportService,
@@ -47,7 +47,7 @@ class DataControllerProviderService
         /**
          * Get a data controller for a framework using a stored data manager
          */
-        fun getStoredDataControllerForFramework(dataType: DataType): DataController<Any> {
+        fun getStoredDataControllerForFramework(dataType: DataType): UploadableDataController<Any> {
             val dataTypeClass = getClassForDataType(dataType)
             return getDataController(dataTypeClass, storedDataManager)
         }
@@ -55,7 +55,7 @@ class DataControllerProviderService
         /**
          * Get a data controller for a framework using an assembled data manager
          */
-        fun getAssembledDataControllerForFramework(dataType: DataType): DataController<Any> {
+        fun getAssembledDataControllerForFramework(dataType: DataType): UploadableDataController<Any> {
             val dataTypeClass = getClassForDataType(dataType)
             return getDataController(dataTypeClass, assembledDataManager)
         }

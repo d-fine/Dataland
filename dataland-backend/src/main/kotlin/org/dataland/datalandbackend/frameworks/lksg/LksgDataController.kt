@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.lksg
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
@@ -38,7 +38,7 @@ class LksgDataController
         @Qualifier("UnassembledExportService") dataExportService: DataExportService<LksgData>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
-    ) : DataController<LksgData>(
+    ) : UploadableDataController<LksgData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,

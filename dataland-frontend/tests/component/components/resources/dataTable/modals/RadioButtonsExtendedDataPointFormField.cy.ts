@@ -54,7 +54,7 @@ describe('Component test for RadioButtonsExtendedDataPointFormField', () => {
     selectOptionAndExpect('No Deviation', 'NoDeviation');
   });
 
-  ['extendedEnumCompanyExchangeStatus', 'extendedEnumSfdrCompanyExchangeStatus'].forEach((typeId) => {
+  ['extendedEnumCompanyExchangeStatus'].forEach((typeId) => {
     it(`offers Listed and Unlisted for ${typeId}`, () => {
       mountComponent({ value: 'Listed' }, typeId);
       cy.get(radioSelector).should('contain', 'Listed').and('contain', 'Unlisted');

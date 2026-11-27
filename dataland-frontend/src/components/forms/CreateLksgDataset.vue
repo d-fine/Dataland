@@ -195,7 +195,7 @@ const postLkSGData = async (): Promise<void> => {
       getKeycloakPromise
     );
 
-    await lksgDataControllerApi.postFrameworkData(companyAssociatedLksgData.value, isCompanyOwnerOrDataUploader);
+    await lksgDataControllerApi.postFrameworkData!(companyAssociatedLksgData.value, isCompanyOwnerOrDataUploader);
 
     emit('datasetCreated');
     dataDate.value = undefined;

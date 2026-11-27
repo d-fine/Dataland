@@ -2,7 +2,7 @@ import { mountEditFormField } from '@ct/testUtils/MountEditFormField.ts';
 import SingleSelectExtendedDataPointFormField from '@/components/resources/dataTable/modals/SingleSelectExtendedDataPointFormField.vue';
 
 describe('Component test for SingleSelectExtendedDataPointFormField', () => {
-  ['extendedEnumPcafMainSector', 'extendedEnumSfdrMainPcafSector'].forEach((dataPointTypeId) => {
+  ['extendedEnumPcafMainSector'].forEach((dataPointTypeId) => {
     it(`maps the displayed value to the technical value and allows changing it for ${dataPointTypeId}`, () => {
       mountEditFormField(
         SingleSelectExtendedDataPointFormField,

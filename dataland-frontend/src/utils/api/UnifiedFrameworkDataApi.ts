@@ -18,7 +18,10 @@ export interface BaseFrameworkDataApi<FrameworkDataType> {
 }
 
 export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
-  postFrameworkData(
+  /**
+   * Uploads a dataset. Only available for frameworks whose backend controller offers an upload endpoint.
+   */
+  postFrameworkData?(
     data: CompanyAssociatedData<FrameworkDataType>,
     bypassQa?: boolean,
     options?: AxiosRequestConfig

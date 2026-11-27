@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.model.export.ExportJobInfo
 import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.BackendOpenApiDescriptionsAndExamples
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.CompanyIdParameterRequired
 import org.dataland.datalandbackendutils.utils.swaggerdocumentation.DataIdParameterRequired
@@ -34,36 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataApi<T> {
-    /**
-     * A method to store data via Dataland into a data store
-     * @param companyAssociatedData consisting of the ID of the company and the data to be stored
-     * @return meta info about the stored data including the ID of the created entry in the data store
-     */
-    @Operation(
-        summary = "Upload new dataset.",
-        description = "The uploaded data is added to the data store, the generated data id is returned.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully added data to the data store."),
-        ],
-    )
-    @PostMapping(
-        produces = ["application/json"],
-        consumes = ["application/json"],
-    )
-    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId, #bypassQa)")
-    fun postCompanyAssociatedData(
-        @Valid @RequestBody
-        companyAssociatedData: CompanyAssociatedData<T>,
-        @Parameter(
-            name = "bypassQa",
-            description = BackendOpenApiDescriptionsAndExamples.BYPASS_QA_DESCRIPTION,
-            required = false,
-        )
-        @RequestParam(defaultValue = "false") bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation>
-
     /**
      * A method to retrieve specific data identified by its ID
      * @param dataId identifier used to uniquely specify data in the data store

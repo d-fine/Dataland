@@ -5,8 +5,8 @@ import {
   ${frameworkBaseName}DataControllerApi,
   type ${frameworkBaseName}Data,
   type Configuration,
-  type DataMetaInformation,
-  type ExportFileType,
+<#if backendUploadEndpoint>  type DataMetaInformation,
+</#if>  type ExportFileType,
   type ExportJobInfo,
 } from "@clients/backend";
 import { type PublicFrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
@@ -32,6 +32,7 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     return this.openApiDataController.getCompanyAssociated${frameworkBaseName}Data(dataId, options);
   }
 
+<#if backendUploadEndpoint>
   postFrameworkData(
     data: CompanyAssociatedData<${frameworkBaseName}Data>,
     bypassQa?: boolean,
@@ -40,6 +41,7 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     return this.openApiDataController.postCompanyAssociated${frameworkBaseName}Data(data, bypassQa, options);
   }
 
+</#if>
   postExportJobCompanyAssociatedDataByDimensions(
      reportingPeriods: string[],
      companyIds: string[],

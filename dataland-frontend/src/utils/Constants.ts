@@ -16,8 +16,13 @@ const MAIN_FRAMEWORKS = new Set([
   'sfdr',
 ]);
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter(
-  (framework) => framework !== 'eutaxonomy-financials-2026-73' && framework !== 'eutaxonomy-non-financials-2026-73'
+  (framework) =>
+    framework !== 'eutaxonomy-financials-2026-73' &&
+    framework !== 'eutaxonomy-non-financials-2026-73' &&
+    framework !== 'pcaf'
 ) as DataTypeEnum[];
+// Frameworks without an upload possibility have no fake fixtures. Their data is seeded via frameworks sharing their data points.
+export const FRAMEWORKS_WITHOUT_FAKE_FIXTURES: string[] = ['pcaf'];
 export const MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.filter((framework) =>
   MAIN_FRAMEWORKS.has(framework)
 );

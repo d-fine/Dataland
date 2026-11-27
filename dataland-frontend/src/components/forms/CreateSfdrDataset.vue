@@ -313,7 +313,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await sfdrDataControllerApi!.postFrameworkData(
+        await sfdrDataControllerApi!.postFrameworkData!(
           removeInferableDocumentFields(this.companyAssociatedSfdrData),
           isCompanyOwnerOrDataUploader
         );

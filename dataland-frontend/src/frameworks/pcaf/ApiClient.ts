@@ -5,7 +5,6 @@ import {
   PcafDataControllerApi,
   type PcafData,
   type Configuration,
-  type DataMetaInformation,
   type ExportFileType,
   type ExportJobInfo,
 } from '@clients/backend';
@@ -30,14 +29,6 @@ export class PcafApiClient implements PublicFrameworkDataApi<PcafData> {
 
   getFrameworkData(dataId: string, options?: AxiosRequestConfig): AxiosPromise<CompanyAssociatedData<PcafData>> {
     return this.openApiDataController.getCompanyAssociatedPcafData(dataId, options);
-  }
-
-  postFrameworkData(
-    data: CompanyAssociatedData<PcafData>,
-    bypassQa?: boolean,
-    options?: AxiosRequestConfig
-  ): AxiosPromise<DataMetaInformation> {
-    return this.openApiDataController.postCompanyAssociatedPcafData(data, bypassQa, options);
   }
 
   postExportJobCompanyAssociatedDataByDimensions(

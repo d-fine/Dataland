@@ -66,6 +66,9 @@ export async function uploadGenericFrameworkData<FrameworkDataType>(
 ): Promise<DataMetaInformation> {
   const apiClient = apiClientConstructor(new Configuration({ accessToken: token }));
 
+  if (!apiClient.postFrameworkData) {
+    throw new Error('The framework API client does not support uploading datasets.');
+  }
   const response = await apiClient.postFrameworkData(
     {
       companyId,

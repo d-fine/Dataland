@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.exceptions.DownloadDataNotFoundApiException
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.enums.export.ExportJobProgressState
 import org.dataland.datalandbackend.model.export.ExportJob
@@ -13,7 +12,6 @@ import org.dataland.datalandbackend.model.export.ExportLatestRequestData
 import org.dataland.datalandbackend.model.export.ExportOptions
 import org.dataland.datalandbackend.model.export.ExportRequestData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataExportService
@@ -29,13 +27,11 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDatasetDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.ListDataDimensions
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonUtils.defaultObjectMapper
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
-import java.time.Instant
 import java.util.UUID
 
 /**
@@ -46,41 +42,16 @@ import java.util.UUID
  * @param companyQueryManager service to retrieve company information
  */
 open class DataController<T>(
-    private val datasetStorageService: DatasetStorageService,
+    protected val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService<T>,
     private val dataExportStorage: DataExportStore,
     private val companyQueryManager: CompanyQueryManager,
     private val clazz: Class<out T>,
 ) : DataApi<T> {
-    private val dataType = DataType.of(clazz)
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val logMessageBuilder = LogMessageBuilder()
-
-    override fun postCompanyAssociatedData(
-        companyAssociatedData: CompanyAssociatedData<T>,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation> {
-        val companyId = companyAssociatedData.companyId
-        val reportingPeriod = companyAssociatedData.reportingPeriod
-        val userId = DatalandAuthentication.fromContext().userId
-        logger.info(logMessageBuilder.postCompanyAssociatedDataMessage(userId, dataType, companyId, reportingPeriod))
-
-        val uploadTime = Instant.now().toEpochMilli()
-        val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val correlationId = IdUtils.generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
-        val dataIdOfPostedData = datasetStorageService.storeDataset(datasetToStore, bypassQa, correlationId)
-
-        logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
-
-        return ResponseEntity.ok(
-            DataMetaInformation(
-                dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
-                uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
-                currentlyActive = false, qaStatus = QaStatus.Pending,
-            ),
-        )
-    }
+    protected val dataType = DataType.of(clazz)
+    protected val logger = LoggerFactory.getLogger(javaClass)
+    protected val logMessageBuilder = LogMessageBuilder()
 
     private fun retrieveDataset(dataId: String): CompanyAssociatedData<T> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
@@ -256,20 +227,6 @@ open class DataController<T>(
         return ResponseEntity
             .ok(ExportJobInfo(id = exportJobId))
     }
-
-    private fun buildStorableDataset(
-        companyAssociatedData: CompanyAssociatedData<T>,
-        userId: String,
-        uploadTime: Long,
-    ): StorableDataset =
-        StorableDataset(
-            companyId = companyAssociatedData.companyId,
-            dataType = dataType,
-            uploaderUserId = userId,
-            uploadTime = uploadTime,
-            reportingPeriod = companyAssociatedData.reportingPeriod,
-            data = defaultObjectMapper.writeValueAsString(companyAssociatedData.data),
-        )
 
     private fun buildCompanyAssociatedData(
         dataId: String,

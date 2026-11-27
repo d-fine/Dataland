@@ -9,6 +9,7 @@ enum class FrameworkGenerationFeatures {
     BackendDataModel,
     QaModel,
     BackendApiController,
+    BackendUploadEndpoint,
     ViewPage,
     UploadPage,
     FakeFixtures,

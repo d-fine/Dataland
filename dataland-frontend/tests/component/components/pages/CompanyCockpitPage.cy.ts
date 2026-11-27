@@ -99,6 +99,7 @@ describe('Component test for the company cockpit', () => {
       'lksg',
       'eutaxonomy-financials-2026-73',
       'eutaxonomy-non-financials-2026-73',
+      'pcaf',
     ]);
     for (const frameworkName of frameworksToTest) {
       const frameworkSummaryPanelSelector = `div[data-test="${frameworkName}-summary-panel"]`;

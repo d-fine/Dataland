@@ -36,7 +36,7 @@
             </div>
 
             <div
-              v-for="dataType in allFrameworksExceptEuTaxonomy"
+              v-for="dataType in uploadableFrameworksExceptEuTaxonomy"
               :key="dataType"
               class="col-9 flex top-border-section"
               :id="dataType + 'Container'"
@@ -68,7 +68,7 @@ import MetaInfoPerCompanyAndFramework from '@/components/resources/chooseFramewo
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
-import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_UPLOAD_FORM } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -99,7 +99,7 @@ export default defineComponent({
 
   data() {
     return {
-      allFrameworksExceptEuTaxonomy: FRONTEND_SUPPORTED_FRAMEWORKS.filter(
+      uploadableFrameworksExceptEuTaxonomy: FRAMEWORKS_WITH_UPLOAD_FORM.filter(
         (frameworkName) =>
           ![DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].includes(
             frameworkName

@@ -258,7 +258,7 @@ export default defineComponent({
           this.getKeycloakPromise
         );
 
-        await nuclearAndGasDataControllerApi?.postFrameworkData(
+        await nuclearAndGasDataControllerApi?.postFrameworkData!(
           this.companyAssociatedNuclearAndGasData,
           isCompanyOwnerOrDataUploader
         );

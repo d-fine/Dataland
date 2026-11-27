@@ -2,7 +2,7 @@
 package org.dataland.datalandbackend.frameworks.sfdr
 
 import io.swagger.v3.oas.annotations.Operation
-import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.controller.UploadableDataController
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.export.ExportJobInfo
@@ -38,7 +38,7 @@ class SfdrDataController
         @Qualifier("AssembledExportService") dataExportService: DataExportService<SfdrData>,
         dataExportStore: DataExportStore,
         companyQueryManager: CompanyQueryManager,
-    ) : DataController<SfdrData>(
+    ) : UploadableDataController<SfdrData>(
             datasetStorageService,
             dataMetaInformationManager,
             dataExportService,

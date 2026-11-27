@@ -3,15 +3,12 @@ package org.dataland.datalandqaservice.frameworks.pcaf.model.general.general
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointLocalDate
-import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 
 /**
  * The QA-model for the General section
  */
 data class PcafGeneralGeneral(
-    @field:Valid()
-    val fiscalYearDeviation: QaReportDataPoint<ExtendedDataPointPcafGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
 )

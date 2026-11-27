@@ -3,7 +3,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
-  type PcafData,
+  type SfdrData,
   type StoredCompany,
 } from '@clients/backend';
 import { getAdminToken } from '@e2e/utils/Auth.ts';
@@ -12,6 +12,7 @@ import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUt
 import { uploadGenericFrameworkData } from '@e2e/utils/FrameworkUpload.ts';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures.ts';
+import { convertSfdrDataToPcafData } from '@sharedUtils/PcafFromSfdr.ts';
 
 type FileTypeLabel = 'Comma-separated Values (.csv)' | 'Excel File (.xlsx)' | 'JavaScript Object Notation (.json)';
 type FileExtension = 'csv' | 'xlsx' | 'json';
@@ -38,7 +39,7 @@ interface FrameworkTestConfig {
 }
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
-let pcafFixtureForTest: FixtureData<PcafData>;
+let sfdrFixtureForPcafTest: FixtureData<SfdrData>;
 
 const frameworkTestConfigs: FrameworkTestConfig[] = [
   {
@@ -60,17 +61,24 @@ const frameworkTestConfigs: FrameworkTestConfig[] = [
   {
     label: 'PCAF',
     loadFixture: (): void => {
-      cy.fixture('CompanyInformationWithPcafPreparedFixtures.json').then((jsonContent) => {
-        const preparedFixtures = jsonContent as Array<FixtureData<PcafData>>;
-        pcafFixtureForTest = getPreparedFixture('All-fields-defined-for-PCAF-Framework-Company', preparedFixtures);
+      // PCAF datasets cannot be uploaded. As SFDR and PCAF share their data points, SFDR data is uploaded instead.
+      cy.fixture('CompanyInformationWithSfdrPreparedFixtures.json').then((jsonContent) => {
+        const preparedFixtures = jsonContent as Array<FixtureData<SfdrData>>;
+        sfdrFixtureForPcafTest = getPreparedFixture('Sfdr-dataset-with-no-null-fields', preparedFixtures);
       });
     },
     upload: (token, companyId, year) =>
-      uploadGenericFrameworkData(token, companyId, year, pcafFixtureForTest.t, (config) =>
-        getBasePublicFrameworkDefinition(DataTypeEnum.Pcaf)!.getPublicFrameworkApiClient(config)
+      uploadGenericFrameworkData(token, companyId, year, sfdrFixtureForPcafTest.t, (config) =>
+        getBasePublicFrameworkDefinition(DataTypeEnum.Sfdr)!.getPublicFrameworkApiClient(config)
       ),
-    // The values are derived from the uploaded fixture, so that the test does not depend on concrete mock data.
-    expectedValuesInExport: () => collectDataPointValues(pcafFixtureForTest.t),
+    // The values are derived from the PCAF data points of the uploaded SFDR fixture, so that the test does not depend
+    // on concrete mock data. Calculated data points are excluded, as their exported value may differ from the upload.
+    expectedValuesInExport: (): string[] => {
+      const pcafData = convertSfdrDataToPcafData(sfdrFixtureForPcafTest.t);
+      delete pcafData.financial!.listedCompany!.enterpriseValueInEUR;
+      delete pcafData.financial!.unlistedCompany!.totalEquityAndDebtInEUR;
+      return collectDataPointValues(pcafData);
+    },
     expectedAliasesInExport: [
       'FISCAL_YEAR_END',
       'MAIN_PCAF_SECTOR',
