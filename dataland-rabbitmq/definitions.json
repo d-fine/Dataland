@@ -123,6 +123,15 @@
       "arguments": {}
     },
     {
+      "name": "user-service.companyInformation",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
       "name": "dataSourcing.dataNonSourceable",
       "vhost": "vhost",
       "type": "direct",
